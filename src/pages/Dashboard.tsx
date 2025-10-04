@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { FileText, Briefcase, Palette, Layout, Sparkles, ArrowRight, Code } from "lucide-react";
+import { FileText, Briefcase, Palette, Layout, Sparkles, ArrowRight, Code, Layers } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 
@@ -53,6 +53,16 @@ const templates = [
     color: "from-blue-600 via-purple-600 to-indigo-700",
     accentColor: "bg-blue-600",
     highlights: ["Gradient Header", "Skills Grid Layout", "Premium Modern Design"]
+  },
+  {
+    id: "fullstack",
+    name: "Full Stack Engineer",
+    subtitle: "Complete Tech Profile",
+    description: "Two-column premium layout showcasing both frontend and backend expertise",
+    icon: Layers,
+    color: "from-teal-500 to-slate-800",
+    accentColor: "bg-teal-500",
+    highlights: ["Dark Sidebar Design", "Icon-Based Layout", "Professional Tech Look"]
   }
 ];
 

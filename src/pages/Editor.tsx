@@ -12,6 +12,7 @@ import { ModernPDF } from "@/components/resume/pdf/ModernPDF";
 import { MinimalPDF } from "@/components/resume/pdf/MinimalPDF";
 import { ExecutivePDF } from "@/components/resume/pdf/ExecutivePDF";
 import { FrontendPDF } from "@/components/resume/pdf/FrontendPDF";
+import { FullstackPDF } from "@/components/resume/pdf/FullstackPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
 export interface ResumeData {
@@ -305,6 +306,54 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           content: "Portfolio Website - Built personal portfolio with React and Framer Motion showcasing interactive animations\nWeather Dashboard - Created real-time weather app using React, TypeScript, and OpenWeather API\nOpen Source - Contributor to popular UI component libraries with 200+ GitHub stars"
         }
       ]
+    },
+    fullstack: {
+      personalInfo: {
+        fullName: "David Anderson",
+        email: "david.anderson@email.com",
+        phone: "+1 (555) 789-0123",
+        location: "Austin, TX",
+        title: "Full Stack Engineer",
+        summary: "Versatile full stack engineer with 6+ years of experience building end-to-end web applications. Expert in both frontend and backend technologies, cloud infrastructure, and database design. Passionate about creating scalable solutions and optimizing performance across the entire stack."
+      },
+      experience: [
+        {
+          id: "1",
+          company: "Cloud Tech Solutions",
+          position: "Senior Full Stack Engineer",
+          startDate: "2021-09",
+          endDate: "",
+          current: true,
+          description: "• Architected and deployed microservices-based applications using Node.js, React, and PostgreSQL\n• Built RESTful APIs and GraphQL endpoints serving 2M+ requests daily\n• Implemented CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 70%\n• Led team of 4 developers in agile sprint planning and code reviews\n• Optimized database queries resulting in 50% reduction in response times"
+        },
+        {
+          id: "2",
+          company: "StartupHub Inc",
+          position: "Full Stack Developer",
+          startDate: "2018-06",
+          endDate: "2021-08",
+          current: false,
+          description: "• Developed full stack web applications using React, Express.js, and MongoDB\n• Created real-time features using WebSocket and Socket.io\n• Integrated third-party APIs including Stripe, SendGrid, and AWS S3\n• Implemented authentication and authorization using JWT and OAuth 2.0\n• Collaborated with designers to create responsive, mobile-first interfaces"
+        }
+      ],
+      education: [
+        {
+          id: "1",
+          school: "University of Texas at Austin",
+          degree: "Bachelor of Science",
+          field: "Computer Science",
+          startDate: "2014-09",
+          endDate: "2018-05"
+        }
+      ],
+      skills: ["JavaScript/TypeScript", "React/Next.js", "Node.js/Express", "Python/Django", "PostgreSQL/MongoDB", "Docker/Kubernetes", "AWS/Azure", "GraphQL/REST API", "Redis/RabbitMQ", "Git/CI-CD", "Microservices", "Testing (Jest/Cypress)"],
+      sections: [
+        {
+          id: "1",
+          title: "Projects & Achievements",
+          content: "E-Commerce Platform - Built scalable marketplace handling 100K+ daily transactions\nReal-time Chat Application - Developed WebSocket-based chat with 10K concurrent users\nAWS Certified Solutions Architect - Associate Level\nContributed to open-source projects with 1K+ GitHub stars"
+        }
+      ]
     }
   };
 
@@ -356,6 +405,7 @@ const Editor = () => {
         minimal: MinimalPDF,
         executive: ExecutivePDF,
         frontend: FrontendPDF,
+        fullstack: FullstackPDF,
       };
 
       const PDFTemplate = pdfTemplates[templateId as keyof typeof pdfTemplates] || ProfessionalPDF;
