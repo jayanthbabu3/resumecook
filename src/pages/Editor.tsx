@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Plus, Trash2 } from "lucide-react";
+import { Download } from "lucide-react";
 import { ResumeForm } from "@/components/resume/ResumeForm";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { toast } from "sonner";
+import { Header } from "@/components/Header";
 
 export interface ResumeData {
   personalInfo: {
@@ -89,34 +90,26 @@ const Editor = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b border-border/50 bg-card sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-6 py-4">
+      <Header />
+      
+      {/* Editor Toolbar */}
+      <div className="border-b border-border/50 bg-card shadow-sm">
+        <div className="container mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground capitalize">
+              Template: <span className="font-semibold text-foreground">{templateId}</span>
+            </span>
             <Button
-              variant="ghost"
-              onClick={() => navigate("/dashboard")}
-              className="gap-2"
+              onClick={handleDownload}
+              className="gap-2 bg-primary hover:bg-primary-hover"
+              size="sm"
             >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Dashboard
+              <Download className="h-4 w-4" />
+              Download Resume
             </Button>
-            
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground capitalize">
-                Template: <span className="font-semibold text-foreground">{templateId}</span>
-              </span>
-              <Button
-                onClick={handleDownload}
-                className="gap-2 bg-primary hover:bg-primary-hover"
-              >
-                <Download className="h-4 w-4" />
-                Download Resume
-              </Button>
-            </div>
           </div>
         </div>
-      </nav>
+      </div>
 
       {/* Editor Layout */}
       <div className="container mx-auto px-6 py-8">
