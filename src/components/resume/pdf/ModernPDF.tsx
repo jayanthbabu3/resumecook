@@ -142,13 +142,13 @@ export const ModernPDF = ({ resumeData }: Props) => {
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarTitle}>Contact</Text>
             {resumeData.personalInfo.email && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.email}</Text>
+              <Text style={styles.sidebarText}>✉ {resumeData.personalInfo.email}</Text>
             )}
             {resumeData.personalInfo.phone && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.phone}</Text>
+              <Text style={styles.sidebarText}>☎ {resumeData.personalInfo.phone}</Text>
             )}
             {resumeData.personalInfo.location && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.location}</Text>
+              <Text style={styles.sidebarText}>📍 {resumeData.personalInfo.location}</Text>
             )}
           </View>
 

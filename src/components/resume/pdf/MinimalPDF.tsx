@@ -126,9 +126,9 @@ export const MinimalPDF = ({ resumeData }: Props) => (
           <Text style={styles.title}>{resumeData.personalInfo.title}</Text>
         )}
         <View style={styles.contactRow}>
-          {resumeData.personalInfo.email && <Text>{resumeData.personalInfo.email}</Text>}
-          {resumeData.personalInfo.phone && <Text>{resumeData.personalInfo.phone}</Text>}
-          {resumeData.personalInfo.location && <Text>{resumeData.personalInfo.location}</Text>}
+          {resumeData.personalInfo.email && <Text>✉ {resumeData.personalInfo.email}</Text>}
+          {resumeData.personalInfo.phone && <Text>☎ {resumeData.personalInfo.phone}</Text>}
+          {resumeData.personalInfo.location && <Text>📍 {resumeData.personalInfo.location}</Text>}
         </View>
       </View>
 
