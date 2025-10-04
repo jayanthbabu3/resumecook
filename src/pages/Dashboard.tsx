@@ -8,29 +8,25 @@ const templates = [
     id: "professional",
     name: "Professional",
     description: "Clean and elegant design perfect for corporate positions and formal industries",
-    preview: "Traditional single-column layout with clear sections",
-    color: "from-blue-500 to-blue-600"
+    preview: "Traditional single-column layout with clear sections"
   },
   {
     id: "modern",
     name: "Modern",
     description: "Contemporary two-column layout ideal for creative and tech professionals",
-    preview: "Eye-catching design with sidebar for skills and contact info",
-    color: "from-purple-500 to-purple-600"
+    preview: "Eye-catching design with sidebar for skills and contact info"
   },
   {
     id: "minimal",
     name: "Minimal",
     description: "Simple and sophisticated design that highlights your experience beautifully",
-    preview: "Clean lines and plenty of white space for easy reading",
-    color: "from-teal-500 to-teal-600"
+    preview: "Clean lines and plenty of white space for easy reading"
   },
   {
     id: "executive",
     name: "Executive",
     description: "Premium template designed for senior positions and leadership roles",
-    preview: "Bold headers and strategic use of color to command attention",
-    color: "from-indigo-500 to-indigo-600"
+    preview: "Bold headers and strategic use of color to command attention"
   }
 ];
 
@@ -52,10 +48,10 @@ const Dashboard = () => {
           </Button>
           
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <FileText className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <span className="text-xl font-bold text-primary">
               ResumeFlow
             </span>
           </div>
@@ -99,8 +95,8 @@ const Dashboard = () => {
                         {template.description}
                       </CardDescription>
                     </div>
-                    <div className={`h-12 w-12 rounded-xl bg-gradient-to-br ${template.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                      <FileText className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                      <FileText className="h-6 w-6 text-primary" />
                     </div>
                   </div>
                 </CardHeader>

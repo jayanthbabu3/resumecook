@@ -108,7 +108,7 @@ const Editor = () => {
               </span>
               <Button
                 onClick={handleDownload}
-                className="gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                className="gap-2 bg-primary hover:bg-primary-hover"
               >
                 <Download className="h-4 w-4" />
                 Download Resume
