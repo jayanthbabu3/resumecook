@@ -41,25 +41,225 @@ export interface ResumeData {
   }>;
 }
 
-const defaultResumeData: ResumeData = {
-  personalInfo: {
-    fullName: "",
-    email: "",
-    phone: "",
-    location: "",
-    title: "",
-    summary: ""
-  },
-  experience: [],
-  education: [],
-  skills: [],
-  sections: []
+const getTemplateDefaults = (templateId: string): ResumeData => {
+  const templates: Record<string, ResumeData> = {
+    professional: {
+      personalInfo: {
+        fullName: "Sarah Johnson",
+        email: "sarah.johnson@email.com",
+        phone: "+1 (555) 123-4567",
+        location: "New York, NY",
+        title: "Senior Financial Analyst",
+        summary: "Results-driven financial analyst with 8+ years of experience in corporate finance, financial modeling, and strategic planning. Proven track record of delivering actionable insights that drive business growth and operational efficiency."
+      },
+      experience: [
+        {
+          id: "1",
+          company: "Goldman Sachs",
+          position: "Senior Financial Analyst",
+          startDate: "2020-03",
+          endDate: "",
+          current: true,
+          description: "• Lead financial planning and analysis for $500M portfolio\n• Develop complex financial models to support strategic decision-making\n• Present quarterly business reviews to C-suite executives\n• Manage team of 3 junior analysts"
+        },
+        {
+          id: "2",
+          company: "JPMorgan Chase",
+          position: "Financial Analyst",
+          startDate: "2016-06",
+          endDate: "2020-02",
+          current: false,
+          description: "• Conducted financial analysis and forecasting for multiple business units\n• Streamlined reporting processes, reducing monthly close time by 30%\n• Collaborated with cross-functional teams on budgeting initiatives"
+        }
+      ],
+      education: [
+        {
+          id: "1",
+          school: "Columbia University",
+          degree: "Master of Business Administration",
+          field: "Finance",
+          startDate: "2014-09",
+          endDate: "2016-05"
+        },
+        {
+          id: "2",
+          school: "University of Pennsylvania",
+          degree: "Bachelor of Science",
+          field: "Economics",
+          startDate: "2010-09",
+          endDate: "2014-05"
+        }
+      ],
+      skills: ["Financial Modeling", "Excel & VBA", "SQL", "Tableau", "Budget Planning", "Risk Analysis", "Bloomberg Terminal", "Financial Reporting"],
+      sections: [
+        {
+          id: "1",
+          title: "Certifications",
+          content: "Chartered Financial Analyst (CFA) - Level III Candidate\nFinancial Risk Manager (FRM) Certified"
+        }
+      ]
+    },
+    modern: {
+      personalInfo: {
+        fullName: "Alex Chen",
+        email: "alex.chen@email.com",
+        phone: "+1 (555) 987-6543",
+        location: "San Francisco, CA",
+        title: "Full Stack Developer",
+        summary: "Passionate full-stack developer with 5+ years building scalable web applications. Specialized in React, Node.js, and cloud technologies. Love creating elegant solutions to complex problems and collaborating with creative teams."
+      },
+      experience: [
+        {
+          id: "1",
+          company: "Tech Startup Inc",
+          position: "Senior Full Stack Developer",
+          startDate: "2021-01",
+          endDate: "",
+          current: true,
+          description: "• Architected and deployed microservices handling 1M+ daily active users\n• Led migration from monolith to serverless architecture on AWS\n• Mentored 5 junior developers and conducted code reviews\n• Improved application performance by 60% through optimization"
+        },
+        {
+          id: "2",
+          company: "Digital Agency Co",
+          position: "Frontend Developer",
+          startDate: "2019-03",
+          endDate: "2020-12",
+          current: false,
+          description: "• Built responsive web applications using React and TypeScript\n• Implemented CI/CD pipelines reducing deployment time by 40%\n• Collaborated with designers to create pixel-perfect UIs"
+        }
+      ],
+      education: [
+        {
+          id: "1",
+          school: "Stanford University",
+          degree: "Bachelor of Science",
+          field: "Computer Science",
+          startDate: "2015-09",
+          endDate: "2019-05"
+        }
+      ],
+      skills: ["React", "TypeScript", "Node.js", "Python", "AWS", "Docker", "PostgreSQL", "GraphQL", "Git", "Agile/Scrum"],
+      sections: [
+        {
+          id: "1",
+          title: "Projects",
+          content: "E-Commerce Platform - Built scalable e-commerce solution serving 50K+ users\nOpen Source Contributor - Active contributor to React ecosystem with 500+ GitHub stars"
+        }
+      ]
+    },
+    minimal: {
+      personalInfo: {
+        fullName: "Emily Rodriguez",
+        email: "emily.rodriguez@email.com",
+        phone: "+1 (555) 234-5678",
+        location: "Austin, TX",
+        title: "UX Designer",
+        summary: "Creative UX designer with a keen eye for detail and user-centered design principles. 6+ years of experience crafting intuitive digital experiences for web and mobile platforms."
+      },
+      experience: [
+        {
+          id: "1",
+          company: "Design Studio",
+          position: "Senior UX Designer",
+          startDate: "2020-08",
+          endDate: "",
+          current: true,
+          description: "• Lead UX strategy for client projects ranging from startups to Fortune 500\n• Conduct user research, usability testing, and data analysis\n• Design wireframes, prototypes, and high-fidelity mockups\n• Collaborate with developers to ensure design implementation"
+        },
+        {
+          id: "2",
+          company: "Tech Company",
+          position: "UX Designer",
+          startDate: "2018-01",
+          endDate: "2020-07",
+          current: false,
+          description: "• Redesigned mobile app resulting in 45% increase in user engagement\n• Created and maintained design system used across product teams\n• Facilitated design workshops with stakeholders"
+        }
+      ],
+      education: [
+        {
+          id: "1",
+          school: "Rhode Island School of Design",
+          degree: "Bachelor of Fine Arts",
+          field: "Graphic Design",
+          startDate: "2014-09",
+          endDate: "2018-05"
+        }
+      ],
+      skills: ["Figma", "Sketch", "Adobe XD", "User Research", "Prototyping", "Wireframing", "Design Systems", "HTML/CSS"],
+      sections: [
+        {
+          id: "1",
+          title: "Awards",
+          content: "Awwwards - Site of the Day (2023)\nRed Dot Design Award - UX Category (2022)"
+        }
+      ]
+    },
+    executive: {
+      personalInfo: {
+        fullName: "Michael Thompson",
+        email: "michael.thompson@email.com",
+        phone: "+1 (555) 345-6789",
+        location: "Chicago, IL",
+        title: "Chief Technology Officer",
+        summary: "Visionary technology executive with 15+ years leading digital transformation initiatives. Proven track record of building high-performing engineering teams and delivering innovative solutions that drive business growth and competitive advantage."
+      },
+      experience: [
+        {
+          id: "1",
+          company: "Global Tech Corp",
+          position: "Chief Technology Officer",
+          startDate: "2019-01",
+          endDate: "",
+          current: true,
+          description: "• Lead technology strategy and innovation for organization with 2,000+ employees\n• Built engineering team from 50 to 200+ across multiple locations\n• Spearheaded cloud migration initiative saving $5M annually\n• Drive product roadmap and architecture decisions for flagship products"
+        },
+        {
+          id: "2",
+          company: "Enterprise Solutions Inc",
+          position: "VP of Engineering",
+          startDate: "2015-03",
+          endDate: "2018-12",
+          current: false,
+          description: "• Managed 80+ person engineering organization across 6 product teams\n• Established technical standards and best practices company-wide\n• Led successful IPO preparation and technical due diligence\n• Reduced infrastructure costs by 40% through strategic optimization"
+        }
+      ],
+      education: [
+        {
+          id: "1",
+          school: "MIT",
+          degree: "Master of Science",
+          field: "Computer Science",
+          startDate: "2006-09",
+          endDate: "2008-05"
+        },
+        {
+          id: "2",
+          school: "University of Illinois",
+          degree: "Bachelor of Science",
+          field: "Computer Engineering",
+          startDate: "2002-09",
+          endDate: "2006-05"
+        }
+      ],
+      skills: ["Strategic Planning", "Technology Leadership", "Cloud Architecture", "Team Building", "Product Strategy", "Vendor Management", "Board Presentations", "P&L Management"],
+      sections: [
+        {
+          id: "1",
+          title: "Board Positions",
+          content: "Board Member - Tech Industry Association (2021-Present)\nAdvisor - Multiple Early-Stage Startups"
+        }
+      ]
+    }
+  };
+
+  return templates[templateId] || templates.professional;
 };
 
 const Editor = () => {
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
-  const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
+  const [resumeData, setResumeData] = useState<ResumeData>(() => getTemplateDefaults(templateId || "professional"));
 
   // Load from local storage on mount
   useEffect(() => {
@@ -71,14 +271,18 @@ const Editor = () => {
           toast.success("Previous resume data loaded");
         } catch (error) {
           console.error("Error loading resume data:", error);
+          setResumeData(getTemplateDefaults(templateId));
         }
+      } else {
+        // Set template defaults if no saved data
+        setResumeData(getTemplateDefaults(templateId));
       }
     }
   }, [templateId]);
 
   // Save to local storage whenever data changes
   useEffect(() => {
-    if (templateId && resumeData !== defaultResumeData) {
+    if (templateId && resumeData.personalInfo.fullName) {
       localStorage.setItem(`resume-${templateId}`, JSON.stringify(resumeData));
     }
   }, [resumeData, templateId]);
