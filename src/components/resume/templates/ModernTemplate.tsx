@@ -14,11 +14,11 @@ export const ModernTemplate = ({ resumeData }: TemplateProps) => {
   };
 
   return (
-    <div className="w-full h-full bg-white text-gray-900 grid grid-cols-[170px,1fr]">
+    <div className="w-full h-full bg-white text-gray-900 grid grid-cols-[240px,1fr]">
       {/* Left Sidebar */}
-      <div className="bg-gradient-to-b from-indigo-600 to-purple-700 text-white p-6">
-        <div className="mb-6">
-          <div className="h-24 w-24 rounded-full bg-white/20 backdrop-blur-sm mx-auto mb-3 flex items-center justify-center">
+      <div className="bg-gradient-to-b from-indigo-600 to-purple-700 text-white p-8">
+        <div className="mb-8">
+          <div className="h-28 w-28 rounded-full bg-white/20 backdrop-blur-sm mx-auto mb-4 flex items-center justify-center">
             <div className="text-4xl font-bold">
               {resumeData.personalInfo.fullName.split(' ').map(n => n[0]).join('').toUpperCase() || "YN"}
             </div>
