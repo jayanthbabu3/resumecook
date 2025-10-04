@@ -14,9 +14,9 @@ export const ProfessionalTemplate = ({ resumeData }: TemplateProps) => {
   };
 
   return (
-    <div className="w-full h-full bg-white p-12 text-gray-900">
+    <div className="w-full h-full bg-white p-12 text-gray-900" style={{ pageBreakAfter: 'auto' }}>
       {/* Header */}
-      <div className="mb-8 pb-6 border-b-2 border-gray-900">
+      <div className="mb-8 pb-6 border-b-2 border-gray-900" style={{ pageBreakAfter: 'avoid', pageBreakInside: 'avoid' }}>
         <h1 className="text-4xl font-bold text-gray-900 mb-2 uppercase tracking-wide">
           {resumeData.personalInfo.fullName || "Your Name"}
         </h1>
@@ -49,8 +49,8 @@ export const ProfessionalTemplate = ({ resumeData }: TemplateProps) => {
 
       {/* Professional Summary */}
       {resumeData.personalInfo.summary && (
-        <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2">
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2" style={{ pageBreakAfter: 'avoid' }}>
             Professional Summary
           </h2>
           <p className="text-sm text-gray-700 leading-relaxed">
@@ -62,12 +62,12 @@ export const ProfessionalTemplate = ({ resumeData }: TemplateProps) => {
       {/* Experience */}
       {resumeData.experience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
+          <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2" style={{ pageBreakAfter: 'avoid' }}>
             Professional Experience
           </h2>
           <div className="space-y-5">
             {resumeData.experience.map((exp) => (
-              <div key={exp.id}>
+              <div key={exp.id} style={{ pageBreakInside: 'avoid' }}>
                 <div className="flex justify-between items-baseline mb-2">
                   <div>
                     <h3 className="text-base font-bold text-gray-900">
@@ -95,12 +95,12 @@ export const ProfessionalTemplate = ({ resumeData }: TemplateProps) => {
       {/* Education */}
       {resumeData.education.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
+          <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2" style={{ pageBreakAfter: 'avoid' }}>
             Education
           </h2>
           <div className="space-y-4">
             {resumeData.education.map((edu) => (
-              <div key={edu.id}>
+              <div key={edu.id} style={{ pageBreakInside: 'avoid' }}>
                 <div className="flex justify-between items-baseline mb-1">
                   <div>
                     <h3 className="text-base font-bold text-gray-900">
@@ -122,8 +122,8 @@ export const ProfessionalTemplate = ({ resumeData }: TemplateProps) => {
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2">
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2" style={{ pageBreakAfter: 'avoid' }}>
             Skills
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -143,8 +143,8 @@ export const ProfessionalTemplate = ({ resumeData }: TemplateProps) => {
 
       {/* Custom Sections */}
       {resumeData.sections.map((section) => (
-        <div key={section.id} className="mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2">
+        <div key={section.id} className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2" style={{ pageBreakAfter: 'avoid' }}>
             {section.title}
           </h2>
           <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">

@@ -14,9 +14,9 @@ export const ExecutiveTemplate = ({ resumeData }: TemplateProps) => {
   };
 
   return (
-    <div className="w-full h-full bg-white text-gray-900">
+    <div className="w-full h-full bg-white text-gray-900" style={{ pageBreakAfter: 'auto' }}>
       {/* Header Bar */}
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-12 py-10">
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-12 py-10" style={{ pageBreakAfter: 'avoid', pageBreakInside: 'avoid' }}>
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-2 tracking-tight">
             {resumeData.personalInfo.fullName || "Your Name"}
@@ -52,8 +52,8 @@ export const ExecutiveTemplate = ({ resumeData }: TemplateProps) => {
       <div className="px-12 py-8 max-w-4xl mx-auto">
         {/* Executive Summary */}
         {resumeData.personalInfo.summary && (
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-3 border-l-4 border-slate-900 pl-3">
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-xl font-bold text-slate-900 mb-3 border-l-4 border-slate-900 pl-3" style={{ pageBreakAfter: 'avoid' }}>
               Executive Summary
             </h2>
             <p className="text-sm text-gray-700 leading-relaxed pl-3">
@@ -65,12 +65,12 @@ export const ExecutiveTemplate = ({ resumeData }: TemplateProps) => {
         {/* Professional Experience */}
         {resumeData.experience.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-4 border-l-4 border-slate-900 pl-3">
+            <h2 className="text-xl font-bold text-slate-900 mb-4 border-l-4 border-slate-900 pl-3" style={{ pageBreakAfter: 'avoid' }}>
               Professional Experience
             </h2>
             <div className="space-y-5 pl-3">
               {resumeData.experience.map((exp) => (
-                <div key={exp.id} className="border-l-2 border-slate-200 pl-5 pb-5">
+                <div key={exp.id} className="border-l-2 border-slate-200 pl-5 pb-5" style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-slate-900">
@@ -97,13 +97,13 @@ export const ExecutiveTemplate = ({ resumeData }: TemplateProps) => {
 
         {/* Education */}
         {resumeData.education.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-4 border-l-4 border-slate-900 pl-3">
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-xl font-bold text-slate-900 mb-4 border-l-4 border-slate-900 pl-3" style={{ pageBreakAfter: 'avoid' }}>
               Education
             </h2>
             <div className="grid md:grid-cols-2 gap-4 pl-3">
               {resumeData.education.map((edu) => (
-                <div key={edu.id} className="border-l-2 border-slate-200 pl-4">
+                <div key={edu.id} className="border-l-2 border-slate-200 pl-4" style={{ pageBreakInside: 'avoid' }}>
                   <h3 className="text-base font-bold text-slate-900">
                     {edu.degree || "Degree"}
                   </h3>
@@ -124,8 +124,8 @@ export const ExecutiveTemplate = ({ resumeData }: TemplateProps) => {
 
         {/* Core Competencies */}
         {resumeData.skills.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-4 border-l-4 border-slate-900 pl-3">
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-xl font-bold text-slate-900 mb-4 border-l-4 border-slate-900 pl-3" style={{ pageBreakAfter: 'avoid' }}>
               Core Competencies
             </h2>
             <div className="grid grid-cols-3 md:grid-cols-4 gap-2 pl-3">
@@ -145,8 +145,8 @@ export const ExecutiveTemplate = ({ resumeData }: TemplateProps) => {
 
         {/* Custom Sections */}
         {resumeData.sections.map((section) => (
-          <div key={section.id} className="mb-8">
-            <h2 className="text-xl font-bold text-slate-900 mb-3 border-l-4 border-slate-900 pl-3">
+          <div key={section.id} className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-xl font-bold text-slate-900 mb-3 border-l-4 border-slate-900 pl-3" style={{ pageBreakAfter: 'avoid' }}>
               {section.title}
             </h2>
             <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line pl-3">

@@ -14,9 +14,9 @@ export const ModernTemplate = ({ resumeData }: TemplateProps) => {
   };
 
   return (
-    <div className="w-full h-full bg-white text-gray-900 grid grid-cols-[240px,1fr]">
+    <div className="w-full h-full bg-white text-gray-900 grid grid-cols-[240px,1fr]" style={{ pageBreakAfter: 'auto' }}>
       {/* Left Sidebar */}
-      <div className="bg-gradient-to-b from-indigo-600 to-purple-700 text-white p-8">
+      <div className="bg-gradient-to-b from-indigo-600 to-purple-700 text-white p-8" style={{ pageBreakInside: 'avoid' }}>
         <div className="mb-8">
           <div className="h-28 w-28 rounded-full bg-white/20 backdrop-blur-sm mx-auto mb-4 flex items-center justify-center">
             <div className="text-4xl font-bold">
@@ -101,8 +101,8 @@ export const ModernTemplate = ({ resumeData }: TemplateProps) => {
 
         {/* Summary */}
         {resumeData.personalInfo.summary && (
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2" style={{ pageBreakAfter: 'avoid' }}>
               <div className="h-1 w-12 bg-indigo-600" />
               <span>About Me</span>
             </h2>
@@ -115,13 +115,13 @@ export const ModernTemplate = ({ resumeData }: TemplateProps) => {
         {/* Experience */}
         {resumeData.experience.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2" style={{ pageBreakAfter: 'avoid' }}>
               <div className="h-1 w-12 bg-indigo-600" />
               <span>Experience</span>
             </h2>
             <div className="space-y-6">
               {resumeData.experience.map((exp, index) => (
-                <div key={exp.id} className="relative pl-6 border-l-2 border-indigo-200">
+                <div key={exp.id} className="relative pl-6 border-l-2 border-indigo-200" style={{ pageBreakInside: 'avoid' }}>
                   <div className="absolute -left-2 top-0 h-4 w-4 rounded-full bg-indigo-600" />
                   <div className="mb-2">
                     <h3 className="text-lg font-bold text-gray-900">
@@ -149,8 +149,8 @@ export const ModernTemplate = ({ resumeData }: TemplateProps) => {
 
         {/* Custom Sections */}
         {resumeData.sections.map((section) => (
-          <div key={section.id} className="mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <div key={section.id} className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2" style={{ pageBreakAfter: 'avoid' }}>
               <div className="h-1 w-12 bg-indigo-600" />
               <span>{section.title}</span>
             </h2>
