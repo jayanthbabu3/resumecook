@@ -16,12 +16,16 @@ const styles = StyleSheet.create({
     width: '35%',
     backgroundColor: '#f9fafb',
     padding: 30,
-    borderRightWidth: 4,
+    borderRightWidth: 1,
     borderRightStyle: 'solid',
-    borderRightColor: '#111827',
+    borderRightColor: '#e5e7eb',
   },
   sidebarHeader: {
     marginBottom: 25,
+    paddingBottom: 15,
+    borderBottomWidth: 2,
+    borderBottomStyle: 'solid',
+    borderBottomColor: '#7c3aed',
   },
   name: {
     fontSize: 20,
@@ -32,20 +36,20 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 10,
-    color: '#374151',
+    color: '#7c3aed',
     fontWeight: 600,
   },
   sidebarSection: {
     marginBottom: 25,
     paddingBottom: 20,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomStyle: 'solid',
-    borderBottomColor: '#d1d5db',
+    borderBottomColor: '#e5e7eb',
   },
   sidebarTitle: {
     fontSize: 9,
     fontWeight: 700,
-    color: '#111827',
+    color: '#7c3aed',
     marginBottom: 10,
     textTransform: 'uppercase',
     letterSpacing: 0.8,
@@ -105,14 +109,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 10,
     fontWeight: 700,
-    color: '#111827',
+    color: '#7c3aed',
     marginBottom: 10,
     paddingBottom: 6,
     textTransform: 'uppercase',
     letterSpacing: 0.8,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomStyle: 'solid',
-    borderBottomColor: '#111827',
+    borderBottomColor: '#7c3aed',
   },
   summary: {
     fontSize: 9,
@@ -175,14 +179,14 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
         {/* Left Sidebar */}
         <View style={styles.sidebar}>
           {/* Header */}
-          <View style={styles.sidebarHeader}>
+          <View style={[styles.sidebarHeader, { borderBottomColor: themeColor }]}>
             <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
-            <Text style={styles.title}>{resumeData.personalInfo.title}</Text>
+            <Text style={[styles.title, { color: themeColor }]}>{resumeData.personalInfo.title}</Text>
           </View>
 
           {/* Contact */}
           <View style={styles.sidebarSection}>
-            <Text style={styles.sidebarTitle}>CONTACT</Text>
+            <Text style={[styles.sidebarTitle, { color: themeColor }]}>CONTACT</Text>
             {resumeData.personalInfo.email && (
               <View style={styles.contactItem}>
                 <Svg width="10" height="10" viewBox="0 0 24 24">
@@ -234,7 +238,7 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {/* Skills */}
           {resumeData.skills && resumeData.skills.length > 0 && (
             <View style={styles.sidebarSection}>
-              <Text style={styles.sidebarTitle}>SKILLS</Text>
+              <Text style={[styles.sidebarTitle, { color: themeColor }]}>SKILLS</Text>
               {resumeData.skills.map((skill, index) => (
                 <Text key={index} style={[styles.skillItem, { borderLeftColor: themeColor }]}>
                   {skill}
@@ -246,7 +250,7 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {/* Education */}
           {resumeData.education && resumeData.education.length > 0 && (
             <View>
-              <Text style={styles.sidebarTitle}>EDUCATION</Text>
+              <Text style={[styles.sidebarTitle, { color: themeColor }]}>EDUCATION</Text>
               {resumeData.education.map((edu, index) => (
                 <View key={index} style={styles.educationItem}>
                   <Text style={styles.educationDegree}>{edu.degree}</Text>
@@ -266,7 +270,7 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {/* Summary */}
           {resumeData.personalInfo.summary && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
+              <Text style={[styles.sectionTitle, { color: themeColor, borderBottomColor: themeColor }]}>PROFESSIONAL SUMMARY</Text>
               <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
             </View>
           )}
@@ -274,7 +278,7 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {/* Experience */}
           {resumeData.experience && resumeData.experience.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>PROFESSIONAL EXPERIENCE</Text>
+              <Text style={[styles.sectionTitle, { color: themeColor, borderBottomColor: themeColor }]}>PROFESSIONAL EXPERIENCE</Text>
               {resumeData.experience.map((exp, index) => (
                 <View key={index} style={styles.experienceItem} wrap={false}>
                   <View style={styles.experienceHeader}>
@@ -296,7 +300,7 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {resumeData.sections &&
             resumeData.sections.map((section, index) => (
               <View key={index} style={styles.section} wrap={false}>
-                <Text style={styles.sectionTitle}>{section.title.toUpperCase()}</Text>
+                <Text style={[styles.sectionTitle, { color: themeColor, borderBottomColor: themeColor }]}>{section.title.toUpperCase()}</Text>
                 <Text style={styles.customSectionContent}>{section.content}</Text>
               </View>
             ))}

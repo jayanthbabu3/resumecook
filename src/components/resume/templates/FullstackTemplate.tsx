@@ -16,15 +16,15 @@ export const FullstackTemplate = ({ resumeData, themeColor = "#7c3aed" }: Templa
   return (
     <div className="w-full min-h-[297mm] bg-white font-sans text-gray-900 flex">
       {/* Left Sidebar */}
-      <div className="w-[35%] bg-gray-50 p-8 border-r-4 border-gray-900">
+      <div className="w-[35%] bg-gray-50 p-8 border-r border-gray-200">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 pb-4" style={{ borderBottom: `2px solid ${themeColor}` }}>
           <h1 className="text-3xl font-bold mb-2 text-gray-900 leading-tight">{resumeData.personalInfo.fullName}</h1>
-          <p className="text-base font-semibold text-gray-700">{resumeData.personalInfo.title}</p>
+          <p className="text-base font-semibold" style={{ color: themeColor }}>{resumeData.personalInfo.title}</p>
         </div>
 
         {/* Contact Info */}
-        <div className="mb-8 pb-6 border-b-2 border-gray-300">
+        <div className="mb-8 pb-6 border-b border-gray-200">
           <h2 className="text-xs font-bold mb-3 text-gray-900 uppercase tracking-wider">Contact</h2>
           <div className="space-y-2 text-xs text-gray-700">
             {resumeData.personalInfo.email && (
@@ -50,8 +50,8 @@ export const FullstackTemplate = ({ resumeData, themeColor = "#7c3aed" }: Templa
 
         {/* Technical Skills */}
         {resumeData.skills && resumeData.skills.length > 0 && (
-          <div className="mb-8 pb-6 border-b-2 border-gray-300">
-            <h2 className="text-xs font-bold mb-3 text-gray-900 uppercase tracking-wider">Skills</h2>
+          <div className="mb-8 pb-6 border-b border-gray-200">
+            <h2 className="text-xs font-bold mb-3 uppercase tracking-wider" style={{ color: themeColor }}>Skills</h2>
             <div className="space-y-1.5">
               {resumeData.skills.map((skill, index) => (
                 <div
@@ -69,7 +69,7 @@ export const FullstackTemplate = ({ resumeData, themeColor = "#7c3aed" }: Templa
         {/* Education */}
         {resumeData.education && resumeData.education.length > 0 && (
           <div>
-            <h2 className="text-xs font-bold mb-3 text-gray-900 uppercase tracking-wider">Education</h2>
+            <h2 className="text-xs font-bold mb-3 uppercase tracking-wider" style={{ color: themeColor }}>Education</h2>
             {resumeData.education.map((edu, index) => (
               <div key={index} className="mb-4 last:mb-0">
                 <h3 className="text-xs font-bold text-gray-900 mb-1">{edu.degree}</h3>
@@ -89,7 +89,7 @@ export const FullstackTemplate = ({ resumeData, themeColor = "#7c3aed" }: Templa
         {/* Professional Summary */}
         {resumeData.personalInfo.summary && (
           <div className="mb-7">
-            <h2 className="text-sm font-bold mb-3 text-gray-900 uppercase tracking-wider pb-2 border-b-2 border-gray-900">
+            <h2 className="text-sm font-bold mb-3 uppercase tracking-wider pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
               Professional Summary
             </h2>
             <p className="text-sm text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
@@ -99,7 +99,7 @@ export const FullstackTemplate = ({ resumeData, themeColor = "#7c3aed" }: Templa
         {/* Professional Experience */}
         {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-7">
-            <h2 className="text-sm font-bold mb-3 text-gray-900 uppercase tracking-wider pb-2 border-b-2 border-gray-900">
+            <h2 className="text-sm font-bold mb-3 uppercase tracking-wider pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
               Professional Experience
             </h2>
             {resumeData.experience.map((exp, index) => (
@@ -123,7 +123,7 @@ export const FullstackTemplate = ({ resumeData, themeColor = "#7c3aed" }: Templa
         {resumeData.sections &&
           resumeData.sections.map((section, index) => (
             <div key={index} className="mb-7">
-              <h2 className="text-sm font-bold mb-3 text-gray-900 uppercase tracking-wider pb-2 border-b-2 border-gray-900">
+              <h2 className="text-sm font-bold mb-3 uppercase tracking-wider pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 {section.title}
               </h2>
               <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{section.content}</p>
