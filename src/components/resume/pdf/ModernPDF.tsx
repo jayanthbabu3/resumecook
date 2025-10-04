@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Svg, Path } from '@react-pdf/renderer';
 import type { ResumeData } from "@/pages/Editor";
 
 const styles = StyleSheet.create({
@@ -47,6 +47,12 @@ const styles = StyleSheet.create({
     fontSize: 9,
     marginBottom: 8,
     lineHeight: 1.4,
+  },
+  sidebarContactItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 5,
+    marginBottom: 8,
   },
   skillBox: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
@@ -142,13 +148,30 @@ export const ModernPDF = ({ resumeData }: Props) => {
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarTitle}>Contact</Text>
             {resumeData.personalInfo.email && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.email}</Text>
+              <View style={styles.sidebarContactItem}>
+                <Svg width="10" height="10" viewBox="0 0 24 24">
+                  <Path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="#fff" strokeWidth="2" />
+                  <Path d="m22 6-10 7L2 6" fill="none" stroke="#fff" strokeWidth="2" />
+                </Svg>
+                <Text style={[styles.sidebarText, { marginBottom: 0 }]}>{resumeData.personalInfo.email}</Text>
+              </View>
             )}
             {resumeData.personalInfo.phone && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.phone}</Text>
+              <View style={styles.sidebarContactItem}>
+                <Svg width="10" height="10" viewBox="0 0 24 24">
+                  <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#fff" strokeWidth="2" />
+                </Svg>
+                <Text style={[styles.sidebarText, { marginBottom: 0 }]}>{resumeData.personalInfo.phone}</Text>
+              </View>
             )}
             {resumeData.personalInfo.location && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.location}</Text>
+              <View style={styles.sidebarContactItem}>
+                <Svg width="10" height="10" viewBox="0 0 24 24">
+                  <Path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="none" stroke="#fff" strokeWidth="2" />
+                  <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="#fff" strokeWidth="2" />
+                </Svg>
+                <Text style={[styles.sidebarText, { marginBottom: 0 }]}>{resumeData.personalInfo.location}</Text>
+              </View>
             )}
           </View>
 
