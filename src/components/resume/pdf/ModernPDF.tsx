@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
     fontSize: 10,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
   },
   sidebar: {
     width: '35%',
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   },
   initials: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
     color: '#fff',
   },
   sidebarSection: {
@@ -36,7 +37,8 @@ const styles = StyleSheet.create({
   },
   sidebarTitle: {
     fontSize: 10,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
     marginBottom: 10,
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -55,13 +57,15 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 28,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
     marginBottom: 5,
   },
   title: {
     fontSize: 16,
     color: '#4f46e5',
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 600,
     marginBottom: 20,
   },
   section: {
@@ -69,7 +73,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 14,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
     marginBottom: 10,
     color: '#4f46e5',
   },
@@ -81,13 +86,15 @@ const styles = StyleSheet.create({
   },
   jobTitle: {
     fontSize: 12,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 700,
     marginBottom: 3,
   },
   company: {
     fontSize: 11,
     color: '#4f46e5',
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Roboto',
+    fontWeight: 600,
     marginBottom: 2,
   },
   date: {
