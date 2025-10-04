@@ -297,15 +297,18 @@ const Editor = () => {
 
     try {
       const opt = {
-        margin: 0,
+        margin: [15, 10, 15, 10] as [number, number, number, number], // top, left, bottom, right margins in mm
         filename: `${resumeData.personalInfo.fullName.replace(/\s+/g, '_')}_Resume.pdf`,
-        image: { type: 'jpeg' as const, quality: 0.98 },
+        image: { type: 'jpeg' as const, quality: 1.0 },
         html2canvas: { 
-          scale: 2,
+          scale: 3, // Higher scale for better quality
           useCORS: true,
           letterRendering: true,
+          logging: false,
+          dpi: 300,
         },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
       await html2pdf().set(opt).from(element).save();
