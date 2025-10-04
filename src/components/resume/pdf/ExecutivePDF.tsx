@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontWeight: 600,
     color: '#1e293b',
-    border: 1,
+    borderWidth: 1,
+    borderStyle: 'solid',
     borderColor: '#e2e8f0',
   },
 });
