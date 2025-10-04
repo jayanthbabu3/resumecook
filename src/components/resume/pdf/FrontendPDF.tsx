@@ -61,6 +61,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#4f46e5',
     borderBottomStyle: 'solid',
   },
+  sectionTitleBar: {
+    width: 0,
+    height: 0,
+  },
   section: {
     marginBottom: 25,
   },
@@ -177,12 +181,12 @@ interface Props {
   themeColor?: string;
 }
 
-export const FrontendPDF = ({ resumeData, themeColor }: Props) => {
+export const FrontendPDF = ({ resumeData, themeColor = "#4f46e5" }: Props) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header with gradient effect */}
-        <View style={styles.header}>
+        {/* Header */}
+        <View style={[styles.header, { backgroundColor: themeColor }]}>
           <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
           <Text style={styles.title}>{resumeData.personalInfo.title}</Text>
           
@@ -240,7 +244,7 @@ export const FrontendPDF = ({ resumeData, themeColor }: Props) => {
           {/* Summary */}
           {resumeData.personalInfo.summary && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>About Me</Text>
+              <Text style={[styles.sectionTitle, { borderBottomColor: themeColor }]}>About Me</Text>
               <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
             </View>
           )}
@@ -248,10 +252,10 @@ export const FrontendPDF = ({ resumeData, themeColor }: Props) => {
           {/* Skills */}
           {resumeData.skills && resumeData.skills.length > 0 && (
             <View style={styles.section} wrap={false}>
-              <Text style={styles.sectionTitle}>Technical Skills</Text>
+              <Text style={[styles.sectionTitle, { borderBottomColor: themeColor }]}>Technical Skills</Text>
               <View style={styles.skillsGrid}>
                 {resumeData.skills.map((skill, index) => (
-                  <Text key={index} style={styles.skillBox}>
+                  <Text key={index} style={[styles.skillBox, { borderLeftColor: themeColor }]}>
                     {skill}
                   </Text>
                 ))}
@@ -262,13 +266,13 @@ export const FrontendPDF = ({ resumeData, themeColor }: Props) => {
           {/* Experience */}
           {resumeData.experience && resumeData.experience.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Professional Experience</Text>
+              <Text style={[styles.sectionTitle, { borderBottomColor: themeColor }]}>Professional Experience</Text>
               {resumeData.experience.map((exp, index) => (
                 <View key={index} style={styles.experienceItem} wrap={false}>
                   <View style={styles.experienceHeader}>
                     <View>
                       <Text style={styles.position}>{exp.position}</Text>
-                      <Text style={styles.company}>{exp.company}</Text>
+                      <Text style={[styles.company, { color: themeColor }]}>{exp.company}</Text>
                     </View>
                     <Text style={styles.dateRange}>
                       {formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate)}
@@ -283,14 +287,14 @@ export const FrontendPDF = ({ resumeData, themeColor }: Props) => {
           {/* Education */}
           {resumeData.education && resumeData.education.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Education</Text>
+              <Text style={[styles.sectionTitle, { borderBottomColor: themeColor }]}>Education</Text>
               {resumeData.education.map((edu, index) => (
                 <View key={index} style={styles.educationItem} wrap={false}>
                   <View style={styles.educationHeader}>
                     <View>
                       <Text style={styles.degree}>{edu.degree}</Text>
                       {edu.field && <Text style={styles.field}>{edu.field}</Text>}
-                      <Text style={styles.school}>{edu.school}</Text>
+                      <Text style={[styles.school, { color: themeColor }]}>{edu.school}</Text>
                     </View>
                     <Text style={styles.dateRange}>
                       {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
@@ -305,7 +309,7 @@ export const FrontendPDF = ({ resumeData, themeColor }: Props) => {
           {resumeData.sections &&
             resumeData.sections.map((section, index) => (
               <View key={index} style={styles.section} wrap={false}>
-                <Text style={styles.sectionTitle}>{section.title}</Text>
+                <Text style={[styles.sectionTitle, { borderBottomColor: themeColor }]}>{section.title}</Text>
                 <Text style={styles.customSectionContent}>{section.content}</Text>
               </View>
             ))}

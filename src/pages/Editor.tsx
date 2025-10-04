@@ -449,36 +449,9 @@ const Editor = () => {
       <div className="border-b border-border/50 bg-card shadow-sm">
         <div className="container mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground capitalize">
-                Template: <span className="font-semibold text-foreground">{templateId}</span>
-              </span>
-              
-              {/* Color Theme Selector */}
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Theme:</span>
-                <div className="flex gap-2">
-                  {[
-                    { name: "Purple", color: "#7c3aed" },
-                    { name: "Blue", color: "#2563eb" },
-                    { name: "Emerald", color: "#059669" },
-                    { name: "Rose", color: "#e11d48" },
-                    { name: "Orange", color: "#ea580c" },
-                    { name: "Teal", color: "#0d9488" },
-                  ].map((theme) => (
-                    <button
-                      key={theme.color}
-                      onClick={() => setThemeColor(theme.color)}
-                      className={`w-7 h-7 rounded-full border-2 transition-all hover:scale-110 ${
-                        themeColor === theme.color ? "border-gray-900 ring-2 ring-offset-2 ring-gray-900" : "border-gray-300"
-                      }`}
-                      style={{ backgroundColor: theme.color }}
-                      title={theme.name}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+            <span className="text-sm text-muted-foreground capitalize">
+              Template: <span className="font-semibold text-foreground">{templateId}</span>
+            </span>
             
             <Button
               onClick={handleDownload}
@@ -512,7 +485,34 @@ const Editor = () => {
           {/* Preview Section */}
           <div className="lg:sticky lg:top-24 h-fit">
             <div className="space-y-4">
-              <h2 className="text-2xl font-bold">Live Preview</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Live Preview</h2>
+                
+                {/* Color Theme Selector */}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Theme:</span>
+                  <div className="flex gap-2">
+                    {[
+                      { name: "Purple", color: "#7c3aed" },
+                      { name: "Blue", color: "#2563eb" },
+                      { name: "Emerald", color: "#059669" },
+                      { name: "Rose", color: "#e11d48" },
+                      { name: "Orange", color: "#ea580c" },
+                      { name: "Teal", color: "#0d9488" },
+                    ].map((theme) => (
+                      <button
+                        key={theme.color}
+                        onClick={() => setThemeColor(theme.color)}
+                        className={`w-7 h-7 rounded-full border-2 transition-all hover:scale-110 ${
+                          themeColor === theme.color ? "border-gray-900 ring-2 ring-offset-2 ring-gray-900" : "border-gray-300"
+                        }`}
+                        style={{ backgroundColor: theme.color }}
+                        title={theme.name}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
               <div className="border-2 border-border rounded-xl overflow-hidden shadow-premium bg-white">
                 <ResumePreview 
                   resumeData={resumeData}
