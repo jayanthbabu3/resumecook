@@ -14,12 +14,12 @@ export const ModernTemplate = ({ resumeData }: TemplateProps) => {
   };
 
   return (
-    <div className="w-full h-full bg-white text-gray-900 grid grid-cols-[200px,1fr]">
+    <div className="w-full h-full bg-white text-gray-900 grid grid-cols-[170px,1fr]">
       {/* Left Sidebar */}
-      <div className="bg-gradient-to-b from-indigo-600 to-purple-700 text-white p-8">
-        <div className="mb-8">
-          <div className="h-32 w-32 rounded-full bg-white/20 backdrop-blur-sm mx-auto mb-4 flex items-center justify-center">
-            <div className="text-5xl font-bold">
+      <div className="bg-gradient-to-b from-indigo-600 to-purple-700 text-white p-6">
+        <div className="mb-6">
+          <div className="h-24 w-24 rounded-full bg-white/20 backdrop-blur-sm mx-auto mb-3 flex items-center justify-center">
+            <div className="text-4xl font-bold">
               {resumeData.personalInfo.fullName.split(' ').map(n => n[0]).join('').toUpperCase() || "YN"}
             </div>
           </div>
@@ -32,7 +32,7 @@ export const ModernTemplate = ({ resumeData }: TemplateProps) => {
             {resumeData.personalInfo.email && (
               <div className="flex items-start gap-2">
                 <Mail className="h-4 w-4 mt-0.5 shrink-0" />
-                <span className="break-words">{resumeData.personalInfo.email}</span>
+                <span className="break-all overflow-wrap-anywhere">{resumeData.personalInfo.email}</span>
               </div>
             )}
             {resumeData.personalInfo.phone && (
