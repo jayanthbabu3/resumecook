@@ -245,7 +245,7 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
         <View style={styles.content}>
           {/* Summary */}
           {resumeData.personalInfo.summary && (
-            <View style={styles.section}>
+            <View style={styles.section} wrap={false}>
               <View style={styles.sectionHeader}>
                 <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
                 <Text style={styles.sectionTitle}>PROFESSIONAL PROFILE</Text>
@@ -259,7 +259,7 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {/* Experience */}
           {resumeData.experience.length > 0 && (
             <View style={styles.section}>
-              <View style={styles.sectionHeader}>
+              <View style={styles.sectionHeader} wrap={false}>
                 <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
                 <Text style={styles.sectionTitle}>EXPERIENCE</Text>
               </View>
@@ -303,14 +303,14 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
 
           {/* Education */}
           {resumeData.education.length > 0 && (
-            <View style={styles.section}>
+            <View style={styles.section} wrap={false}>
               <View style={styles.sectionHeader}>
                 <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
                 <Text style={styles.sectionTitle}>EDUCATION</Text>
               </View>
               <View style={styles.sectionContent}>
                 {resumeData.education.map((edu) => (
-                  <View key={edu.id} style={styles.educationItem}>
+                  <View key={edu.id} style={styles.educationItem} wrap={false}>
                     <View style={styles.educationContent}>
                       <Text style={styles.educationDegree}>{edu.degree}</Text>
                       {edu.field && <Text style={styles.educationField}>{edu.field}</Text>}
