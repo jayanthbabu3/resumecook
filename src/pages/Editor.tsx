@@ -19,7 +19,9 @@ import { GraduatePDF } from "@/components/resume/pdf/GraduatePDF";
 import { StarterPDF } from "@/components/resume/pdf/StarterPDF";
 import { SeniorPDF } from "@/components/resume/pdf/SeniorPDF";
 import { SeniorFrontendPDF } from "@/components/resume/pdf/SeniorFrontendPDF";
+import { SeniorBackendPDF } from "@/components/resume/pdf/SeniorBackendPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
+import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
 
 export interface ResumeData {
   personalInfo: {
@@ -478,6 +480,75 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
         },
       ],
     },
+    "senior-backend": {
+      personalInfo: {
+        fullName: "Morgan Patel",
+        email: "morgan.patel@email.com",
+        phone: "+1 (917) 555-2048",
+        location: "New York, NY",
+        title: "Senior Backend Engineer",
+        summary: "Principal backend engineer with 11+ years designing resilient, event-driven platforms. Specializes in high-volume data pipelines, observability, and leading cross-functional teams to deliver measurable reliability improvements.",
+        photo: "",
+      },
+      experience: [
+        {
+          id: "1",
+          company: "Stripe",
+          position: "Lead Backend Architect",
+          startDate: "2020-02",
+          endDate: "",
+          current: true,
+          description: "• Directed migration to event-driven payouts platform processing $15B+ annually\n• Reduced critical incident rate by 43% via SLO program and adaptive throttling\n• Mentored 7 engineers; established playbooks for blue/green deployments and on-call excellence",
+        },
+        {
+          id: "2",
+          company: "Airbnb",
+          position: "Principal Platform Engineer",
+          startDate: "2016-05",
+          endDate: "2020-01",
+          current: false,
+          description: "• Re-architected reservations pipeline to handle 4x traffic with <200ms P99 latency\n• Introduced schema governance program that cut breaking API changes by 60%\n• Led reliability guild to implement chaos testing and automated rollback strategies",
+        },
+      ],
+      education: [
+        {
+          id: "1",
+          school: "Carnegie Mellon University",
+          degree: "Master of Science",
+          field: "Software Engineering",
+          startDate: "2012-08",
+          endDate: "2014-05",
+        },
+      ],
+      skills: buildSkills(
+        "senior-backend",
+        [
+          "Distributed Systems",
+          "Go",
+          "Python",
+          "Microservices Architecture",
+          "Event-Driven Design",
+          "Cloud Infrastructure (AWS)",
+          "Database Performance",
+          "Observability (Prometheus/Grafana)",
+          "API Design (REST & GraphQL)",
+          "Team Leadership",
+        ],
+        [10, 9, 9, 9, 8, 9, 9, 8, 8, 9]
+      ),
+      sections: [
+        {
+          id: "impact",
+          title: "Impact Metrics",
+          content: "Platform Uptime - 99.98% across 12 regions\nLatency - 38% reduction in P95 API response\nCost Optimisation - $1.2M annual AWS savings via autoscaling",
+        },
+        {
+          id: "initiatives",
+          title: "Key Initiatives",
+          content: "Resilient Data Pipelines - Built self-healing Kafka streams with dead-letter reprocessing\nObservability Overhaul - Rolled out unified tracing reducing MTTR from 41m to 12m\nTalent Development - Launched backend apprenticeship program with 3 promotions in first year",
+        },
+      ],
+    },
     fullstack: {
       personalInfo: {
         fullName: "David Anderson",
@@ -883,64 +954,6 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
   return templates[templateId] || templates.professional;
 };
 
-const templateMetaMap: Record<string, { name: string; description: string; category: string }> = {
-  professional: {
-    name: "Professional",
-    description: "Traditional single-column layout optimized for corporate roles.",
-    category: "Corporate",
-  },
-  modern: {
-    name: "Modern",
-    description: "Contemporary two-column design for creative and product teams.",
-    category: "Creative",
-  },
-  minimal: {
-    name: "Minimal",
-    description: "Sophisticated whitespace-focused template for easy scanning.",
-    category: "Universal",
-  },
-  executive: {
-    name: "Executive",
-    description: "Bold leadership-focused layout for senior candidates.",
-    category: "Leadership",
-  },
-  frontend: {
-    name: "Frontend Developer",
-    description: "Balanced UI-focused resume with skill grids and project highlights.",
-    category: "Engineering",
-  },
-  fullstack: {
-    name: "Full Stack Engineer",
-    description: "Complete stack coverage with plenty of space for technical impact.",
-    category: "Engineering",
-  },
-  backend: {
-    name: "Backend Developer",
-    description: "API-centric template emphasizing scalability and system design.",
-    category: "Engineering",
-  },
-  graduate: {
-    name: "Graduate",
-    description: "Education-forward layout highlighting projects and internships.",
-    category: "Early Career",
-  },
-  starter: {
-    name: "Starter",
-    description: "Entry-level friendly template with skills and achievements spotlight.",
-    category: "Early Career",
-  },
-  senior: {
-    name: "Senior Software Engineer",
-    description: "Achievement-driven layout tailored for senior ICs and leads.",
-    category: "Engineering",
-  },
-  "senior-frontend": {
-    name: "Senior Frontend Designer",
-    description: "Vibrant two-column experience with data-driven highlights.",
-    category: "Design & Engineering",
-  },
-};
-
 const formatTemplateName = (id?: string) => {
   if (!id) return "Professional";
   return id
@@ -960,6 +973,7 @@ const Editor = () => {
     const defaultThemeColors: Record<string, string> = {
       senior: "#0f766e",
       "senior-frontend": "#ec4899",
+      "senior-backend": "#2563eb",
     };
 
     return defaultThemeColors[templateId || ""] || "#7c3aed"; // default purple
@@ -1059,6 +1073,7 @@ const Editor = () => {
         starter: StarterPDF,
         senior: SeniorPDF,
         "senior-frontend": SeniorFrontendPDF,
+        "senior-backend": SeniorBackendPDF,
       };
 
       const PDFTemplate = pdfTemplates[templateId as keyof typeof pdfTemplates] || ProfessionalPDF;
@@ -1085,12 +1100,21 @@ const Editor = () => {
 
   const templateMeta = templateMetaMap[templateId || ""];
   const templateDisplayName = templateMeta?.name || formatTemplateName(templateId);
+  const categorySlug = templateMeta?.categorySlug || "software";
+  const categoryLabel = categoryLabelMap[categorySlug] || templateMeta?.category || "Templates";
+
+  const editorBreadcrumbItems = [
+    { label: "Dashboard", path: "/dashboard" },
+    { label: "Professions", path: "/dashboard" },
+    { label: categoryLabel, path: `/dashboard?focus=templates&category=${categorySlug}` },
+    { label: templateDisplayName },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <div className="container mx-auto px-6 pt-4">
-        <Breadcrumbs />
+        <Breadcrumbs items={editorBreadcrumbItems} />
       </div>
       
       {/* Editor Toolbar */}
@@ -1102,16 +1126,9 @@ const Editor = () => {
                 {templateDisplayName.slice(0, 2).toUpperCase()}
               </div>
               <div className="space-y-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-lg font-semibold text-foreground">
-                    {templateDisplayName}
-                  </h1>
-                  {templateMeta?.category && (
-                    <span className="px-2.5 py-1 text-[11px] font-medium rounded-full bg-primary/10 text-primary">
-                      {templateMeta.category}
-                    </span>
-                  )}
-                </div>
+                <h1 className="text-lg font-semibold text-foreground">
+                  {templateDisplayName}
+                </h1>
                 <p className="text-sm text-muted-foreground max-w-2xl">
                   {templateMeta?.description || "Customize this template and export when you are ready."}
                 </p>
@@ -1123,23 +1140,20 @@ const Editor = () => {
                     />
                     <span>Theme color preview</span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => navigate("/dashboard")}
-                    className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <LayoutDashboard className="h-3.5 w-3.5" />
-                    Change template
-                  </button>
+                  {templateMeta?.category && (
+                    <span className="inline-flex items-center gap-1 text-muted-foreground">
+                      <LayoutDashboard className="h-3.5 w-3.5" />
+                      {templateMeta.category}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-start lg:self-center">
+            <div className="flex flex-wrap items-center gap-2 self-start lg:self-center">
               <Button
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate(`/dashboard?focus=templates&category=${categorySlug}`)}
                 variant="outline"
-                className="hidden sm:inline-flex"
               >
                 Change Template
               </Button>

@@ -13,7 +13,7 @@ export const Header = () => {
   const navItems = useMemo(
     () => [
       { label: "Home", to: "/" },
-      { label: "Templates", to: "/dashboard" },
+      { label: "Templates", to: "/dashboard?focus=templates&category=software" },
       { label: "Features", to: "/#features" },
     ],
     []

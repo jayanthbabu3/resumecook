@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, Briefcase, Code, GraduationCap, Calculator, Users, ArrowRight, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { FileText, Briefcase, Code, GraduationCap, Calculator, Users, ArrowRight } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
@@ -12,7 +12,7 @@ const professions = [
     name: "Software Development",
     description: "Templates optimized for developers and engineers",
     icon: Code,
-    templates: ["frontend", "backend", "fullstack", "senior", "senior-frontend"]
+    templates: ["frontend", "backend", "fullstack", "senior", "senior-frontend", "senior-backend"]
   },
   {
     id: "freshers",
@@ -40,7 +40,7 @@ const professions = [
     name: "All Professions",
     description: "Universal templates suitable for any industry",
     icon: Briefcase,
-    templates: ["professional", "modern", "minimal", "executive", "senior", "senior-frontend"]
+    templates: ["professional", "modern", "minimal", "executive", "senior", "senior-frontend", "senior-backend"]
   }
 ];
 
@@ -106,6 +106,12 @@ const templates = [
     highlights: ["Creative Layout", "Skill Charts", "UI/UX Focus"]
   },
   {
+    id: "senior-backend",
+    name: "Senior Backend Engineer",
+    description: "Reliability-first layout focused on distributed systems, scale, and leadership",
+    highlights: ["Architecture Focus", "Reliability Metrics", "Team Leadership"]
+  },
+  {
     id: "senior",
     name: "Senior Software Engineer",
     description: "Two-column layout highlighting achievements and technical leadership",
@@ -115,19 +121,42 @@ const templates = [
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [selectedProfession, setSelectedProfession] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const focusParam = searchParams.get("focus");
+  const categoryParam = searchParams.get("category");
+
+  const [selectedProfession, setSelectedProfession] = useState<string | null>(() => {
+    if (focusParam === "templates") {
+      return categoryParam ?? "all";
+    }
+    return null;
+  });
+
+  useEffect(() => {
+    const target = focusParam === "templates" ? categoryParam ?? "all" : null;
+    setSelectedProfession(prev => (prev === target ? prev : target));
+  }, [focusParam, categoryParam]);
 
   const selectedProf = professions.find(p => p.id === selectedProfession);
   const filteredTemplates = selectedProf 
     ? templates.filter(t => selectedProf.templates.includes(t.id))
     : [];
 
+  const breadcrumbExtras = useMemo(() => {
+    if (!selectedProfession) return undefined;
+    const professionName = selectedProf?.name ?? "Templates";
+    return [
+      { label: "Professions", path: "/dashboard" },
+      { label: professionName },
+    ];
+  }, [selectedProfession, selectedProf]);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
       <div className="container mx-auto px-6 pt-4">
-        <Breadcrumbs />
+        <Breadcrumbs extraItems={breadcrumbExtras} />
       </div>
 
       {/* Hero Section */}
@@ -147,22 +176,9 @@ const Dashboard = () => {
       </div>
 
       <main className="container mx-auto px-6 py-12">
-        {/* Back Button */}
-        {selectedProfession && (
-          <Button
-            onClick={() => setSelectedProfession(null)}
-            variant="outline"
-            size="sm"
-            className="mb-8 max-w-6xl mx-auto"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Professions
-          </Button>
-        )}
-
         {/* Professions Grid */}
         {!selectedProfession && (
-          <div className="grid gap-6 max-w-6xl mx-auto md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {professions.map((profession, index) => {
               const Icon = profession.icon;
               return (
@@ -170,7 +186,10 @@ const Dashboard = () => {
                   key={profession.id}
                   className="group cursor-pointer hover:border-primary transition-all duration-300 hover:shadow-lg animate-scale-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
-                  onClick={() => setSelectedProfession(profession.id)}
+                  onClick={() => {
+                    setSelectedProfession(profession.id);
+                    setSearchParams({ focus: "templates", category: profession.id });
+                  }}
                 >
                   <CardContent className="p-8">
                     <div className="flex items-start gap-4">
@@ -197,7 +216,7 @@ const Dashboard = () => {
 
         {/* Templates Grid */}
         {selectedProfession && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredTemplates.map((template, index) => (
               <Card
                 key={template.id}
