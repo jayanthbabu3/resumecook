@@ -6,175 +6,128 @@ registerPDFFonts();
 
 const styles = StyleSheet.create({
   page: {
-    padding: 50,
-    fontSize: 10,
+    padding: 48,
+    fontSize: 9,
     fontFamily: "Inter",
     backgroundColor: "#ffffff",
   },
   header: {
-    marginBottom: 32,
-    paddingBottom: 20,
-    borderBottom: "4px solid #0EA5E9",
-    textAlign: "center",
+    marginBottom: 20,
+    paddingBottom: 16,
+    borderBottom: "2px solid #0EA5E9",
   },
   name: {
-    fontSize: 40,
+    fontSize: 24,
     fontWeight: 700,
-    marginBottom: 10,
-    color: "#0EA5E9",
-    letterSpacing: -0.5,
+    marginBottom: 6,
+    color: "#111827",
   },
   title: {
-    fontSize: 15,
-    fontWeight: 600,
-    color: "#0EA5E9",
-    marginBottom: 14,
+    fontSize: 11,
+    fontWeight: 400,
+    color: "#4B5563",
+    marginBottom: 10,
   },
   contactInfo: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
     gap: 12,
-    fontSize: 9,
-    color: "#64748b",
+    fontSize: 8,
+    color: "#6B7280",
   },
-  contactBadge: {
-    backgroundColor: "#e0f2fe",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    fontWeight: 600,
+  contactItem: {
+    marginRight: 4,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 13,
+    fontSize: 9,
     fontWeight: 700,
-    color: "#0EA5E9",
-    marginBottom: 14,
-    letterSpacing: 1,
-  },
-  summaryBox: {
-    backgroundColor: "#f0f9ff",
-    padding: 14,
-    borderLeft: "4px solid #0EA5E9",
-    borderRadius: 6,
+    color: "#111827",
+    marginBottom: 10,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   summary: {
-    fontSize: 9,
-    lineHeight: 1.6,
-    color: "#334155",
+    fontSize: 8,
+    lineHeight: 1.5,
+    color: "#374151",
   },
-  educationBox: {
-    backgroundColor: "#f8fafc",
-    padding: 14,
-    borderLeft: "4px solid #0EA5E9",
-    borderRadius: 8,
-    marginBottom: 12,
+  educationItem: {
+    marginBottom: 10,
   },
   educationHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   degree: {
-    fontSize: 12,
-    fontWeight: 700,
-    color: "#0EA5E9",
-    marginBottom: 3,
+    fontSize: 9,
+    fontWeight: 600,
+    color: "#111827",
+    marginBottom: 2,
   },
   field: {
-    fontSize: 9,
-    color: "#475569",
-    marginBottom: 3,
-    fontWeight: 600,
+    fontSize: 8,
+    color: "#4B5563",
+    marginBottom: 2,
   },
   school: {
-    fontSize: 10,
-    color: "#0369a1",
-    fontWeight: 700,
-    marginTop: 2,
+    fontSize: 8,
+    color: "#0EA5E9",
+    fontWeight: 500,
   },
   educationDate: {
-    fontSize: 9,
-    color: "#64748b",
-    backgroundColor: "#e0f2fe",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    fontWeight: 600,
-  },
-  skillsBox: {
-    backgroundColor: "#f8fafc",
-    padding: 14,
-    borderLeft: "4px solid #0EA5E9",
-    borderRadius: 6,
+    fontSize: 8,
+    color: "#6B7280",
   },
   skillsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 8,
+    gap: 4,
   },
   skillBadge: {
-    backgroundColor: "#0EA5E9",
-    color: "#ffffff",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    fontSize: 9,
-    fontWeight: 700,
+    backgroundColor: "#F3F4F6",
+    color: "#374151",
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 2,
+    fontSize: 8,
+    fontWeight: 500,
   },
   experienceItem: {
-    marginBottom: 16,
-    backgroundColor: "#f8fafc",
-    padding: 14,
-    borderLeft: "4px solid #0EA5E9",
-    borderRadius: 8,
+    marginBottom: 12,
   },
   experienceHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 6,
   },
   position: {
-    fontSize: 12,
-    fontWeight: 700,
-    color: "#0EA5E9",
+    fontSize: 9,
+    fontWeight: 600,
+    color: "#111827",
     marginBottom: 2,
   },
   company: {
-    fontSize: 10,
-    color: "#0369a1",
-    fontWeight: 700,
-    marginTop: 2,
+    fontSize: 8,
+    color: "#0EA5E9",
+    fontWeight: 500,
   },
   dates: {
-    fontSize: 9,
-    color: "#64748b",
-    backgroundColor: "#e0f2fe",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    fontWeight: 600,
+    fontSize: 8,
+    color: "#6B7280",
   },
   description: {
-    fontSize: 9,
+    fontSize: 8,
     lineHeight: 1.5,
-    color: "#475569",
-    paddingLeft: 10,
-    borderLeft: "4px solid #bae6fd",
-  },
-  customSectionBox: {
-    backgroundColor: "#f0f9ff",
-    padding: 14,
-    borderLeft: "4px solid #0EA5E9",
-    borderRadius: 6,
+    color: "#4B5563",
   },
   customSection: {
-    fontSize: 9,
-    lineHeight: 1.6,
-    color: "#334155",
+    fontSize: 8,
+    lineHeight: 1.5,
+    color: "#374151",
   },
 });
 
@@ -183,7 +136,7 @@ interface StarterPDFProps {
   themeColor?: string;
 }
 
-export const StarterPDF = ({ resumeData }: StarterPDFProps) => {
+export const StarterPDF = ({ resumeData, themeColor = "#0EA5E9" }: StarterPDFProps) => {
   const data = resumeData;
   const formatDate = (date: string) => {
     if (!date) return "";
@@ -196,43 +149,37 @@ export const StarterPDF = ({ resumeData }: StarterPDFProps) => {
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
-        <View style={styles.header} wrap={false}>
+        <View style={[styles.header, { borderBottomColor: themeColor }]} wrap={false}>
           <Text style={styles.name}>{data.personalInfo.fullName}</Text>
           {data.personalInfo.title && <Text style={styles.title}>{data.personalInfo.title}</Text>}
           <View style={styles.contactInfo}>
-            {data.personalInfo.email && (
-              <Text style={styles.contactBadge}>📧 {data.personalInfo.email}</Text>
-            )}
-            {data.personalInfo.phone && (
-              <Text style={styles.contactBadge}>📱 {data.personalInfo.phone}</Text>
-            )}
-            {data.personalInfo.location && (
-              <Text style={styles.contactBadge}>📍 {data.personalInfo.location}</Text>
-            )}
+            {data.personalInfo.email && <Text style={styles.contactItem}>{data.personalInfo.email}</Text>}
+            {data.personalInfo.phone && <Text style={styles.contactItem}>•</Text>}
+            {data.personalInfo.phone && <Text style={styles.contactItem}>{data.personalInfo.phone}</Text>}
+            {data.personalInfo.location && <Text style={styles.contactItem}>•</Text>}
+            {data.personalInfo.location && <Text style={styles.contactItem}>{data.personalInfo.location}</Text>}
           </View>
         </View>
 
         {/* Summary */}
         {data.personalInfo.summary && (
           <View style={styles.section} wrap={false}>
-            <Text style={styles.sectionTitle}>PROFILE SUMMARY</Text>
-            <View style={styles.summaryBox}>
-              <Text style={styles.summary}>{data.personalInfo.summary}</Text>
-            </View>
+            <Text style={styles.sectionTitle}>Profile</Text>
+            <Text style={styles.summary}>{data.personalInfo.summary}</Text>
           </View>
         )}
 
         {/* Education */}
         {data.education && data.education.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>EDUCATION</Text>
+            <Text style={styles.sectionTitle}>Education</Text>
             {data.education.map((edu, index) => (
-              <View key={index} style={styles.educationBox} wrap={false}>
+              <View key={index} style={styles.educationItem} wrap={false}>
                 <View style={styles.educationHeader}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.degree}>{edu.degree}</Text>
                     {edu.field && <Text style={styles.field}>{edu.field}</Text>}
-                    <Text style={styles.school}>{edu.school}</Text>
+                    <Text style={[styles.school, { color: themeColor }]}>{edu.school}</Text>
                   </View>
                   <Text style={styles.educationDate}>
                     {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
@@ -246,15 +193,13 @@ export const StarterPDF = ({ resumeData }: StarterPDFProps) => {
         {/* Skills */}
         {data.skills && data.skills.length > 0 && (
           <View style={styles.section} wrap={false}>
-            <Text style={styles.sectionTitle}>CORE SKILLS</Text>
-            <View style={styles.skillsBox}>
-              <View style={styles.skillsContainer}>
-                {data.skills.map((skill, index) => (
-                  <Text key={index} style={styles.skillBadge}>
-                    {skill}
-                  </Text>
-                ))}
-              </View>
+            <Text style={styles.sectionTitle}>Skills</Text>
+            <View style={styles.skillsContainer}>
+              {data.skills.map((skill, index) => (
+                <Text key={index} style={styles.skillBadge}>
+                  {skill}
+                </Text>
+              ))}
             </View>
           </View>
         )}
@@ -262,13 +207,13 @@ export const StarterPDF = ({ resumeData }: StarterPDFProps) => {
         {/* Experience */}
         {data.experience && data.experience.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>EXPERIENCE</Text>
+            <Text style={styles.sectionTitle}>Experience</Text>
             {data.experience.map((exp, index) => (
               <View key={index} style={styles.experienceItem} wrap={false}>
                 <View style={styles.experienceHeader}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.position}>{exp.position}</Text>
-                    <Text style={styles.company}>{exp.company}</Text>
+                    <Text style={[styles.company, { color: themeColor }]}>{exp.company}</Text>
                   </View>
                   <Text style={styles.dates}>
                     {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
@@ -286,10 +231,8 @@ export const StarterPDF = ({ resumeData }: StarterPDFProps) => {
         {data.sections &&
           data.sections.map((section, index) => (
             <View key={index} style={styles.section} wrap={false}>
-              <Text style={styles.sectionTitle}>{section.title.toUpperCase()}</Text>
-              <View style={styles.customSectionBox}>
-                <Text style={styles.customSection}>{section.content}</Text>
-              </View>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <Text style={styles.customSection}>{section.content}</Text>
             </View>
           ))}
       </Page>

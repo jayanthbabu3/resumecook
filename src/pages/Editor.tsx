@@ -408,115 +408,115 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
     },
     graduate: {
       personalInfo: {
-        fullName: "Priya Sharma",
-        email: "priya.sharma@email.com",
+        fullName: "Arjun Mehta",
+        email: "arjun.mehta@email.com",
         phone: "+91 98765 43210",
-        location: "Bangalore, India",
-        title: "Computer Science Graduate | Aspiring Software Developer",
-        summary: "Passionate and detail-oriented Computer Science graduate with strong foundation in full-stack development, data structures, and algorithms. Completed multiple internships and academic projects demonstrating ability to learn quickly and deliver results. Eager to contribute to innovative teams and grow as a software engineer."
+        location: "Pune, India",
+        title: "Computer Science Graduate - Full Stack Development",
+        summary: "Motivated Computer Science graduate with strong foundation in software development, data structures, and algorithms. Completed two internships and multiple academic projects in web development. Eager to apply technical skills and learn from experienced engineers in a collaborative development environment."
       },
       experience: [
         {
           id: "1",
-          company: "Tech Solutions Pvt Ltd",
+          company: "CodeCraft Solutions",
           position: "Software Development Intern",
           startDate: "2024-01",
           endDate: "2024-04",
           current: false,
-          description: "• Developed responsive web applications using React.js and Node.js\n• Collaborated with team of 5 developers using Git and Agile methodology\n• Implemented RESTful APIs and integrated third-party services\n• Wrote unit tests achieving 85% code coverage\n• Participated in code reviews and daily standups"
+          description: "• Developed responsive web applications using React.js and Node.js\n• Built RESTful APIs and integrated third-party services\n• Collaborated with team of 4 developers using Git and Agile methodology\n• Wrote unit tests achieving 80% code coverage using Jest\n• Participated in code reviews and daily standup meetings"
         },
         {
           id: "2",
-          company: "StartupHub Incubator",
-          position: "Frontend Developer Intern",
+          company: "WebTech Innovations",
+          position: "Frontend Development Intern",
           startDate: "2023-06",
           endDate: "2023-08",
           current: false,
-          description: "• Built UI components using React and Tailwind CSS\n• Improved website performance by 30% through optimization\n• Worked closely with designers to implement pixel-perfect designs\n• Gained hands-on experience with modern development tools"
+          description: "• Created UI components using React and Tailwind CSS\n• Improved website load time by 25% through code optimization\n• Worked with designers to implement responsive designs\n• Gained hands-on experience with modern JavaScript frameworks"
         }
       ],
       education: [
         {
           id: "1",
-          school: "RV College of Engineering",
+          school: "College of Engineering Pune",
           degree: "Bachelor of Engineering",
           field: "Computer Science & Engineering",
           startDate: "2020-08",
           endDate: "2024-05"
         }
       ],
-      skills: ["JavaScript", "React.js", "Node.js", "Python", "Java", "HTML/CSS", "SQL", "MongoDB", "Git", "REST APIs", "Data Structures", "Problem Solving"],
+      skills: ["JavaScript", "React.js", "Node.js", "HTML/CSS", "Python", "Java", "SQL", "Git", "REST APIs", "MongoDB", "Data Structures", "Problem Solving"],
       sections: [
         {
           id: "1",
-          title: "Academic Projects",
-          content: "🎯 E-Commerce Platform (Final Year Project)\n• Built full-stack e-commerce website with product catalog, cart, and payment integration\n• Tech Stack: React, Node.js, Express, MongoDB, Stripe API\n• Achieved 95% marks for project demonstration\n\n🎯 Student Management System (Mini Project)\n• Developed web application for managing student records and attendance\n• Tech Stack: Python Flask, SQLite, Bootstrap\n• Implemented CRUD operations and user authentication\n\n🎯 Weather Forecast App\n• Created responsive weather application using React and OpenWeather API\n• Features: Real-time weather data, 5-day forecast, location search"
+          title: "Projects",
+          content: "E-Commerce Web Application (Final Year Project)\n• Built full-stack online shopping platform with product catalog and cart functionality\n• Implemented user authentication, payment integration, and order management\n• Tech Stack: React, Node.js, Express, MongoDB, Stripe API\n• Achieved First Class with Distinction (92% marks)\n\nTask Management App (Personal Project)\n• Developed responsive task tracking application with real-time updates\n• Features: User authentication, task categories, due date reminders\n• Tech Stack: React, Firebase, Material-UI\n• Deployed on Vercel with 100+ active users\n\nWeather Forecast Application\n• Created weather app with location search and 5-day forecast\n• Integrated OpenWeather API for real-time weather data\n• Tech Stack: React, Axios, Chart.js"
         },
         {
           id: "2",
           title: "Achievements & Certifications",
-          content: "• Secured 2nd place in College Hackathon 2023 (Team of 4)\n• Completed AWS Cloud Practitioner Certification\n• Published research paper on Machine Learning in college journal\n• Active member of Coding Club - conducted workshops for juniors\n• LeetCode: Solved 200+ problems | GitHub: 15+ repositories"
+          content: "• Winner - College Hackathon 2023 (Team of 3, built AI chatbot in 24 hours)\n• AWS Certified Cloud Practitioner (2024)\n• Completed 150+ problems on LeetCode (Data Structures & Algorithms)\n• GitHub: 12 public repositories with 50+ stars combined\n• Member of Coding Club - Organized technical workshops for juniors"
         }
       ]
     },
     starter: {
       personalInfo: {
-        fullName: "Rahul Verma",
-        email: "rahul.verma@email.com",
-        phone: "+91 87654 32109",
-        location: "Mumbai, India",
-        title: "MBA Graduate | Marketing Enthusiast",
-        summary: "Dynamic MBA graduate specializing in Digital Marketing with hands-on internship experience in social media management and content creation. Strong analytical and communication skills with passion for data-driven marketing strategies. Seeking opportunities to contribute fresh perspectives and grow in a challenging marketing role."
+        fullName: "Anjali Reddy",
+        email: "anjali.reddy@email.com",
+        phone: "+91 98765 12345",
+        location: "Hyderabad, India",
+        title: "MBA Graduate - Marketing & Business Development",
+        summary: "Results-oriented MBA graduate with practical experience in digital marketing, market research, and brand management through multiple internships. Strong analytical and communication skills with ability to develop data-driven marketing strategies. Seeking opportunities to contribute fresh ideas and grow in a dynamic marketing environment."
       },
       experience: [
         {
           id: "1",
-          company: "Digital Growth Agency",
+          company: "Digital Solutions India",
           position: "Marketing Intern",
-          startDate: "2024-02",
-          endDate: "2024-05",
+          startDate: "2024-01",
+          endDate: "2024-04",
           current: false,
-          description: "• Managed social media accounts (Instagram, LinkedIn, Twitter) for 3 client brands\n• Created engaging content resulting in 40% increase in follower engagement\n• Conducted market research and competitor analysis for campaign planning\n• Designed email marketing campaigns achieving 22% average open rate\n• Assisted in SEO optimization improving organic traffic by 25%"
+          description: "• Managed social media campaigns across Instagram and LinkedIn for 3 B2B clients\n• Created content calendar and executed 40+ posts resulting in 35% engagement increase\n• Conducted competitor analysis and market research for new product launches\n• Assisted in email marketing campaigns achieving 20% average open rate\n• Prepared monthly analytics reports tracking key marketing metrics"
         },
         {
           id: "2",
-          company: "Campus Ambassador Program",
-          position: "Brand Ambassador",
-          startDate: "2023-08",
-          endDate: "2023-12",
+          company: "TechStart Incubator",
+          position: "Business Development Intern",
+          startDate: "2023-06",
+          endDate: "2023-08",
           current: false,
-          description: "• Represented ed-tech startup on campus, organized 5+ promotional events\n• Achieved highest referral conversions (50+ signups) among 20 ambassadors\n• Coordinated with marketing team to execute campus marketing strategies\n• Created promotional materials and managed campus social media presence"
+          description: "• Identified and qualified 50+ potential leads through LinkedIn outreach\n• Created sales presentations and pitch decks for startup founders\n• Assisted in client meetings and follow-up communications\n• Maintained CRM database and tracked sales pipeline activities"
         }
       ],
       education: [
         {
           id: "1",
-          school: "NMIMS Mumbai",
+          school: "Indian School of Business",
           degree: "Master of Business Administration",
-          field: "Marketing Management",
+          field: "Marketing & Strategy",
           startDate: "2022-06",
           endDate: "2024-05"
         },
         {
           id: "2",
-          school: "Mumbai University",
+          school: "Osmania University",
           degree: "Bachelor of Commerce",
-          field: "Commerce",
+          field: "Commerce & Accountancy",
           startDate: "2019-06",
           endDate: "2022-04"
         }
       ],
-      skills: ["Digital Marketing", "Social Media Management", "Content Creation", "SEO & SEM", "Google Analytics", "Email Marketing", "Market Research", "Canva", "MS Office", "Communication", "Team Collaboration"],
+      skills: ["Digital Marketing", "Market Research", "Content Strategy", "Social Media Marketing", "Google Analytics", "SEO Basics", "MS Office Suite", "Canva", "Email Marketing", "Data Analysis", "Business Communication"],
       sections: [
         {
           id: "1",
-          title: "Academic Projects & Campaigns",
-          content: "🎯 Brand Strategy Project (MBA Final Semester)\n• Developed comprehensive brand strategy for local sustainable fashion startup\n• Conducted consumer research with 500+ respondents\n• Presented recommendations to startup founders, received 95% marks\n\n🎯 Social Media Campaign for NGO\n• Created and executed 3-month social media campaign for education NGO\n• Generated 10K+ impressions and 500+ website visits\n• Increased donation sign-ups by 35%"
+          title: "Projects",
+          content: "Brand Strategy for D2C Startup (Capstone Project)\n• Developed comprehensive go-to-market strategy for sustainable fashion brand\n• Conducted primary research with 300+ potential customers across 3 cities\n• Created brand positioning framework and marketing mix recommendations\n• Presented findings to startup founders; received 94% marks\n\nSocial Media Campaign for NGO\n• Designed and executed 2-month awareness campaign for education NGO\n• Generated 8,000+ impressions and 400+ website visits organically\n• Increased volunteer registrations by 40% through targeted content"
         },
         {
           id: "2",
-          title: "Certifications & Achievements",
-          content: "• Google Digital Marketing & E-Commerce Professional Certificate\n• HubSpot Content Marketing Certification\n• Facebook Blueprint - Social Media Marketing\n• Won Best Marketing Plan Award at MBA Inter-College Competition 2024\n• Published article on Digital Marketing Trends in college magazine"
+          title: "Certifications",
+          content: "• Google Digital Marketing & E-Commerce Professional Certificate (2024)\n• HubSpot Inbound Marketing Certification (2024)\n• Facebook Blueprint - Social Media Marketing (2023)\n• Microsoft Excel for Business Specialization (2023)"
         }
       ]
     }

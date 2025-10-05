@@ -6,61 +6,41 @@ registerPDFFonts();
 
 const styles = StyleSheet.create({
   page: {
-    padding: 50,
-    fontSize: 10,
+    padding: 48,
+    fontSize: 9,
     fontFamily: "Inter",
     backgroundColor: "#ffffff",
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 20,
     paddingBottom: 16,
-    borderBottom: "3px solid #0EA5E9",
+    borderBottom: "2px solid #0EA5E9",
   },
   name: {
-    fontSize: 36,
+    fontSize: 24,
     fontWeight: 700,
-    marginBottom: 8,
-    color: "#0EA5E9",
-    letterSpacing: -0.5,
+    marginBottom: 6,
+    color: "#111827",
   },
   title: {
-    fontSize: 13,
-    fontWeight: 600,
-    color: "#64748b",
-    marginBottom: 12,
+    fontSize: 11,
+    fontWeight: 400,
+    color: "#4B5563",
+    marginBottom: 10,
   },
   contactInfo: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 16,
-    fontSize: 9,
-    color: "#64748b",
+    gap: 12,
+    fontSize: 8,
+    color: "#6B7280",
   },
   contactItem: {
     marginRight: 4,
   },
-  summarySection: {
-    marginBottom: 20,
-    padding: 14,
-    backgroundColor: "#f0f9ff",
-    borderLeft: "4px solid #0EA5E9",
-    borderRadius: 6,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontWeight: 700,
-    color: "#0EA5E9",
-    marginBottom: 10,
-    letterSpacing: 0.8,
-  },
-  summary: {
-    fontSize: 9,
-    lineHeight: 1.6,
-    color: "#334155",
-  },
   container: {
     flexDirection: "row",
-    gap: 24,
+    gap: 20,
   },
   leftColumn: {
     width: "32%",
@@ -69,98 +49,92 @@ const styles = StyleSheet.create({
     width: "68%",
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
-  educationItem: {
-    marginBottom: 12,
-    padding: 10,
-    backgroundColor: "#f8fafc",
-    borderRadius: 6,
-  },
-  degree: {
+  sectionTitle: {
     fontSize: 9,
     fontWeight: 700,
-    marginBottom: 3,
-    color: "#0EA5E9",
+    color: "#111827",
+    marginBottom: 10,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  educationItem: {
+    marginBottom: 10,
+  },
+  degree: {
+    fontSize: 8,
+    fontWeight: 600,
+    marginBottom: 2,
+    color: "#111827",
   },
   field: {
     fontSize: 8,
-    color: "#475569",
+    color: "#4B5563",
     marginBottom: 2,
-    fontWeight: 600,
   },
   school: {
     fontSize: 8,
-    color: "#64748b",
+    color: "#374151",
     marginBottom: 2,
     fontWeight: 600,
   },
   educationDate: {
     fontSize: 8,
-    color: "#94a3b8",
+    color: "#6B7280",
   },
   skillsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6,
+    gap: 4,
   },
   skillBadge: {
-    backgroundColor: "#e0f2fe",
-    color: "#0369a1",
-    paddingHorizontal: 8,
-    paddingVertical: 5,
-    borderRadius: 6,
+    backgroundColor: "#F3F4F6",
+    color: "#374151",
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 2,
     fontSize: 8,
-    fontWeight: 600,
+    fontWeight: 500,
+  },
+  summary: {
+    fontSize: 8,
+    lineHeight: 1.5,
+    color: "#374151",
+    marginBottom: 4,
   },
   experienceItem: {
-    marginBottom: 16,
-    padding: 12,
-    backgroundColor: "#f8fafc",
-    borderRadius: 8,
+    marginBottom: 12,
   },
   experienceHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 6,
   },
   position: {
-    fontSize: 10,
-    fontWeight: 700,
-    color: "#0EA5E9",
+    fontSize: 9,
+    fontWeight: 600,
+    color: "#111827",
     marginBottom: 2,
   },
   company: {
-    fontSize: 9,
-    color: "#475569",
-    fontWeight: 600,
+    fontSize: 8,
+    color: "#0EA5E9",
+    fontWeight: 500,
   },
   dates: {
     fontSize: 8,
-    color: "#64748b",
-    backgroundColor: "#e0f2fe",
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-    fontWeight: 600,
+    color: "#6B7280",
   },
   description: {
-    fontSize: 9,
+    fontSize: 8,
     lineHeight: 1.5,
-    color: "#475569",
-    paddingLeft: 8,
-    borderLeft: "2px solid #bae6fd",
-  },
-  projectSection: {
-    padding: 12,
-    backgroundColor: "#f0f9ff",
-    borderLeft: "4px solid #0EA5E9",
-    borderRadius: 6,
+    color: "#4B5563",
   },
   customSection: {
-    fontSize: 9,
-    lineHeight: 1.6,
-    color: "#334155",
+    fontSize: 8,
+    lineHeight: 1.5,
+    color: "#374151",
   },
 });
 
@@ -169,7 +143,7 @@ interface GraduatePDFProps {
   themeColor?: string;
 }
 
-export const GraduatePDF = ({ resumeData }: GraduatePDFProps) => {
+export const GraduatePDF = ({ resumeData, themeColor = "#0EA5E9" }: GraduatePDFProps) => {
   const data = resumeData;
   const formatDate = (date: string) => {
     if (!date) return "";
@@ -182,23 +156,17 @@ export const GraduatePDF = ({ resumeData }: GraduatePDFProps) => {
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
-        <View style={styles.header} wrap={false}>
+        <View style={[styles.header, { borderBottomColor: themeColor }]} wrap={false}>
           <Text style={styles.name}>{data.personalInfo.fullName}</Text>
           {data.personalInfo.title && <Text style={styles.title}>{data.personalInfo.title}</Text>}
           <View style={styles.contactInfo}>
-            {data.personalInfo.email && <Text style={styles.contactItem}>📧 {data.personalInfo.email}</Text>}
-            {data.personalInfo.phone && <Text style={styles.contactItem}>📱 {data.personalInfo.phone}</Text>}
-            {data.personalInfo.location && <Text style={styles.contactItem}>📍 {data.personalInfo.location}</Text>}
+            {data.personalInfo.email && <Text style={styles.contactItem}>{data.personalInfo.email}</Text>}
+            {data.personalInfo.phone && <Text style={styles.contactItem}>•</Text>}
+            {data.personalInfo.phone && <Text style={styles.contactItem}>{data.personalInfo.phone}</Text>}
+            {data.personalInfo.location && <Text style={styles.contactItem}>•</Text>}
+            {data.personalInfo.location && <Text style={styles.contactItem}>{data.personalInfo.location}</Text>}
           </View>
         </View>
-
-        {/* Summary */}
-        {data.personalInfo.summary && (
-          <View style={styles.summarySection} wrap={false}>
-            <Text style={styles.sectionTitle}>PROFILE</Text>
-            <Text style={styles.summary}>{data.personalInfo.summary}</Text>
-          </View>
-        )}
 
         {/* Two Column Layout */}
         <View style={styles.container}>
@@ -207,7 +175,7 @@ export const GraduatePDF = ({ resumeData }: GraduatePDFProps) => {
             {/* Education */}
             {data.education && data.education.length > 0 && (
               <View style={styles.section} wrap={false}>
-                <Text style={styles.sectionTitle}>EDUCATION</Text>
+                <Text style={styles.sectionTitle}>Education</Text>
                 {data.education.map((edu, index) => (
                   <View key={index} style={styles.educationItem}>
                     <Text style={styles.degree}>{edu.degree}</Text>
@@ -224,7 +192,7 @@ export const GraduatePDF = ({ resumeData }: GraduatePDFProps) => {
             {/* Skills */}
             {data.skills && data.skills.length > 0 && (
               <View style={styles.section} wrap={false}>
-                <Text style={styles.sectionTitle}>SKILLS</Text>
+                <Text style={styles.sectionTitle}>Skills</Text>
                 <View style={styles.skillsContainer}>
                   {data.skills.map((skill, index) => (
                     <Text key={index} style={styles.skillBadge}>
@@ -238,16 +206,24 @@ export const GraduatePDF = ({ resumeData }: GraduatePDFProps) => {
 
           {/* Right Column */}
           <View style={styles.rightColumn}>
+            {/* Summary */}
+            {data.personalInfo.summary && (
+              <View style={styles.section} wrap={false}>
+                <Text style={styles.sectionTitle}>Profile</Text>
+                <Text style={styles.summary}>{data.personalInfo.summary}</Text>
+              </View>
+            )}
+
             {/* Experience */}
             {data.experience && data.experience.length > 0 && (
               <View style={styles.section}>
-                <Text style={styles.sectionTitle}>EXPERIENCE</Text>
+                <Text style={styles.sectionTitle}>Experience</Text>
                 {data.experience.map((exp, index) => (
                   <View key={index} style={styles.experienceItem} wrap={false}>
                     <View style={styles.experienceHeader}>
                       <View style={{ flex: 1 }}>
                         <Text style={styles.position}>{exp.position}</Text>
-                        <Text style={styles.company}>{exp.company}</Text>
+                        <Text style={[styles.company, { color: themeColor }]}>{exp.company}</Text>
                       </View>
                       <Text style={styles.dates}>
                         {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
@@ -265,10 +241,8 @@ export const GraduatePDF = ({ resumeData }: GraduatePDFProps) => {
             {data.sections &&
               data.sections.map((section, index) => (
                 <View key={index} style={styles.section} wrap={false}>
-                  <Text style={styles.sectionTitle}>{section.title.toUpperCase()}</Text>
-                  <View style={styles.projectSection}>
-                    <Text style={styles.customSection}>{section.content}</Text>
-                  </View>
+                  <Text style={styles.sectionTitle}>{section.title}</Text>
+                  <Text style={styles.customSection}>{section.content}</Text>
                 </View>
               ))}
           </View>
