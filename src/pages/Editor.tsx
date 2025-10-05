@@ -449,12 +449,17 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
       sections: [
         {
           id: "1",
-          title: "Projects",
-          content: "E-Commerce Web Application (Final Year Project)\n• Built full-stack online shopping platform with product catalog and cart functionality\n• Implemented user authentication, payment integration, and order management\n• Tech Stack: React, Node.js, Express, MongoDB, Stripe API\n• Achieved First Class with Distinction (92% marks)\n\nTask Management App (Personal Project)\n• Developed responsive task tracking application with real-time updates\n• Features: User authentication, task categories, due date reminders\n• Tech Stack: React, Firebase, Material-UI\n• Deployed on Vercel with 100+ active users\n\nWeather Forecast Application\n• Created weather app with location search and 5-day forecast\n• Integrated OpenWeather API for real-time weather data\n• Tech Stack: React, Axios, Chart.js"
+          title: "Final Year Project",
+          content: "E-Commerce Web Application\n• Built full-stack online shopping platform with product catalog and cart functionality\n• Implemented user authentication, payment integration, and order management\n• Tech Stack: React, Node.js, Express, MongoDB, Stripe API\n• Achieved First Class with Distinction (92% marks)"
         },
         {
           id: "2",
-          title: "Achievements & Certifications",
+          title: "Mini Project",
+          content: "Task Management App\n• Developed responsive task tracking application with real-time updates\n• Features: User authentication, task categories, due date reminders\n• Tech Stack: React, Firebase, Material-UI\n• Deployed on Vercel with 100+ active users"
+        },
+        {
+          id: "3",
+          title: "Certifications & Achievements",
           content: "• Winner - College Hackathon 2023 (Team of 3, built AI chatbot in 24 hours)\n• AWS Certified Cloud Practitioner (2024)\n• Completed 150+ problems on LeetCode (Data Structures & Algorithms)\n• GitHub: 12 public repositories with 50+ stars combined\n• Member of Coding Club - Organized technical workshops for juniors"
         }
       ]
@@ -510,11 +515,16 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
       sections: [
         {
           id: "1",
-          title: "Projects",
-          content: "Brand Strategy for D2C Startup (Capstone Project)\n• Developed comprehensive go-to-market strategy for sustainable fashion brand\n• Conducted primary research with 300+ potential customers across 3 cities\n• Created brand positioning framework and marketing mix recommendations\n• Presented findings to startup founders; received 94% marks\n\nSocial Media Campaign for NGO\n• Designed and executed 2-month awareness campaign for education NGO\n• Generated 8,000+ impressions and 400+ website visits organically\n• Increased volunteer registrations by 40% through targeted content"
+          title: "Final Year Project",
+          content: "Brand Strategy for D2C Startup\n• Developed go-to-market strategy for sustainable fashion brand\n• Conducted primary research with 300+ potential customers across 3 cities\n• Created brand positioning framework and marketing mix recommendations\n• Presented findings to startup founders; received 94% marks"
         },
         {
           id: "2",
+          title: "Mini Project",
+          content: "Social Media Campaign for NGO\n• Designed and executed 2-month awareness campaign for education NGO\n• Generated 8,000+ impressions and 400+ website visits organically\n• Increased volunteer registrations by 40% through targeted content"
+        },
+        {
+          id: "3",
           title: "Certifications",
           content: "• Google Digital Marketing & E-Commerce Professional Certificate (2024)\n• HubSpot Inbound Marketing Certification (2024)\n• Facebook Blueprint - Social Media Marketing (2023)\n• Microsoft Excel for Business Specialization (2023)"
         }
@@ -541,20 +551,30 @@ const Editor = () => {
 
   // Load from local storage on mount
   useEffect(() => {
-    if (templateId) {
-      const savedData = localStorage.getItem(`resume-${templateId}`);
-      if (savedData) {
-        try {
-          setResumeData(JSON.parse(savedData));
-          toast.success("Previous resume data loaded");
-        } catch (error) {
-          console.error("Error loading resume data:", error);
-          setResumeData(getTemplateDefaults(templateId));
+    if (!templateId) return;
+    const key = `resume-${templateId}`;
+    const savedData = localStorage.getItem(key);
+
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData) as ResumeData;
+        const badSummary = /8\+\s*years|financial analyst/i.test(parsed?.personalInfo?.summary || "");
+        const isFresherTemplate = templateId === "starter" || templateId === "graduate";
+
+        if (isFresherTemplate && badSummary) {
+          const defaults = getTemplateDefaults(templateId);
+          setResumeData(defaults);
+          localStorage.setItem(key, JSON.stringify(defaults));
+        } else {
+          setResumeData(parsed);
         }
-      } else {
-        // Set template defaults if no saved data
+      } catch (error) {
+        console.error("Error loading resume data:", error);
         setResumeData(getTemplateDefaults(templateId));
       }
+    } else {
+      // Set template defaults if no saved data
+      setResumeData(getTemplateDefaults(templateId));
     }
   }, [templateId]);
 
