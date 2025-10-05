@@ -1,4 +1,4 @@
-import { Page, Text, View, Document, StyleSheet, Font } from "@react-pdf/renderer";
+import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
@@ -6,8 +6,7 @@ registerPDFFonts();
 
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
-    paddingTop: 36,
+    padding: 50,
     fontSize: 10,
     fontFamily: "Inter",
     backgroundColor: "#ffffff",
@@ -15,46 +14,52 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 32,
     paddingBottom: 20,
-    borderBottom: "4px solid #e0f2fe",
+    borderBottom: "4px solid #0EA5E9",
     textAlign: "center",
   },
   name: {
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: 700,
-    marginBottom: 12,
-    color: "#1e293b",
+    marginBottom: 10,
+    color: "#0EA5E9",
+    letterSpacing: -0.5,
   },
   title: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 600,
-    color: "#64748b",
-    marginBottom: 12,
+    color: "#0EA5E9",
+    marginBottom: 14,
   },
   contactInfo: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    gap: 8,
+    gap: 12,
     fontSize: 9,
     color: "#64748b",
   },
-  contactItem: {
-    marginHorizontal: 6,
+  contactBadge: {
+    backgroundColor: "#e0f2fe",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    fontWeight: 600,
   },
   section: {
     marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 700,
     color: "#0EA5E9",
-    marginBottom: 12,
+    marginBottom: 14,
     letterSpacing: 1,
   },
   summaryBox: {
-    backgroundColor: "#f8fafc",
-    padding: 12,
-    borderRadius: 4,
+    backgroundColor: "#f0f9ff",
+    padding: 14,
+    borderLeft: "4px solid #0EA5E9",
+    borderRadius: 6,
   },
   summary: {
     fontSize: 9,
@@ -63,39 +68,48 @@ const styles = StyleSheet.create({
   },
   educationBox: {
     backgroundColor: "#f8fafc",
-    padding: 12,
-    borderRadius: 4,
+    padding: 14,
+    borderLeft: "4px solid #0EA5E9",
+    borderRadius: 8,
     marginBottom: 12,
   },
   educationHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 6,
+    marginBottom: 8,
   },
   degree: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 700,
-    color: "#1e293b",
+    color: "#0EA5E9",
+    marginBottom: 3,
   },
   field: {
     fontSize: 9,
-    color: "#64748b",
-    marginBottom: 4,
+    color: "#475569",
+    marginBottom: 3,
+    fontWeight: 600,
   },
   school: {
-    fontSize: 9,
-    color: "#0EA5E9",
-    fontWeight: 600,
-    marginBottom: 4,
+    fontSize: 10,
+    color: "#0369a1",
+    fontWeight: 700,
+    marginTop: 2,
   },
   educationDate: {
     fontSize: 9,
     color: "#64748b",
+    backgroundColor: "#e0f2fe",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    fontWeight: 600,
   },
   skillsBox: {
     backgroundColor: "#f8fafc",
-    padding: 12,
-    borderRadius: 4,
+    padding: 14,
+    borderLeft: "4px solid #0EA5E9",
+    borderRadius: 6,
   },
   skillsContainer: {
     flexDirection: "row",
@@ -105,46 +119,57 @@ const styles = StyleSheet.create({
   skillBadge: {
     backgroundColor: "#0EA5E9",
     color: "#ffffff",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
     fontSize: 9,
-    fontWeight: 600,
+    fontWeight: 700,
   },
   experienceItem: {
     marginBottom: 16,
+    backgroundColor: "#f8fafc",
+    padding: 14,
+    borderLeft: "4px solid #0EA5E9",
+    borderRadius: 8,
   },
   experienceHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 10,
   },
   position: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 700,
-    color: "#1e293b",
+    color: "#0EA5E9",
+    marginBottom: 2,
   },
   company: {
-    fontSize: 9,
-    color: "#0EA5E9",
-    fontWeight: 600,
+    fontSize: 10,
+    color: "#0369a1",
+    fontWeight: 700,
     marginTop: 2,
   },
   dates: {
     fontSize: 9,
     color: "#64748b",
+    backgroundColor: "#e0f2fe",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    fontWeight: 600,
   },
   description: {
     fontSize: 9,
     lineHeight: 1.5,
     color: "#475569",
-    paddingLeft: 8,
-    borderLeft: "4px solid #e0f2fe",
+    paddingLeft: 10,
+    borderLeft: "4px solid #bae6fd",
   },
   customSectionBox: {
-    backgroundColor: "#f8fafc",
-    padding: 12,
-    borderRadius: 4,
+    backgroundColor: "#f0f9ff",
+    padding: 14,
+    borderLeft: "4px solid #0EA5E9",
+    borderRadius: 6,
   },
   customSection: {
     fontSize: 9,
@@ -175,18 +200,22 @@ export const StarterPDF = ({ resumeData }: StarterPDFProps) => {
           <Text style={styles.name}>{data.personalInfo.fullName}</Text>
           {data.personalInfo.title && <Text style={styles.title}>{data.personalInfo.title}</Text>}
           <View style={styles.contactInfo}>
-            {data.personalInfo.email && <Text style={styles.contactItem}>{data.personalInfo.email}</Text>}
-            {data.personalInfo.phone && <Text style={styles.contactItem}>•</Text>}
-            {data.personalInfo.phone && <Text style={styles.contactItem}>{data.personalInfo.phone}</Text>}
-            {data.personalInfo.location && <Text style={styles.contactItem}>•</Text>}
-            {data.personalInfo.location && <Text style={styles.contactItem}>{data.personalInfo.location}</Text>}
+            {data.personalInfo.email && (
+              <Text style={styles.contactBadge}>📧 {data.personalInfo.email}</Text>
+            )}
+            {data.personalInfo.phone && (
+              <Text style={styles.contactBadge}>📱 {data.personalInfo.phone}</Text>
+            )}
+            {data.personalInfo.location && (
+              <Text style={styles.contactBadge}>📍 {data.personalInfo.location}</Text>
+            )}
           </View>
         </View>
 
         {/* Summary */}
         {data.personalInfo.summary && (
           <View style={styles.section} wrap={false}>
-            <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
+            <Text style={styles.sectionTitle}>PROFILE SUMMARY</Text>
             <View style={styles.summaryBox}>
               <Text style={styles.summary}>{data.personalInfo.summary}</Text>
             </View>
