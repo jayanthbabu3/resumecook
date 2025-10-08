@@ -35,21 +35,7 @@ const professions = [
     name: "Freshers & Entry Level",
     description: "Clean and professional templates for career starters",
     icon: GraduationCap,
-    templates: ["graduate", "starter", "fresher", "premium-fresher", "minimal", "professional"],
-  },
-  {
-    id: "accountants",
-    name: "Accounting & Finance",
-    description: "Professional formats for accounting and finance roles",
-    icon: Calculator,
-    templates: ["professional", "minimal"],
-  },
-  {
-    id: "teaching",
-    name: "Teaching & Education",
-    description: "Academic templates for educators and trainers",
-    icon: Users,
-    templates: ["professional", "minimal"],
+    templates: ["graduate", "starter", "fresher", "premium-fresher"],
   },
   {
     id: "all",
@@ -61,10 +47,6 @@ const professions = [
       "modern",
       "minimal",
       "executive",
-      "software",
-      "senior",
-      "senior-frontend",
-      "senior-backend",
     ],
   },
 ];

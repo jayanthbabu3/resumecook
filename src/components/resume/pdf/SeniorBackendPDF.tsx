@@ -336,10 +336,6 @@ export const SeniorBackendPDF = ({ resumeData, themeColor = '#2563eb' }: Props) 
                               stroke={accent}
                               strokeWidth={3}
                               fill="none"
-                              strokeDasharray={`${circumference} ${circumference}`}
-                              strokeDashoffset={dashOffset}
-                              strokeLinecap="round"
-                              transform="rotate(-90 18 18)"
                             />
                           </Svg>
                           <Text style={styles.metricRingLabel}>{`${Math.round(normalized)}%`}</Text>
