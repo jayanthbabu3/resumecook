@@ -39,8 +39,11 @@ export const ResumePreview = ({ resumeData, templateId, themeColor = "#7c3aed" }
   const Template = templates[templateId as keyof typeof templates] || ProfessionalTemplate;
 
   return (
-    <div className="w-full h-full bg-gray-100 p-2 flex justify-center items-start overflow-auto" id="resume-preview">
-      <div className="w-[210mm] shadow-2xl bg-white relative">
+    <div
+      className="flex h-full w-full items-start justify-center overflow-auto bg-gray-100 p-3 sm:p-4"
+      id="resume-preview"
+    >
+      <div className="relative w-full max-w-[210mm] rounded-lg bg-white shadow-2xl">
         <Template resumeData={resumeData} themeColor={themeColor} />
       </div>
     </div>

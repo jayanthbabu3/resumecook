@@ -10,13 +10,7 @@ export const Header = () => {
   const isDashboard = location.pathname === "/dashboard";
   const isEditor = location.pathname.startsWith("/editor");
 
-  const navItems = useMemo(
-    () => [
-      { label: "Home", to: "/" },
-      { label: "Templates", to: "/dashboard?focus=templates&category=software" },
-    ],
-    []
-  );
+  const navItems = useMemo(() => [{ label: "Home", to: "/" }], []);
 
   return (
     <nav className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">

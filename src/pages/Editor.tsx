@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, LayoutDashboard, Gauge, Loader2 } from "lucide-react";
+import { Download, Gauge, Loader2 } from "lucide-react";
 import { ResumeForm } from "@/components/resume/ResumeForm";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { toast } from "sonner";
@@ -1289,13 +1289,13 @@ const Editor = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto px-6 pt-4">
-        <Breadcrumbs items={editorBreadcrumbItems} />
+      <div className="container mx-auto px-4 pt-4 sm:px-6">
+        <Breadcrumbs items={editorBreadcrumbItems} className="mb-6" />
       </div>
       
       {/* Editor Toolbar */}
       <div className="border-b border-border/60 bg-card/80 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 py-4 sm:px-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-4">
               <div className="h-12 w-12 rounded-xl border border-border bg-background flex items-center justify-center text-sm font-semibold text-muted-foreground uppercase">
@@ -1308,21 +1308,6 @@ const Editor = () => {
                 <p className="text-sm text-muted-foreground max-w-2xl">
                   {templateMeta?.description || "Customize this template and export when you are ready."}
                 </p>
-                <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className="h-2.5 w-2.5 rounded-full border border-border/60"
-                      style={{ backgroundColor: themeColor }}
-                    />
-                    <span>Theme color preview</span>
-                  </div>
-                  {templateMeta?.category && (
-                    <span className="inline-flex items-center gap-1 text-muted-foreground">
-                      <LayoutDashboard className="h-3.5 w-3.5" />
-                      {templateMeta.category}
-                    </span>
-                  )}
-                </div>
               </div>
             </div>
 
@@ -1346,15 +1331,18 @@ const Editor = () => {
                     </div>
                   </button>
                 )}
-                <Button
-                  onClick={runAtsCheck}
-                  variant="secondary"
-                  className="gap-2"
-                  disabled={atsLoading}
-                >
-                  {atsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Gauge className="h-4 w-4" />}
-                  {atsReport ? "Re-run ATS" : "Check ATS Score"}
-                </Button>
+                {/* Temporarily hide ATS score trigger until the end-to-end workflow is ready */}
+                {false && (
+                  <Button
+                    onClick={runAtsCheck}
+                    variant="secondary"
+                    className="gap-2"
+                    disabled={atsLoading}
+                  >
+                    {atsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Gauge className="h-4 w-4" />}
+                    {atsReport ? "Re-run ATS" : "Check ATS Score"}
+                  </Button>
+                )}
                 <Button
                   onClick={() => navigate(`/dashboard?focus=templates&category=${categorySlug}`)}
                   variant="outline"
@@ -1466,10 +1454,10 @@ const Editor = () => {
       </div>
 
       {/* Editor Layout */}
-      <div className="container mx-auto px-6 py-8">
-        <div className="grid lg:grid-cols-[35%,65%] gap-8 max-w-8xl mx-auto">
+      <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8">
+        <div className="grid gap-6 max-w-8xl mx-auto lg:grid-cols-[37%,61%] lg:gap-8">
           {/* Form Section */}
-          <div className="space-y-6">
+          <div className="space-y-6 rounded-2xl border border-border/50 bg-background px-4 py-5 shadow-sm sm:px-6 sm:py-6">
             <div className="space-y-2">
               <h2 className="text-lg font-bold">Edit Your Resume</h2>
               <p className="text-sm text-muted-foreground">
@@ -1484,14 +1472,14 @@ const Editor = () => {
 
           {/* Preview Section */}
           <div className="lg:sticky lg:top-24 h-fit">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between pr-2">
-                <h2 className="text-2xl font-bold">Live Preview</h2>
+            <div className="space-y-4 rounded-2xl border border-border/50 bg-background px-4 py-5 shadow-sm sm:px-6 sm:py-6">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h2 className="text-lg font-bold">Live Preview</h2>
                 
                 {/* Color Theme Selector */}
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Theme:</span>
-                  <div className="flex gap-2 items-center">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                  <span className="text-sm font-medium text-muted-foreground sm:text-right">Theme color</span>
+                  <div className="flex flex-wrap items-center gap-2">
                     {[
                       { name: "Purple", color: "#7c3aed" },
                       { name: "Blue", color: "#2563eb" },

@@ -10,7 +10,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import { Plus, Trash2, Briefcase, GraduationCap, Code, FileText } from "lucide-react";
+import { Plus, Trash2, Briefcase, GraduationCap, Code, FileText, Sparkles } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ResumeData } from "@/pages/Editor";
 
@@ -196,16 +196,54 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
     });
   };
 
+  const formatCountLabel = (
+    count: number,
+    singular: string,
+    plural?: string,
+    zeroLabel = "No entries"
+  ) => {
+    if (count === 0) return zeroLabel;
+    if (count === 1) return `1 ${singular}`;
+    return `${count} ${plural ?? `${singular}s`}`;
+  };
+
+  const toTitleCase = (value: string) =>
+    value.replace(/\b\w/g, (char) => char.toUpperCase());
+
+  const experienceSummary = toTitleCase(
+    formatCountLabel(resumeData.experience.length, "role", "roles", "No roles yet")
+  );
+  const educationSummary = toTitleCase(
+    formatCountLabel(resumeData.education.length, "degree", "degrees", "No education yet")
+  );
+  const skillsSummary = toTitleCase(
+    formatCountLabel(resumeData.skills.length, "skill", "skills", "Add skills")
+  );
+  const customSummary = toTitleCase(
+    formatCountLabel(resumeData.sections.length, "section", "sections", "No custom sections")
+  );
+
   return (
-    <Accordion type="multiple" defaultValue={["personal"]} className="space-y-3">
-      <AccordionItem value="personal" className="border border-border rounded-lg px-2">
-        <AccordionTrigger className="text-left text-sm font-semibold tracking-tight">
-          <span className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-primary" /> Personal Information
+    <Accordion type="multiple" defaultValue={["personal"]} className="space-y-4">
+      <AccordionItem
+        value="personal"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <FileText className="h-4 w-4" />
+            </span>
+            Personal Information
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              Basics
+            </span>
           </span>
         </AccordionTrigger>
-        <AccordionContent>
-          <Card className="shadow-none border-0">
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
             <CardHeader className="pb-4">
               <CardDescription>Your basic contact details and professional title</CardDescription>
             </CardHeader>
@@ -345,14 +383,25 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="experience" className="border border-border rounded-lg px-2">
-        <AccordionTrigger className="text-left text-sm font-semibold tracking-tight">
-          <span className="flex items-center gap-2">
-            <Briefcase className="h-4 w-4 text-primary" /> Work Experience
+      <AccordionItem
+        value="experience"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <Briefcase className="h-4 w-4" />
+            </span>
+            Work Experience
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {experienceSummary}
+            </span>
           </span>
         </AccordionTrigger>
-        <AccordionContent>
-          <Card className="shadow-none border-0">
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <CardDescription>Your professional work history</CardDescription>
@@ -444,14 +493,25 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="education" className="border border-border rounded-lg px-2">
-        <AccordionTrigger className="text-left text-sm font-semibold tracking-tight">
-          <span className="flex items-center gap-2">
-            <GraduationCap className="h-4 w-4 text-primary" /> Education
+      <AccordionItem
+        value="education"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <GraduationCap className="h-4 w-4" />
+            </span>
+            Education
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {educationSummary}
+            </span>
           </span>
         </AccordionTrigger>
-        <AccordionContent>
-          <Card className="shadow-none border-0">
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <CardDescription>Your academic background</CardDescription>
@@ -528,14 +588,25 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="skills" className="border border-border rounded-lg px-2">
-        <AccordionTrigger className="text-left text-sm font-semibold tracking-tight">
-          <span className="flex items-center gap-2">
-            <Code className="h-4 w-4 text-primary" /> Skills
+      <AccordionItem
+        value="skills"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <Code className="h-4 w-4" />
+            </span>
+            Skills
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {skillsSummary}
+            </span>
           </span>
         </AccordionTrigger>
-        <AccordionContent>
-          <Card className="shadow-none border-0">
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
             <CardHeader className="pb-4 space-y-3">
               <CardDescription>Your technical competencies are shown in two blocks on the resume: core skills display with proficiency bars and toolbox skills appear as labeled chips. Add as many as you like in either section.</CardDescription>
               <div className="flex flex-wrap gap-2">
@@ -632,14 +703,25 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="custom" className="border border-border rounded-lg px-2">
-        <AccordionTrigger className="text-left text-sm font-semibold tracking-tight">
-          <span className="flex items-center gap-2">
-            <Code className="h-4 w-4 text-primary" /> Custom Sections
+      <AccordionItem
+        value="custom"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <Sparkles className="h-4 w-4" />
+            </span>
+            Custom Sections
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {customSummary}
+            </span>
           </span>
         </AccordionTrigger>
-        <AccordionContent>
-          <Card className="shadow-none border-0">
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <CardDescription>Add additional sections like certifications, projects, etc.</CardDescription>
