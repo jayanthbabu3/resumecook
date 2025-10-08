@@ -18,7 +18,7 @@ const professions = [
   {
     id: "software",
     name: "Software Development",
-    description: "Templates optimized for developers and engineers",
+    description: "Professional templates optimized for developers and engineers",
     icon: Code,
     templates: [
       "software",
@@ -33,14 +33,14 @@ const professions = [
   {
     id: "freshers",
     name: "Freshers & Entry Level",
-    description: "Clean and professional templates for career starters",
+    description: "Professional templates designed for career starters and graduates",
     icon: GraduationCap,
     templates: ["graduate", "starter", "fresher", "premium-fresher"],
   },
   {
     id: "all",
     name: "All Professions",
-    description: "Universal templates suitable for any industry",
+    description: "Professional templates suitable for any industry and role",
     icon: Briefcase,
     templates: [
       "professional",
