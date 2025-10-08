@@ -1694,7 +1694,7 @@ const Editor = () => {
 
       {/* Editor Layout */}
       <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8">
-        <div className="grid gap-6 max-w-8xl mx-auto lg:grid-cols-[37%,61%] lg:gap-8">
+        <div className="grid gap-2 max-w-8xl mx-auto lg:grid-cols-[37%,63%] lg:gap-2">
           {/* Form Section */}
           <div className="space-y-6 rounded-2xl border border-border/50 bg-background px-4 py-5 shadow-sm sm:px-6 sm:py-6">
             <div className="space-y-2">

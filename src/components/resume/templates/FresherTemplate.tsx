@@ -224,10 +224,7 @@ export const FresherTemplate = ({
                     {resumeData.experience.map((exp, index) => (
                       <div key={index} className="relative">
                         {/* Timeline dot */}
-                        <div
-                          className="absolute -left-2 top-2 w-3 h-3 rounded-full border-2 bg-white"
-                          style={{ borderColor: themeColor }}
-                        />
+                       
 
                         <div className="space-y-2">
                           <div className="flex justify-between items-start gap-4">
