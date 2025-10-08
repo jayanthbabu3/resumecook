@@ -35,7 +35,7 @@ const professions = [
     name: "Freshers & Entry Level",
     description: "Clean and professional templates for career starters",
     icon: GraduationCap,
-    templates: ["graduate", "starter", "fresher", "minimal", "professional"],
+    templates: ["graduate", "starter", "fresher", "premium-fresher", "minimal", "professional"],
   },
   {
     id: "accountants",
@@ -133,6 +133,13 @@ const templates = [
     description:
       "ATS-optimized premium template with elegant design for fresh graduates",
     highlights: ["ATS-Friendly", "Premium Design", "Two-Column Layout"],
+  },
+  {
+    id: "premium-fresher",
+    name: "Premium Fresher",
+    description:
+      "Modern premium template with gradient design and skill levels for fresh graduates",
+    highlights: ["Gradient Design", "Skill Levels", "Modern Layout", "ATS-Optimized"],
   },
   {
     id: "software",

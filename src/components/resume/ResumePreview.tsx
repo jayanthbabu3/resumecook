@@ -9,6 +9,7 @@ import { BackendTemplate } from "./templates/BackendTemplate";
 import { GraduateTemplate } from "./templates/GraduateTemplate";
 import { StarterTemplate } from "./templates/StarterTemplate";
 import { FresherTemplate } from "./templates/FresherTemplate";
+import { PremiumFresherTemplate } from "./templates/PremiumFresherTemplate";
 import { SeniorTemplate } from "./templates/SeniorTemplate";
 import { SeniorFrontendTemplate } from "./templates/SeniorFrontendTemplate";
 import { SeniorBackendTemplate } from "./templates/SeniorBackendTemplate";
@@ -36,6 +37,7 @@ export const ResumePreview = ({
     graduate: GraduateTemplate,
     starter: StarterTemplate,
     fresher: FresherTemplate,
+    "premium-fresher": PremiumFresherTemplate,
     senior: SeniorTemplate,
     "senior-frontend": SeniorFrontendTemplate,
     "senior-backend": SeniorBackendTemplate,

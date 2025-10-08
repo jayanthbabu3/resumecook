@@ -81,6 +81,13 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Early Career",
     categorySlug: "freshers",
   },
+  "premium-fresher": {
+    name: "Premium Fresher",
+    description:
+      "Modern premium template with gradient design, skill levels, and ATS-friendly layout for fresh graduates.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
   senior: {
     name: "Senior Software Engineer",
     description: "Achievement-driven layout tailored for senior ICs and leads.",

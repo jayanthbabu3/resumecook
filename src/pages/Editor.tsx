@@ -18,6 +18,7 @@ import { BackendPDF } from "@/components/resume/pdf/BackendPDF";
 import { GraduatePDF } from "@/components/resume/pdf/GraduatePDF";
 import { StarterPDF } from "@/components/resume/pdf/StarterPDF";
 import { FresherPDF } from "@/components/resume/pdf/FresherPDF";
+import { PremiumFresherPDF } from "@/components/resume/pdf/PremiumFresherPDF";
 import { SeniorPDF } from "@/components/resume/pdf/SeniorPDF";
 import { SeniorFrontendPDF } from "@/components/resume/pdf/SeniorFrontendPDF";
 import { SeniorBackendPDF } from "@/components/resume/pdf/SeniorBackendPDF";
@@ -116,7 +117,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Lead financial planning and analysis for $500M portfolio\n• Develop complex financial models to support strategic decision-making\n• Present quarterly business reviews to C-suite executives\n• Manage team of 3 junior analysts",
+            "Lead financial planning and analysis for $500M portfolio\nDevelop complex financial models to support strategic decision-making\nPresent quarterly business reviews to C-suite executives\nManage team of 3 junior analysts",
         },
         {
           id: "2",
@@ -126,7 +127,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2020-02",
           current: false,
           description:
-            "• Conducted financial analysis and forecasting for multiple business units\n• Streamlined reporting processes, reducing monthly close time by 30%\n• Collaborated with cross-functional teams on budgeting initiatives",
+            "Conducted financial analysis and forecasting for multiple business units\nStreamlined reporting processes, reducing monthly close time by 30%\nCollaborated with cross-functional teams on budgeting initiatives",
         },
       ],
       education: [
@@ -190,7 +191,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Architected and deployed microservices handling 1M+ daily active users\n• Led migration from monolith to serverless architecture on AWS\n• Mentored 5 junior developers and conducted code reviews\n• Improved application performance by 60% through optimization",
+            "Architected and deployed microservices handling 1M+ daily active users\nLed migration from monolith to serverless architecture on AWS\nMentored 5 junior developers and conducted code reviews\nImproved application performance by 60% through optimization",
         },
         {
           id: "2",
@@ -200,7 +201,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2020-12",
           current: false,
           description:
-            "• Built responsive web applications using React and TypeScript\n• Implemented CI/CD pipelines reducing deployment time by 40%\n• Collaborated with designers to create pixel-perfect UIs",
+            "Built responsive web applications using React and TypeScript\nImplemented CI/CD pipelines reducing deployment time by 40%\nCollaborated with designers to create pixel-perfect UIs",
         },
       ],
       education: [
@@ -258,7 +259,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Lead UX strategy for client projects ranging from startups to Fortune 500\n• Conduct user research, usability testing, and data analysis\n• Design wireframes, prototypes, and high-fidelity mockups\n• Collaborate with developers to ensure design implementation",
+            "Lead UX strategy for client projects ranging from startups to Fortune 500\nConduct user research, usability testing, and data analysis\nDesign wireframes, prototypes, and high-fidelity mockups\nCollaborate with developers to ensure design implementation",
         },
         {
           id: "2",
@@ -268,7 +269,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2020-07",
           current: false,
           description:
-            "• Redesigned mobile app resulting in 45% increase in user engagement\n• Created and maintained design system used across product teams\n• Facilitated design workshops with stakeholders",
+            "Redesigned mobile app resulting in 45% increase in user engagement\nCreated and maintained design system used across product teams\nFacilitated design workshops with stakeholders",
         },
       ],
       education: [
@@ -324,7 +325,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Lead technology strategy and innovation for organization with 2,000+ employees\n• Built engineering team from 50 to 200+ across multiple locations\n• Spearheaded cloud migration initiative saving $5M annually\n• Drive product roadmap and architecture decisions for flagship products",
+            "Lead technology strategy and innovation for organization with 2,000+ employees\nBuilt engineering team from 50 to 200+ across multiple locations\nSpearheaded cloud migration initiative saving $5M annually\nDrive product roadmap and architecture decisions for flagship products",
         },
         {
           id: "2",
@@ -334,7 +335,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2018-12",
           current: false,
           description:
-            "• Managed 80+ person engineering organization across 6 product teams\n• Established technical standards and best practices company-wide\n• Led successful IPO preparation and technical due diligence\n• Reduced infrastructure costs by 40% through strategic optimization",
+            "Managed 80+ person engineering organization across 6 product teams\nEstablished technical standards and best practices company-wide\nLed successful IPO preparation and technical due diligence\nReduced infrastructure costs by 40% through strategic optimization",
         },
       ],
       education: [
@@ -398,7 +399,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Developed and maintained high-performance React applications serving 500K+ monthly users\n• Collaborated with UX designers to implement pixel-perfect, responsive interfaces\n• Optimized web vitals resulting in 40% faster load times and improved SEO rankings\n• Mentored junior developers and conducted code reviews\n• Integrated REST and GraphQL APIs with modern state management solutions",
+            "Developed and maintained high-performance React applications serving 500K+ monthly users\nCollaborated with UX designers to implement pixel-perfect, responsive interfaces\nOptimized web vitals resulting in 40% faster load times and improved SEO rankings\nMentored junior developers and conducted code reviews\nIntegrated REST and GraphQL APIs with modern state management solutions",
         },
         {
           id: "2",
@@ -408,7 +409,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2022-05",
           current: false,
           description:
-            "• Built interactive web experiences for clients across various industries\n• Implemented animations and transitions using CSS3 and JavaScript libraries\n• Worked in Agile environment with daily standups and bi-weekly sprints\n• Ensured cross-browser compatibility and mobile responsiveness\n• Contributed to component library used across multiple projects",
+            "Built interactive web experiences for clients across various industries\nImplemented animations and transitions using CSS3 and JavaScript libraries\nWorked in Agile environment with daily standups and bi-weekly sprints\nEnsured cross-browser compatibility and mobile responsiveness\nContributed to component library used across multiple projects",
         },
       ],
       education: [
@@ -470,7 +471,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Led design system modernization serving 75+ teams and 4 design platforms\n• Delivered real-time multiplayer canvas optimizations reducing paint time by 35%\n• Partnered with Data Viz team to launch analytics dashboard viewed by 1M+ users\n• Mentored 8 engineers, introducing progressive enhancement playbooks",
+            "Led design system modernization serving 75+ teams and 4 design platforms\nDelivered real-time multiplayer canvas optimizations reducing paint time by 35%\nPartnered with Data Viz team to launch analytics dashboard viewed by 1M+ users\nMentored 8 engineers, introducing progressive enhancement playbooks",
         },
         {
           id: "2",
@@ -480,7 +481,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2021-03",
           current: false,
           description:
-            "• Owned web playback UI, increasing retention by 12% via personalized layouts\n• Built component performance tooling that cut bundle size by 28%\n• Shipped artist analytics visualizations with interactive charts and stories",
+            "Owned web playback UI, increasing retention by 12% via personalized layouts\nBuilt component performance tooling that cut bundle size by 28%\nShipped artist analytics visualizations with interactive charts and stories",
         },
       ],
       education: [
@@ -544,7 +545,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Led front-of-site modernization across 75+ teams and 4 design surfaces\n• Delivered real-time canvas optimizations reducing paint time by 35%\n• Partnered with data visualization to launch analytics dashboard viewed by 1M+ users\n• Mentored 8 engineers, formalizing progressive enhancement playbooks",
+            "Led front-of-site modernization across 75+ teams and 4 design surfaces\nDelivered real-time canvas optimizations reducing paint time by 35%\nPartnered with data visualization to launch analytics dashboard viewed by 1M+ users\nMentored 8 engineers, formalizing progressive enhancement playbooks",
         },
         {
           id: "2",
@@ -554,7 +555,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2021-03",
           current: false,
           description:
-            "• Owned web playback UI, increasing retention by 12% with personalization\n• Built component performance tooling that cut bundle size by 28%\n• Shipped analytics visualizations with interactive charts and stories",
+            "Owned web playback UI, increasing retention by 12% with personalization\nBuilt component performance tooling that cut bundle size by 28%\nShipped analytics visualizations with interactive charts and stories",
         },
       ],
       education: [
@@ -620,7 +621,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Directed migration to event-driven payouts platform processing $15B+ annually\n• Reduced critical incident rate by 43% via SLO program and adaptive throttling\n• Mentored 7 engineers; established playbooks for blue/green deployments and on-call excellence",
+            "Directed migration to event-driven payouts platform processing $15B+ annually\nReduced critical incident rate by 43% via SLO program and adaptive throttling\nMentored 7 engineers; established playbooks for blue/green deployments and on-call excellence",
         },
         {
           id: "2",
@@ -630,7 +631,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2020-01",
           current: false,
           description:
-            "• Re-architected reservations pipeline to handle 4x traffic with <200ms P99 latency\n• Introduced schema governance program that cut breaking API changes by 60%\n• Led reliability guild to implement chaos testing and automated rollback strategies",
+            "Re-architected reservations pipeline to handle 4x traffic with <200ms P99 latency\nIntroduced schema governance program that cut breaking API changes by 60%\nLed reliability guild to implement chaos testing and automated rollback strategies",
         },
       ],
       education: [
@@ -694,7 +695,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Architected and deployed microservices-based applications using Node.js, React, and PostgreSQL\n• Built RESTful APIs and GraphQL endpoints serving 2M+ requests daily\n• Implemented CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 70%\n• Led team of 4 developers in agile sprint planning and code reviews\n• Optimized database queries resulting in 50% reduction in response times",
+            "Architected and deployed microservices-based applications using Node.js, React, and PostgreSQL\nBuilt RESTful APIs and GraphQL endpoints serving 2M+ requests daily\nImplemented CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 70%\nLed team of 4 developers in agile sprint planning and code reviews\nOptimized database queries resulting in 50% reduction in response times",
         },
         {
           id: "2",
@@ -704,7 +705,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2021-08",
           current: false,
           description:
-            "• Developed full stack web applications using React, Express.js, and MongoDB\n• Created real-time features using WebSocket and Socket.io\n• Integrated third-party APIs including Stripe, SendGrid, and AWS S3\n• Implemented authentication and authorization using JWT and OAuth 2.0\n• Collaborated with designers to create responsive, mobile-first interfaces",
+            "Developed full stack web applications using React, Express.js, and MongoDB\nCreated real-time features using WebSocket and Socket.io\nIntegrated third-party APIs including Stripe, SendGrid, and AWS S3\nImplemented authentication and authorization using JWT and OAuth 2.0\nCollaborated with designers to create responsive, mobile-first interfaces",
         },
       ],
       education: [
@@ -764,7 +765,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Designed and implemented RESTful APIs serving 5M+ requests daily with 99.9% uptime\n• Built microservices architecture using Node.js, Express, and PostgreSQL\n• Optimized database queries reducing response times by 60%\n• Implemented caching strategies using Redis improving performance by 40%\n• Led code reviews and mentored junior developers on best practices",
+            "Designed and implemented RESTful APIs serving 5M+ requests daily with 99.9% uptime\nBuilt microservices architecture using Node.js, Express, and PostgreSQL\nOptimized database queries reducing response times by 60%\nImplemented caching strategies using Redis improving performance by 40%\nLed code reviews and mentored junior developers on best practices",
         },
         {
           id: "2",
@@ -774,7 +775,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2021-02",
           current: false,
           description:
-            "• Developed scalable backend services using Python Django and Flask\n• Integrated third-party APIs including payment gateways and analytics services\n• Implemented JWT-based authentication and role-based access control\n• Created automated testing suites achieving 85% code coverage\n• Participated in agile development with bi-weekly sprint cycles",
+            "Developed scalable backend services using Python Django and Flask\nIntegrated third-party APIs including payment gateways and analytics services\nImplemented JWT-based authentication and role-based access control\nCreated automated testing suites achieving 85% code coverage\nParticipated in agile development with bi-weekly sprint cycles",
         },
       ],
       education: [
@@ -836,7 +837,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "",
           current: true,
           description:
-            "• Directed end-to-end migration of monolith services to Python 3.8 and Kubernetes\n• Built automated testing suites that removed redundant manual QA and reduced regressions by 40%\n• Delivered analytics dashboards that improved release visibility and decision making for executives\n• Mentored a team of 6 engineers, introducing peer review practices and leveling resources",
+            "Directed end-to-end migration of monolith services to Python 3.8 and Kubernetes\nBuilt automated testing suites that removed redundant manual QA and reduced regressions by 40%\nDelivered analytics dashboards that improved release visibility and decision making for executives\nMentored a team of 6 engineers, introducing peer review practices and leveling resources",
         },
         {
           id: "2",
@@ -846,7 +847,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2020-12",
           current: false,
           description:
-            "• Productized an automation platform adopted by three enterprise programs, saving $600K annually\n• Re-architected critical data services to cut page latency by 50% and boost conversion\n• Led reliability guild in scaling monitoring and incident response across 30+ microservices",
+            "Productized an automation platform adopted by three enterprise programs, saving $600K annually\nRe-architected critical data services to cut page latency by 50% and boost conversion\nLed reliability guild in scaling monitoring and incident response across 30+ microservices",
         },
         {
           id: "3",
@@ -856,7 +857,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2017-01",
           current: false,
           description:
-            "• Implemented configuration tooling that accelerated performance testing cycles by 35%\n• Delivered in-memory reporting APIs serving 1M+ daily requests with sub-second latency\n• Partnered with product and ops to reduce critical incident response times by 20%",
+            "Implemented configuration tooling that accelerated performance testing cycles by 35%\nDelivered in-memory reporting APIs serving 1M+ daily requests with sub-second latency\nPartnered with product and ops to reduce critical incident response times by 20%",
         },
         {
           id: "4",
@@ -866,7 +867,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2015-04",
           current: false,
           description:
-            "• Launched customer engagement features that unlocked $18K in new monthly revenue\n• Optimized heavy batch automation reducing processing times from minutes to seconds\n• Spearheaded defect triage that cleared 40% of legacy backlog within two quarters",
+            "Launched customer engagement features that unlocked $18K in new monthly revenue\nOptimized heavy batch automation reducing processing times from minutes to seconds\nSpearheaded defect triage that cleared 40% of legacy backlog within two quarters",
         },
       ],
       education: [
@@ -951,7 +952,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2024-04",
           current: false,
           description:
-            "• Developed responsive web applications using React.js and Node.js\n• Built RESTful APIs and integrated third-party services\n• Collaborated with team of 4 developers using Git and Agile methodology\n• Wrote unit tests achieving 80% code coverage using Jest\n• Participated in code reviews and daily standup meetings",
+            "Developed responsive web applications using React.js and Node.js\nBuilt RESTful APIs and integrated third-party services\nCollaborated with team of 4 developers using Git and Agile methodology\nWrote unit tests achieving 80% code coverage using Jest\nParticipated in code reviews and daily standup meetings",
         },
         {
           id: "2",
@@ -961,7 +962,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2023-08",
           current: false,
           description:
-            "• Created UI components using React and Tailwind CSS\n• Improved website load time by 25% through code optimization\n• Worked with designers to implement responsive designs\n• Gained hands-on experience with modern JavaScript frameworks",
+            "Created UI components using React and Tailwind CSS\nImproved website load time by 25% through code optimization\nWorked with designers to implement responsive designs\nGained hands-on experience with modern JavaScript frameworks",
         },
       ],
       education: [
@@ -997,19 +998,19 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           id: "1",
           title: "Final Year Project",
           content:
-            "E-Commerce Web Application\n• Built full-stack online shopping platform with product catalog and cart functionality\n• Implemented user authentication, payment integration, and order management\n• Tech Stack: React, Node.js, Express, MongoDB, Stripe API\n• Achieved First Class with Distinction (92% marks)",
+            "E-Commerce Web Application\nBuilt full-stack online shopping platform with product catalog and cart functionality\nImplemented user authentication, payment integration, and order management\nTech Stack: React, Node.js, Express, MongoDB, Stripe API\nAchieved First Class with Distinction (92% marks)",
         },
         {
           id: "2",
           title: "Mini Project",
           content:
-            "Task Management App\n• Developed responsive task tracking application with real-time updates\n• Features: User authentication, task categories, due date reminders\n• Tech Stack: React, Firebase, Material-UI\n• Deployed on Vercel with 100+ active users",
+            "Task Management App\nDeveloped responsive task tracking application with real-time updates\nFeatures: User authentication, task categories, due date reminders\nTech Stack: React, Firebase, Material-UI\nDeployed on Vercel with 100+ active users",
         },
         {
           id: "3",
           title: "Certifications & Achievements",
           content:
-            "• Winner - College Hackathon 2023 (Team of 3, built AI chatbot in 24 hours)\n• AWS Certified Cloud Practitioner (2024)\n• Completed 150+ problems on LeetCode (Data Structures & Algorithms)\n• GitHub: 12 public repositories with 50+ stars combined\n• Member of Coding Club - Organized technical workshops for juniors",
+            "Winner - College Hackathon 2023 (Team of 3, built AI chatbot in 24 hours)\nAWS Certified Cloud Practitioner (2024)\nCompleted 150+ problems on LeetCode (Data Structures & Algorithms)\nGitHub: 12 public repositories with 50+ stars combined\nMember of Coding Club - Organized technical workshops for juniors",
         },
       ],
     },
@@ -1122,7 +1123,7 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           endDate: "2024-05",
           current: false,
           description:
-            "• Developed responsive web applications using React.js, Node.js, and MongoDB\n• Built RESTful APIs and integrated third-party payment services\n• Collaborated with cross-functional team of 6 developers using Git and Agile methodology\n• Implemented automated testing achieving 85% code coverage using Jest\n• Optimized application performance resulting in 30% faster load times",
+            "Developed responsive web applications using React.js, Node.js, and MongoDB\nBuilt RESTful APIs and integrated third-party payment services\nCollaborated with cross-functional team of 6 developers using Git and Agile methodology\nImplemented automated testing achieving 85% code coverage using Jest\nOptimized application performance resulting in 30% faster load times",
         },
         {
           id: "2",
@@ -1176,13 +1177,97 @@ const getTemplateDefaults = (templateId: string): ResumeData => {
           id: "1",
           title: "Academic Projects",
           content:
-            "E-Learning Platform (Final Year Project)\n• Built full-stack online learning platform with course management and video streaming\n• Implemented user authentication, progress tracking, and interactive quizzes\n• Tech Stack: React.js, Node.js, Express.js, MongoDB, Socket.io\n• Achieved 95% marks and recognition as Best Project in Computer Science\n\nTask Management Web App\n• Developed responsive task tracking application with real-time collaboration\n• Features: Drag-and-drop interface, deadline notifications, team workspace\n• Tech Stack: React.js, Firebase, Material-UI\n• Deployed on Vercel with 200+ active users during beta testing",
+            "E-Learning Platform (Final Year Project)\nBuilt full-stack online learning platform with course management and video streaming\nImplemented user authentication, progress tracking, and interactive quizzes\nTech Stack: React.js, Node.js, Express.js, MongoDB, Socket.io\nAchieved 95% marks and recognition as Best Project in Computer Science\n\nTask Management Web App\nDeveloped responsive task tracking application with real-time collaboration\nFeatures: Drag-and-drop interface, deadline notifications, team workspace\nTech Stack: React.js, Firebase, Material-UI\nDeployed on Vercel with 200+ active users during beta testing",
         },
         {
           id: "2",
           title: "Achievements & Certifications",
           content:
-            "• Winner - National Level Hackathon 2023 (Built AI-powered study assistant in 36 hours)\n• AWS Certified Cloud Practitioner (2024)\n• Google Cloud Associate Cloud Engineer (2024)\n• Solved 200+ coding problems on LeetCode and GeeksforGeeks\n• GitHub: 15 public repositories with 80+ combined stars\n• Technical Lead - College Coding Club (Organized workshops for 100+ students)",
+            "Winner - National Level Hackathon 2023 (Built AI-powered study assistant in 36 hours)\nAWS Certified Cloud Practitioner (2024)\nGoogle Cloud Associate Cloud Engineer (2024)\nSolved 200+ coding problems on LeetCode and GeeksforGeeks\nGitHub: 15 public repositories with 80+ combined stars\nTechnical Lead - College Coding Club (Organized workshops for 100+ students)",
+        },
+      ],
+    },
+    "premium-fresher": {
+      personalInfo: {
+        fullName: "Alex Chen",
+        email: "alex.chen@email.com",
+        phone: "+1 (555) 987-6543",
+        location: "San Francisco, CA",
+        title: "Computer Science Graduate - Full Stack Developer",
+        summary:
+          "Recent Computer Science graduate with a passion for creating innovative web applications and a strong foundation in modern development technologies. Proven ability to deliver high-quality software solutions through academic projects and internships, with expertise in both frontend and backend development.",
+        photo: "",
+      },
+      experience: [
+        {
+          id: "1",
+          company: "InnovateTech Solutions",
+          position: "Full Stack Development Intern",
+          startDate: "2024-01",
+          endDate: "2024-06",
+          current: false,
+          description:
+            "Developed full-stack web applications using React.js, Node.js, and PostgreSQL\nImplemented responsive UI components with modern CSS frameworks and animations\nBuilt RESTful APIs and integrated third-party services (Stripe, SendGrid)\nCollaborated in Agile environment using Git, Jira, and daily standups\nAchieved 90% test coverage using Jest and Cypress for automated testing",
+        },
+        {
+          id: "2",
+          company: "StartupLab Inc.",
+          position: "Frontend Development Intern",
+          startDate: "2023-07",
+          endDate: "2023-12",
+          current: false,
+          description:
+            "Created interactive user interfaces using React.js, TypeScript, and Tailwind CSS\nOptimized application performance resulting in 45% faster page load times\nImplemented accessibility features following WCAG 2.1 guidelines\nCollaborated with UX/UI designers to create pixel-perfect responsive designs\nParticipated in code reviews and mentored junior developers",
+        },
+      ],
+      education: [
+        {
+          id: "1",
+          school: "University of California, Berkeley",
+          degree: "Bachelor of Science",
+          field: "Computer Science",
+          startDate: "2020-08",
+          endDate: "2024-05",
+        },
+        {
+          id: "2",
+          school: "Berkeley High School",
+          degree: "High School Diploma",
+          field: "College Preparatory",
+          startDate: "2016-09",
+          endDate: "2020-06",
+        },
+      ],
+      skills: buildSkills(
+        "fresher",
+        [
+          "JavaScript",
+          "TypeScript",
+          "React.js",
+          "Node.js",
+          "Python",
+          "Java",
+          "HTML/CSS",
+          "SQL",
+          "Git & GitHub",
+          "Docker",
+          "AWS",
+          "MongoDB",
+        ],
+        [9, 8, 9, 8, 8, 7, 9, 8, 9, 6, 6, 7],
+      ),
+      sections: [
+        {
+          id: "1",
+          title: "Featured Projects",
+          content:
+            "E-Commerce Platform (Capstone Project)\nBuilt complete e-commerce solution with user authentication, product catalog, and payment processing\nFeatures: Real-time inventory management, order tracking, and admin dashboard\nTech Stack: React.js, Node.js, Express.js, PostgreSQL, Stripe API, Redis\nDeployed on AWS with CI/CD pipeline using GitHub Actions\nAchieved 95% test coverage and handled 1000+ concurrent users\n\nSocial Media Dashboard\nDeveloped analytics dashboard for social media management with real-time data visualization\nImplemented data fetching from multiple APIs (Twitter, Instagram, Facebook)\nFeatures: Custom charts, export functionality, and responsive design\nTech Stack: React.js, Chart.js, Python Flask, MongoDB\nOpen-sourced on GitHub with 150+ stars",
+        },
+        {
+          id: "2",
+          title: "Achievements & Recognition",
+          content:
+            "Winner - Google Code Jam 2024 (Top 1000 globally out of 100,000+ participants)\nAWS Certified Cloud Practitioner (2024)\nMicrosoft Azure Fundamentals Certified (2024)\nLeetCode: 500+ problems solved with 90%+ accuracy\nGitHub: 25+ public repositories with 200+ combined stars\nPresident - Computer Science Club (Led 150+ members and organized 20+ tech workshops)\nDean's List - 8 consecutive semesters (GPA: 3.8/4.0)",
         },
       ],
     },
@@ -1214,6 +1299,7 @@ const Editor = () => {
       "senior-frontend": "#ec4899",
       "senior-backend": "#2563eb",
       software: "#2563eb",
+      "premium-fresher": "#7C3AED",
     };
 
     return defaultThemeColors[templateId || ""] || "#7c3aed"; // default purple
@@ -1320,6 +1406,7 @@ const Editor = () => {
         graduate: GraduatePDF,
         starter: StarterPDF,
         fresher: FresherPDF,
+        "premium-fresher": PremiumFresherPDF,
         senior: SeniorPDF,
         "senior-frontend": SeniorFrontendPDF,
         "senior-backend": SeniorBackendPDF,
