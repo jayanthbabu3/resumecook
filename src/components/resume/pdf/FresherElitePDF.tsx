@@ -6,12 +6,71 @@ import {
   StyleSheet,
   Image,
   Svg,
-  Circle,
+  Path,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
 registerPDFFonts();
+
+interface IconProps {
+  color: string;
+}
+
+const MailIcon = ({ color }: IconProps) => (
+  <Svg width={9} height={9} viewBox="0 0 24 24">
+    <Path
+      d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"
+      fill="none"
+      stroke={color}
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="m22 6-10 7L2 6"
+      fill="none"
+      stroke={color}
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const PhoneIcon = ({ color }: IconProps) => (
+  <Svg width={9} height={9} viewBox="0 0 24 24">
+    <Path
+      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"
+      fill="none"
+      stroke={color}
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const MapPinIcon = ({ color }: IconProps) => (
+  <Svg width={9} height={9} viewBox="0 0 24 24">
+    <Path
+      d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0Z"
+      fill="none"
+      stroke={color}
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+      fill="none"
+      stroke={color}
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
 
 interface Props {
   resumeData: ResumeData;
@@ -26,7 +85,7 @@ export const FresherElitePDF = ({
     page: {
       fontFamily: "Inter",
       backgroundColor: "#f9fafb",
-      padding: 40,
+      padding: 32,
     },
     container: {
       backgroundColor: "#ffffff",
@@ -35,8 +94,8 @@ export const FresherElitePDF = ({
     },
     header: {
       backgroundColor: themeColor,
-      paddingHorizontal: 48,
-      paddingVertical: 40,
+      paddingHorizontal: 40,
+      paddingVertical: 32,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
@@ -46,34 +105,39 @@ export const FresherElitePDF = ({
       color: "#ffffff",
     },
     name: {
-      fontSize: 28,
+      fontSize: 26,
       fontWeight: 700,
       color: "#ffffff",
-      marginBottom: 8,
+      marginBottom: 6,
     },
     title: {
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: 600,
       color: "#ffffff",
       opacity: 0.95,
-      marginBottom: 16,
+      marginBottom: 14,
     },
     contactInfo: {
       flexDirection: "row",
       flexWrap: "wrap",
-      gap: 24,
-      fontSize: 9,
+      gap: 20,
       color: "#ffffff",
       opacity: 0.9,
     },
+    contactItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+      fontSize: 9,
+    },
     photoWrapper: {
-      width: 96,
-      height: 96,
-      borderRadius: 48,
+      width: 88,
+      height: 88,
+      borderRadius: 44,
       borderWidth: 4,
       borderColor: "#ffffff",
       overflow: "hidden",
-      marginLeft: 24,
+      marginLeft: 20,
     },
     photo: {
       width: "100%",
@@ -81,14 +145,14 @@ export const FresherElitePDF = ({
       objectFit: "cover",
     },
     mainContent: {
-      paddingHorizontal: 48,
-      paddingVertical: 32,
+      paddingHorizontal: 40,
+      paddingVertical: 24,
     },
     summaryContainer: {
       backgroundColor: "#f9fafb",
       borderRadius: 12,
-      padding: 24,
-      marginBottom: 32,
+      padding: 20,
+      marginBottom: 24,
       borderLeftWidth: 4,
       borderLeftColor: themeColor,
     },
@@ -99,7 +163,7 @@ export const FresherElitePDF = ({
     },
     contentGrid: {
       flexDirection: "row",
-      gap: 32,
+      gap: 28,
     },
     leftColumn: {
       width: "33.333%",
@@ -108,22 +172,22 @@ export const FresherElitePDF = ({
       flex: 1,
     },
     section: {
-      marginBottom: 32,
+      marginBottom: 24,
     },
     sectionHeader: {
       flexDirection: "row",
       alignItems: "center",
       gap: 8,
-      marginBottom: 16,
+      marginBottom: 12,
     },
     sectionDot: {
       width: 4,
-      height: 16,
+      height: 14,
       backgroundColor: themeColor,
       borderRadius: 2,
     },
     sectionTitle: {
-      fontSize: 10,
+      fontSize: 9,
       fontWeight: 700,
       textTransform: "uppercase",
       letterSpacing: 0.5,
@@ -132,27 +196,27 @@ export const FresherElitePDF = ({
     educationCard: {
       backgroundColor: "#ffffff",
       borderRadius: 8,
-      padding: 16,
+      padding: 14,
       borderWidth: 1,
       borderColor: "#e5e7eb",
-      marginBottom: 16,
+      marginBottom: 12,
     },
     degree: {
       fontSize: 10,
       fontWeight: 700,
       color: "#111827",
-      marginBottom: 4,
+      marginBottom: 3,
     },
     field: {
       fontSize: 8,
       color: "#4b5563",
-      marginBottom: 8,
+      marginBottom: 6,
     },
     school: {
       fontSize: 8,
       fontWeight: 600,
       color: themeColor,
-      marginBottom: 4,
+      marginBottom: 3,
     },
     dateText: {
       fontSize: 8,
@@ -162,7 +226,7 @@ export const FresherElitePDF = ({
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: 12,
+      marginBottom: 10,
     },
     skillName: {
       fontSize: 9,
@@ -174,37 +238,37 @@ export const FresherElitePDF = ({
       gap: 4,
     },
     skillDot: {
-      width: 8,
-      height: 8,
-      borderRadius: 4,
+      width: 7,
+      height: 7,
+      borderRadius: 3.5,
     },
     experienceItem: {
       position: "relative",
-      paddingLeft: 24,
-      paddingBottom: 24,
+      paddingLeft: 20,
+      paddingBottom: 20,
       borderLeftWidth: 2,
       borderLeftColor: "#e5e7eb",
     },
     experienceItemLast: {
       position: "relative",
-      paddingLeft: 24,
+      paddingLeft: 20,
       paddingBottom: 0,
       borderLeftWidth: 0,
     },
     timelineDot: {
       position: "absolute",
-      left: -7,
+      left: -6,
       top: 0,
-      width: 12,
-      height: 12,
-      borderRadius: 6,
+      width: 10,
+      height: 10,
+      borderRadius: 5,
       backgroundColor: themeColor,
     },
     experienceHeader: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "flex-start",
-      marginBottom: 8,
+      marginBottom: 6,
     },
     experienceLeft: {
       flex: 1,
@@ -215,18 +279,18 @@ export const FresherElitePDF = ({
       color: "#111827",
     },
     company: {
-      fontSize: 10,
+      fontSize: 9,
       fontWeight: 600,
       color: themeColor,
-      marginTop: 4,
+      marginTop: 3,
     },
     dateBadge: {
       fontSize: 8,
       fontWeight: 600,
       color: themeColor,
       backgroundColor: `${themeColor}15`,
-      paddingHorizontal: 12,
-      paddingVertical: 4,
+      paddingHorizontal: 10,
+      paddingVertical: 3,
       borderRadius: 999,
     },
     description: {
@@ -237,7 +301,7 @@ export const FresherElitePDF = ({
     projectCard: {
       backgroundColor: "#f9fafb",
       borderRadius: 12,
-      padding: 24,
+      padding: 20,
     },
     sectionContent: {
       fontSize: 9,
@@ -261,13 +325,22 @@ export const FresherElitePDF = ({
               )}
               <View style={styles.contactInfo}>
                 {resumeData.personalInfo.email && (
-                  <Text>✉ {resumeData.personalInfo.email}</Text>
+                  <View style={styles.contactItem}>
+                    <MailIcon color="#ffffff" />
+                    <Text>{resumeData.personalInfo.email}</Text>
+                  </View>
                 )}
                 {resumeData.personalInfo.phone && (
-                  <Text>📞 {resumeData.personalInfo.phone}</Text>
+                  <View style={styles.contactItem}>
+                    <PhoneIcon color="#ffffff" />
+                    <Text>{resumeData.personalInfo.phone}</Text>
+                  </View>
                 )}
                 {resumeData.personalInfo.location && (
-                  <Text>📍 {resumeData.personalInfo.location}</Text>
+                  <View style={styles.contactItem}>
+                    <MapPinIcon color="#ffffff" />
+                    <Text>{resumeData.personalInfo.location}</Text>
+                  </View>
                 )}
               </View>
             </View>
