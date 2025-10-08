@@ -1,5 +1,4 @@
 import type { ResumeData } from "@/pages/Editor";
-import { Mail, Phone, MapPin, Calendar, Award, Code, GraduationCap, Briefcase, Star } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 
 interface PremiumFresherTemplateProps {
@@ -11,276 +10,150 @@ export const PremiumFresherTemplate = ({
   resumeData,
   themeColor = "#7C3AED",
 }: PremiumFresherTemplateProps) => {
-  const formatDate = (date: string) => {
-    if (!date) return "";
-    const [year, month] = date.split("-");
-    const monthNames = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    ];
-    return `${monthNames[parseInt(month) - 1]} ${year}`;
-  };
-
   const photo = resumeData.personalInfo.photo;
 
   return (
-    <div className="w-full h-full bg-white overflow-auto">
-      <div className="max-w-[850px] mx-auto">
-        {/* Header with Modern Design */}
-        <div className="relative bg-gradient-to-r from-slate-50 to-white">
-          <div className="absolute inset-0 bg-gradient-to-r" style={{ 
-            background: `linear-gradient(135deg, ${themeColor}15 0%, ${themeColor}05 100%)` 
-          }} />
-          <div className="relative px-12 pt-9 pb-7">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <div className="mb-3">
-                  <h1 className="text-[2.1rem] font-bold text-slate-900 tracking-tight mb-2">
-                    {resumeData.personalInfo.fullName}
-                  </h1>
-                  {resumeData.personalInfo.title && (
-                    <div className="flex items-center gap-2.5">
-                      <div className="h-1 w-10 rounded-full" style={{ backgroundColor: themeColor }} />
-                      <span className="text-base font-medium text-slate-600">
-                        {resumeData.personalInfo.title}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-2 text-sm">
-                  {resumeData.personalInfo.email && (
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-slate-100">
-                        <Mail className="h-4 w-4" style={{ color: themeColor }} />
-                      </div>
-                      <span className="text-slate-700">{resumeData.personalInfo.email}</span>
-                    </div>
-                  )}
-                  {resumeData.personalInfo.phone && (
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-slate-100">
-                        <Phone className="h-4 w-4" style={{ color: themeColor }} />
-                      </div>
-                      <span className="text-slate-700">{resumeData.personalInfo.phone}</span>
-                    </div>
-                  )}
-                  {resumeData.personalInfo.location && (
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-slate-100">
-                        <MapPin className="h-4 w-4" style={{ color: themeColor }} />
-                      </div>
-                      <span className="text-slate-700">{resumeData.personalInfo.location}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              {photo && (
-                <div className="ml-6">
-                  <ProfilePhoto
-                    src={photo}
-                    borderClass="border-4 border-white shadow-lg"
-                    className="rounded-2xl"
-                  />
-                </div>
-              )}
+    <div className="w-full h-full bg-white p-10">
+      {/* Header */}
+      <div className="mb-6 pb-4 border-b-2" style={{ borderColor: themeColor }}>
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold mb-1" style={{ color: themeColor }}>
+              {resumeData.personalInfo.fullName}
+            </h1>
+            {resumeData.personalInfo.title && (
+              <p className="text-base text-gray-600 mb-3">{resumeData.personalInfo.title}</p>
+            )}
+            <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-700">
+              {resumeData.personalInfo.email && <span>{resumeData.personalInfo.email}</span>}
+              {resumeData.personalInfo.phone && <span>{resumeData.personalInfo.phone}</span>}
+              {resumeData.personalInfo.location && <span>{resumeData.personalInfo.location}</span>}
             </div>
           </div>
+          {photo && (
+            <div className="ml-4">
+              <ProfilePhoto src={photo} borderClass="border-2" className="rounded-lg" />
+            </div>
+          )}
         </div>
+      </div>
 
-        <div className="px-12 pb-11">
-          {/* Professional Summary */}
-          {resumeData.personalInfo.summary && (
-            <section className="mb-9">
-              <div className="bg-gradient-to-r from-slate-50/90 to-white p-6 rounded-[18px] border border-slate-100">
-                <div className="flex items-center gap-3.5 mb-3">
-                  <div className="p-2 rounded-lg" style={{ backgroundColor: `${themeColor}20` }}>
-                    <Star className="h-5 w-5" style={{ color: themeColor }} />
-                  </div>
-                  <h2 className="text-xl font-bold text-slate-900">Professional Summary</h2>
+      {/* Professional Summary */}
+      {resumeData.personalInfo.summary && (
+        <div className="mb-6">
+          <h2 className="text-base font-bold mb-2" style={{ color: themeColor }}>
+            Professional Summary
+          </h2>
+          <p className="text-sm text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-12 gap-6">
+        {/* Left Column */}
+        <div className="col-span-4 space-y-6">
+          {/* Education */}
+          {resumeData.education && resumeData.education.length > 0 && (
+            <div>
+              <h2 className="text-base font-bold mb-3" style={{ color: themeColor }}>
+                Education
+              </h2>
+              {resumeData.education.map((edu, index) => (
+                <div key={index} className="mb-4 pb-4 border-b border-gray-200 last:border-0">
+                  <h3 className="text-sm font-bold text-gray-900">{edu.degree}</h3>
+                  {edu.field && <p className="text-xs text-gray-600 mt-1">{edu.field}</p>}
+                  <p className="text-xs font-semibold mt-1" style={{ color: themeColor }}>
+                    {edu.school}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {edu.startDate} - {edu.endDate}
+                  </p>
                 </div>
-                <p className="text-slate-700 leading-relaxed">
-                  {resumeData.personalInfo.summary}
-                </p>
-              </div>
-            </section>
+              ))}
+            </div>
           )}
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-12 gap-7">
-            {/* Left Sidebar */}
-            <div className="col-span-4 space-y-8">
-              {/* Education */}
-              {resumeData.education && resumeData.education.length > 0 && (
-                <section>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${themeColor}20` }}>
-                      <GraduationCap className="h-5 w-5" style={{ color: themeColor }} />
-                    </div>
-                    <h2 className="text-lg font-bold text-slate-900">Education</h2>
-                  </div>
-                  <div className="space-y-6">
-                    {resumeData.education.map((edu, index) => (
-                      <div key={index} className="relative">
-                        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                          <h3 className="font-bold text-slate-900 mb-1">{edu.degree}</h3>
-                          {edu.field && (
-                            <p className="text-sm text-slate-600 mb-2">{edu.field}</p>
-                          )}
-                          <p className="text-sm font-semibold mb-2" style={{ color: themeColor }}>
-                            {edu.school}
-                          </p>
-                          <div className="flex items-center gap-2 text-xs text-slate-500">
-                            <Calendar className="h-3 w-3" />
-                            <span>{formatDate(edu.startDate)} - {formatDate(edu.endDate)}</span>
-                          </div>
+          {/* Skills */}
+          {resumeData.skills && resumeData.skills.length > 0 && (
+            <div>
+              <h2 className="text-base font-bold mb-3" style={{ color: themeColor }}>
+                Technical Skills
+              </h2>
+              <div className="space-y-2">
+                {resumeData.skills.map((skill) => (
+                  <div key={skill.id} className="flex items-center justify-between">
+                    <span className="text-sm text-gray-900">{skill.name}</span>
+                    {skill.level && (
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full"
+                            style={{
+                              width: `${skill.level * 10}%`,
+                              backgroundColor: themeColor,
+                            }}
+                          />
                         </div>
+                        <span className="text-xs text-gray-500 w-8">{skill.level}/10</span>
                       </div>
-                    ))}
+                    )}
                   </div>
-                </section>
-              )}
-
-              {/* Technical Skills */}
-              {resumeData.skills && resumeData.skills.length > 0 && (
-                <section>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${themeColor}20` }}>
-                      <Code className="h-5 w-5" style={{ color: themeColor }} />
-                    </div>
-                    <h2 className="text-lg font-bold text-slate-900">Technical Skills</h2>
-                  </div>
-                  <div className="space-y-3">
-                    {resumeData.skills.map((skill) => (
-                      <div
-                        key={skill.id}
-                        className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm"
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium text-slate-900">{skill.name}</span>
-                          {skill.level && (
-                            <div className="flex items-center gap-2">
-                              <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
-                                <div
-                                  className="h-full rounded-full transition-all"
-                                  style={{ 
-                                    width: `${skill.level * 10}%`, 
-                                    backgroundColor: themeColor 
-                                  }}
-                                />
-                              </div>
-                              <span className="text-xs text-slate-500">{skill.level}/10</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Achievements/Awards */}
-              {resumeData.sections && resumeData.sections.some(section => 
-                section.title.toLowerCase().includes('achievement') || 
-                section.title.toLowerCase().includes('award')
-              ) && (
-                <section>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${themeColor}20` }}>
-                      <Award className="h-5 w-5" style={{ color: themeColor }} />
-                    </div>
-                    <h2 className="text-lg font-bold text-slate-900">Achievements</h2>
-                  </div>
-                  <div className="space-y-4">
-                    {resumeData.sections
-                      .filter(section => 
-                        section.title.toLowerCase().includes('achievement') || 
-                        section.title.toLowerCase().includes('award')
-                      )
-                      .map((section) => (
-                        <div key={section.id} className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                          <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
-                            {section.content}
-                          </p>
-                        </div>
-                      ))}
-                  </div>
-                </section>
-              )}
+                ))}
+              </div>
             </div>
+          )}
+        </div>
 
-            {/* Right Main Content */}
-            <div className="col-span-8 space-y-8">
-              {/* Projects Section - Most Important for Freshers */}
-              {resumeData.sections && resumeData.sections.filter(section => 
-                !section.title.toLowerCase().includes('achievement') && 
-                !section.title.toLowerCase().includes('award')
-              ).length > 0 && (
-                <section>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${themeColor}20` }}>
-                      <Code className="h-5 w-5" style={{ color: themeColor }} />
+        {/* Right Column */}
+        <div className="col-span-8 space-y-6">
+          {/* Experience */}
+          {resumeData.experience && resumeData.experience.length > 0 && (
+            <div>
+              <h2 className="text-base font-bold mb-3" style={{ color: themeColor }}>
+                Experience
+              </h2>
+              {resumeData.experience.map((exp, index) => (
+                <div key={index} className="mb-5">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1">
+                      <h3 className="text-sm font-bold text-gray-900">{exp.position}</h3>
+                      <p className="text-sm font-semibold mt-1" style={{ color: themeColor }}>
+                        {exp.company}
+                      </p>
                     </div>
-                    <h2 className="text-xl font-bold text-slate-900">Projects & Portfolio</h2>
+                    <p className="text-xs text-gray-600">
+                      {exp.startDate} - {exp.current ? "Present" : exp.endDate}
+                    </p>
                   </div>
-                  <div className="space-y-6">
-                    {resumeData.sections
-                      .filter(section => 
-                        !section.title.toLowerCase().includes('achievement') && 
-                        !section.title.toLowerCase().includes('award')
-                      )
-                      .map((section) => (
-                        <div key={section.id} className="bg-gradient-to-r from-white to-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
-                          <h3 className="text-lg font-bold text-slate-900 mb-3">{section.title}</h3>
-                          <div className="text-slate-700 leading-relaxed whitespace-pre-line">
-                            {section.content}
-                          </div>
-                        </div>
+                  {exp.description && (
+                    <div className="text-sm text-gray-700 leading-relaxed">
+                      {exp.description.split("\n").map((line, i) => (
+                        <p key={i} className="mb-1">
+                          {line}
+                        </p>
                       ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Experience/Internships */}
-              {resumeData.experience && resumeData.experience.length > 0 && (
-                <section>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${themeColor}20` }}>
-                      <Briefcase className="h-5 w-5" style={{ color: themeColor }} />
                     </div>
-                    <h2 className="text-xl font-bold text-slate-900">Experience & Internships</h2>
-                  </div>
-                  <div className="space-y-6">
-                    {resumeData.experience.map((exp, index) => (
-                      <div key={index} className="relative">
-                        <div className="bg-gradient-to-r from-white to-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
-                          <div className="flex justify-between items-start gap-4 mb-4">
-                            <div className="flex-1">
-                              <h3 className="text-lg font-bold text-slate-900 mb-1">
-                                {exp.position}
-                              </h3>
-                              <p className="text-base font-semibold mb-2" style={{ color: themeColor }}>
-                                {exp.company}
-                              </p>
-                            </div>
-                            <div className="bg-white px-3 py-1 rounded-lg border border-slate-200 text-sm text-slate-600">
-                              {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-                            </div>
-                          </div>
-                          {exp.description && (
-                            <div className="text-slate-700 leading-relaxed whitespace-pre-line">
-                              {exp.description}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
+                  )}
+                </div>
+              ))}
             </div>
-          </div>
+          )}
+
+          {/* Projects/Sections */}
+          {resumeData.sections &&
+            resumeData.sections.map((section, index) => (
+              <div key={index}>
+                <h2 className="text-base font-bold mb-3" style={{ color: themeColor }}>
+                  {section.title}
+                </h2>
+                <div className="text-sm text-gray-700 leading-relaxed">
+                  {section.content.split("\n").map((line, i) => (
+                    <p key={i} className="mb-1">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </div>
