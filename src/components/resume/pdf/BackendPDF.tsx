@@ -3,7 +3,7 @@ import type { ResumeData } from '@/pages/Editor';
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 40,
+    paddingTop: 0,
     paddingBottom: 40,
     paddingLeft: 0,
     paddingRight: 0,
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   header: {
-    paddingTop: 0,
+    paddingTop: 35,
     paddingBottom: 28,
     paddingHorizontal: 45,
     borderBottomWidth: 2,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 45,
-    paddingTop: 28,
+    paddingTop: 40,
     paddingBottom: 20,
   },
   section: {
