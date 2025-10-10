@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 45,
-    paddingTop: 40,
+    paddingTop: 28,
     paddingBottom: 20,
   },
   section: {
