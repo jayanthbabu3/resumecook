@@ -79,12 +79,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     bio?: string;
   }) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // First, send OTP to email
+      const { error: otpError } = await supabase.auth.signInWithOtp({
         email,
-        password,
         options: {
           data: {
             full_name: userData.fullName,
+            password: password, // Store password in metadata for later
             phone: userData.phone || '',
             location: userData.location || '',
             linkedin_url: userData.linkedinUrl || '',
@@ -96,19 +97,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       });
       
-      if (error) {
-        const msg = (error.message || '').toLowerCase();
-        if (msg.includes('already') || msg.includes('exist') || error.status === 400 || error.status === 422) {
+      if (otpError) {
+        const msg = (otpError.message || '').toLowerCase();
+        if (msg.includes('already') || msg.includes('exist') || otpError.status === 400 || otpError.status === 422) {
           toast.error('An account with this email already exists. Please sign in instead.');
           throw new Error('User already exists');
         }
-        throw error;
-      }
-
-      const identities = (data?.user as any)?.identities ?? [];
-      if (Array.isArray(identities) && identities.length === 0) {
-        toast.error('An account with this email already exists. Please sign in instead.');
-        throw new Error('User already exists');
+        throw otpError;
       }
       
       toast.success('Verification code sent! Please check your email.');
