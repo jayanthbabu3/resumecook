@@ -83,9 +83,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { error: otpError } = await supabase.auth.signInWithOtp({
         email,
         options: {
+          shouldCreateUser: true,
+          emailRedirectTo: `${window.location.origin}/auth`,
           data: {
             full_name: userData.fullName,
-            password: password, // Store password in metadata for later
+            password: password, // Store password in metadata for later and remove after verify
             phone: userData.phone || '',
             location: userData.location || '',
             linkedin_url: userData.linkedinUrl || '',
@@ -122,10 +124,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         token,
         type: 'email'
       });
-      
+
       if (error) throw error;
-      
-      toast.success('Email verified successfully!');
+
+      // After OTP verification, Supabase returns a session. Use it to set the password
+      const { data: sessionData } = await supabase.auth.getSession();
+      const userMeta = sessionData?.session?.user?.user_metadata as any;
+      const pendingPassword = userMeta?.password as string | undefined;
+
+      if (pendingPassword) {
+        const { error: updateError } = await supabase.auth.updateUser({
+          password: pendingPassword,
+          data: { password: null }, // clear temporary password from metadata
+        });
+        if (updateError) {
+          // Not fatal for navigation, but inform the user
+          toast.error(updateError.message || 'Verified but failed to set password');
+        } else {
+          toast.success('Email verified! Password set successfully.');
+        }
+      } else {
+        toast.success('Email verified successfully!');
+      }
+
       navigate('/profile-completion');
     } catch (error: any) {
       toast.error(error.message || 'Invalid verification code');
