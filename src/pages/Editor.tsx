@@ -1789,11 +1789,6 @@ const Editor = () => {
 
   const editorBreadcrumbItems = [
     { label: "Dashboard", path: "/dashboard" },
-    { label: "Professions", path: "/dashboard" },
-    {
-      label: categoryLabel,
-      path: `/dashboard?focus=templates&category=${categorySlug}`,
-    },
     { label: templateDisplayName },
   ];
 

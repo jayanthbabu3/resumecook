@@ -1,9 +1,17 @@
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { ChefHat, LogOut, User } from "lucide-react";
+import { ChefHat, LogOut, User, LayoutDashboard } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -13,12 +21,23 @@ export const Header = () => {
   const isEditor = location.pathname.startsWith("/editor");
   const isProfile = location.pathname === "/profile";
 
-  const navItems = useMemo(() => [{ label: "Home", to: "/" }], []);
+  const navItems = useMemo(() => [
+    { label: "Home", to: "/" },
+    ...(user ? [{ label: "Dashboard", to: "/dashboard" }] : [])
+  ], [user]);
+
+  const getUserInitials = () => {
+    if (user?.email) {
+      return user.email.split('@')[0].slice(0, 2).toUpperCase();
+    }
+    return "U";
+  };
 
   return (
     <nav className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between gap-6">
+          {/* Logo Section */}
           <button
             onClick={() => navigate("/")}
             className="group flex items-center gap-3 rounded-xl px-2 py-1 transition-transform hover:-translate-y-0.5 hover:opacity-90"
@@ -40,7 +59,9 @@ export const Header = () => {
             </div>
           </button>
 
-          <div className="flex items-center gap-3">
+          {/* Navigation Section */}
+          <div className="flex items-center gap-6">
+            {/* Navigation Links */}
             <div className="hidden sm:flex items-center gap-1 text-sm font-medium">
               {navItems.map(({ label, to }) => (
                 <NavLink
@@ -48,16 +69,18 @@ export const Header = () => {
                   to={to}
                   className={({ isActive }) =>
                     cn(
-                      "px-3 py-1.5 rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/40",
+                      "px-3 py-1.5 rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/40 flex items-center gap-2",
                       isActive && "text-foreground bg-muted/60"
                     )
                   }
                 >
+                  {label === "Dashboard" && <LayoutDashboard className="h-4 w-4" />}
                   {label}
                 </NavLink>
               ))}
             </div>
 
+            {/* User Actions */}
             {!isEditor && !user && (
               <Button
                 onClick={() => navigate("/auth")}
@@ -68,35 +91,51 @@ export const Header = () => {
             )}
             
             {!isEditor && user && (
-              <>
-                <Button
-                  onClick={() => navigate("/dashboard")}
-                  className="bg-primary hover:bg-primary-hover"
-                >
-                  {isDashboard ? "Choose Template" : "My Resumes"}
-                </Button>
-                <Button
-                  onClick={() => navigate("/profile")}
-                  variant={isProfile ? "default" : "outline"}
-                  size="sm"
-                  className="gap-2"
-                >
-                  <User className="h-4 w-4" />
-                  <span className="hidden sm:inline">Profile</span>
-                </Button>
-              </>
-            )}
-            
-            {user && (
-              <Button
-                onClick={signOut}
-                variant="outline"
-                size="sm"
-                className="gap-2"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-9 w-9 rounded-full hover:bg-muted/50 transition-colors duration-200"
+                  >
+                    <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all duration-200">
+                      <AvatarFallback className="bg-gradient-to-br from-primary/10 to-primary/5 text-primary font-medium hover:from-primary/20 hover:to-primary/10 transition-all duration-200">
+                        {getUserInitials()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium text-sm">{user.email}</p>
+                      <p className="text-xs text-muted-foreground">Account</p>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => navigate("/dashboard")}
+                    className="cursor-pointer"
+                  >
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    <span>Dashboard</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => navigate("/profile")}
+                    className="cursor-pointer"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={signOut}
+                    className="cursor-pointer text-red-600 focus:text-red-600"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
         </div>

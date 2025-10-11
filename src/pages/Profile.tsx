@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { Header } from '@/components/Header';
 
 interface ProfileData {
   full_name: string;
@@ -111,24 +111,19 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">Loading profile...</div>
+      <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+        <Header />
+        <div className="flex items-center justify-center min-h-[calc(100vh-73px)]">
+          <div className="text-center">Loading profile...</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 p-4">
-      <div className="max-w-3xl mx-auto py-8">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/dashboard')}
-          className="mb-4"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Dashboard
-        </Button>
-
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+      <Header />
+      <div className="max-w-3xl mx-auto py-8 p-4">
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">My Profile</CardTitle>

@@ -9,10 +9,11 @@ import {
   Calculator,
   Users,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { TemplateCarousel } from "@/components/TemplateCarousel";
 
 const professions = [
   {
@@ -182,162 +183,148 @@ const templates = [
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const focusParam = searchParams.get("focus");
-  const categoryParam = searchParams.get("category");
 
-  const [selectedProfession, setSelectedProfession] = useState<string | null>(
-    () => {
-      if (focusParam === "templates") {
-        return categoryParam ?? "all";
-      }
-      return null;
-    },
-  );
-
-  useEffect(() => {
-    const target = focusParam === "templates" ? (categoryParam ?? "all") : null;
-    setSelectedProfession((prev) => (prev === target ? prev : target));
-  }, [focusParam, categoryParam]);
-
-  const selectedProf = professions.find((p) => p.id === selectedProfession);
-  const filteredTemplates = selectedProf
-    ? templates.filter((t) => selectedProf.templates.includes(t.id))
-    : [];
-
-  const breadcrumbExtras = useMemo(() => {
-    if (!selectedProfession) return undefined;
-    const professionName = selectedProf?.name ?? "Templates";
-    return [
-      { label: "Professions", path: "/dashboard" },
-      { label: professionName },
-    ];
-  }, [selectedProfession, selectedProf]);
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
-      <div className="container mx-auto px-6 pt-4">
-        <Breadcrumbs extraItems={breadcrumbExtras} />
-      </div>
 
-      {/* Hero Section */}
-      <div className="border-b border-border/50 bg-muted/20">
-        <div className="container mx-auto px-6 py-12 md:py-16">
+      {/* Elegant Header */}
+      <div className="border-b border-border/30 bg-gradient-to-br from-muted/5 via-muted/10 to-muted/5">
+        <div className="container mx-auto px-6 py-8">
           <div className="max-w-3xl mx-auto text-center space-y-4">
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
-              {selectedProfession
-                ? "Choose Your Template"
-                : "Choose Your Profession"}
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              {selectedProfession
-                ? "Select a template that best represents your professional identity"
-                : "Select your field to see relevant resume templates"}
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                <FileText className="h-5 w-5 text-primary" />
+              </div>
+              <h1 className="text-3xl font-bold text-foreground">
+                Professional Resume Templates
+              </h1>
+            </div>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              Choose from our curated collection of templates designed for different career stages.
             </p>
           </div>
         </div>
       </div>
 
-      <main className="container mx-auto px-6 py-12">
-        {/* Professions Grid */}
-        {!selectedProfession && (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-            {professions.map((profession, index) => {
-              const Icon = profession.icon;
-              return (
-                <Card
-                  key={profession.id}
-                  className="group cursor-pointer hover:border-primary transition-all duration-300 hover:shadow-lg animate-scale-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                  onClick={() => {
-                    setSelectedProfession(profession.id);
-                    setSearchParams({
-                      focus: "templates",
-                      category: profession.id,
-                    });
-                  }}
-                >
-                  <CardContent className="p-8">
-                    <div className="flex items-start gap-4">
-                      <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <Icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <h3 className="text-lg font-semibold">
-                          {profession.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {profession.description}
-                        </p>
-                        <div className="flex items-center text-sm text-primary font-medium pt-2">
-                          {profession.templates.length} templates available
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+      <main className="container mx-auto px-6 py-8">
+        {/* Experienced Professionals Section */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500/15 to-blue-600/8 flex items-center justify-center">
+              <Briefcase className="h-5 w-5 text-blue-600" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold text-foreground mb-1">
+                For Experienced Professionals
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Advanced templates designed for seasoned professionals
+              </p>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 rounded-full">
+              <Sparkles className="h-3.5 w-3.5 text-blue-600" />
+              <span className="text-xs font-medium text-blue-700">
+                {templates.filter(t => !['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id)).length}
+              </span>
+            </div>
           </div>
-        )}
+          
+          <TemplateCarousel
+            templates={templates.filter(t => !['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id))}
+            themeColors={["#2563eb", "#7c3aed", "#059669", "#e11d48", "#ea580c", "#0d9488"]}
+            onTemplateSelect={(templateId) => {
+              navigate(`/editor/${templateId}`);
+            }}
+          />
+        </section>
 
-        {/* Templates Grid */}
-        {selectedProfession && (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredTemplates.map((template, index) => (
-              <Card
-                key={template.id}
-                className="group hover:border-primary transition-all duration-300 hover:shadow-lg animate-scale-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardContent className="p-6 space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-semibold">{template.name}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {template.description}
-                    </p>
-                  </div>
-
-                  {/* Highlights */}
-                  <div className="space-y-2">
-                    {template.highlights.map((highlight, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                        <span className="text-xs text-muted-foreground">
-                          {highlight}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <Button
-                    onClick={() => navigate(`/editor/${template.id}`)}
-                    size="sm"
-                    className="w-full group-hover:shadow-md transition-all"
-                  >
-                    Select Template
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+        {/* Freshers Section */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-green-500/15 to-green-600/8 flex items-center justify-center">
+              <GraduationCap className="h-5 w-5 text-green-600" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold text-foreground mb-1">
+                For Freshers & New Graduates
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Beginner-friendly templates for new graduates and entry-level positions
+              </p>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-50 rounded-full">
+              <Sparkles className="h-3.5 w-3.5 text-green-600" />
+              <span className="text-xs font-medium text-green-700">
+                {templates.filter(t => ['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id)).length}
+              </span>
+            </div>
           </div>
-        )}
+          
+          <TemplateCarousel
+            templates={templates.filter(t => ['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id))}
+            themeColors={["#059669", "#0d9488", "#2563eb", "#7c3aed", "#e11d48", "#ea580c"]}
+            onTemplateSelect={(templateId) => {
+              navigate(`/editor/${templateId}`);
+            }}
+          />
+        </section>
 
-        {/* Bottom Info */}
-        {!selectedProfession && (
-          <div className="max-w-2xl mx-auto mt-16 text-center space-y-3 p-6 rounded-xl bg-muted/30">
-            <FileText className="h-8 w-8 text-primary mx-auto" />
-            <h3 className="text-xl font-semibold">Fully Customizable</h3>
-            <p className="text-muted-foreground text-sm">
-              All templates are fully customizable. You can modify colors,
-              fonts, sections, and layout at any time.
+
+        {/* Features Section */}
+        <div className="max-w-5xl mx-auto mt-20">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl font-bold text-foreground mb-3">
+              Why Choose Our Templates?
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Built with modern design principles and optimized for success
             </p>
           </div>
-        )}
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="group text-center">
+              <div className="relative mb-6">
+                <div className="h-16 w-16 mx-auto rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:from-primary/20 group-hover:to-primary/10 transition-all duration-300">
+                  <FileText className="h-8 w-8 text-primary" />
+                </div>
+                <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <h3 className="text-lg font-semibold mb-3 text-foreground">Fully Customizable</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Modify colors, fonts, sections, and layout to match your personal style and brand
+              </p>
+            </div>
+            
+            <div className="group text-center">
+              <div className="relative mb-6">
+                <div className="h-16 w-16 mx-auto rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center group-hover:from-emerald-200 group-hover:to-emerald-100 transition-all duration-300">
+                  <Calculator className="h-8 w-8 text-emerald-600" />
+                </div>
+                <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-emerald-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <h3 className="text-lg font-semibold mb-3 text-foreground">ATS Optimized</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                All templates are designed to pass Applicant Tracking Systems and get noticed
+              </p>
+            </div>
+            
+            <div className="group text-center">
+              <div className="relative mb-6">
+                <div className="h-16 w-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-100 transition-all duration-300">
+                  <Users className="h-8 w-8 text-blue-600" />
+                </div>
+                <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-blue-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <h3 className="text-lg font-semibold mb-3 text-foreground">Professional Quality</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Industry-standard designs that impress recruiters and hiring managers
+              </p>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
