@@ -96,12 +96,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       });
       
-      if (error) throw error;
+      if (error) {
+        // Check if user already exists
+        if (error.message.toLowerCase().includes('already') || 
+            error.message.toLowerCase().includes('exists') ||
+            error.status === 422) {
+          toast.error('An account with this email already exists. Please sign in instead.');
+          throw new Error('User already exists');
+        }
+        throw error;
+      }
       
       toast.success('Verification email sent! Please check your inbox and verify your email to continue.');
       // Don't navigate to dashboard, user needs to verify email first
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign up');
+      if (error.message !== 'User already exists') {
+        toast.error(error.message || 'Failed to sign up');
+      }
       throw error;
     }
   };
