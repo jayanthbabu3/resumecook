@@ -18,6 +18,7 @@ interface AuthContextType {
     professionalTitle?: string;
     bio?: string;
   }) => Promise<void>;
+  verifyOtp: (email: string, token: string) => Promise<void>;
   signOut: () => Promise<void>;
   loading: boolean;
 }
@@ -82,7 +83,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/`,
           data: {
             full_name: userData.fullName,
             phone: userData.phone || '',
@@ -97,7 +97,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
       
       if (error) {
-        // Check if user already exists (common cases: "User already registered", 400/422)
         const msg = (error.message || '').toLowerCase();
         if (msg.includes('already') || msg.includes('exist') || error.status === 400 || error.status === 422) {
           toast.error('An account with this email already exists. Please sign in instead.');
@@ -106,19 +105,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw error;
       }
 
-      // Supabase may return no error but an empty identities array when email is already registered
       const identities = (data?.user as any)?.identities ?? [];
       if (Array.isArray(identities) && identities.length === 0) {
         toast.error('An account with this email already exists. Please sign in instead.');
         throw new Error('User already exists');
       }
       
-      toast.success('Verification email sent! Please check your inbox and verify your email to continue.');
-      // Don't navigate to dashboard, user needs to verify email first
+      toast.success('Verification code sent! Please check your email.');
     } catch (error: any) {
       if (error.message !== 'User already exists') {
         toast.error(error.message || 'Failed to sign up');
       }
+      throw error;
+    }
+  };
+
+  const verifyOtp = async (email: string, token: string) => {
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'email'
+      });
+      
+      if (error) throw error;
+      
+      toast.success('Email verified successfully!');
+      navigate('/profile-completion');
+    } catch (error: any) {
+      toast.error(error.message || 'Invalid verification code');
       throw error;
     }
   };
@@ -136,7 +151,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, signIn, signUp, signOut, loading }}>
+    <AuthContext.Provider value={{ user, session, signIn, signUp, verifyOtp, signOut, loading }}>
       {children}
     </AuthContext.Provider>
   );
