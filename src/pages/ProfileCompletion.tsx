@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { CheckCircle2 } from 'lucide-react';
+import { Header } from '@/components/Header';
 
 const ProfileCompletion = () => {
   const { user } = useAuth();
@@ -81,8 +82,10 @@ const ProfileCompletion = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-muted/20 p-4">
-      <Card className="w-full max-w-2xl">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+      <Header />
+      <div className="flex items-center justify-center min-h-[calc(100vh-73px)] p-4">
+        <Card className="w-full max-w-2xl">
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
             <CheckCircle2 className="w-8 h-8 text-primary" />
@@ -188,6 +191,7 @@ const ProfileCompletion = () => {
           </form>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };
