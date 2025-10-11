@@ -1,34 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useNavigate } from 'react-router-dom';
+import { Mail, CheckCircle2 } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const Auth = () => {
-  const { signIn, signUp, user, loading } = useAuth();
+  const { user, signIn, signUp, loading } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [signInError, setSignInError] = useState('');
+  const [signUpError, setSignUpError] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
+  const [sentEmail, setSentEmail] = useState('');
 
-  // Redirect if already authenticated
   useEffect(() => {
-    if (user && !loading) {
-      navigate('/dashboard');
+    if (user) {
+      navigate('/profile-completion');
     }
-  }, [user, loading, navigate]);
+  }, [user, navigate]);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSignInError('');
     
     const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    const email = formData.get('signin-email') as string;
+    const password = formData.get('signin-password') as string;
 
     try {
       await signIn(email, password);
+    } catch (error: any) {
+      setSignInError(error.message || 'Failed to sign in. Please check your credentials.');
     } finally {
       setIsSubmitting(false);
     }
@@ -37,30 +45,23 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSignUpError('');
     
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const fullName = formData.get('fullName') as string;
-    const phone = formData.get('phone') as string;
-    const location = formData.get('location') as string;
-    const professionalTitle = formData.get('professionalTitle') as string;
-    const linkedinUrl = formData.get('linkedinUrl') as string;
-    const githubUrl = formData.get('githubUrl') as string;
-    const portfolioUrl = formData.get('portfolioUrl') as string;
-    const bio = formData.get('bio') as string;
 
     try {
-      await signUp(email, password, {
-        fullName,
-        phone,
-        location,
-        professionalTitle,
-        linkedinUrl,
-        githubUrl,
-        portfolioUrl,
-        bio
-      });
+      await signUp(email, password, { fullName });
+      setSentEmail(email);
+      setEmailSent(true);
+    } catch (error: any) {
+      if (error.message === 'User already exists') {
+        setSignUpError('An account with this email already exists. Please sign in instead.');
+      } else {
+        setSignUpError(error.message || 'Failed to sign up. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -68,45 +69,87 @@ const Auth = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">Loading...</div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (emailSent) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-muted/20 p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center space-y-4">
+            <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+              <Mail className="w-8 h-8 text-primary" />
+            </div>
+            <CardTitle className="text-2xl">Check Your Email</CardTitle>
+            <CardDescription className="text-base">
+              We've sent a verification link to <strong className="text-foreground">{sentEmail}</strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Alert>
+              <CheckCircle2 className="h-4 w-4" />
+              <AlertDescription>
+                Click the link in the email to verify your account. After verification, you'll be able to complete your profile.
+              </AlertDescription>
+            </Alert>
+            <Button 
+              variant="outline" 
+              className="w-full" 
+              onClick={() => setEmailSent(false)}
+            >
+              Back to Sign Up
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-background to-secondary/20">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-muted/20 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Resume Cook</CardTitle>
-          <CardDescription>Sign in to save and manage your resumes</CardDescription>
+          <CardTitle className="text-3xl font-bold">Welcome to ResumeCook</CardTitle>
+          <CardDescription>Create your account or sign in to continue</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="signin">
               <form onSubmit={handleSignIn} className="space-y-4">
+                {signInError && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{signInError}</AlertDescription>
+                  </Alert>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>
-                  <Input 
-                    id="signin-email" 
-                    name="email" 
-                    type="email" 
-                    placeholder="you@example.com" 
-                    required 
+                  <Input
+                    id="signin-email"
+                    name="signin-email"
+                    type="email"
+                    placeholder="your@email.com"
+                    required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signin-password">Password</Label>
-                  <Input 
-                    id="signin-password" 
-                    name="password" 
-                    type="password" 
-                    required 
+                  <Input
+                    id="signin-password"
+                    name="signin-password"
+                    type="password"
+                    placeholder="••••••••"
+                    required
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
@@ -114,102 +157,50 @@ const Auth = () => {
                 </Button>
               </form>
             </TabsContent>
-            
+
             <TabsContent value="signup">
-              <form onSubmit={handleSignUp} className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-name">Full Name *</Label>
-                  <Input 
-                    id="signup-name" 
-                    name="fullName" 
-                    type="text" 
-                    placeholder="John Doe" 
-                    required 
-                  />
+              <form onSubmit={handleSignUp} className="space-y-4">
+                {signUpError && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{signUpError}</AlertDescription>
+                  </Alert>
+                )}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName">Full Name *</Label>
+                    <Input
+                      id="fullName"
+                      name="fullName"
+                      type="text"
+                      placeholder="John Doe"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email *</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="your@email.com"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password *</Label>
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      placeholder="••••••••"
+                      minLength={6}
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email *</Label>
-                  <Input 
-                    id="signup-email" 
-                    name="email" 
-                    type="email" 
-                    placeholder="you@example.com" 
-                    required 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password *</Label>
-                  <Input 
-                    id="signup-password" 
-                    name="password" 
-                    type="password" 
-                    minLength={6}
-                    required 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-phone">Phone</Label>
-                  <Input 
-                    id="signup-phone" 
-                    name="phone" 
-                    type="tel" 
-                    placeholder="+1 (555) 000-0000" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-location">Location</Label>
-                  <Input 
-                    id="signup-location" 
-                    name="location" 
-                    type="text" 
-                    placeholder="New York, NY" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-title">Professional Title</Label>
-                  <Input 
-                    id="signup-title" 
-                    name="professionalTitle" 
-                    type="text" 
-                    placeholder="Software Engineer" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-linkedin">LinkedIn URL</Label>
-                  <Input 
-                    id="signup-linkedin" 
-                    name="linkedinUrl" 
-                    type="url" 
-                    placeholder="https://linkedin.com/in/username" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-github">GitHub URL</Label>
-                  <Input 
-                    id="signup-github" 
-                    name="githubUrl" 
-                    type="url" 
-                    placeholder="https://github.com/username" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-portfolio">Portfolio URL</Label>
-                  <Input 
-                    id="signup-portfolio" 
-                    name="portfolioUrl" 
-                    type="url" 
-                    placeholder="https://yourportfolio.com" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-bio">Professional Bio</Label>
-                  <Input 
-                    id="signup-bio" 
-                    name="bio" 
-                    type="text" 
-                    placeholder="Brief professional summary..." 
-                  />
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  * Required fields. You can add more details after verification.
+                </p>
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {isSubmitting ? 'Creating account...' : 'Create Account'}
                 </Button>

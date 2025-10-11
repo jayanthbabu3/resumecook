@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Editor from "./pages/Editor";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import ProfileCompletion from "./pages/ProfileCompletion";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,14 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Hero />} />
             <Route path="/auth" element={<Auth />} />
+            <Route 
+              path="/profile-completion" 
+              element={
+                <ProtectedRoute>
+                  <ProfileCompletion />
+                </ProtectedRoute>
+              } 
+            />
             <Route 
               path="/dashboard" 
               element={
