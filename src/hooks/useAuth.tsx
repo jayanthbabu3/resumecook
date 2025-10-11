@@ -108,7 +108,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw otpError;
       }
       
-      toast.success('Verification code sent! Please check your email.');
+      toast.success('Verification email sent! Please check your inbox.');
+      // Don't navigate here, let the Auth component handle navigation
     } catch (error: any) {
       if (error.message !== 'User already exists') {
         toast.error(error.message || 'Failed to sign up');

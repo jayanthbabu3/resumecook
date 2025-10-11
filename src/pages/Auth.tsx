@@ -6,20 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
 const Auth = () => {
-  const { user, signIn, signUp, verifyOtp, loading } = useAuth();
+  const { user, signIn, signUp, loading } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signInError, setSignInError] = useState('');
   const [signUpError, setSignUpError] = useState('');
-  const [showOtpInput, setShowOtpInput] = useState(false);
-  const [sentEmail, setSentEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [otpError, setOtpError] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -57,33 +51,13 @@ const Auth = () => {
 
     try {
       await signUp(email, password, { fullName });
-      setSentEmail(email);
-      setShowOtpInput(true);
+      navigate(`/verify-email?email=${encodeURIComponent(email)}`);
     } catch (error: any) {
       if (error.message === 'User already exists') {
         setSignUpError('An account with this email already exists. Please sign in instead.');
       } else {
         setSignUpError(error.message || 'Failed to sign up. Please try again.');
       }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (otp.length !== 6) {
-      setOtpError('Please enter a valid 6-digit code');
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setOtpError('');
-    
-    try {
-      await verifyOtp(sentEmail, otp);
-    } catch (error: any) {
-      setOtpError(error.message || 'Invalid verification code. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -96,71 +70,6 @@ const Auth = () => {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading...</p>
         </div>
-      </div>
-    );
-  }
-
-  if (showOtpInput) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-muted/20 p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-              <ShieldCheck className="w-8 h-8 text-primary" />
-            </div>
-            <CardTitle className="text-2xl">Verify Your Email</CardTitle>
-            <CardDescription className="text-base">
-              We've sent a 6-digit verification code to <strong className="text-foreground">{sentEmail}</strong>
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <form onSubmit={handleVerifyOtp} className="space-y-6">
-              {otpError && (
-                <Alert variant="destructive">
-                  <AlertDescription>{otpError}</AlertDescription>
-                </Alert>
-              )}
-              <div className="flex flex-col items-center space-y-4">
-                <Label htmlFor="otp" className="text-sm text-muted-foreground">
-                  Enter verification code
-                </Label>
-                <InputOTP
-                  id="otp"
-                  maxLength={6}
-                  value={otp}
-                  onChange={(value) => {
-                    setOtp(value);
-                    setOtpError('');
-                  }}
-                >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </div>
-              <Button type="submit" className="w-full" disabled={isSubmitting || otp.length !== 6}>
-                {isSubmitting ? 'Verifying...' : 'Verify Email'}
-              </Button>
-              <Button 
-                type="button"
-                variant="ghost" 
-                className="w-full" 
-                onClick={() => {
-                  setShowOtpInput(false);
-                  setOtp('');
-                  setOtpError('');
-                }}
-              >
-                Back to Sign Up
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
       </div>
     );
   }

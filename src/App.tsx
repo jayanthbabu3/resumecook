@@ -12,6 +12,7 @@ import Editor from "./pages/Editor";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import ProfileCompletion from "./pages/ProfileCompletion";
+import VerifyEmail from "./pages/VerifyEmail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,7 +27,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Hero />} />
             <Route path="/auth" element={<Auth />} />
-            <Route 
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route
               path="/profile-completion" 
               element={
                 <ProtectedRoute>
