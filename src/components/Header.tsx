@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { ChefHat, LogOut, User, LayoutDashboard } from "lucide-react";
+import { LogOut, User, LayoutDashboard, Home, FileText, Sparkles, BookOpen } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
@@ -23,6 +23,7 @@ export const Header = () => {
 
   const navItems = useMemo(() => [
     { label: "Home", to: "/" },
+    { label: "ATS Guide", to: "/ats-guidelines" },
     ...(user ? [{ label: "Dashboard", to: "/dashboard" }] : [])
   ], [user]);
 
@@ -35,25 +36,48 @@ export const Header = () => {
 
   return (
     <nav className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-6 py-2">
         <div className="flex items-center justify-between gap-6">
           {/* Logo Section */}
           <button
             onClick={() => navigate("/")}
-            className="group flex items-center gap-3 rounded-xl px-2 py-1 transition-transform hover:-translate-y-0.5 hover:opacity-90"
+            className="group flex items-center gap-3 rounded-xl px-2 py-1 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90"
             aria-label="Resume Cook home"
           >
-            <div className="relative flex h-11 w-11 items-center justify-center">
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-primary/70 opacity-80 blur-sm transition-opacity group-hover:opacity-100" />
-              <div className="relative flex h-full w-full items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-background via-background/60 to-background/30 shadow-[0_12px_30px_-12px_rgba(124,58,237,0.5)] text-primary">
-                <ChefHat className="h-5 w-5" strokeWidth={1.8} />
+            <div className="relative flex h-12 w-12 items-center justify-center">
+              {/* Background glow effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-primary/70 opacity-80 blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:blur-md" />
+              
+              {/* Main logo container */}
+              <div className="relative flex h-full w-full items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-background via-background/80 to-background/50 shadow-[0_8px_25px_-8px_rgba(124,58,237,0.4)] transition-all duration-300 group-hover:shadow-[0_12px_35px_-12px_rgba(124,58,237,0.6)]">
+                {/* Resume document icon */}
+                <div className="relative">
+                  <FileText className="h-6 w-6 text-primary transition-all duration-300 group-hover:scale-110" strokeWidth={2} />
+                  
+                  {/* Sparkle effect overlay */}
+                  <div className="absolute -top-1 -right-1 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    <Sparkles className="h-3 w-3 text-yellow-500 animate-pulse" fill="currentColor" />
+                  </div>
+                  
+                  {/* Success checkmark overlay */}
+                  <div className="absolute -bottom-1 -left-1 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    <div className="h-3 w-3 rounded-full bg-emerald-500 flex items-center justify-center">
+                      <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
+              
+              {/* Floating particles effect */}
+              <div className="absolute -top-1 -left-1 h-2 w-2 rounded-full bg-primary/30 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:animate-ping"></div>
+              <div className="absolute -bottom-1 -right-1 h-1.5 w-1.5 rounded-full bg-emerald-400/40 opacity-0 transition-all duration-700 group-hover:opacity-100 group-hover:animate-pulse"></div>
             </div>
+            
             <div className="flex flex-col text-left leading-none">
-              <span className="text-xl font-semibold tracking-tight text-foreground">
-                Resume<span className="text-primary">Cook</span>
+              <span className="text-xl font-bold tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary">
+                Resume<span className="text-primary group-hover:text-primary/80">Cook</span>
               </span>
-              <span className="text-[10px] font-medium uppercase tracking-[0.35em] text-muted-foreground">
+              <span className="text-[10px] font-medium uppercase tracking-[0.35em] text-muted-foreground transition-colors duration-300 group-hover:text-primary/70">
                 Craft Your Career
               </span>
             </div>
@@ -74,6 +98,8 @@ export const Header = () => {
                     )
                   }
                 >
+                  {label === "Home" && <Home className="h-4 w-4" />}
+                  {label === "ATS Guide" && <BookOpen className="h-4 w-4" />}
                   {label === "Dashboard" && <LayoutDashboard className="h-4 w-4" />}
                   {label}
                 </NavLink>
