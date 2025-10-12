@@ -67,7 +67,7 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
           <div className="mb-7">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }}></div>
-              <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Professional Profile</h2>
+              <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Professional Summary</h2>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed pl-5">
               {resumeData.personalInfo.summary}
@@ -110,7 +110,7 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
           <div className="mb-7">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }}></div>
-              <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Core Competencies</h2>
+              <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Skills</h2>
             </div>
             <div className="flex flex-wrap gap-2 pl-5">
               {resumeData.skills.map((skill) => (

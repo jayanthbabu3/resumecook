@@ -25,6 +25,7 @@ const Hero = () => {
     email: "john.doe@email.com",
     phone: "+1 (555) 123-4567",
     location: "San Francisco, CA",
+    summary: "Experienced software engineer with 5+ years of expertise in full-stack development. Passionate about creating scalable web applications and leading technical teams.",
     jobTitle: "Senior Software Engineer",
     company: "Tech Solutions Inc.",
     startDate: "2022-01-01",
@@ -73,7 +74,7 @@ const Hero = () => {
         phone: demoFormData.phone,
         location: demoFormData.location,
         title: "Software Engineer",
-        summary: "Experienced software engineer with 5+ years of expertise in full-stack development. Passionate about creating scalable web applications and leading technical teams."
+        summary: demoFormData.summary
       },
       experience: [
         {
@@ -849,6 +850,22 @@ const Hero = () => {
                                 />
                               </div>
                             </div>
+                          </div>
+                        </div>
+
+                        {/* Professional Summary */}
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <h3 className="text-sm font-bold text-gray-800 capitalize tracking-wider">Professional Summary</h3>
+                          </div>
+                          <div>
+                            <Textarea 
+                              value={demoFormData.summary}
+                              onChange={(e) => updateFormData('summary', e.target.value)}
+                              className="h-16 text-sm resize-none"
+                              placeholder="Write a brief summary of your professional experience..."
+                            />
                           </div>
                         </div>
 

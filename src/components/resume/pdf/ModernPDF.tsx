@@ -278,7 +278,7 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
             <View style={styles.section} wrap={false}>
               <View style={styles.sectionHeader}>
                 <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
-                <Text style={styles.sectionTitle}>PROFESSIONAL PROFILE</Text>
+                <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
               </View>
               <View style={styles.sectionContent}>
                 <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
@@ -317,7 +317,7 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
             <View style={styles.section} wrap={false}>
               <View style={styles.sectionHeader}>
                 <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
-                <Text style={styles.sectionTitle}>CORE COMPETENCIES</Text>
+                <Text style={styles.sectionTitle}>SKILLS</Text>
               </View>
               <View style={[styles.sectionContent, styles.skillsContainer]}>
                 {resumeData.skills.map((skill) => (
