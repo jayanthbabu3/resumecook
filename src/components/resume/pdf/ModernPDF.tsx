@@ -12,91 +12,48 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   header: {
-    paddingTop: 0,
-    paddingBottom: 35,
+    paddingTop: 36,
+    paddingBottom: 24,
     paddingHorizontal: 45,
-    position: 'relative',
-  },
-  headerContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 16,
-  },
-  topBar: {
-    height: 10,
-    backgroundColor: '#7c3aed',
-    marginBottom: 30,
   },
   name: {
     fontSize: 32,
     fontWeight: 700,
     color: '#111827',
-    marginBottom: 6,
-  },
-  title: {
-    fontSize: 14,
-    color: '#7c3aed',
-    fontWeight: 600,
-    marginBottom: 18,
+    marginBottom: 12,
+    textAlign: 'center',
   },
   contactContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
     flexWrap: 'wrap',
-    gap: 18,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopStyle: 'solid',
-    borderTopColor: '#e5e7eb',
+    gap: 8,
+    fontSize: 9,
+    color: '#6b7280',
   },
   contactItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    fontSize: 8,
-    color: '#6b7280',
   },
-  photoWrapper: {
-    width: 76,
-    height: 76,
-    borderRadius: 38,
-    overflow: 'hidden',
-    borderWidth: 3,
-    borderColor: '#ffffff',
-  },
-  photo: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
+  contactSeparator: {
+    marginHorizontal: 4,
   },
   content: {
     paddingHorizontal: 45,
     paddingBottom: 20,
   },
   section: {
-    marginBottom: 22,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 10,
-  },
-  sectionDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#7c3aed',
+    marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 700,
     color: '#111827',
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
-  },
-  sectionContent: {
-    paddingLeft: 14,
+    marginBottom: 10,
+    paddingBottom: 6,
+    borderBottomWidth: 2,
+    borderBottomColor: '#d1d5db',
   },
   summary: {
     fontSize: 9,
@@ -104,13 +61,16 @@ const styles = StyleSheet.create({
     color: '#374151',
   },
   experienceItem: {
-    marginBottom: 16,
+    marginBottom: 18,
+    paddingLeft: 12,
+    borderLeftWidth: 3,
+    borderLeftColor: '#7c3aed',
   },
   experienceHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 3,
+    marginBottom: 6,
     gap: 10,
   },
   position: {
@@ -122,17 +82,12 @@ const styles = StyleSheet.create({
   company: {
     fontSize: 9,
     fontWeight: 600,
-    color: '#374151',
+    color: '#7c3aed',
     marginBottom: 4,
   },
-  dateTag: {
-    fontSize: 8,
-    fontWeight: 600,
-    color: '#7c3aed',
-    backgroundColor: '#f3e8ff',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
+  experienceDate: {
+    fontSize: 9,
+    color: '#6b7280',
   },
   description: {
     fontSize: 9,
@@ -145,16 +100,13 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   skillBadge: {
-    fontSize: 8,
+    fontSize: 9,
     fontWeight: 600,
-    color: '#7c3aed',
-    backgroundColor: '#f9f5ff',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#e9d5ff',
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
+    borderWidth: 1,
+    borderStyle: 'solid',
   },
   educationItem: {
     marginBottom: 10,
@@ -206,68 +158,24 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          <View style={[styles.topBar, { backgroundColor: themeColor }]} />
-          <View style={styles.headerContent}>
-            <View>
-              <Text style={styles.name}>{resumeData.personalInfo.fullName || "Your Name"}</Text>
-              {resumeData.personalInfo.title && (
-                <Text style={[styles.title, { color: themeColor }]}>{resumeData.personalInfo.title}</Text>
-              )}
-            </View>
-            {photo ? (
-              <View style={styles.photoWrapper}>
-                <Image src={photo} style={styles.photo} />
-              </View>
-            ) : null}
-          </View>
+          <Text style={styles.name}>{resumeData.personalInfo.fullName || "Your Name"}</Text>
           
           {/* Contact Info */}
           <View style={styles.contactContainer}>
             {resumeData.personalInfo.email && (
-              <View style={styles.contactItem}>
-                <Svg width="10" height="10" viewBox="0 0 24 24">
-                  <Path
-                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                    fill="none"
-                    stroke="#6b7280"
-                    strokeWidth="2"
-                  />
-                  <Path d="M22 6l-10 7L2 6" fill="none" stroke="#6b7280" strokeWidth="2" />
-                </Svg>
-                <Text>{resumeData.personalInfo.email}</Text>
-              </View>
+              <Text style={styles.contactItem}>{resumeData.personalInfo.email}</Text>
+            )}
+            {resumeData.personalInfo.email && resumeData.personalInfo.phone && (
+              <Text style={styles.contactSeparator}>•</Text>
             )}
             {resumeData.personalInfo.phone && (
-              <View style={styles.contactItem}>
-                <Svg width="10" height="10" viewBox="0 0 24 24">
-                  <Path
-                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-                    fill="none"
-                    stroke="#6b7280"
-                    strokeWidth="2"
-                  />
-                </Svg>
-                <Text>{resumeData.personalInfo.phone}</Text>
-              </View>
+              <Text style={styles.contactItem}>{resumeData.personalInfo.phone}</Text>
+            )}
+            {resumeData.personalInfo.phone && resumeData.personalInfo.location && (
+              <Text style={styles.contactSeparator}>•</Text>
             )}
             {resumeData.personalInfo.location && (
-              <View style={styles.contactItem}>
-                <Svg width="10" height="10" viewBox="0 0 24 24">
-                  <Path
-                    d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
-                    fill="none"
-                    stroke="#6b7280"
-                    strokeWidth="2"
-                  />
-                  <Path
-                    d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-                    fill="none"
-                    stroke="#6b7280"
-                    strokeWidth="2"
-                  />
-                </Svg>
-                <Text>{resumeData.personalInfo.location}</Text>
-              </View>
+              <Text style={styles.contactItem}>{resumeData.personalInfo.location}</Text>
             )}
           </View>
         </View>
@@ -276,57 +184,56 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {/* Summary */}
           {resumeData.personalInfo.summary && (
             <View style={styles.section} wrap={false}>
-              <View style={styles.sectionHeader}>
-                <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
-                <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
-              </View>
-              <View style={styles.sectionContent}>
-                <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
-              </View>
+              <Text style={styles.sectionTitle}>Professional Summary</Text>
+              <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
             </View>
           )}
 
           {/* Experience */}
           {resumeData.experience.length > 0 && (
             <View style={styles.section}>
-              <View style={styles.sectionHeader} wrap={false}>
-                <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
-                <Text style={styles.sectionTitle}>EXPERIENCE</Text>
-              </View>
-              <View style={styles.sectionContent}>
-                {resumeData.experience.map((exp) => (
-                  <View key={exp.id} style={styles.experienceItem} wrap={false}>
-                    <View style={styles.experienceHeader}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.position}>{exp.position || "Position Title"}</Text>
-                        <Text style={styles.company}>{exp.company || "Company Name"}</Text>
-                      </View>
-                      <Text style={[styles.dateTag, { color: themeColor, backgroundColor: `${themeColor}15` }]}>
-                        {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-                      </Text>
+              <Text style={styles.sectionTitle}>Work Experience</Text>
+              {resumeData.experience.map((exp) => (
+                <View key={exp.id} style={[styles.experienceItem, { borderLeftColor: themeColor }]} wrap={false}>
+                  <View style={styles.experienceHeader}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.position}>{exp.position || "Position Title"}</Text>
+                      <Text style={[styles.company, { color: themeColor }]}>{exp.company || "Company Name"}</Text>
                     </View>
-                    {exp.description && <Text style={styles.description}>{exp.description}</Text>}
+                    <Text style={styles.experienceDate}>
+                      {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
+                    </Text>
                   </View>
-                ))}
-              </View>
+                  {exp.description && <Text style={styles.description}>{exp.description}</Text>}
+                </View>
+              ))}
             </View>
           )}
 
           {/* Skills */}
           {resumeData.skills.length > 0 && (
             <View style={styles.section} wrap={false}>
-              <View style={styles.sectionHeader}>
-                <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
-                <Text style={styles.sectionTitle}>SKILLS</Text>
-              </View>
-              <View style={[styles.sectionContent, styles.skillsContainer]}>
-                {resumeData.skills.map((skill) => (
-                  skill.name && (
-                    <Text key={skill.id} style={[styles.skillBadge, { color: themeColor, borderColor: `${themeColor}40` }]}>
+              <Text style={styles.sectionTitle}>Technical Skills</Text>
+              <View style={styles.skillsContainer}>
+                {resumeData.skills.map((skill, index) => {
+                  const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+                  const color = colors[index % colors.length];
+                  return skill.name ? (
+                    <Text 
+                      key={skill.id} 
+                      style={[
+                        styles.skillBadge, 
+                        { 
+                          color: color, 
+                          backgroundColor: `${color}15`,
+                          borderColor: `${color}40`
+                        }
+                      ]}
+                    >
                       {skill.name}
                     </Text>
-                  )
-                ))}
+                  ) : null;
+                })}
               </View>
             </View>
           )}
@@ -334,37 +241,27 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
           {/* Education */}
           {resumeData.education.length > 0 && (
             <View style={styles.section} wrap={false}>
-              <View style={styles.sectionHeader}>
-                <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
-                <Text style={styles.sectionTitle}>EDUCATION</Text>
-              </View>
-              <View style={styles.sectionContent}>
-                {resumeData.education.map((edu) => (
-                  <View key={edu.id} style={styles.educationItem} wrap={false}>
-                    <View style={styles.educationContent}>
-                      <Text style={styles.educationDegree}>{edu.degree}</Text>
-                      {edu.field && <Text style={styles.educationField}>{edu.field}</Text>}
-                      <Text style={styles.educationSchool}>{edu.school}</Text>
-                    </View>
-                    <Text style={styles.educationDate}>
-                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                    </Text>
+              <Text style={styles.sectionTitle}>Education</Text>
+              {resumeData.education.map((edu) => (
+                <View key={edu.id} style={styles.educationItem} wrap={false}>
+                  <View style={styles.educationContent}>
+                    <Text style={styles.educationDegree}>{edu.degree}</Text>
+                    {edu.field && <Text style={styles.educationField}>{edu.field}</Text>}
+                    <Text style={styles.educationSchool}>{edu.school}</Text>
                   </View>
-                ))}
-              </View>
+                  <Text style={styles.educationDate}>
+                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                  </Text>
+                </View>
+              ))}
             </View>
           )}
 
           {/* Custom Sections */}
           {resumeData.sections.map((section) => (
             <View key={section.id} style={styles.section} wrap={false}>
-              <View style={styles.sectionHeader}>
-                <View style={[styles.sectionDot, { backgroundColor: themeColor }]} />
-                <Text style={styles.sectionTitle}>{section.title.toUpperCase()}</Text>
-              </View>
-              <View style={styles.sectionContent}>
-                <Text style={styles.summary}>{section.content}</Text>
-              </View>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <Text style={styles.summary}>{section.content}</Text>
             </View>
           ))}
         </View>
