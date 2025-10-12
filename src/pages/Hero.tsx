@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -28,7 +28,7 @@ const Hero = () => {
     summary: "Experienced software engineer with 5+ years of expertise in full-stack development. Passionate about creating scalable web applications and leading technical teams.",
     jobTitle: "Senior Software Engineer",
     company: "Tech Solutions Inc.",
-    startDate: "2022-01-01",
+    startDate: "2022-01",
     endDate: "",
     description: "Led development of scalable web applications using React and Node.js. Collaborated with cross-functional teams to deliver high-quality software solutions.",
     skills: ["React", "Node.js", "JavaScript", "TypeScript", "Python"]
@@ -36,6 +36,95 @@ const Hero = () => {
 
   // Separate state for skills input - initialize with existing skills
   const [skillsInput, setSkillsInput] = useState("React, Node.js, JavaScript, TypeScript, Python");
+  const [previewScale, setPreviewScale] = useState(0.6);
+  const [previewHeight, setPreviewHeight] = useState(1120);
+  const previewContainerRef = useRef<HTMLDivElement | null>(null);
+  const previewContentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const baseWidth = 816;
+    const minScale = 0.45;
+    const maxScale = 1;
+
+    const applyScale = (availableWidth: number) => {
+      if (!availableWidth || Number.isNaN(availableWidth)) {
+        return;
+      }
+      const width = Math.max(availableWidth, 280);
+      const computedScale = Math.min(width / baseWidth, maxScale);
+      setPreviewScale(Math.max(minScale, Number(computedScale.toFixed(3))));
+    };
+
+    if (typeof ResizeObserver !== "undefined") {
+      const element = previewContainerRef.current;
+      if (!element) {
+        return;
+      }
+
+      const observer = new ResizeObserver((entries) => {
+        const width = entries[0]?.contentRect?.width;
+        if (width) {
+          const styles = window.getComputedStyle(element);
+          const horizontalPadding =
+            parseFloat(styles.paddingLeft || "0") +
+            parseFloat(styles.paddingRight || "0");
+          applyScale(width - horizontalPadding);
+        }
+      });
+
+      observer.observe(element);
+      const styles = window.getComputedStyle(element);
+      const horizontalPadding =
+        parseFloat(styles.paddingLeft || "0") +
+        parseFloat(styles.paddingRight || "0");
+      applyScale(element.getBoundingClientRect().width - horizontalPadding);
+
+      return () => observer.disconnect();
+    }
+
+    // Fallback for environments without ResizeObserver
+    const handleResize = () => applyScale(window.innerWidth - 32);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const element = previewContentRef.current;
+    if (!element) {
+      return;
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      const height = entries[0]?.contentRect?.height;
+      if (height) {
+        setPreviewHeight(height);
+      }
+    });
+
+    observer.observe(element);
+    setPreviewHeight(element.getBoundingClientRect().height);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const toMonthInputValue = useCallback((dateInput: string) => {
+    if (!dateInput) {
+      return "";
+    }
+
+    const date = new Date(dateInput);
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    return `${date.getFullYear()}-${month}`;
+  }, []);
 
   const updateFormData = (field: string, value: string) => {
     setDemoFormData(prev => ({
@@ -199,11 +288,11 @@ const Hero = () => {
                       </div>
                       
                       {/* App Content */}
-                      <div className="bg-white rounded-b-xl overflow-hidden h-[300px] sm:h-[400px] md:h-[520px]">
+                      <div className="bg-white rounded-b-xl overflow-hidden h-auto lg:h-[520px]">
                         {/* Main Layout */}
-                        <div className="flex flex-col sm:flex-row h-full">
+                        <div className="flex flex-col lg:flex-row h-full">
                           {/* Left Side - Form Editor */}
-                          <div className="w-full sm:w-1/2 p-3 md:p-6 bg-gradient-to-br from-blue-50/30 to-indigo-50/20 border-b sm:border-b-0 sm:border-r border-gray-200 overflow-y-auto">
+                          <div className="w-full lg:w-1/2 p-3 md:p-6 bg-gradient-to-br from-blue-50/30 to-indigo-50/20 border-b lg:border-b-0 lg:border-r border-gray-200 overflow-y-auto">
                             <div className="space-y-3 md:space-y-6">
                               {/* Personal Information */}
                               <div className="space-y-2 md:space-y-4">
@@ -279,7 +368,7 @@ const Hero = () => {
                           </div>
                           
                           {/* Right Side - Resume Preview */}
-                          <div className="w-full sm:w-1/2 p-3 md:p-6 bg-white overflow-y-auto">
+                          <div className="w-full lg:w-1/2 p-3 md:p-6 bg-white overflow-y-auto">
                             <div className="space-y-3 md:space-y-6">
                               {/* Header */}
                               <div className="border-b-2 border-primary/20 pb-3 md:pb-6">
@@ -801,10 +890,10 @@ const Hero = () => {
                   </div>
 
                   {/* Main Editor Layout */}
-                  <div className="flex flex-col md:flex-row h-[400px] md:h-[650px]">
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-0 h-auto md:h-[650px]">
                     {/* Left Side - Form Editor */}
-                    <div className="w-full md:w-1/2 bg-gradient-to-br from-slate-50 to-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
-                      <div className="p-2 md:p-4 space-y-2 md:space-y-4 h-full overflow-y-auto">
+                    <div className="w-full md:w-1/2 bg-gradient-to-br from-slate-50 to-gray-50 border-b md:border-b-0 md:border-r border-gray-200 md:h-full">
+                      <div className="p-2 md:p-4 space-y-2 md:space-y-4 md:h-full md:overflow-y-auto">
                         {/* Personal Information */}
                         <div className="space-y-1 md:space-y-2">
                           <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
@@ -904,18 +993,17 @@ const Hero = () => {
                                   <label className="block text-xs font-medium text-gray-600 mb-1">Start Date</label>
                                   <Input 
                                     type="month"
-                                    value={demoFormData.startDate}
-                                    onChange={(e) => updateFormData('startDate', e.target.value)}
+                                    value={toMonthInputValue(demoFormData.startDate)}
+                                    onChange={(e) => updateFormData("startDate", e.target.value)}
                                     className="h-7 text-sm"
-                                    defaultValue="2022-01"
                                   />
                                 </div>
                                 <div>
                                   <label className="block text-xs font-medium text-gray-600 mb-1">End Date</label>
                                   <Input 
                                     type="month"
-                                    value={demoFormData.endDate}
-                                    onChange={(e) => updateFormData('endDate', e.target.value)}
+                                    value={toMonthInputValue(demoFormData.endDate)}
+                                    onChange={(e) => updateFormData("endDate", e.target.value)}
                                     className="h-7 text-sm"
                                     placeholder="Present"
                                   />
@@ -974,8 +1062,11 @@ const Hero = () => {
                     </div>
 
                     {/* Right Side - Live Preview */}
-                    <div className="w-1/2 bg-white">
-                      <div className="p-4 h-full overflow-hidden">
+                    <div className="w-full md:w-1/2 bg-white">
+                      <div
+                        ref={previewContainerRef}
+                        className="p-4 md:h-full md:overflow-hidden"
+                      >
                         {/* Preview Header */}
                         <div className="mb-4">
                           <div className="flex items-center justify-between mb-3">
@@ -1017,12 +1108,31 @@ const Hero = () => {
                         </div>
 
                         {/* Resume Preview - Use actual ModernTemplate */}
-                        <div className="bg-white border border-gray-200 rounded-lg shadow-sm h-full overflow-hidden">
-                          <div className="origin-top-left" style={{ transform: 'scale(0.6)', width: '167.86%' }} key={JSON.stringify(demoFormData)}>
-                            <ModernTemplate 
-                              resumeData={convertToResumeData()} 
-                              themeColor="#3b82f6"
-                            />
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-sm md:h-full overflow-hidden">
+                          <div
+                            className="relative"
+                            style={{
+                              height: `${Math.max(previewHeight * previewScale, 420)}px`,
+                            }}
+                          >
+                            <div
+                              className="absolute inset-x-0 top-0 flex justify-center"
+                            >
+                              <div
+                                style={{
+                                  transform: `scale(${previewScale})`,
+                                  transformOrigin: "top center",
+                                }}
+                                key={JSON.stringify(demoFormData)}
+                              >
+                                <div ref={previewContentRef} className="w-[816px]">
+                                  <ModernTemplate 
+                                    resumeData={convertToResumeData()} 
+                                    themeColor="#3b82f6"
+                                  />
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
