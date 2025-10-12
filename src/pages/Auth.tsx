@@ -8,9 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Header } from '@/components/Header';
+import { Mail, Lock, User, Chrome } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 const Auth = () => {
-  const { signIn, signUp, loading } = useAuth();
+  const { signIn, signInWithGoogle, signUp, loading } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signInError, setSignInError] = useState('');
@@ -61,6 +63,17 @@ const Auth = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsSubmitting(true);
+      await signInWithGoogle();
+    } catch (error: any) {
+      setSignInError(error.message || 'Failed to sign in with Google');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
@@ -76,105 +89,173 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <Header />
       <div className="flex items-center justify-center min-h-[calc(100vh-73px)] p-4">
-        <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Welcome to ResumeCook</CardTitle>
-          <CardDescription>Create your account or sign in to continue</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
+        <Card className="w-full max-w-md shadow-xl border-primary/10">
+          <CardHeader className="text-center space-y-3 pb-8">
+            <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              Welcome to ResumeCook
+            </CardTitle>
+            <CardDescription className="text-base">
+              Create your perfect resume in minutes
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <Tabs defaultValue="signin" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6 h-11">
+                <TabsTrigger value="signin" className="text-sm">Sign In</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm">Sign Up</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="signin">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                {signInError && (
-                  <Alert variant="destructive">
-                    <AlertDescription>{signInError}</AlertDescription>
-                  </Alert>
-                )}
-                <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
-                  <Input
-                    id="signin-email"
-                    name="signin-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
-                  <Input
-                    id="signin-password"
-                    name="signin-password"
-                    type="password"
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? 'Signing in...' : 'Sign In'}
+              <TabsContent value="signin" className="space-y-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full h-11 gap-2 hover:bg-accent transition-colors"
+                  onClick={handleGoogleSignIn}
+                  disabled={isSubmitting}
+                >
+                  <Chrome className="h-5 w-5" />
+                  Continue with Google
                 </Button>
-              </form>
-            </TabsContent>
 
-            <TabsContent value="signup">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                {signUpError && (
-                  <Alert variant="destructive">
-                    <AlertDescription>{signUpError}</AlertDescription>
-                  </Alert>
-                )}
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name *</Label>
-                    <Input
-                      id="fullName"
-                      name="fullName"
-                      type="text"
-                      placeholder="John Doe"
-                      required
-                    />
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <Separator />
                   </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                      Or continue with email
+                    </span>
+                  </div>
+                </div>
+
+                <form onSubmit={handleSignIn} className="space-y-4">
+                  {signInError && (
+                    <Alert variant="destructive">
+                      <AlertDescription>{signInError}</AlertDescription>
+                    </Alert>
+                  )}
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="signin-email" className="flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      Email
+                    </Label>
                     <Input
-                      id="email"
-                      name="email"
+                      id="signin-email"
+                      name="signin-email"
                       type="email"
                       placeholder="your@email.com"
+                      className="h-11"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password *</Label>
+                    <Label htmlFor="signin-password" className="flex items-center gap-2">
+                      <Lock className="h-4 w-4" />
+                      Password
+                    </Label>
                     <Input
-                      id="password"
-                      name="password"
+                      id="signin-password"
+                      name="signin-password"
                       type="password"
                       placeholder="••••••••"
-                      minLength={6}
+                      className="h-11"
                       required
                     />
                   </div>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  * Required fields. You can add more details after verification.
-                </p>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? 'Creating account...' : 'Create Account'}
+                  <Button type="submit" className="w-full h-11" disabled={isSubmitting}>
+                    {isSubmitting ? 'Signing in...' : 'Sign In'}
+                  </Button>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="signup" className="space-y-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full h-11 gap-2 hover:bg-accent transition-colors"
+                  onClick={handleGoogleSignIn}
+                  disabled={isSubmitting}
+                >
+                  <Chrome className="h-5 w-5" />
+                  Continue with Google
                 </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <Separator />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                      Or sign up with email
+                    </span>
+                  </div>
+                </div>
+
+                <form onSubmit={handleSignUp} className="space-y-4">
+                  {signUpError && (
+                    <Alert variant="destructive">
+                      <AlertDescription>{signUpError}</AlertDescription>
+                    </Alert>
+                  )}
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="fullName" className="flex items-center gap-2">
+                        <User className="h-4 w-4" />
+                        Full Name *
+                      </Label>
+                      <Input
+                        id="fullName"
+                        name="fullName"
+                        type="text"
+                        placeholder="John Doe"
+                        className="h-11"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="flex items-center gap-2">
+                        <Mail className="h-4 w-4" />
+                        Email *
+                      </Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        className="h-11"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="password" className="flex items-center gap-2">
+                        <Lock className="h-4 w-4" />
+                        Password *
+                      </Label>
+                      <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="At least 6 characters"
+                        className="h-11"
+                        minLength={6}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground text-center">
+                    By signing up, you agree to our Terms of Service and Privacy Policy
+                  </p>
+                  <Button type="submit" className="w-full h-11" disabled={isSubmitting}>
+                    {isSubmitting ? 'Creating account...' : 'Create Account'}
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
