@@ -22,12 +22,12 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
       {/* Header - Centered */}
       <div className="bg-white mb-6">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-3 text-gray-900">
+          <h1 className="text-5xl font-bold mb-4 text-gray-900">
             {resumeData.personalInfo.fullName || "Your Name"}
           </h1>
           
           {/* Contact Info - Centered Horizontal Layout */}
-          <div className="flex justify-center flex-wrap gap-x-3 gap-y-2 text-base text-gray-600">
+          <div className="flex justify-center flex-wrap gap-x-3 gap-y-2 text-lg text-gray-600">
             {resumeData.personalInfo.email && (
               <span>{resumeData.personalInfo.email}</span>
             )}
@@ -51,10 +51,10 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
         {/* Summary */}
         {resumeData.personalInfo.summary && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Professional Summary
             </h2>
-            <p className="text-base text-gray-700 leading-relaxed">
+            <p className="text-lg text-gray-700 leading-relaxed">
               {resumeData.personalInfo.summary}
             </p>
           </div>
@@ -63,7 +63,7 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
         {/* Experience */}
         {resumeData.experience.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Work Experience
             </h2>
             <div className="space-y-5">
@@ -71,15 +71,15 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
                 <div key={exp.id} className="relative pl-4 border-l-4" style={{ borderColor: themeColor }}>
                   <div className="flex justify-between items-start mb-2 gap-4">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-gray-900">{exp.position || "Position Title"}</h3>
-                      <p className="text-base font-medium" style={{ color: themeColor }}>{exp.company || "Company Name"}</p>
+                      <h3 className="text-xl font-bold text-gray-900">{exp.position || "Position Title"}</h3>
+                      <p className="text-lg font-medium" style={{ color: themeColor }}>{exp.company || "Company Name"}</p>
                     </div>
-                    <span className="text-base text-gray-600 whitespace-nowrap">
+                    <span className="text-lg text-gray-600 whitespace-nowrap">
                       {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </span>
                   </div>
                   {exp.description && (
-                    <p className="text-base text-gray-700 leading-relaxed whitespace-pre-line">
+                    <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
                       {exp.description}
                     </p>
                   )}
@@ -92,7 +92,7 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
         {/* Skills */}
         {resumeData.skills.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Technical Skills
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -102,7 +102,7 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
                 return skill.name ? (
                   <span
                     key={skill.id}
-                    className="px-4 py-2 text-base font-medium rounded-full"
+                    className="px-4 py-2 text-lg font-medium rounded-full"
                     style={{ 
                       color: color,
                       backgroundColor: `${color}15`,
@@ -122,18 +122,18 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
         {/* Education */}
         {resumeData.education.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Education
             </h2>
             <div className="space-y-3">
               {resumeData.education.map((edu) => (
                 <div key={edu.id} className="flex justify-between items-start gap-4">
                   <div className="flex-1">
-                    <h3 className="text-base font-bold text-gray-900">{edu.degree}</h3>
-                    {edu.field && <p className="text-sm text-gray-600">{edu.field}</p>}
-                    <p className="text-base text-gray-700">{edu.school}</p>
+                    <h3 className="text-lg font-bold text-gray-900">{edu.degree}</h3>
+                    {edu.field && <p className="text-base text-gray-600">{edu.field}</p>}
+                    <p className="text-lg text-gray-700">{edu.school}</p>
                   </div>
-                  <span className="text-base text-gray-500 whitespace-nowrap">
+                  <span className="text-lg text-gray-500 whitespace-nowrap">
                     {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                   </span>
                 </div>
@@ -145,10 +145,10 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
         {/* Custom Sections */}
         {resumeData.sections.map((section) => (
           <div key={section.id} className="mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               {section.title}
             </h2>
-            <p className="text-base text-gray-700 leading-relaxed whitespace-pre-line">
+            <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
               {section.content}
             </p>
           </div>
