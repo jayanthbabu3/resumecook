@@ -15,6 +15,7 @@ import ProfileCompletion from "./pages/ProfileCompletion";
 import VerifyEmail from "./pages/VerifyEmail";
 import ATSGuidelines from "./pages/ATSGuidelines";
 import NotFound from "./pages/NotFound";
+import AuthCallback from "./pages/AuthCallback";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/" element={<Hero />} />
             <Route path="/ats-guidelines" element={<ATSGuidelines />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route
               path="/profile-completion" 
