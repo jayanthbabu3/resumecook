@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 28,
     fontWeight: 700,
-    marginBottom: 0,
+    marginBottom: 4,
     textTransform: "uppercase",
     letterSpacing: 1,
   },

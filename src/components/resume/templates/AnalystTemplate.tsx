@@ -18,7 +18,7 @@ export const AnalystTemplate = ({
       <div className="mb-6 flex items-start justify-between">
         <div className="flex-1">
           <h1
-            className="mb-0 text-4xl font-bold uppercase tracking-wide"
+            className="mb-1 text-4xl font-bold uppercase tracking-wide"
             style={{ color: themeColor }}
           >
             {personalInfo.fullName}
