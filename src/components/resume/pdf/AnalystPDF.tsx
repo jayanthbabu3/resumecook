@@ -33,13 +33,14 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 28,
     fontWeight: 700,
-    marginBottom: 4,
+    marginBottom: 6,
     textTransform: "uppercase",
     letterSpacing: 1,
   },
   title: {
     fontSize: 14,
     fontWeight: 700,
+    marginTop: 2,
     marginBottom: 8,
     textTransform: "uppercase",
     letterSpacing: 0.5,
@@ -161,9 +162,10 @@ export const AnalystPDF = ({
             <Text style={[styles.name, { color: themeColor }]}>
               {personalInfo.fullName}
             </Text>
+            <View style={{ height: 6 }} />
             <Text style={styles.title}>{personalInfo.title}</Text>
             <View style={{ flexDirection: "row", flexWrap: "nowrap" }}>
-              <Text style={styles.contact}>
+              <Text wrap={false} style={styles.contact}>
                 {[
                   personalInfo.location,
                   personalInfo.phone,
