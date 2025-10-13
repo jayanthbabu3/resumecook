@@ -19,6 +19,7 @@ import { PremiumUniversalTemplate } from "./resume/templates/PremiumUniversalTem
 import { PremiumProTemplate } from "./resume/templates/PremiumProTemplate";
 import { FresherEliteTemplate } from "./resume/templates/FresherEliteTemplate";
 import { AnalystTemplate } from "./resume/templates/AnalystTemplate";
+import { EliteTemplate } from "./resume/templates/EliteTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -112,6 +113,7 @@ const templates = {
   "premium-pro": PremiumProTemplate,
   "fresher-elite": FresherEliteTemplate,
   analyst: AnalystTemplate,
+  elite: EliteTemplate,
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({

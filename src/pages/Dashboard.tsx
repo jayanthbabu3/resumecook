@@ -186,6 +186,13 @@ const templates = [
       "Clean professional layout with profile photo, blue accents, and organized sections",
     highlights: ["Profile Photo", "Blue Theme", "Professional Layout", "ATS-Optimized"],
   },
+  {
+    id: "elite",
+    name: "Elite Professional",
+    description:
+      "Premium elegant template with left accent bar and sophisticated typography for all professions",
+    highlights: ["Left Accent Bar", "Elegant Design", "Universal", "ATS-Friendly"],
+  },
 ];
 
 const Dashboard = () => {
