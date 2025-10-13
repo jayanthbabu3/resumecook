@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: "#4b5563",
     marginBottom: 2,
+    flexWrap: "nowrap",
   },
   photo: {
     width: 80,
@@ -161,15 +162,17 @@ export const AnalystPDF = ({
               {personalInfo.fullName}
             </Text>
             <Text style={styles.title}>{personalInfo.title}</Text>
-            <Text style={styles.contact}>
-              {[
-                personalInfo.location,
-                personalInfo.phone,
-                personalInfo.email,
-              ]
-                .filter(Boolean)
-                .join(" | ")}
-            </Text>
+            <View style={{ flexDirection: "row", flexWrap: "nowrap" }}>
+              <Text style={styles.contact}>
+                {[
+                  personalInfo.location,
+                  personalInfo.phone,
+                  personalInfo.email,
+                ]
+                  .filter(Boolean)
+                  .join(" | ")}
+              </Text>
+            </View>
           </View>
           {personalInfo.photo && (
             <Image src={personalInfo.photo} style={styles.photo} />
