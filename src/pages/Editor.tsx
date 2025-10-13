@@ -26,6 +26,7 @@ import { SoftwarePDF } from "@/components/resume/pdf/SoftwarePDF";
 import { PremiumUniversalPDF } from "@/components/resume/pdf/PremiumUniversalPDF";
 import { PremiumProPDF } from "@/components/resume/pdf/PremiumProPDF";
 import { FresherElitePDF } from "@/components/resume/pdf/FresherElitePDF";
+import { AnalystPDF } from "@/components/resume/pdf/AnalystPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
 import { analyzeResumeForATS, type AtsReport } from "@/lib/atsAnalyzer";
@@ -1488,6 +1489,84 @@ export const getTemplateDefaults = (templateId: string): ResumeData => {
         },
       ],
     },
+    analyst: {
+      personalInfo: {
+        fullName: "Herman Walton",
+        email: "example@gmail.com",
+        phone: "(412) 479-6342",
+        location: "Market Street 12, New York, 1021, The USA",
+        title: "Financial Analyst",
+        summary:
+          "Experienced and driven Financial Analyst with an impressive background of managing multi-million dollar budgets while providing analysis and account support within product development departments. Worked to reduce business expenses and develop logical and advantageous operating plan budgets. Experience creating quarterly accruals based on trends and forecasted expenses.",
+        photo: "",
+      },
+      experience: [
+        {
+          id: "1",
+          company: "GEO Corp.",
+          position: "Financial Analyst",
+          startDate: "Jan 2012",
+          endDate: "",
+          current: true,
+          description:
+            "Created budgets and ensured that labor and material costs were decreased by 15 percent.\nCreated financial reports on completed projects, indicating advantageous results.\nGenerated financial statements including cash flow charts and balance sheets.\nCreated analysis and performance reports for management teams to review.\nIntroduced and implemented a different type of software to enhance communication of different organization.",
+        },
+        {
+          id: "2",
+          company: "Cisco Enterprises",
+          position: "Financial Analyst",
+          startDate: "Feb 2008",
+          endDate: "Dec 2012",
+          current: false,
+          description:
+            "Provide reports, ad-hoc analysis, annual operations plan budgets, monthly cash forecasts, and revenue forecasts.\nAnalyzed supplier contracts and advised in negotiations bringing budgets down by 6%.\nCreated weekly labor finance reports and presented the results to management.",
+        },
+      ],
+      education: [
+        {
+          id: "1",
+          school: "University of Arizona",
+          degree: "Diploma in Computer Engineering",
+          field: "",
+          startDate: "Aug 2006",
+          endDate: "Oct 2008",
+        },
+        {
+          id: "2",
+          school: "University of Arizona",
+          degree: "Bachelor in Computer Engineering",
+          field: "",
+          startDate: "Aug 2004",
+          endDate: "Oct 2006",
+        },
+      ],
+      skills: buildSkills(
+        "analyst",
+        [
+          "Solution Strategies",
+          "Analytical Thinker",
+          "Innovation",
+          "Agile Methodologies",
+          "Effective Team leader",
+          "Market Assessment",
+          "Collaboration",
+          "Creative Problem Solving",
+          "Customer-centric Selling",
+          "Trend Analysis",
+          "Source Control",
+          "Networking",
+        ],
+        [9, 9, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7],
+      ),
+      sections: [
+        {
+          id: "1",
+          title: "Additional Information",
+          content:
+            "Languages: English, French\nCertificates: Financial Analyst License\nAwards/Activities: Most Innovate Employer of the Year (2011), Overall Best Employee Division Two (2009)",
+        },
+      ],
+    },
   };
 
   return templates[templateId] || templates.professional;
@@ -1517,6 +1596,7 @@ const Editor = () => {
       "senior-backend": "#2563eb",
       software: "#2563eb",
       "premium-fresher": "#7C3AED",
+      analyst: "#2563eb",
     };
 
     return defaultThemeColors[templateId || ""] || "#7c3aed"; // default purple
@@ -1632,6 +1712,7 @@ const Editor = () => {
         "premium-universal": PremiumUniversalPDF,
         "premium-pro": PremiumProPDF,
         "fresher-elite": FresherElitePDF,
+        analyst: AnalystPDF,
       };
 
       const PDFTemplate =

@@ -128,6 +128,13 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Early Career",
     categorySlug: "freshers",
   },
+  analyst: {
+    name: "Professional Analyst",
+    description:
+      "Clean blue-themed design with photo, ideal for analysts and corporate professionals.",
+    category: "Corporate",
+    categorySlug: "all",
+  },
 };
 
 export const categoryLabelMap: Record<string, string> = {
