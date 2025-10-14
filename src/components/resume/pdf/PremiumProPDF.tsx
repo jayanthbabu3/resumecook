@@ -41,27 +41,27 @@ export const PremiumProPDF = ({
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "flex-start",
-      marginBottom: 24,
+      marginBottom: 20,
     },
     headerLeft: {
       flex: 1,
     },
     name: {
-      fontSize: 28,
+      fontSize: 26,
       fontWeight: 700,
       color: "#111827",
-      marginBottom: 8,
+      marginBottom: 6,
     },
     title: {
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: 600,
       color: "#4b5563",
-      marginBottom: 16,
+      marginBottom: 12,
     },
     contactInfo: {
       flexDirection: "row",
       flexWrap: "wrap",
-      gap: 24,
+      gap: 18,
       fontSize: 9,
       color: "#374151",
     },
@@ -99,7 +99,7 @@ export const PremiumProPDF = ({
     },
     contentGrid: {
       flexDirection: "row",
-      gap: 32,
+      gap: 28,
     },
     leftColumn: {
       width: "33.333%",
@@ -108,17 +108,17 @@ export const PremiumProPDF = ({
       flex: 1,
     },
     section: {
-      marginBottom: 28,
+      marginBottom: 24,
     },
     sectionTitle: {
       fontSize: 10,
-      fontWeight: 700,
+      fontWeight: 600,
       textTransform: "uppercase",
       letterSpacing: 0.5,
       color: themeColor,
-      marginBottom: 16,
-      paddingBottom: 8,
-      borderBottomWidth: 2,
+      marginBottom: 12,
+      paddingBottom: 6,
+      borderBottomWidth: 1.5,
       borderBottomColor: themeColor,
     },
     educationItem: {
@@ -175,7 +175,7 @@ export const PremiumProPDF = ({
       borderRadius: 3,
     },
     experienceItem: {
-      marginBottom: 24,
+      marginBottom: 20,
     },
     experienceHeader: {
       flexDirection: "row",
@@ -187,12 +187,12 @@ export const PremiumProPDF = ({
       flex: 1,
     },
     position: {
-      fontSize: 11,
+      fontSize: 10.5,
       fontWeight: 700,
       color: "#111827",
     },
     company: {
-      fontSize: 10,
+      fontSize: 9.5,
       fontWeight: 600,
       color: themeColor,
       marginTop: 4,
@@ -206,10 +206,28 @@ export const PremiumProPDF = ({
       paddingVertical: 4,
       borderRadius: 999,
     },
-    description: {
+    bulletList: {
+      marginTop: 6,
+      paddingLeft: 14,
+    },
+    bulletItem: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      marginBottom: 4,
+      gap: 6,
+    },
+    bulletDot: {
+      width: 4,
+      height: 4,
+      borderRadius: 2,
+      marginTop: 4,
+      backgroundColor: themeColor,
+    },
+    bulletText: {
       fontSize: 9,
-      lineHeight: 1.6,
+      lineHeight: 1.5,
       color: "#374151",
+      flex: 1,
     },
     sectionContent: {
       fontSize: 9,
@@ -331,7 +349,18 @@ export const PremiumProPDF = ({
                         </Text>
                       </View>
                       {exp.description && (
-                        <Text style={styles.description}>{exp.description}</Text>
+                        <View style={styles.bulletList}>
+                          {exp.description
+                            .split("\n")
+                            .map((line) => line.trim())
+                            .filter(Boolean)
+                            .map((point, bulletIndex) => (
+                              <View key={bulletIndex} style={styles.bulletItem}>
+                                <View style={styles.bulletDot} />
+                                <Text style={styles.bulletText}>{point}</Text>
+                              </View>
+                            ))}
+                        </View>
                       )}
                     </View>
                   ))}

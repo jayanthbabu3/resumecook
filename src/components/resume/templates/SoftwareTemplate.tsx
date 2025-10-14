@@ -44,20 +44,20 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
   return (
     <div className="w-full min-h-[297mm] bg-white font-sans text-[13px] leading-relaxed text-slate-900">
       <div className="mx-auto flex max-w-4xl flex-col gap-6 px-8 py-10">
-        <header className="flex flex-col gap-4 border-b pb-6" style={{ borderColor: accentColor }}>
+        <header className="flex flex-col gap-4 border-b pb-5" style={{ borderColor: accentColor }}>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-3">
               <div className="space-y-1">
-                <h1 className="text-[32px] font-semibold tracking-tight text-slate-900">
+                <h1 className="text-[30px] font-semibold tracking-tight text-slate-900">
                   {resumeData.personalInfo.fullName}
                 </h1>
-                <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: accentColor }}>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.35em]" style={{ color: accentColor }}>
                   {resumeData.personalInfo.title}
                 </p>
                 <div className="h-[2px] w-14 rounded-full" style={{ backgroundColor: accentColor }} />
               </div>
               {contactDetails.length > 0 && (
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-700">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium text-slate-700">
                   {contactDetails.map((detail, idx) => (
                     <span key={detail} className="flex items-center gap-3">
                       <span>{detail}</span>
@@ -83,15 +83,15 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
 
         {resumeData.personalInfo.summary && (
           <section className="space-y-2 border-l-4 pl-5" style={{ borderColor: accentColor }}>
-            <h2 className="text-sm font-semibold uppercase" style={{ color: accentColor }}>
+            <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Summary
             </h2>
-            <p className="text-sm text-slate-800">{resumeData.personalInfo.summary}</p>
+            <p className="text-[12.5px] text-slate-800 leading-[1.7]">{resumeData.personalInfo.summary}</p>
           </section>
         )}
 
         <section className="space-y-4 border-l-4 pl-5" style={{ borderColor: accentColor }}>
-          <h2 className="text-sm font-semibold uppercase" style={{ color: accentColor }}>
+          <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
             Professional Experience
           </h2>
           <div className="space-y-4">
@@ -100,14 +100,14 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
               return (
                 <div key={exp.id} className="space-y-2">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <div className="text-sm font-semibold text-slate-900">{exp.position}</div>
-                    <div className="text-xs font-medium text-slate-600">
+                    <div className="text-[13px] font-semibold text-slate-900">{exp.position}</div>
+                    <div className="text-[11px] font-medium text-slate-600">
                       {formatDate(exp.startDate)} — {exp.current ? "Present" : formatDate(exp.endDate)}
                     </div>
                   </div>
-                  <div className="text-sm font-medium text-slate-700">{exp.company}</div>
+                  <div className="text-[12.5px] font-medium text-slate-700">{exp.company}</div>
                   {points.length > 0 && (
-                    <ul className="list-disc space-y-1 pl-5 text-sm text-slate-800">
+                    <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
                       {points.map((item, bulletIdx) => (
                         <li key={`${exp.id}-${bulletIdx}`}>{item.replace(/^•\s*/, "")}</li>
                       ))}
@@ -121,19 +121,19 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
 
         {resumeData.skills.length > 0 && (
           <section className="space-y-2 border-l-4 pl-5" style={{ borderColor: accentColor }}>
-            <h2 className="text-sm font-semibold uppercase" style={{ color: accentColor }}>
+            <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Skills
             </h2>
-            <p className="text-sm text-slate-800">{skillsList}</p>
+            <p className="text-[12.5px] text-slate-800">{skillsList}</p>
           </section>
         )}
 
         {achievementItems.length > 0 && (
           <section className="space-y-2 border-l-4 pl-5" style={{ borderColor: accentColor }}>
-            <h2 className="text-sm font-semibold uppercase" style={{ color: accentColor }}>
+            <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Achievements
             </h2>
-            <ul className="list-disc space-y-1 pl-5 text-sm text-slate-800">
+            <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
               {achievementItems.map(item => (
                 <li key={item}>{item}</li>
               ))}
@@ -143,10 +143,10 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
 
         {strengthItems.length > 0 && (
           <section className="space-y-2 border-l-4 pl-5" style={{ borderColor: accentColor }}>
-            <h2 className="text-sm font-semibold uppercase" style={{ color: accentColor }}>
+            <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Strengths
             </h2>
-            <ul className="list-disc space-y-1 pl-5 text-sm text-slate-800">
+            <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
               {strengthItems.map(item => (
                 <li key={item}>{item}</li>
               ))}
@@ -156,16 +156,16 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
 
         {resumeData.education.length > 0 && (
           <section className="space-y-4 border-l-4 pl-5" style={{ borderColor: accentColor }}>
-            <h2 className="text-sm font-semibold uppercase" style={{ color: accentColor }}>
+            <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Education
             </h2>
             <div className="space-y-3">
               {resumeData.education.map(edu => (
                 <div key={edu.id} className="space-y-1">
-                  <div className="text-sm font-semibold text-slate-900">{edu.degree}</div>
-                  <div className="text-sm font-medium text-slate-700">{edu.school}</div>
-                  {edu.field && <div className="text-sm text-slate-700">{edu.field}</div>}
-                  <div className="text-xs font-medium text-slate-600">
+                  <div className="text-[13px] font-semibold text-slate-900">{edu.degree}</div>
+                  <div className="text-[12.5px] font-medium text-slate-700">{edu.school}</div>
+                  {edu.field && <div className="text-[12.5px] text-slate-700">{edu.field}</div>}
+                  <div className="text-[11px] font-medium text-slate-600">
                     {formatDate(edu.startDate)} — {formatDate(edu.endDate)}
                   </div>
                 </div>
