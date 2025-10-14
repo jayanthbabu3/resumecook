@@ -18,17 +18,17 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
   const photo = resumeData.personalInfo.photo;
 
   return (
-    <div className="w-full min-h-[297mm] bg-white font-sans text-gray-900 flex shadow-inner">
+    <div className="w-full min-h-[297mm] bg-white font-sans text-gray-900 flex">
       {/* Main Content */}
       <div className="w-[65%] px-12 py-10">
-        <div className="pb-6 mb-8 border-b border-gray-200">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+        <div className="pb-5 mb-7 border-b" style={{ borderColor: `${themeColor}55` }}>
+          <h1 className="text-[28px] font-semibold tracking-tight text-gray-900">
             {resumeData.personalInfo.fullName}
           </h1>
-          <p className="text-lg font-semibold" style={{ color: themeColor }}>
+          <p className="text-[14px] font-semibold" style={{ color: themeColor }}>
             {resumeData.personalInfo.title}
           </p>
-          <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-600">
+          <div className="mt-4 flex flex-wrap gap-4 text-[12px] text-gray-600">
             {resumeData.personalInfo.phone && (
               <span className="flex items-center gap-1.5">
                 <Phone className="w-3.5 h-3.5" />
@@ -51,20 +51,20 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
         </div>
 
         {resumeData.personalInfo.summary && (
-          <section className="mb-7">
-            <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-900 mb-3">
+          <section className="mb-6">
+            <h2 className="text-[13px] font-semibold uppercase text-gray-900 mb-3">
               Summary
             </h2>
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+            <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line text-justify">
               {resumeData.personalInfo.summary}
             </p>
           </section>
         )}
 
         {resumeData.experience.length > 0 && (
-          <section className="mb-7">
-            <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-900 mb-4">
-              Professional Experience
+          <section className="mb-6">
+            <h2 className="text-[13px] font-semibold uppercase text-gray-900 mb-3">
+              Experience
             </h2>
             <div className="space-y-6">
               {resumeData.experience.map((exp) => (
@@ -75,14 +75,14 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
                   />
                   <div className="flex justify-between items-baseline gap-4">
                     <div>
-                      <h3 className="text-base font-semibold text-gray-900">{exp.position}</h3>
-                      <p className="text-sm font-medium text-gray-700">{exp.company}</p>
+                      <h3 className="text-[13px] font-semibold text-gray-900">{exp.position}</h3>
+                      <p className="text-[12.5px] font-medium text-gray-700">{exp.company}</p>
                     </div>
-                    <p className="text-xs text-gray-500 font-medium whitespace-nowrap">
+                    <p className="text-[11px] text-gray-500 font-medium whitespace-nowrap">
                       {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </p>
                   </div>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                  <p className="mt-2 text-[12.5px] text-gray-600 leading-[1.7] whitespace-pre-line">
                     {exp.description}
                   </p>
                 </div>
@@ -92,8 +92,8 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
         )}
 
         {resumeData.education.length > 0 && (
-          <section>
-            <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-900 mb-4">
+          <section className="mb-2">
+            <h2 className="text-[13px] font-semibold uppercase text-gray-900 mb-3">
               Education
             </h2>
             <div className="space-y-4">
@@ -103,10 +103,10 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
                     className="absolute left-0 top-2 block h-2.5 w-2.5 rounded-full"
                     style={{ backgroundColor: markerColor }}
                   />
-                  <h3 className="text-sm font-semibold text-gray-900">{edu.degree}</h3>
-                  {edu.field && <p className="text-sm text-gray-600">{edu.field}</p>}
-                  <p className="text-sm text-gray-700 font-medium">{edu.school}</p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <h3 className="text-[13px] font-semibold text-gray-900">{edu.degree}</h3>
+                  {edu.field && <p className="text-[12.5px] text-gray-600">{edu.field}</p>}
+                  <p className="text-[12.5px] text-gray-700 font-medium">{edu.school}</p>
+                  <p className="text-[11px] text-gray-500 mt-1">
                     {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                   </p>
                 </div>
@@ -118,7 +118,7 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
 
       {/* Sidebar */}
       <aside
-        className="w-[35%] px-8 py-10 text-white flex flex-col gap-8"
+        className="w-[35%] px-8 py-10 text-white flex flex-col gap-7"
         style={{ backgroundColor: themeColor }}
       >
         <div className="flex flex-col items-center text-center">
@@ -133,7 +133,7 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
               {(resumeData.personalInfo.fullName || "").split(" ").map((part) => part[0]).join("") || "SE"}
             </div>
           )}
-          <p className="mt-4 text-xs text-white/80">
+          <p className="mt-4 text-[11px] text-white/80">
             Driving technical excellence and shipping impactful products.
           </p>
         </div>
@@ -142,10 +142,10 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
           <div className="space-y-7">
             {resumeData.sections.map((section) => (
               <div key={section.id}>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.15em] mb-3">
-              {section.title}
-            </h3>
-                <div className="space-y-2 text-sm text-white/90 leading-relaxed whitespace-pre-line">
+                <h3 className="text-[12px] font-semibold uppercase text-white mb-2">
+                  {section.title}
+                </h3>
+                <div className="space-y-2 text-[12px] text-white/90 leading-[1.7] whitespace-pre-line">
                   {section.content}
                 </div>
               </div>
@@ -155,14 +155,14 @@ export const SeniorTemplate = ({ resumeData, themeColor = "#0f766e" }: TemplateP
 
         {resumeData.skills.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.15em] mb-3">
+            <h3 className="text-[12px] font-semibold uppercase text-white mb-2">
               Skills & Tools
             </h3>
             <div className="flex flex-wrap gap-2">
               {resumeData.skills.map((skill) => (
                 <span
                   key={skill.id}
-                  className="text-xs font-medium px-3 py-1 rounded-full bg-white/15 border border-white/20"
+                  className="text-[11px] font-medium px-3 py-1 rounded-full bg-white/15 border border-white/20"
                 >
                   {skill.name}
                 </span>
