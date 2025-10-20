@@ -76,7 +76,7 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
             onClick={() => navigate(`/editor/${template.id}`)}
           >
             {/* Template Preview */}
-            <div className="relative aspect-[8.5/11] bg-white overflow-hidden">
+            <div className="relative aspect-[8.5/9] bg-white overflow-hidden">
               <TemplatePreview
                 templateId={template.id}
                 themeColor={themeColors[index % themeColors.length]}
