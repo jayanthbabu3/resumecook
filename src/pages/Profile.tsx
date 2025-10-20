@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -40,69 +39,27 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user) return;
-
+    // Load from localStorage instead of backend
+    const key = `profile_${user?.id || 'guest'}`;
+    const raw = localStorage.getItem(key);
+    if (raw) {
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-
-        if (data) {
-          setProfileData({
-            full_name: data.full_name || '',
-            email: data.email || '',
-            phone: data.phone || '',
-            location: data.location || '',
-            linkedin_url: data.linkedin_url || '',
-            github_url: data.github_url || '',
-            portfolio_url: data.portfolio_url || '',
-            professional_title: data.professional_title || '',
-            bio: data.bio || '',
-          });
-        }
-      } catch (error: any) {
-        toast.error(error.message || 'Failed to load profile');
-      } finally {
-        setLoading(false);
+        const parsed = JSON.parse(raw) as ProfileData;
+        setProfileData(parsed);
+      } catch {
+        // ignore
       }
-    };
-
-    fetchProfile();
+    }
+    setLoading(false);
   }, [user]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
-
     setSaving(true);
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          full_name: profileData.full_name,
-          phone: profileData.phone,
-          location: profileData.location,
-          linkedin_url: profileData.linkedin_url,
-          github_url: profileData.github_url,
-          portfolio_url: profileData.portfolio_url,
-          professional_title: profileData.professional_title,
-          bio: profileData.bio,
-        })
-        .eq('id', user.id);
-
-      if (error) throw error;
-
-      toast.success('Profile updated successfully!');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update profile');
-    } finally {
-      setSaving(false);
-    }
+    const key = `profile_${user?.id || 'guest'}`;
+    localStorage.setItem(key, JSON.stringify(profileData));
+    toast.success('Profile saved locally');
+    setSaving(false);
   };
 
   const handleChange = (field: keyof ProfileData, value: string) => {

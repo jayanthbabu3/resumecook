@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 
 const AuthCallback = () => {
@@ -17,25 +15,9 @@ const AuthCallback = () => {
     const errorDescription = url.searchParams.get('error_description');
 
     const handleExchange = async () => {
-      try {
-        if (error) {
-          throw new Error(errorDescription || 'Authentication failed');
-        }
-        if (code) {
-          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-          if (exchangeError) throw exchangeError;
-          toast.success('Signed in successfully');
-          navigate('/dashboard', { replace: true });
-        } else {
-          // No code present, just go to auth
-          navigate('/auth', { replace: true });
-        }
-      } catch (e: any) {
-        toast.error(e.message || 'Authentication failed');
-        navigate('/auth', { replace: true });
-      } finally {
-        setProcessing(false);
-      }
+      // In local mode, just go to the auth page
+      navigate('/auth', { replace: true });
+      setProcessing(false);
     };
 
     // Defer to avoid running in onAuthStateChange context
