@@ -832,30 +832,6 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Features */}
-            <div className="mt-8 md:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-              <div className="text-center space-y-2">
-                <div className="h-12 w-12 mx-auto rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <Eye className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-sm font-semibold text-foreground">Live Preview</h3>
-                <p className="text-xs text-muted-foreground">See exactly how your resume will look</p>
-              </div>
-              <div className="text-center space-y-2">
-                <div className="h-12 w-12 mx-auto rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <Target className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-sm font-semibold text-foreground">ATS Optimized</h3>
-                <p className="text-xs text-muted-foreground">All templates pass ATS screening</p>
-              </div>
-              <div className="text-center space-y-2">
-                <div className="h-12 w-12 mx-auto rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <Palette className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-sm font-semibold text-foreground">Customizable</h3>
-                <p className="text-xs text-muted-foreground">Easy to customize and personalize</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
