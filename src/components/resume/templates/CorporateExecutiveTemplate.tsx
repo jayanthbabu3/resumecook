@@ -95,8 +95,8 @@ export const CorporateExecutiveTemplate = ({
             {/* Photo */}
             <ProfilePhoto
               src={photo}
-              borderClass="border-4"
-              style={{ borderColor: themeColor }}
+              sizeClass="h-28 w-28"
+              borderClass="border-4 border-white"
             />
           </div>
         </div>

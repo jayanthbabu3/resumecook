@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     borderBottomWidth: 1,
     borderBottomStyle: 'solid',
-    borderBottomStyle: 'solid',
     marginBottom: 22,
   },
   name: {
@@ -184,6 +183,20 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#ffffff44',
     backgroundColor: '#ffffff11',
+  },
+  bulletList: {
+    marginTop: 8,
+  },
+  bulletItem: {
+    fontSize: 9,
+    color: '#374151',
+    lineHeight: 1.5,
+    marginBottom: 4,
+  },
+  paragraph: {
+    fontSize: 9,
+    color: '#374151',
+    lineHeight: 1.5,
   },
 });
 

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, Users, TrendingUp, Shield, Star, Award, Clock, Globe, Target, ChevronRight, Eye, Palette } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, Users, TrendingUp, Shield, Star, Award, Clock, Globe, Target, ChevronRight, Eye, Palette, Mail, Phone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -267,218 +267,168 @@ const Hero = () => {
         </div>
               </div>
 
-              {/* Right Side - Enhanced Visual Demo */}
+              {/* Right Side - Beautiful 3D Resume Showcase */}
               <div className="relative mt-8 lg:mt-0 hidden lg:block">
-                {/* Modern App Mockup */}
-                <div className="relative mx-auto max-w-5xl">
-                  {/* App Container with Glow Effect */}
-                  <div className="relative">
-                    {/* Glow Background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 rounded-2xl blur-xl scale-105"></div>
+                <div className="relative mx-auto max-w-4xl">
+                  {/* Ambient Glow Effects */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-purple-500/20 to-blue-500/30 rounded-3xl blur-3xl animate-pulse"></div>
+                  <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/20 via-primary/30 to-purple-500/20 rounded-3xl blur-2xl opacity-75"></div>
+                  
+                  {/* Main 3D Card Stack */}
+                  <div className="relative perspective-1000">
+                    {/* Back Cards (Depth Effect) */}
+                    <div className="absolute inset-0 transform translate-y-8 translate-x-8 rotate-3 opacity-30">
+                      <div className="h-full w-full bg-gradient-to-br from-primary/40 to-purple-500/40 rounded-2xl backdrop-blur-sm"></div>
+                    </div>
+                    <div className="absolute inset-0 transform translate-y-4 translate-x-4 rotate-2 opacity-50">
+                      <div className="h-full w-full bg-gradient-to-br from-primary/60 to-blue-500/60 rounded-2xl backdrop-blur-sm"></div>
+                    </div>
                     
-                    {/* Main App Window */}
-                    <div className="relative bg-gradient-to-br from-slate-50 via-white to-slate-100 rounded-xl md:rounded-2xl p-2 md:p-4 border border-gray-200/50">
-                      {/* App Header */}
-                      <div className="flex items-center gap-2 p-2 md:p-4 bg-gradient-to-r from-primary/10 to-primary/5 rounded-t-xl border-b border-primary/20">
-                        <div className="flex gap-2">
-                          <div className="w-3 h-3 bg-red-500 rounded-full shadow-lg"></div>
-                          <div className="w-3 h-3 bg-yellow-500 rounded-full shadow-lg"></div>
-                          <div className="w-3 h-3 bg-green-500 rounded-full shadow-lg"></div>
-                        </div>
-                        <div className="flex-1 text-center">
-                          <span className="text-xs md:text-sm font-semibold text-gray-800 hidden sm:inline">Resume Builder - Editor</span>
-                          <span className="text-xs font-semibold text-gray-800 sm:hidden">Editor</span>
-                        </div>
-                        <div className="flex gap-2">
-                          <div className="px-1.5 py-0.5 md:px-2 md:py-1 bg-emerald-500/20 rounded-md border border-emerald-500/30">
-                            <span className="text-[10px] md:text-xs text-emerald-600 font-medium">LIVE</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* App Content */}
-                      <div className="bg-white rounded-b-xl overflow-hidden h-auto lg:h-[520px]">
-                        {/* Main Layout */}
-                        <div className="flex flex-col lg:flex-row h-full">
-                          {/* Left Side - Form Editor */}
-                          <div className="w-full lg:w-1/2 p-3 md:p-6 bg-gradient-to-br from-blue-50/30 to-indigo-50/20 border-b lg:border-b-0 lg:border-r border-gray-200 overflow-y-auto">
-                            <div className="space-y-3 md:space-y-6">
-                              {/* Personal Information */}
-                              <div className="space-y-2 md:space-y-4">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full"></div>
-                                  <h3 className="text-[10px] md:text-sm font-bold text-gray-800 capitalize tracking-wider">Personal Information</h3>
-                                </div>
-                                <div className="space-y-2 md:space-y-3">
-                                  <div className="space-y-2">
-                                    <div className="h-3 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-full"></div>
-                                    <div className="h-2 bg-gray-100 rounded w-3/4"></div>
-                                  </div>
-                                  <div className="space-y-2">
-                                    <div className="h-3 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-full"></div>
-                                    <div className="h-2 bg-gray-100 rounded w-1/2"></div>
-                                  </div>
-                                  <div className="space-y-2">
-                                    <div className="h-3 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-full"></div>
-                                    <div className="h-2 bg-gray-100 rounded w-2/3"></div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Work Experience */}
-                              <div className="space-y-2 md:space-y-4">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-500 rounded-full"></div>
-                                  <h3 className="text-[10px] md:text-sm font-bold text-gray-800 capitalize tracking-wider">Work Experience</h3>
-                                </div>
-                                <div className="space-y-2 md:space-y-3">
-                                  <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                                    <div className="h-3 bg-gradient-to-r from-primary/40 to-primary/30 rounded w-4/5 mb-2"></div>
-                                    <div className="h-2 bg-gray-200 rounded w-1/2 mb-2"></div>
-                                    <div className="space-y-1">
-                                      <div className="h-2 bg-gray-100 rounded w-full"></div>
-                                      <div className="h-2 bg-gray-100 rounded w-5/6"></div>
-                                      <div className="h-2 bg-gray-100 rounded w-3/4"></div>
-                                    </div>
-                                  </div>
-                                  <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                                    <div className="h-3 bg-gradient-to-r from-emerald-400/40 to-emerald-300/30 rounded w-3/4 mb-2"></div>
-                                    <div className="h-2 bg-gray-200 rounded w-1/3 mb-2"></div>
-                                    <div className="space-y-1">
-                                      <div className="h-2 bg-gray-100 rounded w-full"></div>
-                                      <div className="h-2 bg-gray-100 rounded w-4/5"></div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Skills */}
-                              <div className="space-y-2 md:space-y-4 hidden sm:block">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full"></div>
-                                  <h3 className="text-[10px] md:text-sm font-bold text-gray-800 capitalize tracking-wider">Skills</h3>
-                                </div>
-                                <div className="flex flex-wrap gap-1.5 md:gap-2">
-                                  <div className="h-7 bg-gradient-to-r from-primary/15 to-primary/10 rounded-full px-4 flex items-center border border-primary/20">
-                                    <div className="w-14 h-2 bg-gradient-to-r from-primary/60 to-primary/40 rounded"></div>
-                                  </div>
-                                  <div className="h-7 bg-gradient-to-r from-emerald-500/15 to-emerald-500/10 rounded-full px-4 flex items-center border border-emerald-500/20">
-                                    <div className="w-10 h-2 bg-gradient-to-r from-emerald-500/60 to-emerald-500/40 rounded"></div>
-                                  </div>
-                                  <div className="h-7 bg-gradient-to-r from-blue-500/15 to-blue-500/10 rounded-full px-4 flex items-center border border-blue-500/20">
-                                    <div className="w-18 h-2 bg-gradient-to-r from-blue-500/60 to-blue-500/40 rounded"></div>
-                                  </div>
-                                  <div className="h-7 bg-gradient-to-r from-purple-500/15 to-purple-500/10 rounded-full px-4 flex items-center border border-purple-500/20">
-                                    <div className="w-12 h-2 bg-gradient-to-r from-purple-500/60 to-purple-500/40 rounded"></div>
-                                  </div>
-                                </div>
-                              </div>
+                    {/* Main Resume Card */}
+                    <div className="relative transform hover:scale-105 transition-transform duration-500 ease-out">
+                      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200/50 p-8 space-y-6 backdrop-blur-xl">
+                        {/* Resume Header */}
+                        <div className="flex items-start justify-between pb-6 border-b-2 border-primary/20">
+                          <div className="space-y-2">
+                            <h3 className="text-2xl font-bold text-gray-900">Sarah Anderson</h3>
+                            <p className="text-base font-semibold text-primary">Senior Product Designer</p>
+                            <div className="flex gap-4 text-xs text-gray-600">
+                              <span className="flex items-center gap-1">
+                                <Mail className="w-3 h-3" />
+                                sarah@example.com
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Phone className="w-3 h-3" />
+                                (555) 123-4567
+                              </span>
                             </div>
                           </div>
-                          
-                          {/* Right Side - Resume Preview */}
-                          <div className="w-full lg:w-1/2 p-3 md:p-6 bg-white overflow-y-auto">
-                            <div className="space-y-3 md:space-y-6">
-                              {/* Header */}
-                              <div className="border-b-2 border-primary/20 pb-3 md:pb-6">
-                                <div className="flex items-center gap-2 md:gap-4">
-                                  <div className="w-12 h-12 md:w-18 md:h-18 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center shadow-lg">
-                                    <span className="text-white font-bold text-base md:text-2xl">JD</span>
-                                  </div>
-                                  <div className="flex-1 space-y-1 md:space-y-2">
-                                    <div className="h-4 md:h-6 bg-gradient-to-r from-gray-700 to-gray-600 rounded w-3/4"></div>
-                                    <div className="h-3 md:h-4 bg-primary/60 rounded w-1/2"></div>
-                                    <div className="flex gap-2 md:gap-4 mt-1 md:mt-2">
-                                      <div className="h-2 md:h-3 bg-gray-300 rounded w-20 md:w-32"></div>
-                                      <div className="h-2 md:h-3 bg-gray-300 rounded w-16 md:w-24"></div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shadow-lg border-4 border-white">
+                            <span className="text-white font-bold text-xl">SA</span>
+                          </div>
+                        </div>
 
-                              {/* Experience */}
-                              <div className="space-y-2 md:space-y-4">
-                                <div className="h-3 md:h-5 bg-gradient-to-r from-gray-700 to-gray-600 rounded w-20 md:w-28"></div>
-                                <div className="space-y-2 md:space-y-4">
-                                  <div className="border-l-4 border-primary/30 pl-4 space-y-2">
-                                    <div className="flex justify-between items-start">
-                                      <div className="space-y-1">
-                                        <div className="h-4 bg-gray-500 rounded w-48"></div>
-                                        <div className="h-3 bg-primary/50 rounded w-32"></div>
-                                      </div>
-                                      <div className="h-3 bg-gray-300 rounded w-20"></div>
-                                    </div>
-                                    <div className="space-y-1">
-                                      <div className="h-3 bg-gray-200 rounded w-full"></div>
-                                      <div className="h-3 bg-gray-200 rounded w-4/5"></div>
-                                      <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-                                    </div>
-                                  </div>
-                                  
-                                  <div className="border-l-4 border-emerald-500/30 pl-4 space-y-2">
-                                    <div className="flex justify-between items-start">
-                                      <div className="space-y-1">
-                                        <div className="h-4 bg-gray-500 rounded w-40"></div>
-                                        <div className="h-3 bg-emerald-500/50 rounded w-28"></div>
-                                      </div>
-                                      <div className="h-3 bg-gray-300 rounded w-20"></div>
-                                    </div>
-                                    <div className="space-y-1">
-                                      <div className="h-3 bg-gray-200 rounded w-full"></div>
-                                      <div className="h-3 bg-gray-200 rounded w-5/6"></div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                        {/* Professional Summary */}
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                            <div className="w-1 h-4 bg-primary rounded-full"></div>
+                            About
+                          </h4>
+                          <div className="space-y-2 pl-3">
+                            <div className="h-2 bg-gradient-to-r from-gray-300 to-transparent rounded w-full"></div>
+                            <div className="h-2 bg-gradient-to-r from-gray-300 to-transparent rounded w-11/12"></div>
+                            <div className="h-2 bg-gradient-to-r from-gray-300 to-transparent rounded w-10/12"></div>
+                          </div>
+                        </div>
 
-                              {/* Skills */}
-                              <div className="space-y-4">
-                                <div className="h-5 bg-gradient-to-r from-gray-700 to-gray-600 rounded w-20"></div>
-                                <div className="flex flex-wrap gap-2">
-                                  <div className="h-6 bg-primary/10 rounded-full w-20 border border-primary/20"></div>
-                                  <div className="h-6 bg-emerald-500/10 rounded-full w-16 border border-emerald-500/20"></div>
-                                  <div className="h-6 bg-blue-500/10 rounded-full w-24 border border-blue-500/20"></div>
-                                  <div className="h-6 bg-purple-500/10 rounded-full w-18 border border-purple-500/20"></div>
+                        {/* Experience Highlight */}
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                            <div className="w-1 h-4 bg-primary rounded-full"></div>
+                            Experience
+                          </h4>
+                          <div className="pl-3 space-y-4">
+                            <div className="border-l-4 border-primary/40 pl-4 space-y-2 hover:border-primary transition-colors">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <p className="font-bold text-gray-800">Lead Designer</p>
+                                  <p className="text-sm text-primary font-medium">TechCorp Inc.</p>
                                 </div>
+                                <span className="text-xs text-gray-500 font-medium">2021 - Present</span>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="h-2 bg-gray-200 rounded w-full"></div>
+                                <div className="h-2 bg-gray-200 rounded w-5/6"></div>
+                              </div>
+                            </div>
+                            
+                            <div className="border-l-4 border-blue-500/40 pl-4 space-y-2 hover:border-blue-500 transition-colors">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <p className="font-bold text-gray-800">Product Designer</p>
+                                  <p className="text-sm text-blue-600 font-medium">StartupXYZ</p>
+                                </div>
+                                <span className="text-xs text-gray-500 font-medium">2019 - 2021</span>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="h-2 bg-gray-200 rounded w-full"></div>
+                                <div className="h-2 bg-gray-200 rounded w-4/5"></div>
                               </div>
                             </div>
                           </div>
                         </div>
+
+                        {/* Skills */}
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                            <div className="w-1 h-4 bg-primary rounded-full"></div>
+                            Skills
+                          </h4>
+                          <div className="flex flex-wrap gap-2 pl-3">
+                            <span className="px-4 py-1.5 bg-gradient-to-r from-primary/20 to-primary/10 text-primary text-xs font-medium rounded-full border border-primary/30">
+                              UI/UX Design
+                            </span>
+                            <span className="px-4 py-1.5 bg-gradient-to-r from-blue-500/20 to-blue-500/10 text-blue-700 text-xs font-medium rounded-full border border-blue-500/30">
+                              Figma
+                            </span>
+                            <span className="px-4 py-1.5 bg-gradient-to-r from-purple-500/20 to-purple-500/10 text-purple-700 text-xs font-medium rounded-full border border-purple-500/30">
+                              Prototyping
+                            </span>
+                            <span className="px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 text-emerald-700 text-xs font-medium rounded-full border border-emerald-500/30">
+                              User Research
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* ATS Badge */}
+                        <div className="flex items-center justify-center pt-4 border-t border-gray-100">
+                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-green-50 rounded-full border border-emerald-200">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                            <span className="text-xs font-semibold text-emerald-700">ATS-Optimized & Ready</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Shine Effect */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/10 to-transparent transform -translate-x-full animate-[shimmer_3s_ease-in-out_infinite]"></div>
+                    </div>
+                  </div>
+
+                  {/* Floating Feature Pills */}
+                  <div className="absolute -top-8 -left-8 animate-float">
+                    <div className="bg-white rounded-full shadow-xl px-4 py-2 border border-gray-200/50 backdrop-blur-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center">
+                          <Sparkles className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-gray-900">AI-Powered</p>
+                          <p className="text-[10px] text-gray-500">Smart Content</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Floating Feature Cards */}
-                <div className="absolute -top-4 -left-4 bg-white rounded-lg shadow-lg p-3 border border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-primary" />
-                    <div>
-                      <div className="text-sm font-bold text-foreground">2.4k+</div>
-                      <div className="text-xs text-muted-foreground">Active Users</div>
+                  <div className="absolute -bottom-8 -right-8 animate-float" style={{ animationDelay: '1s' }}>
+                    <div className="bg-white rounded-full shadow-xl px-4 py-2 border border-gray-200/50 backdrop-blur-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center">
+                          <Zap className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-gray-900">Instant Export</p>
+                          <p className="text-[10px] text-gray-500">PDF Ready</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute top-1/3 -left-12 animate-float" style={{ animationDelay: '2s' }}>
+                    <div className="bg-white rounded-full shadow-xl p-3 border border-gray-200/50 backdrop-blur-sm">
+                      <Users className="w-5 h-5 text-primary" />
                     </div>
                   </div>
                 </div>
-
-                <div className="absolute -bottom-4 -left-4 bg-white rounded-lg shadow-lg p-3 border border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-emerald-600" />
-                    <div>
-                      <div className="text-xs font-semibold text-foreground">AI-Powered</div>
-                      <div className="text-xs text-muted-foreground">Smart suggestions</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute -top-4 -right-4 bg-white rounded-lg shadow-lg p-3 border border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                    <div>
-                      <div className="text-xs font-semibold text-foreground">ATS Optimized</div>
-                      <div className="text-xs text-muted-foreground">100% Compatible</div>
-                    </div>
-              </div>
-              </div>
               </div>
             </div>
           </div>

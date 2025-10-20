@@ -54,7 +54,7 @@ export const BackendTemplate = ({ resumeData, themeColor = "#374151" }: Template
                 {resumeData.personalInfo.title}
               </p>
             </div>
-            <ProfilePhoto src={photo} borderClass="border-2" style={{ borderColor: accentBorder }} />
+            <ProfilePhoto src={photo} borderClass="border-2" />
           </div>
           
           {/* Contact Info */}
