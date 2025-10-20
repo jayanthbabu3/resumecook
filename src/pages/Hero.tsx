@@ -269,7 +269,7 @@ const Hero = () => {
 
               {/* Right Side - Beautiful 3D Resume Showcase */}
               <div className="relative mt-8 lg:mt-0 hidden lg:block">
-                <div className="relative mx-auto max-w-4xl">
+                <div className="relative mx-auto max-w-4xl scale-[0.7] origin-center">
                   {/* Ambient Glow Effects */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-purple-500/20 to-blue-500/30 rounded-3xl blur-3xl animate-pulse"></div>
                   <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/20 via-primary/30 to-purple-500/20 rounded-3xl blur-2xl opacity-75"></div>
