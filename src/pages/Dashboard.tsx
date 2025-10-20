@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   FileText,
   Briefcase,
@@ -67,8 +73,8 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
   }, [hasMore, isLoading, templates.length]);
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="space-y-6 md:space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {visibleTemplates.map((template, index) => (
           <Card
             key={template.id}
@@ -76,7 +82,7 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
             onClick={() => navigate(`/editor/${template.id}`)}
           >
             {/* Template Number Badge */}
-            <div className="absolute top-3 right-3 z-10 flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-br from-primary to-primary/80 text-white text-sm font-semibold shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <div className="absolute top-2 right-2 md:top-3 md:right-3 z-10 flex items-center justify-center h-7 w-7 md:h-8 md:w-8 rounded-full bg-gradient-to-br from-primary to-primary/80 text-white text-xs md:text-sm font-semibold shadow-lg group-hover:scale-110 transition-transform duration-300">
               {index + 1}
             </div>
 
@@ -89,10 +95,10 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
               />
               
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4 md:p-6">
                 <Button
                   size="sm"
-                  className="shadow-lg"
+                  className="shadow-lg text-xs md:text-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/editor/${template.id}`);
@@ -104,17 +110,17 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
             </div>
 
             {/* Template Info */}
-            <div className="p-4 border-t border-border/30">
-              <div className="flex items-start justify-between gap-2 mb-2">
-                <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
+            <div className="p-3 md:p-4 border-t border-border/30">
+              <div className="flex items-start justify-between gap-2 mb-1.5">
+                <h3 className="font-semibold text-xs md:text-sm text-foreground group-hover:text-primary transition-colors">
                   {template.name}
                 </h3>
                 <div
-                  className="h-3 w-3 rounded-full shrink-0 mt-0.5"
+                  className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full shrink-0 mt-0.5"
                   style={{ backgroundColor: themeColors[index % themeColors.length] }}
                 />
               </div>
-              <p className="text-xs text-muted-foreground line-clamp-2">
+              <p className="text-[10px] md:text-xs text-muted-foreground line-clamp-2">
                 {template.description}
               </p>
             </div>
@@ -124,11 +130,11 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
 
       {/* Infinite Scroll Trigger & Loading */}
       {hasMore && (
-        <div ref={observerRef} className="flex justify-center py-8">
+        <div ref={observerRef} className="flex justify-center py-6 md:py-8">
           {isLoading && (
             <div className="flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="h-5 w-5 animate-spin" />
-              <span className="text-sm">Loading more templates...</span>
+              <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
+              <span className="text-xs md:text-sm">Loading more templates...</span>
             </div>
           )}
         </div>
@@ -136,8 +142,8 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
 
       {/* End Message */}
       {!hasMore && templates.length > 9 && (
-        <div className="text-center py-8">
-          <p className="text-sm text-muted-foreground">
+        <div className="text-center py-6 md:py-8">
+          <p className="text-xs md:text-sm text-muted-foreground">
             You've viewed all {templates.length} templates
           </p>
         </div>
@@ -147,7 +153,9 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
 };
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("experienced");
+  const [category, setCategory] = useState("experienced");
+  
+  const currentTemplates = category === "experienced" ? experiencedTemplates : freshersTemplates;
 
   return (
     <div className="min-h-screen bg-background">
@@ -155,59 +163,55 @@ const Dashboard = () => {
 
       {/* Elegant Header */}
       <div className="border-b border-border/30 bg-gradient-to-br from-muted/5 via-muted/10 to-muted/5">
-        <div className="container mx-auto px-6 py-12">
-          <div className="max-w-3xl mx-auto text-center space-y-4">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                <FileText className="h-6 w-6 text-primary" />
+        <div className="container mx-auto px-4 md:px-6 py-6 md:py-12">
+          <div className="max-w-3xl mx-auto text-center space-y-3 md:space-y-4">
+            <div className="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-4">
+              <div className="h-8 w-8 md:h-10 md:w-10 rounded-lg md:rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                <FileText className="h-5 w-5 md:h-6 md:w-6 text-primary" />
               </div>
-              <h1 className="text-4xl font-bold text-foreground">
+              <h1 className="text-2xl md:text-4xl font-bold text-foreground">
                 Resume Templates
               </h1>
             </div>
-            <p className="text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto px-4">
               Choose from our curated collection of professional templates designed for different career stages and industries
             </p>
           </div>
         </div>
       </div>
 
-      <main className="container mx-auto px-6 py-12">
-        {/* Tabs for Filtering */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex justify-center mb-12">
-            <TabsList className="inline-flex h-12 items-center justify-center rounded-xl bg-muted p-1.5 text-muted-foreground">
-              <TabsTrigger
-                value="experienced"
-                className="inline-flex items-center justify-center gap-2 rounded-lg px-6 py-2.5 text-sm font-medium transition-all data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-              >
-                <Briefcase className="h-4 w-4" />
-                Experienced Professionals
-                <span className="ml-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                  {experiencedTemplates.length}
-                </span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="freshers"
-                className="inline-flex items-center justify-center gap-2 rounded-lg px-6 py-2.5 text-sm font-medium transition-all data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-              >
-                <GraduationCap className="h-4 w-4" />
-                Freshers & Graduates
-                <span className="ml-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600">
-                  {freshersTemplates.length}
-                </span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-12">
+        {/* Category Selection */}
+        <div className="mb-6 md:mb-12">
+          <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger className="w-full md:w-auto md:min-w-[320px] mx-auto h-12 md:h-14 text-sm md:text-base">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="experienced" className="py-3">
+                <div className="flex items-center gap-3">
+                  <Briefcase className="h-4 w-4 text-primary" />
+                  <span className="font-medium">Experienced Professionals</span>
+                  <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                    {experiencedTemplates.length}
+                  </span>
+                </div>
+              </SelectItem>
+              <SelectItem value="freshers" className="py-3">
+                <div className="flex items-center gap-3">
+                  <GraduationCap className="h-4 w-4 text-emerald-600" />
+                  <span className="font-medium">Freshers & Graduates</span>
+                  <span className="ml-auto rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600">
+                    {freshersTemplates.length}
+                  </span>
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <TabsContent value="experienced" className="mt-0">
-            <TemplateGrid templates={experiencedTemplates} />
-          </TabsContent>
-
-          <TabsContent value="freshers" className="mt-0">
-            <TemplateGrid templates={freshersTemplates} />
-          </TabsContent>
-        </Tabs>
+        {/* Template Grid */}
+        <TemplateGrid templates={currentTemplates} />
       </main>
     </div>
   );
