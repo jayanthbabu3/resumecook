@@ -7,131 +7,131 @@ export interface TemplateMeta {
 
 export const templateMetaMap: Record<string, TemplateMeta> = {
   professional: {
-    name: "Professional",
+    name: "Classic Professional",
     description:
       "Traditional single-column layout optimized for corporate roles.",
     category: "Corporate",
     categorySlug: "all",
   },
   modern: {
-    name: "Modern",
+    name: "Contemporary",
     description:
       "Contemporary two-column design for creative and product teams.",
     category: "Creative",
     categorySlug: "all",
   },
   minimal: {
-    name: "Minimal",
+    name: "Elegant Minimal",
     description: "Sophisticated whitespace-focused template for easy scanning.",
     category: "Universal",
     categorySlug: "all",
   },
   executive: {
-    name: "Executive",
+    name: "Executive Leadership",
     description: "Bold leadership-focused layout for senior candidates.",
     category: "Leadership",
     categorySlug: "all",
   },
   frontend: {
-    name: "Frontend Developer",
+    name: "Technical Grid",
     description:
       "Balanced UI-focused resume with skill grids and project highlights.",
     category: "Engineering",
     categorySlug: "software",
   },
   fullstack: {
-    name: "Full Stack Engineer",
+    name: "Comprehensive Pro",
     description:
-      "Complete stack coverage with plenty of space for technical impact.",
+      "Complete coverage with plenty of space for technical impact.",
     category: "Engineering",
     categorySlug: "software",
   },
   backend: {
-    name: "Backend Developer",
+    name: "Systems Focus",
     description:
       "API-centric template emphasizing scalability and system design.",
     category: "Engineering",
     categorySlug: "software",
   },
   software: {
-    name: "Lead Software Engineer",
+    name: "Impact Metrics",
     description:
       "Bold two-column layout with impact metrics, achievements, and career highlights.",
     category: "Engineering",
     categorySlug: "software",
   },
   graduate: {
-    name: "Graduate",
+    name: "Fresh Graduate",
     description:
       "Education-forward layout highlighting projects and internships.",
     category: "Early Career",
     categorySlug: "freshers",
   },
   starter: {
-    name: "Starter",
+    name: "Career Starter",
     description:
       "Entry-level friendly template with skills and achievements spotlight.",
     category: "Early Career",
     categorySlug: "freshers",
   },
   fresher: {
-    name: "Fresher Premium",
+    name: "Modern Entry",
     description:
       "ATS-optimized premium template with elegant design for fresh graduates and entry-level professionals.",
     category: "Early Career",
     categorySlug: "freshers",
   },
   "premium-fresher": {
-    name: "Premium Fresher",
+    name: "Graduate Plus",
     description:
       "Modern premium template with gradient design, skill levels, and ATS-friendly layout for fresh graduates.",
     category: "Early Career",
     categorySlug: "freshers",
   },
   senior: {
-    name: "Senior Software Engineer",
-    description: "Achievement-driven layout tailored for senior ICs and leads.",
+    name: "Achievement Driven",
+    description: "Achievement-driven layout tailored for senior professionals.",
     category: "Engineering",
     categorySlug: "software",
   },
   "senior-frontend": {
-    name: "Senior Frontend Designer",
+    name: "Vibrant Professional",
     description: "Vibrant two-column experience with data-driven highlights.",
     category: "Design & Engineering",
     categorySlug: "software",
   },
   "senior-backend": {
-    name: "Senior Backend Engineer",
+    name: "Architecture Pro",
     description:
-      "Robust backend-focused resume highlighting scalable architecture, reliability, and leadership impact.",
+      "Robust template highlighting scalable architecture, reliability, and leadership impact.",
     category: "Engineering",
     categorySlug: "software",
   },
   "premium-universal": {
-    name: "Premium Universal",
+    name: "Universal Pro",
     description:
       "Elegant and simple ATS-friendly template suitable for all industries and experience levels.",
     category: "Universal",
     categorySlug: "all",
   },
   "premium-pro": {
-    name: "Premium Pro",
+    name: "Accent Panel",
     description:
       "Modern premium design with side accent panel and sophisticated typography for all professions.",
     category: "Universal",
     categorySlug: "all",
   },
   "fresher-elite": {
-    name: "Fresher Elite",
+    name: "Elite Entry",
     description:
       "Modern premium design with colored header and timeline layout, perfect for fresh graduates.",
     category: "Early Career",
     categorySlug: "freshers",
   },
   analyst: {
-    name: "Professional Analyst",
+    name: "Corporate Blue",
     description:
-      "Clean blue-themed design with photo, ideal for analysts and corporate professionals.",
+      "Clean blue-themed design with photo, ideal for corporate professionals.",
     category: "Corporate",
     categorySlug: "all",
   },
