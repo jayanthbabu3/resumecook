@@ -17,6 +17,7 @@ import { auth, db } from '@/lib/firebase';
 
 interface UserProfile {
   fullName: string;
+  email?: string;
   phone?: string;
   location?: string;
   linkedinUrl?: string;
@@ -24,6 +25,12 @@ interface UserProfile {
   portfolioUrl?: string;
   professionalTitle?: string;
   bio?: string;
+  profilePhoto?: string;
+  // Google-specific fields
+  googleId?: string;
+  emailVerified?: boolean;
+  provider?: string;
+  lastSignIn?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -83,7 +90,18 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      
+      // Update last sign-in timestamp
+      try {
+        await setDoc(doc(db, 'users', result.user.uid), {
+          lastSignIn: new Date(),
+          updatedAt: new Date(),
+        }, { merge: true });
+      } catch (error) {
+        console.error('Error updating last sign-in:', error);
+      }
+      
       toast.success('Signed in successfully');
       navigate('/dashboard');
     } catch (error: any) {
@@ -98,24 +116,74 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
     try {
       setLoading(true);
       const provider = new GoogleAuthProvider();
+      
+      // Add additional scopes if needed
+      provider.addScope('email');
+      provider.addScope('profile');
+      
       const result = await signInWithPopup(auth, provider);
       
-      // Create user profile if it doesn't exist
+      // Create or update user profile with Google data
       const userDoc = await getDoc(doc(db, 'users', result.user.uid));
+      
+      // Extract all available data from Google profile
+      const googleProfileData = {
+        fullName: result.user.displayName || '',
+        email: result.user.email || '',
+        phone: result.user.phoneNumber || '',
+        location: '', // Not available from Google
+        linkedinUrl: '', // Not available from Google
+        githubUrl: '', // Not available from Google
+        portfolioUrl: '', // Not available from Google
+        professionalTitle: '', // Not available from Google
+        bio: '', // Not available from Google
+        profilePhoto: result.user.photoURL || '',
+        // Additional Google-specific data
+        googleId: result.user.uid,
+        emailVerified: result.user.emailVerified,
+        provider: 'google',
+        lastSignIn: new Date(),
+        createdAt: userDoc.exists() ? (userDoc.data() as UserProfile).createdAt : new Date(),
+        updatedAt: new Date(),
+      };
+
       if (!userDoc.exists()) {
-        const profileData: UserProfile = {
-          fullName: result.user.displayName || '',
-          createdAt: new Date(),
+        // Create new profile
+        await setDoc(doc(db, 'users', result.user.uid), googleProfileData);
+        setUserProfile(googleProfileData);
+        toast.success('Welcome! Your account has been created with Google.');
+      } else {
+        // Update existing profile with latest Google data
+        const existingProfile = userDoc.data() as UserProfile;
+        const updatedProfile = {
+          ...existingProfile,
+          fullName: result.user.displayName || existingProfile.fullName,
+          email: result.user.email || existingProfile.email,
+          profilePhoto: result.user.photoURL || existingProfile.profilePhoto,
+          emailVerified: result.user.emailVerified,
+          lastSignIn: new Date(),
           updatedAt: new Date(),
         };
-        await setDoc(doc(db, 'users', result.user.uid), profileData);
-        setUserProfile(profileData);
+        
+        await setDoc(doc(db, 'users', result.user.uid), updatedProfile, { merge: true });
+        setUserProfile(updatedProfile);
+        toast.success('Signed in with Google successfully');
       }
       
-      toast.success('Signed in with Google successfully');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with Google');
+      console.error('Google sign-in error:', error);
+      
+      // Handle specific error cases
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('Sign-in was cancelled');
+      } else if (error.code === 'auth/popup-blocked') {
+        toast.error('Popup was blocked. Please allow popups for this site.');
+      } else if (error.code === 'auth/network-request-failed') {
+        toast.error('Network error. Please check your connection.');
+      } else {
+        toast.error(error.message || 'Failed to sign in with Google');
+      }
       throw error;
     } finally {
       setLoading(false);
@@ -147,6 +215,11 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
       // Create user profile in Firestore
       const profileData: UserProfile = {
         ...userData,
+        email: result.user.email || '',
+        profilePhoto: result.user.photoURL || '',
+        emailVerified: result.user.emailVerified,
+        provider: 'email',
+        lastSignIn: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
       };

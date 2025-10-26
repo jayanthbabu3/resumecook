@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut, User, LayoutDashboard, Home, FileText, Sparkles, BookOpen, Menu } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/useAuth";
+import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Sheet,
   SheetClose,
@@ -24,7 +24,7 @@ import {
 export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, signOut } = useFirebaseAuth();
   const isEditor = location.pathname.startsWith("/editor");
 
   const navItems = useMemo(() => [
@@ -34,10 +34,23 @@ export const Header = () => {
   ], [user]);
 
   const getUserInitials = () => {
+    if (user?.displayName) {
+      return user.displayName.split(' ').map(name => name[0]).join('').slice(0, 2).toUpperCase();
+    }
     if (user?.email) {
       return user.email.split('@')[0].slice(0, 2).toUpperCase();
     }
     return "U";
+  };
+
+  const getUserDisplayName = () => {
+    if (user?.displayName) {
+      return user.displayName;
+    }
+    if (user?.email) {
+      return user.email.split('@')[0];
+    }
+    return "User";
   };
 
   return (
@@ -122,6 +135,7 @@ export const Header = () => {
                       className="relative h-9 w-9 rounded-full hover:bg-muted/50 transition-colors duration-200"
                     >
                       <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all duration-200">
+                        <AvatarImage src={user.photoURL || undefined} alt={getUserDisplayName()} />
                         <AvatarFallback className="bg-gradient-to-br from-primary/10 to-primary/5 text-primary font-medium hover:from-primary/20 hover:to-primary/10 transition-all duration-200">
                           {getUserInitials()}
                         </AvatarFallback>
@@ -131,8 +145,8 @@ export const Header = () => {
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <div className="flex items-center justify-start gap-2 p-2">
                       <div className="flex flex-col space-y-1 leading-none">
-                        <p className="font-medium text-sm">{user.email}</p>
-                        <p className="text-xs text-muted-foreground">Account</p>
+                        <p className="font-medium text-sm">{getUserDisplayName()}</p>
+                        <p className="text-xs text-muted-foreground">{user.email}</p>
                       </div>
                     </div>
                     <DropdownMenuSeparator />

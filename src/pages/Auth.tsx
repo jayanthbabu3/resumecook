@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,7 @@ import { Mail, Lock, User, Chrome } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const Auth = () => {
-  const { signIn, signInWithGoogle, signUp, loading, user } = useAuth();
+  const { signIn, signInWithGoogle, signUp, loading, user } = useFirebaseAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signInError, setSignInError] = useState('');
@@ -77,6 +77,7 @@ const Auth = () => {
       setIsSubmitting(false);
     }
   };
+
 
   if (loading) {
     return (

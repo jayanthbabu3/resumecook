@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
+import { FirebaseAuthProvider } from "@/hooks/useFirebaseAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
@@ -25,7 +25,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthProvider>
+        <FirebaseAuthProvider>
           <Routes>
             <Route path="/" element={<Hero />} />
             <Route path="/ats-guidelines" element={<ATSGuidelines />} />
@@ -67,7 +67,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </AuthProvider>
+        </FirebaseAuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
