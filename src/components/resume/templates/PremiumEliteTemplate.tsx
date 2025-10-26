@@ -64,10 +64,9 @@ export const PremiumEliteTemplate = ({
         {resumeData.personalInfo.summary && (
           <div className="mb-8 p-5 rounded-xl" style={{ backgroundColor: accentLight }}>
             <h2 
-              className="text-[13px] font-bold uppercase tracking-wide mb-3 flex items-center gap-2"
+              className="text-[13px] font-bold uppercase tracking-wide mb-3"
               style={{ color: accent }}
             >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accent }} />
               Professional Summary
             </h2>
             <p className="text-[12.5px] text-gray-700 leading-[1.75]">
@@ -83,10 +82,9 @@ export const PremiumEliteTemplate = ({
             {resumeData.education && resumeData.education.length > 0 && (
               <div>
                 <h2 
-                  className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2 flex items-center gap-2"
+                  className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2"
                   style={{ color: accent, borderColor: accent }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accent }} />
                   Education
                 </h2>
                 <div className="space-y-5">
@@ -118,10 +116,9 @@ export const PremiumEliteTemplate = ({
             {resumeData.skills && resumeData.skills.length > 0 && (
               <div>
                 <h2 
-                  className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2 flex items-center gap-2"
+                  className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2"
                   style={{ color: accent, borderColor: accent }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accent }} />
                   Skills & Expertise
                 </h2>
                 <div className="flex flex-wrap gap-2">
@@ -148,10 +145,9 @@ export const PremiumEliteTemplate = ({
             {resumeData.experience && resumeData.experience.length > 0 && (
               <div>
                 <h2 
-                  className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2 flex items-center gap-2"
+                  className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2"
                   style={{ color: accent, borderColor: accent }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accent }} />
                   Professional Experience
                 </h2>
                 <div className="space-y-6">
@@ -201,10 +197,9 @@ export const PremiumEliteTemplate = ({
               resumeData.sections.map((section, index) => (
                 <div key={index}>
                   <h2 
-                    className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2 flex items-center gap-2"
+                    className="text-[13px] font-bold uppercase tracking-wide mb-4 pb-2.5 border-b-2"
                     style={{ color: accent, borderColor: accent }}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accent }} />
                     {section.title}
                   </h2>
                   <div className="text-[12px] text-gray-700 leading-[1.7] whitespace-pre-line">

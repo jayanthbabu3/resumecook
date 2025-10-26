@@ -90,15 +90,6 @@ export const PremiumElitePDF = ({
       letterSpacing: 0.5,
       color: themeColor,
       marginBottom: 12,
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 8,
-    },
-    dot: {
-      width: 6,
-      height: 6,
-      borderRadius: 3,
-      backgroundColor: themeColor,
     },
     summaryText: {
       fontSize: 9.5,
@@ -129,9 +120,6 @@ export const PremiumElitePDF = ({
       paddingBottom: 10,
       borderBottomWidth: 2,
       borderBottomColor: themeColor,
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 8,
     },
     educationItem: {
       marginBottom: 16,
@@ -289,10 +277,7 @@ export const PremiumElitePDF = ({
           {/* Professional Summary */}
           {resumeData.personalInfo.summary && (
             <View style={styles.summaryBox}>
-              <View style={styles.summaryTitle}>
-                <View style={styles.dot} />
-                <Text>Professional Summary</Text>
-              </View>
+              <Text style={styles.summaryTitle}>Professional Summary</Text>
               <Text style={styles.summaryText}>
                 {resumeData.personalInfo.summary}
               </Text>
@@ -305,10 +290,7 @@ export const PremiumElitePDF = ({
               {/* Education */}
               {resumeData.education && resumeData.education.length > 0 && (
                 <View style={styles.section}>
-                  <View style={styles.sectionTitle}>
-                    <View style={styles.dot} />
-                    <Text>Education</Text>
-                  </View>
+                  <Text style={styles.sectionTitle}>Education</Text>
                   {resumeData.education.map((edu, index) => (
                     <View key={index} style={styles.educationItem}>
                       <View style={styles.timelineDot} />
@@ -326,10 +308,7 @@ export const PremiumElitePDF = ({
               {/* Skills */}
               {resumeData.skills && resumeData.skills.length > 0 && (
                 <View style={styles.section}>
-                  <View style={styles.sectionTitle}>
-                    <View style={styles.dot} />
-                    <Text>Skills & Expertise</Text>
-                  </View>
+                  <Text style={styles.sectionTitle}>Skills & Expertise</Text>
                   <View style={styles.skillsContainer}>
                     {resumeData.skills.map((skill) => (
                       <View key={skill.id} style={styles.skillBadge}>
@@ -346,10 +325,7 @@ export const PremiumElitePDF = ({
               {/* Experience */}
               {resumeData.experience && resumeData.experience.length > 0 && (
                 <View style={styles.section}>
-                  <View style={styles.sectionTitle}>
-                    <View style={styles.dot} />
-                    <Text>Professional Experience</Text>
-                  </View>
+                  <Text style={styles.sectionTitle}>Professional Experience</Text>
                   {resumeData.experience.map((exp, index) => (
                     <View key={index} style={styles.experienceItem}>
                       <View style={styles.experienceHeader}>
@@ -384,10 +360,7 @@ export const PremiumElitePDF = ({
               {resumeData.sections &&
                 resumeData.sections.map((section, index) => (
                   <View key={index} style={styles.section}>
-                    <View style={styles.sectionTitle}>
-                      <View style={styles.dot} />
-                      <Text>{section.title}</Text>
-                    </View>
+                    <Text style={styles.sectionTitle}>{section.title}</Text>
                     <Text style={styles.sectionContent}>{section.content}</Text>
                   </View>
                 ))}
