@@ -27,9 +27,9 @@ export const PremiumElitePDF = ({
     },
     headerSection: {
       backgroundColor: themeColor,
-      paddingHorizontal: 48,
-      paddingTop: 40,
-      paddingBottom: 32,
+      paddingHorizontal: 32,
+      paddingTop: 36,
+      paddingBottom: 28,
     },
     headerContent: {
       flexDirection: "row",
@@ -74,8 +74,8 @@ export const PremiumElitePDF = ({
       objectFit: "cover",
     },
     mainContent: {
-      paddingHorizontal: 48,
-      paddingVertical: 32,
+      paddingHorizontal: 32,
+      paddingVertical: 28,
     },
     summaryBox: {
       backgroundColor: `${themeColor}15`,
@@ -107,7 +107,7 @@ export const PremiumElitePDF = ({
     },
     contentGrid: {
       flexDirection: "row",
-      gap: 32,
+      gap: 28,
     },
     leftColumn: {
       width: "42%",
@@ -116,7 +116,8 @@ export const PremiumElitePDF = ({
       flex: 1,
     },
     section: {
-      marginBottom: 26,
+      marginBottom: 22,
+      breakInside: "avoid",
     },
     sectionTitle: {
       fontSize: 10,
@@ -133,11 +134,12 @@ export const PremiumElitePDF = ({
       gap: 8,
     },
     educationItem: {
-      marginBottom: 18,
+      marginBottom: 16,
       paddingLeft: 16,
       borderLeftWidth: 2,
       borderLeftColor: `${themeColor}25`,
       position: "relative",
+      breakInside: "avoid",
     },
     timelineDot: {
       position: "absolute",
@@ -187,7 +189,8 @@ export const PremiumElitePDF = ({
       color: themeColor,
     },
     experienceItem: {
-      marginBottom: 22,
+      marginBottom: 20,
+      breakInside: "avoid",
     },
     experienceHeader: {
       flexDirection: "row",
