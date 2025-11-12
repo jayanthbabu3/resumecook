@@ -9,6 +9,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
 import Editor from "./pages/Editor";
+import LiveEditor from "./pages/LiveEditor";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import ProfileCompletion from "./pages/ProfileCompletion";
@@ -61,6 +62,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Editor />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/live-editor/:templateId" 
+              element={
+                <ProtectedRoute>
+                  <LiveEditor />
                 </ProtectedRoute>
               } 
             />

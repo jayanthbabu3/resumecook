@@ -96,16 +96,27 @@ const TemplateGrid = ({ templates }: TemplateGridProps) => {
               />
               
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4 md:p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center gap-2 p-4 md:p-6">
                 <Button
                   size="sm"
+                  variant="secondary"
                   className="shadow-lg text-xs md:text-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/editor/${template.id}`);
                   }}
                 >
-                  Use Template
+                  Form Editor
+                </Button>
+                <Button
+                  size="sm"
+                  className="shadow-lg text-xs md:text-sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/live-editor/${template.id}`);
+                  }}
+                >
+                  Live Editor
                 </Button>
               </div>
             </div>
