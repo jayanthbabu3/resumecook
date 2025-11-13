@@ -1,5 +1,7 @@
 import type { ResumeData } from "@/pages/Editor";
 import { ProfilePhoto } from "./ProfilePhoto";
+import { InlineEditableText } from "@/components/resume/InlineEditableText";
+import { InlineEditableList } from "@/components/resume/InlineEditableList";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -21,7 +23,7 @@ const splitLines = (text?: string) =>
         .filter(Boolean)
     : [];
 
-export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563eb" }: TemplateProps) => {
+export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563eb", editable = false }: TemplateProps) => {
   const strengthsSection = resumeData.sections.find(section => section.id === "strengths");
   const achievementsSection = resumeData.sections.find(section => section.id === "achievements");
   const strengthItems = splitLines(strengthsSection?.content);
@@ -49,22 +51,76 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-3">
               <div className="space-y-1">
-                <h1 className="text-[30px] font-semibold tracking-tight text-slate-900">
-                  {resumeData.personalInfo.fullName}
-                </h1>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.35em]" style={{ color: accentColor }}>
-                  {resumeData.personalInfo.title}
-                </p>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={resumeData.personalInfo.fullName}
+                    className="text-[30px] font-semibold tracking-tight text-slate-900"
+                    as="h1"
+                  />
+                ) : (
+                  <h1 className="text-[30px] font-semibold tracking-tight text-slate-900">
+                    {resumeData.personalInfo.fullName}
+                  </h1>
+                )}
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.title"
+                    value={resumeData.personalInfo.title}
+                    className="text-[11px] font-semibold uppercase tracking-[0.35em]"
+                    as="p"
+                    style={{ color: accentColor }}
+                  />
+                ) : (
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.35em]" style={{ color: accentColor }}>
+                    {resumeData.personalInfo.title}
+                  </p>
+                )}
                 <div className="h-[2px] w-14 rounded-full" style={{ backgroundColor: accentColor }} />
               </div>
-              {contactDetails.length > 0 && (
+              {(contactDetails.length > 0 || editable) && (
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium text-slate-700">
-                  {contactDetails.map((detail, idx) => (
-                    <span key={detail} className="flex items-center gap-3">
-                      <span>{detail}</span>
-                      {idx < contactDetails.length - 1 && <span className="text-slate-300">|</span>}
-                    </span>
-                  ))}
+                  {editable ? (
+                    <>
+                      {resumeData.personalInfo.email && (
+                        <span className="flex items-center gap-3">
+                          <InlineEditableText
+                            path="personalInfo.email"
+                            value={resumeData.personalInfo.email}
+                            className="text-[11px] font-medium text-slate-700"
+                            as="span"
+                          />
+                          <span className="text-slate-300">|</span>
+                        </span>
+                      )}
+                      {resumeData.personalInfo.phone && (
+                        <span className="flex items-center gap-3">
+                          <InlineEditableText
+                            path="personalInfo.phone"
+                            value={resumeData.personalInfo.phone}
+                            className="text-[11px] font-medium text-slate-700"
+                            as="span"
+                          />
+                          {resumeData.personalInfo.location && <span className="text-slate-300">|</span>}
+                        </span>
+                      )}
+                      {resumeData.personalInfo.location && (
+                        <InlineEditableText
+                          path="personalInfo.location"
+                          value={resumeData.personalInfo.location}
+                          className="text-[11px] font-medium text-slate-700"
+                          as="span"
+                        />
+                      )}
+                    </>
+                  ) : (
+                    contactDetails.map((detail, idx) => (
+                      <span key={detail} className="flex items-center gap-3">
+                        <span>{detail}</span>
+                        {idx < contactDetails.length - 1 && <span className="text-slate-300">|</span>}
+                      </span>
+                    ))
+                  )}
                 </div>
               )}
             </div>
@@ -87,7 +143,17 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
             <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Summary
             </h2>
-            <p className="text-[12.5px] text-slate-800 leading-[1.7]">{resumeData.personalInfo.summary}</p>
+            {editable ? (
+              <InlineEditableText
+                path="personalInfo.summary"
+                value={resumeData.personalInfo.summary}
+                className="text-[12.5px] text-slate-800 leading-[1.7]"
+                as="p"
+                multiline
+              />
+            ) : (
+              <p className="text-[12.5px] text-slate-800 leading-[1.7]">{resumeData.personalInfo.summary}</p>
+            )}
           </section>
         )}
 
@@ -95,29 +161,77 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
           <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
             Professional Experience
           </h2>
-          <div className="space-y-4">
-            {resumeData.experience.map(exp => {
-              const points = splitLines(exp.description);
-              return (
-                <div key={exp.id} className="space-y-2">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <div className="text-[13px] font-semibold text-slate-900">{exp.position}</div>
-                    <div className="text-[11px] font-medium text-slate-600">
-                      {formatDate(exp.startDate)} — {exp.current ? "Present" : formatDate(exp.endDate)}
+          {editable ? (
+            <InlineEditableList
+              path="experience"
+              items={resumeData.experience}
+              defaultItem={{
+                id: Date.now().toString(),
+                company: "Company Name",
+                position: "Position Title",
+                startDate: "2023-01",
+                endDate: "2024-01",
+                description: "Job description",
+                current: false,
+              }}
+              addButtonLabel="Add Experience"
+              renderItem={(exp, index) => {
+                const points = splitLines(exp.description);
+                return (
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <InlineEditableText
+                        path={`experience[${index}].position`}
+                        value={exp.position}
+                        className="text-[13px] font-semibold text-slate-900"
+                        as="div"
+                      />
+                      <div className="text-[11px] font-medium text-slate-600">
+                        {formatDate(exp.startDate)} — {exp.current ? "Present" : formatDate(exp.endDate)}
+                      </div>
                     </div>
+                    <InlineEditableText
+                      path={`experience[${index}].company`}
+                      value={exp.company}
+                      className="text-[12.5px] font-medium text-slate-700"
+                      as="div"
+                    />
+                    <InlineEditableText
+                      path={`experience[${index}].description`}
+                      value={exp.description}
+                      className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]"
+                      as="div"
+                      multiline
+                    />
                   </div>
-                  <div className="text-[12.5px] font-medium text-slate-700">{exp.company}</div>
-                  {points.length > 0 && (
-                    <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
-                      {points.map((item, bulletIdx) => (
-                        <li key={`${exp.id}-${bulletIdx}`}>{item.replace(/^•\s*/, "")}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                );
+              }}
+            />
+          ) : (
+            <div className="space-y-4">
+              {resumeData.experience.map(exp => {
+                const points = splitLines(exp.description);
+                return (
+                  <div key={exp.id} className="space-y-2">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <div className="text-[13px] font-semibold text-slate-900">{exp.position}</div>
+                      <div className="text-[11px] font-medium text-slate-600">
+                        {formatDate(exp.startDate)} — {exp.current ? "Present" : formatDate(exp.endDate)}
+                      </div>
+                    </div>
+                    <div className="text-[12.5px] font-medium text-slate-700">{exp.company}</div>
+                    {points.length > 0 && (
+                      <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
+                        {points.map((item, bulletIdx) => (
+                          <li key={`${exp.id}-${bulletIdx}`}>{item.replace(/^•\s*/, "")}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         {resumeData.skills.length > 0 && (
@@ -125,33 +239,77 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
             <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Skills
             </h2>
-            <p className="text-[12.5px] text-slate-800">{skillsList}</p>
+            {editable ? (
+              <InlineEditableList
+                path="skills"
+                items={resumeData.skills}
+                defaultItem={{
+                  id: Date.now().toString(),
+                  name: "New Skill",
+                  level: 5,
+                }}
+                addButtonLabel="Add Skill"
+                renderItem={(skill, index) => (
+                  <span className="inline">
+                    <InlineEditableText
+                      path={`skills[${index}].name`}
+                      value={skill.name}
+                      className="text-[12.5px] text-slate-800 inline"
+                      as="span"
+                    />
+                    {index < resumeData.skills.length - 1 && ", "}
+                  </span>
+                )}
+              />
+            ) : (
+              <p className="text-[12.5px] text-slate-800">{skillsList}</p>
+            )}
           </section>
         )}
 
-        {achievementItems.length > 0 && (
+        {(achievementItems.length > 0 || (editable && achievementsSection)) && achievementsSection && (
           <section className="space-y-2 border-l-4 pl-5" style={{ borderColor: accentColor }}>
             <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Achievements
             </h2>
-            <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
-              {achievementItems.map(item => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            {editable ? (
+              <InlineEditableText
+                path={`sections[${resumeData.sections.findIndex(s => s.id === "achievements")}].content`}
+                value={achievementsSection.content || ""}
+                className="text-[12.5px] text-slate-800 leading-[1.7]"
+                as="div"
+                multiline
+              />
+            ) : (
+              <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
+                {achievementItems.map(item => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            )}
           </section>
         )}
 
-        {strengthItems.length > 0 && (
+        {(strengthItems.length > 0 || (editable && strengthsSection)) && strengthsSection && (
           <section className="space-y-2 border-l-4 pl-5" style={{ borderColor: accentColor }}>
             <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Strengths
             </h2>
-            <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
-              {strengthItems.map(item => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            {editable ? (
+              <InlineEditableText
+                path={`sections[${resumeData.sections.findIndex(s => s.id === "strengths")}].content`}
+                value={strengthsSection.content || ""}
+                className="text-[12.5px] text-slate-800 leading-[1.7]"
+                as="div"
+                multiline
+              />
+            ) : (
+              <ul className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]">
+                {strengthItems.map(item => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            )}
           </section>
         )}
 
@@ -160,18 +318,61 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
             <h2 className="text-[13px] font-semibold uppercase" style={{ color: accentColor }}>
               Education
             </h2>
-            <div className="space-y-3">
-              {resumeData.education.map(edu => (
-                <div key={edu.id} className="space-y-1">
-                  <div className="text-[13px] font-semibold text-slate-900">{edu.degree}</div>
-                  <div className="text-[12.5px] font-medium text-slate-700">{edu.school}</div>
-                  {edu.field && <div className="text-[12.5px] text-slate-700">{edu.field}</div>}
-                  <div className="text-[11px] font-medium text-slate-600">
-                    {formatDate(edu.startDate)} — {formatDate(edu.endDate)}
+            {editable ? (
+              <InlineEditableList
+                path="education"
+                items={resumeData.education}
+                defaultItem={{
+                  id: Date.now().toString(),
+                  degree: "Degree",
+                  school: "School Name",
+                  field: "Field of Study",
+                  startDate: "2020-01",
+                  endDate: "2024-01",
+                }}
+                addButtonLabel="Add Education"
+                renderItem={(edu, index) => (
+                  <div className="space-y-1">
+                    <InlineEditableText
+                      path={`education[${index}].degree`}
+                      value={edu.degree}
+                      className="text-[13px] font-semibold text-slate-900"
+                      as="div"
+                    />
+                    <InlineEditableText
+                      path={`education[${index}].school`}
+                      value={edu.school}
+                      className="text-[12.5px] font-medium text-slate-700"
+                      as="div"
+                    />
+                    {edu.field && (
+                      <InlineEditableText
+                        path={`education[${index}].field`}
+                        value={edu.field}
+                        className="text-[12.5px] text-slate-700"
+                        as="div"
+                      />
+                    )}
+                    <div className="text-[11px] font-medium text-slate-600">
+                      {formatDate(edu.startDate)} — {formatDate(edu.endDate)}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                )}
+              />
+            ) : (
+              <div className="space-y-3">
+                {resumeData.education.map(edu => (
+                  <div key={edu.id} className="space-y-1">
+                    <div className="text-[13px] font-semibold text-slate-900">{edu.degree}</div>
+                    <div className="text-[12.5px] font-medium text-slate-700">{edu.school}</div>
+                    {edu.field && <div className="text-[12.5px] text-slate-700">{edu.field}</div>}
+                    <div className="text-[11px] font-medium text-slate-600">
+                      {formatDate(edu.startDate)} — {formatDate(edu.endDate)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         )}
       </div>
