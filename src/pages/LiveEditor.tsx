@@ -31,13 +31,36 @@ import { RefinedPDF } from "@/components/resume/pdf/RefinedPDF";
 import { PremiumElitePDF } from "@/components/resume/pdf/PremiumElitePDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { getTemplateDefaults, type ResumeData } from "@/pages/Editor";
-import { EditableResumePreview } from "@/components/resume/EditableResumePreview";
+import { InlineEditProvider } from "@/contexts/InlineEditContext";
+import { ProfessionalTemplate } from "@/components/resume/templates/ProfessionalTemplate";
+import { ModernTemplate } from "@/components/resume/templates/ModernTemplate";
+import { MinimalTemplate } from "@/components/resume/templates/MinimalTemplate";
+import { ExecutiveTemplate } from "@/components/resume/templates/ExecutiveTemplate";
+import { FrontendTemplate } from "@/components/resume/templates/FrontendTemplate";
+import { FullstackTemplate } from "@/components/resume/templates/FullstackTemplate";
+import { BackendTemplate } from "@/components/resume/templates/BackendTemplate";
+import { GraduateTemplate } from "@/components/resume/templates/GraduateTemplate";
+import { StarterTemplate } from "@/components/resume/templates/StarterTemplate";
+import { FresherTemplate } from "@/components/resume/templates/FresherTemplate";
+import { PremiumFresherTemplate } from "@/components/resume/templates/PremiumFresherTemplate";
+import { SeniorTemplate } from "@/components/resume/templates/SeniorTemplate";
+import { SeniorFrontendTemplate } from "@/components/resume/templates/SeniorFrontendTemplate";
+import { SoftwareTemplate } from "@/components/resume/templates/SoftwareTemplate";
+import { PremiumUniversalTemplate } from "@/components/resume/templates/PremiumUniversalTemplate";
+import { PremiumProTemplate } from "@/components/resume/templates/PremiumProTemplate";
+import { FresherEliteTemplate } from "@/components/resume/templates/FresherEliteTemplate";
+import { AnalystTemplate } from "@/components/resume/templates/AnalystTemplate";
+import { EliteTemplate } from "@/components/resume/templates/EliteTemplate";
+import { CorporateExecutiveTemplate } from "@/components/resume/templates/CorporateExecutiveTemplate";
+import { RefinedTemplate } from "@/components/resume/templates/RefinedTemplate";
+import { PremiumEliteTemplate } from "@/components/resume/templates/PremiumEliteTemplate";
+import { SeniorBackendTemplate } from "@/components/resume/templates/SeniorBackendTemplate";
 
 const pdfTemplates: Record<string, any> = {
   professional: ProfessionalPDF,
   modern: ModernPDF,
   minimal: MinimalPDF,
-  executive: ExecutivePDF,
+  executive: ExecutiveTemplate,
   frontend: FrontendPDF,
   fullstack: FullstackPDF,
   backend: BackendPDF,
@@ -57,6 +80,32 @@ const pdfTemplates: Record<string, any> = {
   "corporate-executive": CorporateExecutivePDF,
   refined: RefinedPDF,
   "premium-elite": PremiumElitePDF,
+};
+
+const displayTemplates: Record<string, any> = {
+  professional: ProfessionalTemplate,
+  modern: ModernTemplate,
+  minimal: MinimalTemplate,
+  executive: ExecutiveTemplate,
+  frontend: FrontendTemplate,
+  fullstack: FullstackTemplate,
+  backend: BackendTemplate,
+  graduate: GraduateTemplate,
+  starter: StarterTemplate,
+  fresher: FresherTemplate,
+  "premium-fresher": PremiumFresherTemplate,
+  senior: SeniorTemplate,
+  "senior-frontend": SeniorFrontendTemplate,
+  "senior-backend": SeniorBackendTemplate,
+  software: SoftwareTemplate,
+  "premium-universal": PremiumUniversalTemplate,
+  "premium-pro": PremiumProTemplate,
+  "fresher-elite": FresherEliteTemplate,
+  analyst: AnalystTemplate,
+  elite: EliteTemplate,
+  "corporate-executive": CorporateExecutiveTemplate,
+  refined: RefinedTemplate,
+  "premium-elite": PremiumEliteTemplate,
 };
 
 const LiveEditor = () => {
@@ -202,12 +251,18 @@ const LiveEditor = () => {
 
       <div className="flex-1 overflow-auto p-4 md:p-8">
         <div className="container mx-auto max-w-5xl">
-          <EditableResumePreview
-            resumeData={resumeData}
-            setResumeData={setResumeData}
-            templateId={templateId || "professional"}
-            themeColor={themeColor}
-          />
+          <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
+            <div className="bg-white shadow-2xl rounded-lg overflow-hidden">
+              {(() => {
+                const TemplateComponent = displayTemplates[templateId || "professional"];
+                return TemplateComponent ? (
+                  <TemplateComponent resumeData={resumeData} themeColor={themeColor} />
+                ) : (
+                  <ProfessionalTemplate resumeData={resumeData} themeColor={themeColor} />
+                );
+              })()}
+            </div>
+          </InlineEditProvider>
         </div>
       </div>
     </div>
