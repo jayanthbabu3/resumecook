@@ -199,22 +199,10 @@ const Dashboard = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="experienced" className="py-3">
-                <div className="flex items-center gap-3">
-                  <Briefcase className="h-4 w-4 text-primary" />
-                  <span className="font-medium">Experienced Professionals</span>
-                  <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                    {experiencedTemplates.length}
-                  </span>
-                </div>
+                <span className="font-medium">Experienced Professionals ({experiencedTemplates.length})</span>
               </SelectItem>
               <SelectItem value="freshers" className="py-3">
-                <div className="flex items-center gap-3">
-                  <GraduationCap className="h-4 w-4 text-emerald-600" />
-                  <span className="font-medium">Freshers & Graduates</span>
-                  <span className="ml-auto rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600">
-                    {freshersTemplates.length}
-                  </span>
-                </div>
+                <span className="font-medium">Freshers & Graduates ({freshersTemplates.length})</span>
               </SelectItem>
             </SelectContent>
           </Select>
