@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Download, Loader2, ArrowLeft, Edit3, FileEdit } from "lucide-react";
@@ -68,6 +68,10 @@ const LiveEditor = () => {
   const [themeColor, setThemeColor] = useState("#7c3aed");
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [editorMode, setEditorMode] = useState<"live" | "form">("live");
+
+  useEffect(() => {
+    setResumeData(getTemplateDefaults(templateId || "professional"));
+  }, [templateId]);
 
   const handleDownloadPDF = useCallback(async () => {
     if (!templateId) return;
