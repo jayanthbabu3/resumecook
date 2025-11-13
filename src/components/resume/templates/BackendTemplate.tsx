@@ -51,10 +51,28 @@ export const BackendTemplate = ({ resumeData, themeColor = "#374151", editable =
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-[32px] font-bold tracking-tight text-gray-900">
-                {resumeData.personalInfo.fullName}
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={resumeData.personalInfo.fullName}
+                    placeholder="Your Name"
+                    as="span"
+                  />
+                ) : (
+                  resumeData.personalInfo.fullName
+                )}
               </h1>
               <p className="text-[13px] font-semibold text-gray-600">
-                {resumeData.personalInfo.title}
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.title"
+                    value={resumeData.personalInfo.title}
+                    placeholder="Professional Title"
+                    as="span"
+                  />
+                ) : (
+                  resumeData.personalInfo.title
+                )}
               </p>
             </div>
             <ProfilePhoto src={photo} borderClass="border-2" />
@@ -95,7 +113,17 @@ export const BackendTemplate = ({ resumeData, themeColor = "#374151", editable =
               Professional Summary
             </h2>
             <p className="text-[12.5px] text-gray-700 leading-[1.7]">
-              {resumeData.personalInfo.summary}
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.summary"
+                  value={resumeData.personalInfo.summary}
+                  placeholder="Professional Summary"
+                  multiline
+                  as="span"
+                />
+              ) : (
+                resumeData.personalInfo.summary
+              )}
             </p>
           </div>
         )}

@@ -84,11 +84,29 @@ export const ExecutiveTemplate = ({
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-[30px] font-bold tracking-tight">
-                {resumeData.personalInfo.fullName || "Your Name"}
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={resumeData.personalInfo.fullName || ""}
+                    placeholder="Your Name"
+                    as="span"
+                  />
+                ) : (
+                  resumeData.personalInfo.fullName || "Your Name"
+                )}
               </h1>
               {resumeData.personalInfo.title && (
                 <p className="text-[15px] font-light text-white/80 mt-1.5">
-                  {resumeData.personalInfo.title}
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.title"
+                      value={resumeData.personalInfo.title}
+                      placeholder="Professional Title"
+                      as="span"
+                    />
+                  ) : (
+                    resumeData.personalInfo.title
+                  )}
                 </p>
               )}
             </div>
