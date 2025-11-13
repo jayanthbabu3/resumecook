@@ -268,7 +268,7 @@ const LiveEditor = () => {
               if (supportsInlineEdit) {
                 return (
                   <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
-                    <TemplateComponent resumeData={resumeData} themeColor={themeColor} />
+                    <TemplateComponent resumeData={resumeData} themeColor={themeColor} editable={true} />
                   </InlineEditProvider>
                 );
               }

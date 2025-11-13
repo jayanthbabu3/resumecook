@@ -7,9 +7,10 @@ import { InlineEditableList } from "@/components/resume/InlineEditableList";
 interface TemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
+  editable?: boolean;
 }
 
-export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateProps) => {
+export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed", editable = false }: TemplateProps) => {
   const formatDate = (date: string) => {
     if (!date) return "";
     const [year, month] = date.split("-");
@@ -24,41 +25,59 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
       {/* Header - Centered */}
       <div className="bg-white mb-8">
         <div className="text-center">
-          <InlineEditableText
-            path="personalInfo.fullName"
-            value={resumeData.personalInfo.fullName || "Your Name"}
-            className="text-[32px] font-bold mb-4 text-gray-900 block"
-            as="h1"
-          />
+          {editable ? (
+            <InlineEditableText
+              path="personalInfo.fullName"
+              value={resumeData.personalInfo.fullName || "Your Name"}
+              className="text-[32px] font-bold mb-4 text-gray-900 block"
+              as="h1"
+            />
+          ) : (
+            <h1 className="text-[32px] font-bold mb-4 text-gray-900">
+              {resumeData.personalInfo.fullName || "Your Name"}
+            </h1>
+          )}
           
           {/* Contact Info - Centered Horizontal Layout */}
           <div className="flex justify-center flex-wrap gap-x-4 gap-y-1 text-[12px] text-gray-600">
             {resumeData.personalInfo.email && (
-              <InlineEditableText
-                path="personalInfo.email"
-                value={resumeData.personalInfo.email}
-                className="inline-block"
-              />
+              editable ? (
+                <InlineEditableText
+                  path="personalInfo.email"
+                  value={resumeData.personalInfo.email}
+                  className="inline-block"
+                />
+              ) : (
+                <span>{resumeData.personalInfo.email}</span>
+              )
             )}
             {resumeData.personalInfo.email && resumeData.personalInfo.phone && (
               <span>•</span>
             )}
             {resumeData.personalInfo.phone && (
-              <InlineEditableText
-                path="personalInfo.phone"
-                value={resumeData.personalInfo.phone}
-                className="inline-block"
-              />
+              editable ? (
+                <InlineEditableText
+                  path="personalInfo.phone"
+                  value={resumeData.personalInfo.phone}
+                  className="inline-block"
+                />
+              ) : (
+                <span>{resumeData.personalInfo.phone}</span>
+              )
             )}
             {resumeData.personalInfo.phone && resumeData.personalInfo.location && (
               <span>•</span>
             )}
             {resumeData.personalInfo.location && (
-              <InlineEditableText
-                path="personalInfo.location"
-                value={resumeData.personalInfo.location}
-                className="inline-block"
-              />
+              editable ? (
+                <InlineEditableText
+                  path="personalInfo.location"
+                  value={resumeData.personalInfo.location}
+                  className="inline-block"
+                />
+              ) : (
+                <span>{resumeData.personalInfo.location}</span>
+              )
             )}
           </div>
         </div>
@@ -71,13 +90,19 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
             <h2 className="text-[15px] font-semibold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Professional Summary
             </h2>
-            <InlineEditableText
-              path="personalInfo.summary"
-              value={resumeData.personalInfo.summary}
-              className="text-[12.5px] text-gray-700 leading-[1.7] block"
-              multiline
-              as="p"
-            />
+            {editable ? (
+              <InlineEditableText
+                path="personalInfo.summary"
+                value={resumeData.personalInfo.summary}
+                className="text-[12.5px] text-gray-700 leading-[1.7] block"
+                multiline
+                as="p"
+              />
+            ) : (
+              <p className="text-[12.5px] text-gray-700 leading-[1.7]">
+                {resumeData.personalInfo.summary}
+              </p>
+            )}
           </div>
         )}
 
@@ -87,53 +112,76 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
             <h2 className="text-[15px] font-semibold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Work Experience
             </h2>
-            <InlineEditableList
-              path="experience"
-              items={resumeData.experience}
-              defaultItem={{
-                id: Date.now().toString(),
-                company: "Company Name",
-                position: "Position Title",
-                startDate: "2023-01",
-                endDate: "2024-01",
-                description: "Job description here",
-                current: false,
-              }}
-              addButtonLabel="Add Experience"
-              renderItem={(exp, index) => (
-                <div className="relative pl-4 border-l-4" style={{ borderColor: themeColor }}>
-                  <div className="flex justify-between items-start mb-2 gap-4">
-                    <div className="flex-1">
+            {editable ? (
+              <InlineEditableList
+                path="experience"
+                items={resumeData.experience}
+                defaultItem={{
+                  id: Date.now().toString(),
+                  company: "Company Name",
+                  position: "Position Title",
+                  startDate: "2023-01",
+                  endDate: "2024-01",
+                  description: "Job description here",
+                  current: false,
+                }}
+                addButtonLabel="Add Experience"
+                renderItem={(exp, index) => (
+                  <div className="relative pl-4 border-l-4" style={{ borderColor: themeColor }}>
+                    <div className="flex justify-between items-start mb-2 gap-4">
+                      <div className="flex-1">
+                        <InlineEditableText
+                          path={`experience[${index}].position`}
+                          value={exp.position || "Position Title"}
+                          className="text-[15px] font-semibold text-gray-900 block"
+                          as="h3"
+                        />
+                        <InlineEditableText
+                          path={`experience[${index}].company`}
+                          value={exp.company || "Company Name"}
+                          className="text-[13px] font-medium block"
+                          style={{ color: themeColor }}
+                          as="p"
+                        />
+                      </div>
+                      <span className="text-[12px] text-gray-600 whitespace-nowrap">
+                        {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
+                      </span>
+                    </div>
+                    {exp.description && (
                       <InlineEditableText
-                        path={`experience[${index}].position`}
-                        value={exp.position || "Position Title"}
-                        className="text-[15px] font-semibold text-gray-900 block"
-                        as="h3"
-                      />
-                      <InlineEditableText
-                        path={`experience[${index}].company`}
-                        value={exp.company || "Company Name"}
-                        className="text-[13px] font-medium block"
-                        style={{ color: themeColor }}
+                        path={`experience[${index}].description`}
+                        value={exp.description}
+                        className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
+                        multiline
                         as="p"
                       />
-                    </div>
-                    <span className="text-[12px] text-gray-600 whitespace-nowrap">
-                      {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-                    </span>
+                    )}
                   </div>
-                  {exp.description && (
-                    <InlineEditableText
-                      path={`experience[${index}].description`}
-                      value={exp.description}
-                      className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
-                      multiline
-                      as="p"
-                    />
-                  )}
-                </div>
-              )}
-            />
+                )}
+              />
+            ) : (
+              <div className="space-y-5">
+                {resumeData.experience.map((exp) => (
+                  <div key={exp.id} className="relative pl-4 border-l-4" style={{ borderColor: themeColor }}>
+                    <div className="flex justify-between items-start mb-2 gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-[15px] font-semibold text-gray-900">{exp.position || "Position Title"}</h3>
+                        <p className="text-[13px] font-medium" style={{ color: themeColor }}>{exp.company || "Company Name"}</p>
+                      </div>
+                      <span className="text-[12px] text-gray-600 whitespace-nowrap">
+                        {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
+                      </span>
+                    </div>
+                    {exp.description && (
+                      <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
+                        {exp.description}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -143,30 +191,54 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
             <h2 className="text-[15px] font-semibold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Technical Skills
             </h2>
-            <InlineEditableList
-              path="skills"
-              items={resumeData.skills}
-              defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-              addButtonLabel="Add Skill"
-              renderItem={(skill, index) => {
-                const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
-                const color = colors[index % colors.length];
-                return skill.name ? (
-                  <InlineEditableText
-                    path={`skills[${index}].name`}
-                    value={skill.name}
-                    className="px-4 py-1.5 text-[12px] font-medium rounded-full inline-block"
-                    style={{ 
-                      color: color,
-                      backgroundColor: `${color}15`,
-                      borderWidth: '1px',
-                      borderStyle: 'solid',
-                      borderColor: `${color}40`
-                    }}
-                  />
-                ) : null;
-              }}
-            />
+            {editable ? (
+              <InlineEditableList
+                path="skills"
+                items={resumeData.skills}
+                defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
+                addButtonLabel="Add Skill"
+                renderItem={(skill, index) => {
+                  const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+                  const color = colors[index % colors.length];
+                  return skill.name ? (
+                    <InlineEditableText
+                      path={`skills[${index}].name`}
+                      value={skill.name}
+                      className="px-4 py-1.5 text-[12px] font-medium rounded-full inline-block"
+                      style={{ 
+                        color: color,
+                        backgroundColor: `${color}15`,
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        borderColor: `${color}40`
+                      }}
+                    />
+                  ) : null;
+                }}
+              />
+            ) : (
+              <div className="flex flex-wrap gap-2.5">
+                {resumeData.skills.map((skill, index) => {
+                  const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+                  const color = colors[index % colors.length];
+                  return skill.name ? (
+                    <span
+                      key={skill.id}
+                      className="px-4 py-1.5 text-[12px] font-medium rounded-full"
+                      style={{ 
+                        color: color,
+                        backgroundColor: `${color}15`,
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        borderColor: `${color}40`
+                      }}
+                    >
+                      {skill.name}
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            )}
           </div>
         )}
 
@@ -176,48 +248,65 @@ export const ModernTemplate = ({ resumeData, themeColor = "#7c3aed" }: TemplateP
             <h2 className="text-[15px] font-semibold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">
               Education
             </h2>
-            <InlineEditableList
-              path="education"
-              items={resumeData.education}
-              defaultItem={{
-                id: Date.now().toString(),
-                school: "School Name",
-                degree: "Degree",
-                field: "Field of Study",
-                startDate: "2019-09",
-                endDate: "2023-05",
-              }}
-              addButtonLabel="Add Education"
-              renderItem={(edu, index) => (
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <InlineEditableText
-                      path={`education[${index}].degree`}
-                      value={edu.degree}
-                      className="text-[13px] font-semibold text-gray-900 block"
-                      as="h3"
-                    />
-                    {edu.field && (
+            {editable ? (
+              <InlineEditableList
+                path="education"
+                items={resumeData.education}
+                defaultItem={{
+                  id: Date.now().toString(),
+                  school: "School Name",
+                  degree: "Degree",
+                  field: "Field of Study",
+                  startDate: "2019-09",
+                  endDate: "2023-05",
+                }}
+                addButtonLabel="Add Education"
+                renderItem={(edu, index) => (
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="flex-1">
                       <InlineEditableText
-                        path={`education[${index}].field`}
-                        value={edu.field}
-                        className="text-[12px] text-gray-600 block"
+                        path={`education[${index}].degree`}
+                        value={edu.degree}
+                        className="text-[13px] font-semibold text-gray-900 block"
+                        as="h3"
+                      />
+                      {edu.field && (
+                        <InlineEditableText
+                          path={`education[${index}].field`}
+                          value={edu.field}
+                          className="text-[12px] text-gray-600 block"
+                          as="p"
+                        />
+                      )}
+                      <InlineEditableText
+                        path={`education[${index}].school`}
+                        value={edu.school}
+                        className="text-[12.5px] text-gray-700 block"
                         as="p"
                       />
-                    )}
-                    <InlineEditableText
-                      path={`education[${index}].school`}
-                      value={edu.school}
-                      className="text-[12.5px] text-gray-700 block"
-                      as="p"
-                    />
+                    </div>
+                    <span className="text-[12px] text-gray-500 whitespace-nowrap">
+                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    </span>
                   </div>
-                  <span className="text-[12px] text-gray-500 whitespace-nowrap">
-                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                  </span>
-                </div>
-              )}
-            />
+                )}
+              />
+            ) : (
+              <div className="space-y-4">
+                {resumeData.education.map((edu) => (
+                  <div key={edu.id} className="flex justify-between items-start gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-[13px] font-semibold text-gray-900">{edu.degree}</h3>
+                      {edu.field && <p className="text-[12px] text-gray-600">{edu.field}</p>}
+                      <p className="text-[12.5px] text-gray-700">{edu.school}</p>
+                    </div>
+                    <span className="text-[12px] text-gray-500 whitespace-nowrap">
+                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
