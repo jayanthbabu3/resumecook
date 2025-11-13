@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Gauge, Loader2, RotateCcw } from "lucide-react";
+import { Download, Gauge, Loader2, RotateCcw, ArrowLeft, Edit3, FileEdit } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResumeForm } from "@/components/resume/ResumeForm";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { toast } from "sonner";
@@ -1798,6 +1799,7 @@ const Editor = () => {
   const [atsDialogOpen, setAtsDialogOpen] = useState(false);
   const [atsLoading, setAtsLoading] = useState(false);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // Register fonts for PDF generation
   useEffect(() => {
@@ -1884,6 +1886,7 @@ const Editor = () => {
   }, [themeColor, templateId]);
 
   const handleDownload = async () => {
+    setIsDownloading(true);
     try {
       // Select the appropriate PDF template
       const pdfTemplates = {
@@ -1935,6 +1938,8 @@ const Editor = () => {
     } catch (error) {
       console.error("Download error:", error);
       toast.error("Failed to download resume");
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -2076,26 +2081,81 @@ const Editor = () => {
       
       {/* Fixed Header Section */}
       <div className="sticky top-0 z-50 bg-background border-b border-border/60 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 sm:px-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <Breadcrumbs items={editorBreadcrumbItems} />
-            <div className="flex flex-wrap items-center gap-2">
+        <div className="container mx-auto px-4 py-3 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            {/* Left Section: Back button and Title */}
+            <div className="flex items-center gap-3">
               <Button
-                onClick={() => setResetDialogOpen(true)}
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/dashboard")}
+                className="gap-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </Button>
+              <div className="border-l border-border h-8" />
+              <div>
+                <h1 className="text-lg font-semibold text-primary">Form Editor</h1>
+                <p className="text-xs text-muted-foreground">Fill in your information below</p>
+              </div>
+            </div>
+
+            {/* Right Section: Controls */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <Tabs value="form" onValueChange={(v) => v === "live" && navigate(`/live-editor/${templateId}`)} className="hidden md:block">
+                <TabsList className="bg-muted/50">
+                  <TabsTrigger value="live" className="gap-2">
+                    <Edit3 className="h-4 w-4" />
+                    Live Editor
+                  </TabsTrigger>
+                  <TabsTrigger value="form" className="gap-2">
+                    <FileEdit className="h-4 w-4" />
+                    Form Editor
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+
+              <Button
                 variant="outline"
                 size="sm"
-                className="gap-1 h-8 px-3 text-xs"
+                onClick={() => navigate(`/live-editor/${templateId}`)}
+                className="md:hidden"
               >
-                <RotateCcw className="h-3 w-3" />
-                Reset Form
+                <Edit3 className="h-4 w-4 mr-2" />
+                Switch to Live
               </Button>
+              
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border">
+                <label htmlFor="themeColor" className="text-sm font-medium whitespace-nowrap">
+                  Theme:
+                </label>
+                <input
+                  id="themeColor"
+                  type="color"
+                  value={themeColor}
+                  onChange={(e) => setThemeColor(e.target.value)}
+                  className="h-8 w-12 cursor-pointer rounded border border-border"
+                />
+              </div>
+              
               <Button
                 onClick={handleDownload}
-                size="sm"
-                className="gap-1 h-8 px-3 text-xs bg-primary hover:bg-primary-hover"
+                disabled={isDownloading}
+                size="default"
+                className="gap-2 shadow-md"
               >
-                <Download className="h-3 w-3" />
-                Download Resume
+                {isDownloading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4" />
+                    Download PDF
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -2284,49 +2344,7 @@ const Editor = () => {
           {/* Preview Section */}
           <div className="lg:sticky lg:top-32 max-h-[calc(100vh-8rem)] overflow-y-auto">
             <div className="space-y-4 rounded-2xl border border-border/50 bg-background px-4 py-5 shadow-sm sm:px-6 sm:py-6">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-lg font-bold">Live Preview</h2>
-
-                {/* Color Theme Selector */}
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-                  <span className="text-sm font-medium text-muted-foreground sm:text-right">
-                    Theme color
-                  </span>
-                  <div className="flex flex-wrap items-center gap-2">
-                    {[
-                      { name: "Purple", color: "#7c3aed" },
-                      { name: "Blue", color: "#2563eb" },
-                      { name: "Emerald", color: "#059669" },
-                      { name: "Rose", color: "#e11d48" },
-                      { name: "Orange", color: "#ea580c" },
-                      { name: "Teal", color: "#0d9488" },
-                    ].map((theme) => (
-                      <button
-                        key={theme.color}
-                        onClick={() => setThemeColor(theme.color)}
-                        className={`w-7 h-7 rounded-full border-2 transition-all hover:scale-110 ${
-                          themeColor === theme.color
-                            ? "border-gray-900 ring-2 ring-offset-2 ring-gray-900"
-                            : "border-gray-300"
-                        }`}
-                        style={{ backgroundColor: theme.color }}
-                        title={theme.name}
-                      />
-                    ))}
-
-                    {/* Custom Color Picker */}
-                    <div className="relative">
-                      <input
-                        type="color"
-                        value={themeColor}
-                        onChange={(e) => setThemeColor(e.target.value)}
-                        className="w-7 h-7 rounded-full border-2 border-gray-300 cursor-pointer"
-                        title="Custom Color"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <h2 className="text-lg font-bold">Live Preview</h2>
               <div className="border-2 border-border rounded-xl overflow-hidden shadow-premium bg-white">
                 <ResumePreview
                   resumeData={resumeData}
