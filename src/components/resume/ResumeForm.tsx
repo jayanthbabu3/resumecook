@@ -11,9 +11,11 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Trash2, Briefcase, GraduationCap, Code, FileText, Sparkles, Camera, X, Search, Tag } from "lucide-react";
+import { Plus, Trash2, Briefcase, GraduationCap, Code, FileText, Sparkles, Camera, X, Search, Tag, Layers } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ResumeData } from "@/pages/Editor";
+import { DynamicSections } from "./DynamicSections";
+import type { ResumeSection } from "@/types/resume";
 
 interface ResumeFormProps {
   resumeData: ResumeData;
@@ -318,6 +320,12 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
     });
   };
 
+  const updateDynamicSections = (sections: ResumeSection[]) => {
+    setResumeData({
+      ...resumeData,
+      dynamicSections: sections,
+    });
+  };
 
   const formatCountLabel = (
     count: number,
@@ -562,6 +570,40 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                     event.target.value = "";
                   }
                 }}
+              />
+            </CardContent>
+          </Card>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem
+        value="dynamic-sections"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-purple-500/10 text-primary shadow-sm">
+              <Layers className="h-4 w-4" />
+            </span>
+            Resume Sections (New!)
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-gradient-to-r from-primary/10 to-purple-500/10 px-2.5 py-0.5 text-[11px] font-medium text-primary capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {resumeData.dynamicSections?.length || 0} Sections
+            </span>
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
+            <CardHeader className="pb-4">
+              <CardDescription>
+                Drag and drop to reorder sections or add new ones from the section library
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicSections
+                sections={resumeData.dynamicSections || []}
+                onChange={updateDynamicSections}
               />
             </CardContent>
           </Card>

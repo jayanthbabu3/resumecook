@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/pages/Editor";
+import type { ResumeSection } from "@/types/resume";
 import { Mail, Phone, MapPin, Briefcase, GraduationCap } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
@@ -21,6 +22,168 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false 
   };
 
   const photo = resumeData.personalInfo.photo;
+
+  // Render a single dynamic section
+  const renderDynamicSection = (section: ResumeSection) => {
+    if (!section.enabled) return null;
+
+    const sectionData = section.data;
+
+    switch (sectionData.type) {
+      case 'certifications':
+        return sectionData.items.length > 0 ? (
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
+              {section.title}
+            </h2>
+            <div className="space-y-3">
+              {sectionData.items.map((cert) => (
+                <div key={cert.id} style={{ pageBreakInside: 'avoid' }}>
+                  <div className="flex justify-between items-baseline mb-1">
+                    <div>
+                      <h3 className="text-base font-bold text-gray-900">{cert.name}</h3>
+                      <p className="text-sm text-gray-700 font-semibold">{cert.issuer}</p>
+                    </div>
+                    <div className="text-xs text-gray-600">{formatDate(cert.date)}</div>
+                  </div>
+                  {cert.credentialId && (
+                    <p className="text-xs text-gray-600">ID: {cert.credentialId}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'languages':
+        return sectionData.items.length > 0 ? (
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2">
+              {section.title}
+            </h2>
+            <div className="grid grid-cols-2 gap-2">
+              {sectionData.items.map((lang) => (
+                <div key={lang.id} className="text-sm text-gray-700">
+                  <span className="font-semibold">{lang.language}</span>
+                  <span className="text-gray-600"> - {lang.proficiency}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'projects':
+        return sectionData.items.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
+              {section.title}
+            </h2>
+            <div className="space-y-4">
+              {sectionData.items.map((project) => (
+                <div key={project.id} style={{ pageBreakInside: 'avoid' }}>
+                  <h3 className="text-base font-bold text-gray-900">{project.name}</h3>
+                  {project.description && (
+                    <p className="text-sm text-gray-700 leading-relaxed mt-1">{project.description}</p>
+                  )}
+                  {project.techStack.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      <span className="text-xs text-gray-600">Tech:</span>
+                      {project.techStack.map((tech, idx) => (
+                        <span key={idx} className="text-xs text-gray-700 font-medium">
+                          {tech}{idx < project.techStack.length - 1 ? "," : ""}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'awards':
+        return sectionData.items.length > 0 ? (
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
+              {section.title}
+            </h2>
+            <div className="space-y-3">
+              {sectionData.items.map((award) => (
+                <div key={award.id} style={{ pageBreakInside: 'avoid' }}>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="text-base font-bold text-gray-900">{award.title}</h3>
+                    <div className="text-xs text-gray-600">{formatDate(award.date)}</div>
+                  </div>
+                  <p className="text-sm text-gray-700">{award.issuer}</p>
+                  {award.description && (
+                    <p className="text-sm text-gray-600 mt-1">{award.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'volunteer':
+        return sectionData.items.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
+              {section.title}
+            </h2>
+            <div className="space-y-4">
+              {sectionData.items.map((vol) => (
+                <div key={vol.id} style={{ pageBreakInside: 'avoid' }}>
+                  <div className="flex justify-between items-baseline mb-2">
+                    <div>
+                      <h3 className="text-base font-bold text-gray-900">{vol.role}</h3>
+                      <p className="text-sm text-gray-700 font-semibold">{vol.organization}</p>
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      {formatDate(vol.startDate)} - {vol.current ? "Present" : formatDate(vol.endDate)}
+                    </div>
+                  </div>
+                  {vol.description && (
+                    <p className="text-sm text-gray-700 leading-relaxed">{vol.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'portfolio':
+        return sectionData.items.length > 0 ? (
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2">
+              {section.title}
+            </h2>
+            <div className="space-y-2">
+              {sectionData.items.map((item) => (
+                <div key={item.id} className="text-sm">
+                  <span className="font-semibold text-gray-900">{item.platform}:</span>{" "}
+                  <span className="text-gray-700">{item.url}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'custom':
+        return sectionData.content ? (
+          <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+            <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-300 pb-2">
+              {section.title}
+            </h2>
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+              {sectionData.content}
+            </p>
+          </div>
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="w-full h-full bg-white p-12 text-gray-900" style={{ pageBreakAfter: 'auto' }}>
@@ -380,6 +543,20 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false 
           )}
         </div>
       ))}
+
+      {/* Dynamic Sections (New Feature) */}
+      {resumeData.dynamicSections && resumeData.dynamicSections.length > 0 && (
+        <>
+          {resumeData.dynamicSections
+            .filter(section => section.enabled)
+            .sort((a, b) => a.order - b.order)
+            .map(section => (
+              <div key={section.id}>
+                {renderDynamicSection(section)}
+              </div>
+            ))}
+        </>
+      )}
     </div>
   );
 };
