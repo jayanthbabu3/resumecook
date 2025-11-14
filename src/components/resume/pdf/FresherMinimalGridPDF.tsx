@@ -13,7 +13,6 @@ import { registerPDFFonts } from "@/lib/pdfFonts";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 registerPDFFonts();
-};
 
 const styles = StyleSheet.create({
   page: {
@@ -205,7 +204,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
 });
-};
 
 const EmailIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -213,14 +211,12 @@ const EmailIcon = () => (
     <Path d="m22 6-10 7L2 6" fill="none" stroke="#10B981" strokeWidth={2} />
   </Svg>
 );
-};
 
 const PhoneIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
     <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#10B981" strokeWidth={2} />
   </Svg>
 );
-};
 
 const LocationIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -228,14 +224,12 @@ const LocationIcon = () => (
     <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="#10B981" strokeWidth={2} />
   </Svg>
 );
-};
 
 const AwardIcon = () => (
   <Svg style={styles.titleIcon} viewBox="0 0 24 24">
     <Path d="M12 2L8 7H2l5 8-3 7 8-4 8 4-3-7 5-8h-6l-4-5z" fill="none" stroke="#10B981" strokeWidth={2} />
   </Svg>
 );
-};
 
 const CalendarIcon = () => (
   <Svg style={styles.dateIcon} viewBox="0 0 24 24">
@@ -243,7 +237,6 @@ const CalendarIcon = () => (
     <Path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#6B7280" strokeWidth={2} fill="none" />
   </Svg>
 );
-};
 
 interface FresherMinimalGridPDFProps {
   resumeData: ResumeData;
