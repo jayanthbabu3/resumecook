@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Scale,
   Settings,
+  Sparkles,
 } from "lucide-react";
 
 export interface ProfessionCategory {
@@ -21,18 +22,40 @@ export interface ProfessionCategory {
   gradientFrom: string;
   gradientTo: string;
   templateIds: string[];
+  isAll?: boolean; // Special flag for the "All" category
 }
 
 export const professionCategories: ProfessionCategory[] = [
   {
-    id: "software-technology",
-    name: "Software & Technology",
-    description: "Resume templates for developers, engineers, and tech professionals",
-    icon: Code,
-    color: "#3b82f6",
-    gradientFrom: "#3b82f6",
-    gradientTo: "#2563eb",
+    id: "all",
+    name: "All Templates",
+    description: "Browse all our professionally designed resume templates across all categories",
+    icon: Sparkles,
+    color: "#6366f1",
+    gradientFrom: "#6366f1",
+    gradientTo: "#8b5cf6",
+    isAll: true,
     templateIds: [
+      // Universal Professional Templates
+      "professional",
+      "minimal",
+      "premium-universal",
+      "premium-pro",
+      "elite",
+      "refined",
+      "premium-elite",
+      "modern-sidebar",
+      "minimalist-geometric",
+      "bold-headline",
+      "dual-tone",
+      "contemporary-split",
+      // Fresh Graduates Templates
+      "graduate",
+      "starter",
+      "fresher",
+      "premium-fresher",
+      "fresher-elite",
+      // Software & Technology Templates
       "frontend",
       "backend",
       "fullstack",
@@ -41,48 +64,16 @@ export const professionCategories: ProfessionCategory[] = [
       "senior-backend",
       "software",
       "tech-grid",
-    ],
-  },
-  {
-    id: "business-leadership",
-    name: "Business & Leadership",
-    description: "Executive and leadership templates for senior professionals",
-    icon: Briefcase,
-    color: "#8b5cf6",
-    gradientFrom: "#8b5cf6",
-    gradientTo: "#7c3aed",
-    templateIds: [
+      // Creative & Design Templates
+      "creative-accent",
+      "modern",
+      "elegant-serif",
+      // Business & Leadership Templates
       "executive",
       "sapphire-executive",
       "luxury-timeline",
       "corporate-executive",
       "analyst",
-    ],
-  },
-  {
-    id: "creative-design",
-    name: "Creative & Design",
-    description: "Modern creative templates for designers and creative professionals",
-    icon: Palette,
-    color: "#ec4899",
-    gradientFrom: "#ec4899",
-    gradientTo: "#db2777",
-    templateIds: ["creative-accent", "modern", "elegant-serif"],
-  },
-  {
-    id: "fresh-graduates",
-    name: "Fresh Graduates & Students",
-    description: "Entry-level templates for recent graduates and students",
-    icon: GraduationCap,
-    color: "#10b981",
-    gradientFrom: "#10b981",
-    gradientTo: "#059669",
-    templateIds: [
-      "graduate",
-      "starter",
-      "fresher",
-      "premium-fresher",
-      "fresher-elite",
     ],
   },
   {
@@ -106,6 +97,67 @@ export const professionCategories: ProfessionCategory[] = [
       "bold-headline",
       "dual-tone",
       "contemporary-split",
+    ],
+  },
+  {
+    id: "fresh-graduates",
+    name: "Fresh Graduates & Students",
+    description: "Entry-level templates for recent graduates and students",
+    icon: GraduationCap,
+    color: "#10b981",
+    gradientFrom: "#10b981",
+    gradientTo: "#059669",
+    templateIds: [
+      "graduate",
+      "starter",
+      "fresher",
+      "premium-fresher",
+      "fresher-elite",
+    ],
+  },
+  {
+    id: "software-technology",
+    name: "Software & Technology",
+    description: "Resume templates for developers, engineers, and tech professionals",
+    icon: Code,
+    color: "#3b82f6",
+    gradientFrom: "#3b82f6",
+    gradientTo: "#2563eb",
+    templateIds: [
+      "frontend",
+      "backend",
+      "fullstack",
+      "senior",
+      "senior-frontend",
+      "senior-backend",
+      "software",
+      "tech-grid",
+    ],
+  },
+  {
+    id: "creative-design",
+    name: "Creative & Design",
+    description: "Modern creative templates for designers and creative professionals",
+    icon: Palette,
+    color: "#ec4899",
+    gradientFrom: "#ec4899",
+    gradientTo: "#db2777",
+    templateIds: ["creative-accent", "modern", "elegant-serif"],
+  },
+  {
+    id: "business-leadership",
+    name: "Business & Leadership",
+    description: "Executive and leadership templates for senior professionals",
+    icon: Briefcase,
+    color: "#8b5cf6",
+    gradientFrom: "#8b5cf6",
+    gradientTo: "#7c3aed",
+    templateIds: [
+      "executive",
+      "sapphire-executive",
+      "luxury-timeline",
+      "corporate-executive",
+      "analyst",
     ],
   },
   {

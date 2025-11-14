@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { FileText, Loader2, ChevronRight, Home } from "lucide-react";
+import {
+  FileText,
+  Loader2,
+  ChevronRight,
+  Home,
+  Star,
+  GraduationCap,
+  Code,
+  Palette,
+  Briefcase,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { TemplatePreview } from "@/components/TemplatePreview";
@@ -220,8 +230,91 @@ const Dashboard = () => {
         {/* Profession Categories Grid */}
         {!selectedCategory && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {professionCategories.map((category) => {
+            {professionCategories.map((category, index) => {
               const IconComponent = category.icon;
+
+              // Special rendering for "All" card
+              if (category.isAll) {
+                return (
+                  <Card
+                    key={category.id}
+                    className="group relative overflow-hidden border-2 border-primary/40 hover:border-primary/60 transition-all duration-300 hover:shadow-2xl cursor-pointer bg-gradient-to-br from-primary/5 via-card to-primary/5 sm:col-span-2 lg:col-span-3 xl:col-span-4"
+                    onClick={() => setSelectedCategory(category.id)}
+                  >
+                    {/* Animated Gradient Background */}
+                    <div
+                      className="absolute inset-0 opacity-10 group-hover:opacity-15 transition-opacity duration-500"
+                      style={{
+                        background: `linear-gradient(135deg, ${category.gradientFrom} 0%, ${category.gradientTo} 50%, ${category.gradientFrom} 100%)`,
+                      }}
+                    />
+
+                    {/* Background Icons Grid */}
+                    <div className="absolute inset-0 overflow-hidden">
+                      <div className="absolute top-4 left-4 opacity-[0.08] group-hover:opacity-[0.12] transition-opacity duration-300">
+                        <Star className="h-16 w-16 text-primary" />
+                      </div>
+                      <div className="absolute top-8 right-12 opacity-[0.08] group-hover:opacity-[0.12] transition-opacity duration-300">
+                        <GraduationCap className="h-14 w-14 text-primary" />
+                      </div>
+                      <div className="absolute bottom-8 left-16 opacity-[0.08] group-hover:opacity-[0.12] transition-opacity duration-300">
+                        <Code className="h-18 w-18 text-primary" />
+                      </div>
+                      <div className="absolute bottom-4 right-8 opacity-[0.08] group-hover:opacity-[0.12] transition-opacity duration-300">
+                        <Palette className="h-16 w-16 text-primary" />
+                      </div>
+                      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 opacity-[0.06] group-hover:opacity-[0.10] transition-opacity duration-300">
+                        <Briefcase className="h-20 w-20 text-primary" />
+                      </div>
+                    </div>
+
+                    <div className="relative p-8 md:p-10">
+                      <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
+                        {/* Icon */}
+                        <div
+                          className="w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-3xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg"
+                          style={{
+                            background: `linear-gradient(135deg, ${category.gradientFrom} 0%, ${category.gradientTo} 100%)`,
+                          }}
+                        >
+                          <IconComponent className="h-10 w-10 md:h-12 md:w-12 text-white" />
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 text-center md:text-left space-y-3">
+                          <div>
+                            <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors mb-2">
+                              {category.name}
+                            </h3>
+                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl">
+                              {category.description}
+                            </p>
+                          </div>
+
+                          {/* Template Count Badge */}
+                          <div className="flex items-center justify-center md:justify-start gap-4 pt-2">
+                            <span
+                              className="text-sm font-semibold px-4 py-2 rounded-full shadow-sm"
+                              style={{
+                                backgroundColor: `${category.color}20`,
+                                color: category.color,
+                              }}
+                            >
+                              {category.templateIds.length} templates
+                            </span>
+                            <ChevronRight
+                              className="h-6 w-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-2 transition-all duration-300"
+                              style={{ color: category.color }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                );
+              }
+
+              // Regular category cards
               return (
                 <Card
                   key={category.id}
