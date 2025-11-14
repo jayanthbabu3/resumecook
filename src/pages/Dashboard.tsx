@@ -38,7 +38,7 @@ interface TemplateGridProps {
 
 const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
   const navigate = useNavigate();
-  const [visibleCount, setVisibleCount] = useState(9);
+  const [visibleCount, setVisibleCount] = useState(15);
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +51,7 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
         if (entries[0].isIntersecting && hasMore && !isLoading) {
           setIsLoading(true);
           setTimeout(() => {
-            setVisibleCount((prev) => Math.min(prev + 9, templates.length));
+            setVisibleCount((prev) => Math.min(prev + 15, templates.length));
             setIsLoading(false);
           }, 500);
         }
@@ -67,8 +67,8 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
   }, [hasMore, isLoading, templates.length]);
 
   return (
-    <div className="space-y-6 md:space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <div className="space-y-4 md:space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
         {visibleTemplates.map((template, index) => (
           <Card
             key={template.id}
@@ -77,7 +77,7 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
           >
             {/* Template Number Badge */}
             <div
-              className="absolute top-2 right-2 md:top-3 md:right-3 z-10 flex items-center justify-center h-7 w-7 md:h-8 md:w-8 rounded-full text-white text-xs md:text-sm font-semibold shadow-lg group-hover:scale-110 transition-transform duration-300"
+              className="absolute top-1.5 right-1.5 md:top-2 md:right-2 z-10 flex items-center justify-center h-6 w-6 md:h-7 md:w-7 rounded-full text-white text-[10px] md:text-xs font-semibold shadow-lg group-hover:scale-110 transition-transform duration-300"
               style={{
                 background: `linear-gradient(135deg, ${categoryColor} 0%, ${categoryColor}dd 100%)`,
               }}
@@ -86,7 +86,7 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
             </div>
 
             {/* Template Preview */}
-            <div className="relative aspect-[8.5/8] bg-white overflow-hidden">
+            <div className="relative aspect-[8.5/11] bg-white overflow-hidden">
               <TemplatePreview
                 templateId={template.id}
                 themeColor={themeColors[index % themeColors.length]}
@@ -94,43 +94,43 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
               />
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center gap-2 p-4 md:p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center gap-1.5 p-2 md:p-3">
                 <Button
                   size="sm"
                   variant="secondary"
-                  className="shadow-lg text-xs md:text-sm"
+                  className="shadow-lg text-[10px] md:text-xs px-2 py-1 h-7 md:h-8"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/editor/${template.id}`);
                   }}
                 >
-                  Form Editor
+                  Form
                 </Button>
                 <Button
                   size="sm"
-                  className="shadow-lg text-xs md:text-sm"
+                  className="shadow-lg text-[10px] md:text-xs px-2 py-1 h-7 md:h-8"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/live-editor/${template.id}`);
                   }}
                 >
-                  Live Editor
+                  Live
                 </Button>
               </div>
             </div>
 
             {/* Template Info */}
-            <div className="p-3 md:p-4 border-t border-border/30">
-              <div className="flex items-start justify-between gap-2 mb-1.5">
-                <h3 className="font-semibold text-xs md:text-sm text-foreground group-hover:text-primary transition-colors">
+            <div className="p-2 md:p-3 border-t border-border/30">
+              <div className="flex items-start justify-between gap-1.5 mb-1">
+                <h3 className="font-semibold text-[10px] md:text-xs text-foreground group-hover:text-primary transition-colors line-clamp-1">
                   {template.name}
                 </h3>
                 <div
-                  className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full shrink-0 mt-0.5"
+                  className="h-2 w-2 md:h-2.5 md:w-2.5 rounded-full shrink-0 mt-0.5"
                   style={{ backgroundColor: categoryColor }}
                 />
               </div>
-              <p className="text-[10px] md:text-xs text-muted-foreground line-clamp-2">
+              <p className="text-[9px] md:text-[10px] text-muted-foreground line-clamp-2 leading-tight">
                 {template.description}
               </p>
             </div>
@@ -140,20 +140,20 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
 
       {/* Infinite Scroll Trigger & Loading */}
       {hasMore && (
-        <div ref={observerRef} className="flex justify-center py-6 md:py-8">
+        <div ref={observerRef} className="flex justify-center py-4 md:py-6">
           {isLoading && (
             <div className="flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
-              <span className="text-xs md:text-sm">Loading more templates...</span>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-xs">Loading more templates...</span>
             </div>
           )}
         </div>
       )}
 
       {/* End Message */}
-      {!hasMore && templates.length > 9 && (
-        <div className="text-center py-6 md:py-8">
-          <p className="text-xs md:text-sm text-muted-foreground">
+      {!hasMore && templates.length > 15 && (
+        <div className="text-center py-4 md:py-6">
+          <p className="text-xs text-muted-foreground">
             You've viewed all {templates.length} templates
           </p>
         </div>
