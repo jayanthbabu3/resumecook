@@ -1,7 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, ArrowLeft, Edit3, FileEdit } from "lucide-react";
+import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save } from "lucide-react";
+import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
+import { firestoreService, ResumeData as FirestoreResumeData } from "@/lib/firestore";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { pdf } from "@react-pdf/renderer";
@@ -121,16 +123,153 @@ const displayTemplates: Record<string, any> = {
 const LiveEditor = () => {
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const resumeId = searchParams.get("resumeId");
+  const { user } = useFirebaseAuth();
   const [resumeData, setResumeData] = useState<ResumeData>(() =>
     getTemplateDefaults(templateId || "professional")
   );
   const [themeColor, setThemeColor] = useState("#7c3aed");
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [editorMode, setEditorMode] = useState<"live" | "form">("live");
+  const [isSaving, setIsSaving] = useState(false);
+  const [currentResumeId, setCurrentResumeId] = useState<string | null>(resumeId);
 
   useEffect(() => {
     setResumeData(getTemplateDefaults(templateId || "professional"));
   }, [templateId]);
+
+  // Load resume from Firestore if resumeId exists
+  useEffect(() => {
+    const loadResumeFromFirestore = async () => {
+      if (!resumeId || !user) return;
+
+      try {
+        const firestoreResume = await firestoreService.getResume(resumeId);
+        if (firestoreResume) {
+          // Convert Firestore resume data to Editor resume data format
+          const editorResumeData: ResumeData = {
+            personalInfo: {
+              fullName: firestoreResume.personalInfo.fullName,
+              email: firestoreResume.personalInfo.email,
+              phone: firestoreResume.personalInfo.phone,
+              location: firestoreResume.personalInfo.location,
+              title: firestoreResume.personalInfo.professionalTitle,
+              summary: firestoreResume.personalInfo.bio,
+              photo: firestoreResume.personalInfo.profilePhoto,
+            },
+            experience: firestoreResume.experience.map(exp => ({
+              id: exp.id,
+              company: exp.company,
+              position: exp.position,
+              startDate: exp.startDate,
+              endDate: exp.endDate,
+              description: exp.description,
+              current: exp.current,
+            })),
+            education: firestoreResume.education.map(edu => ({
+              id: edu.id,
+              school: edu.institution,
+              degree: edu.degree,
+              field: edu.field,
+              startDate: edu.startDate,
+              endDate: edu.endDate,
+            })),
+            skills: firestoreResume.skills.map((skill, index) => ({
+              id: skill.id,
+              name: skill.name,
+              level: 8,
+              category: index < 6 ? "core" : "toolbox",
+            })),
+            sections: [],
+          };
+          setResumeData(editorResumeData);
+        }
+      } catch (error) {
+        console.error("Error loading resume from Firestore:", error);
+        toast.error("Failed to load resume");
+      }
+    };
+
+    loadResumeFromFirestore();
+  }, [resumeId, user]);
+
+  const handleSave = useCallback(async () => {
+    if (!user) {
+      toast.error("Please sign in to save your resume");
+      return;
+    }
+
+    if (!templateId) {
+      toast.error("Template ID is missing");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      // Convert Editor resume data to Firestore format
+      const firestoreData: Omit<FirestoreResumeData, 'id' | 'userId' | 'createdAt' | 'updatedAt'> = {
+        templateId,
+        personalInfo: {
+          fullName: resumeData.personalInfo.fullName,
+          email: resumeData.personalInfo.email,
+          phone: resumeData.personalInfo.phone,
+          location: resumeData.personalInfo.location,
+          linkedinUrl: "",
+          githubUrl: "",
+          portfolioUrl: "",
+          professionalTitle: resumeData.personalInfo.title,
+          bio: resumeData.personalInfo.summary,
+          profilePhoto: resumeData.personalInfo.photo || "",
+        },
+        experience: resumeData.experience.map(exp => ({
+          id: exp.id,
+          company: exp.company,
+          position: exp.position,
+          location: "",
+          startDate: exp.startDate,
+          endDate: exp.endDate,
+          current: exp.current,
+          description: exp.description,
+        })),
+        education: resumeData.education.map(edu => ({
+          id: edu.id,
+          institution: edu.school,
+          degree: edu.degree,
+          field: edu.field,
+          location: "",
+          startDate: edu.startDate,
+          endDate: edu.endDate,
+          current: false,
+          gpa: "",
+          description: "",
+        })),
+        skills: resumeData.skills.map(skill => ({
+          id: skill.id,
+          name: skill.name,
+        })),
+        projects: [],
+        certifications: [],
+        languages: [],
+      };
+
+      if (currentResumeId) {
+        // Update existing resume
+        await firestoreService.updateResume(currentResumeId, firestoreData);
+        toast.success("Resume updated successfully!");
+      } else {
+        // Create new resume
+        const newResumeId = await firestoreService.saveResume(user.uid, firestoreData);
+        setCurrentResumeId(newResumeId);
+        toast.success("Resume saved successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving resume:", error);
+      toast.error("Failed to save resume. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  }, [user, templateId, resumeData, currentResumeId]);
 
   const handleDownloadPDF = useCallback(async () => {
     if (!templateId) return;
@@ -235,7 +374,27 @@ const LiveEditor = () => {
                   className="h-8 w-12 cursor-pointer rounded border border-border"
                 />
               </div>
-              
+
+              <Button
+                onClick={handleSave}
+                disabled={isSaving || !user}
+                size="default"
+                variant="outline"
+                className="gap-2 shadow-md"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4" />
+                    Save
+                  </>
+                )}
+              </Button>
+
               <Button
                 onClick={handleDownloadPDF}
                 disabled={isGeneratingPDF}

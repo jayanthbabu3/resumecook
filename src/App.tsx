@@ -17,6 +17,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ATSGuidelines from "./pages/ATSGuidelines";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
+import MyResumes from "./pages/MyResumes";
 
 const queryClient = new QueryClient();
 
@@ -49,21 +50,29 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
-            <Route 
-              path="/profile" 
+            <Route
+              path="/profile"
               element={
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/editor/:templateId" 
+            <Route
+              path="/my-resumes"
+              element={
+                <ProtectedRoute>
+                  <MyResumes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/editor/:templateId"
               element={
                 <ProtectedRoute>
                   <Editor />
                 </ProtectedRoute>
-              } 
+              }
             />
             <Route 
               path="/live-editor/:templateId" 

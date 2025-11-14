@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, Home, FileText, Sparkles, BookOpen, Menu } from "lucide-react";
+import { LogOut, User, LayoutDashboard, Home, FileText, Sparkles, BookOpen, Menu, FolderOpen } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
@@ -30,7 +30,10 @@ export const Header = () => {
   const navItems = useMemo(() => [
     { label: "Home", to: "/" },
     { label: "ATS Guide", to: "/ats-guidelines" },
-    ...(user ? [{ label: "Dashboard", to: "/dashboard" }] : [])
+    ...(user ? [
+      { label: "Templates", to: "/dashboard" },
+      { label: "My Resumes", to: "/my-resumes" }
+    ] : [])
   ], [user]);
 
   const getUserInitials = () => {
@@ -119,7 +122,8 @@ export const Header = () => {
                 >
                   {label === "Home" && <Home className="h-4 w-4" />}
                   {label === "ATS Guide" && <BookOpen className="h-4 w-4" />}
-                  {label === "Dashboard" && <LayoutDashboard className="h-4 w-4" />}
+                  {label === "Templates" && <LayoutDashboard className="h-4 w-4" />}
+                  {label === "My Resumes" && <FolderOpen className="h-4 w-4" />}
                   {label}
                 </NavLink>
               ))}
@@ -155,7 +159,14 @@ export const Header = () => {
                       className="cursor-pointer"
                     >
                       <LayoutDashboard className="mr-2 h-4 w-4" />
-                      <span>Dashboard</span>
+                      <span>Templates</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => navigate("/my-resumes")}
+                      className="cursor-pointer"
+                    >
+                      <FolderOpen className="mr-2 h-4 w-4" />
+                      <span>My Resumes</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => navigate("/profile")}
@@ -224,7 +235,8 @@ export const Header = () => {
                             <div className="transition-all duration-300 group-hover:scale-110">
                               {label === "Home" && <Home className="h-4 w-4" />}
                               {label === "ATS Guide" && <BookOpen className="h-4 w-4" />}
-                              {label === "Dashboard" && <LayoutDashboard className="h-4 w-4" />}
+                              {label === "Templates" && <LayoutDashboard className="h-4 w-4" />}
+                              {label === "My Resumes" && <FolderOpen className="h-4 w-4" />}
                             </div>
                             {/* Subtle glow effect */}
                             <div className="absolute inset-0 rounded-xl bg-primary/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -314,7 +326,14 @@ export const Header = () => {
                     className="cursor-pointer"
                   >
                     <LayoutDashboard className="mr-2 h-4 w-4" />
-                    <span>Dashboard</span>
+                    <span>Templates</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => navigate("/my-resumes")}
+                    className="cursor-pointer"
+                  >
+                    <FolderOpen className="mr-2 h-4 w-4" />
+                    <span>My Resumes</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => navigate("/profile")}
