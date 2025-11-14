@@ -44,6 +44,26 @@ import { registerPDFFonts } from "@/lib/pdfFonts";
 // Simple ID generator
 const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
+// Drop zone component for the canvas
+interface DropZoneProps {
+  sections: ResumeSection[];
+  children: React.ReactNode;
+}
+
+function DropZone({ sections, children }: DropZoneProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: 'resume-canvas',
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`transition-all duration-200 ${isOver ? 'ring-2 ring-primary/50 rounded-lg' : ''}`}
+    >
+      {children}
+    </div>
+  );
+}
 
 // Helper section card in the right panel
 interface HelperSectionCardProps {
@@ -988,7 +1008,21 @@ const ScratchBuilder = () => {
     if (activeData?.source === "helper") {
       const sectionType = activeData.type as SectionType;
       const newSection = createSection(sectionType);
-      setSections((prev) => [...prev, newSection]);
+
+      // If dropping on an existing section, insert before it
+      if (over.id !== 'resume-canvas') {
+        setSections((prev) => {
+          const overIndex = prev.findIndex((item) => item.id === over.id);
+          if (overIndex === -1) return [...prev, newSection];
+          const newSections = [...prev];
+          newSections.splice(overIndex, 0, newSection);
+          return newSections.map((item, index) => ({ ...item, order: index }));
+        });
+      } else {
+        // Dropping on canvas, add to end
+        setSections((prev) => [...prev, newSection]);
+      }
+
       toast.success(`${newSection.title} section added!`);
     }
     // Reordering existing sections
@@ -1156,107 +1190,109 @@ const ScratchBuilder = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Side - Blank Canvas */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg border shadow-sm p-6 min-h-[600px]">
-                {/* Personal Info Header */}
-                <div className="mb-6 pb-6 border-b">
-                  <input
-                    type="text"
-                    className="w-full text-3xl font-bold mb-2 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-2 -mx-2"
-                    value={personalInfo.fullName}
-                    onChange={(e) =>
-                      setPersonalInfo((prev) => ({
-                        ...prev,
-                        fullName: e.target.value,
-                      }))
-                    }
-                    placeholder="Your Name"
-                  />
-                  <input
-                    type="text"
-                    className="w-full text-lg text-gray-600 mb-3 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-2 -mx-2"
-                    value={personalInfo.title}
-                    onChange={(e) =>
-                      setPersonalInfo((prev) => ({
-                        ...prev,
-                        title: e.target.value,
-                      }))
-                    }
-                    placeholder="Professional Title"
-                  />
-                  <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+            <DropZone sections={sections}>
+              <div className="lg:col-span-2">
+                <div className="bg-white rounded-lg border shadow-sm p-6 min-h-[600px]">
+                  {/* Personal Info Header */}
+                  <div className="mb-6 pb-6 border-b">
                     <input
-                      type="email"
-                      className="flex-1 min-w-[200px] bg-transparent border-b border-gray-300 focus:outline-none focus:border-primary px-1 py-1"
-                      value={personalInfo.email}
+                      type="text"
+                      className="w-full text-3xl font-bold mb-2 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-2 -mx-2"
+                      value={personalInfo.fullName}
                       onChange={(e) =>
                         setPersonalInfo((prev) => ({
                           ...prev,
-                          email: e.target.value,
+                          fullName: e.target.value,
                         }))
                       }
-                      placeholder="email@example.com"
-                    />
-                    <input
-                      type="tel"
-                      className="flex-1 min-w-[150px] bg-transparent border-b border-gray-300 focus:outline-none focus:border-primary px-1 py-1"
-                      value={personalInfo.phone}
-                      onChange={(e) =>
-                        setPersonalInfo((prev) => ({
-                          ...prev,
-                          phone: e.target.value,
-                        }))
-                      }
-                      placeholder="Phone"
+                      placeholder="Your Name"
                     />
                     <input
                       type="text"
-                      className="flex-1 min-w-[150px] bg-transparent border-b border-gray-300 focus:outline-none focus:border-primary px-1 py-1"
-                      value={personalInfo.location}
+                      className="w-full text-lg text-gray-600 mb-3 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-2 -mx-2"
+                      value={personalInfo.title}
                       onChange={(e) =>
                         setPersonalInfo((prev) => ({
                           ...prev,
-                          location: e.target.value,
+                          title: e.target.value,
                         }))
                       }
-                      placeholder="Location"
+                      placeholder="Professional Title"
                     />
+                    <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+                      <input
+                        type="email"
+                        className="flex-1 min-w-[200px] bg-transparent border-b border-gray-300 focus:outline-none focus:border-primary px-1 py-1"
+                        value={personalInfo.email}
+                        onChange={(e) =>
+                          setPersonalInfo((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
+                        placeholder="email@example.com"
+                      />
+                      <input
+                        type="tel"
+                        className="flex-1 min-w-[150px] bg-transparent border-b border-gray-300 focus:outline-none focus:border-primary px-1 py-1"
+                        value={personalInfo.phone}
+                        onChange={(e) =>
+                          setPersonalInfo((prev) => ({
+                            ...prev,
+                            phone: e.target.value,
+                          }))
+                        }
+                        placeholder="Phone"
+                      />
+                      <input
+                        type="text"
+                        className="flex-1 min-w-[150px] bg-transparent border-b border-gray-300 focus:outline-none focus:border-primary px-1 py-1"
+                        value={personalInfo.location}
+                        onChange={(e) =>
+                          setPersonalInfo((prev) => ({
+                            ...prev,
+                            location: e.target.value,
+                          }))
+                        }
+                        placeholder="Location"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Sections Drop Zone */}
-                {sections.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-20 text-center">
-                    <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <Plus className="h-10 w-10 text-primary" />
+                  {/* Sections Drop Zone */}
+                  {sections.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-20 text-center">
+                      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <Plus className="h-10 w-10 text-primary" />
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Start Building Your Resume
+                      </h3>
+                      <p className="text-sm text-muted-foreground max-w-md">
+                        Drag sections from the helper panel on the right to add them to
+                        your resume. You can add sections in any order you prefer.
+                      </p>
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">
-                      Start Building Your Resume
-                    </h3>
-                    <p className="text-sm text-muted-foreground max-w-md">
-                      Drag sections from the helper panel on the right to add them to
-                      your resume. You can add sections in any order you prefer.
-                    </p>
-                  </div>
-                ) : (
-                  <SortableContext
-                    items={sections.map((s) => s.id)}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    <div className="space-y-4">
-                      {sections.map((section) => (
-                        <ResumeSectionCard
-                          key={section.id}
-                          section={section}
-                          onUpdate={handleUpdateSection}
-                          onDelete={handleDeleteSection}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                )}
+                  ) : (
+                    <SortableContext
+                      items={sections.map((s) => s.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      <div className="space-y-4">
+                        {sections.map((section) => (
+                          <ResumeSectionCard
+                            key={section.id}
+                            section={section}
+                            onUpdate={handleUpdateSection}
+                            onDelete={handleDeleteSection}
+                          />
+                        ))}
+                      </div>
+                    </SortableContext>
+                  )}
+                </div>
               </div>
-            </div>
+            </DropZone>
 
             {/* Right Side - Helper Sections */}
             <div className="lg:col-span-1">
