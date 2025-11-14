@@ -501,6 +501,7 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                   <div className="text-center space-y-3">
                     <Button
                       type="button"
+                      size="sm"
                       variant="outline"
                       onClick={() => fileInputRef.current?.click()}
                       className="gap-2"
@@ -530,6 +531,7 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                     />
                     <Button
                       type="button"
+                      size="sm"
                       variant={photoUrlInput.trim() ? "default" : "outline"}
                       onClick={applyPhotoUrl}
                       disabled={!photoUrlInput.trim()}

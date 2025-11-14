@@ -789,7 +789,7 @@ const Hero = () => {
                     
                     {/* Overlay on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                      <Button className="bg-white text-primary hover:bg-white/90 shadow-lg">
+                      <Button size="sm" className="bg-white text-primary hover:bg-white/90 shadow-lg">
                         <Eye className="w-4 h-4 mr-2" />
                         Use Template
                       </Button>
