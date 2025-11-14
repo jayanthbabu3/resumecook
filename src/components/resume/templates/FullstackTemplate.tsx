@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin, Code2, Database, Server } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -131,21 +132,19 @@ export const FullstackTemplate = ({ resumeData, themeColor = "#7c3aed", editable
               Skills
             </h2>
             {editable ? (
-              <InlineEditableList
+              <InlineEditableSkills
                 path="skills"
-                items={resumeData.skills}
-                defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-                addButtonLabel="Add Skill"
-                renderItem={(skill, index) => (
-                  <InlineEditableText
-                    path={`skills[${index}].name`}
-                    value={skill.name}
-                    className="text-[11px] font-medium text-gray-800 py-1.5 px-2.5 rounded block"
+                skills={resumeData.skills}
+                renderSkill={(skill, index) => (
+                  <div
+                    className="text-[11px] font-medium text-gray-800 py-1.5 px-2.5 rounded"
                     style={{
                       backgroundColor: accentSoft,
                       borderLeft: `2px solid ${accent}`,
                     }}
-                  />
+                  >
+                    {skill.name}
+                  </div>
                 )}
               />
             ) : (

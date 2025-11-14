@@ -2,6 +2,7 @@ import type { ResumeData } from "@/pages/Editor";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -240,23 +241,14 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
               Skills
             </h2>
             {editable ? (
-              <InlineEditableList
+              <InlineEditableSkills
                 path="skills"
-                items={resumeData.skills}
-                defaultItem={{
-                  id: Date.now().toString(),
-                  name: "New Skill",
-                  level: 5,
-                }}
-                addButtonLabel="Add Skill"
-                renderItem={(skill, index) => (
+                skills={resumeData.skills}
+                renderSkill={(skill, index) => (
                   <span className="inline">
-                    <InlineEditableText
-                      path={`skills[${index}].name`}
-                      value={skill.name}
-                      className="text-[12.5px] text-slate-800 inline"
-                      as="span"
-                    />
+                    <span className="text-[12.5px] text-slate-800">
+                      {skill.name}
+                    </span>
                     {index < resumeData.skills.length - 1 && ", "}
                   </span>
                 )}

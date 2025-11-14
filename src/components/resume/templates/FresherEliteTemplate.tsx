@@ -2,6 +2,7 @@ import type { ResumeData } from "@/pages/Editor";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface FresherEliteTemplateProps {
   resumeData: ResumeData;
@@ -223,23 +224,14 @@ export const FresherEliteTemplate = ({
                     Skills
                   </h2>
                   {editable ? (
-                    <InlineEditableList
+                    <InlineEditableSkills
                       path="skills"
-                      items={resumeData.skills}
-                      defaultItem={{
-                        id: Date.now().toString(),
-                        name: "New Skill",
-                        level: 5,
-                      }}
-                      addButtonLabel="Add Skill"
-                      renderItem={(skill, index) => (
+                      skills={resumeData.skills}
+                      renderSkill={(skill, index) => (
                         <div className="flex items-center justify-between">
-                          <InlineEditableText
-                            path={`skills[${index}].name`}
-                            value={skill.name}
-                            className="text-sm font-medium text-gray-900"
-                            as="span"
-                          />
+                          <span className="text-sm font-medium text-gray-900">
+                            {skill.name}
+                          </span>
                           {skill.level && (
                             <div className="flex items-center gap-1">
                               {[...Array(5)].map((_, i) => (

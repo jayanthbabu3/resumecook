@@ -2,6 +2,7 @@ import type { ResumeData } from "@/pages/Editor";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface PremiumEliteTemplateProps {
   resumeData: ResumeData;
@@ -229,16 +230,10 @@ export const PremiumEliteTemplate = ({
                   Skills & Expertise
                 </h2>
                 {editable ? (
-                  <InlineEditableList
+                  <InlineEditableSkills
                     path="skills"
-                    items={resumeData.skills}
-                    defaultItem={{
-                      id: Date.now().toString(),
-                      name: "New Skill",
-                      level: 5,
-                    }}
-                    addButtonLabel="Add Skill"
-                    renderItem={(skill, index) => (
+                    skills={resumeData.skills}
+                    renderSkill={(skill, index) => (
                       <span
                         className="text-[11.5px] font-medium px-3 py-1.5 rounded-lg"
                         style={{
@@ -246,13 +241,7 @@ export const PremiumEliteTemplate = ({
                           color: accent
                         }}
                       >
-                        <InlineEditableText
-                          path={`skills[${index}].name`}
-                          value={skill.name}
-                          className="text-[11.5px] font-medium inline"
-                          as="span"
-                          style={{ color: accent }}
-                        />
+                        {skill.name}
                       </span>
                     )}
                   />

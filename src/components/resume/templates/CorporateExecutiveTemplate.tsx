@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -455,28 +456,19 @@ export const CorporateExecutiveTemplate = ({
                   Core Competencies
                 </h2>
                 {editable ? (
-                  <InlineEditableList
+                  <InlineEditableSkills
                     path="skills"
-                    items={resumeData.skills}
-                    defaultItem={{
-                      id: Date.now().toString(),
-                      name: "New Skill",
-                      level: 5,
-                    }}
-                    addButtonLabel="Add Skill"
-                    renderItem={(skill, index) =>
+                    skills={resumeData.skills}
+                    renderSkill={(skill, index) =>
                       skill.name ? (
                         <div className="flex items-center gap-2">
                           <div
                             className="w-1.5 h-1.5 rounded-full"
                             style={{ backgroundColor: themeColor }}
                           />
-                          <InlineEditableText
-                            path={`skills[${index}].name`}
-                            value={skill.name}
-                            className="text-xs text-gray-700 font-medium inline"
-                            as="span"
-                          />
+                          <span className="text-xs text-gray-700 font-medium">
+                            {skill.name}
+                          </span>
                         </div>
                       ) : null
                     }

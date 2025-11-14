@@ -15,12 +15,14 @@ interface InlineEditableSkillsProps {
   path: string;
   skills: Skill[];
   className?: string;
+  renderSkill?: (skill: Skill, index: number) => React.ReactNode;
 }
 
 export const InlineEditableSkills = ({
   path,
   skills,
   className,
+  renderSkill,
 }: InlineEditableSkillsProps) => {
   const { updateField, addArrayItem, removeArrayItem } = useInlineEdit();
   const [isEditing, setIsEditing] = useState(false);
@@ -81,6 +83,34 @@ export const InlineEditableSkills = ({
                 >
                   <X className="h-3 w-3" />
                 </Button>
+              </div>
+            ) : renderSkill ? (
+              <div className="group/badge relative inline-flex items-center">
+                {renderSkill(skill, index)}
+                <div className="absolute -right-1 -top-1 inline-flex gap-0.5 opacity-0 group-hover/badge:opacity-100 transition-opacity">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-5 w-5 p-0 bg-background rounded-full shadow-sm border"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit(index, skill.name);
+                    }}
+                  >
+                    <Pencil className="h-2.5 w-2.5" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-5 w-5 p-0 bg-background rounded-full shadow-sm border text-destructive"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(index);
+                    }}
+                  >
+                    <X className="h-2.5 w-2.5" />
+                  </Button>
+                </div>
               </div>
             ) : (
               <Badge

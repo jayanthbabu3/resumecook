@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -258,14 +259,12 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
           </h2>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700 font-light max-w-4xl mx-auto">
             {editable ? (
-              <InlineEditableList
+              <InlineEditableSkills
                 path="skills"
-                items={resumeData.skills}
-                defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-                addButtonLabel="Add Skill"
-                renderItem={(skill, index) => 
+                skills={resumeData.skills}
+                renderSkill={(skill, index) =>
                   skill.name && (
-                    <InlineEditableText path={`skills[${index}].name`} value={skill.name} className="inline-block" />
+                    <span>{skill.name}</span>
                   )
                 }
               />

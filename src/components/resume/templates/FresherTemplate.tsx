@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin, Calendar } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface FresherTemplateProps {
   resumeData: ResumeData;
@@ -270,19 +271,17 @@ export const FresherTemplate = ({
                     <div className="flex-1 h-px bg-gray-200" />
                   </div>
                   {editable ? (
-                    <InlineEditableList
+                    <InlineEditableSkills
                       path="skills"
-                      items={resumeData.skills}
-                      defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-                      addButtonLabel="Add Skill"
-                      renderItem={(skill, index) => (
+                      skills={resumeData.skills}
+                      renderSkill={(skill, index) => (
                         <div className="pl-4">
-                          <InlineEditableText
-                            path={`skills[${index}].name`}
-                            value={skill.name}
-                            className="px-3 py-2 bg-gray-50 border-l-3 text-xs font-medium text-gray-800 block"
+                          <div
+                            className="px-3 py-2 bg-gray-50 border-l-3 text-xs font-medium text-gray-800"
                             style={{ borderLeftColor: themeColor }}
-                          />
+                          >
+                            {skill.name}
+                          </div>
                         </div>
                       )}
                     />

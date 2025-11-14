@@ -1917,6 +1917,11 @@ const Editor = () => {
     loadResumeFromFirestore();
   }, [resumeId, user]);
 
+  // Sync currentResumeId with resumeId from URL parameters
+  useEffect(() => {
+    setCurrentResumeId(resumeId);
+  }, [resumeId]);
+
   const handleSave = async () => {
     if (!user) {
       toast.error("Please sign in to save your resume");

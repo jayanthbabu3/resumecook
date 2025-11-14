@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface GraduateTemplateProps {
   resumeData: ResumeData;
@@ -173,17 +174,13 @@ export const GraduateTemplate = ({ resumeData, themeColor = "#0EA5E9", editable 
                   Skills
                 </h2>
                 {editable ? (
-                  <InlineEditableList
+                  <InlineEditableSkills
                     path="skills"
-                    items={resumeData.skills}
-                    defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-                    addButtonLabel="Add Skill"
-                    renderItem={(skill, index) => (
-                      <InlineEditableText
-                        path={`skills[${index}].name`}
-                        value={skill.name}
-                        className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded inline-block"
-                      />
+                    skills={resumeData.skills}
+                    renderSkill={(skill, index) => (
+                      <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded">
+                        {skill.name}
+                      </span>
                     )}
                   />
                 ) : (

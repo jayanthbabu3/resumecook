@@ -1,6 +1,7 @@
 import type { ResumeData } from "@/pages/Editor";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -248,17 +249,16 @@ export const SeniorFrontendTemplate = ({
               Skills
             </h2>
             {editable ? (
-              <InlineEditableList
+              <InlineEditableSkills
                 path="skills"
-                items={resumeData.skills}
-                defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-                addButtonLabel="Add Skill"
-                renderItem={(skill, index) => (
-                  <InlineEditableText
-                    path={`skills[${index}].name`}
-                    value={skill.name}
-                    className="inline-block text-[12.5px] text-slate-800 leading-[1.7]"
-                  />
+                skills={resumeData.skills}
+                renderSkill={(skill, index) => (
+                  <span className="inline">
+                    <span className="text-[12.5px] text-slate-800 leading-[1.7]">
+                      {skill.name}
+                    </span>
+                    {index < resumeData.skills.length - 1 && " • "}
+                  </span>
                 )}
               />
             ) : (

@@ -2,6 +2,7 @@ import type { ResumeData } from "@/pages/Editor";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface RefinedTemplateProps {
   resumeData: ResumeData;
@@ -95,22 +96,13 @@ export const RefinedTemplate = ({
                 Skills
               </h3>
               {editable ? (
-                <InlineEditableList
+                <InlineEditableSkills
                   path="skills"
-                  items={skills}
-                  defaultItem={{
-                    id: Date.now().toString(),
-                    name: "New Skill",
-                    level: 5,
-                  }}
-                  addButtonLabel="Add Skill"
-                  renderItem={(skill, index) => (
-                    <InlineEditableText
-                      path={`skills[${index}].name`}
-                      value={skill.name}
-                      className="text-xs font-light text-gray-700 leading-relaxed"
-                      as="div"
-                    />
+                  skills={skills}
+                  renderSkill={(skill, index) => (
+                    <div className="text-xs font-light text-gray-700 leading-relaxed">
+                      {skill.name}
+                    </div>
                   )}
                 />
               ) : (

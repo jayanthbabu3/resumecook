@@ -1,6 +1,7 @@
 import { ResumeData } from "@/pages/Editor";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface PremiumUniversalTemplateProps {
   resumeData: ResumeData;
@@ -273,18 +274,16 @@ export const PremiumUniversalTemplate = ({
             Skills
           </h2>
           {editable ? (
-            <InlineEditableList
+            <InlineEditableSkills
               path="skills"
-              items={resumeData.skills}
-              defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-              addButtonLabel="Add Skill"
-              renderItem={(skill, index) => (
-                <InlineEditableText
-                  path={`skills[${index}].name`}
-                  value={skill.name}
-                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded inline-block"
+              skills={resumeData.skills}
+              renderSkill={(skill, index) => (
+                <span
+                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded"
                   style={{ border: `1px solid ${accentBorder}` }}
-                />
+                >
+                  {skill.name}
+                </span>
               )}
             />
           ) : (

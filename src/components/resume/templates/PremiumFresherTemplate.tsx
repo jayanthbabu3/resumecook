@@ -2,6 +2,7 @@ import type { ResumeData } from "@/pages/Editor";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface PremiumFresherTemplateProps {
   resumeData: ResumeData;
@@ -186,18 +187,12 @@ export const PremiumFresherTemplate = ({
                 Technical Skills
               </h2>
               {editable ? (
-                <InlineEditableList
+                <InlineEditableSkills
                   path="skills"
-                  items={resumeData.skills}
-                  defaultItem={{ id: Date.now().toString(), name: "New Skill" }}
-                  addButtonLabel="Add Skill"
-                  renderItem={(skill, index) => (
+                  skills={resumeData.skills}
+                  renderSkill={(skill, index) => (
                     <div className="flex items-center justify-between">
-                      <InlineEditableText
-                        path={`skills[${index}].name`}
-                        value={skill.name}
-                        className="text-sm text-gray-900 inline-block"
-                      />
+                      <span className="text-sm text-gray-900">{skill.name}</span>
                       {skill.level && (
                         <div className="flex items-center gap-2">
                           <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
