@@ -23,9 +23,8 @@ const styles = StyleSheet.create({
   },
   leftSidebar: {
     width: "35%",
-    backgroundColor: "#8B5CF6",
     color: "#ffffff",
-    padding: 32,
+    padding: 24,
   },
   photoWrapper: {
     width: 64,
@@ -57,8 +56,8 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   sidebarSection: {
-    marginBottom: 32,
-    paddingBottom: 32,
+    marginBottom: 24,
+    paddingBottom: 24,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.2)",
   },
@@ -118,18 +117,18 @@ const styles = StyleSheet.create({
     color: "rgba(255, 255, 255, 0.7)",
   },
   skillItem: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     color: "#ffffff",
     fontSize: 9,
     fontWeight: 600,
-    marginBottom: 8,
+    marginBottom: 6,
     borderRadius: 4,
   },
   rightContent: {
     width: "65%",
-    padding: 48,
+    padding: 32,
   },
   mainSectionTitle: {
     fontSize: 13,
@@ -143,7 +142,6 @@ const styles = StyleSheet.create({
   accentBar: {
     width: 32,
     height: 4,
-    backgroundColor: "#8B5CF6",
     borderRadius: 2,
   },
   summarySection: {
@@ -181,7 +179,6 @@ const styles = StyleSheet.create({
   experienceCompany: {
     fontSize: 10,
     fontWeight: 600,
-    color: "#8B5CF6",
   },
   experienceDate: {
     flexDirection: "row",
@@ -276,11 +273,28 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherColorAccentPDF = ({ resumeData }: FresherColorAccentPDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
+export const FresherColorAccentPDF = ({ resumeData, themeColor = "#8B5CF6" }: FresherColorAccentPDFProps) => {
+  // Dynamic styles that use themeColor
+  const dynamicStyles = StyleSheet.create({
+    leftSidebar: {
+      ...styles.leftSidebar,
+      backgroundColor: themeColor,
+    },
+    accentBar: {
+      ...styles.accentBar,
+      backgroundColor: themeColor,
+    },
+    experienceCompany: {
+      ...styles.experienceCompany,
+      color: themeColor,
+    },
+  });
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
       {/* Left Sidebar */}
-      <View style={styles.leftSidebar}>
+      <View style={dynamicStyles.leftSidebar}>
         {resumeData.personalInfo.photo && (
           <View style={styles.photoWrapper}>
             <Image src={resumeData.personalInfo.photo} style={styles.photo} />
@@ -360,7 +374,7 @@ export const FresherColorAccentPDF = ({ resumeData }: FresherColorAccentPDFProps
         {hasContent(resumeData.personalInfo.summary) && (
           <View style={styles.summarySection}>
             <View style={styles.mainSectionTitle}>
-              <View style={styles.accentBar} />
+              <View style={dynamicStyles.accentBar} />
               <Text>Professional Summary</Text>
             </View>
             <Text style={styles.summaryText}>{resumeData.personalInfo.summary}</Text>
@@ -379,7 +393,7 @@ export const FresherColorAccentPDF = ({ resumeData }: FresherColorAccentPDFProps
                 <View style={styles.experienceHeader}>
                   <View style={styles.experienceLeft}>
                     <Text style={styles.experiencePosition}>{exp.position}</Text>
-                    <Text style={styles.experienceCompany}>{exp.company}</Text>
+                    <Text style={dynamicStyles.experienceCompany}>{exp.company}</Text>
                   </View>
                   <View style={styles.experienceDate}>
                     <CalendarIcon />
@@ -403,7 +417,7 @@ export const FresherColorAccentPDF = ({ resumeData }: FresherColorAccentPDFProps
               hasContent(section.title) && hasContent(section.content) && (
                 <View key={index} style={styles.customSectionMargin}>
                   <View style={styles.mainSectionTitle}>
-                    <View style={styles.accentBar} />
+                    <View style={dynamicStyles.accentBar} />
                     <Text>{section.title}</Text>
                   </View>
                   <Text style={styles.sectionContent}>{section.content}</Text>
@@ -415,4 +429,5 @@ export const FresherColorAccentPDF = ({ resumeData }: FresherColorAccentPDFProps
       </View>
     </Page>
   </Document>
-);
+  );
+};

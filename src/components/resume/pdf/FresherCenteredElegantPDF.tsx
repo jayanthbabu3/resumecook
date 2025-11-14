@@ -13,6 +13,7 @@ import { registerPDFFonts } from "@/lib/pdfFonts";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 registerPDFFonts();
+};
 
 const styles = StyleSheet.create({
   page: {
@@ -122,8 +123,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   skillItem: {
-    paddingHorizontal: 20,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderWidth: 2,
     borderColor: "#A855F7",
     borderRadius: 20,
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   },
   experienceItem: {
     alignItems: "center",
-    marginBottom: 32,
+    marginBottom: 20,
     maxWidth: 450,
     marginHorizontal: "auto",
   },
@@ -201,6 +202,7 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
   },
 });
+};
 
 const EmailIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -208,12 +210,14 @@ const EmailIcon = () => (
     <Path d="m22 6-10 7L2 6" fill="none" stroke="#A855F7" strokeWidth={2} />
   </Svg>
 );
+};
 
 const PhoneIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
     <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#A855F7" strokeWidth={2} />
   </Svg>
 );
+};
 
 const LocationIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -221,6 +225,7 @@ const LocationIcon = () => (
     <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="#A855F7" strokeWidth={2} />
   </Svg>
 );
+};
 
 interface FresherCenteredElegantPDFProps {
   resumeData: ResumeData;
@@ -230,6 +235,7 @@ interface FresherCenteredElegantPDFProps {
 const formatDate = (date: string) => {
   if (!date) return "";
   const [year, month] = date.split("-");
+};
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
@@ -237,7 +243,8 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherCenteredElegantPDF = ({ resumeData }: FresherCenteredElegantPDFProps) => (
+export const FresherCenteredElegantPDF = ({ resumeData, themeColor = "#A855F7" }: FresherCenteredElegantPDFProps) => {
+  return (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
@@ -357,3 +364,4 @@ export const FresherCenteredElegantPDF = ({ resumeData }: FresherCenteredElegant
     </Page>
   </Document>
 );
+};

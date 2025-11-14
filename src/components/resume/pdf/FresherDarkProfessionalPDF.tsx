@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#1F2937",
-    paddingVertical: 40,
-    paddingHorizontal: 48,
+    paddingVertical: 32,
+    paddingHorizontal: 32,
     marginTop: -40,
     marginLeft: -40,
     marginRight: -40,
-    marginBottom: 32,
+    marginBottom: 24,
     flexDirection: "row",
     gap: 32,
   },
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   summarySection: {
-    marginBottom: 32,
-    paddingBottom: 24,
+    marginBottom: 24,
+    paddingBottom: 20,
     borderBottomWidth: 1,
     borderBottomColor: "#E5E7EB",
   },
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
   sectionIndicator: {
     width: 4,
     height: 24,
-    backgroundColor: "#6366F1",
     borderRadius: 2,
   },
   sectionTitle: {
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flexDirection: "row",
-    gap: 40,
+    gap: 32,
   },
   leftColumn: {
     width: "33%",
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     width: "67%",
   },
   sectionMargin: {
-    marginBottom: 32,
+    marginBottom: 24,
   },
   educationItem: {
     marginBottom: 20,
@@ -151,7 +150,6 @@ const styles = StyleSheet.create({
   educationSchool: {
     fontSize: 9,
     fontWeight: 600,
-    color: "#6366F1",
     marginBottom: 8,
   },
   educationDate: {
@@ -166,13 +164,13 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   skillItem: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     backgroundColor: "#1F2937",
     color: "#ffffff",
     fontSize: 9,
     fontWeight: 600,
-    marginBottom: 8,
+    marginBottom: 6,
     marginLeft: 20,
     borderRadius: 4,
   },
@@ -198,10 +196,8 @@ const styles = StyleSheet.create({
   experienceCompany: {
     fontSize: 10,
     fontWeight: 600,
-    color: "#6366F1",
   },
   experienceDateBadge: {
-    backgroundColor: "#6366F1",
     color: "#ffffff",
     paddingHorizontal: 12,
     paddingVertical: 4,
@@ -221,23 +217,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const EmailIcon = () => (
+const EmailIcon = ({ color }: { color: string }) => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
-    <Path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="#6366F1" strokeWidth={2} />
-    <Path d="m22 6-10 7L2 6" fill="none" stroke="#6366F1" strokeWidth={2} />
+    <Path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke={color} strokeWidth={2} />
+    <Path d="m22 6-10 7L2 6" fill="none" stroke={color} strokeWidth={2} />
   </Svg>
 );
 
-const PhoneIcon = () => (
+const PhoneIcon = ({ color }: { color: string }) => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
-    <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#6366F1" strokeWidth={2} />
+    <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke={color} strokeWidth={2} />
   </Svg>
 );
 
-const LocationIcon = () => (
+const LocationIcon = ({ color }: { color: string }) => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
-    <Path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="none" stroke="#6366F1" strokeWidth={2} />
-    <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="#6366F1" strokeWidth={2} />
+    <Path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="none" stroke={color} strokeWidth={2} />
+    <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke={color} strokeWidth={2} />
   </Svg>
 );
 
@@ -279,153 +275,175 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherDarkProfessionalPDF = ({ resumeData }: FresherDarkProfessionalPDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Dark Header */}
-      <View style={styles.header}>
-        {resumeData.personalInfo.photo && (
-          <View style={styles.photoWrapper}>
-            <Image src={resumeData.personalInfo.photo} style={styles.photo} />
+export const FresherDarkProfessionalPDF = ({ resumeData, themeColor = "#6366F1" }: FresherDarkProfessionalPDFProps) => {
+  // Dynamic styles that use themeColor
+  const dynamicStyles = StyleSheet.create({
+    sectionIndicator: {
+      ...styles.sectionIndicator,
+      backgroundColor: themeColor,
+    },
+    educationSchool: {
+      ...styles.educationSchool,
+      color: themeColor,
+    },
+    experienceCompany: {
+      ...styles.experienceCompany,
+      color: themeColor,
+    },
+    experienceDateBadge: {
+      ...styles.experienceDateBadge,
+      backgroundColor: themeColor,
+    },
+  });
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Dark Header */}
+        <View style={styles.header}>
+          {resumeData.personalInfo.photo && (
+            <View style={styles.photoWrapper}>
+              <Image src={resumeData.personalInfo.photo} style={styles.photo} />
+            </View>
+          )}
+
+          <View style={styles.headerContent}>
+            <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
+
+            {resumeData.personalInfo.title && (
+              <View style={styles.titleRow}>
+                <BriefcaseIcon />
+                <Text style={styles.title}>{resumeData.personalInfo.title}</Text>
+              </View>
+            )}
+
+            <View style={styles.contactInfo}>
+              {resumeData.personalInfo.email && (
+                <View style={styles.contactItem}>
+                  <EmailIcon color={themeColor} />
+                  <Text>{resumeData.personalInfo.email}</Text>
+                </View>
+              )}
+              {resumeData.personalInfo.phone && (
+                <View style={styles.contactItem}>
+                  <PhoneIcon color={themeColor} />
+                  <Text>{resumeData.personalInfo.phone}</Text>
+                </View>
+              )}
+              {resumeData.personalInfo.location && (
+                <View style={styles.contactItem}>
+                  <LocationIcon color={themeColor} />
+                  <Text>{resumeData.personalInfo.location}</Text>
+                </View>
+              )}
+            </View>
+          </View>
+        </View>
+
+        {/* Professional Summary */}
+        {hasContent(resumeData.personalInfo.summary) && (
+          <View style={styles.summarySection}>
+            <View style={styles.sectionHeaderRow}>
+              <View style={dynamicStyles.sectionIndicator} />
+              <Text style={styles.sectionTitle}>Professional Summary</Text>
+            </View>
+            <Text style={styles.summaryText}>{resumeData.personalInfo.summary}</Text>
           </View>
         )}
 
-        <View style={styles.headerContent}>
-          <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
-
-          {resumeData.personalInfo.title && (
-            <View style={styles.titleRow}>
-              <BriefcaseIcon />
-              <Text style={styles.title}>{resumeData.personalInfo.title}</Text>
-            </View>
-          )}
-
-          <View style={styles.contactInfo}>
-            {resumeData.personalInfo.email && (
-              <View style={styles.contactItem}>
-                <EmailIcon />
-                <Text>{resumeData.personalInfo.email}</Text>
+        {/* Main Content */}
+        <View style={styles.mainContent}>
+          {/* Left Column */}
+          <View style={styles.leftColumn}>
+            {/* Education */}
+            {resumeData.education && resumeData.education.length > 0 && (
+              <View style={styles.sectionMargin}>
+                <View style={styles.sectionHeaderRow}>
+                  <View style={dynamicStyles.sectionIndicator} />
+                  <Text style={styles.sectionTitle}>Education</Text>
+                </View>
+                {resumeData.education.map((edu, index) => (
+                  <View key={index} style={styles.educationItem}>
+                    <Text style={styles.educationDegree}>{edu.degree}</Text>
+                    {hasContent(edu.field) && (
+                      <Text style={styles.educationField}>{edu.field}</Text>
+                    )}
+                    <Text style={dynamicStyles.educationSchool}>{edu.school}</Text>
+                    <View style={styles.educationDate}>
+                      <CalendarIcon />
+                      <Text>
+                        {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                      </Text>
+                    </View>
+                  </View>
+                ))}
               </View>
             )}
-            {resumeData.personalInfo.phone && (
-              <View style={styles.contactItem}>
-                <PhoneIcon />
-                <Text>{resumeData.personalInfo.phone}</Text>
-              </View>
-            )}
-            {resumeData.personalInfo.location && (
-              <View style={styles.contactItem}>
-                <LocationIcon />
-                <Text>{resumeData.personalInfo.location}</Text>
+
+            {/* Skills */}
+            {resumeData.skills && resumeData.skills.length > 0 && (
+              <View style={styles.sectionMargin}>
+                <View style={styles.sectionHeaderRow}>
+                  <View style={dynamicStyles.sectionIndicator} />
+                  <Text style={styles.sectionTitle}>Skills</Text>
+                </View>
+                {resumeData.skills.map((skill) => (
+                  <Text key={skill.id} style={styles.skillItem}>
+                    {skill.name}
+                  </Text>
+                ))}
               </View>
             )}
           </View>
-        </View>
-      </View>
 
-      {/* Professional Summary */}
-      {hasContent(resumeData.personalInfo.summary) && (
-        <View style={styles.summarySection}>
-          <View style={styles.sectionHeaderRow}>
-            <View style={styles.sectionIndicator} />
-            <Text style={styles.sectionTitle}>Professional Summary</Text>
+          {/* Right Column */}
+          <View style={styles.rightColumn}>
+            {/* Experience */}
+            {resumeData.experience && resumeData.experience.length > 0 && (
+              <View style={styles.sectionMargin}>
+                <View style={styles.sectionHeaderRow}>
+                  <View style={dynamicStyles.sectionIndicator} />
+                  <Text style={styles.sectionTitle}>Experience & Internships</Text>
+                </View>
+                {resumeData.experience.map((exp, index) => (
+                  <View key={index} style={styles.experienceItem}>
+                    <View style={styles.experienceHeader}>
+                      <View style={styles.experienceLeft}>
+                        <Text style={styles.experiencePosition}>{exp.position}</Text>
+                        <Text style={dynamicStyles.experienceCompany}>{exp.company}</Text>
+                      </View>
+                      <Text style={dynamicStyles.experienceDateBadge}>
+                        {formatDate(exp.startDate)} -{" "}
+                        {exp.current ? "Present" : formatDate(exp.endDate)}
+                      </Text>
+                    </View>
+                    {hasContent(exp.description) && (
+                      <Text style={styles.experienceDescription}>{exp.description}</Text>
+                    )}
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {/* Custom Sections */}
+            {resumeData.sections && resumeData.sections.length > 0 && (
+              <>
+                {resumeData.sections.map((section, index) => (
+                  hasContent(section.title) && hasContent(section.content) && (
+                    <View key={index} style={styles.sectionMargin}>
+                      <View style={styles.sectionHeaderRow}>
+                        <View style={dynamicStyles.sectionIndicator} />
+                        <Text style={styles.sectionTitle}>{section.title}</Text>
+                      </View>
+                      <Text style={styles.sectionContent}>{section.content}</Text>
+                    </View>
+                  )
+                ))}
+              </>
+            )}
           </View>
-          <Text style={styles.summaryText}>{resumeData.personalInfo.summary}</Text>
         </View>
-      )}
-
-      {/* Main Content */}
-      <View style={styles.mainContent}>
-        {/* Left Column */}
-        <View style={styles.leftColumn}>
-          {/* Education */}
-          {resumeData.education && resumeData.education.length > 0 && (
-            <View style={styles.sectionMargin}>
-              <View style={styles.sectionHeaderRow}>
-                <View style={styles.sectionIndicator} />
-                <Text style={styles.sectionTitle}>Education</Text>
-              </View>
-              {resumeData.education.map((edu, index) => (
-                <View key={index} style={styles.educationItem}>
-                  <Text style={styles.educationDegree}>{edu.degree}</Text>
-                  {hasContent(edu.field) && (
-                    <Text style={styles.educationField}>{edu.field}</Text>
-                  )}
-                  <Text style={styles.educationSchool}>{edu.school}</Text>
-                  <View style={styles.educationDate}>
-                    <CalendarIcon />
-                    <Text>
-                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-          )}
-
-          {/* Skills */}
-          {resumeData.skills && resumeData.skills.length > 0 && (
-            <View style={styles.sectionMargin}>
-              <View style={styles.sectionHeaderRow}>
-                <View style={styles.sectionIndicator} />
-                <Text style={styles.sectionTitle}>Skills</Text>
-              </View>
-              {resumeData.skills.map((skill) => (
-                <Text key={skill.id} style={styles.skillItem}>
-                  {skill.name}
-                </Text>
-              ))}
-            </View>
-          )}
-        </View>
-
-        {/* Right Column */}
-        <View style={styles.rightColumn}>
-          {/* Experience */}
-          {resumeData.experience && resumeData.experience.length > 0 && (
-            <View style={styles.sectionMargin}>
-              <View style={styles.sectionHeaderRow}>
-                <View style={styles.sectionIndicator} />
-                <Text style={styles.sectionTitle}>Experience & Internships</Text>
-              </View>
-              {resumeData.experience.map((exp, index) => (
-                <View key={index} style={styles.experienceItem}>
-                  <View style={styles.experienceHeader}>
-                    <View style={styles.experienceLeft}>
-                      <Text style={styles.experiencePosition}>{exp.position}</Text>
-                      <Text style={styles.experienceCompany}>{exp.company}</Text>
-                    </View>
-                    <Text style={styles.experienceDateBadge}>
-                      {formatDate(exp.startDate)} -{" "}
-                      {exp.current ? "Present" : formatDate(exp.endDate)}
-                    </Text>
-                  </View>
-                  {hasContent(exp.description) && (
-                    <Text style={styles.experienceDescription}>{exp.description}</Text>
-                  )}
-                </View>
-              ))}
-            </View>
-          )}
-
-          {/* Custom Sections */}
-          {resumeData.sections && resumeData.sections.length > 0 && (
-            <>
-              {resumeData.sections.map((section, index) => (
-                hasContent(section.title) && hasContent(section.content) && (
-                  <View key={index} style={styles.sectionMargin}>
-                    <View style={styles.sectionHeaderRow}>
-                      <View style={styles.sectionIndicator} />
-                      <Text style={styles.sectionTitle}>{section.title}</Text>
-                    </View>
-                    <Text style={styles.sectionContent}>{section.content}</Text>
-                  </View>
-                )
-              ))}
-            </>
-          )}
-        </View>
-      </View>
-    </Page>
-  </Document>
-);
+      </Page>
+    </Document>
+  );
+};

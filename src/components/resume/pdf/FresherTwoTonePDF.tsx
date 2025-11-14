@@ -23,14 +23,13 @@ const styles = StyleSheet.create({
   },
   leftHalf: {
     width: "50%",
-    backgroundColor: "#F43F5E",
     color: "#ffffff",
-    padding: 40,
+    padding: 24,
   },
   rightHalf: {
     width: "50%",
     backgroundColor: "#ffffff",
-    padding: 40,
+    padding: 24,
   },
   photoWrapper: {
     width: 64,
@@ -62,8 +61,8 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   leftSection: {
-    marginBottom: 32,
-    paddingBottom: 32,
+    marginBottom: 24,
+    paddingBottom: 24,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255, 255, 255, 0.3)",
   },
@@ -123,17 +122,17 @@ const styles = StyleSheet.create({
     color: "rgba(255, 255, 255, 0.7)",
   },
   skillItem: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     color: "#ffffff",
     fontSize: 9,
     fontWeight: 600,
-    marginBottom: 8,
+    marginBottom: 6,
     borderRadius: 4,
   },
   rightSection: {
-    marginBottom: 32,
+    marginBottom: 24,
   },
   rightSectionTitle: {
     fontSize: 11,
@@ -142,7 +141,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingBottom: 8,
     borderBottomWidth: 2,
-    borderBottomColor: "#F43F5E",
   },
   summaryText: {
     fontSize: 10,
@@ -161,7 +159,6 @@ const styles = StyleSheet.create({
   experienceCompany: {
     fontSize: 10,
     fontWeight: 600,
-    color: "#F43F5E",
     marginBottom: 4,
   },
   experienceDate: {
@@ -243,11 +240,28 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherTwoTonePDF = ({ resumeData }: FresherTwoTonePDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Left Half - Colored */}
-      <View style={styles.leftHalf}>
+export const FresherTwoTonePDF = ({ resumeData, themeColor = "#F43F5E" }: FresherTwoTonePDFProps) => {
+  // Dynamic styles that use themeColor
+  const dynamicStyles = StyleSheet.create({
+    leftHalf: {
+      ...styles.leftHalf,
+      backgroundColor: themeColor,
+    },
+    rightSectionTitle: {
+      ...styles.rightSectionTitle,
+      borderBottomColor: themeColor,
+    },
+    experienceCompany: {
+      ...styles.experienceCompany,
+      color: themeColor,
+    },
+  });
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Left Half - Colored */}
+        <View style={dynamicStyles.leftHalf}>
         {resumeData.personalInfo.photo && (
           <View style={styles.photoWrapper}>
             <Image src={resumeData.personalInfo.photo} style={styles.photo} />
@@ -326,7 +340,7 @@ export const FresherTwoTonePDF = ({ resumeData }: FresherTwoTonePDFProps) => (
         {/* Professional Summary */}
         {hasContent(resumeData.personalInfo.summary) && (
           <View style={styles.rightSection}>
-            <Text style={styles.rightSectionTitle}>Professional Summary</Text>
+            <Text style={dynamicStyles.rightSectionTitle}>Professional Summary</Text>
             <Text style={styles.summaryText}>{resumeData.personalInfo.summary}</Text>
           </View>
         )}
@@ -334,11 +348,11 @@ export const FresherTwoTonePDF = ({ resumeData }: FresherTwoTonePDFProps) => (
         {/* Experience */}
         {resumeData.experience && resumeData.experience.length > 0 && (
           <View style={styles.rightSection}>
-            <Text style={styles.rightSectionTitle}>Experience & Internships</Text>
+            <Text style={dynamicStyles.rightSectionTitle}>Experience & Internships</Text>
             {resumeData.experience.map((exp, index) => (
               <View key={index} style={styles.experienceItem}>
                 <Text style={styles.experiencePosition}>{exp.position}</Text>
-                <Text style={styles.experienceCompany}>{exp.company}</Text>
+                <Text style={dynamicStyles.experienceCompany}>{exp.company}</Text>
                 <View style={styles.experienceDate}>
                   <CalendarIcon />
                   <Text>
@@ -359,7 +373,7 @@ export const FresherTwoTonePDF = ({ resumeData }: FresherTwoTonePDFProps) => (
             {resumeData.sections.map((section, index) => (
               hasContent(section.title) && hasContent(section.content) && (
                 <View key={index} style={styles.rightSection}>
-                  <Text style={styles.rightSectionTitle}>{section.title}</Text>
+                  <Text style={dynamicStyles.rightSectionTitle}>{section.title}</Text>
                   <Text style={styles.sectionContent}>{section.content}</Text>
                 </View>
               )
@@ -369,4 +383,5 @@ export const FresherTwoTonePDF = ({ resumeData }: FresherTwoTonePDFProps) => (
       </View>
     </Page>
   </Document>
-);
+  );
+};

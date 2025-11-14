@@ -13,6 +13,7 @@ import { registerPDFFonts } from "@/lib/pdfFonts";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 registerPDFFonts();
+};
 
 const styles = StyleSheet.create({
   page: {
@@ -27,14 +28,14 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#ffffff",
     borderRadius: 8,
-    padding: 24,
-    marginBottom: 24,
+    padding: 16,
+    marginBottom: 16,
   },
   headerCard: {
     backgroundColor: "#ffffff",
     borderRadius: 8,
-    padding: 32,
-    marginBottom: 24,
+    padding: 20,
+    marginBottom: 16,
   },
   headerContent: {
     flexDirection: "row",
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     overflow: "hidden",
     borderWidth: 4,
-    borderColor: "#14B8A6",
+    borderColor: "#14B8A6", // Will be overridden by dynamic
   },
   photo: {
     width: "100%",
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: 600,
-    color: "#14B8A6",
+    // color will be dynamic
     marginBottom: 16,
   },
   contactInfo: {
@@ -118,15 +119,15 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   skillItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "#F9FAFB",
-    borderLeftWidth: 3,
-    borderLeftColor: "#14B8A6",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    backgroundColor: "#E5E7EB",
+    color: "#374151",
     fontSize: 9,
     fontWeight: 600,
-    color: "#1F2937",
     borderRadius: 4,
+    marginRight: 6,
+    marginBottom: 6,
   },
   twoColumnGrid: {
     flexDirection: "row",
@@ -193,6 +194,7 @@ const styles = StyleSheet.create({
     color: "#374151",
   },
 });
+};
 
 const EmailIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -200,12 +202,14 @@ const EmailIcon = () => (
     <Path d="m22 6-10 7L2 6" fill="none" stroke="#14B8A6" strokeWidth={2} />
   </Svg>
 );
+};
 
 const PhoneIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
     <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#14B8A6" strokeWidth={2} />
   </Svg>
 );
+};
 
 const LocationIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -213,12 +217,14 @@ const LocationIcon = () => (
     <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="#14B8A6" strokeWidth={2} />
   </Svg>
 );
+};
 
 const CodeIcon = () => (
   <Svg style={styles.cardIcon} viewBox="0 0 24 24">
     <Path d="m16 18 6-6-6-6M8 6l-6 6 6 6" fill="none" stroke="#14B8A6" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 );
+};
 
 const GraduationCapIcon = () => (
   <Svg style={styles.cardIcon} viewBox="0 0 24 24">
@@ -226,12 +232,14 @@ const GraduationCapIcon = () => (
     <Path d="M5 13.18v4L12 21l7-3.82v-4" fill="none" stroke="#14B8A6" strokeWidth={2} />
   </Svg>
 );
+};
 
 const BriefcaseIcon = () => (
   <Svg style={styles.cardIcon} viewBox="0 0 24 24">
     <Path d="M8 6V4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2M3 8h18v12c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V8z" fill="none" stroke="#14B8A6" strokeWidth={2} />
   </Svg>
 );
+};
 
 const CalendarIcon = () => (
   <Svg style={styles.dateIcon} viewBox="0 0 24 24">
@@ -239,6 +247,7 @@ const CalendarIcon = () => (
     <Path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#6B7280" strokeWidth={2} fill="none" />
   </Svg>
 );
+};
 
 interface FresherCardBasedPDFProps {
   resumeData: ResumeData;
@@ -248,6 +257,7 @@ interface FresherCardBasedPDFProps {
 const formatDate = (date: string) => {
   if (!date) return "";
   const [year, month] = date.split("-");
+};
   const monthNames = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -255,8 +265,31 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherCardBasedPDF = ({ resumeData }: FresherCardBasedPDFProps) => (
-  <Document>
+export const FresherCardBasedPDF = ({ resumeData, themeColor = "#14B8A6" }: FresherCardBasedPDFProps) => {
+
+  // Dynamic styles that use themeColor
+  const dynamicStyles = StyleSheet.create({
+    photoWrapper: {
+      ...styles.photoWrapper,
+      borderColor: themeColor,
+    },
+    title: {
+      ...styles.title,
+      color: themeColor,
+    },
+    experienceCompany: {
+      ...styles.experienceCompany,
+      color: themeColor,
+    },
+    educationSchool: {
+      ...styles.educationSchool,
+      color: themeColor,
+    },
+  });
+};
+
+  return (
+    <Document>
     <Page size="A4" style={styles.page}>
       {/* Header Card */}
       <View style={styles.headerCard}>
@@ -389,4 +422,6 @@ export const FresherCardBasedPDF = ({ resumeData }: FresherCardBasedPDFProps) =>
       )}
     </Page>
   </Document>
-);
+  );
+};
+};

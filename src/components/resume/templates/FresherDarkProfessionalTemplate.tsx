@@ -43,14 +43,14 @@ export const FresherDarkProfessionalTemplate = ({
     <div className="w-full h-full bg-white overflow-auto">
       <div className="max-w-[850px] mx-auto">
         {/* Dark Modern Header */}
-        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-12 py-10 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-8 py-6 relative overflow-hidden">
           {/* Decorative Background Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full" style={{ background: themeColor }} />
             <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full" style={{ background: themeColor }} />
           </div>
 
-          <div className="relative flex items-center gap-8">
+          <div className="relative flex items-center gap-6">
             <div className="flex-shrink-0">
               <ProfilePhoto
                 src={photo}
@@ -140,7 +140,7 @@ export const FresherDarkProfessionalTemplate = ({
 
         {/* Professional Summary */}
         {resumeData.personalInfo.summary && (
-          <section className="px-12 py-8 border-b border-gray-200">
+          <section className="px-8 py-6 border-b border-gray-200">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-1 h-6 rounded-full" style={{ backgroundColor: themeColor }} />
               <h2 className="text-lg font-bold text-gray-900">Professional Summary</h2>
@@ -162,8 +162,8 @@ export const FresherDarkProfessionalTemplate = ({
         )}
 
         {/* Main Content - Two Column Layout */}
-        <div className="px-12 py-8">
-          <div className="grid grid-cols-3 gap-10">
+        <div className="px-8 py-8">
+          <div className="grid grid-cols-3 gap-6">
             {/* Left Sidebar - Education & Skills */}
             <div className="col-span-1 space-y-8">
               {/* Education */}
@@ -265,7 +265,7 @@ export const FresherDarkProfessionalTemplate = ({
                       skills={resumeData.skills}
                       renderSkill={(skill, index) => (
                         <div className="mb-2 pl-5">
-                          <div className="px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-md">
+                          <div className="px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md">
                             {skill.name}
                           </div>
                         </div>
@@ -274,7 +274,7 @@ export const FresherDarkProfessionalTemplate = ({
                   ) : (
                     <div className="space-y-2 pl-5">
                       {resumeData.skills.map((skill) => (
-                        <div key={skill.id} className="px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-md">
+                        <div key={skill.id} className="px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md">
                           {skill.name}
                         </div>
                       ))}

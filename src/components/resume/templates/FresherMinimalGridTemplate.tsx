@@ -44,7 +44,7 @@ export const FresherMinimalGridTemplate = ({
       <div className="max-w-[850px] mx-auto">
         {/* Minimal Header with Side Border */}
         <div className="relative border-l-4 pl-12 pr-12 pt-10 pb-8" style={{ borderLeftColor: themeColor }}>
-          <div className="flex items-start gap-8">
+          <div className="flex items-start gap-6">
             <div className="flex-shrink-0">
               <ProfilePhoto
                 src={photo}
@@ -135,7 +135,7 @@ export const FresherMinimalGridTemplate = ({
 
         {/* Professional Summary */}
         {resumeData.personalInfo.summary && (
-          <section className="px-12 py-6 bg-gray-50">
+          <section className="px-8 py-6 bg-gray-50">
             <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: themeColor }}>
               Professional Summary
             </h2>
@@ -156,8 +156,8 @@ export const FresherMinimalGridTemplate = ({
         )}
 
         {/* 3-Column Grid Layout */}
-        <div className="px-12 py-8">
-          <div className="grid grid-cols-3 gap-8">
+        <div className="px-8 py-8">
+          <div className="grid grid-cols-3 gap-6">
             {/* Column 1 - Education */}
             <div className="space-y-6">
               {resumeData.education && resumeData.education.length > 0 && (
@@ -258,7 +258,7 @@ export const FresherMinimalGridTemplate = ({
                       skills={resumeData.skills}
                       renderSkill={(skill, index) => (
                         <div className="mb-2">
-                          <div className="px-3 py-2 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
+                          <div className="px-3 py-1.5 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
                             {skill.name}
                           </div>
                         </div>
@@ -267,7 +267,7 @@ export const FresherMinimalGridTemplate = ({
                   ) : (
                     <div className="space-y-2">
                       {resumeData.skills.map((skill) => (
-                        <div key={skill.id} className="px-3 py-2 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
+                        <div key={skill.id} className="px-3 py-1.5 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
                           {skill.name}
                         </div>
                       ))}

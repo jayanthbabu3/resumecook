@@ -39,7 +39,7 @@ export const FresherGeometricTemplate = ({
         <div className="w-full h-full rounded-full border-8 border-current transform -translate-x-24 translate-y-24" style={{ borderColor: themeColor }} />
       </div>
 
-      <div className="max-w-[850px] mx-auto px-12 py-10 relative z-10">
+      <div className="max-w-[850px] mx-auto px-8 py-6 relative z-10">
         {/* Header with Geometric Accent */}
         <div className="flex items-start gap-8 mb-8">
           <div className="flex-shrink-0 relative">
@@ -159,7 +159,7 @@ export const FresherGeometricTemplate = ({
           </section>
         )}
 
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-6">
           {/* Left Column - Skills */}
           <div className="col-span-1 space-y-8">
             {/* Skills with Geometric Accent */}
@@ -178,7 +178,7 @@ export const FresherGeometricTemplate = ({
                     renderSkill={(skill, index) => (
                       <div className="mb-3 relative group">
                         <div className="absolute -left-3 top-1/2 transform -translate-y-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }} />
-                        <div className="px-3 py-2 bg-gray-50 text-xs font-medium text-gray-800 rounded-r-lg">
+                        <div className="px-3 py-1.5 bg-gray-50 text-xs font-medium text-gray-800 rounded-r-lg">
                           {skill.name}
                         </div>
                       </div>
@@ -189,7 +189,7 @@ export const FresherGeometricTemplate = ({
                     {resumeData.skills.map((skill) => (
                       <div key={skill.id} className="relative group">
                         <div className="absolute -left-3 top-1/2 transform -translate-y-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }} />
-                        <div className="px-3 py-2 bg-gray-50 text-xs font-medium text-gray-800 rounded-r-lg">
+                        <div className="px-3 py-1.5 bg-gray-50 text-xs font-medium text-gray-800 rounded-r-lg">
                           {skill.name}
                         </div>
                       </div>

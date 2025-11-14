@@ -14,6 +14,7 @@ import { registerPDFFonts } from "@/lib/pdfFonts";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 registerPDFFonts();
+};
 
 const styles = StyleSheet.create({
   page: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   header: {
-    paddingHorizontal: 48,
+    paddingHorizontal: 32,
     paddingTop: 40,
     paddingBottom: 32,
     backgroundColor: "#F9FAFB",
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   summarySection: {
-    paddingHorizontal: 48,
+    paddingHorizontal: 32,
     paddingVertical: 24,
     marginBottom: 0,
   },
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     color: "#374151",
   },
   mainContent: {
-    paddingHorizontal: 48,
+    paddingHorizontal: 32,
     paddingVertical: 32,
     flexDirection: "row",
     gap: 32,
@@ -118,8 +119,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   skillItem: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     backgroundColor: "#F9FAFB",
     borderLeftWidth: 3,
     borderLeftColor: "#EC4899",
@@ -206,9 +207,10 @@ const styles = StyleSheet.create({
     color: "#374151",
   },
   sectionMargin: {
-    marginBottom: 32,
+    marginBottom: 20,
   },
 });
+};
 
 const EmailIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -216,12 +218,14 @@ const EmailIcon = () => (
     <Path d="m22 6-10 7L2 6" fill="none" stroke="#EC4899" strokeWidth={2} />
   </Svg>
 );
+};
 
 const PhoneIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
     <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#EC4899" strokeWidth={2} />
   </Svg>
 );
+};
 
 const LocationIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -229,6 +233,7 @@ const LocationIcon = () => (
     <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="#EC4899" strokeWidth={2} />
   </Svg>
 );
+};
 
 const CalendarIcon = () => (
   <Svg style={styles.dateIcon} viewBox="0 0 24 24">
@@ -236,12 +241,14 @@ const CalendarIcon = () => (
     <Path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#6B7280" strokeWidth={2} fill="none" />
   </Svg>
 );
+};
 
 const TimelineDotIcon = () => (
   <Svg style={styles.timelineDot} viewBox="0 0 24 24">
     <Circle cx={12} cy={12} r={10} fill="#EC4899" />
   </Svg>
 );
+};
 
 interface FresherTimelinePDFProps {
   resumeData: ResumeData;
@@ -251,6 +258,7 @@ interface FresherTimelinePDFProps {
 const formatDate = (date: string) => {
   if (!date) return "";
   const [year, month] = date.split("-");
+};
   const monthNames = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -258,7 +266,8 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherTimelinePDF = ({ resumeData }: FresherTimelinePDFProps) => (
+export const FresherTimelinePDF = ({ resumeData, themeColor = "#EC4899" }: FresherTimelinePDFProps) => {
+  return (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
@@ -399,3 +408,4 @@ export const FresherTimelinePDF = ({ resumeData }: FresherTimelinePDFProps) => (
     </Page>
   </Document>
 );
+};

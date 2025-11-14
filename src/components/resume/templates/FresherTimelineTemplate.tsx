@@ -33,8 +33,8 @@ export const FresherTimelineTemplate = ({
     <div className="w-full h-full bg-white overflow-auto">
       <div className="max-w-[850px] mx-auto">
         {/* Header Section */}
-        <div className="relative px-12 pt-10 pb-8 bg-gradient-to-r from-gray-50 to-white">
-          <div className="flex items-start gap-8">
+        <div className="relative px-8 pt-10 pb-8 bg-gradient-to-r from-gray-50 to-white">
+          <div className="flex items-start gap-6">
             <div className="flex-shrink-0">
               <ProfilePhoto
                 src={photo}
@@ -124,7 +124,7 @@ export const FresherTimelineTemplate = ({
 
         {/* Professional Summary */}
         {resumeData.personalInfo.summary && (
-          <section className="px-12 py-6 bg-white">
+          <section className="px-8 py-6 bg-white">
             <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: themeColor }}>
               Professional Summary
             </h2>
@@ -144,8 +144,8 @@ export const FresherTimelineTemplate = ({
           </section>
         )}
 
-        <div className="px-12 py-8">
-          <div className="grid grid-cols-3 gap-8">
+        <div className="px-8 py-8">
+          <div className="grid grid-cols-3 gap-6">
             {/* Left Column - Skills */}
             <div className="col-span-1 space-y-8">
               {/* Skills */}
@@ -160,7 +160,7 @@ export const FresherTimelineTemplate = ({
                       skills={resumeData.skills}
                       renderSkill={(skill, index) => (
                         <div className="mb-2">
-                          <div className="px-3 py-2 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
+                          <div className="px-3 py-1.5 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
                             {skill.name}
                           </div>
                         </div>
@@ -169,7 +169,7 @@ export const FresherTimelineTemplate = ({
                   ) : (
                     <div className="space-y-2">
                       {resumeData.skills.map((skill) => (
-                        <div key={skill.id} className="px-3 py-2 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
+                        <div key={skill.id} className="px-3 py-1.5 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
                           {skill.name}
                         </div>
                       ))}

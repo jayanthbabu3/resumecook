@@ -45,7 +45,7 @@ export const FresherTemplate = ({
         {/* Header Section with Theme Accent */}
         <div className="relative">
           <div className="h-2 w-full" style={{ backgroundColor: themeColor }} />
-          <div className="px-12 pt-8 pb-6">
+          <div className="px-8 pt-8 pb-6">
             <div className="text-center mb-6">
               <ProfilePhoto
                 src={photo}
@@ -136,7 +136,7 @@ export const FresherTemplate = ({
           </div>
         </div>
 
-        <div className="px-12 pb-12">
+        <div className="px-8 pb-12">
           {/* Professional Summary */}
           {resumeData.personalInfo.summary && (
             <section className="mb-8">
@@ -166,7 +166,7 @@ export const FresherTemplate = ({
           )}
 
           {/* Main Content Grid */}
-          <div className="grid grid-cols-5 gap-8">
+          <div className="grid grid-cols-5 gap-6">
             {/* Left Column - Education & Skills */}
             <div className="col-span-2 space-y-8">
               {/* Education */}
@@ -289,7 +289,7 @@ export const FresherTemplate = ({
                       renderSkill={(skill, index) => (
                         <div className="pl-4">
                           <div
-                            className="px-3 py-2 bg-gray-50 border-l-3 text-xs font-medium text-gray-800"
+                            className="px-3 py-1.5 bg-gray-50 border-l-3 text-xs font-medium text-gray-800"
                             style={{ borderLeftColor: themeColor }}
                           >
                             {skill.name}
@@ -303,7 +303,7 @@ export const FresherTemplate = ({
                         {resumeData.skills.map((skill) => (
                           <div
                             key={skill.id}
-                            className="px-3 py-2 bg-gray-50 border-l-3 text-xs font-medium text-gray-800"
+                            className="px-3 py-1.5 bg-gray-50 border-l-3 text-xs font-medium text-gray-800"
                             style={{ borderLeftColor: themeColor }}
                           >
                             {skill.name}

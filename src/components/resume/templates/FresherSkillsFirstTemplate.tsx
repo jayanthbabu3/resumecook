@@ -33,8 +33,8 @@ export const FresherSkillsFirstTemplate = ({
     <div className="w-full h-full bg-white overflow-auto">
       <div className="max-w-[850px] mx-auto">
         {/* Compact Header */}
-        <div className="px-12 pt-10 pb-6 border-b-2" style={{ borderBottomColor: themeColor }}>
-          <div className="flex items-center justify-between gap-8">
+        <div className="px-8 pt-8 pb-5 border-b-2" style={{ borderBottomColor: themeColor }}>
+          <div className="flex items-center justify-between gap-6">
             <div className="flex items-center gap-6">
               <ProfilePhoto
                 src={photo}
@@ -124,7 +124,7 @@ export const FresherSkillsFirstTemplate = ({
 
         {/* Skills Section - Prominent at Top */}
         {resumeData.skills && resumeData.skills.length > 0 && (
-          <section className="px-12 py-8 bg-gray-50">
+          <section className="px-8 py-6 bg-gray-50">
             <div className="flex items-center gap-3 mb-6">
               <Code className="h-6 w-6" style={{ color: themeColor }} />
               <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wide">
@@ -136,9 +136,9 @@ export const FresherSkillsFirstTemplate = ({
                 path="skills"
                 skills={resumeData.skills}
                 renderSkill={(skill, index) => (
-                  <div className="inline-block m-2">
+                  <div className="inline-block m-1.5">
                     <div
-                      className="px-6 py-4 rounded-lg text-base font-semibold text-white shadow-md hover:shadow-lg transition-shadow"
+                      className="px-3 py-1.5 rounded-md text-sm font-semibold text-white"
                       style={{ backgroundColor: themeColor }}
                     >
                       {skill.name}
@@ -149,9 +149,9 @@ export const FresherSkillsFirstTemplate = ({
             ) : (
               <div className="flex flex-wrap">
                 {resumeData.skills.map((skill) => (
-                  <div key={skill.id} className="inline-block m-2">
+                  <div key={skill.id} className="inline-block m-1.5">
                     <div
-                      className="px-6 py-4 rounded-lg text-base font-semibold text-white shadow-md hover:shadow-lg transition-shadow"
+                      className="px-3 py-1.5 rounded-md text-sm font-semibold text-white"
                       style={{ backgroundColor: themeColor }}
                     >
                       {skill.name}
@@ -163,7 +163,7 @@ export const FresherSkillsFirstTemplate = ({
           </section>
         )}
 
-        <div className="px-12 py-8">
+        <div className="px-8 py-6">
           {/* Professional Summary */}
           {resumeData.personalInfo.summary && (
             <section className="mb-8">
@@ -186,7 +186,7 @@ export const FresherSkillsFirstTemplate = ({
             </section>
           )}
 
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 gap-6">
             {/* Left Column - Projects & Custom Sections */}
             <div className="space-y-8">
               {/* Custom Sections - Most Important for Freshers */}

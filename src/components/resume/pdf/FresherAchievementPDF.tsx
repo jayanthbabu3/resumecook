@@ -13,6 +13,7 @@ import { registerPDFFonts } from "@/lib/pdfFonts";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 registerPDFFonts();
+};
 
 const styles = StyleSheet.create({
   page: {
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   headerBg: {
-    paddingHorizontal: 48,
+    paddingHorizontal: 32,
     paddingTop: 40,
     paddingBottom: 32,
     backgroundColor: "#FEF3C7",
@@ -99,11 +100,11 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   mainContent: {
-    paddingHorizontal: 48,
+    paddingHorizontal: 32,
     paddingVertical: 32,
   },
   section: {
-    marginBottom: 32,
+    marginBottom: 20,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   skillItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderWidth: 2,
     borderColor: "#EAB308",
     backgroundColor: "#FEF3C7",
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: "#6B7280",
     backgroundColor: "#ffffff",
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
     flexDirection: "row",
@@ -240,6 +241,7 @@ const styles = StyleSheet.create({
     borderLeftColor: "#EAB308",
   },
 });
+};
 
 const EmailIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -247,12 +249,14 @@ const EmailIcon = () => (
     <Path d="m22 6-10 7L2 6" fill="none" stroke="#EAB308" strokeWidth={2} />
   </Svg>
 );
+};
 
 const PhoneIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
     <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="#EAB308" strokeWidth={2} />
   </Svg>
 );
+};
 
 const LocationIcon = () => (
   <Svg style={styles.contactIcon} viewBox="0 0 24 24">
@@ -260,18 +264,21 @@ const LocationIcon = () => (
     <Path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="#EAB308" strokeWidth={2} />
   </Svg>
 );
+};
 
 const AwardIcon = () => (
   <Svg style={styles.awardBadge} viewBox="0 0 24 24">
     <Path d="M12 2L8 7H2l5 8-3 7 8-4 8 4-3-7 5-8h-6l-4-5z" fill="#EAB308" stroke="none" />
   </Svg>
 );
+};
 
 const StarIcon = () => (
   <Svg style={styles.starIcon} viewBox="0 0 24 24">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#EAB308" />
   </Svg>
 );
+};
 
 const TrendingUpIcon = () => (
   <Svg style={styles.sectionIcon} viewBox="0 0 24 24">
@@ -279,6 +286,7 @@ const TrendingUpIcon = () => (
     <Path d="M17 6h6v6" fill="none" stroke="#EAB308" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 );
+};
 
 const CalendarIcon = () => (
   <Svg style={styles.dateIcon} viewBox="0 0 24 24">
@@ -286,6 +294,7 @@ const CalendarIcon = () => (
     <Path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#6B7280" strokeWidth={2} fill="none" />
   </Svg>
 );
+};
 
 interface FresherAchievementPDFProps {
   resumeData: ResumeData;
@@ -295,6 +304,7 @@ interface FresherAchievementPDFProps {
 const formatDate = (date: string) => {
   if (!date) return "";
   const [year, month] = date.split("-");
+};
   const monthNames = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -302,7 +312,8 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherAchievementPDF = ({ resumeData }: FresherAchievementPDFProps) => (
+export const FresherAchievementPDF = ({ resumeData, themeColor = "#EAB308" }: FresherAchievementPDFProps) => {
+  return (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
@@ -460,3 +471,4 @@ export const FresherAchievementPDF = ({ resumeData }: FresherAchievementPDFProps
     </Page>
   </Document>
 );
+};

@@ -155,7 +155,7 @@ export const FresherCardBasedTemplate = ({
                 skills={resumeData.skills}
                 renderSkill={(skill, index) => (
                   <div className="inline-block m-1.5">
-                    <div className="px-4 py-2 bg-gray-100 rounded-md text-sm font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
+                    <div className="px-3 py-1.5 bg-gray-100 rounded-md text-sm font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
                       {skill.name}
                     </div>
                   </div>
@@ -165,7 +165,7 @@ export const FresherCardBasedTemplate = ({
               <div className="flex flex-wrap">
                 {resumeData.skills.map((skill) => (
                   <div key={skill.id} className="inline-block m-1.5">
-                    <div className="px-4 py-2 bg-gray-100 rounded-md text-sm font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
+                    <div className="px-3 py-1.5 bg-gray-100 rounded-md text-sm font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
                       {skill.name}
                     </div>
                   </div>

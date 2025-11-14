@@ -33,8 +33,8 @@ export const FresherAchievementTemplate = ({
     <div className="w-full h-full bg-white overflow-auto">
       <div className="max-w-[850px] mx-auto">
         {/* Achievement-focused Header */}
-        <div className="relative px-12 pt-10 pb-8" style={{ background: `linear-gradient(135deg, ${themeColor}15 0%, ${themeColor}05 100%)` }}>
-          <div className="flex items-start gap-8">
+        <div className="relative px-8 pt-10 pb-8" style={{ background: `linear-gradient(135deg, ${themeColor}15 0%, ${themeColor}05 100%)` }}>
+          <div className="flex items-start gap-6">
             <div className="flex-shrink-0 relative">
               <div className="absolute -top-2 -right-2 z-10">
                 <Award className="h-6 w-6" style={{ color: themeColor }} />
@@ -127,7 +127,7 @@ export const FresherAchievementTemplate = ({
           </div>
         </div>
 
-        <div className="px-12 py-8">
+        <div className="px-8 py-8">
           {/* Professional Summary with Achievement Focus */}
           {resumeData.personalInfo.summary && (
             <section className="mb-8">
@@ -170,7 +170,7 @@ export const FresherAchievementTemplate = ({
                   skills={resumeData.skills}
                   renderSkill={(skill, index) => (
                     <div className="inline-block m-1.5">
-                      <div className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-800 border-2" style={{ borderColor: themeColor, backgroundColor: `${themeColor}10` }}>
+                      <div className="px-3 py-1.5 rounded-lg text-sm font-semibold text-gray-800 border-2" style={{ borderColor: themeColor, backgroundColor: `${themeColor}10` }}>
                         {skill.name}
                       </div>
                     </div>
@@ -180,7 +180,7 @@ export const FresherAchievementTemplate = ({
                 <div className="flex flex-wrap">
                   {resumeData.skills.map((skill) => (
                     <div key={skill.id} className="inline-block m-1.5">
-                      <div className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-800 border-2" style={{ borderColor: themeColor, backgroundColor: `${themeColor}10` }}>
+                      <div className="px-3 py-1.5 rounded-lg text-sm font-semibold text-gray-800 border-2" style={{ borderColor: themeColor, backgroundColor: `${themeColor}10` }}>
                         {skill.name}
                       </div>
                     </div>

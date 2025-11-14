@@ -33,7 +33,7 @@ export const FresherColorAccentTemplate = ({
     <div className="w-full h-full bg-white overflow-auto">
       <div className="max-w-[850px] mx-auto flex">
         {/* Left Colored Sidebar */}
-        <div className="w-72 flex-shrink-0 text-white p-8" style={{ backgroundColor: themeColor }}>
+        <div className="w-72 flex-shrink-0 text-white p-6" style={{ backgroundColor: themeColor }}>
           {/* Profile Photo */}
           <div className="text-center mb-6">
             <ProfilePhoto
@@ -76,7 +76,7 @@ export const FresherColorAccentTemplate = ({
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-4 mb-8 pb-8 border-b border-white/20">
+          <div className="space-y-3 mb-6 pb-6 border-b border-white/20">
             <h2 className="text-xs font-bold uppercase tracking-wider text-white/80 mb-4">
               Contact
             </h2>
@@ -132,7 +132,7 @@ export const FresherColorAccentTemplate = ({
 
           {/* Education */}
           {resumeData.education && resumeData.education.length > 0 && (
-            <div className="mb-8 pb-8 border-b border-white/20">
+            <div className="mb-6 pb-6 border-b border-white/20">
               <div className="flex items-center gap-2 mb-4">
                 <GraduationCap className="h-4 w-4" />
                 <h2 className="text-xs font-bold uppercase tracking-wider text-white/80">
@@ -230,7 +230,7 @@ export const FresherColorAccentTemplate = ({
                   skills={resumeData.skills}
                   renderSkill={(skill, index) => (
                     <div className="mb-2">
-                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-md text-xs font-medium text-white">
+                      <div className="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-md text-xs font-medium text-white">
                         {skill.name}
                       </div>
                     </div>
@@ -239,7 +239,7 @@ export const FresherColorAccentTemplate = ({
               ) : (
                 <div className="space-y-2">
                   {resumeData.skills.map((skill) => (
-                    <div key={skill.id} className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-md text-xs font-medium text-white">
+                    <div key={skill.id} className="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-md text-xs font-medium text-white">
                       {skill.name}
                     </div>
                   ))}
@@ -250,7 +250,7 @@ export const FresherColorAccentTemplate = ({
         </div>
 
         {/* Right Content Area */}
-        <div className="flex-1 p-12">
+        <div className="flex-1 p-8">
           {/* Professional Summary */}
           {resumeData.personalInfo.summary && (
             <section className="mb-8">

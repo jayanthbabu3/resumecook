@@ -25,11 +25,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   header: {
-    paddingHorizontal: 48,
-    paddingTop: 40,
-    paddingBottom: 24,
+    paddingHorizontal: 32,
+    paddingTop: 32,
+    paddingBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: "#F59E0B",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -63,7 +62,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 12,
     fontWeight: 600,
-    color: "#F59E0B",
   },
   headerRight: {
     gap: 8,
@@ -80,8 +78,8 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   skillsSection: {
-    paddingHorizontal: 48,
-    paddingVertical: 32,
+    paddingHorizontal: 32,
+    paddingVertical: 24,
     backgroundColor: "#F9FAFB",
   },
   skillsHeader: {
@@ -107,17 +105,16 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   skillCard: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    backgroundColor: "#F59E0B",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     color: "#ffffff",
-    borderRadius: 8,
-    fontSize: 11,
+    borderRadius: 4,
+    fontSize: 9,
     fontWeight: 600,
   },
   mainContent: {
-    paddingHorizontal: 48,
-    paddingVertical: 32,
+    paddingHorizontal: 32,
+    paddingVertical: 24,
   },
   summarySection: {
     marginBottom: 32,
@@ -127,7 +124,6 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: "uppercase",
     letterSpacing: 0.5,
-    color: "#F59E0B",
     marginBottom: 12,
   },
   summaryText: {
@@ -137,7 +133,7 @@ const styles = StyleSheet.create({
   },
   twoColumnGrid: {
     flexDirection: "row",
-    gap: 32,
+    gap: 24,
   },
   column: {
     flex: 1,
@@ -154,7 +150,6 @@ const styles = StyleSheet.create({
   experienceCompany: {
     fontSize: 10,
     fontWeight: 600,
-    color: "#F59E0B",
     marginBottom: 4,
   },
   experienceDate: {
@@ -191,7 +186,6 @@ const styles = StyleSheet.create({
   educationSchool: {
     fontSize: 9,
     fontWeight: 600,
-    color: "#F59E0B",
     marginBottom: 8,
   },
   educationDate: {
@@ -258,11 +252,43 @@ const formatDate = (date: string) => {
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 };
 
-export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
+export const FresherSkillsFirstPDF = ({ resumeData, themeColor = "#F59E0B" }: FresherSkillsFirstPDFProps) => {
+  // Dynamic styles that use themeColor
+  const dynamicStyles = StyleSheet.create({
+    borderBottom: {
+      borderBottomColor: themeColor,
+    },
+    title: {
+      ...styles.title,
+      color: themeColor,
+    },
+    skillsSection: {
+      ...styles.skillsSection,
+      backgroundColor: "#F9FAFB",
+    },
+    skillCard: {
+      ...styles.skillCard,
+      backgroundColor: themeColor,
+    },
+    sectionTitle: {
+      ...styles.sectionTitle,
+      color: themeColor,
+    },
+    experienceCompany: {
+      ...styles.experienceCompany,
+      color: themeColor,
+    },
+    educationSchool: {
+      ...styles.educationSchool,
+      color: themeColor,
+    },
+  });
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, dynamicStyles.borderBottom]}>
         <View style={styles.headerLeft}>
           {resumeData.personalInfo.photo && (
             <View style={styles.photoWrapper}>
@@ -272,7 +298,7 @@ export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps
           <View>
             <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
             {resumeData.personalInfo.title && (
-              <Text style={styles.title}>{resumeData.personalInfo.title}</Text>
+              <Text style={dynamicStyles.title}>{resumeData.personalInfo.title}</Text>
             )}
           </View>
         </View>
@@ -301,14 +327,14 @@ export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps
 
       {/* Skills Section */}
       {resumeData.skills && resumeData.skills.length > 0 && (
-        <View style={styles.skillsSection}>
+        <View style={dynamicStyles.skillsSection}>
           <View style={styles.skillsHeader}>
             <CodeIcon />
             <Text style={styles.skillsTitle}>Technical Skills</Text>
           </View>
           <View style={styles.skillsGrid}>
             {resumeData.skills.map((skill) => (
-              <Text key={skill.id} style={styles.skillCard}>
+              <Text key={skill.id} style={dynamicStyles.skillCard}>
                 {skill.name}
               </Text>
             ))}
@@ -321,7 +347,7 @@ export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps
         {/* Professional Summary */}
         {hasContent(resumeData.personalInfo.summary) && (
           <View style={styles.summarySection}>
-            <Text style={styles.sectionTitle}>Professional Summary</Text>
+            <Text style={dynamicStyles.sectionTitle}>Professional Summary</Text>
             <Text style={styles.summaryText}>{resumeData.personalInfo.summary}</Text>
           </View>
         )}
@@ -332,11 +358,11 @@ export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps
           <View style={styles.column}>
             {resumeData.experience && resumeData.experience.length > 0 && (
               <View style={styles.sectionMargin}>
-                <Text style={styles.sectionTitle}>Experience & Internships</Text>
+                <Text style={dynamicStyles.sectionTitle}>Experience & Internships</Text>
                 {resumeData.experience.map((exp, index) => (
                   <View key={index} style={styles.experienceItem}>
                     <Text style={styles.experiencePosition}>{exp.position}</Text>
-                    <Text style={styles.experienceCompany}>{exp.company}</Text>
+                    <Text style={dynamicStyles.experienceCompany}>{exp.company}</Text>
                     <View style={styles.experienceDate}>
                       <CalendarIcon />
                       <Text>
@@ -356,14 +382,14 @@ export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps
           <View style={styles.column}>
             {resumeData.education && resumeData.education.length > 0 && (
               <View style={styles.sectionMargin}>
-                <Text style={styles.sectionTitle}>Education</Text>
+                <Text style={dynamicStyles.sectionTitle}>Education</Text>
                 {resumeData.education.map((edu, index) => (
                   <View key={index} style={styles.educationItem}>
                     <Text style={styles.educationDegree}>{edu.degree}</Text>
                     {hasContent(edu.field) && (
                       <Text style={styles.educationField}>{edu.field}</Text>
                     )}
-                    <Text style={styles.educationSchool}>{edu.school}</Text>
+                    <Text style={dynamicStyles.educationSchool}>{edu.school}</Text>
                     <View style={styles.educationDate}>
                       <CalendarIcon />
                       <Text>
@@ -380,7 +406,7 @@ export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps
                 {resumeData.sections.map((section, index) => (
                   hasContent(section.title) && hasContent(section.content) && (
                     <View key={index} style={styles.sectionMargin}>
-                      <Text style={styles.sectionTitle}>{section.title}</Text>
+                      <Text style={dynamicStyles.sectionTitle}>{section.title}</Text>
                       <Text style={styles.sectionContent}>{section.content}</Text>
                     </View>
                   )
@@ -392,4 +418,5 @@ export const FresherSkillsFirstPDF = ({ resumeData }: FresherSkillsFirstPDFProps
       </View>
     </Page>
   </Document>
-);
+  );
+};
