@@ -1,5 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Svg, Path, Image } from '@react-pdf/renderer';
 import type { ResumeData } from "@/pages/Editor";
+import type { ResumeSection } from "@/types/resume";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
@@ -141,6 +142,180 @@ interface Props {
 export const ProfessionalPDF = ({ resumeData, themeColor }: Props) => {
   const photo = resumeData.personalInfo.photo;
 
+  // Render a single dynamic section
+  const renderDynamicSection = (section: ResumeSection) => {
+    if (!section.enabled) return null;
+
+    const sectionData = section.data;
+
+    switch (sectionData.type) {
+      case 'certifications':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((cert) => (
+              <View key={cert.id} style={styles.educationItem}>
+                <Text style={styles.degree}>{cert.name}</Text>
+                <Text style={styles.company}>{cert.issuer}</Text>
+                <Text style={styles.date}>{formatDate(cert.date)}</Text>
+                {cert.credentialId && (
+                  <Text style={styles.description}>ID: {cert.credentialId}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'languages':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            <View style={styles.skillsContainer}>
+              {sectionData.items.map((lang, index) => (
+                <Text key={lang.id} style={styles.skill}>
+                  {lang.language} - {lang.proficiency}
+                  {index < sectionData.items.length - 1 ? " •" : ""}
+                </Text>
+              ))}
+            </View>
+          </View>
+        ) : null;
+
+      case 'projects':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((project) => (
+              <View key={project.id} style={styles.experienceItem}>
+                <Text style={styles.jobTitle}>{project.name}</Text>
+                {project.description && (
+                  <Text style={styles.description}>{project.description}</Text>
+                )}
+                {project.techStack && project.techStack.length > 0 && (
+                  <Text style={styles.description}>
+                    Tech: {project.techStack.join(", ")}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'awards':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((award) => (
+              <View key={award.id} style={styles.educationItem}>
+                <Text style={styles.degree}>{award.title}</Text>
+                <Text style={styles.company}>{award.issuer}</Text>
+                <Text style={styles.date}>{formatDate(award.date)}</Text>
+                {award.description && (
+                  <Text style={styles.description}>{award.description}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'volunteer':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((vol) => (
+              <View key={vol.id} style={styles.experienceItem}>
+                <Text style={styles.jobTitle}>{vol.role}</Text>
+                <Text style={styles.company}>{vol.organization}</Text>
+                <Text style={styles.date}>
+                  {formatDate(vol.startDate)} - {vol.current ? "Present" : formatDate(vol.endDate)}
+                </Text>
+                {vol.description && (
+                  <Text style={styles.description}>{vol.description}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'publications':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((pub) => (
+              <View key={pub.id} style={styles.educationItem}>
+                <Text style={styles.degree}>{pub.title}</Text>
+                <Text style={styles.company}>{pub.publisher}</Text>
+                <Text style={styles.date}>{formatDate(pub.date)}</Text>
+                {pub.description && (
+                  <Text style={styles.description}>{pub.description}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'speaking':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((talk) => (
+              <View key={talk.id} style={styles.educationItem}>
+                <Text style={styles.degree}>{talk.topic}</Text>
+                <Text style={styles.company}>{talk.event}</Text>
+                <Text style={styles.date}>
+                  {formatDate(talk.date)} • {talk.location}
+                </Text>
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'patents':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((patent) => (
+              <View key={patent.id} style={styles.educationItem}>
+                <Text style={styles.degree}>{patent.title}</Text>
+                <Text style={styles.company}>
+                  {patent.patentNumber} • {patent.status}
+                </Text>
+                <Text style={styles.date}>{formatDate(patent.date)}</Text>
+                {patent.description && (
+                  <Text style={styles.description}>{patent.description}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'portfolio':
+        return sectionData.items.length > 0 ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {sectionData.items.map((item) => (
+              <View key={item.id} style={styles.educationItem}>
+                <Text style={styles.description}>
+                  {item.platform}: {item.url}
+                </Text>
+              </View>
+            ))}
+          </View>
+        ) : null;
+
+      case 'custom':
+        return hasContent(sectionData.content) ? (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            <Text style={styles.description}>{sectionData.content}</Text>
+          </View>
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -257,6 +432,16 @@ export const ProfessionalPDF = ({ resumeData, themeColor }: Props) => {
           </View>
         )
       ))}
+
+      {/* Dynamic Sections (Helper Sections) */}
+      {resumeData.dynamicSections && resumeData.dynamicSections.length > 0 && (
+        <>
+          {resumeData.dynamicSections
+            .filter(section => section.enabled)
+            .sort((a, b) => a.order - b.order)
+            .map(section => renderDynamicSection(section))}
+        </>
+      )}
       </Page>
     </Document>
   );

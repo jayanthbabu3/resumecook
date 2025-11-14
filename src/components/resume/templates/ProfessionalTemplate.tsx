@@ -6,6 +6,7 @@ import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
+import { InlineEditableDynamicSection } from "@/components/resume/InlineEditableDynamicSection";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -24,12 +25,14 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false 
   const photo = resumeData.personalInfo.photo;
 
   // Render a single dynamic section
-  const renderDynamicSection = (section: ResumeSection) => {
+  const renderDynamicSection = (section: ResumeSection, sectionIndex: number) => {
     if (!section.enabled) return null;
 
     const sectionData = section.data;
 
-    switch (sectionData.type) {
+    // Render the non-editable version of the section content
+    const renderNonEditableContent = () => {
+      switch (sectionData.type) {
       case 'certifications':
         return sectionData.items.length > 0 ? (
           <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
@@ -180,9 +183,37 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false 
           </div>
         ) : null;
 
-      default:
-        return null;
-    }
+        default:
+          return null;
+      }
+    };
+
+    // Render section header and content
+    return (
+      <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+        <h2 className="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
+          {editable ? (
+            <InlineEditableText
+              path={`dynamicSections[${sectionIndex}].title`}
+              value={section.title}
+              className="inline-block"
+            />
+          ) : (
+            section.title
+          )}
+        </h2>
+        {editable ? (
+          <InlineEditableDynamicSection
+            section={section}
+            sectionIndex={sectionIndex}
+            formatDate={formatDate}
+            renderNonEditable={renderNonEditableContent}
+          />
+        ) : (
+          renderNonEditableContent()
+        )}
+      </div>
+    );
   };
 
   return (
@@ -550,11 +581,15 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false 
           {resumeData.dynamicSections
             .filter(section => section.enabled)
             .sort((a, b) => a.order - b.order)
-            .map(section => (
-              <div key={section.id}>
-                {renderDynamicSection(section)}
-              </div>
-            ))}
+            .map((section, index) => {
+              // Find the actual index in the original array for proper path
+              const actualIndex = resumeData.dynamicSections!.findIndex(s => s.id === section.id);
+              return (
+                <div key={section.id}>
+                  {renderDynamicSection(section, actualIndex)}
+                </div>
+              );
+            })}
         </>
       )}
     </div>
