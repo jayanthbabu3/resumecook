@@ -163,6 +163,76 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Universal",
     categorySlug: "all",
   },
+  "sapphire-executive": {
+    name: "Sapphire Executive",
+    description:
+      "Elegant professional template with diagonal accent, timeline experience markers, and sophisticated typography for executives.",
+    category: "Leadership",
+    categorySlug: "all",
+  },
+  "creative-accent": {
+    name: "Creative Accent",
+    description:
+      "Modern sidebar template with gradient accent panel, skill bars, and creative two-column layout for all professionals.",
+    category: "Creative",
+    categorySlug: "all",
+  },
+  "modern-sidebar": {
+    name: "Modern Sidebar",
+    description:
+      "Contemporary template with left sidebar, clean grid layout, and modern design perfect for all industries.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "minimalist-geometric": {
+    name: "Minimalist Geometric",
+    description:
+      "Clean minimalist design with geometric accents, light typography, and exceptional white space for modern professionals.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "bold-headline": {
+    name: "Bold Headline",
+    description:
+      "Powerful dark header template with bold typography, strong visual hierarchy, and impactful design for all roles.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "dual-tone": {
+    name: "Dual Tone",
+    description:
+      "Modern two-tone template with accent sidebar, card-style skills, and clean sectioning for contemporary professionals.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "elegant-serif": {
+    name: "Elegant Serif",
+    description:
+      "Sophisticated serif typography template with ornamental dividers, centered layout, and classic elegance for all fields.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "tech-grid": {
+    name: "Tech Grid",
+    description:
+      "Technical template with gradient header, 3-column skill grid, and card-style layout for technology professionals.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "contemporary-split": {
+    name: "Contemporary Split",
+    description:
+      "Bold 50/50 split design with dark sidebar, high contrast layout, and modern aesthetic for all professionals.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "luxury-timeline": {
+    name: "Luxury Timeline",
+    description:
+      "Premium template with golden timeline, elegant typography, ample white space, and luxury feel for senior professionals.",
+    category: "Leadership",
+    categorySlug: "all",
+  },
 };
 
 export const categoryLabelMap: Record<string, string> = {

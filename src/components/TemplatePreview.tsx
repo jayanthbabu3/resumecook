@@ -21,6 +21,16 @@ import { FresherEliteTemplate } from "./resume/templates/FresherEliteTemplate";
 import { AnalystTemplate } from "./resume/templates/AnalystTemplate";
 import { EliteTemplate } from "./resume/templates/EliteTemplate";
 import { RefinedTemplate } from "./resume/templates/RefinedTemplate";
+import { SapphireExecutiveTemplate } from "./resume/templates/SapphireExecutiveTemplate";
+import { CreativeAccentTemplate } from "./resume/templates/CreativeAccentTemplate";
+import { ModernSidebarTemplate } from "./resume/templates/ModernSidebarTemplate";
+import { MinimalistGeometricTemplate } from "./resume/templates/MinimalistGeometricTemplate";
+import { BoldHeadlineTemplate } from "./resume/templates/BoldHeadlineTemplate";
+import { DualToneTemplate } from "./resume/templates/DualToneTemplate";
+import { ElegantSerifTemplate } from "./resume/templates/ElegantSerifTemplate";
+import { TechGridTemplate } from "./resume/templates/TechGridTemplate";
+import { ContemporarySplitTemplate } from "./resume/templates/ContemporarySplitTemplate";
+import { LuxuryTimelineTemplate } from "./resume/templates/LuxuryTimelineTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -520,6 +530,16 @@ const templates = {
   analyst: AnalystTemplate,
   elite: EliteTemplate,
   refined: RefinedTemplate,
+  "sapphire-executive": SapphireExecutiveTemplate,
+  "creative-accent": CreativeAccentTemplate,
+  "modern-sidebar": ModernSidebarTemplate,
+  "minimalist-geometric": MinimalistGeometricTemplate,
+  "bold-headline": BoldHeadlineTemplate,
+  "dual-tone": DualToneTemplate,
+  "elegant-serif": ElegantSerifTemplate,
+  "tech-grid": TechGridTemplate,
+  "contemporary-split": ContemporarySplitTemplate,
+  "luxury-timeline": LuxuryTimelineTemplate,
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({

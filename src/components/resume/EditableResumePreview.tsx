@@ -23,6 +23,16 @@ import { EliteTemplate } from "./templates/EliteTemplate";
 import { CorporateExecutiveTemplate } from "./templates/CorporateExecutiveTemplate";
 import { RefinedTemplate } from "./templates/RefinedTemplate";
 import { PremiumEliteTemplate } from "./templates/PremiumEliteTemplate";
+import { SapphireExecutiveTemplate } from "./templates/SapphireExecutiveTemplate";
+import { CreativeAccentTemplate } from "./templates/CreativeAccentTemplate";
+import { ModernSidebarTemplate } from "./templates/ModernSidebarTemplate";
+import { MinimalistGeometricTemplate } from "./templates/MinimalistGeometricTemplate";
+import { BoldHeadlineTemplate } from "./templates/BoldHeadlineTemplate";
+import { DualToneTemplate } from "./templates/DualToneTemplate";
+import { ElegantSerifTemplate } from "./templates/ElegantSerifTemplate";
+import { TechGridTemplate } from "./templates/TechGridTemplate";
+import { ContemporarySplitTemplate } from "./templates/ContemporarySplitTemplate";
+import { LuxuryTimelineTemplate } from "./templates/LuxuryTimelineTemplate";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
@@ -193,6 +203,16 @@ export const EditableResumePreview = ({
     "corporate-executive": CorporateExecutiveTemplate,
     refined: RefinedTemplate,
     "premium-elite": PremiumEliteTemplate,
+    "sapphire-executive": SapphireExecutiveTemplate,
+    "creative-accent": CreativeAccentTemplate,
+    "modern-sidebar": ModernSidebarTemplate,
+    "minimalist-geometric": MinimalistGeometricTemplate,
+    "bold-headline": BoldHeadlineTemplate,
+    "dual-tone": DualToneTemplate,
+    "elegant-serif": ElegantSerifTemplate,
+    "tech-grid": TechGridTemplate,
+    "contemporary-split": ContemporarySplitTemplate,
+    "luxury-timeline": LuxuryTimelineTemplate,
   };
 
   const Template =
