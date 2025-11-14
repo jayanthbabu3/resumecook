@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FirebaseAuthProvider } from "@/hooks/useFirebaseAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { MigrationHandler } from "@/components/MigrationHandler";
 import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
 import Editor from "./pages/Editor";
