@@ -11,6 +11,7 @@ import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
 import Editor from "./pages/Editor";
 import LiveEditor from "./pages/LiveEditor";
+import ScratchBuilder from "./pages/ScratchBuilder";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import ProfileCompletion from "./pages/ProfileCompletion";
@@ -75,9 +76,17 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            <Route 
-              path="/live-editor/:templateId" 
-              element={<LiveEditor />} 
+            <Route
+              path="/live-editor/:templateId"
+              element={<LiveEditor />}
+            />
+            <Route
+              path="/builder/scratch"
+              element={
+                <ProtectedRoute>
+                  <ScratchBuilder />
+                </ProtectedRoute>
+              }
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

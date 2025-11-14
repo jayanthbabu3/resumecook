@@ -11,6 +11,7 @@ import {
   Code,
   Palette,
   Briefcase,
+  Sparkles,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -225,6 +226,78 @@ const Dashboard = () => {
               </span>
             </nav>
           </div>
+        )}
+
+        {/* Create from Scratch Card */}
+        {!selectedCategory && (
+          <Card
+            className="group relative overflow-hidden border-2 border-primary/50 hover:border-primary transition-all duration-300 hover:shadow-2xl cursor-pointer bg-gradient-to-br from-purple-500/10 via-card to-blue-500/10 mb-6 md:mb-8"
+            onClick={() => navigate("/builder/scratch")}
+          >
+            {/* Animated Gradient Background */}
+            <div
+              className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500"
+              style={{
+                background: "linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #8b5cf6 100%)",
+              }}
+            />
+
+            {/* Background Sparkles */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute top-4 left-4 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-300">
+                <Sparkles className="h-12 w-12 text-purple-500" />
+              </div>
+              <div className="absolute top-8 right-12 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-300">
+                <Sparkles className="h-10 w-10 text-blue-500" />
+              </div>
+              <div className="absolute bottom-8 left-16 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-300">
+                <Sparkles className="h-14 w-14 text-purple-500" />
+              </div>
+              <div className="absolute bottom-4 right-8 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-300">
+                <Sparkles className="h-12 w-12 text-blue-500" />
+              </div>
+            </div>
+
+            <div className="relative p-6 md:p-8">
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6">
+                {/* Icon */}
+                <div
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)",
+                  }}
+                >
+                  <Sparkles className="h-8 w-8 md:h-10 md:w-10 text-white" />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 text-center md:text-left space-y-2">
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors mb-1">
+                      Create Resume from Scratch
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Build your resume your way with drag-and-drop sections. Start with a blank canvas and add only what you need, in any order you want.
+                    </p>
+                  </div>
+
+                  {/* Features */}
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
+                    <span className="text-xs font-medium px-3 py-1 rounded-full bg-purple-500/20 text-purple-600 dark:text-purple-400">
+                      Drag & Drop
+                    </span>
+                    <span className="text-xs font-medium px-3 py-1 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400">
+                      Fully Customizable
+                    </span>
+                    <span className="text-xs font-medium px-3 py-1 rounded-full bg-green-500/20 text-green-600 dark:text-green-400">
+                      Blank Canvas
+                    </span>
+                    <ChevronRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-all duration-300" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
         )}
 
         {/* Profession Categories Grid */}
