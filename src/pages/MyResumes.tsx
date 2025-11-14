@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { firestoreService, ResumeData } from "@/lib/firestore";
+import { resumeService } from "@/lib/firestore/resumeService";
+import type { ResumeMetadata } from "@/types/resume";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { templateMetaMap } from "@/constants/templateMeta";
 import { useToast } from "@/hooks/use-toast";
@@ -31,7 +32,7 @@ const MyResumes = () => {
   const navigate = useNavigate();
   const { user } = useFirebaseAuth();
   const { toast } = useToast();
-  const [resumes, setResumes] = useState<ResumeData[]>([]);
+  const [resumes, setResumes] = useState<ResumeMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resumeToDelete, setResumeToDelete] = useState<string | null>(null);
@@ -45,7 +46,7 @@ const MyResumes = () => {
 
     try {
       setLoading(true);
-      const userResumes = await firestoreService.getUserResumes(user.uid);
+      const userResumes = await resumeService.getUserResumes();
       setResumes(userResumes);
     } catch (error) {
       console.error("Error loading resumes:", error);
@@ -61,7 +62,7 @@ const MyResumes = () => {
 
   const handleDelete = async (resumeId: string) => {
     try {
-      await firestoreService.deleteResume(resumeId);
+      await resumeService.deleteResume(resumeId);
       setResumes(resumes.filter((r) => r.id !== resumeId));
       toast({
         title: "Success",
@@ -173,7 +174,7 @@ const MyResumes = () => {
                   {/* Resume Info */}
                   <div className="mb-4">
                     <h3 className="font-semibold text-lg mb-1 truncate">
-                      {resume.personalInfo.fullName || "Untitled Resume"}
+                      {resume.title || "Untitled Resume"}
                     </h3>
                     <p className="text-sm text-muted-foreground mb-2">
                       {getTemplateName(resume.templateId)}
@@ -186,11 +187,11 @@ const MyResumes = () => {
 
                   {/* Quick Info */}
                   <div className="mb-4 space-y-1 text-xs text-muted-foreground">
-                    {resume.personalInfo.professionalTitle && (
-                      <p className="truncate">{resume.personalInfo.professionalTitle}</p>
+                    {resume.isPrimary && (
+                      <p className="truncate font-medium text-primary">Primary Resume</p>
                     )}
-                    {resume.personalInfo.email && (
-                      <p className="truncate">{resume.personalInfo.email}</p>
+                    {resume.wordCount && (
+                      <p className="truncate">{resume.wordCount} words</p>
                     )}
                   </div>
 

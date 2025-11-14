@@ -3,7 +3,8 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Download, Gauge, Loader2, RotateCcw, ArrowLeft, Edit3, FileEdit, Save } from "lucide-react";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
-import { firestoreService, ResumeData as FirestoreResumeData } from "@/lib/firestore";
+import { resumeService } from "@/lib/firestore/resumeService";
+import type { ResumeData as NewResumeData } from "@/types/resume";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResumeForm } from "@/components/resume/ResumeForm";
 import { ResumePreview } from "@/components/resume/ResumePreview";
@@ -1898,45 +1899,14 @@ const Editor = () => {
       if (!resumeId || !user) return;
 
       try {
-        const firestoreResume = await firestoreService.getResume(resumeId);
-        if (firestoreResume) {
-          // Convert Firestore resume data to Editor resume data format
-          const editorResumeData: ResumeData = {
-            personalInfo: {
-              fullName: firestoreResume.personalInfo.fullName,
-              email: firestoreResume.personalInfo.email,
-              phone: firestoreResume.personalInfo.phone,
-              location: firestoreResume.personalInfo.location,
-              title: firestoreResume.personalInfo.professionalTitle,
-              summary: firestoreResume.personalInfo.bio,
-              photo: firestoreResume.personalInfo.profilePhoto,
-            },
-            experience: firestoreResume.experience.map(exp => ({
-              id: exp.id,
-              company: exp.company,
-              position: exp.position,
-              startDate: exp.startDate,
-              endDate: exp.endDate,
-              description: exp.description,
-              current: exp.current,
-            })),
-            education: firestoreResume.education.map(edu => ({
-              id: edu.id,
-              school: edu.institution,
-              degree: edu.degree,
-              field: edu.field,
-              startDate: edu.startDate,
-              endDate: edu.endDate,
-            })),
-            skills: firestoreResume.skills.map((skill, index) => ({
-              id: skill.id,
-              name: skill.name,
-              level: 8,
-              category: index < 6 ? "core" : "toolbox",
-            })),
-            sections: [],
-          };
-          setResumeData(editorResumeData);
+        const resume = await resumeService.getResume(resumeId);
+        if (resume && resume.data) {
+          // The new service returns data in the same format as Editor's ResumeData
+          setResumeData(resume.data as ResumeData);
+          // Also update theme color if it exists
+          if (resume.themeColor) {
+            setThemeColor(resume.themeColor);
+          }
         }
       } catch (error) {
         console.error("Error loading resume from Firestore:", error);
@@ -1960,59 +1930,29 @@ const Editor = () => {
 
     setIsSaving(true);
     try {
-      // Convert Editor resume data to Firestore format
-      const firestoreData: Omit<FirestoreResumeData, 'id' | 'userId' | 'createdAt' | 'updatedAt'> = {
-        templateId,
-        personalInfo: {
-          fullName: resumeData.personalInfo.fullName,
-          email: resumeData.personalInfo.email,
-          phone: resumeData.personalInfo.phone,
-          location: resumeData.personalInfo.location,
-          linkedinUrl: "",
-          githubUrl: "",
-          portfolioUrl: "",
-          professionalTitle: resumeData.personalInfo.title,
-          bio: resumeData.personalInfo.summary,
-          profilePhoto: resumeData.personalInfo.photo || "",
-        },
-        experience: resumeData.experience.map(exp => ({
-          id: exp.id,
-          company: exp.company,
-          position: exp.position,
-          location: "",
-          startDate: exp.startDate,
-          endDate: exp.endDate,
-          current: exp.current,
-          description: exp.description,
-        })),
-        education: resumeData.education.map(edu => ({
-          id: edu.id,
-          institution: edu.school,
-          degree: edu.degree,
-          field: edu.field,
-          location: "",
-          startDate: edu.startDate,
-          endDate: edu.endDate,
-          current: false,
-          gpa: "",
-          description: "",
-        })),
-        skills: resumeData.skills.map(skill => ({
-          id: skill.id,
-          name: skill.name,
-        })),
-        projects: [],
-        certifications: [],
-        languages: [],
+      // Convert Editor resume data to new service format (same structure!)
+      const resumeDataToSave: NewResumeData = {
+        personalInfo: resumeData.personalInfo,
+        experience: resumeData.experience,
+        education: resumeData.education,
+        skills: resumeData.skills,
+        sections: resumeData.sections,
       };
 
       if (currentResumeId) {
         // Update existing resume
-        await firestoreService.updateResume(currentResumeId, firestoreData);
+        await resumeService.updateResumeData(currentResumeId, resumeDataToSave);
         toast.success("Resume updated successfully!");
       } else {
         // Create new resume
-        const newResumeId = await firestoreService.saveResume(user.uid, firestoreData);
+        const newResumeId = await resumeService.createResume(
+          templateId,
+          resumeDataToSave,
+          {
+            title: `Resume - ${resumeData.personalInfo.fullName || new Date().toLocaleDateString()}`,
+            themeColor: themeColor,
+          }
+        );
         setCurrentResumeId(newResumeId);
         toast.success("Resume saved successfully!");
       }
