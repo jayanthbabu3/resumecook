@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FirebaseAuthProvider } from "@/hooks/useFirebaseAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { MigrationHandler } from "@/components/MigrationHandler";
 import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
 import Editor from "./pages/Editor";
@@ -27,51 +28,53 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <FirebaseAuthProvider>
-          <Routes>
-            <Route path="/" element={<Hero />} />
-            <Route path="/ats-guidelines" element={<ATSGuidelines />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route
-              path="/profile-completion" 
-              element={
-                <ProtectedRoute>
-                  <ProfileCompletion />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/profile" 
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/editor/:templateId" 
-              element={
-                <ProtectedRoute>
-                  <Editor />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/live-editor/:templateId" 
-              element={<LiveEditor />} 
-            />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <MigrationHandler>
+            <Routes>
+              <Route path="/" element={<Hero />} />
+              <Route path="/ats-guidelines" element={<ATSGuidelines />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route
+                path="/profile-completion"
+                element={
+                  <ProtectedRoute>
+                    <ProfileCompletion />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/editor/:templateId"
+                element={
+                  <ProtectedRoute>
+                    <Editor />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/live-editor/:templateId"
+                element={<LiveEditor />}
+              />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </MigrationHandler>
         </FirebaseAuthProvider>
       </BrowserRouter>
     </TooltipProvider>
