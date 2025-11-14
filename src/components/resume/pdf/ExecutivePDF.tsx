@@ -1,8 +1,13 @@
 import { Document, Page, Text, View, StyleSheet, Svg, Path, Image } from '@react-pdf/renderer';
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
   page: {
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     fontSize: 10,
     fontFamily: 'Roboto',
   },
@@ -11,6 +16,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     padding: 30,
     marginBottom: 25,
+    marginTop: -40,
+    marginLeft: -40,
+    marginRight: -40,
   },
   headerContent: {
     flexDirection: 'row',
@@ -55,7 +63,7 @@ const styles = StyleSheet.create({
     objectFit: 'cover',
   },
   content: {
-    paddingHorizontal: 35,
+    flex: 1,
   },
   section: {
     marginBottom: 20,
@@ -230,7 +238,7 @@ export const ExecutivePDF = ({ resumeData, themeColor }: Props) => {
 
       <View style={styles.content}>
         {/* Summary */}
-        {resumeData.personalInfo.summary && (
+        {hasContent(resumeData.personalInfo.summary) && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Executive Summary</Text>
             <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
@@ -242,7 +250,7 @@ export const ExecutivePDF = ({ resumeData, themeColor }: Props) => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Professional Experience</Text>
             {resumeData.experience.map((exp) => (
-              <View key={exp.id} style={styles.experienceItem} wrap={false}>
+              <View key={exp.id} style={styles.experienceItem}>
                 <View style={styles.experienceHeader}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.jobTitle}>{exp.position || "Position Title"}</Text>
@@ -252,7 +260,7 @@ export const ExecutivePDF = ({ resumeData, themeColor }: Props) => {
                     {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                   </Text>
                 </View>
-                {exp.description && <Text style={styles.description}>{exp.description}</Text>}
+                {hasContent(exp.description) && <Text style={styles.description}>{exp.description}</Text>}
               </View>
             ))}
           </View>
@@ -264,10 +272,10 @@ export const ExecutivePDF = ({ resumeData, themeColor }: Props) => {
             <Text style={styles.sectionTitle}>Education</Text>
             <View style={styles.educationGrid}>
               {resumeData.education.map((edu) => (
-                <View key={edu.id} style={styles.educationItem} wrap={false}>
+                <View key={edu.id} style={styles.educationItem}>
                   <Text style={styles.degree}>{edu.degree || "Degree"}</Text>
                   <Text style={styles.school}>{edu.school || "School Name"}</Text>
-                  {edu.field && <Text style={styles.field}>{edu.field}</Text>}
+                  {hasContent(edu.field) && <Text style={styles.field}>{edu.field}</Text>}
                   <Text style={styles.date}>
                     {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                   </Text>
@@ -279,11 +287,11 @@ export const ExecutivePDF = ({ resumeData, themeColor }: Props) => {
 
         {/* Skills */}
         {resumeData.skills.length > 0 && (
-          <View style={styles.section} wrap={false}>
+          <View style={styles.section}>
             <Text style={styles.sectionTitle}>Core Competencies</Text>
               <View style={styles.skillsGrid}>
                 {resumeData.skills.map((skill) => (
-                  skill.name && <Text key={skill.id} style={styles.skillBox}>{skill.name}</Text>
+                  hasContent(skill.name) && <Text key={skill.id} style={styles.skillBox}>{skill.name}</Text>
                 ))}
               </View>
             </View>
@@ -291,10 +299,12 @@ export const ExecutivePDF = ({ resumeData, themeColor }: Props) => {
 
         {/* Custom Sections */}
         {resumeData.sections.map((section) => (
-          <View key={section.id} style={styles.section} wrap={false}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <Text style={styles.summary}>{section.content}</Text>
-          </View>
+          hasContent(section.title) && hasContent(section.content) && (
+            <View key={section.id} style={styles.section}>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <Text style={styles.summary}>{section.content}</Text>
+            </View>
+          )
         ))}
       </View>
       </Page>

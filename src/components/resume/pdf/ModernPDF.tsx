@@ -1,20 +1,19 @@
 import { Document, Page, Text, View, StyleSheet, Svg, Path, Image } from '@react-pdf/renderer';
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 36,
-    paddingBottom: 40,
-    paddingLeft: 0,
-    paddingRight: 0,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     fontFamily: 'Inter',
     fontSize: 10,
     backgroundColor: '#ffffff',
   },
   header: {
-    paddingTop: 36,
-    paddingBottom: 24,
-    paddingHorizontal: 45,
+    marginBottom: 24,
     alignItems: 'center',
   },
   name: {
@@ -40,8 +39,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   content: {
-    paddingHorizontal: 45,
-    paddingBottom: 20,
+    flex: 1,
   },
   section: {
     marginBottom: 24,
@@ -182,8 +180,8 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
 
         <View style={styles.content}>
           {/* Summary */}
-          {resumeData.personalInfo.summary && (
-            <View style={styles.section} wrap={false}>
+          {hasContent(resumeData.personalInfo.summary) && (
+            <View style={styles.section}>
               <Text style={styles.sectionTitle}>Professional Summary</Text>
               <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
             </View>
@@ -194,7 +192,7 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Work Experience</Text>
               {resumeData.experience.map((exp) => (
-                <View key={exp.id} style={[styles.experienceItem, { borderLeftColor: themeColor }]} wrap={false}>
+                <View key={exp.id} style={[styles.experienceItem, { borderLeftColor: themeColor }]}>
                   <View style={styles.experienceHeader}>
                     <View style={{ flex: 1 }}>
                       <Text style={styles.position}>{exp.position || "Position Title"}</Text>
@@ -204,7 +202,7 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
                       {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </Text>
                   </View>
-                  {exp.description && <Text style={styles.description}>{exp.description}</Text>}
+                  {hasContent(exp.description) && <Text style={styles.description}>{exp.description}</Text>}
                 </View>
               ))}
             </View>
@@ -212,19 +210,19 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
 
           {/* Skills */}
           {resumeData.skills.length > 0 && (
-            <View style={styles.section} wrap={false}>
+            <View style={styles.section}>
               <Text style={styles.sectionTitle}>Technical Skills</Text>
               <View style={styles.skillsContainer}>
                 {resumeData.skills.map((skill, index) => {
                   const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
                   const color = colors[index % colors.length];
-                  return skill.name ? (
-                    <Text 
-                      key={skill.id} 
+                  return hasContent(skill.name) ? (
+                    <Text
+                      key={skill.id}
                       style={[
-                        styles.skillBadge, 
-                        { 
-                          color: color, 
+                        styles.skillBadge,
+                        {
+                          color: color,
                           backgroundColor: `${color}15`,
                           borderColor: `${color}40`
                         }
@@ -240,13 +238,13 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
 
           {/* Education */}
           {resumeData.education.length > 0 && (
-            <View style={styles.section} wrap={false}>
+            <View style={styles.section}>
               <Text style={styles.sectionTitle}>Education</Text>
               {resumeData.education.map((edu) => (
-                <View key={edu.id} style={styles.educationItem} wrap={false}>
+                <View key={edu.id} style={styles.educationItem}>
                   <View style={styles.educationContent}>
                     <Text style={styles.educationDegree}>{edu.degree}</Text>
-                    {edu.field && <Text style={styles.educationField}>{edu.field}</Text>}
+                    {hasContent(edu.field) && <Text style={styles.educationField}>{edu.field}</Text>}
                     <Text style={styles.educationSchool}>{edu.school}</Text>
                   </View>
                   <Text style={styles.educationDate}>
@@ -259,10 +257,12 @@ export const ModernPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
 
           {/* Custom Sections */}
           {resumeData.sections.map((section) => (
-            <View key={section.id} style={styles.section} wrap={false}>
-              <Text style={styles.sectionTitle}>{section.title}</Text>
-              <Text style={styles.summary}>{section.content}</Text>
-            </View>
+            hasContent(section.title) && hasContent(section.content) && (
+              <View key={section.id} style={styles.section}>
+                <Text style={styles.sectionTitle}>{section.title}</Text>
+                <Text style={styles.summary}>{section.content}</Text>
+              </View>
+            )
           ))}
         </View>
       </Page>

@@ -7,6 +7,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 interface ElitePDFProps {
   resumeData: ResumeData;
@@ -26,7 +27,10 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
-    padding: 40,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
   },
   header: {
     marginBottom: 24,
@@ -260,9 +264,9 @@ export const ElitePDF = ({
                         • {line}
                       </Text>
                     ))}
-                  </View>
+        )                  </View>
                 ))}
-              </View>
+        )              </View>
             </View>
           )}
 
@@ -283,7 +287,7 @@ export const ElitePDF = ({
                     <View style={styles.educationHeader}>
                       <View style={styles.experienceLeft}>
                         <Text style={styles.degree}>
-                          {edu.degree} {edu.field && `in ${edu.field}`}
+                          {edu.degree} {hasContent(edu.field) && `in ${edu.field}`}
                         </Text>
                         <Text style={[styles.school, { color: themeColor }]}>
                           {edu.school}
@@ -295,7 +299,7 @@ export const ElitePDF = ({
                     </View>
                   </View>
                 ))}
-              </View>
+        )              </View>
             </View>
           )}
 
@@ -320,7 +324,7 @@ export const ElitePDF = ({
                       <Text>{skill.name}</Text>
                     </View>
                   ))}
-                </View>
+        )                </View>
               </View>
             </View>
           )}
@@ -342,10 +346,10 @@ export const ElitePDF = ({
                     • {line}
                   </Text>
                 ))}
-              </View>
+        )              </View>
             </View>
           ))}
-        </View>
+        )        </View>
       </Page>
     </Document>
   );

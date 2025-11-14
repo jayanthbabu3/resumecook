@@ -4,10 +4,10 @@ import type { ResumeData } from '@/pages/Editor';
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
-    paddingTop: 40,
-    paddingBottom: 40,
-    paddingLeft: 0,
-    paddingRight: 0,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
+    paddingRight: PDF_PAGE_MARGINS.right,
     fontFamily: 'Inter',
     fontSize: 10,
     backgroundColor: '#ffffff',
@@ -15,7 +15,10 @@ const styles = StyleSheet.create({
   sidebar: {
     width: '35%',
     backgroundColor: '#f9fafb',
-    padding: 30,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     borderRightWidth: 1,
     borderRightStyle: 'solid',
     borderRightColor: '#e5e7eb',
@@ -115,7 +118,10 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     width: '65%',
-    padding: 30,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
   },
   section: {
     marginBottom: 22,
@@ -265,7 +271,7 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
                   {skill.name}
                 </Text>
               ))}
-            </View>
+        )            </View>
           )}
 
           {/* Education */}
@@ -275,21 +281,21 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
               {resumeData.education.map((edu, index) => (
                 <View key={index} style={styles.educationItem}>
                   <Text style={styles.educationDegree}>{edu.degree}</Text>
-                  {edu.field && <Text style={styles.educationField}>{edu.field}</Text>}
+                  {hasContent(edu.field) && <Text style={styles.educationField}>{edu.field}</Text>}
                   <Text style={styles.educationSchool}>{edu.school}</Text>
                   <Text style={styles.educationDate}>
                     {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                   </Text>
                 </View>
               ))}
-            </View>
+        )            </View>
           )}
         </View>
 
         {/* Main Content */}
         <View style={styles.mainContent}>
           {/* Summary */}
-          {resumeData.personalInfo.summary && (
+          {hasContent(resumeData.personalInfo.summary) && (
             <View style={styles.section}>
               <Text style={[styles.sectionTitle, { color: themeColor, borderBottomColor: themeColor }]}>PROFESSIONAL SUMMARY</Text>
               <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
@@ -301,7 +307,7 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
             <View style={styles.section}>
               <Text style={[styles.sectionTitle, { color: themeColor, borderBottomColor: themeColor }]}>PROFESSIONAL EXPERIENCE</Text>
               {resumeData.experience.map((exp, index) => (
-                <View key={index} style={styles.experienceItem} wrap={false}>
+                <View key={index} style={styles.experienceItem}>
                   <View style={styles.experienceHeader}>
                     <View style={{ flex: 1 }}>
                       <Text style={styles.position}>{exp.position}</Text>
@@ -314,18 +320,18 @@ export const FullstackPDF = ({ resumeData, themeColor = "#7c3aed" }: Props) => {
                   <Text style={styles.description}>{exp.description}</Text>
                 </View>
               ))}
-            </View>
+        )            </View>
           )}
 
           {/* Custom Sections */}
           {resumeData.sections &&
             resumeData.sections.map((section, index) => (
-              <View key={index} style={styles.section} wrap={false}>
+              <View key={index} style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: themeColor, borderBottomColor: themeColor }]}>{section.title.toUpperCase()}</Text>
                 <Text style={styles.customSectionContent}>{section.content}</Text>
               </View>
             ))}
-        </View>
+        )        </View>
       </Page>
     </Document>
   );

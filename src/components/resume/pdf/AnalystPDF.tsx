@@ -7,6 +7,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 interface AnalystPDFProps {
   resumeData: ResumeData;
@@ -15,7 +16,10 @@ interface AnalystPDFProps {
 
 const styles = StyleSheet.create({
   page: {
-    padding: 48,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     fontFamily: "Inter",
     fontSize: 10,
     lineHeight: 1.6,
@@ -165,7 +169,7 @@ export const AnalystPDF = ({
             <View style={{ height: 6 }} />
             <Text style={styles.title}>{personalInfo.title}</Text>
             <View style={{ flexDirection: "row", flexWrap: "nowrap" }}>
-              <Text wrap={false} style={styles.contact}>
+              <Text style={styles.contact}>
                 {[
                   personalInfo.location,
                   personalInfo.phone,
@@ -218,9 +222,9 @@ export const AnalystPDF = ({
                     • {line}
                   </Text>
                 ))}
-              </View>
+        )              </View>
             ))}
-          </View>
+        )          </View>
         )}
 
         {/* Education */}
@@ -236,7 +240,7 @@ export const AnalystPDF = ({
               <View key={edu.id} style={styles.educationItem}>
                 <View style={styles.educationHeader}>
                   <Text style={styles.educationTitle}>
-                    {edu.degree} {edu.field && `in ${edu.field}`}
+                    {edu.degree} {hasContent(edu.field) && `in ${edu.field}`}
                   </Text>
                   <Text style={styles.experienceDate}>
                     {edu.startDate} — {edu.endDate}
@@ -248,7 +252,7 @@ export const AnalystPDF = ({
                 </Text>
               </View>
             ))}
-          </View>
+        )          </View>
         )}
 
         {/* Technical Skills */}
@@ -266,7 +270,7 @@ export const AnalystPDF = ({
                   {skill.name}
                 </Text>
               ))}
-            </View>
+        )            </View>
           </View>
         )}
 
@@ -284,9 +288,9 @@ export const AnalystPDF = ({
                 • {line}
               </Text>
             ))}
-          </View>
+        )          </View>
         ))}
-      </Page>
+        )      </Page>
     </Document>
   );
 };

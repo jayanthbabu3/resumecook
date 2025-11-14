@@ -202,7 +202,7 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
           </View>
 
           {resumeData.personalInfo.summary ? (
-            <View style={[styles.section, { borderLeftColor: themeColor }]} wrap={false}>
+            <View style={[styles.section, { borderLeftColor: themeColor }]}>
               <Text style={[styles.sectionTitle, { color: themeColor }]}>Summary</Text>
               <Text style={styles.paragraph}>{resumeData.personalInfo.summary}</Text>
             </View>
@@ -214,7 +214,7 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
               {resumeData.experience.map(exp => {
                 const bullets = splitLines(exp.description);
                 return (
-                  <View key={exp.id} style={styles.experienceBlock} wrap={false}>
+                  <View key={exp.id} style={styles.experienceBlock}>
                     <View style={styles.experienceHeader}>
                       <Text style={styles.position}>{exp.position}</Text>
                       <Text style={styles.date}>
@@ -229,7 +229,7 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
                             • {item.replace(/^•\s*/, '')}
                           </Text>
                         ))}
-                      </View>
+        )                      </View>
                     )}
                   </View>
                 );
@@ -238,14 +238,14 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
           </View>
 
           {resumeData.skills.length > 0 ? (
-            <View style={[styles.section, { borderLeftColor: themeColor }]} wrap={false}>
+            <View style={[styles.section, { borderLeftColor: themeColor }]}>
               <Text style={[styles.sectionTitle, { color: themeColor }]}>Skills</Text>
               <Text style={styles.paragraph}>{skillsList}</Text>
             </View>
           ) : null}
 
           {achievements.length > 0 ? (
-            <View style={[styles.section, { borderLeftColor: themeColor }]} wrap={false}>
+            <View style={[styles.section, { borderLeftColor: themeColor }]}>
               <Text style={[styles.sectionTitle, { color: themeColor }]}>Achievements</Text>
               <View style={styles.list}>
                 {achievements.map((item, idx) => (
@@ -253,12 +253,12 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
                     • {item}
                   </Text>
                 ))}
-              </View>
+        )              </View>
             </View>
           ) : null}
 
           {strengths.length > 0 ? (
-            <View style={[styles.section, { borderLeftColor: themeColor }]} wrap={false}>
+            <View style={[styles.section, { borderLeftColor: themeColor }]}>
               <Text style={[styles.sectionTitle, { color: themeColor }]}>Strengths</Text>
               <View style={styles.list}>
                 {strengths.map((item, idx) => (
@@ -266,7 +266,7 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
                     • {item}
                   </Text>
                 ))}
-              </View>
+        )              </View>
             </View>
           ) : null}
 
@@ -275,7 +275,7 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
               <Text style={[styles.sectionTitle, { color: themeColor }]}>Education</Text>
               <View style={{ marginTop: 4 }}>
                 {resumeData.education.map(edu => (
-                  <View key={edu.id} style={styles.educationBlock} wrap={false}>
+                  <View key={edu.id} style={styles.educationBlock}>
                     <Text style={styles.position}>{edu.degree}</Text>
                     <Text style={styles.company}>{edu.school}</Text>
                     {edu.field ? <Text style={styles.paragraph}>{edu.field}</Text> : null}
@@ -284,7 +284,7 @@ export const SoftwarePDF = ({ resumeData, themeColor = '#2563eb' }: Props) => {
                     </Text>
                   </View>
                 ))}
-              </View>
+        )              </View>
             </View>
           ) : null}
         </View>

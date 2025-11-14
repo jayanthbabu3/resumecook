@@ -1,5 +1,6 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
   page: {
@@ -192,7 +193,7 @@ export const SeniorBackendPDF = ({
         </View>
 
         <View style={styles.contentRow}>
-          <View style={styles.sidebar} wrap={false}>
+          <View style={styles.sidebar}>
             {resumeData.personalInfo.summary ? (
               <View style={styles.sidebarSection}>
                 <Text style={[styles.sidebarTitle, { color: accent }]}>Summary</Text>
@@ -209,7 +210,7 @@ export const SeniorBackendPDF = ({
                       {skill}
                     </Text>
                   ))}
-                </View>
+        )                </View>
               </View>
             ) : null}
 
@@ -222,12 +223,12 @@ export const SeniorBackendPDF = ({
                       • {line}
                     </Text>
                   ))}
-                </View>
+        )                </View>
               </View>
             ) : null}
           </View>
 
-          <View style={styles.mainColumn} wrap={false}>
+          <View style={styles.mainColumn}>
             {resumeData.experience.length > 0 ? (
               <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accent }]}>
@@ -236,7 +237,7 @@ export const SeniorBackendPDF = ({
                 {resumeData.experience.map((exp) => {
                   const bullets = splitLines(exp.description);
                   return (
-                    <View key={exp.id} style={styles.experienceBlock} wrap={false}>
+                    <View key={exp.id} style={styles.experienceBlock}>
                       <View style={styles.experienceHeader}>
                         <Text style={styles.position}>{exp.position || "Role"}</Text>
                         <Text style={styles.date}>
@@ -251,7 +252,7 @@ export const SeniorBackendPDF = ({
                               • {point.replace(/^•\s*/, "")}
                             </Text>
                           ))}
-                        </View>
+        )                        </View>
                       ) : null}
                     </View>
                   );
@@ -262,7 +263,7 @@ export const SeniorBackendPDF = ({
             {otherSections.map((section) => {
               const items = splitLines(section.content);
               return (
-                <View key={section.id} style={styles.section} wrap={false}>
+                <View key={section.id} style={styles.section}>
                   <Text style={[styles.sectionTitle, { color: accent }]}>{section.title}</Text>
                   {items.length > 0 ? (
                     <View style={styles.bulletList}>
@@ -271,7 +272,7 @@ export const SeniorBackendPDF = ({
                           • {line}
                         </Text>
                       ))}
-                    </View>
+        )                    </View>
                   ) : (
                     <Text style={styles.paragraph}>{section.content}</Text>
                   )}
@@ -283,7 +284,7 @@ export const SeniorBackendPDF = ({
               <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accent }]}>Education</Text>
                 {resumeData.education.map((edu) => (
-                  <View key={edu.id} style={styles.experienceBlock} wrap={false}>
+                  <View key={edu.id} style={styles.experienceBlock}>
                     <Text style={styles.position}>{edu.degree || "Degree"}</Text>
                     {edu.school ? <Text style={styles.company}>{edu.school}</Text> : null}
                     {edu.field ? <Text style={styles.paragraph}>{edu.field}</Text> : null}
@@ -292,7 +293,7 @@ export const SeniorBackendPDF = ({
                     </Text>
                   </View>
                 ))}
-              </View>
+        )              </View>
             ) : null}
           </View>
         </View>

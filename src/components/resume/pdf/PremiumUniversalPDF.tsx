@@ -23,7 +23,10 @@ export const PremiumUniversalPDF = ({
   const styles = StyleSheet.create({
     page: {
       backgroundColor: "#ffffff",
-      padding: 48,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
       fontFamily: "Inter",
       color: "#111827",
     },
@@ -233,7 +236,7 @@ export const PremiumUniversalPDF = ({
         </View>
 
         {/* Professional Summary */}
-        {resumeData.personalInfo.summary && (
+        {hasContent(resumeData.personalInfo.summary) && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Professional Summary</Text>
             <Text style={styles.summaryText}>{resumeData.personalInfo.summary}</Text>
@@ -257,7 +260,7 @@ export const PremiumUniversalPDF = ({
                     </Text>
                   </View>
                 </View>
-                {exp.description && (
+                {hasContent(exp.description) && (
                   <View style={styles.bulletList}>
                     {exp.description
                       .split("\n")
@@ -269,11 +272,11 @@ export const PremiumUniversalPDF = ({
                           <Text style={styles.bulletText}>{point}</Text>
                         </View>
                       ))}
-                  </View>
+        )                  </View>
                 )}
               </View>
             ))}
-          </View>
+        )          </View>
         )}
 
         {/* Education */}
@@ -285,7 +288,7 @@ export const PremiumUniversalPDF = ({
                 <View style={styles.educationHeader}>
                   <View>
                     <Text style={styles.degree}>
-                      {edu.degree} {edu.field && `in ${edu.field}`}
+                      {edu.degree} {hasContent(edu.field) && `in ${edu.field}`}
                     </Text>
                     <Text style={styles.institution}>{edu.school}</Text>
                   </View>
@@ -297,7 +300,7 @@ export const PremiumUniversalPDF = ({
                 </View>
               </View>
             ))}
-          </View>
+        )          </View>
         )}
 
         {/* Skills */}
@@ -310,7 +313,7 @@ export const PremiumUniversalPDF = ({
                   {skill.name}
                 </Text>
               ))}
-            </View>
+        )            </View>
           </View>
         )}
 
@@ -322,7 +325,7 @@ export const PremiumUniversalPDF = ({
               <Text style={styles.description}>{section.content}</Text>
             </View>
           ))}
-      </Page>
+        )      </Page>
     </Document>
   );
 };

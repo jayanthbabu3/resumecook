@@ -7,6 +7,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
 registerPDFFonts();
@@ -24,7 +25,10 @@ export const PremiumFresherPDF = ({
     page: {
       fontFamily: "Inter",
       backgroundColor: "#ffffff",
-      padding: 40,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     },
     header: {
       marginBottom: 24,
@@ -237,7 +241,7 @@ export const PremiumFresherPDF = ({
         </View>
 
         {/* Professional Summary */}
-        {resumeData.personalInfo.summary && (
+        {hasContent(resumeData.personalInfo.summary) && (
           <View style={styles.summarySection}>
             <Text style={styles.sectionTitle}>Professional Summary</Text>
             <Text style={styles.summaryText}>{resumeData.personalInfo.summary}</Text>
@@ -257,14 +261,14 @@ export const PremiumFresherPDF = ({
                     style={index === resumeData.education.length - 1 ? styles.educationItemLast : styles.educationItem}
                   >
                     <Text style={styles.degree}>{edu.degree}</Text>
-                    {edu.field && <Text style={styles.field}>{edu.field}</Text>}
+                    {hasContent(edu.field) && <Text style={styles.field}>{edu.field}</Text>}
                     <Text style={styles.school}>{edu.school}</Text>
                     <Text style={styles.dateText}>
                       {edu.startDate} - {edu.endDate}
                     </Text>
                   </View>
                 ))}
-              </View>
+        )              </View>
             )}
 
             {/* Skills */}
@@ -289,7 +293,7 @@ export const PremiumFresherPDF = ({
                     )}
                   </View>
                 ))}
-              </View>
+        )              </View>
             )}
           </View>
 
@@ -310,12 +314,12 @@ export const PremiumFresherPDF = ({
                         {exp.startDate} - {exp.current ? "Present" : exp.endDate}
                       </Text>
                     </View>
-                    {exp.description && (
+                    {hasContent(exp.description) && (
                       <Text style={styles.description}>{exp.description}</Text>
                     )}
                   </View>
                 ))}
-              </View>
+        )              </View>
             )}
 
             {/* Projects/Sections */}
@@ -326,7 +330,7 @@ export const PremiumFresherPDF = ({
                   <Text style={styles.sectionContent}>{section.content}</Text>
                 </View>
               ))}
-          </View>
+        )          </View>
         </View>
       </Page>
     </Document>

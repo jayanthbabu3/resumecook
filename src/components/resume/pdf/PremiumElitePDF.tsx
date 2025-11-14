@@ -7,6 +7,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
 registerPDFFonts();
@@ -79,7 +80,10 @@ export const PremiumElitePDF = ({
     },
     summaryBox: {
       backgroundColor: `${themeColor}15`,
-      padding: 20,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
       borderRadius: 12,
       marginBottom: 28,
     },
@@ -275,7 +279,7 @@ export const PremiumElitePDF = ({
         {/* Main Content */}
         <View style={styles.mainContent}>
           {/* Professional Summary */}
-          {resumeData.personalInfo.summary && (
+          {hasContent(resumeData.personalInfo.summary) && (
             <View style={styles.summaryBox}>
               <Text style={styles.summaryTitle}>Professional Summary</Text>
               <Text style={styles.summaryText}>
@@ -295,14 +299,14 @@ export const PremiumElitePDF = ({
                     <View key={index} style={styles.educationItem}>
                       <View style={styles.timelineDot} />
                       <Text style={styles.degree}>{edu.degree}</Text>
-                      {edu.field && <Text style={styles.field}>{edu.field}</Text>}
+                      {hasContent(edu.field) && <Text style={styles.field}>{edu.field}</Text>}
                       <Text style={styles.school}>{edu.school}</Text>
                       <Text style={styles.dateText}>
                         {edu.startDate} - {edu.endDate}
                       </Text>
                     </View>
                   ))}
-                </View>
+        )                </View>
               )}
 
               {/* Skills */}
@@ -315,7 +319,7 @@ export const PremiumElitePDF = ({
                         <Text style={styles.skillBadgeText}>{skill.name}</Text>
                       </View>
                     ))}
-                  </View>
+        )                  </View>
                 </View>
               )}
             </View>
@@ -337,7 +341,7 @@ export const PremiumElitePDF = ({
                           {exp.startDate} - {exp.current ? "Present" : exp.endDate}
                         </Text>
                       </View>
-                      {exp.description && (
+                      {hasContent(exp.description) && (
                         <View style={styles.bulletList}>
                           {exp.description
                             .split("\n")
@@ -349,11 +353,11 @@ export const PremiumElitePDF = ({
                                 <Text style={styles.bulletText}>{point}</Text>
                               </View>
                             ))}
-                        </View>
+        )                        </View>
                       )}
                     </View>
                   ))}
-                </View>
+        )                </View>
               )}
 
               {/* Additional Sections */}
@@ -364,7 +368,7 @@ export const PremiumElitePDF = ({
                     <Text style={styles.sectionContent}>{section.content}</Text>
                   </View>
                 ))}
-            </View>
+        )            </View>
           </View>
         </View>
       </Page>

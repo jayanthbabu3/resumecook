@@ -1,12 +1,16 @@
 import { Page, Text, View, Document, StyleSheet, Image } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
 registerPDFFonts();
 
 const styles = StyleSheet.create({
   page: {
-    padding: 48,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     fontSize: 9,
     fontFamily: "Inter",
     backgroundColor: "#ffffff",
@@ -171,7 +175,7 @@ export const StarterPDF = ({ resumeData, themeColor = "#0EA5E9" }: StarterPDFPro
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
-        <View style={[styles.header, { borderBottomColor: themeColor }]} wrap={false}>
+        <View style={[styles.header, { borderBottomColor: themeColor }]}>
           <View style={styles.headerContent}>
             <View>
               <Text style={styles.name}>{data.personalInfo.fullName}</Text>
@@ -204,7 +208,7 @@ export const StarterPDF = ({ resumeData, themeColor = "#0EA5E9" }: StarterPDFPro
 
         {/* Summary */}
         {data.personalInfo.summary && (
-          <View style={styles.section} wrap={false}>
+          <View style={styles.section}>
             <Text style={styles.sectionTitle}>Profile</Text>
             <Text style={styles.summary}>{data.personalInfo.summary}</Text>
           </View>
@@ -215,11 +219,11 @@ export const StarterPDF = ({ resumeData, themeColor = "#0EA5E9" }: StarterPDFPro
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Education</Text>
             {data.education.map((edu, index) => (
-              <View key={index} style={styles.educationItem} wrap={false}>
+              <View key={index} style={styles.educationItem}>
                 <View style={styles.educationHeader}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.degree}>{edu.degree}</Text>
-                    {edu.field && <Text style={styles.field}>{edu.field}</Text>}
+                    {hasContent(edu.field) && <Text style={styles.field}>{edu.field}</Text>}
                     <Text style={[styles.school, { color: themeColor }]}>{edu.school}</Text>
                   </View>
                   <Text style={styles.educationDate}>
@@ -228,12 +232,12 @@ export const StarterPDF = ({ resumeData, themeColor = "#0EA5E9" }: StarterPDFPro
                 </View>
               </View>
             ))}
-          </View>
+        )          </View>
         )}
 
         {/* Skills */}
         {data.skills && data.skills.length > 0 && (
-          <View style={styles.section} wrap={false}>
+          <View style={styles.section}>
             <Text style={styles.sectionTitle}>Skills</Text>
             <View style={styles.skillsContainer}>
               {data.skills.map((skill) => (
@@ -241,25 +245,25 @@ export const StarterPDF = ({ resumeData, themeColor = "#0EA5E9" }: StarterPDFPro
                   {skill.name}
                 </Text>
               ))}
-            </View>
+        )            </View>
           </View>
         )}
 
         {/* Projects - Prominent for freshers */}
         {data.sections &&
           data.sections.map((section, index) => (
-            <View key={index} style={styles.section} wrap={false}>
+            <View key={index} style={styles.section}>
               <Text style={styles.sectionTitle}>{section.title}</Text>
               <Text style={styles.customSection}>{section.content}</Text>
             </View>
           ))}
-
+        )
         {/* Experience/Internships */}
         {data.experience && data.experience.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Internships & Experience</Text>
             {data.experience.map((exp, index) => (
-              <View key={index} style={styles.experienceItem} wrap={false}>
+              <View key={index} style={styles.experienceItem}>
                 <View style={styles.experienceHeader}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.position}>{exp.position}</Text>
@@ -269,12 +273,12 @@ export const StarterPDF = ({ resumeData, themeColor = "#0EA5E9" }: StarterPDFPro
                     {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                   </Text>
                 </View>
-                {exp.description && (
+                {hasContent(exp.description) && (
                   <Text style={styles.description}>{exp.description}</Text>
                 )}
               </View>
             ))}
-          </View>
+        )          </View>
         )}
       </Page>
     </Document>

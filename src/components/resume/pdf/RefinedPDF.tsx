@@ -7,6 +7,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 interface RefinedPDFProps {
   resumeData: ResumeData;
@@ -24,11 +25,17 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   sidebar: {
     width: 200,
     backgroundColor: `${themeColor}15`,
-    padding: 32,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
   },
   mainContent: {
     flex: 1,
-    padding: 32,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
   },
   photo: {
     width: 100,
@@ -227,7 +234,7 @@ export const RefinedPDF = ({
                   {skill.name}
                 </Text>
               ))}
-            </View>
+        )            </View>
           )}
 
           {/* Education */}
@@ -237,7 +244,7 @@ export const RefinedPDF = ({
               {education.map((edu) => (
                 <View key={edu.id} style={styles.educationItem}>
                   <Text style={styles.educationDegree}>{edu.degree}</Text>
-                  {edu.field && (
+                  {hasContent(edu.field) && (
                     <Text style={styles.educationField}>{edu.field}</Text>
                   )}
                   <Text style={styles.educationSchool}>{edu.school}</Text>
@@ -246,7 +253,7 @@ export const RefinedPDF = ({
                   </Text>
                 </View>
               ))}
-            </View>
+        )            </View>
           )}
         </View>
 
@@ -281,9 +288,9 @@ export const RefinedPDF = ({
                       • {line}
                     </Text>
                   ))}
-                </View>
+        )                </View>
               ))}
-            </View>
+        )            </View>
           )}
 
           {/* Custom Sections */}
@@ -295,9 +302,9 @@ export const RefinedPDF = ({
                   • {line}
                 </Text>
               ))}
-            </View>
+        )            </View>
           ))}
-        </View>
+        )        </View>
       </Page>
     </Document>
   );

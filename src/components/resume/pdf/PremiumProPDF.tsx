@@ -7,6 +7,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
 registerPDFFonts();
@@ -32,7 +33,10 @@ export const PremiumProPDF = ({
     },
     mainContent: {
       flex: 1,
-      padding: 48,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     },
     header: {
       marginBottom: 32,
@@ -273,7 +277,7 @@ export const PremiumProPDF = ({
               )}
             </View>
             
-            {resumeData.personalInfo.summary && (
+            {hasContent(resumeData.personalInfo.summary) && (
               <View style={styles.summaryContainer}>
                 <View style={styles.summaryAccent} />
                 <Text style={styles.summaryText}>
@@ -293,14 +297,14 @@ export const PremiumProPDF = ({
                   {resumeData.education.map((edu, index) => (
                     <View key={index} style={styles.educationItem}>
                       <Text style={styles.degree}>{edu.degree}</Text>
-                      {edu.field && <Text style={styles.field}>{edu.field}</Text>}
+                      {hasContent(edu.field) && <Text style={styles.field}>{edu.field}</Text>}
                       <Text style={styles.school}>{edu.school}</Text>
                       <Text style={styles.dateText}>
                         {edu.startDate} - {edu.endDate}
                       </Text>
                     </View>
                   ))}
-                </View>
+        )                </View>
               )}
 
               {/* Skills */}
@@ -327,7 +331,7 @@ export const PremiumProPDF = ({
                       )}
                     </View>
                   ))}
-                </View>
+        )                </View>
               )}
             </View>
 
@@ -348,7 +352,7 @@ export const PremiumProPDF = ({
                           {exp.startDate} - {exp.current ? "Present" : exp.endDate}
                         </Text>
                       </View>
-                      {exp.description && (
+                      {hasContent(exp.description) && (
                         <View style={styles.bulletList}>
                           {exp.description
                             .split("\n")
@@ -360,11 +364,11 @@ export const PremiumProPDF = ({
                                 <Text style={styles.bulletText}>{point}</Text>
                               </View>
                             ))}
-                        </View>
+        )                        </View>
                       )}
                     </View>
                   ))}
-                </View>
+        )                </View>
               )}
 
               {/* Sections */}
@@ -375,7 +379,7 @@ export const PremiumProPDF = ({
                     <Text style={styles.sectionContent}>{section.content}</Text>
                   </View>
                 ))}
-            </View>
+        )            </View>
           </View>
         </View>
       </Page>

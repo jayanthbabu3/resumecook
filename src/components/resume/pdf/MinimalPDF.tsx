@@ -1,9 +1,13 @@
 import { Document, Page, Text, View, StyleSheet, Svg, Path, Image } from '@react-pdf/renderer';
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
   page: {
-    padding: 50,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     fontSize: 10,
     fontFamily: 'Inter',
   },
@@ -184,7 +188,7 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
       </View>
 
       {/* Summary */}
-      {resumeData.personalInfo.summary && (
+      {hasContent(resumeData.personalInfo.summary) && (
         <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
       )}
 
@@ -193,13 +197,12 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Experience</Text>
           {resumeData.experience.map((exp, index) => (
-            <View 
-              key={exp.id} 
+            <View
+              key={exp.id}
               style={[
                 styles.experienceItem,
                 index === resumeData.experience.length - 1 && { borderBottom: 0 }
-              ]} 
-              wrap={false}
+              ]}
             >
               <View style={styles.experienceHeader}>
                 <View>
@@ -210,7 +213,7 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
                   {formatDate(exp.startDate)} — {exp.current ? "Present" : formatDate(exp.endDate)}
                 </Text>
               </View>
-              {exp.description && <Text style={styles.description}>{exp.description}</Text>}
+              {hasContent(exp.description) && <Text style={styles.description}>{exp.description}</Text>}
             </View>
           ))}
         </View>
@@ -221,11 +224,11 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Education</Text>
           {resumeData.education.map((edu) => (
-            <View key={edu.id} style={styles.educationItem} wrap={false}>
+            <View key={edu.id} style={styles.educationItem}>
               <View style={styles.experienceHeader}>
                 <View>
                   <Text style={styles.degree}>
-                    {edu.degree || "Degree"}{edu.field && `, ${edu.field}`}
+                    {edu.degree || "Degree"}{hasContent(edu.field) && `, ${edu.field}`}
                   </Text>
                   <Text style={styles.school}>{edu.school || "School Name"}</Text>
                 </View>
@@ -240,11 +243,11 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
-        <View style={styles.section} wrap={false}>
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Skills</Text>
           <View style={styles.skillsContainer}>
             {resumeData.skills.map((skill) => (
-              skill.name && <Text key={skill.id} style={styles.skill}>{skill.name}</Text>
+              hasContent(skill.name) && <Text key={skill.id} style={styles.skill}>{skill.name}</Text>
             ))}
           </View>
         </View>
@@ -252,10 +255,12 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
 
       {/* Custom Sections */}
       {resumeData.sections.map((section) => (
-        <View key={section.id} style={styles.section} wrap={false}>
-          <Text style={styles.sectionTitle}>{section.title}</Text>
-          <Text style={styles.description}>{section.content}</Text>
-        </View>
+        hasContent(section.title) && hasContent(section.content) && (
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            <Text style={styles.description}>{section.content}</Text>
+          </View>
+        )
       ))}
       </Page>
     </Document>

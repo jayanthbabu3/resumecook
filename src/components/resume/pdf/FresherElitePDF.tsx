@@ -9,6 +9,7 @@ import {
   Path,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 
 registerPDFFonts();
@@ -85,7 +86,10 @@ export const FresherElitePDF = ({
     page: {
       fontFamily: "Inter",
       backgroundColor: "#f9fafb",
-      padding: 32,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     },
     container: {
       backgroundColor: "#ffffff",
@@ -151,7 +155,10 @@ export const FresherElitePDF = ({
     summaryContainer: {
       backgroundColor: "#f9fafb",
       borderRadius: 12,
-      padding: 20,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
       marginBottom: 24,
       borderLeftWidth: 4,
       borderLeftColor: themeColor,
@@ -196,7 +203,10 @@ export const FresherElitePDF = ({
     educationCard: {
       backgroundColor: "#ffffff",
       borderRadius: 8,
-      padding: 14,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
       borderWidth: 1,
       borderColor: "#e5e7eb",
       marginBottom: 12,
@@ -301,7 +311,10 @@ export const FresherElitePDF = ({
     projectCard: {
       backgroundColor: "#f9fafb",
       borderRadius: 12,
-      padding: 20,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     },
     sectionContent: {
       fontSize: 9,
@@ -353,7 +366,7 @@ export const FresherElitePDF = ({
 
           <View style={styles.mainContent}>
             {/* Professional Summary */}
-            {resumeData.personalInfo.summary && (
+            {hasContent(resumeData.personalInfo.summary) && (
               <View style={styles.summaryContainer}>
                 <Text style={styles.summaryText}>
                   {resumeData.personalInfo.summary}
@@ -374,14 +387,14 @@ export const FresherElitePDF = ({
                     {resumeData.education.map((edu, index) => (
                       <View key={index} style={styles.educationCard}>
                         <Text style={styles.degree}>{edu.degree}</Text>
-                        {edu.field && <Text style={styles.field}>{edu.field}</Text>}
+                        {hasContent(edu.field) && <Text style={styles.field}>{edu.field}</Text>}
                         <Text style={styles.school}>{edu.school}</Text>
                         <Text style={styles.dateText}>
                           {edu.startDate} - {edu.endDate}
                         </Text>
                       </View>
                     ))}
-                  </View>
+        )                  </View>
                 )}
 
                 {/* Skills */}
@@ -410,11 +423,11 @@ export const FresherElitePDF = ({
                                 ]}
                               />
                             ))}
-                          </View>
+        )                          </View>
                         )}
                       </View>
                     ))}
-                  </View>
+        )                  </View>
                 )}
               </View>
 
@@ -446,12 +459,12 @@ export const FresherElitePDF = ({
                             {exp.startDate} - {exp.current ? "Present" : exp.endDate}
                           </Text>
                         </View>
-                        {exp.description && (
+                        {hasContent(exp.description) && (
                           <Text style={styles.description}>{exp.description}</Text>
                         )}
                       </View>
                     ))}
-                  </View>
+        )                  </View>
                 )}
 
                 {/* Projects/Sections */}
@@ -467,7 +480,7 @@ export const FresherElitePDF = ({
                       </View>
                     </View>
                   ))}
-              </View>
+        )              </View>
             </View>
           </View>
         </View>

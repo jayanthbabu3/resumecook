@@ -1,5 +1,6 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
   page: {
@@ -172,7 +173,7 @@ export const SeniorFrontendPDF = ({
             {resumeData.experience.map((exp) => {
               const bullets = splitLines(exp.description);
               return (
-                <View key={exp.id} style={styles.experienceBlock} wrap={false}>
+                <View key={exp.id} style={styles.experienceBlock}>
                   <View style={styles.experienceHeader}>
                     <Text style={styles.position}>{exp.position || "Role"}</Text>
                     <Text style={styles.date}>
@@ -189,7 +190,7 @@ export const SeniorFrontendPDF = ({
                           • {point.replace(/^•\s*/, "")}
                         </Text>
                       ))}
-                    </View>
+        )                    </View>
                   ) : null}
                 </View>
               );
@@ -216,7 +217,7 @@ export const SeniorFrontendPDF = ({
                       • {point}
                     </Text>
                   ))}
-                </View>
+        )                </View>
               </View>
             ))
           : null}
@@ -225,7 +226,7 @@ export const SeniorFrontendPDF = ({
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: accent }]}>Education</Text>
             {resumeData.education.map((edu) => (
-              <View key={edu.id} style={styles.experienceBlock} wrap={false}>
+              <View key={edu.id} style={styles.experienceBlock}>
                 <Text style={styles.position}>{edu.degree || "Degree"}</Text>
                 {edu.school ? <Text style={styles.company}>{edu.school}</Text> : null}
                 {edu.field ? <Text style={styles.paragraph}>{edu.field}</Text> : null}
@@ -234,7 +235,7 @@ export const SeniorFrontendPDF = ({
                 </Text>
               </View>
             ))}
-          </View>
+        )          </View>
         ) : null}
       </Page>
     </Document>

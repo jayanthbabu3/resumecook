@@ -10,12 +10,16 @@ import {
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
 import { registerPDFFonts } from "@/lib/pdfFonts";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 registerPDFFonts();
 
 const styles = StyleSheet.create({
   page: {
-    padding: 0,
+    paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
     fontSize: 9,
     fontFamily: "Inter",
     backgroundColor: "#ffffff",
@@ -23,9 +27,13 @@ const styles = StyleSheet.create({
   headerAccent: {
     height: 8,
     backgroundColor: "#2563EB",
+    marginTop: -40,
+    marginLeft: -40,
+    marginRight: -40,
   },
   headerContent: {
-    padding: "32 48 24 48",
+    paddingTop: 32,
+    paddingBottom: 24,
     textAlign: "center",
   },
   photoWrapper: {
@@ -80,7 +88,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   mainContent: {
-    padding: "0 48 48 48",
+    flex: 1,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -347,7 +355,7 @@ export const FresherPDF = ({ resumeData }: FresherPDFProps) => (
 
       <View style={styles.mainContent}>
         {/* Professional Summary */}
-        {resumeData.personalInfo.summary && (
+        {hasContent(resumeData.personalInfo.summary) && (
           <View style={styles.summarySection}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
@@ -374,7 +382,7 @@ export const FresherPDF = ({ resumeData }: FresherPDFProps) => (
                   {resumeData.education.map((edu, index) => (
                     <View key={index} style={styles.educationItem}>
                       <Text style={styles.educationDegree}>{edu.degree}</Text>
-                      {edu.field && (
+                      {hasContent(edu.field) && (
                         <Text style={styles.educationField}>{edu.field}</Text>
                       )}
                       <Text style={styles.educationSchool}>{edu.school}</Text>
@@ -415,19 +423,21 @@ export const FresherPDF = ({ resumeData }: FresherPDFProps) => (
             {resumeData.sections && resumeData.sections.length > 0 && (
               <>
                 {resumeData.sections.map((section, index) => (
-                  <View key={index} style={styles.sectionSpacing}>
-                    <View style={styles.sectionHeader}>
-                      <Text style={styles.sectionTitle}>
-                        {section.title.toUpperCase()}
-                      </Text>
-                      <View style={styles.sectionLine} />
+                  hasContent(section.title) && hasContent(section.content) && (
+                    <View key={index} style={styles.sectionSpacing}>
+                      <View style={styles.sectionHeader}>
+                        <Text style={styles.sectionTitle}>
+                          {section.title.toUpperCase()}
+                        </Text>
+                        <View style={styles.sectionLine} />
+                      </View>
+                      <View style={styles.projectSection}>
+                        <Text style={styles.projectContent}>
+                          {section.content}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.projectSection}>
-                      <Text style={styles.projectContent}>
-                        {section.content}
-                      </Text>
-                    </View>
-                  </View>
+                  )
                 ))}
               </>
             )}
@@ -458,7 +468,7 @@ export const FresherPDF = ({ resumeData }: FresherPDFProps) => (
                           {exp.current ? "Present" : formatDate(exp.endDate)}
                         </Text>
                       </View>
-                      {exp.description && (
+                      {hasContent(exp.description) && (
                         <Text style={styles.experienceDescription}>
                           {exp.description}
                         </Text>

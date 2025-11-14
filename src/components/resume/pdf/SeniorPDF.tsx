@@ -304,7 +304,7 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
             </View>
           </View>
 
-          {resumeData.personalInfo.summary && (
+          {hasContent(resumeData.personalInfo.summary) && (
             <View style={styles.section}>
               <Text style={[styles.sectionTitle, { color: accent }]}>Summary</Text>
               <Text style={[styles.summary, { textAlign: 'justify' }]}>
@@ -317,7 +317,7 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: accent }]}>Experience</Text>
             {resumeData.experience.map((exp) => (
-              <View key={exp.id} style={{ marginBottom: 14 }} wrap={false}>
+              <View key={exp.id} style={{ marginBottom: 14 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 8 }}>
                   <View
                     style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: accent, marginTop: 5 }}
@@ -332,7 +332,7 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
                         {formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate)}
                       </Text>
                     </View>
-                    {exp.description && (
+                    {hasContent(exp.description) && (
                       <Text style={[styles.experienceDescription, { textAlign: 'justify' }]}>
                         {exp.description}
                       </Text>
@@ -341,14 +341,14 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
                 </View>
               </View>
             ))}
-          </View>
+        )          </View>
         )}
 
         {otherSections.length > 0 &&
           otherSections.map((section) => {
             const items = splitLines(section.content);
             return (
-              <View key={section.id} style={styles.section} wrap={false}>
+              <View key={section.id} style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: accent }]}>{section.title}</Text>
                 {items.length > 0 ? (
                   <View style={styles.bulletList}>
@@ -357,7 +357,7 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
                         • {line}
                       </Text>
                     ))}
-                  </View>
+        )                  </View>
                 ) : (
                   <Text style={[styles.paragraph, { textAlign: 'justify' }]}>{section.content}</Text>
                 )}
@@ -378,7 +378,7 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
                   </Text>
                 </View>
               ))}
-            </View>
+        )            </View>
           )}
         </View>
 
@@ -407,7 +407,7 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
                     • {line}
                   </Text>
                 ))}
-              </View>
+        )              </View>
             </View>
           )}
 
@@ -426,7 +426,7 @@ export const SeniorPDF = ({ resumeData, themeColor = '#0f766e' }: Props) => {
                     {skill}
                   </Text>
                 ))}
-              </View>
+        )              </View>
             </View>
           )}
         </View>

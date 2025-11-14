@@ -9,11 +9,15 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/pages/Editor";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const createStyles = (themeColor: string) =>
   StyleSheet.create({
     page: {
-      padding: 0,
+      paddingTop: PDF_PAGE_MARGINS.top,
+    paddingRight: PDF_PAGE_MARGINS.right,
+    paddingBottom: PDF_PAGE_MARGINS.bottom,
+    paddingLeft: PDF_PAGE_MARGINS.left,
       fontSize: 10,
       fontFamily: "Inter",
       backgroundColor: "#ffffff",
@@ -347,8 +351,8 @@ export const CorporateExecutivePDF = ({
         {/* Main Content */}
         <View style={styles.mainContent}>
           {/* Summary */}
-          {resumeData.personalInfo.summary && (
-            <View style={styles.summarySection} wrap={false}>
+          {hasContent(resumeData.personalInfo.summary) && (
+            <View style={styles.summarySection}>
               <Text style={styles.sectionTitle}>Executive Summary</Text>
               <Text style={styles.summaryText}>
                 {resumeData.personalInfo.summary}
@@ -367,7 +371,7 @@ export const CorporateExecutivePDF = ({
                     Professional Experience
                   </Text>
                   {resumeData.experience.map((exp) => (
-                    <View key={exp.id} style={styles.experienceItem} wrap={false}>
+                    <View key={exp.id} style={styles.experienceItem}>
                       <View style={styles.experienceHeader}>
                         <View style={styles.experienceLeft}>
                           <Text style={styles.jobTitle}>
@@ -386,12 +390,12 @@ export const CorporateExecutivePDF = ({
                           </Text>
                         </View>
                       </View>
-                      {exp.description && (
+                      {hasContent(exp.description) && (
                         <Text style={styles.description}>{exp.description}</Text>
                       )}
                     </View>
                   ))}
-                </View>
+        )                </View>
               )}
 
               {/* First Half of Custom Sections */}
@@ -399,27 +403,27 @@ export const CorporateExecutivePDF = ({
                 .filter((section) => section.title && section.content)
                 .slice(0, Math.ceil(resumeData.sections.length / 2))
                 .map((section) => (
-                  <View key={section.id} style={styles.section} wrap={false}>
+                  <View key={section.id} style={styles.section}>
                     <Text style={styles.sectionTitle}>{section.title}</Text>
                     <Text style={styles.customSectionText}>
                       {section.content}
                     </Text>
                   </View>
                 ))}
-            </View>
+        )            </View>
 
             {/* Right Column */}
             <View style={styles.rightColumn}>
               {/* Education */}
               {resumeData.education.length > 0 && (
-                <View style={styles.sectionSmall} wrap={false}>
+                <View style={styles.sectionSmall}>
                   <Text style={styles.sectionTitleSmall}>Education</Text>
                   {resumeData.education.map((edu) => (
                     <View key={edu.id} style={styles.educationItem}>
                       <Text style={styles.degree}>
                         {edu.degree || "Degree"}
                       </Text>
-                      {edu.field && (
+                      {hasContent(edu.field) && (
                         <Text style={styles.field}>{edu.field}</Text>
                       )}
                       <Text style={styles.school}>
@@ -430,12 +434,12 @@ export const CorporateExecutivePDF = ({
                       </Text>
                     </View>
                   ))}
-                </View>
+        )                </View>
               )}
 
               {/* Skills */}
               {resumeData.skills.length > 0 && (
-                <View style={styles.sectionSmall} wrap={false}>
+                <View style={styles.sectionSmall}>
                   <Text style={styles.sectionTitleSmall}>
                     Core Competencies
                   </Text>
@@ -455,14 +459,14 @@ export const CorporateExecutivePDF = ({
                 .filter((section) => section.title && section.content)
                 .slice(Math.ceil(resumeData.sections.length / 2))
                 .map((section) => (
-                  <View key={section.id} style={styles.sectionSmall} wrap={false}>
+                  <View key={section.id} style={styles.sectionSmall}>
                     <Text style={styles.sectionTitleSmall}>{section.title}</Text>
                     <Text style={styles.customSectionTextSmall}>
                       {section.content}
                     </Text>
                   </View>
                 ))}
-            </View>
+        )            </View>
           </View>
         </View>
       </Page>
