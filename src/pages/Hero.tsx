@@ -13,6 +13,7 @@ import { ModernPDF } from "@/components/resume/pdf/ModernPDF";
 import { ModernTemplate } from "@/components/resume/templates/ModernTemplate";
 import { ExecutivePDF } from "@/components/resume/pdf/ExecutivePDF";
 import { ExecutiveTemplate } from "@/components/resume/templates/ExecutiveTemplate";
+import { InlineEditProvider } from "@/contexts/InlineEditContext";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { cn } from "@/lib/utils";
 
@@ -75,6 +76,48 @@ const Hero = () => {
   const [livePreviewHeight, setLivePreviewHeight] = useState(1120);
   const livePreviewContainerRef = useRef<HTMLDivElement | null>(null);
   const livePreviewContentRef = useRef<HTMLDivElement | null>(null);
+
+  // State for Live Editor in ResumeData format (for InlineEditProvider)
+  const [liveResumeData, setLiveResumeData] = useState(() => ({
+    personalInfo: {
+      fullName: "Michael Chen",
+      email: "michael.chen@email.com",
+      phone: "+1 (555) 987-6543",
+      location: "Seattle, WA",
+      title: "Chief Technology Officer",
+      summary: "Visionary technology executive with 15+ years of experience leading engineering teams and driving digital transformation. Proven track record of scaling organizations, implementing innovative solutions, and delivering exceptional business outcomes."
+    },
+    experience: [
+      {
+        id: "exp-0",
+        position: "Chief Technology Officer",
+        company: "TechVision Inc.",
+        startDate: "2020-01",
+        endDate: "",
+        current: true,
+        description: "• Spearheaded digital transformation initiatives, increasing operational efficiency by 45%\n• Led a team of 120+ engineers across multiple product lines\n• Architected cloud migration strategy saving $2M annually"
+      },
+      {
+        id: "exp-1",
+        position: "VP of Engineering",
+        company: "Innovation Labs",
+        startDate: "2016-03",
+        endDate: "2019-12",
+        current: false,
+        description: "• Built and scaled engineering organization from 20 to 85 team members\n• Launched 3 successful products generating $50M in annual revenue\n• Implemented agile methodologies improving delivery speed by 60%"
+      }
+    ],
+    education: [],
+    skills: [
+      { id: "skill-0", name: "Strategic Planning", level: 10, category: "core" as const },
+      { id: "skill-1", name: "Cloud Architecture", level: 9, category: "core" as const },
+      { id: "skill-2", name: "Team Leadership", level: 8, category: "core" as const },
+      { id: "skill-3", name: "Digital Transformation", level: 7, category: "core" as const },
+      { id: "skill-4", name: "Product Strategy", level: 7, category: "core" as const }
+    ],
+    sections: []
+  }));
+
   const buttonBaseClass = "h-11 px-6 text-sm md:text-base font-semibold transition-all duration-300";
   const primaryButtonClass = cn(
     buttonBaseClass,
@@ -1369,16 +1412,14 @@ const Hero = () => {
                       <button
                         onClick={async () => {
                           try {
-                            const resumeData = convertLiveEditorToResumeData();
-
                             const blob = await pdf(
-                              <ExecutivePDF resumeData={resumeData} themeColor="#059669" />
+                              <ExecutivePDF resumeData={liveResumeData} themeColor="#059669" />
                             ).toBlob();
 
                             const url = URL.createObjectURL(blob);
                             const link = document.createElement("a");
                             link.href = url;
-                            link.download = `${liveEditorData.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                            link.download = `${liveResumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);
@@ -1417,14 +1458,16 @@ const Hero = () => {
                               transform: `scale(${livePreviewScale})`,
                               transformOrigin: "top center",
                             }}
-                            key={JSON.stringify(liveEditorData)}
+                            key={JSON.stringify(liveResumeData)}
                           >
                             <div ref={livePreviewContentRef} className="w-[816px]">
-                              <ExecutiveTemplate
-                                resumeData={convertLiveEditorToResumeData()}
-                                themeColor="#059669"
-                                editable={true}
-                              />
+                              <InlineEditProvider resumeData={liveResumeData} setResumeData={setLiveResumeData}>
+                                <ExecutiveTemplate
+                                  resumeData={liveResumeData}
+                                  themeColor="#059669"
+                                  editable={true}
+                                />
+                              </InlineEditProvider>
                             </div>
                           </div>
                         </div>
