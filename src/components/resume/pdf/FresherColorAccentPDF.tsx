@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.5,
     color: "rgba(255, 255, 255, 0.8)",
-    marginBottom: 16,
+    marginBottom: 12,
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 12,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   contactIcon: {
     width: 12,
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
   },
   educationItem: {
     marginBottom: 16,
+    paddingBottom: 0,
   },
   educationDegree: {
     fontSize: 10,
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 9,
     fontWeight: 600,
-    marginBottom: 6,
+    marginBottom: 8,
     borderRadius: 4,
   },
   rightContent: {

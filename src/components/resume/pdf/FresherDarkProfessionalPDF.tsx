@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 9,
     fontWeight: 600,
-    marginBottom: 6,
+    marginBottom: 8,
     marginLeft: 20,
     borderRadius: 4,
   },

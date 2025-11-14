@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 12,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   contactIcon: {
     width: 12,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 9,
     fontWeight: 600,
-    marginBottom: 6,
+    marginBottom: 8,
     borderRadius: 4,
   },
   rightSection: {
