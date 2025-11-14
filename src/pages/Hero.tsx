@@ -1337,196 +1337,128 @@ const Hero = () => {
               </h2>
 
               <p className="text-xs md:text-sm text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Edit your resume content directly with real-time updates. Our live editor gives you complete control
-                with instant visual feedback, making resume creation faster and more intuitive than ever.
+                Click anywhere on the resume below to edit directly. No forms, no switching between views.
+                Edit content inline with instant visual feedback - the most intuitive way to build your resume.
               </p>
+
+              {/* Interactive Instruction Badge */}
+              <div className="mt-6 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-500/5 border border-emerald-300/30 shadow-sm">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/20 animate-pulse">
+                  <span className="text-emerald-600 text-xs font-bold">✎</span>
+                </div>
+                <span className="text-sm font-medium text-emerald-700">Click on any text below to start editing</span>
+              </div>
             </div>
 
             {/* Interactive Live Editor Demo */}
             <div className="relative">
               {/* Editor Container with Emerald Glow */}
-              <div className="relative">
+              <div className="relative max-w-4xl mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/15 to-emerald-500/10 rounded-2xl md:rounded-3xl blur-xl md:blur-2xl scale-105"></div>
 
                 <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-emerald-200/50 overflow-hidden">
                   {/* Editor Header */}
-                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-200 px-3 md:px-6 py-2 md:py-4">
+                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-200 px-3 md:px-6 py-3 md:py-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 md:gap-3">
                         <div className="w-2 h-2 md:w-3 md:h-3 bg-emerald-400 rounded-full"></div>
                         <div className="w-2 h-2 md:w-3 md:h-3 bg-teal-400 rounded-full"></div>
                         <div className="w-2 h-2 md:w-3 md:h-3 bg-cyan-400 rounded-full"></div>
-                        <div className="ml-2 md:ml-4 text-[10px] md:text-xs font-semibold text-emerald-700 hidden sm:inline">Live Editor - Executive Template</div>
-                        <div className="ml-2 text-[10px] font-semibold text-emerald-700 sm:hidden">Live Editor</div>
+                        <div className="ml-2 md:ml-4 text-[10px] md:text-xs font-semibold text-emerald-700">Live Editor - Click to Edit Directly</div>
                       </div>
+                      <button
+                        onClick={async () => {
+                          try {
+                            const resumeData = convertLiveEditorToResumeData();
+
+                            const blob = await pdf(
+                              <ExecutivePDF resumeData={resumeData} themeColor="#059669" />
+                            ).toBlob();
+
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement("a");
+                            link.href = url;
+                            link.download = `${liveEditorData.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+
+                            URL.revokeObjectURL(url);
+                          } catch (error) {
+                            console.error("Download error:", error);
+                          }
+                        }}
+                        className="px-2 md:px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors flex items-center gap-1"
+                      >
+                        <svg className="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span className="text-[10px] md:text-xs text-emerald-600 font-medium">Download PDF</span>
+                      </button>
                     </div>
                   </div>
 
-                  {/* Main Editor Layout */}
-                  <div className="flex flex-col md:flex-row gap-6 md:gap-0 h-auto md:h-[650px]">
-                    {/* Left Side - Direct Content Editor */}
-                    <div className="w-full md:w-1/2 bg-gradient-to-br from-slate-50 to-emerald-50/30 border-b md:border-b-0 md:border-r border-emerald-200 md:h-full">
-                      <div className="p-2 md:p-4 space-y-2 md:space-y-3 md:h-full md:overflow-y-auto">
-                        {/* Professional Summary - Direct Edit */}
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                            <h3 className="text-xs md:text-sm font-bold text-gray-800 capitalize tracking-wider">Professional Summary</h3>
-                          </div>
-                          <Textarea
-                            value={liveEditorData.summary}
-                            onChange={(e) => setLiveEditorData(prev => ({ ...prev, summary: e.target.value }))}
-                            className="min-h-[80px] md:min-h-[100px] text-xs md:text-sm resize-none bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400/20"
-                            placeholder="Write your professional summary..."
-                          />
-                        </div>
-
-                        {/* Experience Section - Direct Edit */}
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                            <h3 className="text-xs md:text-sm font-bold text-gray-800 capitalize tracking-wider">Latest Experience</h3>
-                          </div>
-                          <div className="p-3 bg-white rounded-lg border border-emerald-200 shadow-sm space-y-2">
-                            <div className="grid grid-cols-2 gap-2">
-                              <div>
-                                <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-1">Position</label>
-                                <Input
-                                  value={liveEditorData.experiences[0].position}
-                                  onChange={(e) => {
-                                    const newExps = [...liveEditorData.experiences];
-                                    newExps[0] = { ...newExps[0], position: e.target.value };
-                                    setLiveEditorData(prev => ({ ...prev, experiences: newExps }));
-                                  }}
-                                  className="h-6 md:h-7 text-[10px] md:text-sm border-emerald-200 focus:border-emerald-400"
-                                  placeholder="Your position"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-1">Company</label>
-                                <Input
-                                  value={liveEditorData.experiences[0].company}
-                                  onChange={(e) => {
-                                    const newExps = [...liveEditorData.experiences];
-                                    newExps[0] = { ...newExps[0], company: e.target.value };
-                                    setLiveEditorData(prev => ({ ...prev, experiences: newExps }));
-                                  }}
-                                  className="h-6 md:h-7 text-[10px] md:text-sm border-emerald-200 focus:border-emerald-400"
-                                  placeholder="Company name"
-                                />
-                              </div>
-                            </div>
-                            <div>
-                              <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-1">Key Achievements</label>
-                              <Textarea
-                                value={liveEditorData.experiences[0].description}
-                                onChange={(e) => {
-                                  const newExps = [...liveEditorData.experiences];
-                                  newExps[0] = { ...newExps[0], description: e.target.value };
-                                  setLiveEditorData(prev => ({ ...prev, experiences: newExps }));
-                                }}
-                                className="min-h-[60px] md:min-h-[80px] text-[10px] md:text-sm resize-none border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400/20"
-                                placeholder="• Achievement 1&#10;• Achievement 2&#10;• Achievement 3"
+                  {/* Resume with Inline Editing */}
+                  <div className="bg-gradient-to-br from-slate-50 to-emerald-50/20 p-4 md:p-8">
+                    <div
+                      ref={livePreviewContainerRef}
+                      className="bg-white border-2 border-emerald-200/60 rounded-lg shadow-xl mx-auto"
+                      style={{ maxWidth: "850px" }}
+                    >
+                      <div
+                        className="relative overflow-hidden"
+                        style={{
+                          height: `${Math.max(livePreviewHeight * livePreviewScale, 500)}px`,
+                        }}
+                      >
+                        <div className="absolute inset-x-0 top-0 flex justify-center">
+                          <div
+                            style={{
+                              transform: `scale(${livePreviewScale})`,
+                              transformOrigin: "top center",
+                            }}
+                            key={JSON.stringify(liveEditorData)}
+                          >
+                            <div ref={livePreviewContentRef} className="w-[816px]">
+                              <ExecutiveTemplate
+                                resumeData={convertLiveEditorToResumeData()}
+                                themeColor="#059669"
+                                editable={true}
                               />
                             </div>
                           </div>
                         </div>
-
-                        {/* Skills - Direct Edit */}
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="w-2 h-2 bg-cyan-500 rounded-full"></div>
-                            <h3 className="text-xs md:text-sm font-bold text-gray-800 capitalize tracking-wider">Core Skills</h3>
-                          </div>
-                          <div className="relative">
-                            <Input
-                              value={liveEditorData.skills.join(", ")}
-                              onChange={(e) => {
-                                const skillsArray = e.target.value.split(',').map(s => s.trim()).filter(s => s);
-                                setLiveEditorData(prev => ({ ...prev, skills: skillsArray }));
-                              }}
-                              className="h-7 md:h-8 text-[10px] md:text-sm border-emerald-200 focus:border-emerald-400 pr-8"
-                              placeholder="Type skills separated by commas"
-                            />
-                            <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                              <span className="text-xs text-emerald-400">✎</span>
-                            </div>
-                          </div>
-                          <p className="text-[9px] md:text-xs text-muted-foreground italic">
-                            Edit directly and see changes instantly on the right →
-                          </p>
-                        </div>
                       </div>
                     </div>
 
-                    {/* Right Side - Live Preview */}
-                    <div className="w-full md:w-1/2 bg-white">
-                      <div
-                        ref={livePreviewContainerRef}
-                        className="p-4 md:h-full md:overflow-hidden"
-                      >
-                        {/* Preview Header */}
-                        <div className="mb-4">
-                          <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-sm font-semibold text-gray-800">Live Preview</h3>
-                            <button
-                              onClick={async () => {
-                                try {
-                                  const resumeData = convertLiveEditorToResumeData();
-
-                                  const blob = await pdf(
-                                    <ExecutivePDF resumeData={resumeData} themeColor="#059669" />
-                                  ).toBlob();
-
-                                  const url = URL.createObjectURL(blob);
-                                  const link = document.createElement("a");
-                                  link.href = url;
-                                  link.download = `${liveEditorData.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
-                                  document.body.appendChild(link);
-                                  link.click();
-                                  document.body.removeChild(link);
-
-                                  URL.revokeObjectURL(url);
-                                } catch (error) {
-                                  console.error("Download error:", error);
-                                }
-                              }}
-                              className="px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors flex items-center gap-1"
-                            >
-                              <svg className="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                              </svg>
-                              <span className="text-xs text-emerald-600 font-medium">Download PDF</span>
-                            </button>
+                    {/* Helpful Tips */}
+                    <div className="mt-6 max-w-3xl mx-auto">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div className="flex items-start gap-2 p-3 bg-white/60 backdrop-blur-sm rounded-lg border border-emerald-200/40">
+                          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
+                            <span className="text-emerald-600 text-xs">✓</span>
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-semibold text-gray-800 mb-0.5">Click to Edit</h4>
+                            <p className="text-[10px] text-gray-600">Click any text to edit it directly</p>
                           </div>
                         </div>
-
-                        {/* Resume Preview - Use ExecutiveTemplate */}
-                        <div className="bg-white border border-emerald-200 rounded-lg shadow-sm md:h-full overflow-hidden">
-                          <div
-                            className="relative"
-                            style={{
-                              height: `${Math.max(livePreviewHeight * livePreviewScale, 420)}px`,
-                            }}
-                          >
-                            <div
-                              className="absolute inset-x-0 top-0 flex justify-center"
-                            >
-                              <div
-                                style={{
-                                  transform: `scale(${livePreviewScale})`,
-                                  transformOrigin: "top center",
-                                }}
-                                key={JSON.stringify(liveEditorData)}
-                              >
-                                <div ref={livePreviewContentRef} className="w-[816px]">
-                                  <ExecutiveTemplate
-                                    resumeData={convertLiveEditorToResumeData()}
-                                    themeColor="#059669"
-                                  />
-                                </div>
-                              </div>
-                            </div>
+                        <div className="flex items-start gap-2 p-3 bg-white/60 backdrop-blur-sm rounded-lg border border-emerald-200/40">
+                          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-500/20 flex items-center justify-center mt-0.5">
+                            <span className="text-teal-600 text-xs">⚡</span>
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-semibold text-gray-800 mb-0.5">Real-Time Updates</h4>
+                            <p className="text-[10px] text-gray-600">See changes instantly as you type</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2 p-3 bg-white/60 backdrop-blur-sm rounded-lg border border-emerald-200/40">
+                          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mt-0.5">
+                            <span className="text-cyan-600 text-xs">↓</span>
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-semibold text-gray-800 mb-0.5">Download Ready</h4>
+                            <p className="text-[10px] text-gray-600">Export to PDF anytime you want</p>
                           </div>
                         </div>
                       </div>
@@ -1555,7 +1487,7 @@ const Hero = () => {
                 </Button>
               </div>
               <p className="text-sm text-muted-foreground mt-4">
-                Edit in real-time, download instantly. No learning curve required.
+                The fastest way to create a professional resume. Edit directly, download instantly.
               </p>
             </div>
           </div>
