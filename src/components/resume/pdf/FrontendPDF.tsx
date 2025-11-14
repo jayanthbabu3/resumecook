@@ -1,5 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Svg, Path, Image } from '@react-pdf/renderer';
 import type { ResumeData } from '@/pages/Editor';
+import { PDF_PAGE_MARGINS, hasContent } from '@/lib/pdfConfig';
 
 const styles = StyleSheet.create({
   page: {
