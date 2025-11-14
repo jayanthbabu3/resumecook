@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useResume } from '@/hooks/useResume';
-import { use
-
-AutoSave } from '@/hooks/useAutoSave';
+import { useAutoSave } from '@/hooks/useAutoSave';
 import { AutoSaveIndicatorCompact } from '@/components/AutoSaveIndicator';
 import { getTemplateDefaults, type ResumeData } from './Editor';
 import Editor from './Editor';
