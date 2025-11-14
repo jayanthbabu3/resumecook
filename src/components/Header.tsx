@@ -27,14 +27,16 @@ export const Header = () => {
   const { user, signOut } = useFirebaseAuth();
   const isEditor = location.pathname.startsWith("/editor");
 
-  const navItems = useMemo(() => [
-    { label: "Home", to: "/" },
-    { label: "ATS Guide", to: "/ats-guidelines" },
-    ...(user ? [
+  const navItems = useMemo(() =>
+    user ? [
       { label: "Templates", to: "/dashboard" },
-      { label: "My Resumes", to: "/my-resumes" }
-    ] : [])
-  ], [user]);
+      { label: "My Resumes", to: "/my-resumes" },
+      { label: "ATS Guide", to: "/ats-guidelines" }
+    ] : [
+      { label: "Home", to: "/" },
+      { label: "ATS Guide", to: "/ats-guidelines" }
+    ]
+  , [user]);
 
   const getUserInitials = () => {
     if (user?.displayName) {
