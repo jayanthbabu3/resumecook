@@ -233,6 +233,76 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Leadership",
     categorySlug: "all",
   },
+  "fresher-minimal-grid": {
+    name: "Minimal Grid",
+    description:
+      "Clean 3-column grid layout with side border accent, perfect for showcasing education, skills, and early experience systematically.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-dark-professional": {
+    name: "Dark Professional",
+    description:
+      "Modern template with dark gradient header, white skills badges, and side accent bars for a sophisticated fresh graduate look.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-color-accent": {
+    name: "Color Accent Sidebar",
+    description:
+      "Eye-catching colored sidebar with profile photo, contact info, and skills, paired with clean white content area.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-timeline": {
+    name: "Timeline Journey",
+    description:
+      "Vertical timeline design with connecting lines and timeline dots showing your educational and professional journey chronologically.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-skills-first": {
+    name: "Skills Showcase",
+    description:
+      "Skills-prominent layout with large skill cards at the top, ideal for freshers with strong technical capabilities.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-card-based": {
+    name: "Card Design",
+    description:
+      "Modern card-based layout with shadow effects and gray background, creating depth and visual hierarchy for all sections.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-two-tone": {
+    name: "Two-Tone Split",
+    description:
+      "Bold 50/50 split design with colored left half featuring white text and clean white right content area.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-centered-elegant": {
+    name: "Centered Elegance",
+    description:
+      "Sophisticated center-aligned layout with elegant typography, decorative line elements, and refined styling.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-geometric": {
+    name: "Geometric Shapes",
+    description:
+      "Creative template with geometric accent shapes (hexagons, circles) as decorative elements throughout the design.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
+  "fresher-achievement": {
+    name: "Achievement Focus",
+    description:
+      "Achievement-focused layout with highlighted sections and award icons, perfect for emphasizing accomplishments and metrics.",
+    category: "Early Career",
+    categorySlug: "freshers",
+  },
 };
 
 export const categoryLabelMap: Record<string, string> = {

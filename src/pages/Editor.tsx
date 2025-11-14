@@ -35,6 +35,16 @@ import { ElitePDF } from "@/components/resume/pdf/ElitePDF";
 import { CorporateExecutivePDF } from "@/components/resume/pdf/CorporateExecutivePDF";
 import { RefinedPDF } from "@/components/resume/pdf/RefinedPDF";
 import { PremiumElitePDF } from "@/components/resume/pdf/PremiumElitePDF";
+import { FresherMinimalGridPDF } from "@/components/resume/pdf/FresherMinimalGridPDF";
+import { FresherDarkProfessionalPDF } from "@/components/resume/pdf/FresherDarkProfessionalPDF";
+import { FresherColorAccentPDF } from "@/components/resume/pdf/FresherColorAccentPDF";
+import { FresherTimelinePDF } from "@/components/resume/pdf/FresherTimelinePDF";
+import { FresherSkillsFirstPDF } from "@/components/resume/pdf/FresherSkillsFirstPDF";
+import { FresherCardBasedPDF } from "@/components/resume/pdf/FresherCardBasedPDF";
+import { FresherTwoTonePDF } from "@/components/resume/pdf/FresherTwoTonePDF";
+import { FresherCenteredElegantPDF } from "@/components/resume/pdf/FresherCenteredElegantPDF";
+import { FresherGeometricPDF } from "@/components/resume/pdf/FresherGeometricPDF";
+import { FresherAchievementPDF } from "@/components/resume/pdf/FresherAchievementPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
 import { analyzeResumeForATS, type AtsReport } from "@/lib/atsAnalyzer";
@@ -1997,6 +2007,16 @@ const Editor = () => {
         "corporate-executive": CorporateExecutivePDF,
         refined: RefinedPDF,
         "premium-elite": PremiumElitePDF,
+        "fresher-minimal-grid": FresherMinimalGridPDF,
+        "fresher-dark-professional": FresherDarkProfessionalPDF,
+        "fresher-color-accent": FresherColorAccentPDF,
+        "fresher-timeline": FresherTimelinePDF,
+        "fresher-skills-first": FresherSkillsFirstPDF,
+        "fresher-card-based": FresherCardBasedPDF,
+        "fresher-two-tone": FresherTwoTonePDF,
+        "fresher-centered-elegant": FresherCenteredElegantPDF,
+        "fresher-geometric": FresherGeometricPDF,
+        "fresher-achievement": FresherAchievementPDF,
       };
 
       const PDFTemplate =

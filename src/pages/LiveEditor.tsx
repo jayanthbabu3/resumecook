@@ -32,6 +32,16 @@ import { ElitePDF } from "@/components/resume/pdf/ElitePDF";
 import { CorporateExecutivePDF } from "@/components/resume/pdf/CorporateExecutivePDF";
 import { RefinedPDF } from "@/components/resume/pdf/RefinedPDF";
 import { PremiumElitePDF } from "@/components/resume/pdf/PremiumElitePDF";
+import { FresherMinimalGridPDF } from "@/components/resume/pdf/FresherMinimalGridPDF";
+import { FresherDarkProfessionalPDF } from "@/components/resume/pdf/FresherDarkProfessionalPDF";
+import { FresherColorAccentPDF } from "@/components/resume/pdf/FresherColorAccentPDF";
+import { FresherTimelinePDF } from "@/components/resume/pdf/FresherTimelinePDF";
+import { FresherSkillsFirstPDF } from "@/components/resume/pdf/FresherSkillsFirstPDF";
+import { FresherCardBasedPDF } from "@/components/resume/pdf/FresherCardBasedPDF";
+import { FresherTwoTonePDF } from "@/components/resume/pdf/FresherTwoTonePDF";
+import { FresherCenteredElegantPDF } from "@/components/resume/pdf/FresherCenteredElegantPDF";
+import { FresherGeometricPDF } from "@/components/resume/pdf/FresherGeometricPDF";
+import { FresherAchievementPDF } from "@/components/resume/pdf/FresherAchievementPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { getTemplateDefaults, type ResumeData } from "@/pages/Editor";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
@@ -68,6 +78,16 @@ import { ElegantSerifTemplate } from "@/components/resume/templates/ElegantSerif
 import { TechGridTemplate } from "@/components/resume/templates/TechGridTemplate";
 import { ContemporarySplitTemplate } from "@/components/resume/templates/ContemporarySplitTemplate";
 import { LuxuryTimelineTemplate } from "@/components/resume/templates/LuxuryTimelineTemplate";
+import { FresherMinimalGridTemplate } from "@/components/resume/templates/FresherMinimalGridTemplate";
+import { FresherDarkProfessionalTemplate } from "@/components/resume/templates/FresherDarkProfessionalTemplate";
+import { FresherColorAccentTemplate } from "@/components/resume/templates/FresherColorAccentTemplate";
+import { FresherTimelineTemplate } from "@/components/resume/templates/FresherTimelineTemplate";
+import { FresherSkillsFirstTemplate } from "@/components/resume/templates/FresherSkillsFirstTemplate";
+import { FresherCardBasedTemplate } from "@/components/resume/templates/FresherCardBasedTemplate";
+import { FresherTwoToneTemplate } from "@/components/resume/templates/FresherTwoToneTemplate";
+import { FresherCenteredElegantTemplate } from "@/components/resume/templates/FresherCenteredElegantTemplate";
+import { FresherGeometricTemplate } from "@/components/resume/templates/FresherGeometricTemplate";
+import { FresherAchievementTemplate } from "@/components/resume/templates/FresherAchievementTemplate";
 
 const pdfTemplates: Record<string, any> = {
   professional: ProfessionalPDF,
@@ -103,6 +123,16 @@ const pdfTemplates: Record<string, any> = {
   "tech-grid": TechGridTemplate,
   "contemporary-split": ContemporarySplitTemplate,
   "luxury-timeline": LuxuryTimelineTemplate,
+  "fresher-minimal-grid": FresherMinimalGridPDF,
+  "fresher-dark-professional": FresherDarkProfessionalPDF,
+  "fresher-color-accent": FresherColorAccentPDF,
+  "fresher-timeline": FresherTimelinePDF,
+  "fresher-skills-first": FresherSkillsFirstPDF,
+  "fresher-card-based": FresherCardBasedPDF,
+  "fresher-two-tone": FresherTwoTonePDF,
+  "fresher-centered-elegant": FresherCenteredElegantPDF,
+  "fresher-geometric": FresherGeometricPDF,
+  "fresher-achievement": FresherAchievementPDF,
 };
 
 // Templates that support inline editing - updated to include Professional
@@ -114,7 +144,11 @@ const inlineEditableTemplates = [
   "premium-pro", "fresher-elite", "analyst", "elite", "corporate-executive",
   "refined", "premium-elite", "sapphire-executive", "creative-accent",
   "modern-sidebar", "minimalist-geometric", "bold-headline", "dual-tone",
-  "elegant-serif", "tech-grid", "contemporary-split", "luxury-timeline"
+  "elegant-serif", "tech-grid", "contemporary-split", "luxury-timeline",
+  "fresher-minimal-grid", "fresher-dark-professional", "fresher-color-accent",
+  "fresher-timeline", "fresher-skills-first", "fresher-card-based",
+  "fresher-two-tone", "fresher-centered-elegant", "fresher-geometric",
+  "fresher-achievement"
 ];
 
 const displayTemplates: Record<string, any> = {
@@ -151,6 +185,16 @@ const displayTemplates: Record<string, any> = {
   "tech-grid": TechGridTemplate,
   "contemporary-split": ContemporarySplitTemplate,
   "luxury-timeline": LuxuryTimelineTemplate,
+  "fresher-minimal-grid": FresherMinimalGridTemplate,
+  "fresher-dark-professional": FresherDarkProfessionalTemplate,
+  "fresher-color-accent": FresherColorAccentTemplate,
+  "fresher-timeline": FresherTimelineTemplate,
+  "fresher-skills-first": FresherSkillsFirstTemplate,
+  "fresher-card-based": FresherCardBasedTemplate,
+  "fresher-two-tone": FresherTwoToneTemplate,
+  "fresher-centered-elegant": FresherCenteredElegantTemplate,
+  "fresher-geometric": FresherGeometricTemplate,
+  "fresher-achievement": FresherAchievementTemplate,
 };
 
 const LiveEditor = () => {

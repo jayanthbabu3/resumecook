@@ -31,6 +31,16 @@ import { ElegantSerifTemplate } from "./resume/templates/ElegantSerifTemplate";
 import { TechGridTemplate } from "./resume/templates/TechGridTemplate";
 import { ContemporarySplitTemplate } from "./resume/templates/ContemporarySplitTemplate";
 import { LuxuryTimelineTemplate } from "./resume/templates/LuxuryTimelineTemplate";
+import { FresherMinimalGridTemplate } from "./resume/templates/FresherMinimalGridTemplate";
+import { FresherDarkProfessionalTemplate } from "./resume/templates/FresherDarkProfessionalTemplate";
+import { FresherColorAccentTemplate } from "./resume/templates/FresherColorAccentTemplate";
+import { FresherTimelineTemplate } from "./resume/templates/FresherTimelineTemplate";
+import { FresherSkillsFirstTemplate } from "./resume/templates/FresherSkillsFirstTemplate";
+import { FresherCardBasedTemplate } from "./resume/templates/FresherCardBasedTemplate";
+import { FresherTwoToneTemplate } from "./resume/templates/FresherTwoToneTemplate";
+import { FresherCenteredElegantTemplate } from "./resume/templates/FresherCenteredElegantTemplate";
+import { FresherGeometricTemplate } from "./resume/templates/FresherGeometricTemplate";
+import { FresherAchievementTemplate } from "./resume/templates/FresherAchievementTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -540,6 +550,16 @@ const templates = {
   "tech-grid": TechGridTemplate,
   "contemporary-split": ContemporarySplitTemplate,
   "luxury-timeline": LuxuryTimelineTemplate,
+  "fresher-minimal-grid": FresherMinimalGridTemplate,
+  "fresher-dark-professional": FresherDarkProfessionalTemplate,
+  "fresher-color-accent": FresherColorAccentTemplate,
+  "fresher-timeline": FresherTimelineTemplate,
+  "fresher-skills-first": FresherSkillsFirstTemplate,
+  "fresher-card-based": FresherCardBasedTemplate,
+  "fresher-two-tone": FresherTwoToneTemplate,
+  "fresher-centered-elegant": FresherCenteredElegantTemplate,
+  "fresher-geometric": FresherGeometricTemplate,
+  "fresher-achievement": FresherAchievementTemplate,
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({
