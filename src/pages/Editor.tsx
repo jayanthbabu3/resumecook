@@ -2164,18 +2164,84 @@ const Editor = () => {
       <Header />
       
       {/* Fixed Header Section */}
-      <div className="sticky top-0 z-50 bg-background border-b border-border/60 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-3 sm:px-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            {/* Left Section: Back button and Title */}
+      <div className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm shadow-sm">
+        <div className="container mx-auto px-4 py-3">
+          {/* Mobile Layout */}
+          <div className="flex flex-col gap-3 md:hidden">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate("/dashboard")}
+                  className="hover:bg-accent"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
+                </Button>
+                <div className="border-l border-border h-6" />
+                <div>
+                  <h1 className="text-lg font-semibold text-primary">Form Editor</h1>
+                  <p className="text-xs text-muted-foreground">Fill in your information</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate(`/live-editor/${templateId}`)}
+              >
+                <Edit3 className="h-4 w-4 mr-2" />
+                Live
+              </Button>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-muted/30 border">
+                  <label htmlFor="themeColor" className="text-xs font-medium">
+                    Theme:
+                  </label>
+                  <input
+                    id="themeColor"
+                    type="color"
+                    value={themeColor}
+                    onChange={(e) => setThemeColor(e.target.value)}
+                    className="h-7 w-10 cursor-pointer rounded border border-border"
+                  />
+                </div>
+                <Button
+                  onClick={handleSave}
+                  disabled={isSaving || !user}
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <Save className="h-4 w-4" />
+                  {!isSaving && "Save"}
+                </Button>
+                <Button
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                  size="sm"
+                  className="gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  {!isDownloading && "PDF"}
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout - 3 Column Grid */}
+          <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-4">
+            {/* Left Section */}
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/dashboard")}
-                className="gap-2"
+                className="hover:bg-accent"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
               <div className="border-l border-border h-8" />
@@ -2185,32 +2251,25 @@ const Editor = () => {
               </div>
             </div>
 
-            {/* Right Section: Controls */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <Tabs value="form" onValueChange={(v) => v === "live" && navigate(`/live-editor/${templateId}`)} className="hidden md:block">
-                <TabsList className="bg-muted/50">
-                  <TabsTrigger value="live" className="gap-2">
+            {/* Center Section - Tabs */}
+            <div className="flex justify-center">
+              <Tabs value="form" onValueChange={(v) => v === "live" && navigate(`/live-editor/${templateId}`)}>
+                <TabsList className="bg-muted/50 border">
+                  <TabsTrigger value="live" className="gap-2 text-sm">
                     <Edit3 className="h-4 w-4" />
                     Live Editor
                   </TabsTrigger>
-                  <TabsTrigger value="form" className="gap-2">
+                  <TabsTrigger value="form" className="gap-2 text-sm">
                     <FileEdit className="h-4 w-4" />
                     Form Editor
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
+            </div>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate(`/live-editor/${templateId}`)}
-                className="md:hidden"
-              >
-                <Edit3 className="h-4 w-4 mr-2" />
-                Switch to Live
-              </Button>
-              
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border">
+            {/* Right Section - Controls */}
+            <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/30 border">
                 <label htmlFor="themeColor" className="text-sm font-medium whitespace-nowrap">
                   Theme:
                 </label>
@@ -2219,16 +2278,16 @@ const Editor = () => {
                   type="color"
                   value={themeColor}
                   onChange={(e) => setThemeColor(e.target.value)}
-                  className="h-8 w-12 cursor-pointer rounded border border-border"
+                  className="h-7 w-10 cursor-pointer rounded border border-border"
                 />
               </div>
 
               <Button
                 onClick={handleSave}
                 disabled={isSaving || !user}
-                size="default"
+                size="sm"
                 variant="outline"
-                className="gap-2 shadow-md"
+                className="gap-2"
               >
                 {isSaving ? (
                   <>
@@ -2246,8 +2305,8 @@ const Editor = () => {
               <Button
                 onClick={handleDownload}
                 disabled={isDownloading}
-                size="default"
-                className="gap-2 shadow-md"
+                size="sm"
+                className="gap-2"
               >
                 {isDownloading ? (
                   <>

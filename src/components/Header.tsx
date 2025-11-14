@@ -138,6 +138,7 @@ export const Header = () => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
+                      size="icon"
                       className="relative h-9 w-9 rounded-full hover:bg-muted/50 transition-colors duration-200"
                     >
                       <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all duration-200">
@@ -192,6 +193,7 @@ export const Header = () => {
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
+                    size="icon"
                     className="relative h-10 w-10 rounded-xl border border-border/50 bg-gradient-to-br from-background/90 via-background/80 to-background/70 backdrop-blur-sm hover:bg-gradient-to-br hover:from-muted/60 hover:to-muted/40 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:border-primary/20 group"
                     aria-label="Open navigation menu"
                   >
@@ -259,6 +261,7 @@ export const Header = () => {
                     {!user && (
                       <SheetClose asChild>
                         <Button
+                          size="default"
                           className={cn(
                             "mt-6 w-full h-12 text-base font-semibold",
                             "bg-gradient-to-r from-primary via-primary to-primary/90",
@@ -294,6 +297,7 @@ export const Header = () => {
             {/* User Actions */}
             {!user && (
               <Button
+                size="sm"
                 onClick={() => navigate("/auth")}
                 className="hidden sm:inline-flex bg-primary hover:bg-primary-hover"
               >
@@ -306,6 +310,7 @@ export const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
+                    size="icon"
                     className="relative hidden h-9 w-9 rounded-full hover:bg-muted/50 transition-colors duration-200 sm:flex"
                   >
                     <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all duration-200">

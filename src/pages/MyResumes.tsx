@@ -136,6 +136,7 @@ const MyResumes = () => {
         {/* Create New Resume Button */}
         <div className="mb-8 flex justify-end">
           <Button
+            size="sm"
             onClick={() => navigate("/dashboard")}
             className="gap-2"
           >
