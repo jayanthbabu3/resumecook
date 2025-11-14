@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, Users, TrendingUp, Shield, Star, Award, Clock, Globe, Target, ChevronRight, Eye, Palette, Mail, Phone } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, Users, TrendingUp, Shield, Star, Award, Clock, Globe, Target, ChevronRight, Palette, Mail, Phone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -788,10 +788,27 @@ const Hero = () => {
                     />
                     
                     {/* Overlay on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                      <Button size="sm" className="bg-white text-primary hover:bg-white/90 shadow-lg">
-                        <Eye className="w-4 h-4 mr-2" />
-                        Use Template
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center gap-2 p-4 md:p-6">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="shadow-lg text-xs md:text-sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/editor/${template.id}`);
+                        }}
+                      >
+                        Form Editor
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="shadow-lg text-xs md:text-sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/live-editor/${template.id}`);
+                        }}
+                      >
+                        Live Editor
                       </Button>
                     </div>
                   </div>
