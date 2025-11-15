@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { ResumeSection } from '@/types/resume';
 import { InlineEditableText } from './InlineEditableText';
 import { Button } from '@/components/ui/button';
-import { GripVertical, Trash2, Plus } from 'lucide-react';
+import { GripVertical, Trash2, Plus, AlignLeft, AlignCenter, AlignRight, AlignJustify } from 'lucide-react';
 
 interface ScratchBuilderSectionProps {
   section: ResumeSection;
@@ -149,8 +149,28 @@ export function ScratchBuilderSection({
     });
   };
 
+  // Handle title alignment change
+  const handleTitleAlignmentChange = (alignment: 'left' | 'center' | 'right') => {
+    onUpdateSection(section.id, (prevSection) => {
+      const newSection = JSON.parse(JSON.stringify(prevSection));
+      newSection.titleAlignment = alignment;
+      return newSection;
+    });
+  };
+
+  // Handle content alignment change
+  const handleContentAlignmentChange = (alignment: 'left' | 'center' | 'right' | 'justify') => {
+    onUpdateSection(section.id, (prevSection) => {
+      const newSection = JSON.parse(JSON.stringify(prevSection));
+      newSection.contentAlignment = alignment;
+      return newSection;
+    });
+  };
+
   const titleCase = section.titleCase || 'upper'; // Default to uppercase
   const displayTitle = applyTextCase(section.title, titleCase);
+  const titleAlignment = section.titleAlignment || 'left'; // Default to left
+  const contentAlignment = section.contentAlignment || 'left'; // Default to left
 
   const formatDate = (date: string) => {
     if (!date) return '';
@@ -164,87 +184,135 @@ export function ScratchBuilderSection({
 
     switch (data.type) {
       case 'summary':
-        // Executive Summary - centered, bold
-        if (data.variant === 'executive-summary') {
-          return (
-            <InlineEditableText
-              path={`${basePath}.data.content`}
-              value={data.content}
-              multiline
-              placeholder="Write your executive summary..."
-              className="block text-sm leading-relaxed text-center font-semibold"
-              onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
-            />
-          );
-        }
-
-        // Professional Profile - bullet points
-        if (data.variant === 'professional-profile' && Array.isArray(data.content)) {
-          return (
-            <div className="space-y-2">
-              {data.content.map((item: string, idx: number) => (
-                <div key={idx} className="flex items-start gap-2">
-                  <span className="text-sm mt-1">•</span>
-                  <InlineEditableText
-                    path={`${basePath}.data.content[${idx}]`}
-                    value={item}
-                    multiline
-                    placeholder="Add a key strength..."
-                    className="flex-1 text-sm leading-relaxed"
-                    onCustomUpdate={createFieldUpdater(`${basePath}.data.content[${idx}]`)}
-                  />
-                </div>
-              ))}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => addArrayItem(`${basePath}.data.content`, '')}
-              >
-                <Plus className="h-4 w-4 mr-1" />
-                Add Point
-              </Button>
-            </div>
-          );
-        }
-
-        // Career Objective - italic
-        if (data.variant === 'career-objective') {
-          return (
-            <InlineEditableText
-              path={`${basePath}.data.content`}
-              value={data.content}
-              multiline
-              placeholder="Write your career objective..."
-              className="block text-sm leading-relaxed italic"
-              onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
-            />
-          );
-        }
-
-        // About Me - casual
-        if (data.variant === 'about-me') {
-          return (
-            <InlineEditableText
-              path={`${basePath}.data.content`}
-              value={data.content}
-              multiline
-              placeholder="Tell us about yourself..."
-              className="block text-sm leading-relaxed italic"
-              onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
-            />
-          );
-        }
-
-        // Default/Professional Summary
         return (
-          <InlineEditableText
-            path={`${basePath}.data.content`}
-            value={data.content}
-            multiline
-            placeholder="Write your professional summary..."
-            className="block text-sm leading-relaxed"
-            onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
-          />
+          <div>
+            {/* Content Alignment Controls for Summary */}
+            <div className="flex items-center gap-1 mb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="text-xs text-gray-500 mr-1">Content:</span>
+              <button
+                onClick={() => handleContentAlignmentChange('left')}
+                className={`p-1.5 rounded border transition-colors ${
+                  contentAlignment === 'left'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Align Left"
+              >
+                <AlignLeft className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => handleContentAlignmentChange('center')}
+                className={`p-1.5 rounded border transition-colors ${
+                  contentAlignment === 'center'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Align Center"
+              >
+                <AlignCenter className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => handleContentAlignmentChange('right')}
+                className={`p-1.5 rounded border transition-colors ${
+                  contentAlignment === 'right'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Align Right"
+              >
+                <AlignRight className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => handleContentAlignmentChange('justify')}
+                className={`p-1.5 rounded border transition-colors ${
+                  contentAlignment === 'justify'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Justify"
+              >
+                <AlignJustify className="h-3 w-3" />
+              </button>
+            </div>
+
+            {/* Summary Content with alignment */}
+            <div style={{ textAlign: contentAlignment }}>
+              {/* Executive Summary - centered, bold */}
+              {data.variant === 'executive-summary' && (
+                <InlineEditableText
+                  path={`${basePath}.data.content`}
+                  value={data.content}
+                  multiline
+                  placeholder="Write your executive summary..."
+                  className="block text-sm leading-relaxed font-semibold"
+                  onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
+                />
+              )}
+
+              {/* Professional Profile - bullet points */}
+              {data.variant === 'professional-profile' && Array.isArray(data.content) && (
+                <div className="space-y-2">
+                  {data.content.map((item: string, idx: number) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <span className="text-sm mt-1">•</span>
+                      <InlineEditableText
+                        path={`${basePath}.data.content[${idx}]`}
+                        value={item}
+                        multiline
+                        placeholder="Add a key strength..."
+                        className="flex-1 text-sm leading-relaxed"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.content[${idx}]`)}
+                      />
+                    </div>
+                  ))}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addArrayItem(`${basePath}.data.content`, '')}
+                  >
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Point
+                  </Button>
+                </div>
+              )}
+
+              {/* Career Objective - italic */}
+              {data.variant === 'career-objective' && !Array.isArray(data.content) && (
+                <InlineEditableText
+                  path={`${basePath}.data.content`}
+                  value={data.content}
+                  multiline
+                  placeholder="Write your career objective..."
+                  className="block text-sm leading-relaxed italic"
+                  onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
+                />
+              )}
+
+              {/* About Me - casual */}
+              {data.variant === 'about-me' && !Array.isArray(data.content) && (
+                <InlineEditableText
+                  path={`${basePath}.data.content`}
+                  value={data.content}
+                  multiline
+                  placeholder="Tell us about yourself..."
+                  className="block text-sm leading-relaxed italic"
+                  onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
+                />
+              )}
+
+              {/* Default/Professional Summary */}
+              {(!data.variant || data.variant === 'professional-summary') && !Array.isArray(data.content) && (
+                <InlineEditableText
+                  path={`${basePath}.data.content`}
+                  value={data.content}
+                  multiline
+                  placeholder="Write your professional summary..."
+                  className="block text-sm leading-relaxed"
+                  onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
+                />
+              )}
+            </div>
+          </div>
         );
 
       case 'experience':
@@ -786,19 +854,34 @@ export function ScratchBuilderSection({
           <GripVertical className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2 flex-1">
-              <div style={{ color: themeColor }}>
-                <InlineEditableText
-                  path={`${basePath}.title`}
-                  value={displayTitle}
-                  className="font-bold text-lg tracking-wide"
-                  placeholder="Section Title"
-                  onCustomUpdate={createFieldUpdater(`${basePath}.title`)}
-                />
+          <div className="flex flex-col gap-2 mb-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 flex-1">
+                <div style={{ color: themeColor, textAlign: titleAlignment, width: '100%' }}>
+                  <InlineEditableText
+                    path={`${basePath}.title`}
+                    value={displayTitle}
+                    className="font-bold text-lg tracking-wide block"
+                    placeholder="Section Title"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.title`)}
+                  />
+                </div>
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onDelete(section.id)}
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Text Controls - Case and Alignment */}
+            <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
               {/* Case Toggle Buttons */}
-              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-gray-500 mr-1">Case:</span>
                 <button
                   onClick={() => handleTitleCaseChange('title')}
                   className={`px-2 py-1 text-xs rounded border transition-colors ${
@@ -833,15 +916,45 @@ export function ScratchBuilderSection({
                   aa
                 </button>
               </div>
+
+              {/* Title Alignment Buttons */}
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-gray-500 mr-1">Align:</span>
+                <button
+                  onClick={() => handleTitleAlignmentChange('left')}
+                  className={`p-1.5 rounded border transition-colors ${
+                    titleAlignment === 'left'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                  }`}
+                  title="Align Left"
+                >
+                  <AlignLeft className="h-3 w-3" />
+                </button>
+                <button
+                  onClick={() => handleTitleAlignmentChange('center')}
+                  className={`p-1.5 rounded border transition-colors ${
+                    titleAlignment === 'center'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                  }`}
+                  title="Align Center"
+                >
+                  <AlignCenter className="h-3 w-3" />
+                </button>
+                <button
+                  onClick={() => handleTitleAlignmentChange('right')}
+                  className={`p-1.5 rounded border transition-colors ${
+                    titleAlignment === 'right'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                  }`}
+                  title="Align Right"
+                >
+                  <AlignRight className="h-3 w-3" />
+                </button>
+              </div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onDelete(section.id)}
-              className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
           </div>
           {renderSection()}
         </div>

@@ -181,23 +181,26 @@ export function ScratchBuilderPDF({
           .filter((section) => section.enabled)
           .map((section) => (
             <View key={section.id} style={styles.section}>
-              <Text style={styles.sectionTitle}>
+              <Text style={[
+                styles.sectionTitle,
+                { textAlign: section.titleAlignment || 'left' }
+              ]}>
                 {applyTextCase(section.title, section.titleCase)}
               </Text>
 
               {/* Summary Section with variant support */}
               {(section.type === "summary" || section.data.type === "summary") && (
                 <>
-                  {/* Executive Summary - centered, bold */}
+                  {/* Executive Summary - bold */}
                   {section.data.variant === "executive-summary" && section.data.content && (
-                    <Text style={[styles.sectionContent, { textAlign: "center", fontWeight: 600 }]}>
+                    <Text style={[styles.sectionContent, { textAlign: section.contentAlignment || 'left', fontWeight: 600 }]}>
                       {section.data.content}
                     </Text>
                   )}
 
                   {/* Professional Profile - bullet points */}
                   {section.data.variant === "professional-profile" && Array.isArray(section.data.content) && (
-                    <View>
+                    <View style={{ textAlign: section.contentAlignment || 'left' }}>
                       {section.data.content.map((item: string, idx: number) => (
                         <Text key={idx} style={[styles.sectionContent, { marginBottom: 3 }]}>
                           • {item}
@@ -208,26 +211,26 @@ export function ScratchBuilderPDF({
 
                   {/* Career Objective - italic style */}
                   {section.data.variant === "career-objective" && section.data.content && (
-                    <Text style={[styles.sectionContent, { fontStyle: "italic" }]}>
+                    <Text style={[styles.sectionContent, { fontStyle: "italic", textAlign: section.contentAlignment || 'left' }]}>
                       {section.data.content}
                     </Text>
                   )}
 
                   {/* About Me - casual style */}
                   {section.data.variant === "about-me" && section.data.content && (
-                    <Text style={[styles.sectionContent, { fontStyle: "italic", lineHeight: 1.7 }]}>
+                    <Text style={[styles.sectionContent, { fontStyle: "italic", lineHeight: 1.7, textAlign: section.contentAlignment || 'left' }]}>
                       {section.data.content}
                     </Text>
                   )}
 
                   {/* Professional Summary - classic with border */}
                   {section.data.variant === "professional-summary" && section.data.content && (
-                    <Text style={styles.sectionContent}>{section.data.content}</Text>
+                    <Text style={[styles.sectionContent, { textAlign: section.contentAlignment || 'left' }]}>{section.data.content}</Text>
                   )}
 
                   {/* Default summary - for sections without variant */}
                   {!section.data.variant && section.data.content && (
-                    <Text style={styles.sectionContent}>{section.data.content}</Text>
+                    <Text style={[styles.sectionContent, { textAlign: section.contentAlignment || 'left' }]}>{section.data.content}</Text>
                   )}
                 </>
               )}
