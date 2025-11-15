@@ -167,7 +167,8 @@ export default function ScratchBuilder() {
   const createSection = useCallback(
     (type: SectionType, variant?: SectionVariant): ResumeSection => {
       const id = generateId();
-      const title = SECTION_DEFAULT_TITLES[type];
+      // Use variant preview title if available, otherwise use default title
+      const title = variant?.previewData?.title || SECTION_DEFAULT_TITLES[type];
       const order = sections.length;
 
       // Get base mock data with correct editable structure
@@ -177,27 +178,96 @@ export default function ScratchBuilder() {
       if (variant?.previewData) {
         const previewData = variant.previewData;
 
-        // For summary: Convert content to string format (editors expect string)
-        if (type === 'summary' && previewData.content) {
-          const content = Array.isArray(previewData.content)
-            ? '• ' + previewData.content.join('\n• ')
-            : previewData.content;
-          data = { type: 'summary', content };
+        // For summary: Keep the content structure as-is (array or string)
+        if (type === 'summary') {
+          data = { type: 'summary' };
+
+          // Preserve content (can be string or array)
+          if (previewData.content) {
+            (data as any).content = previewData.content;
+          }
+
+          // Preserve stats for two-column variant
+          if (previewData.stats) {
+            (data as any).stats = previewData.stats;
+          }
+
+          // Preserve tags for expertise variant
+          if (previewData.tags) {
+            (data as any).tags = previewData.tags;
+          }
         }
-        // For skills: Convert preview skills to proper items array
+        // For skills: Convert preview skills to proper format based on variant style
         else if (type === 'skills' && previewData.skills) {
           const skills = previewData.skills;
-          const items = Array.isArray(skills)
-            ? skills.slice(0, 6).map((skill: any) => ({
-                id: generateId(),
-                name: typeof skill === 'string' ? skill : skill.name || String(skill),
-                level: 80,
-                category: 'core' as const,
-              }))
-            : []; // Fallback to empty if not array
-          data = { type: 'skills', items };
+
+          // For variants that need objects with name/level (skill-list, skill-bars, skill-rating)
+          if (variant.id === 'skill-list' || variant.id === 'skill-bars' || variant.id === 'skill-rating') {
+            data = {
+              type: 'skills',
+              skills: Array.isArray(skills) && typeof skills[0] === 'object'
+                ? skills
+                : Array.isArray(skills)
+                ? skills.slice(0, 6).map((skill: any) => ({
+                    name: typeof skill === 'string' ? skill : skill.name || String(skill),
+                    level: typeof skill === 'object' && skill.level ? skill.level : 80,
+                    rating: typeof skill === 'object' && skill.rating ? skill.rating : 4,
+                  }))
+                : []
+            };
+          }
+          // For variants that need grouped skills (skill-grouped)
+          else if (variant.id === 'skill-grouped' && previewData.skillGroups) {
+            data = {
+              type: 'skills',
+              skillGroups: previewData.skillGroups
+            };
+          }
+          // For variants that need string arrays (skill-pills, skill-grid, skill-minimal, skill-badges)
+          else if (variant.id === 'skill-pills' || variant.id === 'skill-grid' || variant.id === 'skill-minimal' || variant.id === 'skill-badges') {
+            data = {
+              type: 'skills',
+              skills: Array.isArray(skills)
+                ? skills.map((skill: any) => typeof skill === 'string' ? skill : skill.name || String(skill))
+                : []
+            };
+          }
+          // For inline/comma-separated (skill-inline)
+          else if (variant.id === 'skill-inline') {
+            data = {
+              type: 'skills',
+              skills: typeof skills === 'string' ? skills : Array.isArray(skills) ? skills.join(', ') : ''
+            };
+          }
+          // For two-column variant
+          else if (variant.id === 'skill-two-column' && previewData.technical && previewData.soft) {
+            data = {
+              type: 'skills',
+              technical: previewData.technical,
+              soft: previewData.soft
+            };
+          }
+          // Default fallback
+          else {
+            data = {
+              type: 'skills',
+              skills: Array.isArray(skills)
+                ? skills.map((skill: any) => typeof skill === 'string' ? skill : skill.name || String(skill))
+                : []
+            };
+          }
         }
-        // For all other types, keep mock data structure as-is
+        // For all other types with items arrays (experience, education, projects, etc.)
+        else if (previewData.items && Array.isArray(previewData.items)) {
+          // Preserve the items from the variant preview data
+          data = {
+            type: type,
+            items: previewData.items.map((item: any) => ({
+              ...item,
+              id: item.id || generateId(), // Ensure each item has an ID
+            }))
+          };
+        }
 
         // Store variant ID for styling
         (data as any).variantId = variant.id;
