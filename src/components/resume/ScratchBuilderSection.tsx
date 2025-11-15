@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { ResumeSection } from '@/types/resume';
-import { useInlineEdit } from '@/contexts/InlineEditContext';
 import { InlineEditableText } from './InlineEditableText';
 import { Button } from '@/components/ui/button';
 import { GripVertical, Trash2, Plus } from 'lucide-react';
@@ -22,8 +21,43 @@ export function ScratchBuilderSection({
   dragHandleProps,
   themeColor = '#7c3aed',
 }: ScratchBuilderSectionProps) {
-  const { updateField } = useInlineEdit();
   const basePath = `dynamicSections[${sectionIndex}]`;
+
+  // Local updateField handler that updates the section directly
+  const updateField = (path: string, value: any) => {
+    onUpdateSection(section.id, (prevSection) => {
+      const newSection = JSON.parse(JSON.stringify(prevSection));
+
+      // Extract the field path after basePath
+      const fieldPath = path.replace(`${basePath}.`, '');
+      const pathParts = fieldPath.split('.');
+
+      let current: any = newSection;
+      for (let i = 0; i < pathParts.length - 1; i++) {
+        const part = pathParts[i];
+        const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
+
+        if (arrayMatch) {
+          const [, arrayName, index] = arrayMatch;
+          current = current[arrayName][parseInt(index)];
+        } else {
+          current = current[part];
+        }
+      }
+
+      const lastPart = pathParts[pathParts.length - 1];
+      const arrayMatch = lastPart.match(/^(.+)\[(\d+)\]$/);
+
+      if (arrayMatch) {
+        const [, arrayName, index] = arrayMatch;
+        current[arrayName][parseInt(index)] = value;
+      } else {
+        current[lastPart] = value;
+      }
+
+      return newSection;
+    });
+  };
 
   // Local add/remove handlers that update the section directly
   const addArrayItem = (path: string, defaultItem: any) => {
@@ -84,6 +118,11 @@ export function ScratchBuilderSection({
     });
   };
 
+  // Helper to create field updater for InlineEditableText onCustomUpdate
+  const createFieldUpdater = (fieldPath: string) => (value: any) => {
+    updateField(fieldPath, value);
+  };
+
   const formatDate = (date: string) => {
     if (!date) return '';
     const [year, month] = date.split('-');
@@ -105,6 +144,7 @@ export function ScratchBuilderSection({
               multiline
               placeholder="Write your executive summary..."
               className="block text-sm leading-relaxed text-center font-semibold"
+              onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
             />
           );
         }
@@ -122,6 +162,7 @@ export function ScratchBuilderSection({
                     multiline
                     placeholder="Add a key strength..."
                     className="flex-1 text-sm leading-relaxed"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.content[${idx}]`)}
                   />
                 </div>
               ))}
@@ -146,6 +187,7 @@ export function ScratchBuilderSection({
               multiline
               placeholder="Write your career objective..."
               className="block text-sm leading-relaxed italic"
+              onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
             />
           );
         }
@@ -159,6 +201,7 @@ export function ScratchBuilderSection({
               multiline
               placeholder="Tell us about yourself..."
               className="block text-sm leading-relaxed italic"
+              onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
             />
           );
         }
@@ -171,6 +214,7 @@ export function ScratchBuilderSection({
             multiline
             placeholder="Write your professional summary..."
             className="block text-sm leading-relaxed"
+            onCustomUpdate={createFieldUpdater(`${basePath}.data.content`)}
           />
         );
 
@@ -333,6 +377,7 @@ export function ScratchBuilderSection({
                     value={skill}
                     placeholder="Skill"
                     className="text-sm"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}]`)}
                   />
                   <button
                     onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
@@ -366,12 +411,14 @@ export function ScratchBuilderSection({
                     value={skill.name}
                     placeholder="Skill name"
                     className="text-sm flex-1"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}].name`)}
                   />
                   <InlineEditableText
                     path={`${basePath}.data.skills[${idx}].level`}
                     value={skill.level}
                     placeholder="Level"
                     className="text-xs text-muted-foreground w-24"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}].level`)}
                   />
                   <button
                     onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
@@ -402,6 +449,7 @@ export function ScratchBuilderSection({
               multiline
               placeholder="JavaScript, React, TypeScript, Node.js, etc."
               className="text-sm leading-relaxed"
+              onCustomUpdate={createFieldUpdater(`${basePath}.data.skills`)}
             />
           );
         }
@@ -418,6 +466,7 @@ export function ScratchBuilderSection({
                     value={group.category}
                     placeholder="Category"
                     className="font-semibold text-sm block mb-1"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skillGroups[${idx}].category`)}
                   />
                   <div className="relative">
                     <InlineEditableText
@@ -470,12 +519,14 @@ export function ScratchBuilderSection({
                       value={skill.name}
                       placeholder="Skill name"
                       className="text-sm flex-1"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}].name`)}
                     />
                     <InlineEditableText
                       path={`${basePath}.data.skills[${idx}].level`}
                       value={skill.level}
                       placeholder="90"
                       className="text-xs text-muted-foreground w-12"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}].level`)}
                     />
                     <button
                       onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
