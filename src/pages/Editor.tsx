@@ -103,6 +103,7 @@ export interface ResumeData {
     title: string;
     content: string;
   }>;
+  dynamicSections?: any[]; // For backward compatibility
 }
 
 const buildSkills = (

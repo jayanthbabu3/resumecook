@@ -204,13 +204,13 @@ export const PremiumFresherTemplate = ({
                   renderSkill={(skill, index) => (
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-900">{skill.name}</span>
-                      {skill.level && (
+                      {(skill.level !== undefined && skill.level !== null) && (
                         <div className="flex items-center gap-2">
                           <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                             <div
                               className="h-full rounded-full"
                               style={{
-                                width: `${skill.level * 10}%`,
+                                width: `${(skill.level || 0) * 10}%`,
                                 backgroundColor: themeColor,
                               }}
                             />

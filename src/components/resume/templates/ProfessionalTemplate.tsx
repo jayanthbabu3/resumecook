@@ -576,7 +576,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false 
       ))}
 
       {/* Dynamic Sections (New Feature) */}
-      {resumeData.dynamicSections && resumeData.dynamicSections.length > 0 && (
+      {resumeData.dynamicSections && Array.isArray(resumeData.dynamicSections) && resumeData.dynamicSections.length > 0 && (
         <>
           {resumeData.dynamicSections
             .filter(section => section.enabled)

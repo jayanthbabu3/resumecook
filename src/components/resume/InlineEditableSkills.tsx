@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 interface Skill {
   name: string;
   id: string;
+  level?: number;
+  category?: "core" | "toolbox";
 }
 
 interface InlineEditableSkillsProps {

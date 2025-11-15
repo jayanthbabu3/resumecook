@@ -237,27 +237,27 @@ export const FresherEliteTemplate = ({
                     Skills
                   </h2>
                   {editable ? (
-                    <InlineEditableSkills
-                      path="skills"
-                      skills={resumeData.skills}
-                      renderSkill={(skill, index) => (
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-gray-900">
-                            {skill.name}
-                          </span>
-                          {skill.level && (
-                            <div className="flex items-center gap-1">
-                              {[...Array(5)].map((_, i) => (
-                                <div
-                                  key={i}
-                                  className="w-1.5 h-1.5 rounded-full"
-                                  style={{
-                                    backgroundColor: i < Math.ceil(skill.level / 2) ? themeColor : '#e5e7eb',
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          )}
+                      <InlineEditableSkills
+                        path="skills"
+                        skills={resumeData.skills}
+                        renderSkill={(skill, index) => (
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-900">
+                              {skill.name}
+                            </span>
+                            {(skill.level !== undefined && skill.level !== null) && (
+                              <div className="flex items-center gap-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <div
+                                    key={i}
+                                    className="w-1.5 h-1.5 rounded-full"
+                                    style={{
+                                      backgroundColor: i < Math.ceil((skill.level || 0) / 2) ? themeColor : '#e5e7eb',
+                                    }}
+                                  />
+                                ))}
+                              </div>
+                            )}
                         </div>
                       )}
                     />

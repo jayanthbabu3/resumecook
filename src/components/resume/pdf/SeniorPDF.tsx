@@ -200,6 +200,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const hasContent = (value?: string | null) => value && value.trim().length > 0;
+
 const formatDate = (date: string): string => {
   if (!date) return '';
   const d = new Date(date);

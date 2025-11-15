@@ -434,7 +434,7 @@ export const ProfessionalPDF = ({ resumeData, themeColor }: Props) => {
       ))}
 
       {/* Dynamic Sections (Helper Sections) */}
-      {resumeData.dynamicSections && resumeData.dynamicSections.length > 0 && (
+      {resumeData.dynamicSections && Array.isArray(resumeData.dynamicSections) && resumeData.dynamicSections.length > 0 && (
         <>
           {resumeData.dynamicSections
             .filter(section => section.enabled)

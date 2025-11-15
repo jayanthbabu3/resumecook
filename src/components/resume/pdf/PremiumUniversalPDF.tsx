@@ -20,13 +20,15 @@ export const PremiumUniversalPDF = ({
   resumeData,
   themeColor = "#2563eb",
 }: PremiumUniversalPDFProps) => {
+  const hasContent = (value?: string | null) => value && value.trim().length > 0;
+
   const styles = StyleSheet.create({
     page: {
       backgroundColor: "#ffffff",
-      paddingTop: PDF_PAGE_MARGINS.top,
-    paddingRight: PDF_PAGE_MARGINS.right,
-    paddingBottom: PDF_PAGE_MARGINS.bottom,
-    paddingLeft: PDF_PAGE_MARGINS.left,
+      paddingTop: 40,
+      paddingRight: 40,
+      paddingBottom: 40,
+      paddingLeft: 40,
       fontFamily: "Inter",
       color: "#111827",
     },

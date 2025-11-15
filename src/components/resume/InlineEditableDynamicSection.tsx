@@ -377,7 +377,7 @@ export function InlineEditableDynamicSection({
       return (
         <InlineEditableText
           path={`${basePath}.data.content`}
-          value={sectionData.content || ""}
+          value={Array.isArray(sectionData.content) ? sectionData.content.join('\n') : (sectionData.content || "")}
           className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
           multiline
           as="p"
