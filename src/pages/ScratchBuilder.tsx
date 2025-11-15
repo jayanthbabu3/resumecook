@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Download, Save, ArrowLeft, Loader2, GripVertical } from 'lucide-react';
@@ -154,6 +154,14 @@ export default function ScratchBuilder() {
   );
 
   const themeColor = '#7c3aed';
+
+  // Sync sections with resumeData.dynamicSections
+  useEffect(() => {
+    setResumeData((prev) => ({
+      ...prev,
+      dynamicSections: sections,
+    }));
+  }, [sections]);
 
   // Create a new section with mock data and optional variant
   const createSection = useCallback(
