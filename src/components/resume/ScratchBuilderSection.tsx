@@ -545,40 +545,264 @@ export function ScratchBuilderSection({
         );
 
       case 'education':
+        // Classic Timeline - school first, traditional format
+        if (data.variantId === 'education-classic' || !data.variantId) {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((edu, idx) => (
+                <div key={edu.id} className="border-l-2 pl-4" style={{ borderColor: themeColor }}>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].school`}
+                    value={edu.school}
+                    className="font-semibold text-base block mb-1"
+                    placeholder="School Name"
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].degree`}
+                    value={edu.degree}
+                    className="block mb-1"
+                    placeholder="Degree"
+                    style={{ color: themeColor }}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].field`}
+                    value={edu.field}
+                    className="text-sm block mb-2"
+                    placeholder="Field of Study"
+                  />
+                  <div className="text-sm text-muted-foreground mb-1">
+                    {edu.startDate && (
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].startDate`}
+                        value={edu.startDate}
+                        placeholder="2016"
+                      />
+                    )}
+                    {edu.startDate && ' - '}
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].endDate`}
+                      value={edu.endDate}
+                      placeholder="2020"
+                    />
+                  </div>
+                  {edu.gpa && (
+                    <div className="text-sm">
+                      GPA: <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].gpa`}
+                        value={edu.gpa}
+                        placeholder="3.8"
+                        className="inline"
+                      />
+                    </div>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
+                    className="mt-2 text-destructive"
+                  >
+                    <Trash2 className="h-3 w-3 mr-1" />
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  addArrayItem(`${basePath}.data.items`, {
+                    id: Date.now().toString(),
+                    school: '',
+                    degree: '',
+                    field: '',
+                    startDate: '',
+                    endDate: '',
+                    gpa: ''
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Education
+              </Button>
+            </div>
+          );
+        }
+
+        // Modern Card - degree first, card style
+        if (data.variantId === 'education-modern') {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((edu, idx) => (
+                <div key={edu.id} className="bg-gray-50 rounded-lg p-4">
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].degree`}
+                    value={edu.degree}
+                    className="font-semibold text-base block mb-1"
+                    placeholder="Bachelor of Science"
+                  />
+                  {edu.field && (
+                    <div className="text-sm mb-2">
+                      in <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].field`}
+                        value={edu.field}
+                        placeholder="Computer Science"
+                        className="inline"
+                      />
+                    </div>
+                  )}
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].school`}
+                    value={edu.school}
+                    className="block mb-1"
+                    placeholder="School Name"
+                    style={{ color: themeColor }}
+                  />
+                  <div className="text-sm text-muted-foreground">
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].endDate`}
+                      value={edu.endDate}
+                      placeholder="2020"
+                    />
+                  </div>
+                  {edu.gpa && (
+                    <div className="text-sm mt-1">
+                      GPA: <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].gpa`}
+                        value={edu.gpa}
+                        placeholder="3.8"
+                        className="inline"
+                      />
+                    </div>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
+                    className="mt-2 text-destructive"
+                  >
+                    <Trash2 className="h-3 w-3 mr-1" />
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  addArrayItem(`${basePath}.data.items`, {
+                    id: Date.now().toString(),
+                    school: '',
+                    degree: '',
+                    field: '',
+                    endDate: '',
+                    gpa: ''
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Education
+              </Button>
+            </div>
+          );
+        }
+
+        // Minimal Clean - essential info only
+        if (data.variantId === 'education-minimal') {
+          return (
+            <div className="space-y-3">
+              {data.items?.map((edu, idx) => (
+                <div key={edu.id} className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].degree`}
+                      value={edu.degree}
+                      className="text-sm inline"
+                      placeholder="BS Computer Science"
+                    />
+                    <span className="mx-2">•</span>
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].school`}
+                      value={edu.school}
+                      className="text-sm inline"
+                      placeholder="School"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].endDate`}
+                      value={edu.endDate}
+                      className="text-sm text-muted-foreground"
+                      placeholder="2020"
+                    />
+                    <button
+                      onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
+                      className="text-xs text-destructive hover:text-destructive/80"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  addArrayItem(`${basePath}.data.items`, {
+                    id: Date.now().toString(),
+                    school: '',
+                    degree: '',
+                    endDate: ''
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Education
+              </Button>
+            </div>
+          );
+        }
+
+        // Default fallback - same as classic
         return (
           <div className="space-y-4">
             {data.items?.map((edu, idx) => (
               <div key={edu.id} className="border-l-2 pl-4" style={{ borderColor: themeColor }}>
                 <InlineEditableText
-                  path={`${basePath}.data.items[${idx}].degree`}
-                  value={edu.degree}
-                  className="font-semibold text-lg block mb-1"
-                  placeholder="Degree"
-                />
-                <InlineEditableText
                   path={`${basePath}.data.items[${idx}].school`}
                   value={edu.school}
-                  className="block mb-1"
+                  className="font-semibold text-base block mb-1"
                   placeholder="School Name"
-                  style={{ color: themeColor }}
                 />
                 <InlineEditableText
-                  path={`${basePath}.data.items[${idx}].field`}
-                  value={edu.field}
-                  className="text-sm block mb-2"
-                  placeholder="Field of Study"
+                  path={`${basePath}.data.items[${idx}].degree`}
+                  value={edu.degree}
+                  className="block mb-1"
+                  placeholder="Degree"
+                  style={{ color: themeColor }}
                 />
-                <div className="text-sm text-muted-foreground">
+                {edu.field && (
                   <InlineEditableText
-                    path={`${basePath}.data.items[${idx}].startDate`}
-                    value={formatDate(edu.startDate)}
-                    placeholder="Start Date"
+                    path={`${basePath}.data.items[${idx}].field`}
+                    value={edu.field}
+                    className="text-sm block mb-2"
+                    placeholder="Field of Study"
                   />
-                  {' - '}
+                )}
+                <div className="text-sm text-muted-foreground">
+                  {edu.startDate && (
+                    <>
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].startDate`}
+                        value={edu.startDate}
+                        placeholder="Start Year"
+                      />
+                      {' - '}
+                    </>
+                  )}
                   <InlineEditableText
                     path={`${basePath}.data.items[${idx}].endDate`}
-                    value={formatDate(edu.endDate)}
-                    placeholder="End Date"
+                    value={edu.endDate}
+                    placeholder="End Year"
                   />
                 </div>
                 <Button
