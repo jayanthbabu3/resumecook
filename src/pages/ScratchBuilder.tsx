@@ -91,10 +91,12 @@ function DropZone({ children }: DropZoneProps) {
 // Sortable section in the resume
 interface SortableSectionProps {
   section: ResumeSection;
+  sectionIndex: number;
   onDelete: (id: string) => void;
+  onUpdateSection: (sectionId: string, updater: (section: ResumeSection) => ResumeSection) => void;
 }
 
-function SortableSection({ section, onDelete }: SortableSectionProps) {
+function SortableSection({ section, sectionIndex, onDelete, onUpdateSection }: SortableSectionProps) {
   const {
     attributes,
     listeners,
@@ -110,19 +112,25 @@ function SortableSection({ section, onDelete }: SortableSectionProps) {
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const sectionIndex = 0; // This will be provided properly by parent
-
   return (
     <div ref={setNodeRef} style={style} className="mb-6">
       <ScratchBuilderSection
         section={section}
         sectionIndex={sectionIndex}
         onDelete={onDelete}
+        onUpdateSection={onUpdateSection}
         dragHandleProps={{ ...attributes, ...listeners }}
         themeColor="#7c3aed"
       />
     </div>
   );
+}
+
+interface SortableSectionWrapperProps {
+  section: ResumeSection;
+  sectionIndex: number;
+  onDelete: (id: string) => void;
+  onUpdateSection: (sectionId: string, updater: (section: ResumeSection) => ResumeSection) => void;
 }
 
 export default function ScratchBuilder() {
@@ -236,7 +244,7 @@ export default function ScratchBuilder() {
           else if (variant.id === 'skill-inline') {
             data = {
               type: 'skills',
-              skills: typeof skills === 'string' ? skills : Array.isArray(skills) ? skills.join(', ') : ''
+              skills: [(typeof skills === 'string' ? skills : Array.isArray(skills) ? skills.join(', ') : '')]
             };
           }
           // For two-column variant

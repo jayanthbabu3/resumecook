@@ -237,7 +237,7 @@ export function ScratchBuilderSection({
             {/* Summary Content with alignment */}
             <div style={{ textAlign: contentAlignment }}>
               {/* Executive Summary - centered, bold */}
-              {data.variantId === 'executive-summary' && (
+              {data.variantId === 'executive-summary' && typeof data.content === 'string' && (
                 <InlineEditableText
                   path={`${basePath}.data.content`}
                   value={data.content}
@@ -352,7 +352,7 @@ export function ScratchBuilderSection({
                   {data.content && (
                     <InlineEditableText
                       path={`${basePath}.data.content`}
-                      value={data.content}
+                      value={typeof data.content === 'string' ? data.content : Array.isArray(data.content) ? data.content.join('\n') : ''}
                       multiline
                       placeholder="Write your professional overview..."
                       className="block text-sm leading-relaxed"
@@ -413,7 +413,7 @@ export function ScratchBuilderSection({
                   {data.content && (
                     <InlineEditableText
                       path={`${basePath}.data.content`}
-                      value={data.content}
+                      value={typeof data.content === 'string' ? data.content : Array.isArray(data.content) ? data.content.join('\n') : ''}
                       multiline
                       placeholder="Write about your core expertise..."
                       className="block text-sm leading-relaxed"
@@ -927,7 +927,7 @@ export function ScratchBuilderSection({
           return (
             <InlineEditableText
               path={`${basePath}.data.skills`}
-              value={data.skills}
+              value={Array.isArray(data.skills) ? data.skills.map(s => typeof s === 'string' ? s : s.name).join(', ') : typeof data.skills === 'string' ? data.skills : ''}
               multiline
               placeholder="JavaScript, React, TypeScript, Node.js, etc."
               className="text-sm leading-relaxed"
@@ -1445,7 +1445,7 @@ export function ScratchBuilderSection({
         return (
           <InlineEditableText
             path={`${basePath}.data.content`}
-            value={data.content}
+            value={typeof data.content === 'string' ? data.content : Array.isArray(data.content) ? data.content.join('\n') : ''}
             multiline
             placeholder="Add your custom content..."
             className="block text-sm"

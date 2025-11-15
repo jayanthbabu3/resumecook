@@ -38,6 +38,10 @@ export interface EducationItem {
   field: string;
   startDate: string;
   endDate: string;
+  gpa?: string;
+  coursework?: string[];
+  honors?: string[];
+  location?: string;
 }
 
 export interface SkillItem {
@@ -150,22 +154,19 @@ export interface PortfolioItem {
   description?: string;
 }
 
-// Union type for all section data
-export type SectionData =
-  | { type: 'summary'; content: string }
-  | { type: 'experience'; items: ExperienceItem[] }
-  | { type: 'education'; items: EducationItem[] }
-  | { type: 'skills'; items: SkillItem[] }
-  | { type: 'certifications'; items: CertificationItem[] }
-  | { type: 'languages'; items: LanguageItem[] }
-  | { type: 'projects'; items: ProjectItem[] }
-  | { type: 'awards'; items: AwardItem[] }
-  | { type: 'publications'; items: PublicationItem[] }
-  | { type: 'volunteer'; items: VolunteerItem[] }
-  | { type: 'speaking'; items: SpeakingItem[] }
-  | { type: 'patents'; items: PatentItem[] }
-  | { type: 'portfolio'; items: PortfolioItem[] }
-  | { type: 'custom'; content: string };
+// Union type for all section data with variant support
+export type SectionData = {
+  type: SectionType;
+  content?: string | string[];
+  items?: any[];
+  skills?: (string | { name: string; level?: number; rating?: number })[];
+  variantId?: string;
+  stats?: string[];
+  tags?: string[];
+  skillGroups?: { category: string; skills: string[] }[];
+  technical?: string[];
+  soft?: string[];
+};
 
 export interface ResumeSection {
   id: string;

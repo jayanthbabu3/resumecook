@@ -77,7 +77,7 @@ export function DynamicSectionCard({
           <div>
             <Label>Professional Summary</Label>
             <Textarea
-              value={section.data.content}
+              value={typeof section.data.content === 'string' ? section.data.content : section.data.content.join('\n')}
               onChange={(e) => onUpdate(section.id, { data: { ...section.data, content: e.target.value } })}
               placeholder="Write a compelling summary of your professional experience and goals..."
               rows={4}
@@ -87,79 +87,79 @@ export function DynamicSectionCard({
         );
 
       case 'experience':
-        return (
+        return section.data.type === 'experience' ? (
           <ExperienceEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'education':
-        return (
+        return section.data.type === 'education' ? (
           <EducationEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'skills':
-        return (
+        return section.data.type === 'skills' && section.data.items ? (
           <SkillsEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'certifications':
-        return (
+        return section.data.type === 'certifications' ? (
           <CertificationsEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'languages':
-        return (
+        return section.data.type === 'languages' ? (
           <LanguagesEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'projects':
-        return (
+        return section.data.type === 'projects' ? (
           <ProjectsEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'awards':
-        return (
+        return section.data.type === 'awards' ? (
           <AwardsEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'volunteer':
-        return (
+        return section.data.type === 'volunteer' ? (
           <VolunteerEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'portfolio':
-        return (
+        return section.data.type === 'portfolio' ? (
           <PortfolioEditor
             items={section.data.items}
             onChange={(items) => onUpdate(section.id, { data: { ...section.data, items } })}
           />
-        );
+        ) : null;
 
       case 'custom':
-        return (
+        return section.data.type === 'custom' ? (
           <div>
             <Label>Content</Label>
             <Textarea
@@ -170,7 +170,7 @@ export function DynamicSectionCard({
               className="mt-2"
             />
           </div>
-        );
+        ) : null;
 
       default:
         return <div className="text-sm text-gray-500">No editor available for this section type</div>;
