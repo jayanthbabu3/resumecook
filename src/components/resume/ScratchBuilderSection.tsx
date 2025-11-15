@@ -185,9 +185,9 @@ export function ScratchBuilderSection({
     switch (data.type) {
       case 'summary':
         return (
-          <div className="relative">
-            {/* Floating Content Alignment Controls - Appears on hover */}
-            <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1.5">
+          <div className="group/content relative">
+            {/* Floating Content Alignment Controls - Appears on content hover only */}
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 opacity-0 group-hover/content:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1.5">
               <button
                 onClick={() => handleContentAlignmentChange('left')}
                 className={`p-1.5 rounded border transition-colors ${
@@ -853,84 +853,84 @@ export function ScratchBuilderSection({
           <GripVertical className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="flex-1 relative">
-          {/* Floating Text Controls - Appears on hover, doesn't take space */}
-          <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1.5">
-            {/* Case Toggle Buttons */}
-            <button
-              onClick={() => handleTitleCaseChange('title')}
-              className={`px-2 py-1 text-xs rounded border transition-colors ${
-                titleCase === 'title'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
-              }`}
-              title="Title Case"
-            >
-              Aa
-            </button>
-            <button
-              onClick={() => handleTitleCaseChange('upper')}
-              className={`px-2 py-1 text-xs rounded border transition-colors ${
-                titleCase === 'upper'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
-              }`}
-              title="UPPERCASE"
-            >
-              AA
-            </button>
-            <button
-              onClick={() => handleTitleCaseChange('lower')}
-              className={`px-2 py-1 text-xs rounded border transition-colors ${
-                titleCase === 'lower'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
-              }`}
-              title="lowercase"
-            >
-              aa
-            </button>
+          {/* Section Title - with its own hover group for title controls */}
+          <div className="group/title relative flex items-center justify-between mb-3">
+            {/* Floating Title Controls - Appears on title hover only */}
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 opacity-0 group-hover/title:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1.5">
+              {/* Case Toggle Buttons */}
+              <button
+                onClick={() => handleTitleCaseChange('title')}
+                className={`px-2 py-1 text-xs rounded border transition-colors ${
+                  titleCase === 'title'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Title Case"
+              >
+                Aa
+              </button>
+              <button
+                onClick={() => handleTitleCaseChange('upper')}
+                className={`px-2 py-1 text-xs rounded border transition-colors ${
+                  titleCase === 'upper'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="UPPERCASE"
+              >
+                AA
+              </button>
+              <button
+                onClick={() => handleTitleCaseChange('lower')}
+                className={`px-2 py-1 text-xs rounded border transition-colors ${
+                  titleCase === 'lower'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="lowercase"
+              >
+                aa
+              </button>
 
-            {/* Separator */}
-            <div className="w-px h-5 bg-gray-300 mx-1" />
+              {/* Separator */}
+              <div className="w-px h-5 bg-gray-300 mx-1" />
 
-            {/* Title Alignment Buttons */}
-            <button
-              onClick={() => handleTitleAlignmentChange('left')}
-              className={`p-1.5 rounded border transition-colors ${
-                titleAlignment === 'left'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
-              }`}
-              title="Align Left"
-            >
-              <AlignLeft className="h-3 w-3" />
-            </button>
-            <button
-              onClick={() => handleTitleAlignmentChange('center')}
-              className={`p-1.5 rounded border transition-colors ${
-                titleAlignment === 'center'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
-              }`}
-              title="Align Center"
-            >
-              <AlignCenter className="h-3 w-3" />
-            </button>
-            <button
-              onClick={() => handleTitleAlignmentChange('right')}
-              className={`p-1.5 rounded border transition-colors ${
-                titleAlignment === 'right'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
-              }`}
-              title="Align Right"
-            >
-              <AlignRight className="h-3 w-3" />
-            </button>
-          </div>
+              {/* Title Alignment Buttons */}
+              <button
+                onClick={() => handleTitleAlignmentChange('left')}
+                className={`p-1.5 rounded border transition-colors ${
+                  titleAlignment === 'left'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Align Left"
+              >
+                <AlignLeft className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => handleTitleAlignmentChange('center')}
+                className={`p-1.5 rounded border transition-colors ${
+                  titleAlignment === 'center'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Align Center"
+              >
+                <AlignCenter className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => handleTitleAlignmentChange('right')}
+                className={`p-1.5 rounded border transition-colors ${
+                  titleAlignment === 'right'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                }`}
+                title="Align Right"
+              >
+                <AlignRight className="h-3 w-3" />
+              </button>
+            </div>
 
-          {/* Section Title */}
-          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2 flex-1">
               <div style={{ color: themeColor, textAlign: titleAlignment, width: '100%' }}>
                 <InlineEditableText
