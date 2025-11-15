@@ -237,7 +237,7 @@ export function ScratchBuilderSection({
             {/* Summary Content with alignment */}
             <div style={{ textAlign: contentAlignment }}>
               {/* Executive Summary - centered, bold */}
-              {data.variant === 'executive-summary' && (
+              {data.variantId === 'executive-summary' && (
                 <InlineEditableText
                   path={`${basePath}.data.content`}
                   value={data.content}
@@ -249,7 +249,7 @@ export function ScratchBuilderSection({
               )}
 
               {/* Professional Profile - bullet points */}
-              {data.variant === 'professional-profile' && Array.isArray(data.content) && (
+              {data.variantId === 'professional-profile' && Array.isArray(data.content) && (
                 <div className="space-y-2">
                   {data.content.map((item: string, idx: number) => (
                     <div key={idx} className="flex items-start gap-2">
@@ -276,7 +276,7 @@ export function ScratchBuilderSection({
               )}
 
               {/* Career Objective - italic */}
-              {data.variant === 'career-objective' && !Array.isArray(data.content) && (
+              {data.variantId === 'career-objective' && !Array.isArray(data.content) && (
                 <InlineEditableText
                   path={`${basePath}.data.content`}
                   value={data.content}
@@ -288,7 +288,7 @@ export function ScratchBuilderSection({
               )}
 
               {/* About Me - casual */}
-              {data.variant === 'about-me' && !Array.isArray(data.content) && (
+              {data.variantId === 'about-me' && !Array.isArray(data.content) && (
                 <InlineEditableText
                   path={`${basePath}.data.content`}
                   value={data.content}
@@ -300,7 +300,7 @@ export function ScratchBuilderSection({
               )}
 
               {/* Default/Professional Summary */}
-              {(!data.variant || data.variant === 'professional-summary') && !Array.isArray(data.content) && (
+              {(!data.variantId || data.variantId === 'professional-summary') && !Array.isArray(data.content) && (
                 <InlineEditableText
                   path={`${basePath}.data.content`}
                   value={data.content}
@@ -458,7 +458,7 @@ export function ScratchBuilderSection({
 
       case 'skills':
         // Skill Pills - horizontal chips (default)
-        if (data.variant === 'skill-pills' || !data.variant) {
+        if (data.variantId === 'skill-pills' || !data.variantId) {
           const skills = data.skills || [];
           return (
             <div className="flex flex-wrap gap-2">
@@ -496,7 +496,7 @@ export function ScratchBuilderSection({
         }
 
         // Vertical List with levels
-        if (data.variant === 'skill-list') {
+        if (data.variantId === 'skill-list') {
           const skills = data.skills || [];
           return (
             <div className="space-y-2">
@@ -537,7 +537,7 @@ export function ScratchBuilderSection({
         }
 
         // Comma Separated
-        if (data.variant === 'skill-inline') {
+        if (data.variantId === 'skill-inline') {
           return (
             <InlineEditableText
               path={`${basePath}.data.skills`}
@@ -551,7 +551,7 @@ export function ScratchBuilderSection({
         }
 
         // Grouped Categories
-        if (data.variant === 'skill-grouped') {
+        if (data.variantId === 'skill-grouped') {
           const skillGroups = data.skillGroups || [];
           return (
             <div className="space-y-3">
@@ -603,7 +603,7 @@ export function ScratchBuilderSection({
         }
 
         // Skill Bars
-        if (data.variant === 'skill-bars') {
+        if (data.variantId === 'skill-bars') {
           const skills = data.skills || [];
           return (
             <div className="space-y-3">
@@ -646,6 +646,231 @@ export function ScratchBuilderSection({
                 variant="outline"
                 size="sm"
                 onClick={() => addArrayItem(`${basePath}.data.skills`, { name: '', level: 80 })}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        // Grid Layout
+        if (data.variantId === 'skill-grid') {
+          const skills = data.skills || [];
+          return (
+            <div className="grid grid-cols-2 gap-2">
+              {skills.map((skill: string, idx: number) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <span className="text-sm">•</span>
+                  <InlineEditableText
+                    path={`${basePath}.data.skills[${idx}]`}
+                    value={skill}
+                    placeholder="Skill"
+                    className="text-sm flex-1"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}]`)}
+                  />
+                  <button
+                    onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
+                    className="text-xs text-destructive hover:text-destructive/80"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.skills`, '')}
+                className="col-span-2"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        // Star Rating
+        if (data.variantId === 'skill-rating') {
+          const skills = data.skills || [];
+          return (
+            <div className="space-y-2">
+              {skills.map((skill: any, idx: number) => (
+                <div key={idx} className="flex items-center justify-between gap-4">
+                  <InlineEditableText
+                    path={`${basePath}.data.skills[${idx}].name`}
+                    value={skill.name}
+                    placeholder="Skill name"
+                    className="text-sm flex-1"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}].name`)}
+                  />
+                  <div className="flex items-center gap-2">
+                    <InlineEditableText
+                      path={`${basePath}.data.skills[${idx}].rating`}
+                      value={skill.rating || 4}
+                      placeholder="4"
+                      className="text-xs text-muted-foreground w-8"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}].rating`)}
+                    />
+                    <span className="text-xs text-muted-foreground">/ 5</span>
+                    <button
+                      onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
+                      className="text-destructive hover:text-destructive/80"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.skills`, { name: '', rating: 4 })}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        // Two-Column Split
+        if (data.variantId === 'skill-two-column') {
+          const technical = data.technical || [];
+          const soft = data.soft || [];
+          return (
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <h4 className="text-sm font-semibold mb-2" style={{ color: themeColor }}>Technical</h4>
+                <div className="space-y-1">
+                  {technical.map((skill: string, idx: number) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span className="text-sm">•</span>
+                      <InlineEditableText
+                        path={`${basePath}.data.technical[${idx}]`}
+                        value={skill}
+                        placeholder="Technical skill"
+                        className="text-sm flex-1"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.technical[${idx}]`)}
+                      />
+                      <button
+                        onClick={() => removeArrayItem(`${basePath}.data.technical`, idx)}
+                        className="text-xs text-destructive hover:text-destructive/80"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addArrayItem(`${basePath}.data.technical`, '')}
+                  >
+                    <Plus className="h-3 w-3 mr-1" />
+                    Add
+                  </Button>
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold mb-2" style={{ color: themeColor }}>Soft Skills</h4>
+                <div className="space-y-1">
+                  {soft.map((skill: string, idx: number) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span className="text-sm">•</span>
+                      <InlineEditableText
+                        path={`${basePath}.data.soft[${idx}]`}
+                        value={skill}
+                        placeholder="Soft skill"
+                        className="text-sm flex-1"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.soft[${idx}]`)}
+                      />
+                      <button
+                        onClick={() => removeArrayItem(`${basePath}.data.soft`, idx)}
+                        className="text-xs text-destructive hover:text-destructive/80"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addArrayItem(`${basePath}.data.soft`, '')}
+                  >
+                    <Plus className="h-3 w-3 mr-1" />
+                    Add
+                  </Button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // Minimal List
+        if (data.variantId === 'skill-minimal') {
+          const skills = data.skills || [];
+          return (
+            <div className="space-y-1">
+              {skills.map((skill: string, idx: number) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <span className="text-sm">•</span>
+                  <InlineEditableText
+                    path={`${basePath}.data.skills[${idx}]`}
+                    value={skill}
+                    placeholder="Skill"
+                    className="text-sm flex-1"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}]`)}
+                  />
+                  <button
+                    onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
+                    className="text-xs text-destructive hover:text-destructive/80"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.skills`, '')}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        // Skill Badges
+        if (data.variantId === 'skill-badges') {
+          const skills = data.skills || [];
+          return (
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill: string, idx: number) => (
+                <div
+                  key={idx}
+                  className="px-3 py-1 rounded border flex items-center gap-2"
+                  style={{ borderColor: `${themeColor}50` }}
+                >
+                  <InlineEditableText
+                    path={`${basePath}.data.skills[${idx}]`}
+                    value={skill}
+                    placeholder="Skill"
+                    className="text-sm"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.skills[${idx}]`)}
+                  />
+                  <button
+                    onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
+                    className="text-destructive hover:text-destructive/80"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.skills`, '')}
               >
                 <Plus className="h-4 w-4 mr-1" />
                 Add Skill

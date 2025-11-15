@@ -192,14 +192,14 @@ export function ScratchBuilderPDF({
               {(section.type === "summary" || section.data.type === "summary") && (
                 <>
                   {/* Executive Summary - bold */}
-                  {section.data.variant === "executive-summary" && section.data.content && (
+                  {section.data.variantId === "executive-summary" && section.data.content && (
                     <Text style={[styles.sectionContent, { textAlign: section.contentAlignment || 'left', fontWeight: 600 }]}>
                       {section.data.content}
                     </Text>
                   )}
 
                   {/* Professional Profile - bullet points */}
-                  {section.data.variant === "professional-profile" && Array.isArray(section.data.content) && (
+                  {section.data.variantId === "professional-profile" && Array.isArray(section.data.content) && (
                     <View style={{ textAlign: section.contentAlignment || 'left' }}>
                       {section.data.content.map((item: string, idx: number) => (
                         <Text key={idx} style={[styles.sectionContent, { marginBottom: 3 }]}>
@@ -210,26 +210,26 @@ export function ScratchBuilderPDF({
                   )}
 
                   {/* Career Objective - italic style */}
-                  {section.data.variant === "career-objective" && section.data.content && (
+                  {section.data.variantId === "career-objective" && section.data.content && (
                     <Text style={[styles.sectionContent, { fontStyle: "italic", textAlign: section.contentAlignment || 'left' }]}>
                       {section.data.content}
                     </Text>
                   )}
 
                   {/* About Me - casual style */}
-                  {section.data.variant === "about-me" && section.data.content && (
+                  {section.data.variantId === "about-me" && section.data.content && (
                     <Text style={[styles.sectionContent, { fontStyle: "italic", lineHeight: 1.7, textAlign: section.contentAlignment || 'left' }]}>
                       {section.data.content}
                     </Text>
                   )}
 
                   {/* Professional Summary - classic with border */}
-                  {section.data.variant === "professional-summary" && section.data.content && (
+                  {section.data.variantId === "professional-summary" && section.data.content && (
                     <Text style={[styles.sectionContent, { textAlign: section.contentAlignment || 'left' }]}>{section.data.content}</Text>
                   )}
 
                   {/* Default summary - for sections without variant */}
-                  {!section.data.variant && section.data.content && (
+                  {!section.data.variantId && section.data.content && (
                     <Text style={[styles.sectionContent, { textAlign: section.contentAlignment || 'left' }]}>{section.data.content}</Text>
                   )}
                 </>
@@ -293,7 +293,7 @@ export function ScratchBuilderPDF({
               {(section.type === "skills" || section.data.type === "skills") && (
                 <>
                   {/* Skill Pills - horizontal chips */}
-                  {(section.data.variant === "skill-pills" || !section.data.variant) && section.data.skills && (
+                  {(section.data.variantId === "skill-pills" || !section.data.variantId) && section.data.skills && (
                     <View style={styles.skillsContainer}>
                       {Array.isArray(section.data.skills) && section.data.skills.map((skill: string, idx: number) => (
                         <View key={idx} style={styles.skillTag}>
@@ -304,7 +304,7 @@ export function ScratchBuilderPDF({
                   )}
 
                   {/* Vertical List with levels */}
-                  {section.data.variant === "skill-list" && section.data.skills && (
+                  {section.data.variantId === "skill-list" && section.data.skills && (
                     <View>
                       {section.data.skills.map((skill: any, idx: number) => (
                         <View key={idx} style={[styles.itemContainer, { marginBottom: 4 }]}>
@@ -318,14 +318,14 @@ export function ScratchBuilderPDF({
                   )}
 
                   {/* Comma Separated - inline */}
-                  {section.data.variant === "skill-inline" && section.data.skills && (
+                  {section.data.variantId === "skill-inline" && section.data.skills && (
                     <Text style={styles.sectionContent}>
                       {typeof section.data.skills === "string" ? section.data.skills : ""}
                     </Text>
                   )}
 
                   {/* Grouped Categories */}
-                  {section.data.variant === "skill-grouped" && section.data.skillGroups && (
+                  {section.data.variantId === "skill-grouped" && section.data.skillGroups && (
                     <View>
                       {section.data.skillGroups.map((group: any, idx: number) => (
                         <View key={idx} style={[styles.itemContainer, { marginBottom: 6 }]}>
@@ -341,7 +341,7 @@ export function ScratchBuilderPDF({
                   )}
 
                   {/* Skill Bars */}
-                  {section.data.variant === "skill-bars" && section.data.skills && (
+                  {section.data.variantId === "skill-bars" && section.data.skills && (
                     <View>
                       {section.data.skills.map((skill: any, idx: number) => (
                         <View key={idx} style={[styles.itemContainer, { marginBottom: 6 }]}>
