@@ -36,21 +36,31 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
+            {/* Temporarily removed ProtectedRoute for easier development - TODO: Re-enable before production */}
+            <Route path="/profile-completion" element={<ProfileCompletion />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/my-resumes" element={<MyResumes />} />
+            <Route path="/editor/:templateId" element={<Editor />} />
+            <Route path="/live-editor/:templateId" element={<LiveEditor />} />
+            <Route path="/builder/scratch" element={<ScratchBuilder />} />
+
+            {/* Original protected routes (commented out for development):
             <Route
-              path="/profile-completion" 
+              path="/profile-completion"
               element={
                 <ProtectedRoute>
                   <ProfileCompletion />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/dashboard" 
+            <Route
+              path="/dashboard"
               element={
                 <ProtectedRoute>
                   <Dashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
             <Route
               path="/profile"
@@ -77,10 +87,6 @@ const App = () => (
               }
             />
             <Route
-              path="/live-editor/:templateId"
-              element={<LiveEditor />}
-            />
-            <Route
               path="/builder/scratch"
               element={
                 <ProtectedRoute>
@@ -88,6 +94,7 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
