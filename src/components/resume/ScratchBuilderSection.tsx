@@ -187,7 +187,7 @@ export function ScratchBuilderSection({
         return (
           <div className="relative">
             {/* Floating Content Alignment Controls - Appears on hover */}
-            <div className="absolute -top-8 left-0 right-0 flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 p-1.5">
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1.5">
               <button
                 onClick={() => handleContentAlignmentChange('left')}
                 className={`p-1.5 rounded border transition-colors ${
@@ -854,7 +854,7 @@ export function ScratchBuilderSection({
         </div>
         <div className="flex-1 relative">
           {/* Floating Text Controls - Appears on hover, doesn't take space */}
-          <div className="absolute -top-8 left-0 right-0 flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 p-1.5">
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1.5">
             {/* Case Toggle Buttons */}
             <button
               onClick={() => handleTitleCaseChange('title')}
