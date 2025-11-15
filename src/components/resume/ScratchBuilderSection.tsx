@@ -471,75 +471,522 @@ export function ScratchBuilderSection({
         );
 
       case 'experience':
+        // Classic Timeline - traditional format
+        if (data.variantId === 'experience-classic' || !data.variantId) {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="border-l-2 pl-4" style={{ borderColor: themeColor }}>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].position`}
+                    value={exp.position}
+                    className="font-semibold text-base block mb-1"
+                    placeholder="Position Title"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].company`}
+                    value={exp.company}
+                    className="block mb-1"
+                    placeholder="Company Name"
+                    style={{ color: themeColor }}
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)}
+                  />
+                  {exp.location && (
+                    <div className="text-sm text-muted-foreground mb-1">
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].location`}
+                        value={exp.location}
+                        placeholder="Location"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].location`)}
+                      />
+                    </div>
+                  )}
+                  <div className="text-sm text-muted-foreground mb-2">
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].startDate`}
+                      value={exp.startDate}
+                      placeholder="2020"
+                      className="inline"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)}
+                    />
+                    {' - '}
+                    {exp.current ? (
+                      'Present'
+                    ) : (
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].endDate`}
+                        value={exp.endDate}
+                        placeholder="2024"
+                        className="inline"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)}
+                      />
+                    )}
+                  </div>
+                  {Array.isArray(exp.description) ? (
+                    <div className="space-y-1">
+                      {exp.description.map((desc: string, dIdx: number) => (
+                        <div key={dIdx} className="flex items-start gap-2 text-sm">
+                          <span className="mt-0.5">•</span>
+                          <InlineEditableText
+                            path={`${basePath}.data.items[${idx}].description[${dIdx}]`}
+                            value={desc}
+                            placeholder="Achievement or responsibility"
+                            className="flex-1"
+                            multiline
+                            onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].description[${dIdx}]`)}
+                          />
+                          <button
+                            onClick={() => removeArrayItem(`${basePath}.data.items[${idx}].description`, dIdx)}
+                            className="text-xs text-destructive hover:text-destructive/80"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => addArrayItem(`${basePath}.data.items[${idx}].description`, '')}
+                      >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add Point
+                      </Button>
+                    </div>
+                  ) : (
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].description`}
+                      value={exp.description}
+                      multiline
+                      placeholder="Job description..."
+                      className="text-sm whitespace-pre-line"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].description`)}
+                    />
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
+                    className="mt-2 text-destructive"
+                  >
+                    <Trash2 className="h-3 w-3 mr-1" />
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  addArrayItem(`${basePath}.data.items`, {
+                    id: Date.now().toString(),
+                    company: '',
+                    position: '',
+                    location: '',
+                    startDate: '',
+                    endDate: '',
+                    current: false,
+                    description: [],
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Modern Card - card-based design
+        if (data.variantId === 'experience-modern') {
+          return (
+            <div className="space-y-3">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="border rounded-lg p-4 shadow-sm bg-gradient-to-r from-gray-50 to-white">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].position`}
+                        value={exp.position}
+                        className="font-bold text-base block"
+                        placeholder="Position"
+                        style={{ color: themeColor }}
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)}
+                      />
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].company`}
+                        value={exp.company}
+                        className="text-sm text-gray-600 block"
+                        placeholder="Company"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)}
+                      />
+                    </div>
+                    <div className="text-xs text-muted-foreground whitespace-nowrap ml-2">
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].startDate`}
+                        value={exp.startDate}
+                        placeholder="2020"
+                        className="inline"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)}
+                      />
+                      {' - '}
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].endDate`}
+                        value={exp.endDate}
+                        placeholder="Present"
+                        className="inline"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)}
+                      />
+                    </div>
+                  </div>
+                  {Array.isArray(exp.description) && (
+                    <div className="space-y-1 mt-2">
+                      {exp.description.map((desc: string, dIdx: number) => (
+                        <div key={dIdx} className="flex items-start gap-2 text-sm">
+                          <span style={{ color: themeColor }}>▪</span>
+                          <InlineEditableText
+                            path={`${basePath}.data.items[${idx}].description[${dIdx}]`}
+                            value={desc}
+                            placeholder="Achievement"
+                            className="flex-1"
+                            onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].description[${dIdx}]`)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive">
+                    <Trash2 className="h-3 w-3 mr-1" /> Remove
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Minimal Clean - essential information only
+        if (data.variantId === 'experience-minimal') {
+          return (
+            <div className="space-y-3">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="text-sm">
+                  <div className="font-semibold" style={{ color: themeColor }}>
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].position`}
+                      value={exp.position}
+                      placeholder="Position"
+                      className="inline"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)}
+                    />
+                    <span className="mx-2 text-gray-400">|</span>
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].company`}
+                      value={exp.company}
+                      placeholder="Company"
+                      className="inline font-normal"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)}
+                    />
+                    <span className="mx-2 text-gray-400">|</span>
+                    <span className="text-muted-foreground font-normal">
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].startDate`}
+                        value={exp.startDate}
+                        placeholder="2020"
+                        className="inline"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)}
+                      />
+                      {'-'}
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].endDate`}
+                        value={exp.endDate}
+                        placeholder="Present"
+                        className="inline"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)}
+                      />
+                    </span>
+                  </div>
+                  {Array.isArray(exp.description) && exp.description.length > 0 && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {exp.description.map((d: string) => d).join(' • ')}
+                    </div>
+                  )}
+                  <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive mt-1">Remove</button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Detailed Format - comprehensive with location
+        if (data.variantId === 'experience-detailed') {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="pb-4 border-b">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].position`}
+                        value={exp.position}
+                        className="font-bold text-base block"
+                        placeholder="Position"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)}
+                      />
+                      <div className="text-sm" style={{ color: themeColor }}>
+                        <InlineEditableText
+                          path={`${basePath}.data.items[${idx}].company`}
+                          value={exp.company}
+                          placeholder="Company"
+                          className="inline"
+                          onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)}
+                        />
+                        {' • '}
+                        <InlineEditableText
+                          path={`${basePath}.data.items[${idx}].location`}
+                          value={exp.location}
+                          placeholder="Location"
+                          className="inline"
+                          onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].location`)}
+                        />
+                      </div>
+                    </div>
+                    <div className="text-xs text-muted-foreground whitespace-nowrap ml-2">
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].startDate`} value={exp.startDate} placeholder="2020" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)} />
+                      {' - '}
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].endDate`} value={exp.endDate} placeholder="Present" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)} />
+                    </div>
+                  </div>
+                  {Array.isArray(exp.description) && (
+                    <div className="space-y-1">
+                      {exp.description.map((desc: string, dIdx: number) => (
+                        <div key={dIdx} className="flex items-start gap-2 text-sm">
+                          <span>•</span>
+                          <InlineEditableText path={`${basePath}.data.items[${idx}].description[${dIdx}]`} value={desc} placeholder="Achievement" className="flex-1" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].description[${dIdx}]`)} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive"><Trash2 className="h-3 w-3 mr-1" /> Remove</Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', location: '', startDate: '', endDate: '', description: [] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Visual Timeline - timeline with dots
+        if (data.variantId === 'experience-timeline') {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-3 h-3 rounded-full mt-1" style={{ backgroundColor: themeColor }}></div>
+                    <div className="w-0.5 flex-1 bg-gray-200 my-1"></div>
+                  </div>
+                  <div className="flex-1 pb-4">
+                    <div className="text-xs text-muted-foreground mb-1">
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].startDate`} value={exp.startDate} placeholder="2020" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)} />
+                      {' - '}
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].endDate`} value={exp.endDate} placeholder="Present" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)} />
+                    </div>
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].position`} value={exp.position} className="font-semibold text-sm block" placeholder="Position" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)} />
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].company`} value={exp.company} className="text-sm block" style={{ color: themeColor }} placeholder="Company" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)} />
+                    {Array.isArray(exp.description) && exp.description.length > 0 && (
+                      <div className="text-xs text-muted-foreground mt-1">{exp.description.join(' • ')}</div>
+                    )}
+                    <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive mt-2">Remove</button>
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Compact View - space efficient
+        if (data.variantId === 'experience-compact') {
+          return (
+            <div className="space-y-2">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="text-sm flex items-center gap-2">
+                  <InlineEditableText path={`${basePath}.data.items[${idx}].position`} value={exp.position} placeholder="Position" className="inline font-semibold" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)} />
+                  <span className="text-gray-400">•</span>
+                  <InlineEditableText path={`${basePath}.data.items[${idx}].company`} value={exp.company} placeholder="Company" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)} />
+                  <span className="text-gray-400">•</span>
+                  <span className="text-muted-foreground">
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].startDate`} value={exp.startDate} placeholder="2020" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)} />
+                    {'-'}
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].endDate`} value={exp.endDate} placeholder="Present" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)} />
+                  </span>
+                  <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive ml-auto">×</button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Boxed Layout - bordered boxes
+        if (data.variantId === 'experience-boxed') {
+          return (
+            <div className="space-y-3">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="border-2 rounded-md p-3" style={{ borderColor: `${themeColor}40` }}>
+                  <InlineEditableText path={`${basePath}.data.items[${idx}].position`} value={exp.position} className="font-bold text-sm block mb-1" placeholder="Position" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)} />
+                  <div className="flex items-center justify-between text-sm mb-2">
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].company`} value={exp.company} placeholder="Company" style={{ color: themeColor }} onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)} />
+                    <span className="text-xs text-muted-foreground">
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].startDate`} value={exp.startDate} placeholder="2020" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)} />
+                      {'-'}
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].endDate`} value={exp.endDate} placeholder="Present" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)} />
+                    </span>
+                  </div>
+                  {Array.isArray(exp.description) && exp.description.length > 0 && (
+                    <div className="text-xs text-muted-foreground">{exp.description.join(' • ')}</div>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive"><Trash2 className="h-3 w-3 mr-1" /> Remove</Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Achievement-Focused - star markers
+        if (data.variantId === 'experience-achievement') {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="pl-4 border-l-2" style={{ borderColor: themeColor }}>
+                  <InlineEditableText path={`${basePath}.data.items[${idx}].position`} value={exp.position} className="font-bold text-base block mb-1" placeholder="Position" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)} />
+                  <div className="text-sm mb-2">
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].company`} value={exp.company} placeholder="Company" style={{ color: themeColor }} className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)} />
+                    <span className="mx-2 text-muted-foreground">|</span>
+                    <span className="text-xs text-muted-foreground">
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].startDate`} value={exp.startDate} placeholder="2020" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)} />
+                      {' - '}
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].endDate`} value={exp.endDate} placeholder="Present" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)} />
+                    </span>
+                  </div>
+                  {Array.isArray(exp.description) && (
+                    <div className="space-y-1">
+                      {exp.description.map((desc: string, dIdx: number) => (
+                        <div key={dIdx} className="flex items-start gap-2 text-sm">
+                          <span style={{ color: themeColor }}>★</span>
+                          <InlineEditableText path={`${basePath}.data.items[${idx}].description[${dIdx}]`} value={desc} placeholder="Key achievement" className="flex-1" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].description[${dIdx}]`)} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive"><Trash2 className="h-3 w-3 mr-1" /> Remove</Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [''] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Sidebar Timeline - dates in sidebar
+        if (data.variantId === 'experience-sidebar') {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="flex gap-4">
+                  <div className="w-20 text-right text-xs text-muted-foreground flex-shrink-0">
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].startDate`} value={exp.startDate} placeholder="2020" className="block" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)} />
+                    <span className="block">-</span>
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].endDate`} value={exp.endDate} placeholder="Present" className="block" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)} />
+                  </div>
+                  <div className="w-0.5 bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
+                  <div className="flex-1">
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].position`} value={exp.position} className="font-semibold text-sm block" placeholder="Position" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)} />
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].company`} value={exp.company} className="text-sm block" style={{ color: themeColor }} placeholder="Company" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)} />
+                    {Array.isArray(exp.description) && exp.description.length > 0 && (
+                      <div className="text-xs text-muted-foreground mt-1">{exp.description.join(' • ')}</div>
+                    )}
+                    <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive mt-2">Remove</button>
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Executive Format - premium format for senior positions
+        if (data.variantId === 'experience-executive') {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((exp, idx) => (
+                <div key={exp.id} className="pb-4 border-b-2" style={{ borderColor: `${themeColor}20` }}>
+                  <div className="flex items-start justify-between mb-2">
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].position`} value={exp.position} className="font-bold text-lg block uppercase tracking-wide" placeholder="POSITION TITLE" style={{ color: themeColor }} onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)} />
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider whitespace-nowrap ml-4">
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].startDate`} value={exp.startDate} placeholder="2020" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].startDate`)} />
+                      {' - '}
+                      <InlineEditableText path={`${basePath}.data.items[${idx}].endDate`} value={exp.endDate} placeholder="PRESENT" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].endDate`)} />
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium mb-1">
+                    <InlineEditableText path={`${basePath}.data.items[${idx}].company`} value={exp.company} placeholder="Company Name" className="inline" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)} />
+                    {exp.location && (
+                      <>
+                        {' • '}
+                        <InlineEditableText path={`${basePath}.data.items[${idx}].location`} value={exp.location} placeholder="Location" className="inline text-muted-foreground" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].location`)} />
+                      </>
+                    )}
+                  </div>
+                  {Array.isArray(exp.description) && (
+                    <div className="space-y-1 mt-3">
+                      {exp.description.map((desc: string, dIdx: number) => (
+                        <div key={dIdx} className="flex items-start gap-2 text-sm">
+                          <span className="font-bold" style={{ color: themeColor }}>▸</span>
+                          <InlineEditableText path={`${basePath}.data.items[${idx}].description[${dIdx}]`} value={desc} placeholder="Strategic achievement" className="flex-1" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].description[${dIdx}]`)} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-3 text-destructive"><Trash2 className="h-3 w-3 mr-1" /> Remove</Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', location: '', startDate: '', endDate: '', description: [''] })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Experience
+              </Button>
+            </div>
+          );
+        }
+
+        // Default fallback
         return (
           <div className="space-y-4">
             {data.items?.map((exp, idx) => (
               <div key={exp.id} className="border-l-2 pl-4" style={{ borderColor: themeColor }}>
-                <InlineEditableText
-                  path={`${basePath}.data.items[${idx}].position`}
-                  value={exp.position}
-                  className="font-semibold text-lg block mb-1"
-                  placeholder="Position Title"
-                />
-                <InlineEditableText
-                  path={`${basePath}.data.items[${idx}].company`}
-                  value={exp.company}
-                  className="block mb-2"
-                  placeholder="Company Name"
-                  style={{ color: themeColor }}
-                />
-                <div className="text-sm text-muted-foreground mb-2">
-                  <InlineEditableText
-                    path={`${basePath}.data.items[${idx}].startDate`}
-                    value={formatDate(exp.startDate)}
-                    placeholder="Start Date"
-                  />
-                  {' - '}
-                  {exp.current ? (
-                    'Present'
-                  ) : (
-                    <InlineEditableText
-                      path={`${basePath}.data.items[${idx}].endDate`}
-                      value={formatDate(exp.endDate)}
-                      placeholder="End Date"
-                    />
-                  )}
-                </div>
-                <InlineEditableText
-                  path={`${basePath}.data.items[${idx}].description`}
-                  value={exp.description}
-                  multiline
-                  placeholder="Job description..."
-                  className="text-sm whitespace-pre-line"
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
-                  className="mt-2 text-destructive"
-                >
-                  <Trash2 className="h-3 w-3 mr-1" />
-                  Remove
-                </Button>
+                <InlineEditableText path={`${basePath}.data.items[${idx}].position`} value={exp.position} className="font-semibold text-base block mb-1" placeholder="Position" onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].position`)} />
+                <InlineEditableText path={`${basePath}.data.items[${idx}].company`} value={exp.company} className="block mb-2" placeholder="Company" style={{ color: themeColor }} onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].company`)} />
+                <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive"><Trash2 className="h-3 w-3 mr-1" /> Remove</Button>
               </div>
             ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                addArrayItem(`${basePath}.data.items`, {
-                  id: Date.now().toString(),
-                  company: '',
-                  position: '',
-                  startDate: '',
-                  endDate: '',
-                  current: false,
-                  description: '',
-                })
-              }
-            >
-              <Plus className="h-4 w-4 mr-1" />
-              Add Experience
+            <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), company: '', position: '', startDate: '', endDate: '', description: [] })}>
+              <Plus className="h-4 w-4 mr-1" /> Add Experience
             </Button>
           </div>
         );
