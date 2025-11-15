@@ -66,14 +66,26 @@ export const InlineEditProvider = ({
   const addArrayItem = (path: string, defaultItem: any) => {
     const newData = JSON.parse(JSON.stringify(resumeData));
     const pathParts = path.split(".");
-    
+
     let current = newData;
     for (const part of pathParts) {
-      current = current[part];
+      const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
+
+      if (arrayMatch) {
+        const [, arrayName, index] = arrayMatch;
+        current = current[arrayName][parseInt(index)];
+      } else {
+        current = current[part];
+      }
     }
-    
+
     if (Array.isArray(current)) {
-      current.push({ ...defaultItem, id: Date.now().toString() });
+      // Don't add id if defaultItem is a primitive (string, number)
+      if (typeof defaultItem === 'object' && defaultItem !== null) {
+        current.push({ ...defaultItem, id: defaultItem.id || Date.now().toString() });
+      } else {
+        current.push(defaultItem);
+      }
       setResumeData(newData);
     }
   };
@@ -81,12 +93,19 @@ export const InlineEditProvider = ({
   const removeArrayItem = (path: string, index: number) => {
     const newData = JSON.parse(JSON.stringify(resumeData));
     const pathParts = path.split(".");
-    
+
     let current = newData;
     for (const part of pathParts) {
-      current = current[part];
+      const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
+
+      if (arrayMatch) {
+        const [, arrayName, arrayIndex] = arrayMatch;
+        current = current[arrayName][parseInt(arrayIndex)];
+      } else {
+        current = current[part];
+      }
     }
-    
+
     if (Array.isArray(current)) {
       current.splice(index, 1);
       setResumeData(newData);

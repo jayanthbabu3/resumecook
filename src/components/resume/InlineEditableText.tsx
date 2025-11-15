@@ -10,6 +10,7 @@ interface InlineEditableTextProps {
   placeholder?: string;
   as?: keyof JSX.IntrinsicElements;
   style?: React.CSSProperties;
+  onCustomUpdate?: (value: string) => void; // Custom update handler
 }
 
 export const InlineEditableText = ({
@@ -20,6 +21,7 @@ export const InlineEditableText = ({
   placeholder = "Click to edit",
   as: Component = "span",
   style,
+  onCustomUpdate,
 }: InlineEditableTextProps) => {
   const { updateField } = useInlineEdit();
   const [isEditing, setIsEditing] = useState(false);
@@ -47,7 +49,11 @@ export const InlineEditableText = ({
     setIsEditing(false);
     setIsFocused(false);
     if (localValue !== value) {
-      updateField(path, localValue);
+      if (onCustomUpdate) {
+        onCustomUpdate(localValue);
+      } else {
+        updateField(path, localValue);
+      }
     }
   };
 

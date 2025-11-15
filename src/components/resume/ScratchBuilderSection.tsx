@@ -358,12 +358,19 @@ export function ScratchBuilderSection({
                     placeholder="Category"
                     className="font-semibold text-sm block mb-1"
                   />
-                  <InlineEditableText
-                    path={`${basePath}.data.skillGroups[${idx}].skills`}
-                    value={group.skills.join(', ')}
-                    placeholder="Skill1, Skill2, Skill3"
-                    className="text-sm text-muted-foreground"
-                  />
+                  <div className="relative">
+                    <InlineEditableText
+                      path={`${basePath}.data.skillGroups[${idx}].__skillsString`}
+                      value={Array.isArray(group.skills) ? group.skills.join(', ') : group.skills}
+                      placeholder="Skill1, Skill2, Skill3"
+                      className="text-sm text-muted-foreground"
+                      onCustomUpdate={(newValue) => {
+                        // Convert comma-separated string back to array
+                        const skillsArray = newValue.split(',').map((s: string) => s.trim()).filter((s: string) => s);
+                        updateField(`${basePath}.data.skillGroups[${idx}].skills`, skillsArray);
+                      }}
+                    />
+                  </div>
                   <button
                     onClick={() => removeArrayItem(`${basePath}.data.skillGroups`, idx)}
                     className="text-xs text-destructive hover:text-destructive/80 mt-1"
