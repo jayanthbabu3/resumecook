@@ -173,6 +173,7 @@ export interface ResumeSection {
   order: number;
   enabled: boolean;
   title: string;
+  titleCase?: 'title' | 'upper' | 'lower'; // Text case for the section title
   data: SectionData;
 }
 

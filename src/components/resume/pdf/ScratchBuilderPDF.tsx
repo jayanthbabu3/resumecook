@@ -36,6 +36,24 @@ export function ScratchBuilderPDF({
   resumeData,
   themeColor = "#2563eb",
 }: ScratchBuilderPDFProps) {
+  // Helper to apply text case transformation
+  const applyTextCase = (text: string, caseType?: string) => {
+    if (!text) return text;
+    switch (caseType) {
+      case 'upper':
+        return text.toUpperCase();
+      case 'lower':
+        return text.toLowerCase();
+      case 'title':
+        // Title case: capitalize first letter of each word
+        return text.replace(/\w\S*/g, (word) =>
+          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        );
+      default:
+        return text.toUpperCase(); // Default to uppercase for backwards compatibility
+    }
+  };
+
   const styles = StyleSheet.create({
     page: {
       padding: 40,
@@ -163,7 +181,9 @@ export function ScratchBuilderPDF({
           .filter((section) => section.enabled)
           .map((section) => (
             <View key={section.id} style={styles.section}>
-              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <Text style={styles.sectionTitle}>
+                {applyTextCase(section.title, section.titleCase)}
+              </Text>
 
               {/* Summary Section with variant support */}
               {(section.type === "summary" || section.data.type === "summary") && (

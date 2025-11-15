@@ -123,6 +123,35 @@ export function ScratchBuilderSection({
     updateField(fieldPath, value);
   };
 
+  // Helper to apply text case transformation
+  const applyTextCase = (text: string, caseType: string) => {
+    if (!text) return text;
+    switch (caseType) {
+      case 'upper':
+        return text.toUpperCase();
+      case 'lower':
+        return text.toLowerCase();
+      case 'title':
+      default:
+        // Title case: capitalize first letter of each word
+        return text.replace(/\w\S*/g, (word) =>
+          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        );
+    }
+  };
+
+  // Handle title case change
+  const handleTitleCaseChange = (caseType: 'title' | 'upper' | 'lower') => {
+    onUpdateSection(section.id, (prevSection) => {
+      const newSection = JSON.parse(JSON.stringify(prevSection));
+      newSection.titleCase = caseType;
+      return newSection;
+    });
+  };
+
+  const titleCase = section.titleCase || 'upper'; // Default to uppercase
+  const displayTitle = applyTextCase(section.title, titleCase);
+
   const formatDate = (date: string) => {
     if (!date) return '';
     const [year, month] = date.split('-');
@@ -758,13 +787,53 @@ export function ScratchBuilderSection({
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between mb-3">
-            <InlineEditableText
-              path={`${basePath}.title`}
-              value={section.title}
-              className="font-bold text-lg uppercase tracking-wide"
-              placeholder="Section Title"
-              style={{ color: themeColor }}
-            />
+            <div className="flex items-center gap-2 flex-1">
+              <div style={{ color: themeColor }}>
+                <InlineEditableText
+                  path={`${basePath}.title`}
+                  value={displayTitle}
+                  className="font-bold text-lg tracking-wide"
+                  placeholder="Section Title"
+                  onCustomUpdate={createFieldUpdater(`${basePath}.title`)}
+                />
+              </div>
+              {/* Case Toggle Buttons */}
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => handleTitleCaseChange('title')}
+                  className={`px-2 py-1 text-xs rounded border transition-colors ${
+                    titleCase === 'title'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                  }`}
+                  title="Title Case"
+                >
+                  Aa
+                </button>
+                <button
+                  onClick={() => handleTitleCaseChange('upper')}
+                  className={`px-2 py-1 text-xs rounded border transition-colors ${
+                    titleCase === 'upper'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                  }`}
+                  title="UPPERCASE"
+                >
+                  AA
+                </button>
+                <button
+                  onClick={() => handleTitleCaseChange('lower')}
+                  className={`px-2 py-1 text-xs rounded border transition-colors ${
+                    titleCase === 'lower'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-primary'
+                  }`}
+                  title="lowercase"
+                >
+                  aa
+                </button>
+              </div>
+            </div>
             <Button
               variant="ghost"
               size="sm"
