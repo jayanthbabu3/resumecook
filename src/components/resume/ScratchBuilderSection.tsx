@@ -4,6 +4,118 @@ import { InlineEditableText } from './InlineEditableText';
 import { Button } from '@/components/ui/button';
 import { GripVertical, Trash2, Plus, AlignLeft, AlignCenter, AlignRight, AlignJustify } from 'lucide-react';
 
+// Helper function to render section items in a preview format
+function renderHelperSectionItems(type: string, items: any[]) {
+  if (!items || items.length === 0) return null;
+
+  switch (type) {
+    case 'languages':
+      return (
+        <div className="space-y-1">
+          {items.map((item: any, idx: number) => (
+            <div key={idx} className="flex justify-between text-xs">
+              <span className="text-gray-800 font-medium">{item.language}</span>
+              <span className="text-gray-600">{item.proficiency}</span>
+            </div>
+          ))}
+        </div>
+      );
+
+    case 'projects':
+      return (
+        <div className="space-y-2">
+          {items.map((item: any, idx: number) => (
+            <div key={idx}>
+              <div className="text-xs font-semibold text-gray-900">{item.name}</div>
+              {item.description && (
+                <div className="text-xs text-gray-600 line-clamp-2">{item.description}</div>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+
+    case 'awards':
+      return (
+        <div className="space-y-1">
+          {items.map((item: any, idx: number) => (
+            <div key={idx} className="text-xs">
+              <span className="font-semibold text-gray-900">{item.title}</span>
+              <span className="text-gray-600"> - {item.issuer}</span>
+            </div>
+          ))}
+        </div>
+      );
+
+    case 'publications':
+      return (
+        <div className="space-y-1">
+          {items.map((item: any, idx: number) => (
+            <div key={idx} className="text-xs">
+              <div className="font-semibold text-gray-900 italic">{item.title}</div>
+              <div className="text-gray-600">{item.publisher}</div>
+            </div>
+          ))}
+        </div>
+      );
+
+    case 'volunteer':
+      return (
+        <div className="space-y-2">
+          {items.map((item: any, idx: number) => (
+            <div key={idx}>
+              <div className="text-xs font-semibold text-gray-900">{item.role}</div>
+              <div className="text-xs text-gray-600">{item.organization}</div>
+            </div>
+          ))}
+        </div>
+      );
+
+    case 'speaking':
+      return (
+        <div className="space-y-1">
+          {items.map((item: any, idx: number) => (
+            <div key={idx} className="text-xs">
+              <div className="font-semibold text-gray-900">{item.topic}</div>
+              <div className="text-gray-600">{item.event}</div>
+            </div>
+          ))}
+        </div>
+      );
+
+    case 'patents':
+      return (
+        <div className="space-y-1">
+          {items.map((item: any, idx: number) => (
+            <div key={idx} className="text-xs">
+              <div className="font-semibold text-gray-900">{item.title}</div>
+              <div className="text-gray-600">{item.patentNumber}</div>
+            </div>
+          ))}
+        </div>
+      );
+
+    case 'portfolio':
+      return (
+        <div className="space-y-1">
+          {items.map((item: any, idx: number) => (
+            <div key={idx} className="text-xs">
+              <span className="font-semibold text-gray-900">{item.platform}:</span>{' '}
+              <span className="text-gray-600">{item.url}</span>
+            </div>
+          ))}
+        </div>
+      );
+
+    default:
+      return (
+        <div className="text-xs text-muted-foreground">
+          {items.length} {items.length === 1 ? 'item' : 'items'}
+        </div>
+      );
+  }
+}
+
 interface ScratchBuilderSectionProps {
   section: ResumeSection;
   sectionIndex: number;
@@ -2670,17 +2782,27 @@ export function ScratchBuilderSection({
           </div>
         );
 
-      // Add more cases for other section types
+      // Helper sections - render with variant support
       case 'languages':
+      case 'projects':
       case 'awards':
       case 'publications':
       case 'volunteer':
       case 'speaking':
       case 'patents':
       case 'portfolio':
+        if (!data.items || data.items.length === 0) {
+          return (
+            <div className="text-sm text-muted-foreground italic">
+              No items yet - Click "Add {section.type}" button below
+            </div>
+          );
+        }
+        // Render actual content using variant renderer
+        // Import and use HelperSectionVariantRenderer at the top of the file
         return (
-          <div className="text-sm text-muted-foreground">
-            {data.items?.length || 0} items - Click to edit
+          <div className="text-sm">
+            {renderHelperSectionItems(section.type, data.items)}
           </div>
         );
 

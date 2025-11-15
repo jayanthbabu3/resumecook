@@ -12,10 +12,25 @@ export const HelperSectionVariantRenderer: React.FC<HelperSectionVariantRenderer
   formatDate,
 }) => {
   const { data: sectionData, title } = section;
+
+  // Safety check - ensure section data exists
+  if (!sectionData) {
+    console.warn('Section data is missing for section:', section.id);
+    return null;
+  }
+
   const variantId = sectionData.variantId || 'classic'; // Default to classic if no variant selected
 
   // Extract style name from variant ID (e.g., 'lang-classic' => 'classic')
   const style = variantId.split('-').slice(1).join('-') || 'classic';
+
+  // Ensure items array exists for item-based sections
+  if (['languages', 'projects', 'awards', 'publications', 'volunteer', 'speaking', 'patents', 'portfolio', 'certifications'].includes(sectionData.type)) {
+    if (!sectionData.items || !Array.isArray(sectionData.items)) {
+      console.warn(`Section ${section.id} (${sectionData.type}) has no items array or items is not an array:`, sectionData);
+      return null;
+    }
+  }
 
   switch (sectionData.type) {
     case 'languages':
@@ -39,6 +54,7 @@ export const HelperSectionVariantRenderer: React.FC<HelperSectionVariantRenderer
     case 'custom':
       return renderCustomSection(sectionData, title);
     default:
+      console.warn('Unknown section type:', sectionData.type);
       return null;
   }
 };
