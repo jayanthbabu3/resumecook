@@ -11,7 +11,6 @@ import {
   useSensors,
   closestCenter,
   DragStartEvent,
-  useDraggable,
   useDroppable,
 } from '@dnd-kit/core';
 import {
@@ -33,6 +32,8 @@ import { registerPDFFonts } from '@/lib/pdfFonts';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { ScratchBuilderSection } from '@/components/resume/ScratchBuilderSection';
+import { SectionStyleModal } from '@/components/resume/SectionStyleModal';
+import { SectionVariant, getSectionVariants } from '@/constants/sectionVariants';
 
 const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
@@ -42,28 +43,14 @@ interface HelperSectionCardProps {
   icon: string;
   title: string;
   description: string;
+  onClick: () => void;
 }
 
-function HelperSectionCard({ type, icon, title, description }: HelperSectionCardProps) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: `helper-${type}`,
-    data: { type, source: 'helper' },
-  });
-
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        opacity: isDragging ? 0.5 : 1,
-      }
-    : undefined;
-
+function HelperSectionCard({ type, icon, title, description, onClick }: HelperSectionCardProps) {
   return (
     <div
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
-      className="group relative overflow-hidden rounded-lg border bg-gradient-to-br from-white to-gray-50/50 cursor-grab active:cursor-grabbing transition-all duration-200 hover:shadow-md hover:border-primary/30"
+      onClick={onClick}
+      className="group relative overflow-hidden rounded-lg border bg-gradient-to-br from-white to-gray-50/50 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-primary/30 hover:scale-[1.02]"
     >
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="relative p-3">
@@ -73,7 +60,6 @@ function HelperSectionCard({ type, icon, title, description }: HelperSectionCard
             <h4 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-1">{title}</h4>
             <p className="text-xs text-gray-500 line-clamp-2">{description}</p>
           </div>
-          <GripVertical className="h-4 w-4 text-gray-400 flex-shrink-0" />
         </div>
       </div>
     </div>
@@ -154,6 +140,11 @@ export default function ScratchBuilder() {
   const [isSaving, setIsSaving] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
 
+  // Modal state for section style selection
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSectionType, setSelectedSectionType] = useState<SectionType | null>(null);
+  const [selectedSectionTitle, setSelectedSectionTitle] = useState('');
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -164,13 +155,13 @@ export default function ScratchBuilder() {
 
   const themeColor = '#7c3aed';
 
-  // Create a new section with mock data
+  // Create a new section with mock data and optional variant
   const createSection = useCallback(
-    (type: SectionType): ResumeSection => {
+    (type: SectionType, variant?: SectionVariant): ResumeSection => {
       const id = generateId();
-      const title = SECTION_DEFAULT_TITLES[type];
+      const title = variant?.previewData?.title || SECTION_DEFAULT_TITLES[type];
       const order = sections.length;
-      const data = getMockSectionData(type);
+      const data = variant?.previewData || getMockSectionData(type);
 
       return {
         id,
@@ -178,11 +169,46 @@ export default function ScratchBuilder() {
         order,
         enabled: true,
         title,
-        data,
+        data: {
+          ...data,
+          variant: variant?.id, // Store the variant ID for rendering
+        },
       };
     },
     [sections.length]
   );
+
+  // Handle helper section card click
+  const handleHelperSectionClick = (type: SectionType, title: string) => {
+    // Check if this section type has variants
+    const variants = getSectionVariants(type);
+
+    if (variants.length > 0) {
+      // Open modal to select variant
+      setSelectedSectionType(type);
+      setSelectedSectionTitle(title);
+      setIsModalOpen(true);
+    } else {
+      // Add section directly with default style
+      const newSection = createSection(type);
+      setSections((prev) => [...prev, newSection]);
+      toast.success(`${title} section added!`);
+    }
+  };
+
+  // Handle variant selection from modal
+  const handleVariantSelect = (variant: SectionVariant) => {
+    if (!selectedSectionType) return;
+
+    const newSection = createSection(selectedSectionType, variant);
+    setSections((prev) => [...prev, newSection]);
+    toast.success(`${variant.name} section added!`);
+
+    // Reset modal state
+    setIsModalOpen(false);
+    setSelectedSectionType(null);
+    setSelectedSectionTitle('');
+  };
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -196,30 +222,8 @@ export default function ScratchBuilder() {
       return;
     }
 
-    const activeData = active.data.current;
-    
-    // Check if dragging from helper sections
-    if (activeData?.source === 'helper') {
-      const sectionType = activeData.type as SectionType;
-      const newSection = createSection(sectionType);
-
-      // If dropping on an existing section, insert before it
-      if (over.id !== 'resume-canvas') {
-        setSections((prev) => {
-          const overIndex = prev.findIndex((item) => item.id === over.id);
-          if (overIndex === -1) return [...prev, newSection];
-          const newSections = [...prev];
-          newSections.splice(overIndex, 0, newSection);
-          return newSections.map((item, index) => ({ ...item, order: index }));
-        });
-      } else {
-        setSections((prev) => [...prev, newSection]);
-      }
-
-      toast.success(`${newSection.title} section added!`);
-    }
-    // Reordering existing sections
-    else if (active.id !== over.id) {
+    // Only handle reordering existing sections
+    if (active.id !== over.id) {
       setSections((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
@@ -317,7 +321,7 @@ export default function ScratchBuilder() {
               <div>
                 <h1 className="text-xl font-bold">Create Resume from Scratch</h1>
                 <p className="text-xs text-muted-foreground">
-                  Drag sections from the right panel to build your resume
+                  Click sections from the right panel to add them to your resume
                 </p>
               </div>
             </div>
@@ -418,7 +422,7 @@ export default function ScratchBuilder() {
                         Start building your resume
                       </p>
                       <p className="text-sm">
-                        Drag sections from the right panel to add them here
+                        Click sections from the right panel to add them here
                       </p>
                     </div>
                   ) : (
@@ -470,7 +474,7 @@ export default function ScratchBuilder() {
                   <div className="mb-4">
                     <h2 className="text-lg font-bold mb-1">Helper Sections</h2>
                     <p className="text-xs text-muted-foreground">
-                      Drag these sections to your resume
+                      Click to add sections to your resume
                     </p>
                   </div>
                   <div className="space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
@@ -481,6 +485,7 @@ export default function ScratchBuilder() {
                         icon={section.icon}
                         title={section.title}
                         description={section.description}
+                        onClick={() => handleHelperSectionClick(section.type, section.title)}
                       />
                     ))}
                   </div>
@@ -491,19 +496,22 @@ export default function ScratchBuilder() {
 
           {/* Drag Overlay */}
           <DragOverlay>
-            {activeId && activeId.startsWith('helper-') ? (
+            {activeId ? (
               <div className="bg-white rounded-lg border-2 border-primary shadow-xl p-4 opacity-90">
-                <p className="font-semibold">
-                  {
-                    HELPER_SECTIONS.find(
-                      (s) => s.type === activeId.replace('helper-', '')
-                    )?.title
-                  }
-                </p>
+                <p className="font-semibold">Reordering...</p>
               </div>
             ) : null}
           </DragOverlay>
         </DndContext>
+
+        {/* Section Style Modal */}
+        <SectionStyleModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          sectionType={selectedSectionType || 'summary'}
+          sectionTitle={selectedSectionTitle}
+          onSelectVariant={handleVariantSelect}
+        />
       </div>
     </InlineEditProvider>
   );

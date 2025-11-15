@@ -35,6 +35,74 @@ export function ScratchBuilderSection({
 
     switch (data.type) {
       case 'summary':
+        // Executive Summary - centered, bold
+        if (data.variant === 'executive-summary') {
+          return (
+            <InlineEditableText
+              path={`${basePath}.data.content`}
+              value={data.content}
+              multiline
+              placeholder="Write your executive summary..."
+              className="block text-sm leading-relaxed text-center font-semibold"
+            />
+          );
+        }
+
+        // Professional Profile - bullet points
+        if (data.variant === 'professional-profile' && Array.isArray(data.content)) {
+          return (
+            <div className="space-y-2">
+              {data.content.map((item: string, idx: number) => (
+                <div key={idx} className="flex items-start gap-2">
+                  <span className="text-sm mt-1">•</span>
+                  <InlineEditableText
+                    path={`${basePath}.data.content[${idx}]`}
+                    value={item}
+                    multiline
+                    placeholder="Add a key strength..."
+                    className="flex-1 text-sm leading-relaxed"
+                  />
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.content`, '')}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Point
+              </Button>
+            </div>
+          );
+        }
+
+        // Career Objective - italic
+        if (data.variant === 'career-objective') {
+          return (
+            <InlineEditableText
+              path={`${basePath}.data.content`}
+              value={data.content}
+              multiline
+              placeholder="Write your career objective..."
+              className="block text-sm leading-relaxed italic"
+            />
+          );
+        }
+
+        // About Me - casual
+        if (data.variant === 'about-me') {
+          return (
+            <InlineEditableText
+              path={`${basePath}.data.content`}
+              value={data.content}
+              multiline
+              placeholder="Tell us about yourself..."
+              className="block text-sm leading-relaxed italic"
+            />
+          );
+        }
+
+        // Default/Professional Summary
         return (
           <InlineEditableText
             path={`${basePath}.data.content`}
@@ -188,45 +256,233 @@ export function ScratchBuilderSection({
         );
 
       case 'skills':
-        return (
-          <div className="flex flex-wrap gap-2">
-            {data.items?.map((skill, idx) => (
-              <div
-                key={skill.id}
-                className="px-3 py-1 rounded-full border flex items-center gap-2"
-                style={{ borderColor: themeColor }}
-              >
-                <InlineEditableText
-                  path={`${basePath}.data.items[${idx}].name`}
-                  value={skill.name}
-                  placeholder="Skill"
-                  className="text-sm"
-                />
-                <button
-                  onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
-                  className="text-destructive hover:text-destructive/80"
+        // Skill Pills - horizontal chips (default)
+        if (data.variant === 'skill-pills' || !data.variant) {
+          const skills = data.skills || [];
+          return (
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill: string, idx: number) => (
+                <div
+                  key={idx}
+                  className="px-3 py-1 rounded-full flex items-center gap-2"
+                  style={{ backgroundColor: `${themeColor}15`, color: themeColor }}
                 >
-                  ×
-                </button>
-              </div>
-            ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                addArrayItem(`${basePath}.data.items`, {
-                  id: Date.now().toString(),
-                  name: '',
-                  level: 80,
-                  category: 'core',
-                })
-              }
-            >
-              <Plus className="h-4 w-4 mr-1" />
-              Add Skill
-            </Button>
-          </div>
-        );
+                  <InlineEditableText
+                    path={`${basePath}.data.skills[${idx}]`}
+                    value={skill}
+                    placeholder="Skill"
+                    className="text-sm"
+                  />
+                  <button
+                    onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
+                    className="text-destructive hover:text-destructive/80"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.skills`, '')}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        // Vertical List with levels
+        if (data.variant === 'skill-list') {
+          const skills = data.skills || [];
+          return (
+            <div className="space-y-2">
+              {skills.map((skill: any, idx: number) => (
+                <div key={idx} className="flex items-center justify-between gap-4 border-b pb-2">
+                  <InlineEditableText
+                    path={`${basePath}.data.skills[${idx}].name`}
+                    value={skill.name}
+                    placeholder="Skill name"
+                    className="text-sm flex-1"
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.skills[${idx}].level`}
+                    value={skill.level}
+                    placeholder="Level"
+                    className="text-xs text-muted-foreground w-24"
+                  />
+                  <button
+                    onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
+                    className="text-destructive hover:text-destructive/80"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.skills`, { name: '', level: 'Advanced' })}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        // Comma Separated
+        if (data.variant === 'skill-inline') {
+          return (
+            <InlineEditableText
+              path={`${basePath}.data.skills`}
+              value={data.skills}
+              multiline
+              placeholder="JavaScript, React, TypeScript, Node.js, etc."
+              className="text-sm leading-relaxed"
+            />
+          );
+        }
+
+        // Grouped Categories
+        if (data.variant === 'skill-grouped') {
+          const skillGroups = data.skillGroups || [];
+          return (
+            <div className="space-y-3">
+              {skillGroups.map((group: any, idx: number) => (
+                <div key={idx} className="border-l-2 pl-3" style={{ borderColor: themeColor }}>
+                  <InlineEditableText
+                    path={`${basePath}.data.skillGroups[${idx}].category`}
+                    value={group.category}
+                    placeholder="Category"
+                    className="font-semibold text-sm block mb-1"
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.skillGroups[${idx}].skills`}
+                    value={group.skills.join(', ')}
+                    placeholder="Skill1, Skill2, Skill3"
+                    className="text-sm text-muted-foreground"
+                  />
+                  <button
+                    onClick={() => removeArrayItem(`${basePath}.data.skillGroups`, idx)}
+                    className="text-xs text-destructive hover:text-destructive/80 mt-1"
+                  >
+                    Remove group
+                  </button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  addArrayItem(`${basePath}.data.skillGroups`, {
+                    category: '',
+                    skills: [],
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Category
+              </Button>
+            </div>
+          );
+        }
+
+        // Skill Bars
+        if (data.variant === 'skill-bars') {
+          const skills = data.skills || [];
+          return (
+            <div className="space-y-3">
+              {skills.map((skill: any, idx: number) => (
+                <div key={idx} className="space-y-1">
+                  <div className="flex items-center justify-between gap-4">
+                    <InlineEditableText
+                      path={`${basePath}.data.skills[${idx}].name`}
+                      value={skill.name}
+                      placeholder="Skill name"
+                      className="text-sm flex-1"
+                    />
+                    <InlineEditableText
+                      path={`${basePath}.data.skills[${idx}].level`}
+                      value={skill.level}
+                      placeholder="90"
+                      className="text-xs text-muted-foreground w-12"
+                    />
+                    <button
+                      onClick={() => removeArrayItem(`${basePath}.data.skills`, idx)}
+                      className="text-destructive hover:text-destructive/80"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full"
+                      style={{
+                        backgroundColor: themeColor,
+                        width: `${skill.level}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => addArrayItem(`${basePath}.data.skills`, { name: '', level: 80 })}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        // Legacy support for old data structure
+        if (data.items) {
+          return (
+            <div className="flex flex-wrap gap-2">
+              {data.items?.map((skill: any, idx: number) => (
+                <div
+                  key={skill.id}
+                  className="px-3 py-1 rounded-full border flex items-center gap-2"
+                  style={{ borderColor: themeColor }}
+                >
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={skill.name}
+                    placeholder="Skill"
+                    className="text-sm"
+                  />
+                  <button
+                    onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
+                    className="text-destructive hover:text-destructive/80"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  addArrayItem(`${basePath}.data.items`, {
+                    id: Date.now().toString(),
+                    name: '',
+                    level: 80,
+                    category: 'core',
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Skill
+              </Button>
+            </div>
+          );
+        }
+
+        return <div className="text-sm text-muted-foreground">Add skills</div>;
 
       case 'certifications':
         return (
