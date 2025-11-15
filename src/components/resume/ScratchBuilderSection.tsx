@@ -2099,6 +2099,458 @@ export function ScratchBuilderSection({
         return <div className="text-sm text-muted-foreground">Add skills</div>;
 
       case 'certifications':
+        // Classic List - traditional certification listing
+        if (data.variantId === 'cert-classic' || !data.variantId) {
+          return (
+            <div className="space-y-3">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="border-l-2 pl-4" style={{ borderColor: themeColor }}>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-semibold block mb-1"
+                    placeholder="AWS Certified Solutions Architect"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].issuer`}
+                    value={cert.issuer}
+                    className="text-sm block mb-1"
+                    placeholder="Amazon Web Services"
+                    style={{ color: themeColor }}
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].date`}
+                    value={formatDate(cert.date)}
+                    className="text-sm text-muted-foreground block mb-1"
+                    placeholder="2023"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                  />
+                  {cert.credentialId && (
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].credentialId`}
+                      value={cert.credentialId}
+                      className="text-xs text-muted-foreground block"
+                      placeholder="Credential ID: ABC123"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].credentialId`)}
+                    />
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeArrayItem(`${basePath}.data.items`, idx)}
+                    className="mt-2 text-destructive"
+                  >
+                    <Trash2 className="h-3 w-3 mr-1" />
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  addArrayItem(`${basePath}.data.items`, {
+                    id: Date.now().toString(),
+                    name: '',
+                    issuer: '',
+                    date: '',
+                    credentialId: '',
+                    url: '',
+                  })
+                }
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Modern Card - card-based with issuer logos
+        if (data.variantId === 'cert-modern') {
+          return (
+            <div className="space-y-3">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="border rounded-lg p-4 shadow-sm bg-gradient-to-r from-gray-50 to-white">
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-bold text-base block mb-2"
+                    placeholder="AWS Solutions Architect"
+                    style={{ color: themeColor }}
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].issuer`}
+                    value={cert.issuer}
+                    className="text-sm text-gray-600 block mb-1"
+                    placeholder="Amazon Web Services"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].date`}
+                    value={formatDate(cert.date)}
+                    className="text-xs text-muted-foreground block"
+                    placeholder="2023"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                  />
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive">
+                    <Trash2 className="h-3 w-3 mr-1" /> Remove
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '', credentialId: '', url: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Minimal List - clean, simple format
+        if (data.variantId === 'cert-minimal') {
+          return (
+            <div className="space-y-2">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="flex items-baseline gap-2">
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-medium"
+                    placeholder="AWS Solutions Architect"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <span className="text-muted-foreground">-</span>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].issuer`}
+                    value={cert.issuer}
+                    className="text-sm text-muted-foreground"
+                    placeholder="AWS"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].date`}
+                    value={formatDate(cert.date)}
+                    className="text-sm text-muted-foreground ml-auto"
+                    placeholder="2023"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                  />
+                  <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive hover:text-destructive/80">×</button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Detailed Format - includes credential ID and expiry
+        if (data.variantId === 'cert-detailed') {
+          return (
+            <div className="space-y-4">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="border-l-2 pl-4" style={{ borderColor: themeColor }}>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-bold text-base block mb-1"
+                    placeholder="AWS Certified Solutions Architect"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].issuer`}
+                    value={cert.issuer}
+                    className="text-sm block mb-2"
+                    placeholder="Amazon Web Services"
+                    style={{ color: themeColor }}
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                  />
+                  <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                    <div>
+                      <span className="font-medium">Issued: </span>
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].date`}
+                        value={formatDate(cert.date)}
+                        className="inline"
+                        placeholder="2023"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                      />
+                    </div>
+                    {cert.expiryDate && (
+                      <div>
+                        <span className="font-medium">Expires: </span>
+                        <InlineEditableText
+                          path={`${basePath}.data.items[${idx}].expiryDate`}
+                          value={formatDate(cert.expiryDate)}
+                          className="inline"
+                          placeholder="2026"
+                          onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].expiryDate`)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  {cert.credentialId && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                      <span className="font-medium">Credential ID: </span>
+                      <InlineEditableText
+                        path={`${basePath}.data.items[${idx}].credentialId`}
+                        value={cert.credentialId}
+                        className="inline"
+                        placeholder="ABC123XYZ"
+                        onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].credentialId`)}
+                      />
+                    </div>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive">
+                    <Trash2 className="h-3 w-3 mr-1" /> Remove
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '', credentialId: '', expiryDate: '', url: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Timeline View - chronological timeline
+        if (data.variantId === 'cert-timeline') {
+          return (
+            <div className="space-y-3 relative pl-6">
+              <div className="absolute left-2 top-2 bottom-2 w-0.5" style={{ backgroundColor: themeColor }}></div>
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="relative">
+                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full" style={{ backgroundColor: themeColor }}></div>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-semibold block"
+                    placeholder="AWS Solutions Architect"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].issuer`}
+                    value={cert.issuer}
+                    className="text-sm block"
+                    placeholder="AWS"
+                    style={{ color: themeColor }}
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].date`}
+                    value={formatDate(cert.date)}
+                    className="text-xs text-muted-foreground block"
+                    placeholder="2023"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                  />
+                  <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive hover:text-destructive/80 mt-1">Remove</button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Grouped by Provider
+        if (data.variantId === 'cert-grouped') {
+          // Group certifications by issuer
+          const grouped = (data.items || []).reduce((acc: any, cert: any) => {
+            const issuer = cert.issuer || 'Other';
+            if (!acc[issuer]) acc[issuer] = [];
+            acc[issuer].push(cert);
+            return acc;
+          }, {});
+
+          return (
+            <div className="space-y-4">
+              {Object.entries(grouped).map(([issuer, certs]: [string, any]) => (
+                <div key={issuer}>
+                  <h4 className="font-semibold mb-2" style={{ color: themeColor }}>{issuer}</h4>
+                  <div className="space-y-1 pl-4">
+                    {certs.map((cert: any, idx: number) => {
+                      const globalIdx = data.items?.findIndex((c: any) => c.id === cert.id) ?? 0;
+                      return (
+                        <div key={cert.id} className="flex items-baseline gap-2">
+                          <InlineEditableText
+                            path={`${basePath}.data.items[${globalIdx}].name`}
+                            value={cert.name}
+                            className="flex-1"
+                            placeholder="Solutions Architect"
+                            onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${globalIdx}].name`)}
+                          />
+                          <InlineEditableText
+                            path={`${basePath}.data.items[${globalIdx}].date`}
+                            value={formatDate(cert.date)}
+                            className="text-sm text-muted-foreground"
+                            placeholder="2023"
+                            onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${globalIdx}].date`)}
+                          />
+                          <button onClick={() => removeArrayItem(`${basePath}.data.items`, globalIdx)} className="text-xs text-destructive hover:text-destructive/80">×</button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Badge Style - visual badges for each cert
+        if (data.variantId === 'cert-badges') {
+          return (
+            <div className="flex flex-wrap gap-3">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="border-2 rounded-lg p-3 min-w-[200px]" style={{ borderColor: themeColor }}>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-bold text-sm block mb-1"
+                    placeholder="AWS Solutions Architect"
+                    style={{ color: themeColor }}
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].issuer`}
+                    value={cert.issuer}
+                    className="text-xs text-muted-foreground block mb-1"
+                    placeholder="AWS"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].date`}
+                    value={formatDate(cert.date)}
+                    className="text-xs text-muted-foreground block"
+                    placeholder="2023"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                  />
+                  <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive hover:text-destructive/80 mt-1">Remove</button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Compact List - space-efficient format
+        if (data.variantId === 'cert-compact') {
+          return (
+            <div className="space-y-1">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="flex items-center gap-2 text-sm">
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-medium flex-1"
+                    placeholder="AWS Solutions Architect"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].date`}
+                    value={formatDate(cert.date)}
+                    className="text-xs text-muted-foreground"
+                    placeholder="2023"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                  />
+                  <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive hover:text-destructive/80">×</button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Two-Column Layout - cert and issuer in columns
+        if (data.variantId === 'cert-two-column') {
+          return (
+            <div className="space-y-2">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="grid grid-cols-2 gap-4 items-start">
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-semibold"
+                    placeholder="AWS Solutions Architect"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <div>
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].issuer`}
+                      value={cert.issuer}
+                      className="text-sm block"
+                      placeholder="Amazon Web Services"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                    />
+                    <InlineEditableText
+                      path={`${basePath}.data.items[${idx}].date`}
+                      value={formatDate(cert.date)}
+                      className="text-xs text-muted-foreground block"
+                      placeholder="2023"
+                      onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                    />
+                    <button onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="text-xs text-destructive hover:text-destructive/80 mt-1">Remove</button>
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Boxed Format - each cert in bordered box
+        if (data.variantId === 'cert-boxed') {
+          return (
+            <div className="space-y-3">
+              {data.items?.map((cert, idx) => (
+                <div key={cert.id} className="border-2 rounded p-3" style={{ borderColor: themeColor + '40' }}>
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].name`}
+                    value={cert.name}
+                    className="font-bold block mb-1"
+                    placeholder="AWS Certified Solutions Architect"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].issuer`}
+                    value={cert.issuer}
+                    className="text-sm block mb-1"
+                    placeholder="Amazon Web Services"
+                    style={{ color: themeColor }}
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
+                  />
+                  <InlineEditableText
+                    path={`${basePath}.data.items[${idx}].date`}
+                    value={formatDate(cert.date)}
+                    className="text-sm text-muted-foreground block"
+                    placeholder="2023"
+                    onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
+                  />
+                  <Button variant="ghost" size="sm" onClick={() => removeArrayItem(`${basePath}.data.items`, idx)} className="mt-2 text-destructive">
+                    <Trash2 className="h-3 w-3 mr-1" /> Remove
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => addArrayItem(`${basePath}.data.items`, { id: Date.now().toString(), name: '', issuer: '', date: '' })}>
+                <Plus className="h-4 w-4 mr-1" /> Add Certification
+              </Button>
+            </div>
+          );
+        }
+
+        // Default fallback
         return (
           <div className="space-y-3">
             {data.items?.map((cert, idx) => (
@@ -2108,6 +2560,7 @@ export function ScratchBuilderSection({
                   value={cert.name}
                   className="font-semibold block mb-1"
                   placeholder="Certification Name"
+                  onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].name`)}
                 />
                 <InlineEditableText
                   path={`${basePath}.data.items[${idx}].issuer`}
@@ -2115,12 +2568,14 @@ export function ScratchBuilderSection({
                   className="text-sm block mb-1"
                   placeholder="Issuing Organization"
                   style={{ color: themeColor }}
+                  onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].issuer`)}
                 />
                 <InlineEditableText
                   path={`${basePath}.data.items[${idx}].date`}
                   value={formatDate(cert.date)}
                   className="text-sm text-muted-foreground block"
                   placeholder="Date"
+                  onCustomUpdate={createFieldUpdater(`${basePath}.data.items[${idx}].date`)}
                 />
                 <Button
                   variant="ghost"
