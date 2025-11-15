@@ -84,6 +84,42 @@ export const professionCategories: ProfessionCategory[] = [
       "luxury-timeline",
       "corporate-executive",
       "analyst",
+      // Healthcare & Medical
+      "medical-professional",
+      "healthcare-two-column",
+      "nurse-specialist",
+      "medical-executive",
+      "clinical-minimal",
+      // Education & Teaching
+      "teacher-professional",
+      "academic-scholar",
+      "educator-modern",
+      "teaching-certified",
+      "student-educator",
+      // Finance & Accounting
+      "cpa-professional",
+      "finance-analyst",
+      "accounting-executive",
+      "auditor",
+      "finance-two-column",
+      // Sales & Marketing
+      "sales-executive",
+      "marketing-professional",
+      "sales-marketing-hybrid",
+      "digital-marketer",
+      "sales-manager",
+      // Legal & Consulting
+      "attorney-professional",
+      "legal-counsel",
+      "consultant",
+      "legal-executive",
+      "paralegal",
+      // Operations & Project Management
+      "project-manager-pmp",
+      "operations-manager",
+      "pm-executive",
+      "agile-scrum",
+      "operations-two-column",
     ],
   },
   {
@@ -188,7 +224,13 @@ export const professionCategories: ProfessionCategory[] = [
     color: "#ef4444",
     gradientFrom: "#ef4444",
     gradientTo: "#dc2626",
-    templateIds: [],
+    templateIds: [
+      "medical-professional",
+      "healthcare-two-column",
+      "nurse-specialist",
+      "medical-executive",
+      "clinical-minimal",
+    ],
   },
   {
     id: "education-teaching",
@@ -198,7 +240,13 @@ export const professionCategories: ProfessionCategory[] = [
     color: "#06b6d4",
     gradientFrom: "#06b6d4",
     gradientTo: "#0891b2",
-    templateIds: [],
+    templateIds: [
+      "teacher-professional",
+      "academic-scholar",
+      "educator-modern",
+      "teaching-certified",
+      "student-educator",
+    ],
   },
   {
     id: "finance-accounting",
@@ -208,7 +256,13 @@ export const professionCategories: ProfessionCategory[] = [
     color: "#84cc16",
     gradientFrom: "#84cc16",
     gradientTo: "#65a30d",
-    templateIds: [],
+    templateIds: [
+      "cpa-professional",
+      "finance-analyst",
+      "accounting-executive",
+      "auditor",
+      "finance-two-column",
+    ],
   },
   {
     id: "sales-marketing",
@@ -218,7 +272,13 @@ export const professionCategories: ProfessionCategory[] = [
     color: "#f97316",
     gradientFrom: "#f97316",
     gradientTo: "#ea580c",
-    templateIds: [],
+    templateIds: [
+      "sales-executive",
+      "marketing-professional",
+      "sales-marketing-hybrid",
+      "digital-marketer",
+      "sales-manager",
+    ],
   },
   {
     id: "legal-consulting",
@@ -228,7 +288,13 @@ export const professionCategories: ProfessionCategory[] = [
     color: "#6366f1",
     gradientFrom: "#6366f1",
     gradientTo: "#4f46e5",
-    templateIds: [],
+    templateIds: [
+      "attorney-professional",
+      "legal-counsel",
+      "consultant",
+      "legal-executive",
+      "paralegal",
+    ],
   },
   {
     id: "operations-management",
@@ -238,7 +304,13 @@ export const professionCategories: ProfessionCategory[] = [
     color: "#14b8a6",
     gradientFrom: "#14b8a6",
     gradientTo: "#0d9488",
-    templateIds: [],
+    templateIds: [
+      "project-manager-pmp",
+      "operations-manager",
+      "pm-executive",
+      "agile-scrum",
+      "operations-two-column",
+    ],
   },
 ];
 

@@ -4,14 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save } from "lucide-react";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { resumeService } from "@/lib/firestore/resumeService";
-import type { ResumeData as NewResumeData, ResumeSection, SectionType, SectionData } from "@/types/resume";
+import type { ResumeData as NewResumeData } from "@/types/resume";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { pdf } from "@react-pdf/renderer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { LiveEditorSidebar } from "@/components/resume/LiveEditorSidebar";
-import { SECTION_DEFAULT_TITLES } from "@/constants/helperSections";
 import { ProfessionalPDF } from "@/components/resume/pdf/ProfessionalPDF";
 import { ModernPDF } from "@/components/resume/pdf/ModernPDF";
 import { MinimalPDF } from "@/components/resume/pdf/MinimalPDF";
@@ -91,6 +88,42 @@ import { FresherTwoToneTemplate } from "@/components/resume/templates/FresherTwo
 import { FresherCenteredElegantTemplate } from "@/components/resume/templates/FresherCenteredElegantTemplate";
 import { FresherGeometricTemplate } from "@/components/resume/templates/FresherGeometricTemplate";
 import { FresherAchievementTemplate } from "@/components/resume/templates/FresherAchievementTemplate";
+// Healthcare & Medical Templates
+import { MedicalProfessionalTemplate } from "@/components/resume/templates/MedicalProfessionalTemplate";
+import { HealthcareTwoColumnTemplate } from "@/components/resume/templates/HealthcareTwoColumnTemplate";
+import { NurseSpecialistTemplate } from "@/components/resume/templates/NurseSpecialistTemplate";
+import { MedicalExecutiveTemplate } from "@/components/resume/templates/MedicalExecutiveTemplate";
+import { ClinicalMinimalTemplate } from "@/components/resume/templates/ClinicalMinimalTemplate";
+// Education & Teaching Templates
+import { TeacherProfessionalTemplate } from "@/components/resume/templates/TeacherProfessionalTemplate";
+import { AcademicScholarTemplate } from "@/components/resume/templates/AcademicScholarTemplate";
+import { EducatorModernTemplate } from "@/components/resume/templates/EducatorModernTemplate";
+import { TeachingCertifiedTemplate } from "@/components/resume/templates/TeachingCertifiedTemplate";
+import { StudentEducatorTemplate } from "@/components/resume/templates/StudentEducatorTemplate";
+// Finance & Accounting Templates
+import { CPAProfessionalTemplate } from "@/components/resume/templates/CPAProfessionalTemplate";
+import { FinanceAnalystTemplate } from "@/components/resume/templates/FinanceAnalystTemplate";
+import { AccountingExecutiveTemplate } from "@/components/resume/templates/AccountingExecutiveTemplate";
+import { AuditorTemplate } from "@/components/resume/templates/AuditorTemplate";
+import { FinanceTwoColumnTemplate } from "@/components/resume/templates/FinanceTwoColumnTemplate";
+// Sales & Marketing Templates
+import { SalesExecutiveTemplate } from "@/components/resume/templates/SalesExecutiveTemplate";
+import { MarketingProfessionalTemplate } from "@/components/resume/templates/MarketingProfessionalTemplate";
+import { SalesMarketingHybridTemplate } from "@/components/resume/templates/SalesMarketingHybridTemplate";
+import { DigitalMarketerTemplate } from "@/components/resume/templates/DigitalMarketerTemplate";
+import { SalesManagerTemplate } from "@/components/resume/templates/SalesManagerTemplate";
+// Legal & Consulting Templates
+import { AttorneyProfessionalTemplate } from "@/components/resume/templates/AttorneyProfessionalTemplate";
+import { LegalCounselTemplate } from "@/components/resume/templates/LegalCounselTemplate";
+import { ConsultantTemplate } from "@/components/resume/templates/ConsultantTemplate";
+import { LegalExecutiveTemplate } from "@/components/resume/templates/LegalExecutiveTemplate";
+import { ParalegalTemplate } from "@/components/resume/templates/ParalegalTemplate";
+// Operations & Project Management Templates
+import { ProjectManagerPMPTemplate } from "@/components/resume/templates/ProjectManagerPMPTemplate";
+import { OperationsManagerTemplate } from "@/components/resume/templates/OperationsManagerTemplate";
+import { PMExecutiveTemplate } from "@/components/resume/templates/PMExecutiveTemplate";
+import { AgileScrumTemplate } from "@/components/resume/templates/AgileScrumTemplate";
+import { OperationsTwoColumnTemplate } from "@/components/resume/templates/OperationsTwoColumnTemplate";
 
 const pdfTemplates: Record<string, any> = {
   professional: ProfessionalPDF,
@@ -138,7 +171,7 @@ const pdfTemplates: Record<string, any> = {
   "fresher-achievement": FresherAchievementPDF,
 };
 
-// Templates that support inline editing - updated to include Professional
+// Templates that support inline editing
 const inlineEditableTemplates = [
   "professional", "modern", "senior",
   "minimal", "executive", "frontend", "fullstack",
@@ -151,7 +184,25 @@ const inlineEditableTemplates = [
   "fresher-minimal-grid", "fresher-dark-professional", "fresher-color-accent",
   "fresher-timeline", "fresher-skills-first", "fresher-card-based",
   "fresher-two-tone", "fresher-centered-elegant", "fresher-geometric",
-  "fresher-achievement"
+  "fresher-achievement",
+  // Healthcare & Medical
+  "medical-professional", "healthcare-two-column", "nurse-specialist",
+  "medical-executive", "clinical-minimal",
+  // Education & Teaching
+  "teacher-professional", "academic-scholar", "educator-modern",
+  "teaching-certified", "student-educator",
+  // Finance & Accounting
+  "cpa-professional", "finance-analyst", "accounting-executive",
+  "auditor", "finance-two-column",
+  // Sales & Marketing
+  "sales-executive", "marketing-professional", "sales-marketing-hybrid",
+  "digital-marketer", "sales-manager",
+  // Legal & Consulting
+  "attorney-professional", "legal-counsel", "consultant",
+  "legal-executive", "paralegal",
+  // Operations & Project Management
+  "project-manager-pmp", "operations-manager", "pm-executive",
+  "agile-scrum", "operations-two-column"
 ];
 
 const displayTemplates: Record<string, any> = {
@@ -198,43 +249,43 @@ const displayTemplates: Record<string, any> = {
   "fresher-centered-elegant": FresherCenteredElegantTemplate,
   "fresher-geometric": FresherGeometricTemplate,
   "fresher-achievement": FresherAchievementTemplate,
+  // Healthcare & Medical
+  "medical-professional": MedicalProfessionalTemplate,
+  "healthcare-two-column": HealthcareTwoColumnTemplate,
+  "nurse-specialist": NurseSpecialistTemplate,
+  "medical-executive": MedicalExecutiveTemplate,
+  "clinical-minimal": ClinicalMinimalTemplate,
+  // Education & Teaching
+  "teacher-professional": TeacherProfessionalTemplate,
+  "academic-scholar": AcademicScholarTemplate,
+  "educator-modern": EducatorModernTemplate,
+  "teaching-certified": TeachingCertifiedTemplate,
+  "student-educator": StudentEducatorTemplate,
+  // Finance & Accounting
+  "cpa-professional": CPAProfessionalTemplate,
+  "finance-analyst": FinanceAnalystTemplate,
+  "accounting-executive": AccountingExecutiveTemplate,
+  "auditor": AuditorTemplate,
+  "finance-two-column": FinanceTwoColumnTemplate,
+  // Sales & Marketing
+  "sales-executive": SalesExecutiveTemplate,
+  "marketing-professional": MarketingProfessionalTemplate,
+  "sales-marketing-hybrid": SalesMarketingHybridTemplate,
+  "digital-marketer": DigitalMarketerTemplate,
+  "sales-manager": SalesManagerTemplate,
+  // Legal & Consulting
+  "attorney-professional": AttorneyProfessionalTemplate,
+  "legal-counsel": LegalCounselTemplate,
+  "consultant": ConsultantTemplate,
+  "legal-executive": LegalExecutiveTemplate,
+  "paralegal": ParalegalTemplate,
+  // Operations & Project Management
+  "project-manager-pmp": ProjectManagerPMPTemplate,
+  "operations-manager": OperationsManagerTemplate,
+  "pm-executive": PMExecutiveTemplate,
+  "agile-scrum": AgileScrumTemplate,
+  "operations-two-column": OperationsTwoColumnTemplate,
 };
-
-// Helper function to create empty data for a section type
-function getEmptyDataForType(type: SectionType): SectionData {
-  switch (type) {
-    case 'summary':
-      return { type: 'summary', content: '' };
-    case 'experience':
-      return { type: 'experience', items: [] };
-    case 'education':
-      return { type: 'education', items: [] };
-    case 'skills':
-      return { type: 'skills', items: [] };
-    case 'certifications':
-      return { type: 'certifications', items: [] };
-    case 'languages':
-      return { type: 'languages', items: [] };
-    case 'projects':
-      return { type: 'projects', items: [] };
-    case 'awards':
-      return { type: 'awards', items: [] };
-    case 'publications':
-      return { type: 'publications', items: [] };
-    case 'volunteer':
-      return { type: 'volunteer', items: [] };
-    case 'speaking':
-      return { type: 'speaking', items: [] };
-    case 'patents':
-      return { type: 'patents', items: [] };
-    case 'portfolio':
-      return { type: 'portfolio', items: [] };
-    case 'custom':
-      return { type: 'custom', content: '' };
-    default:
-      return { type: 'custom', content: '' };
-  }
-}
 
 const LiveEditor = () => {
   const { templateId } = useParams<{ templateId: string }>();
@@ -250,51 +301,6 @@ const LiveEditor = () => {
   const [editorMode, setEditorMode] = useState<"live" | "form">("live");
   const [isSaving, setIsSaving] = useState(false);
   const [currentResumeId, setCurrentResumeId] = useState<string | null>(resumeId);
-
-  // Drag and drop sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
-
-  // Handle adding a section from the sidebar
-  const handleAddSection = useCallback((type: SectionType) => {
-    const newSection: ResumeSection = {
-      id: `section-${Date.now()}`,
-      type,
-      order: (resumeData.dynamicSections || []).length,
-      enabled: true,
-      title: SECTION_DEFAULT_TITLES[type],
-      data: getEmptyDataForType(type),
-    };
-
-    setResumeData(prev => ({
-      ...prev,
-      dynamicSections: [...(prev.dynamicSections || []), newSection]
-    }));
-
-    toast.success(`${SECTION_DEFAULT_TITLES[type]} added to your resume`);
-  }, [resumeData.dynamicSections]);
-
-  // Handle drag end event
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active } = event;
-
-    // Check if dragging from library
-    const activeData = active.data.current;
-    if (activeData?.source === 'library') {
-      const sectionType = activeData.type as SectionType;
-      handleAddSection(sectionType);
-    }
-  }, [handleAddSection]);
-
-  // Get list of section types already added (to disable in sidebar)
-  const addedSectionTypes = (resumeData.dynamicSections || [])
-    .filter((s: ResumeSection) => s.type !== 'custom') // Allow multiple custom sections
-    .map((s: ResumeSection) => s.type);
 
   useEffect(() => {
     setResumeData(getTemplateDefaults(templateId || "professional"));
@@ -412,16 +418,9 @@ const LiveEditor = () => {
   };
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="flex h-screen flex-col bg-gradient-to-br from-background via-muted/5 to-background">
-        <Header />
+    <div className="flex h-screen flex-col bg-gradient-to-br from-background via-muted/5 to-background">
+      <Header />
 
-        {/* Sidebar for helper sections */}
-        <LiveEditorSidebar
-          onAddSection={handleAddSection}
-          disabledSections={addedSectionTypes}
-        />
-      
       <div className="border-b bg-card/80 backdrop-blur-sm shadow-sm">
         <div className="container mx-auto px-4 py-3">
           {/* Mobile Layout */}
@@ -583,14 +582,14 @@ const LiveEditor = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-4 md:p-8 md:pr-[22rem]">
-        <div className="container mx-auto max-w-5xl">
-          <div className="bg-white shadow-2xl rounded-lg overflow-hidden">
+      <div className="flex-1 overflow-auto md:p-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="bg-white shadow-none md:shadow-2xl rounded-none md:rounded-lg overflow-hidden">
             {(() => {
               const currentTemplateId = templateId || "professional";
               const TemplateComponent = displayTemplates[currentTemplateId];
               const supportsInlineEdit = inlineEditableTemplates.includes(currentTemplateId);
-              
+
               if (!TemplateComponent) {
                 return <ProfessionalTemplate resumeData={resumeData} themeColor={themeColor} />;
               }
@@ -606,9 +605,9 @@ const LiveEditor = () => {
 
               // For templates without inline editing, show message
               return (
-                <div className="p-8">
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-                    <p className="text-sm text-yellow-800">
+                <div className="p-4 md:p-8">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 md:p-4 mb-4">
+                    <p className="text-xs md:text-sm text-yellow-800">
                       Direct inline editing is not yet available for this template. Use the Form Editor tab to edit this template, or try the Modern or Senior templates which support inline editing.
                     </p>
                   </div>
@@ -619,8 +618,7 @@ const LiveEditor = () => {
           </div>
         </div>
       </div>
-      </div>
-    </DndContext>
+    </div>
   );
 };
 

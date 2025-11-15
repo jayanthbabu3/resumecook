@@ -33,6 +33,52 @@ import { ElegantSerifTemplate } from "./templates/ElegantSerifTemplate";
 import { TechGridTemplate } from "./templates/TechGridTemplate";
 import { ContemporarySplitTemplate } from "./templates/ContemporarySplitTemplate";
 import { LuxuryTimelineTemplate } from "./templates/LuxuryTimelineTemplate";
+import { FresherMinimalGridTemplate } from "./templates/FresherMinimalGridTemplate";
+import { FresherDarkProfessionalTemplate } from "./templates/FresherDarkProfessionalTemplate";
+import { FresherColorAccentTemplate } from "./templates/FresherColorAccentTemplate";
+import { FresherTimelineTemplate } from "./templates/FresherTimelineTemplate";
+import { FresherSkillsFirstTemplate } from "./templates/FresherSkillsFirstTemplate";
+import { FresherCardBasedTemplate } from "./templates/FresherCardBasedTemplate";
+import { FresherTwoToneTemplate } from "./templates/FresherTwoToneTemplate";
+import { FresherCenteredElegantTemplate } from "./templates/FresherCenteredElegantTemplate";
+import { FresherGeometricTemplate } from "./templates/FresherGeometricTemplate";
+import { FresherAchievementTemplate } from "./templates/FresherAchievementTemplate";
+// Healthcare & Medical Templates
+import { MedicalProfessionalTemplate } from "./templates/MedicalProfessionalTemplate";
+import { HealthcareTwoColumnTemplate } from "./templates/HealthcareTwoColumnTemplate";
+import { NurseSpecialistTemplate } from "./templates/NurseSpecialistTemplate";
+import { MedicalExecutiveTemplate } from "./templates/MedicalExecutiveTemplate";
+import { ClinicalMinimalTemplate } from "./templates/ClinicalMinimalTemplate";
+// Education & Teaching Templates
+import { TeacherProfessionalTemplate } from "./templates/TeacherProfessionalTemplate";
+import { AcademicScholarTemplate } from "./templates/AcademicScholarTemplate";
+import { EducatorModernTemplate } from "./templates/EducatorModernTemplate";
+import { TeachingCertifiedTemplate } from "./templates/TeachingCertifiedTemplate";
+import { StudentEducatorTemplate } from "./templates/StudentEducatorTemplate";
+// Finance & Accounting Templates
+import { CPAProfessionalTemplate } from "./templates/CPAProfessionalTemplate";
+import { FinanceAnalystTemplate } from "./templates/FinanceAnalystTemplate";
+import { AccountingExecutiveTemplate } from "./templates/AccountingExecutiveTemplate";
+import { AuditorTemplate } from "./templates/AuditorTemplate";
+import { FinanceTwoColumnTemplate } from "./templates/FinanceTwoColumnTemplate";
+// Sales & Marketing Templates
+import { SalesExecutiveTemplate } from "./templates/SalesExecutiveTemplate";
+import { MarketingProfessionalTemplate } from "./templates/MarketingProfessionalTemplate";
+import { SalesMarketingHybridTemplate } from "./templates/SalesMarketingHybridTemplate";
+import { DigitalMarketerTemplate } from "./templates/DigitalMarketerTemplate";
+import { SalesManagerTemplate } from "./templates/SalesManagerTemplate";
+// Legal & Consulting Templates
+import { AttorneyProfessionalTemplate } from "./templates/AttorneyProfessionalTemplate";
+import { LegalCounselTemplate } from "./templates/LegalCounselTemplate";
+import { ConsultantTemplate } from "./templates/ConsultantTemplate";
+import { LegalExecutiveTemplate } from "./templates/LegalExecutiveTemplate";
+import { ParalegalTemplate } from "./templates/ParalegalTemplate";
+// Operations & Project Management Templates
+import { ProjectManagerPMPTemplate } from "./templates/ProjectManagerPMPTemplate";
+import { OperationsManagerTemplate } from "./templates/OperationsManagerTemplate";
+import { PMExecutiveTemplate } from "./templates/PMExecutiveTemplate";
+import { AgileScrumTemplate } from "./templates/AgileScrumTemplate";
+import { OperationsTwoColumnTemplate } from "./templates/OperationsTwoColumnTemplate";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
@@ -213,6 +259,52 @@ export const EditableResumePreview = ({
     "tech-grid": TechGridTemplate,
     "contemporary-split": ContemporarySplitTemplate,
     "luxury-timeline": LuxuryTimelineTemplate,
+    "fresher-minimal-grid": FresherMinimalGridTemplate,
+    "fresher-dark-professional": FresherDarkProfessionalTemplate,
+    "fresher-color-accent": FresherColorAccentTemplate,
+    "fresher-timeline": FresherTimelineTemplate,
+    "fresher-skills-first": FresherSkillsFirstTemplate,
+    "fresher-card-based": FresherCardBasedTemplate,
+    "fresher-two-tone": FresherTwoToneTemplate,
+    "fresher-centered-elegant": FresherCenteredElegantTemplate,
+    "fresher-geometric": FresherGeometricTemplate,
+    "fresher-achievement": FresherAchievementTemplate,
+    // Healthcare & Medical
+    "medical-professional": MedicalProfessionalTemplate,
+    "healthcare-two-column": HealthcareTwoColumnTemplate,
+    "nurse-specialist": NurseSpecialistTemplate,
+    "medical-executive": MedicalExecutiveTemplate,
+    "clinical-minimal": ClinicalMinimalTemplate,
+    // Education & Teaching
+    "teacher-professional": TeacherProfessionalTemplate,
+    "academic-scholar": AcademicScholarTemplate,
+    "educator-modern": EducatorModernTemplate,
+    "teaching-certified": TeachingCertifiedTemplate,
+    "student-educator": StudentEducatorTemplate,
+    // Finance & Accounting
+    "cpa-professional": CPAProfessionalTemplate,
+    "finance-analyst": FinanceAnalystTemplate,
+    "accounting-executive": AccountingExecutiveTemplate,
+    "auditor": AuditorTemplate,
+    "finance-two-column": FinanceTwoColumnTemplate,
+    // Sales & Marketing
+    "sales-executive": SalesExecutiveTemplate,
+    "marketing-professional": MarketingProfessionalTemplate,
+    "sales-marketing-hybrid": SalesMarketingHybridTemplate,
+    "digital-marketer": DigitalMarketerTemplate,
+    "sales-manager": SalesManagerTemplate,
+    // Legal & Consulting
+    "attorney-professional": AttorneyProfessionalTemplate,
+    "legal-counsel": LegalCounselTemplate,
+    "consultant": ConsultantTemplate,
+    "legal-executive": LegalExecutiveTemplate,
+    "paralegal": ParalegalTemplate,
+    // Operations & Project Management
+    "project-manager-pmp": ProjectManagerPMPTemplate,
+    "operations-manager": OperationsManagerTemplate,
+    "pm-executive": PMExecutiveTemplate,
+    "agile-scrum": AgileScrumTemplate,
+    "operations-two-column": OperationsTwoColumnTemplate,
   };
 
   const Template =

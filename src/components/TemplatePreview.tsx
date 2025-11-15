@@ -41,6 +41,42 @@ import { FresherTwoToneTemplate } from "./resume/templates/FresherTwoToneTemplat
 import { FresherCenteredElegantTemplate } from "./resume/templates/FresherCenteredElegantTemplate";
 import { FresherGeometricTemplate } from "./resume/templates/FresherGeometricTemplate";
 import { FresherAchievementTemplate } from "./resume/templates/FresherAchievementTemplate";
+// Healthcare & Medical Templates
+import { MedicalProfessionalTemplate } from "./resume/templates/MedicalProfessionalTemplate";
+import { HealthcareTwoColumnTemplate } from "./resume/templates/HealthcareTwoColumnTemplate";
+import { NurseSpecialistTemplate } from "./resume/templates/NurseSpecialistTemplate";
+import { MedicalExecutiveTemplate } from "./resume/templates/MedicalExecutiveTemplate";
+import { ClinicalMinimalTemplate } from "./resume/templates/ClinicalMinimalTemplate";
+// Education & Teaching Templates
+import { TeacherProfessionalTemplate } from "./resume/templates/TeacherProfessionalTemplate";
+import { AcademicScholarTemplate } from "./resume/templates/AcademicScholarTemplate";
+import { EducatorModernTemplate } from "./resume/templates/EducatorModernTemplate";
+import { TeachingCertifiedTemplate } from "./resume/templates/TeachingCertifiedTemplate";
+import { StudentEducatorTemplate } from "./resume/templates/StudentEducatorTemplate";
+// Finance & Accounting Templates
+import { CPAProfessionalTemplate } from "./resume/templates/CPAProfessionalTemplate";
+import { FinanceAnalystTemplate } from "./resume/templates/FinanceAnalystTemplate";
+import { AccountingExecutiveTemplate } from "./resume/templates/AccountingExecutiveTemplate";
+import { AuditorTemplate } from "./resume/templates/AuditorTemplate";
+import { FinanceTwoColumnTemplate } from "./resume/templates/FinanceTwoColumnTemplate";
+// Sales & Marketing Templates
+import { SalesExecutiveTemplate } from "./resume/templates/SalesExecutiveTemplate";
+import { MarketingProfessionalTemplate } from "./resume/templates/MarketingProfessionalTemplate";
+import { SalesMarketingHybridTemplate } from "./resume/templates/SalesMarketingHybridTemplate";
+import { DigitalMarketerTemplate } from "./resume/templates/DigitalMarketerTemplate";
+import { SalesManagerTemplate } from "./resume/templates/SalesManagerTemplate";
+// Legal & Consulting Templates
+import { AttorneyProfessionalTemplate } from "./resume/templates/AttorneyProfessionalTemplate";
+import { LegalCounselTemplate } from "./resume/templates/LegalCounselTemplate";
+import { ConsultantTemplate } from "./resume/templates/ConsultantTemplate";
+import { LegalExecutiveTemplate } from "./resume/templates/LegalExecutiveTemplate";
+import { ParalegalTemplate } from "./resume/templates/ParalegalTemplate";
+// Operations & Project Management Templates
+import { ProjectManagerPMPTemplate } from "./resume/templates/ProjectManagerPMPTemplate";
+import { OperationsManagerTemplate } from "./resume/templates/OperationsManagerTemplate";
+import { PMExecutiveTemplate } from "./resume/templates/PMExecutiveTemplate";
+import { AgileScrumTemplate } from "./resume/templates/AgileScrumTemplate";
+import { OperationsTwoColumnTemplate } from "./resume/templates/OperationsTwoColumnTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -560,6 +596,42 @@ const templates = {
   "fresher-centered-elegant": FresherCenteredElegantTemplate,
   "fresher-geometric": FresherGeometricTemplate,
   "fresher-achievement": FresherAchievementTemplate,
+  // Healthcare & Medical
+  "medical-professional": MedicalProfessionalTemplate,
+  "healthcare-two-column": HealthcareTwoColumnTemplate,
+  "nurse-specialist": NurseSpecialistTemplate,
+  "medical-executive": MedicalExecutiveTemplate,
+  "clinical-minimal": ClinicalMinimalTemplate,
+  // Education & Teaching
+  "teacher-professional": TeacherProfessionalTemplate,
+  "academic-scholar": AcademicScholarTemplate,
+  "educator-modern": EducatorModernTemplate,
+  "teaching-certified": TeachingCertifiedTemplate,
+  "student-educator": StudentEducatorTemplate,
+  // Finance & Accounting
+  "cpa-professional": CPAProfessionalTemplate,
+  "finance-analyst": FinanceAnalystTemplate,
+  "accounting-executive": AccountingExecutiveTemplate,
+  "auditor": AuditorTemplate,
+  "finance-two-column": FinanceTwoColumnTemplate,
+  // Sales & Marketing
+  "sales-executive": SalesExecutiveTemplate,
+  "marketing-professional": MarketingProfessionalTemplate,
+  "sales-marketing-hybrid": SalesMarketingHybridTemplate,
+  "digital-marketer": DigitalMarketerTemplate,
+  "sales-manager": SalesManagerTemplate,
+  // Legal & Consulting
+  "attorney-professional": AttorneyProfessionalTemplate,
+  "legal-counsel": LegalCounselTemplate,
+  "consultant": ConsultantTemplate,
+  "legal-executive": LegalExecutiveTemplate,
+  "paralegal": ParalegalTemplate,
+  // Operations & Project Management
+  "project-manager-pmp": ProjectManagerPMPTemplate,
+  "operations-manager": OperationsManagerTemplate,
+  "pm-executive": PMExecutiveTemplate,
+  "agile-scrum": AgileScrumTemplate,
+  "operations-two-column": OperationsTwoColumnTemplate,
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({
