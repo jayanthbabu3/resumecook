@@ -9,6 +9,7 @@ interface ScratchBuilderSectionProps {
   section: ResumeSection;
   sectionIndex: number;
   onDelete: (id: string) => void;
+  onUpdateSection: (sectionId: string, updater: (section: ResumeSection) => ResumeSection) => void;
   dragHandleProps?: any;
   themeColor?: string;
 }
@@ -17,11 +18,71 @@ export function ScratchBuilderSection({
   section,
   sectionIndex,
   onDelete,
+  onUpdateSection,
   dragHandleProps,
   themeColor = '#7c3aed',
 }: ScratchBuilderSectionProps) {
-  const { updateField, addArrayItem, removeArrayItem } = useInlineEdit();
+  const { updateField } = useInlineEdit();
   const basePath = `dynamicSections[${sectionIndex}]`;
+
+  // Local add/remove handlers that update the section directly
+  const addArrayItem = (path: string, defaultItem: any) => {
+    onUpdateSection(section.id, (prevSection) => {
+      const newSection = JSON.parse(JSON.stringify(prevSection));
+
+      // Extract the field path after basePath
+      const fieldPath = path.replace(`${basePath}.`, '');
+      const pathParts = fieldPath.split('.');
+
+      let current: any = newSection;
+      for (const part of pathParts) {
+        const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
+        if (arrayMatch) {
+          const [, arrayName, index] = arrayMatch;
+          current = current[arrayName][parseInt(index)];
+        } else {
+          current = current[part];
+        }
+      }
+
+      if (Array.isArray(current)) {
+        if (typeof defaultItem === 'object' && defaultItem !== null) {
+          current.push({ ...defaultItem, id: defaultItem.id || Date.now().toString() });
+        } else {
+          current.push(defaultItem);
+        }
+      }
+
+      return newSection;
+    });
+  };
+
+  const removeArrayItem = (path: string, index: number) => {
+    onUpdateSection(section.id, (prevSection) => {
+      const newSection = JSON.parse(JSON.stringify(prevSection));
+
+      // Extract the field path after basePath
+      const fieldPath = path.replace(`${basePath}.`, '');
+      const pathParts = fieldPath.split('.');
+
+      let current: any = newSection;
+      for (const part of pathParts) {
+        const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
+        if (arrayMatch) {
+          const [, arrayName, arrayIndex] = arrayMatch;
+          current = current[arrayName][parseInt(arrayIndex)];
+        } else {
+          current = current[part];
+        }
+      }
+
+      if (Array.isArray(current)) {
+        current.splice(index, 1);
+      }
+
+      return newSection;
+    });
+  };
 
   const formatDate = (date: string) => {
     if (!date) return '';

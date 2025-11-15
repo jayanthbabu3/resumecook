@@ -260,6 +260,12 @@ export default function ScratchBuilder() {
     toast.success('Section removed');
   };
 
+  const handleUpdateSection = (sectionId: string, updater: (section: ResumeSection) => ResumeSection) => {
+    setSections((prev) =>
+      prev.map((section) => (section.id === sectionId ? updater(section) : section))
+    );
+  };
+
   const handleSave = async () => {
     if (!user) {
       toast.error('Please sign in to save your resume');
@@ -470,6 +476,7 @@ export default function ScratchBuilder() {
                                 section={section}
                                 sectionIndex={index}
                                 onDelete={handleDeleteSection}
+                                onUpdateSection={handleUpdateSection}
                                 dragHandleProps={{ ...attributes, ...listeners }}
                                 themeColor={themeColor}
                               />
