@@ -257,7 +257,17 @@ export default function ScratchBuilder() {
             };
           }
         }
-        // For all other types, keep mock data structure as-is
+        // For all other types with items arrays (experience, education, projects, etc.)
+        else if (previewData.items && Array.isArray(previewData.items)) {
+          // Preserve the items from the variant preview data
+          data = {
+            type: type,
+            items: previewData.items.map((item: any) => ({
+              ...item,
+              id: item.id || generateId(), // Ensure each item has an ID
+            }))
+          };
+        }
 
         // Store variant ID for styling
         (data as any).variantId = variant.id;
