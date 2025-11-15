@@ -161,7 +161,18 @@ export default function ScratchBuilder() {
       const id = generateId();
       const title = variant?.previewData?.title || SECTION_DEFAULT_TITLES[type];
       const order = sections.length;
-      const data = variant?.previewData || getMockSectionData(type);
+
+      // Build the section data with proper type field
+      let data;
+      if (variant?.previewData) {
+        data = {
+          type, // Ensure type is set for rendering
+          ...variant.previewData,
+          variant: variant?.id, // Store the variant ID for rendering
+        };
+      } else {
+        data = getMockSectionData(type);
+      }
 
       return {
         id,
@@ -169,10 +180,7 @@ export default function ScratchBuilder() {
         order,
         enabled: true,
         title,
-        data: {
-          ...data,
-          variant: variant?.id, // Store the variant ID for rendering
-        },
+        data,
       };
     },
     [sections.length]
