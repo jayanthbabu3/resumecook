@@ -303,6 +303,222 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Early Career",
     categorySlug: "freshers",
   },
+  // Healthcare & Medical Templates
+  "medical-professional": {
+    name: "Medical Professional",
+    description:
+      "Clean professional layout with prominent certifications section and patient care metrics for healthcare professionals.",
+    category: "Healthcare",
+    categorySlug: "healthcare-medical",
+  },
+  "healthcare-two-column": {
+    name: "Healthcare Two-Column",
+    description:
+      "Modern two-column design optimized for healthcare workers with licenses and clinical experience sections.",
+    category: "Healthcare",
+    categorySlug: "healthcare-medical",
+  },
+  "nurse-specialist": {
+    name: "Nurse Specialist",
+    description:
+      "Focused template for nursing and clinical roles emphasizing certifications, licenses, and patient outcomes.",
+    category: "Healthcare",
+    categorySlug: "healthcare-medical",
+  },
+  "medical-executive": {
+    name: "Medical Executive",
+    description:
+      "Executive-level design for healthcare administrators with leadership achievements and organizational metrics.",
+    category: "Healthcare",
+    categorySlug: "healthcare-medical",
+  },
+  "clinical-minimal": {
+    name: "Clinical Minimal",
+    description:
+      "Minimal clean design for clinical staff with emphasis on credentials and clinical competencies.",
+    category: "Healthcare",
+    categorySlug: "healthcare-medical",
+  },
+  // Education & Teaching Templates
+  "teacher-professional": {
+    name: "Teacher Professional",
+    description:
+      "Traditional teacher resume with education credentials prominent and student achievement metrics.",
+    category: "Education",
+    categorySlug: "education-teaching",
+  },
+  "academic-scholar": {
+    name: "Academic Scholar",
+    description:
+      "Scholarly template for professors and researchers with publications, research, and academic achievements.",
+    category: "Education",
+    categorySlug: "education-teaching",
+  },
+  "educator-modern": {
+    name: "Educator Modern",
+    description:
+      "Modern design for educators with teaching certifications and classroom management accomplishments.",
+    category: "Education",
+    categorySlug: "education-teaching",
+  },
+  "teaching-certified": {
+    name: "Teaching Certified",
+    description:
+      "Certification-focused template highlighting teaching credentials, licenses, and professional development.",
+    category: "Education",
+    categorySlug: "education-teaching",
+  },
+  "student-educator": {
+    name: "Student Educator",
+    description:
+      "For student teachers and new educators with field experience and practicum highlights.",
+    category: "Education",
+    categorySlug: "education-teaching",
+  },
+  // Finance & Accounting Templates
+  "cpa-professional": {
+    name: "CPA Professional",
+    description:
+      "CPA-focused template with professional certifications prominent and quantifiable financial achievements.",
+    category: "Finance",
+    categorySlug: "finance-accounting",
+  },
+  "finance-analyst": {
+    name: "Finance Analyst",
+    description:
+      "Clean layout for financial analysts emphasizing analytical skills, financial modeling, and data-driven results.",
+    category: "Finance",
+    categorySlug: "finance-accounting",
+  },
+  "accounting-executive": {
+    name: "Accounting Executive",
+    description:
+      "Executive template for senior accounting roles with leadership achievements and financial oversight.",
+    category: "Finance",
+    categorySlug: "finance-accounting",
+  },
+  "auditor": {
+    name: "Auditor Professional",
+    description:
+      "Focused on audit experience with compliance achievements and risk management expertise.",
+    category: "Finance",
+    categorySlug: "finance-accounting",
+  },
+  "finance-two-column": {
+    name: "Finance Two-Column",
+    description:
+      "Two-column finance layout with skills sidebar and detailed experience section for financial professionals.",
+    category: "Finance",
+    categorySlug: "finance-accounting",
+  },
+  // Sales & Marketing Templates
+  "sales-executive": {
+    name: "Sales Executive",
+    description:
+      "Results-driven sales resume emphasizing revenue generated, quota achievement, and client acquisition.",
+    category: "Sales",
+    categorySlug: "sales-marketing",
+  },
+  "marketing-professional": {
+    name: "Marketing Professional",
+    description:
+      "Marketing-focused layout showcasing campaign results, brand growth, and digital marketing expertise.",
+    category: "Marketing",
+    categorySlug: "sales-marketing",
+  },
+  "sales-marketing-hybrid": {
+    name: "Sales & Marketing Hybrid",
+    description:
+      "Combined template for sales and marketing professionals with metrics-driven achievements.",
+    category: "Sales & Marketing",
+    categorySlug: "sales-marketing",
+  },
+  "digital-marketer": {
+    name: "Digital Marketer",
+    description:
+      "Modern design for digital marketing roles highlighting SEO, PPC, social media, and analytics expertise.",
+    category: "Marketing",
+    categorySlug: "sales-marketing",
+  },
+  "sales-manager": {
+    name: "Sales Manager",
+    description:
+      "Management-focused sales template emphasizing team leadership, sales process optimization, and territory growth.",
+    category: "Sales",
+    categorySlug: "sales-marketing",
+  },
+  // Legal & Consulting Templates
+  "attorney-professional": {
+    name: "Attorney Professional",
+    description:
+      "Traditional professional format for attorneys with practice areas, case results, and legal expertise.",
+    category: "Legal",
+    categorySlug: "legal-consulting",
+  },
+  "legal-counsel": {
+    name: "Legal Counsel",
+    description:
+      "For in-house counsel positions emphasizing corporate law, compliance, and risk management.",
+    category: "Legal",
+    categorySlug: "legal-consulting",
+  },
+  "consultant": {
+    name: "Management Consultant",
+    description:
+      "Consulting resume format highlighting client projects, business impact, and industry expertise.",
+    category: "Consulting",
+    categorySlug: "legal-consulting",
+  },
+  "legal-executive": {
+    name: "Legal Executive",
+    description:
+      "For legal executives and partners emphasizing firm leadership, client development, and legal strategy.",
+    category: "Legal",
+    categorySlug: "legal-consulting",
+  },
+  "paralegal": {
+    name: "Paralegal Professional",
+    description:
+      "For paralegals and legal assistants with legal research, case management, and administrative expertise.",
+    category: "Legal",
+    categorySlug: "legal-consulting",
+  },
+  // Operations & Project Management Templates
+  "project-manager-pmp": {
+    name: "Project Manager PMP",
+    description:
+      "PMP-certified PM resume with certifications prominent, project metrics, and stakeholder management.",
+    category: "Project Management",
+    categorySlug: "operations-management",
+  },
+  "operations-manager": {
+    name: "Operations Manager",
+    description:
+      "Operations management focus with process improvements, cost savings, and efficiency metrics.",
+    category: "Operations",
+    categorySlug: "operations-management",
+  },
+  "pm-executive": {
+    name: "PM Executive",
+    description:
+      "Executive PM template for program managers with portfolio oversight and strategic initiative leadership.",
+    category: "Project Management",
+    categorySlug: "operations-management",
+  },
+  "agile-scrum": {
+    name: "Agile Scrum Master",
+    description:
+      "For Agile/Scrum masters highlighting sprint management, team velocity, and agile transformation.",
+    category: "Project Management",
+    categorySlug: "operations-management",
+  },
+  "operations-two-column": {
+    name: "Operations Two-Column",
+    description:
+      "Two-column operations layout with skills and certifications sidebar, process improvement highlights.",
+    category: "Operations",
+    categorySlug: "operations-management",
+  },
 };
 
 export const categoryLabelMap: Record<string, string> = {

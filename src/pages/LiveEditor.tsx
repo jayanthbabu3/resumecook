@@ -91,6 +91,42 @@ import { FresherTwoToneTemplate } from "@/components/resume/templates/FresherTwo
 import { FresherCenteredElegantTemplate } from "@/components/resume/templates/FresherCenteredElegantTemplate";
 import { FresherGeometricTemplate } from "@/components/resume/templates/FresherGeometricTemplate";
 import { FresherAchievementTemplate } from "@/components/resume/templates/FresherAchievementTemplate";
+// Healthcare & Medical Templates
+import { MedicalProfessionalTemplate } from "@/components/resume/templates/MedicalProfessionalTemplate";
+import { HealthcareTwoColumnTemplate } from "@/components/resume/templates/HealthcareTwoColumnTemplate";
+import { NurseSpecialistTemplate } from "@/components/resume/templates/NurseSpecialistTemplate";
+import { MedicalExecutiveTemplate } from "@/components/resume/templates/MedicalExecutiveTemplate";
+import { ClinicalMinimalTemplate } from "@/components/resume/templates/ClinicalMinimalTemplate";
+// Education & Teaching Templates
+import { TeacherProfessionalTemplate } from "@/components/resume/templates/TeacherProfessionalTemplate";
+import { AcademicScholarTemplate } from "@/components/resume/templates/AcademicScholarTemplate";
+import { EducatorModernTemplate } from "@/components/resume/templates/EducatorModernTemplate";
+import { TeachingCertifiedTemplate } from "@/components/resume/templates/TeachingCertifiedTemplate";
+import { StudentEducatorTemplate } from "@/components/resume/templates/StudentEducatorTemplate";
+// Finance & Accounting Templates
+import { CPAProfessionalTemplate } from "@/components/resume/templates/CPAProfessionalTemplate";
+import { FinanceAnalystTemplate } from "@/components/resume/templates/FinanceAnalystTemplate";
+import { AccountingExecutiveTemplate } from "@/components/resume/templates/AccountingExecutiveTemplate";
+import { AuditorTemplate } from "@/components/resume/templates/AuditorTemplate";
+import { FinanceTwoColumnTemplate } from "@/components/resume/templates/FinanceTwoColumnTemplate";
+// Sales & Marketing Templates
+import { SalesExecutiveTemplate } from "@/components/resume/templates/SalesExecutiveTemplate";
+import { MarketingProfessionalTemplate } from "@/components/resume/templates/MarketingProfessionalTemplate";
+import { SalesMarketingHybridTemplate } from "@/components/resume/templates/SalesMarketingHybridTemplate";
+import { DigitalMarketerTemplate } from "@/components/resume/templates/DigitalMarketerTemplate";
+import { SalesManagerTemplate } from "@/components/resume/templates/SalesManagerTemplate";
+// Legal & Consulting Templates
+import { AttorneyProfessionalTemplate } from "@/components/resume/templates/AttorneyProfessionalTemplate";
+import { LegalCounselTemplate } from "@/components/resume/templates/LegalCounselTemplate";
+import { ConsultantTemplate } from "@/components/resume/templates/ConsultantTemplate";
+import { LegalExecutiveTemplate } from "@/components/resume/templates/LegalExecutiveTemplate";
+import { ParalegalTemplate } from "@/components/resume/templates/ParalegalTemplate";
+// Operations & Project Management Templates
+import { ProjectManagerPMPTemplate } from "@/components/resume/templates/ProjectManagerPMPTemplate";
+import { OperationsManagerTemplate } from "@/components/resume/templates/OperationsManagerTemplate";
+import { PMExecutiveTemplate } from "@/components/resume/templates/PMExecutiveTemplate";
+import { AgileScrumTemplate } from "@/components/resume/templates/AgileScrumTemplate";
+import { OperationsTwoColumnTemplate } from "@/components/resume/templates/OperationsTwoColumnTemplate";
 
 const pdfTemplates: Record<string, any> = {
   professional: ProfessionalPDF,
@@ -198,6 +234,42 @@ const displayTemplates: Record<string, any> = {
   "fresher-centered-elegant": FresherCenteredElegantTemplate,
   "fresher-geometric": FresherGeometricTemplate,
   "fresher-achievement": FresherAchievementTemplate,
+  // Healthcare & Medical
+  "medical-professional": MedicalProfessionalTemplate,
+  "healthcare-two-column": HealthcareTwoColumnTemplate,
+  "nurse-specialist": NurseSpecialistTemplate,
+  "medical-executive": MedicalExecutiveTemplate,
+  "clinical-minimal": ClinicalMinimalTemplate,
+  // Education & Teaching
+  "teacher-professional": TeacherProfessionalTemplate,
+  "academic-scholar": AcademicScholarTemplate,
+  "educator-modern": EducatorModernTemplate,
+  "teaching-certified": TeachingCertifiedTemplate,
+  "student-educator": StudentEducatorTemplate,
+  // Finance & Accounting
+  "cpa-professional": CPAProfessionalTemplate,
+  "finance-analyst": FinanceAnalystTemplate,
+  "accounting-executive": AccountingExecutiveTemplate,
+  "auditor": AuditorTemplate,
+  "finance-two-column": FinanceTwoColumnTemplate,
+  // Sales & Marketing
+  "sales-executive": SalesExecutiveTemplate,
+  "marketing-professional": MarketingProfessionalTemplate,
+  "sales-marketing-hybrid": SalesMarketingHybridTemplate,
+  "digital-marketer": DigitalMarketerTemplate,
+  "sales-manager": SalesManagerTemplate,
+  // Legal & Consulting
+  "attorney-professional": AttorneyProfessionalTemplate,
+  "legal-counsel": LegalCounselTemplate,
+  "consultant": ConsultantTemplate,
+  "legal-executive": LegalExecutiveTemplate,
+  "paralegal": ParalegalTemplate,
+  // Operations & Project Management
+  "project-manager-pmp": ProjectManagerPMPTemplate,
+  "operations-manager": OperationsManagerTemplate,
+  "pm-executive": PMExecutiveTemplate,
+  "agile-scrum": AgileScrumTemplate,
+  "operations-two-column": OperationsTwoColumnTemplate,
 };
 
 // Helper function to create empty data for a section type
