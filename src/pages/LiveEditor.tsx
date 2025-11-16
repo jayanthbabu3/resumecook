@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save } from "lucide-react";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { resumeService } from "@/lib/firestore/resumeService";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import type { ResumeData as NewResumeData } from "@/types/resume";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
@@ -498,6 +499,11 @@ const LiveEditor = () => {
                   <Save className="h-4 w-4" />
                   {!isSaving && "Save"}
                 </Button>
+                <FavoriteButton
+                  templateId={templateId}
+                  variant="button"
+                  size="sm"
+                />
                 <ATSScoreButton
                   resumeData={resumeData}
                   templateId={templateId}
@@ -588,6 +594,13 @@ const LiveEditor = () => {
                   </>
                 )}
               </Button>
+
+              <FavoriteButton
+                templateId={templateId}
+                variant="button"
+                size="sm"
+                showLabel
+              />
 
               <ATSScoreButton
                 resumeData={resumeData}

@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TemplatePreview } from "@/components/TemplatePreview";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import { templateMetaMap } from "@/constants/templateMeta";
 import { getCategoryById } from "@/constants/professionCategories";
 
@@ -63,6 +64,16 @@ const TemplateGrid = ({ templates, categoryColor, professionId }: TemplateGridPr
             className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
             onClick={() => navigate(`/dashboard/${professionId}/editor/${template.id}`)}
           >
+            {/* Favorite Button - Top Left */}
+            <div className="absolute top-1.5 left-1.5 md:top-2 md:left-2 z-10">
+              <FavoriteButton
+                templateId={template.id}
+                variant="icon"
+                size="sm"
+                className="scale-75 md:scale-100"
+              />
+            </div>
+
             {/* Template Number Badge */}
             <div
               className="absolute top-1.5 right-1.5 md:top-2 md:right-2 z-10 flex items-center justify-center h-6 w-6 md:h-7 md:w-7 rounded-full text-white text-[10px] md:text-xs font-semibold shadow-lg group-hover:scale-110 transition-transform duration-300"

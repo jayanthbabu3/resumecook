@@ -535,6 +535,123 @@ class ResumeService {
 
     await this.updateResume(resumeId, updates as any);
   }
+
+  // ========== FAVORITE TEMPLATES ==========
+
+  /**
+   * Get user's favorites document reference
+   */
+  private getUserPreferencesRef(userId: string) {
+    return doc(db, 'users', userId, 'preferences', 'favorites');
+  }
+
+  /**
+   * Get user's favorite templates
+   */
+  async getFavoriteTemplates(): Promise<string[]> {
+    const user = auth.currentUser;
+    if (!user) return [];
+
+    try {
+      const docRef = this.getUserPreferencesRef(user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) return [];
+
+      const data = docSnap.data();
+      return Array.isArray(data.templateIds) ? data.templateIds : [];
+    } catch (error) {
+      console.error('Error getting favorite templates:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Check if a template is favorited
+   */
+  async isFavoriteTemplate(templateId: string): Promise<boolean> {
+    const favorites = await this.getFavoriteTemplates();
+    return favorites.includes(templateId);
+  }
+
+  /**
+   * Add template to favorites
+   */
+  async addFavoriteTemplate(templateId: string): Promise<void> {
+    const user = auth.currentUser;
+    if (!user) throw new Error('User not authenticated');
+
+    try {
+      const docRef = this.getUserPreferencesRef(user.uid);
+      const docSnap = await getDoc(docRef);
+
+      let favorites: string[] = [];
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        favorites = Array.isArray(data.templateIds) ? data.templateIds : [];
+      }
+
+      // Add if not already in favorites
+      if (!favorites.includes(templateId)) {
+        favorites.push(templateId);
+        await setDoc(docRef, {
+          templateIds: favorites,
+          updatedAt: serverTimestamp(),
+        }, { merge: true });
+        toast.success('Template added to favorites');
+      }
+    } catch (error) {
+      console.error('Error adding favorite template:', error);
+      toast.error('Failed to add to favorites');
+      throw error;
+    }
+  }
+
+  /**
+   * Remove template from favorites
+   */
+  async removeFavoriteTemplate(templateId: string): Promise<void> {
+    const user = auth.currentUser;
+    if (!user) throw new Error('User not authenticated');
+
+    try {
+      const docRef = this.getUserPreferencesRef(user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        let favorites: string[] = Array.isArray(data.templateIds) ? data.templateIds : [];
+
+        // Remove from favorites
+        favorites = favorites.filter(id => id !== templateId);
+
+        await setDoc(docRef, {
+          templateIds: favorites,
+          updatedAt: serverTimestamp(),
+        }, { merge: true });
+        toast.success('Template removed from favorites');
+      }
+    } catch (error) {
+      console.error('Error removing favorite template:', error);
+      toast.error('Failed to remove from favorites');
+      throw error;
+    }
+  }
+
+  /**
+   * Toggle template favorite status
+   */
+  async toggleFavoriteTemplate(templateId: string): Promise<boolean> {
+    const isFavorite = await this.isFavoriteTemplate(templateId);
+
+    if (isFavorite) {
+      await this.removeFavoriteTemplate(templateId);
+      return false;
+    } else {
+      await this.addFavoriteTemplate(templateId);
+      return true;
+    }
+  }
 }
 
 export const resumeService = new ResumeService();

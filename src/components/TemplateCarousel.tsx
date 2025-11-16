@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { TemplatePreview } from './TemplatePreview';
+import { FavoriteButton } from './FavoriteButton';
 import { cn } from '@/lib/utils';
 
 interface Template {
@@ -126,9 +127,9 @@ export const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
                      <div className="group cursor-pointer bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 rounded-xl p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
                        {/* Template Preview */}
                        <div className="relative">
-                  <div 
+                  <div
                     className="overflow-hidden rounded-lg bg-white shadow-lg group-hover:shadow-2xl transition-shadow duration-300 border border-gray-200"
-                    style={{ 
+                    style={{
                       aspectRatio: '1 / 1.414', // Standard A4 aspect ratio for proper resume display
                       width: '100%',
                       minHeight: itemsPerView === 1 ? '280px' : '350px'
@@ -140,7 +141,16 @@ export const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
                       className="h-full"
                     />
                   </div>
-                  
+
+                  {/* Favorite Button - Top Right */}
+                  <div className="absolute top-2 right-2 z-20">
+                    <FavoriteButton
+                      templateId={template.id}
+                      variant="icon"
+                      size="sm"
+                    />
+                  </div>
+
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
                     <Button

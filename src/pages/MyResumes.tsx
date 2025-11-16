@@ -9,6 +9,7 @@ import {
   Loader2,
   Calendar,
   Download,
+  Heart,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -18,6 +19,8 @@ import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { templateMetaMap } from "@/constants/templateMeta";
 import { useToast } from "@/hooks/use-toast";
 import { CircularScoreIndicator } from "@/components/CircularScoreIndicator";
+import { FavoriteTemplates } from "@/components/FavoriteTemplates";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -134,114 +137,144 @@ const MyResumes = () => {
       </div>
 
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-12">
-        {/* Create New Resume Button */}
-        <div className="mb-8 flex justify-end">
-          <Button
-            size="sm"
-            onClick={() => navigate("/dashboard")}
-            className="gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Create New Resume
-          </Button>
-        </div>
-
-        {/* Resumes Grid */}
-        {resumes.length === 0 ? (
-          <Card className="p-12 text-center">
-            <div className="flex flex-col items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center">
-                <FileText className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">No resumes yet</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Create your first resume from our template library
-                </p>
-                <Button onClick={() => navigate("/dashboard")}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Browse Templates
-                </Button>
-              </div>
-            </div>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {resumes.map((resume) => (
-              <Card
-                key={resume.id}
-                className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
-              >
-                {/* ATS Score Badge - Top Right */}
-                {resume.atsScore && resume.atsScore > 0 && (
-                  <div className="absolute top-4 right-4 z-10">
-                    <CircularScoreIndicator
-                      score={resume.atsScore}
-                      size="sm"
-                      showLabel={false}
-                    />
-                  </div>
+        {/* Tabs */}
+        <Tabs defaultValue="resumes" className="w-full">
+          {/* Tab Navigation */}
+          <div className="flex items-center justify-between mb-6 md:mb-8">
+            <TabsList className="bg-muted/50 border">
+              <TabsTrigger value="resumes" className="gap-2 text-sm md:text-base px-4 md:px-6">
+                <FileText className="h-4 w-4" />
+                <span className="hidden sm:inline">My Resumes</span>
+                <span className="sm:hidden">Resumes</span>
+                {resumes.length > 0 && (
+                  <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary">
+                    {resumes.length}
+                  </span>
                 )}
+              </TabsTrigger>
+              <TabsTrigger value="favorites" className="gap-2 text-sm md:text-base px-4 md:px-6">
+                <Heart className="h-4 w-4" />
+                <span className="hidden sm:inline">Favorites</span>
+                <span className="sm:hidden">Favs</span>
+              </TabsTrigger>
+            </TabsList>
 
-                <div className="p-6">
-                  {/* Resume Info */}
-                  <div className="mb-4 pr-16">
-                    <h3 className="font-semibold text-lg mb-1 truncate">
-                      {resume.title || "Untitled Resume"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {getTemplateName(resume.templateId)}
+            {/* Create New Resume Button */}
+            <Button
+              size="sm"
+              onClick={() => navigate("/dashboard")}
+              className="gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Create New Resume</span>
+              <span className="sm:hidden">New</span>
+            </Button>
+          </div>
+
+          {/* My Resumes Tab */}
+          <TabsContent value="resumes" className="mt-0">
+            {resumes.length === 0 ? (
+              <Card className="p-12 text-center">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center">
+                    <FileText className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">No resumes yet</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Create your first resume from our template library
                     </p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Calendar className="h-3 w-3" />
-                      <span>Updated {formatDate(resume.updatedAt instanceof Date ? resume.updatedAt : resume.updatedAt.toDate())}</span>
-                    </div>
-                  </div>
-
-                  {/* Quick Info */}
-                  <div className="mb-4 space-y-1 text-xs text-muted-foreground">
-                    {resume.isPrimary && (
-                      <p className="truncate font-medium text-primary">Primary Resume</p>
-                    )}
-                    {resume.wordCount && (
-                      <p className="truncate">{resume.wordCount} words</p>
-                    )}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="default"
-                      className="flex-1 gap-2"
-                      onClick={() => navigate(`/editor/${resume.templateId}?resumeId=${resume.id}`)}
-                    >
-                      <Edit className="h-3 w-3" />
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => navigate(`/live-editor/${resume.templateId}?resumeId=${resume.id}`)}
-                    >
-                      <FileText className="h-3 w-3" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setResumeToDelete(resume.id!);
-                        setDeleteDialogOpen(true);
-                      }}
-                    >
-                      <Trash2 className="h-3 w-3 text-destructive" />
+                    <Button onClick={() => navigate("/dashboard")}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Browse Templates
                     </Button>
                   </div>
                 </div>
               </Card>
-            ))}
-          </div>
-        )}
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {resumes.map((resume) => (
+                  <Card
+                    key={resume.id}
+                    className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
+                  >
+                    {/* ATS Score Badge - Top Right */}
+                    {resume.atsScore && resume.atsScore > 0 && (
+                      <div className="absolute top-4 right-4 z-10">
+                        <CircularScoreIndicator
+                          score={resume.atsScore}
+                          size="sm"
+                          showLabel={false}
+                        />
+                      </div>
+                    )}
+
+                    <div className="p-6">
+                      {/* Resume Info */}
+                      <div className="mb-4 pr-16">
+                        <h3 className="font-semibold text-lg mb-1 truncate">
+                          {resume.title || "Untitled Resume"}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {getTemplateName(resume.templateId)}
+                        </p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Calendar className="h-3 w-3" />
+                          <span>Updated {formatDate(resume.updatedAt instanceof Date ? resume.updatedAt : resume.updatedAt.toDate())}</span>
+                        </div>
+                      </div>
+
+                      {/* Quick Info */}
+                      <div className="mb-4 space-y-1 text-xs text-muted-foreground">
+                        {resume.isPrimary && (
+                          <p className="truncate font-medium text-primary">Primary Resume</p>
+                        )}
+                        {resume.wordCount && (
+                          <p className="truncate">{resume.wordCount} words</p>
+                        )}
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="default"
+                          className="flex-1 gap-2"
+                          onClick={() => navigate(`/editor/${resume.templateId}?resumeId=${resume.id}`)}
+                        >
+                          <Edit className="h-3 w-3" />
+                          Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => navigate(`/live-editor/${resume.templateId}?resumeId=${resume.id}`)}
+                        >
+                          <FileText className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            setResumeToDelete(resume.id!);
+                            setDeleteDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 className="h-3 w-3 text-destructive" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* Favorite Templates Tab */}
+          <TabsContent value="favorites" className="mt-0">
+            <FavoriteTemplates />
+          </TabsContent>
+        </Tabs>
       </main>
 
       {/* Delete Confirmation Dialog */}
