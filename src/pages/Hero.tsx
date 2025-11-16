@@ -1419,7 +1419,7 @@ const Hero = () => {
                               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                               </svg>
-                              <span>Download Resume</span>
+                              <span>Download</span>
                             </Button>
                           </div>
                         </div>
@@ -1523,7 +1523,7 @@ const Hero = () => {
                         <div className="w-2 h-2 md:w-3 md:h-3 bg-cyan-400 rounded-full"></div>
                         <div className="ml-2 md:ml-4 text-[10px] md:text-xs font-semibold text-emerald-700">Live Editor - Click to Edit Directly</div>
                       </div>
-                      <button
+                      <Button
                         onClick={async () => {
                           try {
                             const blob = await pdf(
@@ -1543,13 +1543,13 @@ const Hero = () => {
                             console.error("Download error:", error);
                           }
                         }}
-                        className="px-2 md:px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors flex items-center gap-1"
+                        className={cn(primaryButtonClass, "h-9 px-4 text-sm")}
                       >
-                        <svg className="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <span className="text-[10px] md:text-xs text-emerald-600 font-medium">Download PDF</span>
-                      </button>
+                        <span>Download</span>
+                      </Button>
                     </div>
                   </div>
 
