@@ -9,8 +9,6 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   CheckCircle2,
   XCircle,
@@ -37,7 +35,7 @@ interface ATSReportDialogProps {
 export function ATSReportDialog({ isOpen, onClose, report, isAnalyzing }: ATSReportDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 flex flex-col">
         {isAnalyzing ? (
           <AnalyzingLoader />
         ) : report ? (
@@ -86,8 +84,8 @@ function ReportContent({ report }: { report: AtsReport }) {
   const scoreColor = report.score >= 8 ? "#10b981" : report.score >= 6.5 ? "#3b82f6" : report.score >= 5 ? "#f59e0b" : "#ef4444";
 
   return (
-    <>
-      <DialogHeader>
+    <div className="flex flex-col max-h-[90vh]">
+      <DialogHeader className="px-6 pt-6 pb-4 border-b">
         <DialogTitle className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-primary" />
           ATS Score Report
@@ -97,8 +95,8 @@ function ReportContent({ report }: { report: AtsReport }) {
         </DialogDescription>
       </DialogHeader>
 
-      <ScrollArea className="flex-1 pr-4">
-        <div className="space-y-6 pb-6">
+      <div className="flex-1 overflow-y-auto px-6">
+        <div className="space-y-6 py-6">
           {/* Overall Score Section */}
           <div className="flex items-center justify-between gap-6 p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border">
             <div className="flex-1 space-y-2">
@@ -409,7 +407,7 @@ function ReportContent({ report }: { report: AtsReport }) {
             </TabsContent>
           </Tabs>
         </div>
-      </ScrollArea>
-    </>
+      </div>
+    </div>
   );
 }
