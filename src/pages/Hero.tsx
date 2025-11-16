@@ -1054,12 +1054,12 @@ const Hero = () => {
               
               
               <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight text-foreground mb-4 md:mb-6">
-                See How Our <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Resume Editor</span> Works
+                See How Our <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Form-Based Editor</span> Works
               </h2>
-              
+
               <p className="text-xs md:text-sm text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Experience our intuitive editor with real-time preview. Watch how your resume comes to life as you type, 
-                with professional templates that adapt to your content instantly.
+                Traditional form-based editing with real-time preview. Fill out structured forms and watch your resume
+                update instantly - perfect for those who prefer guided input fields.
               </p>
             </div>
 
@@ -1085,10 +1085,10 @@ const Hero = () => {
                   </div>
 
                   {/* Main Editor Layout */}
-                  <div className="flex flex-col md:flex-row gap-6 md:gap-0 h-auto md:h-[650px]">
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-0 h-auto">
                     {/* Left Side - Form Editor */}
-                    <div className="w-full md:w-1/2 bg-gradient-to-br from-slate-50 to-gray-50 border-b md:border-b-0 md:border-r border-gray-200 md:h-full">
-                      <div className="p-2 md:p-4 space-y-2 md:space-y-4 md:h-full md:overflow-y-auto">
+                    <div className="w-full md:w-1/2 bg-gradient-to-br from-slate-50 to-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
+                      <div className="p-2 md:p-4 space-y-2 md:space-y-4">
                         {/* Personal Information */}
                         <div className="space-y-1 md:space-y-2">
                           <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
@@ -1099,18 +1099,24 @@ const Hero = () => {
                             <div className="grid grid-cols-2 gap-1.5 md:gap-2">
                               <div>
                                 <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Full Name</label>
-                                <Input 
-                                  value={demoFormData.fullName}
-                                  onChange={(e) => updateFormData('fullName', e.target.value)}
+                                <Input
+                                  value={liveResumeData.personalInfo.fullName}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    personalInfo: { ...prev.personalInfo, fullName: e.target.value }
+                                  }))}
                                   className="h-6 md:h-7 text-[10px] md:text-sm"
                                   placeholder="Enter your full name"
                                 />
                               </div>
                               <div>
                                 <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Location</label>
-                                <Input 
-                                  value={demoFormData.location}
-                                  onChange={(e) => updateFormData('location', e.target.value)}
+                                <Input
+                                  value={liveResumeData.personalInfo.location}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    personalInfo: { ...prev.personalInfo, location: e.target.value }
+                                  }))}
                                   className="h-6 md:h-7 text-[10px] md:text-sm"
                                   placeholder="Enter your location"
                                 />
@@ -1119,18 +1125,24 @@ const Hero = () => {
                             <div className="grid grid-cols-2 gap-1.5 md:gap-2">
                               <div>
                                 <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Email Address</label>
-                                <Input 
-                                  value={demoFormData.email}
-                                  onChange={(e) => updateFormData('email', e.target.value)}
+                                <Input
+                                  value={liveResumeData.personalInfo.email}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    personalInfo: { ...prev.personalInfo, email: e.target.value }
+                                  }))}
                                   className="h-6 md:h-7 text-[10px] md:text-sm"
                                   placeholder="Enter your email"
                                 />
                               </div>
                               <div>
                                 <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Phone Number</label>
-                                <Input 
-                                  value={demoFormData.phone}
-                                  onChange={(e) => updateFormData('phone', e.target.value)}
+                                <Input
+                                  value={liveResumeData.personalInfo.phone}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    personalInfo: { ...prev.personalInfo, phone: e.target.value }
+                                  }))}
                                   className="h-6 md:h-7 text-[10px] md:text-sm"
                                   placeholder="Enter your phone number"
                                 />
@@ -1146,9 +1158,12 @@ const Hero = () => {
                             <h3 className="text-sm font-bold text-gray-800 capitalize tracking-wider">Professional Summary</h3>
                           </div>
                           <div>
-                            <Textarea 
-                              value={demoFormData.summary}
-                              onChange={(e) => updateFormData('summary', e.target.value)}
+                            <Textarea
+                              value={liveResumeData.personalInfo.summary}
+                              onChange={(e) => setLiveResumeData(prev => ({
+                                ...prev,
+                                personalInfo: { ...prev.personalInfo, summary: e.target.value }
+                              }))}
                               className="h-16 text-sm resize-none"
                               placeholder="Write a brief summary of your professional experience..."
                             />
@@ -1161,23 +1176,35 @@ const Hero = () => {
                             <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-500 rounded-full"></div>
                             <h3 className="text-[10px] md:text-sm font-bold text-gray-800 capitalize tracking-wider">Work Experience</h3>
                           </div>
+
+                          {/* Experience 1 */}
                           <div className="p-2 md:p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
                             <div className="space-y-1.5 md:space-y-2">
                               <div className="grid grid-cols-2 gap-1.5 md:gap-2">
                                 <div>
                                   <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Job Title</label>
-                                  <Input 
-                                    value={demoFormData.jobTitle}
-                                    onChange={(e) => updateFormData('jobTitle', e.target.value)}
+                                  <Input
+                                    value={liveResumeData.experience[0]?.position || ""}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 0 ? { ...exp, position: e.target.value } : exp
+                                      )
+                                    }))}
                                     className="h-6 md:h-7 text-[10px] md:text-sm"
                                     placeholder="Enter job title"
                                   />
                                 </div>
                                 <div>
                                   <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Company</label>
-                                  <Input 
-                                    value={demoFormData.company}
-                                    onChange={(e) => updateFormData('company', e.target.value)}
+                                  <Input
+                                    value={liveResumeData.experience[0]?.company || ""}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 0 ? { ...exp, company: e.target.value } : exp
+                                      )
+                                    }))}
                                     className="h-6 md:h-7 text-[10px] md:text-sm"
                                     placeholder="Enter company name"
                                   />
@@ -1186,19 +1213,29 @@ const Hero = () => {
                               <div className="grid grid-cols-2 gap-2">
                                 <div>
                                   <label className="block text-xs font-medium text-gray-600 mb-1">Start Date</label>
-                                  <Input 
+                                  <Input
                                     type="month"
-                                    value={toMonthInputValue(demoFormData.startDate)}
-                                    onChange={(e) => updateFormData("startDate", e.target.value)}
+                                    value={toMonthInputValue(liveResumeData.experience[0]?.startDate || "")}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 0 ? { ...exp, startDate: e.target.value } : exp
+                                      )
+                                    }))}
                                     className="h-7 text-sm"
                                   />
                                 </div>
                                 <div>
                                   <label className="block text-xs font-medium text-gray-600 mb-1">End Date</label>
-                                  <Input 
+                                  <Input
                                     type="month"
-                                    value={toMonthInputValue(demoFormData.endDate)}
-                                    onChange={(e) => updateFormData("endDate", e.target.value)}
+                                    value={toMonthInputValue(liveResumeData.experience[0]?.endDate || "")}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 0 ? { ...exp, endDate: e.target.value, current: !e.target.value } : exp
+                                      )
+                                    }))}
                                     className="h-7 text-sm"
                                     placeholder="Present"
                                   />
@@ -1206,9 +1243,95 @@ const Hero = () => {
                               </div>
                               <div>
                                 <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
-                                <Textarea 
-                                  value={demoFormData.description}
-                                  onChange={(e) => updateFormData('description', e.target.value)}
+                                <Textarea
+                                  value={liveResumeData.experience[0]?.description || ""}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 0 ? { ...exp, description: e.target.value } : exp
+                                    )
+                                  }))}
+                                  className="h-12 text-sm resize-none"
+                                  placeholder="Describe your role and achievements..."
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Experience 2 */}
+                          <div className="p-2 md:p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
+                            <div className="space-y-1.5 md:space-y-2">
+                              <div className="grid grid-cols-2 gap-1.5 md:gap-2">
+                                <div>
+                                  <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Job Title</label>
+                                  <Input
+                                    value={liveResumeData.experience[1]?.position || ""}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 1 ? { ...exp, position: e.target.value } : exp
+                                      )
+                                    }))}
+                                    className="h-6 md:h-7 text-[10px] md:text-sm"
+                                    placeholder="Enter job title"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Company</label>
+                                  <Input
+                                    value={liveResumeData.experience[1]?.company || ""}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 1 ? { ...exp, company: e.target.value } : exp
+                                      )
+                                    }))}
+                                    className="h-6 md:h-7 text-[10px] md:text-sm"
+                                    placeholder="Enter company name"
+                                  />
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">Start Date</label>
+                                  <Input
+                                    type="month"
+                                    value={toMonthInputValue(liveResumeData.experience[1]?.startDate || "")}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 1 ? { ...exp, startDate: e.target.value } : exp
+                                      )
+                                    }))}
+                                    className="h-7 text-sm"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-medium text-gray-600 mb-1">End Date</label>
+                                  <Input
+                                    type="month"
+                                    value={toMonthInputValue(liveResumeData.experience[1]?.endDate || "")}
+                                    onChange={(e) => setLiveResumeData(prev => ({
+                                      ...prev,
+                                      experience: prev.experience.map((exp, idx) =>
+                                        idx === 1 ? { ...exp, endDate: e.target.value, current: !e.target.value } : exp
+                                      )
+                                    }))}
+                                    className="h-7 text-sm"
+                                    placeholder="Present"
+                                  />
+                                </div>
+                              </div>
+                              <div>
+                                <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
+                                <Textarea
+                                  value={liveResumeData.experience[1]?.description || ""}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 1 ? { ...exp, description: e.target.value } : exp
+                                    )
+                                  }))}
                                   className="h-12 text-sm resize-none"
                                   placeholder="Describe your role and achievements..."
                                 />
@@ -1225,17 +1348,20 @@ const Hero = () => {
                           </div>
                           <div className="space-y-2">
                             <div className="relative">
-                              <Input 
-                                value={skillsInput}
+                              <Input
+                                value={liveResumeData.skills.map(s => s.name).join(', ')}
                                 onChange={(e) => {
-                                  setSkillsInput(e.target.value);
-                                  // Update skills array in real-time as user types
                                   const skillsFromInput = e.target.value.split(',')
                                     .map(skill => skill.trim())
                                     .filter(skill => skill.length > 0);
-                                  setDemoFormData(prev => ({
+                                  setLiveResumeData(prev => ({
                                     ...prev,
-                                    skills: skillsFromInput
+                                    skills: skillsFromInput.map((name, idx) => ({
+                                      id: `skill-${idx}`,
+                                      name,
+                                      level: 8,
+                                      category: "core" as const
+                                    }))
                                   }));
                                 }}
                                 className="h-7 text-sm pr-8"
@@ -1243,7 +1369,6 @@ const Hero = () => {
                                 onKeyDown={(e) => {
                                   if (e.key === 'Enter') {
                                     e.preventDefault();
-                                    // Just prevent form submission, let the onChange handle it
                                   }
                                 }}
                               />
@@ -1260,72 +1385,59 @@ const Hero = () => {
                     <div className="w-full md:w-1/2 bg-white">
                       <div
                         ref={previewContainerRef}
-                        className="p-4 md:h-full md:overflow-hidden"
+                        className="p-4"
                       >
                         {/* Preview Header */}
                         <div className="mb-4">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-sm font-semibold text-gray-800">Live Preview</h3>
-                            <button 
+                            <Button
                               onClick={async () => {
                                 try {
-                                  // Convert demo data to proper ResumeData format
-                                  const resumeData = convertToResumeData();
-                                  
-                                  // Generate PDF using the actual ModernPDF template
+                                  // Generate PDF using the Executive template
                                   const blob = await pdf(
-                                    <ModernPDF resumeData={resumeData} themeColor="#3b82f6" />
+                                    <ExecutivePDF resumeData={liveResumeData} themeColor="#3b82f6" />
                                   ).toBlob();
-                                  
+
                                   // Create download link
                                   const url = URL.createObjectURL(blob);
                                   const link = document.createElement("a");
                                   link.href = url;
-                                  link.download = `${demoFormData.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                                  link.download = `${liveResumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
                                   document.body.appendChild(link);
                                   link.click();
                                   document.body.removeChild(link);
-                                  
+
                                   // Cleanup
                                   URL.revokeObjectURL(url);
                                 } catch (error) {
                                   console.error("Download error:", error);
                                 }
                               }}
-                              className="px-3 py-1 bg-primary/10 rounded-full border border-primary/20 hover:bg-primary/20 transition-colors flex items-center gap-1"
+                              className={cn(primaryButtonClass, "h-9 px-3")}
                             >
-                              <svg className="w-3 h-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                               </svg>
-                              <span className="text-xs text-primary font-medium">Download Resume</span>
-                            </button>
+                            </Button>
                           </div>
                         </div>
 
-                        {/* Resume Preview - Use actual ModernTemplate */}
-                        <div className="bg-white border border-gray-200 rounded-lg shadow-sm md:h-full overflow-hidden">
-                          <div
-                            className="relative"
-                            style={{
-                              height: `${Math.max(previewHeight * previewScale, 420)}px`,
-                            }}
-                          >
+                        {/* Resume Preview - Use Executive Template */}
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-auto">
+                          <div className="flex justify-center py-4">
                             <div
-                              className="absolute inset-x-0 top-0 flex justify-center"
+                              style={{
+                                transform: `scale(${previewScale})`,
+                                transformOrigin: "top center",
+                              }}
+                              key={JSON.stringify(liveResumeData)}
                             >
-                              <div
-                                style={{
-                                  transform: `scale(${previewScale})`,
-                                  transformOrigin: "top center",
-                                }}
-                                key={JSON.stringify(demoFormData)}
-                              >
-                                <div ref={previewContentRef} className="w-[816px]">
-                                  <ModernTemplate 
-                                    resumeData={convertToResumeData()} 
-                                    themeColor="#3b82f6"
-                                  />
-                                </div>
+                              <div ref={previewContentRef} className="w-[816px]">
+                                <ExecutiveTemplate
+                                  resumeData={liveResumeData}
+                                  themeColor="#3b82f6"
+                                />
                               </div>
                             </div>
                           </div>
@@ -1410,7 +1522,7 @@ const Hero = () => {
                         <div className="w-2 h-2 md:w-3 md:h-3 bg-cyan-400 rounded-full"></div>
                         <div className="ml-2 md:ml-4 text-[10px] md:text-xs font-semibold text-emerald-700">Live Editor - Click to Edit Directly</div>
                       </div>
-                      <button
+                      <Button
                         onClick={async () => {
                           try {
                             const blob = await pdf(
@@ -1430,13 +1542,12 @@ const Hero = () => {
                             console.error("Download error:", error);
                           }
                         }}
-                        className="px-2 md:px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors flex items-center gap-1"
+                        className={cn(buttonBaseClass, "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl h-9 px-3")}
                       >
-                        <svg className="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <span className="text-[10px] md:text-xs text-emerald-600 font-medium">Download PDF</span>
-                      </button>
+                      </Button>
                     </div>
                   </div>
 
