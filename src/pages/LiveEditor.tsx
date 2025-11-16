@@ -44,6 +44,22 @@ import { FresherTwoTonePDF } from "@/components/resume/pdf/FresherTwoTonePDF";
 import { FresherCenteredElegantPDF } from "@/components/resume/pdf/FresherCenteredElegantPDF";
 import { FresherGeometricPDF } from "@/components/resume/pdf/FresherGeometricPDF";
 import { FresherAchievementPDF } from "@/components/resume/pdf/FresherAchievementPDF";
+// New Software Development PDF Templates
+import { JavaDeveloperPDF } from "@/components/resume/pdf/JavaDeveloperPDF";
+import { DotNetDeveloperPDF } from "@/components/resume/pdf/DotNetDeveloperPDF";
+import { DevOpsEngineerPDF } from "@/components/resume/pdf/DevOpsEngineerPDF";
+import { CloudArchitectPDF } from "@/components/resume/pdf/CloudArchitectPDF";
+import { MobileDeveloperPDF } from "@/components/resume/pdf/MobileDeveloperPDF";
+import { ReactNativeDeveloperPDF } from "@/components/resume/pdf/ReactNativeDeveloperPDF";
+import { DataEngineerPDF } from "@/components/resume/pdf/DataEngineerPDF";
+import { MachineLearningEngineerPDF } from "@/components/resume/pdf/MachineLearningEngineerPDF";
+import { QAAutomationEngineerPDF } from "@/components/resume/pdf/QAAutomationEngineerPDF";
+import { SecurityEngineerPDF } from "@/components/resume/pdf/SecurityEngineerPDF";
+import { PythonDeveloperPDF } from "@/components/resume/pdf/PythonDeveloperPDF";
+import { NodeJSDeveloperPDF } from "@/components/resume/pdf/NodeJSDeveloperPDF";
+import { ReactDeveloperPDF } from "@/components/resume/pdf/ReactDeveloperPDF";
+import { GoDeveloperPDF } from "@/components/resume/pdf/GoDeveloperPDF";
+import { KubernetesEngineerPDF } from "@/components/resume/pdf/KubernetesEngineerPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { getTemplateDefaults, type ResumeData } from "@/pages/Editor";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
@@ -128,6 +144,22 @@ import { OperationsManagerTemplate } from "@/components/resume/templates/Operati
 import { PMExecutiveTemplate } from "@/components/resume/templates/PMExecutiveTemplate";
 import { AgileScrumTemplate } from "@/components/resume/templates/AgileScrumTemplate";
 import { OperationsTwoColumnTemplate } from "@/components/resume/templates/OperationsTwoColumnTemplate";
+// New Software Development Templates
+import { JavaDeveloperTemplate } from "@/components/resume/templates/JavaDeveloperTemplate";
+import { DotNetDeveloperTemplate } from "@/components/resume/templates/DotNetDeveloperTemplate";
+import { DevOpsEngineerTemplate } from "@/components/resume/templates/DevOpsEngineerTemplate";
+import { CloudArchitectTemplate } from "@/components/resume/templates/CloudArchitectTemplate";
+import { MobileDeveloperTemplate } from "@/components/resume/templates/MobileDeveloperTemplate";
+import { ReactNativeDeveloperTemplate } from "@/components/resume/templates/ReactNativeDeveloperTemplate";
+import { DataEngineerTemplate } from "@/components/resume/templates/DataEngineerTemplate";
+import { MachineLearningEngineerTemplate } from "@/components/resume/templates/MachineLearningEngineerTemplate";
+import { QAAutomationEngineerTemplate } from "@/components/resume/templates/QAAutomationEngineerTemplate";
+import { SecurityEngineerTemplate } from "@/components/resume/templates/SecurityEngineerTemplate";
+import { PythonDeveloperTemplate } from "@/components/resume/templates/PythonDeveloperTemplate";
+import { NodeJSDeveloperTemplate } from "@/components/resume/templates/NodeJSDeveloperTemplate";
+import { ReactDeveloperTemplate } from "@/components/resume/templates/ReactDeveloperTemplate";
+import { GoDeveloperTemplate } from "@/components/resume/templates/GoDeveloperTemplate";
+import { KuberneteEngineerTemplate } from "@/components/resume/templates/KuberneteEngineerTemplate";
 
 const pdfTemplates: Record<string, any> = {
   professional: ProfessionalPDF,
@@ -173,6 +205,22 @@ const pdfTemplates: Record<string, any> = {
   "fresher-centered-elegant": FresherCenteredElegantPDF,
   "fresher-geometric": FresherGeometricPDF,
   "fresher-achievement": FresherAchievementPDF,
+  // New Software Development Templates
+  "java-developer": JavaDeveloperPDF,
+  "dotnet-developer": DotNetDeveloperPDF,
+  "devops-engineer": DevOpsEngineerPDF,
+  "cloud-architect": CloudArchitectPDF,
+  "mobile-developer": MobileDeveloperPDF,
+  "react-native-developer": ReactNativeDeveloperPDF,
+  "data-engineer": DataEngineerPDF,
+  "machine-learning-engineer": MachineLearningEngineerPDF,
+  "qa-automation-engineer": QAAutomationEngineerPDF,
+  "security-engineer": SecurityEngineerPDF,
+  "python-developer": PythonDeveloperPDF,
+  "nodejs-developer": NodeJSDeveloperPDF,
+  "react-developer": ReactDeveloperPDF,
+  "go-developer": GoDeveloperPDF,
+  "kubernetes-engineer": KubernetesEngineerPDF,
 };
 
 // Templates that support inline editing
@@ -206,7 +254,13 @@ const inlineEditableTemplates = [
   "legal-executive", "paralegal",
   // Operations & Project Management
   "project-manager-pmp", "operations-manager", "pm-executive",
-  "agile-scrum", "operations-two-column"
+  "agile-scrum", "operations-two-column",
+  // New Software Development Templates
+  "java-developer", "dotnet-developer", "devops-engineer",
+  "cloud-architect", "mobile-developer", "react-native-developer",
+  "data-engineer", "machine-learning-engineer", "qa-automation-engineer",
+  "security-engineer", "python-developer", "nodejs-developer",
+  "react-developer", "go-developer", "kubernetes-engineer"
 ];
 
 const displayTemplates: Record<string, any> = {
@@ -289,6 +343,22 @@ const displayTemplates: Record<string, any> = {
   "pm-executive": PMExecutiveTemplate,
   "agile-scrum": AgileScrumTemplate,
   "operations-two-column": OperationsTwoColumnTemplate,
+  // New Software Development Templates
+  "java-developer": JavaDeveloperTemplate,
+  "dotnet-developer": DotNetDeveloperTemplate,
+  "devops-engineer": DevOpsEngineerTemplate,
+  "cloud-architect": CloudArchitectTemplate,
+  "mobile-developer": MobileDeveloperTemplate,
+  "react-native-developer": ReactNativeDeveloperTemplate,
+  "data-engineer": DataEngineerTemplate,
+  "machine-learning-engineer": MachineLearningEngineerTemplate,
+  "qa-automation-engineer": QAAutomationEngineerTemplate,
+  "security-engineer": SecurityEngineerTemplate,
+  "python-developer": PythonDeveloperTemplate,
+  "nodejs-developer": NodeJSDeveloperTemplate,
+  "react-developer": ReactDeveloperTemplate,
+  "go-developer": GoDeveloperTemplate,
+  "kubernetes-engineer": KuberneteEngineerTemplate,
 };
 
 const LiveEditor = () => {

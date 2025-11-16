@@ -79,6 +79,22 @@ import { OperationsManagerTemplate } from "./templates/OperationsManagerTemplate
 import { PMExecutiveTemplate } from "./templates/PMExecutiveTemplate";
 import { AgileScrumTemplate } from "./templates/AgileScrumTemplate";
 import { OperationsTwoColumnTemplate } from "./templates/OperationsTwoColumnTemplate";
+// New Software Development Templates
+import { JavaDeveloperTemplate } from "./templates/JavaDeveloperTemplate";
+import { DotNetDeveloperTemplate } from "./templates/DotNetDeveloperTemplate";
+import { DevOpsEngineerTemplate } from "./templates/DevOpsEngineerTemplate";
+import { CloudArchitectTemplate } from "./templates/CloudArchitectTemplate";
+import { MobileDeveloperTemplate } from "./templates/MobileDeveloperTemplate";
+import { ReactNativeDeveloperTemplate } from "./templates/ReactNativeDeveloperTemplate";
+import { DataEngineerTemplate } from "./templates/DataEngineerTemplate";
+import { MachineLearningEngineerTemplate } from "./templates/MachineLearningEngineerTemplate";
+import { QAAutomationEngineerTemplate } from "./templates/QAAutomationEngineerTemplate";
+import { SecurityEngineerTemplate } from "./templates/SecurityEngineerTemplate";
+import { PythonDeveloperTemplate } from "./templates/PythonDeveloperTemplate";
+import { NodeJSDeveloperTemplate } from "./templates/NodeJSDeveloperTemplate";
+import { ReactDeveloperTemplate } from "./templates/ReactDeveloperTemplate";
+import { GoDeveloperTemplate } from "./templates/GoDeveloperTemplate";
+import { KuberneteEngineerTemplate } from "./templates/KuberneteEngineerTemplate";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
@@ -305,6 +321,22 @@ export const EditableResumePreview = ({
     "pm-executive": PMExecutiveTemplate,
     "agile-scrum": AgileScrumTemplate,
     "operations-two-column": OperationsTwoColumnTemplate,
+    // New Software Development Templates
+    "java-developer": JavaDeveloperTemplate,
+    "dotnet-developer": DotNetDeveloperTemplate,
+    "devops-engineer": DevOpsEngineerTemplate,
+    "cloud-architect": CloudArchitectTemplate,
+    "mobile-developer": MobileDeveloperTemplate,
+    "react-native-developer": ReactNativeDeveloperTemplate,
+    "data-engineer": DataEngineerTemplate,
+    "machine-learning-engineer": MachineLearningEngineerTemplate,
+    "qa-automation-engineer": QAAutomationEngineerTemplate,
+    "security-engineer": SecurityEngineerTemplate,
+    "python-developer": PythonDeveloperTemplate,
+    "nodejs-developer": NodeJSDeveloperTemplate,
+    "react-developer": ReactDeveloperTemplate,
+    "go-developer": GoDeveloperTemplate,
+    "kubernetes-engineer": KuberneteEngineerTemplate,
   };
 
   const Template =

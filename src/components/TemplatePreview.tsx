@@ -77,6 +77,22 @@ import { OperationsManagerTemplate } from "./resume/templates/OperationsManagerT
 import { PMExecutiveTemplate } from "./resume/templates/PMExecutiveTemplate";
 import { AgileScrumTemplate } from "./resume/templates/AgileScrumTemplate";
 import { OperationsTwoColumnTemplate } from "./resume/templates/OperationsTwoColumnTemplate";
+// New Software Development Templates
+import { JavaDeveloperTemplate } from "./resume/templates/JavaDeveloperTemplate";
+import { DotNetDeveloperTemplate } from "./resume/templates/DotNetDeveloperTemplate";
+import { DevOpsEngineerTemplate } from "./resume/templates/DevOpsEngineerTemplate";
+import { CloudArchitectTemplate } from "./resume/templates/CloudArchitectTemplate";
+import { MobileDeveloperTemplate } from "./resume/templates/MobileDeveloperTemplate";
+import { ReactNativeDeveloperTemplate } from "./resume/templates/ReactNativeDeveloperTemplate";
+import { DataEngineerTemplate } from "./resume/templates/DataEngineerTemplate";
+import { MachineLearningEngineerTemplate } from "./resume/templates/MachineLearningEngineerTemplate";
+import { QAAutomationEngineerTemplate } from "./resume/templates/QAAutomationEngineerTemplate";
+import { SecurityEngineerTemplate } from "./resume/templates/SecurityEngineerTemplate";
+import { PythonDeveloperTemplate } from "./resume/templates/PythonDeveloperTemplate";
+import { NodeJSDeveloperTemplate } from "./resume/templates/NodeJSDeveloperTemplate";
+import { ReactDeveloperTemplate } from "./resume/templates/ReactDeveloperTemplate";
+import { GoDeveloperTemplate } from "./resume/templates/GoDeveloperTemplate";
+import { KuberneteEngineerTemplate } from "./resume/templates/KuberneteEngineerTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -1365,6 +1381,22 @@ const templates = {
   "pm-executive": PMExecutiveTemplate,
   "agile-scrum": AgileScrumTemplate,
   "operations-two-column": OperationsTwoColumnTemplate,
+  // New Software Development Templates
+  "java-developer": JavaDeveloperTemplate,
+  "dotnet-developer": DotNetDeveloperTemplate,
+  "devops-engineer": DevOpsEngineerTemplate,
+  "cloud-architect": CloudArchitectTemplate,
+  "mobile-developer": MobileDeveloperTemplate,
+  "react-native-developer": ReactNativeDeveloperTemplate,
+  "data-engineer": DataEngineerTemplate,
+  "machine-learning-engineer": MachineLearningEngineerTemplate,
+  "qa-automation-engineer": QAAutomationEngineerTemplate,
+  "security-engineer": SecurityEngineerTemplate,
+  "python-developer": PythonDeveloperTemplate,
+  "nodejs-developer": NodeJSDeveloperTemplate,
+  "react-developer": ReactDeveloperTemplate,
+  "go-developer": GoDeveloperTemplate,
+  "kubernetes-engineer": KuberneteEngineerTemplate,
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({

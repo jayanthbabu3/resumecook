@@ -519,6 +519,112 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Operations",
     categorySlug: "operations-management",
   },
+  // New Software Development Templates
+  "java-developer": {
+    name: "Java Professional",
+    description:
+      "Enterprise Java template with Spring Boot focus, highlighting microservices and API development expertise.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "dotnet-developer": {
+    name: ".NET Professional",
+    description:
+      "Microsoft-inspired clean design for .NET developers with ASP.NET Core and Azure cloud experience.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "devops-engineer": {
+    name: "DevOps Specialist",
+    description:
+      "Tech-forward template for DevOps engineers emphasizing CI/CD, containerization, and cloud automation.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "cloud-architect": {
+    name: "Cloud Solutions Architect",
+    description:
+      "Executive-level template for cloud architects highlighting multi-cloud expertise and infrastructure design.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "mobile-developer": {
+    name: "Mobile Developer",
+    description:
+      "Modern mobile-focused template for iOS/Android developers with native and cross-platform experience.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "react-native-developer": {
+    name: "React Native Developer",
+    description:
+      "Cross-platform mobile development template emphasizing React Native and JavaScript expertise.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "data-engineer": {
+    name: "Data Engineer",
+    description:
+      "Data-driven template for engineers building ETL pipelines, data warehouses, and big data solutions.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "machine-learning-engineer": {
+    name: "ML Engineer",
+    description:
+      "AI/ML focused template highlighting deep learning, model deployment, and MLOps expertise.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "qa-automation-engineer": {
+    name: "QA Automation Engineer",
+    description:
+      "Test automation template emphasizing frameworks, CI/CD integration, and quality assurance expertise.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "security-engineer": {
+    name: "Security Engineer",
+    description:
+      "Cybersecurity template for engineers specializing in penetration testing, SIEM, and compliance.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "python-developer": {
+    name: "Python Developer",
+    description:
+      "Python-focused template for developers working with Django, Flask, FastAPI, and data processing.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "nodejs-developer": {
+    name: "Node.js Developer",
+    description:
+      "Backend Node.js template emphasizing Express, NestJS, microservices, and event-driven architecture.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "react-developer": {
+    name: "React Developer",
+    description:
+      "Frontend React template highlighting component architecture, TypeScript, and modern state management.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "go-developer": {
+    name: "Go Developer",
+    description:
+      "Minimalist Go/Golang template for developers building high-performance systems and microservices.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "kubernetes-engineer": {
+    name: "Kubernetes Engineer",
+    description:
+      "Container orchestration template for K8s specialists focusing on cloud-native and DevOps practices.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
 };
 
 export const categoryLabelMap: Record<string, string> = {
