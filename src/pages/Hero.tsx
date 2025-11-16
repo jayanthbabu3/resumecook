@@ -125,7 +125,7 @@ const Hero = () => {
   );
   const neutralButtonClass = cn(
     buttonBaseClass,
-    "border border-border/70 text-foreground hover:bg-muted/50",
+    "border border-border/70 text-foreground hover:bg-muted/50 hover:text-foreground",
   );
   const outlinePrimaryButtonClass = cn(
     buttonBaseClass,
@@ -424,6 +424,7 @@ const Hero = () => {
                 <Button
                   variant="outline"
                   className={neutralButtonClass}
+                  onClick={() => navigate("/dashboard")}
                 >
                   View Templates
                 </Button>
@@ -955,7 +956,7 @@ const Hero = () => {
                 <div
                   key={template.id}
                   className="group relative bg-white rounded-xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
-                  onClick={() => navigate(`/editor/${template.id}`)}
+                  onClick={() => navigate(`/dashboard/all/editor/${template.id}`)}
                 >
                   {/* Template Preview */}
                   <div className="relative h-72 bg-gray-50 overflow-hidden">
@@ -974,7 +975,7 @@ const Hero = () => {
                         className="shadow-lg text-xs md:text-sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/editor/${template.id}`);
+                          navigate(`/dashboard/all/editor/${template.id}`);
                         }}
                       >
                         Form Editor
@@ -984,7 +985,7 @@ const Hero = () => {
                         className="shadow-lg text-xs md:text-sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/live-editor/${template.id}`);
+                          navigate(`/dashboard/all/live-editor/${template.id}`);
                         }}
                       >
                         Live Editor
@@ -1339,8 +1340,8 @@ const Hero = () => {
             {/* Call to Action */}
             <div className="text-center mt-12">
               <div className="inline-flex flex-col sm:flex-row gap-3">
-                <Button className={primaryButtonClass}>Start Creating Your Resume</Button>
-                <Button variant="outline" className={outlinePrimaryButtonClass}>
+                <Button className={primaryButtonClass} onClick={() => navigate("/dashboard")}>Start Creating Your Resume</Button>
+                <Button variant="outline" className={outlinePrimaryButtonClass} onClick={() => navigate("/dashboard")}>
                   Explore All Templates
                 </Button>
               </div>
@@ -1640,6 +1641,7 @@ const Hero = () => {
               <Button
                 variant="outline"
                 className={neutralButtonClass}
+                onClick={() => navigate("/dashboard")}
               >
                 View Examples
               </Button>

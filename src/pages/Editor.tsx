@@ -63,8 +63,9 @@ import { ATSScoreButton } from "@/components/ATSScoreButton";
 const gradeMap: Record<AtsReport["grade"], { label: string; tone: string }> = {
   excellent: { label: "ATS ready", tone: "text-emerald-600" },
   strong: { label: "Strong match", tone: "text-blue-600" },
-  ok: { label: "Needs refinement", tone: "text-amber-600" },
-  weak: { label: "High risk", tone: "text-rose-600" },
+  good: { label: "Good foundation", tone: "text-green-600" },
+  fair: { label: "Needs refinement", tone: "text-amber-600" },
+  poor: { label: "High risk", tone: "text-rose-600" },
 };
 
 export interface ResumeData {
