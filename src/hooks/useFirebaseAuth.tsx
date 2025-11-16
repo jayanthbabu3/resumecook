@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { 
-  User, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
+import {
+  User,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   sendEmailVerification,
@@ -14,6 +14,7 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
+import { incrementUsersCount } from '@/lib/firestore/statsService';
 
 interface UserProfile {
   fullName: string;
@@ -151,6 +152,14 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
         // Create new profile
         await setDoc(doc(db, 'users', result.user.uid), googleProfileData);
         setUserProfile(googleProfileData);
+
+        // Increment users count for new user
+        try {
+          await incrementUsersCount();
+        } catch (error) {
+          console.error('Error incrementing users count:', error);
+        }
+
         toast.success('Welcome! Your account has been created with Google.');
       } else {
         // Update existing profile with latest Google data
@@ -226,7 +235,14 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
       
       await setDoc(doc(db, 'users', result.user.uid), profileData);
       setUserProfile(profileData);
-      
+
+      // Increment users count in stats
+      try {
+        await incrementUsersCount();
+      } catch (error) {
+        console.error('Error incrementing users count:', error);
+      }
+
       toast.success('Account created successfully! Please check your email to verify your account.');
       navigate('/profile-completion');
     } catch (error: any) {

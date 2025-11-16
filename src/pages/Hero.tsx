@@ -16,12 +16,17 @@ import { ExecutiveTemplate } from "@/components/resume/templates/ExecutiveTempla
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { cn } from "@/lib/utils";
+import { useAppStats } from "@/hooks/useAppStats";
+import { formatCount, incrementDownloadsCount } from "@/lib/firestore/statsService";
 
 // Register fonts for PDF generation
 registerPDFFonts();
 
 const Hero = () => {
   const navigate = useNavigate();
+
+  // Get real-time stats from Firestore
+  const { stats, loading: statsLoading } = useAppStats();
 
   // State for interactive demo form
   const [demoFormData, setDemoFormData] = useState({
@@ -433,7 +438,9 @@ const Hero = () => {
                 {/* Stats */}
                 <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-6 md:gap-8 pt-2 md:pt-4">
                   <div className="text-center">
-                    <div className="text-base md:text-lg font-bold text-primary">2.4k+</div>
+                    <div className="text-base md:text-lg font-bold text-primary">
+                      {statsLoading ? "..." : formatCount(stats?.usersCount || 0)}
+                    </div>
                     <div className="text-[10px] sm:text-xs text-muted-foreground">Active Users</div>
                   </div>
                   <div className="text-center">
@@ -441,8 +448,10 @@ const Hero = () => {
                     <div className="text-[10px] sm:text-xs text-muted-foreground">ATS Compatible</div>
             </div>
                   <div className="text-center">
-                    <div className="text-base md:text-lg font-bold text-primary">4.9</div>
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">User Rating</div>
+                    <div className="text-base md:text-lg font-bold text-primary">
+                      {statsLoading ? "..." : formatCount(stats?.downloadsCount || 0)}
+                    </div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">Downloads</div>
           </div>
         </div>
               </div>
@@ -1410,6 +1419,9 @@ const Hero = () => {
 
                                   // Cleanup
                                   URL.revokeObjectURL(url);
+
+                                  // Track download in Firestore
+                                  await incrementDownloadsCount();
                                 } catch (error) {
                                   console.error("Download error:", error);
                                 }
@@ -1538,6 +1550,9 @@ const Hero = () => {
                             document.body.removeChild(link);
 
                             URL.revokeObjectURL(url);
+
+                            // Track download in Firestore
+                            await incrementDownloadsCount();
                           } catch (error) {
                             console.error("Download error:", error);
                           }
