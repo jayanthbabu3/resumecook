@@ -7,6 +7,7 @@ import { resumeService } from "@/lib/firestore/resumeService";
 import type { ResumeData as NewResumeData } from "@/types/resume";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { pdf } from "@react-pdf/renderer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProfessionalPDF } from "@/components/resume/pdf/ProfessionalPDF";
@@ -290,7 +291,7 @@ const displayTemplates: Record<string, any> = {
 };
 
 const LiveEditor = () => {
-  const { templateId } = useParams<{ templateId: string }>();
+  const { templateId, professionId } = useParams<{ templateId: string; professionId?: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const resumeId = searchParams.get("resumeId");
@@ -298,6 +299,9 @@ const LiveEditor = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(() =>
     getTemplateDefaults(templateId || "professional")
   );
+
+  // Determine back navigation path based on whether we're in a nested route
+  const backPath = professionId ? `/dashboard/${professionId}` : "/dashboard";
   const [themeColor, setThemeColor] = useState("#7c3aed");
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [editorMode, setEditorMode] = useState<"live" | "form">("live");
@@ -428,7 +432,7 @@ const LiveEditor = () => {
   }, [currentResumeId]);
 
   const handleSwitchToFormEditor = () => {
-    navigate(`/editor/${templateId}`);
+    navigate(professionId ? `/dashboard/${professionId}/editor/${templateId}` : `/editor/${templateId}`);
   };
 
   return (
@@ -437,6 +441,11 @@ const LiveEditor = () => {
 
       <div className="border-b bg-card/80 backdrop-blur-sm shadow-sm">
         <div className="container mx-auto px-4 py-3">
+          {/* Breadcrumbs - Show on desktop */}
+          <div className="hidden md:block mb-3">
+            <Breadcrumbs />
+          </div>
+
           {/* Mobile Layout */}
           <div className="flex flex-col gap-3 md:hidden">
             <div className="flex items-center justify-between">
@@ -444,7 +453,7 @@ const LiveEditor = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => navigate(backPath)}
                   className="hover:bg-accent"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
@@ -516,7 +525,7 @@ const LiveEditor = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate(backPath)}
                 className="hover:bg-accent"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />

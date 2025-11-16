@@ -9,6 +9,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MigrationHandler } from "@/components/MigrationHandler";
 import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
+import ProfessionTemplates from "./pages/ProfessionTemplates";
 import Editor from "./pages/Editor";
 import LiveEditor from "./pages/LiveEditor";
 import ScratchBuilder from "./pages/ScratchBuilder";
@@ -39,10 +40,11 @@ const App = () => (
             {/* Temporarily removed ProtectedRoute for easier development - TODO: Re-enable before production */}
             <Route path="/profile-completion" element={<ProfileCompletion />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/:professionId" element={<ProfessionTemplates />} />
+            <Route path="/dashboard/:professionId/editor/:templateId" element={<Editor />} />
+            <Route path="/dashboard/:professionId/live-editor/:templateId" element={<LiveEditor />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-resumes" element={<MyResumes />} />
-            <Route path="/editor/:templateId" element={<Editor />} />
-            <Route path="/live-editor/:templateId" element={<LiveEditor />} />
             <Route path="/builder/scratch" element={<ScratchBuilder />} />
 
             {/* Original protected routes (commented out for development):

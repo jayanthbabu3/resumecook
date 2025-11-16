@@ -1808,7 +1808,7 @@ const formatTemplateName = (id?: string) => {
 };
 
 const Editor = () => {
-  const { templateId } = useParams<{ templateId: string }>();
+  const { templateId, professionId } = useParams<{ templateId: string; professionId?: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const resumeId = searchParams.get("resumeId");
@@ -2211,18 +2211,30 @@ const Editor = () => {
   const categoryLabel =
     categoryLabelMap[categorySlug] || templateMeta?.category || "Templates";
 
-  const editorBreadcrumbItems = [
-    { label: "Dashboard", path: "/dashboard" },
-    { label: templateDisplayName },
-  ];
+  // Determine back navigation path based on whether we're in a nested route
+  const backPath = professionId ? `/dashboard/${professionId}` : "/dashboard";
+
+  // Build breadcrumbs - they will be auto-generated from the URL by the Breadcrumbs component
+  // But we can also provide custom breadcrumbs if needed
+  const editorBreadcrumbItems = professionId
+    ? undefined // Let Breadcrumbs component auto-generate from URL
+    : [
+        { label: "Dashboard", path: "/dashboard" },
+        { label: templateDisplayName },
+      ];
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       {/* Fixed Header Section */}
       <div className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm shadow-sm">
         <div className="container mx-auto px-4 py-3">
+          {/* Breadcrumbs - Show on desktop */}
+          <div className="hidden md:block mb-3">
+            <Breadcrumbs items={editorBreadcrumbItems} />
+          </div>
+
           {/* Mobile Layout */}
           <div className="flex flex-col gap-3 md:hidden">
             <div className="flex items-center justify-between">
@@ -2230,7 +2242,7 @@ const Editor = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => navigate(backPath)}
                   className="hover:bg-accent"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
@@ -2247,7 +2259,7 @@ const Editor = () => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => navigate(`/live-editor/${templateId}`)}
+                onClick={() => navigate(professionId ? `/dashboard/${professionId}/live-editor/${templateId}` : `/live-editor/${templateId}`)}
               >
                 <Edit3 className="h-4 w-4 mr-2" />
                 Live
@@ -2302,7 +2314,7 @@ const Editor = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate(backPath)}
                 className="hover:bg-accent"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -2317,7 +2329,7 @@ const Editor = () => {
 
             {/* Center Section - Tabs */}
             <div className="flex justify-center">
-              <Tabs value="form" onValueChange={(v) => v === "live" && navigate(`/live-editor/${templateId}`)}>
+              <Tabs value="form" onValueChange={(v) => v === "live" && navigate(professionId ? `/dashboard/${professionId}/live-editor/${templateId}` : `/live-editor/${templateId}`)}>
                 <TabsList className="bg-muted/50 border">
                   <TabsTrigger value="live" className="gap-2 text-sm">
                     <Edit3 className="h-4 w-4" />
