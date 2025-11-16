@@ -956,7 +956,7 @@ const Hero = () => {
                 <div
                   key={template.id}
                   className="group relative bg-white rounded-xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
-                  onClick={() => navigate(`/editor/${template.id}`)}
+                  onClick={() => navigate(`/dashboard/all/editor/${template.id}`)}
                 >
                   {/* Template Preview */}
                   <div className="relative h-72 bg-gray-50 overflow-hidden">
@@ -975,7 +975,7 @@ const Hero = () => {
                         className="shadow-lg text-xs md:text-sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/editor/${template.id}`);
+                          navigate(`/dashboard/all/editor/${template.id}`);
                         }}
                       >
                         Form Editor
@@ -985,7 +985,7 @@ const Hero = () => {
                         className="shadow-lg text-xs md:text-sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/live-editor/${template.id}`);
+                          navigate(`/dashboard/all/live-editor/${template.id}`);
                         }}
                       >
                         Live Editor
