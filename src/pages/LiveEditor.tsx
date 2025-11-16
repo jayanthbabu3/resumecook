@@ -442,31 +442,9 @@ const LiveEditor = () => {
 
       <div className="border-b bg-card/80 backdrop-blur-sm shadow-sm">
         <div className="container mx-auto px-4 py-3">
-          {/* Breadcrumbs - Show on desktop */}
-          <div className="hidden md:block mb-3">
-            <Breadcrumbs />
-          </div>
-
           {/* Mobile Layout */}
           <div className="flex flex-col gap-3 md:hidden">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigate(backPath)}
-                  className="hover:bg-accent"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-                <div className="border-l border-border h-6" />
-                <div>
-                  <h1 className="text-lg font-semibold text-primary">Live Editor</h1>
-                  <p className="text-xs text-muted-foreground">Click to edit</p>
-                </div>
-              </div>
-            </div>
+            <Breadcrumbs />
             <div className="flex items-center justify-between gap-2">
               <Button
                 variant="outline"
@@ -526,22 +504,9 @@ const LiveEditor = () => {
 
           {/* Desktop Layout - 3 Column Grid */}
           <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-4">
-            {/* Left Section */}
-            <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate(backPath)}
-                className="hover:bg-accent"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
-              </Button>
-              <div className="border-l border-border h-8" />
-              <div>
-                <h1 className="text-lg font-semibold text-primary">Live Editor</h1>
-                <p className="text-xs text-muted-foreground">Click any field to edit directly</p>
-              </div>
+            {/* Left Section - Breadcrumbs */}
+            <div className="flex items-center">
+              <Breadcrumbs />
             </div>
 
             {/* Center Section - Tabs */}

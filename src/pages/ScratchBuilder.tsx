@@ -1,7 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Download, Save, ArrowLeft, Loader2, GripVertical } from 'lucide-react';
+import { Download, Save, Loader2, GripVertical } from 'lucide-react';
+import { Header } from '@/components/Header';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import {
   DndContext,
   DragEndEvent,
@@ -426,64 +428,102 @@ export default function ScratchBuilder() {
   return (
     <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-        {/* Header */}
-        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/dashboard')}
-                className="gap-2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-              <div>
-                <h1 className="text-xl font-bold">Create Resume from Scratch</h1>
-                <p className="text-xs text-muted-foreground">
-                  Click sections from the right panel to add them to your resume
-                </p>
+        <Header />
+
+        {/* Subheader */}
+        <div className="sticky top-0 z-10 bg-card/80 backdrop-blur-sm border-b shadow-sm">
+          <div className="container mx-auto px-4 py-3">
+            {/* Mobile Layout */}
+            <div className="flex flex-col gap-3 md:hidden">
+              <Breadcrumbs />
+              <div className="flex items-center justify-end gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportPDF}
+                  disabled={isExporting || sections.length === 0}
+                  className="gap-2"
+                >
+                  {isExporting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Exporting...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4" />
+                      Export PDF
+                    </>
+                  )}
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={isSaving || !user}
+                  className="gap-2"
+                >
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      Save
+                    </>
+                  )}
+                </Button>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleExportPDF}
-                disabled={isExporting || sections.length === 0}
-                className="gap-2"
-              >
-                {isExporting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Exporting...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4" />
-                    Export PDF
-                  </>
-                )}
-              </Button>
-              <Button
-                size="sm"
-                onClick={handleSave}
-                disabled={isSaving || !user}
-                className="gap-2"
-              >
-                {isSaving ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4" />
-                    Save
-                  </>
-                )}
-              </Button>
+
+            {/* Desktop Layout */}
+            <div className="hidden md:flex md:items-center md:justify-between md:gap-4">
+              {/* Breadcrumbs */}
+              <div className="flex items-center">
+                <Breadcrumbs />
+              </div>
+
+              {/* Controls */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportPDF}
+                  disabled={isExporting || sections.length === 0}
+                  className="gap-2"
+                >
+                  {isExporting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Exporting...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4" />
+                      Export PDF
+                    </>
+                  )}
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={isSaving || !user}
+                  className="gap-2"
+                >
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      Save
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
