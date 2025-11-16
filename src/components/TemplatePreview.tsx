@@ -499,7 +499,740 @@ const getTemplateSpecificData = (templateId: string): ResumeData => {
     };
   }
 
-  // Default sample data for remaining templates (software, premium-universal, premium-pro, modern, minimal, professional)
+  // Healthcare & Medical templates
+  if (['medical-professional', 'healthcare-two-column', 'nurse-specialist', 'medical-executive', 'clinical-minimal'].includes(templateId)) {
+    const isExecutive = templateId === 'medical-executive';
+    const isNurse = templateId === 'nurse-specialist';
+
+    return {
+      personalInfo: {
+        fullName: isNurse ? "Jennifer Rodriguez" : "Dr. Sarah Williams",
+        title: isExecutive ? "Chief Medical Officer" : isNurse ? "Registered Nurse - ICU Specialist" : "Physician - Internal Medicine",
+        email: isNurse ? "j.rodriguez@email.com" : "dr.williams@email.com",
+        phone: "+1 (555) 234-5678",
+        location: isExecutive ? "Houston, TX" : "New York, NY",
+        summary: isExecutive
+          ? "Visionary healthcare executive with 18+ years of clinical and administrative leadership. Board-certified physician with expertise in patient care excellence, operational efficiency, and strategic planning. Proven track record in transforming healthcare delivery systems."
+          : isNurse
+          ? "Dedicated Registered Nurse with 6+ years of critical care experience. Specialized in intensive care unit operations, patient advocacy, and emergency response. Committed to providing compassionate, evidence-based nursing care."
+          : "Board-certified internist with 10+ years providing comprehensive primary care. Expertise in chronic disease management, preventive medicine, and patient-centered care. Passionate about improving patient outcomes through evidence-based practice.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: isExecutive ? "Metropolitan Healthcare System" : isNurse ? "St. Mary's Medical Center" : "City General Hospital",
+          position: isExecutive ? "Chief Medical Officer" : isNurse ? "ICU Registered Nurse" : "Attending Physician",
+          startDate: isExecutive ? "2018-01" : isNurse ? "2021-03" : "2019-06",
+          endDate: "present",
+          current: true,
+          description: isExecutive
+            ? "Lead medical staff of 400+ physicians across 8 hospital locations\nDeveloped quality improvement initiatives reducing readmissions by 25%\nOversee clinical operations with $150M annual budget\nChampion patient safety programs achieving top tier quality metrics"
+            : isNurse
+            ? "Provide critical care nursing for ICU patients with complex conditions\nMonitor patient vital signs and administer medications safely\nCollaborate with multidisciplinary team on patient care plans\nMentor new graduate nurses and nursing students"
+            : "Manage panel of 2,000+ patients in internal medicine practice\nDiagnose and treat acute and chronic medical conditions\nCoordinate care with specialists and healthcare team\nImplement preventive care strategies improving patient health outcomes",
+        },
+        {
+          id: "exp-2",
+          company: isExecutive ? "Regional Medical Center" : isNurse ? "Community Hospital" : "University Medical Center",
+          position: isExecutive ? "Medical Director" : isNurse ? "Medical-Surgical Nurse" : "Resident Physician",
+          startDate: isExecutive ? "2012-03" : isNurse ? "2019-01" : "2016-07",
+          endDate: isExecutive ? "2017-12" : isNurse ? "2021-02" : "2019-05",
+          current: false,
+          description: isExecutive
+            ? "Directed clinical operations for 150-bed hospital\nLed physician recruitment and credentialing processes\nImplemented electronic health records system\nEstablished clinical protocols improving care quality"
+            : isNurse
+            ? "Provided nursing care for post-operative and medical patients\nAdministered medications and treatments per physician orders\nDocumented patient assessments in electronic health records\nParticipated in unit quality improvement initiatives"
+            : "Completed 3-year internal medicine residency program\nManaged inpatient and outpatient care under supervision\nParticipated in teaching rounds and case presentations\nDeveloped clinical skills in diagnosis and treatment",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: isNurse ? "State University" : "Johns Hopkins University",
+          degree: isNurse ? "Bachelor of Science in Nursing" : isExecutive ? "Doctor of Medicine" : "Doctor of Medicine",
+          field: isNurse ? "Nursing" : "Medicine",
+          startDate: isNurse ? "2015-09" : "2008-09",
+          endDate: isNurse ? "2019-05" : "2012-05",
+        },
+      ],
+      skills: isNurse
+        ? [
+            { id: "skill-1", name: "Critical Care Nursing" },
+            { id: "skill-2", name: "Patient Assessment" },
+            { id: "skill-3", name: "IV Therapy" },
+            { id: "skill-4", name: "Ventilator Management" },
+            { id: "skill-5", name: "Emergency Response" },
+            { id: "skill-6", name: "Electronic Health Records" },
+            { id: "skill-7", name: "ACLS Certified" },
+            { id: "skill-8", name: "Patient Advocacy" },
+          ]
+        : [
+            { id: "skill-1", name: "Internal Medicine" },
+            { id: "skill-2", name: "Patient Care" },
+            { id: "skill-3", name: "Diagnosis & Treatment" },
+            { id: "skill-4", name: "Electronic Health Records" },
+            { id: "skill-5", name: "Chronic Disease Management" },
+            { id: "skill-6", name: "Preventive Medicine" },
+            { id: "skill-7", name: "Healthcare Leadership" },
+            { id: "skill-8", name: "Quality Improvement" },
+          ],
+      sections: [],
+    };
+  }
+
+  // Finance & Accounting templates
+  if (['cpa-professional', 'finance-analyst', 'accounting-executive', 'auditor', 'finance-two-column'].includes(templateId)) {
+    const isCPA = templateId === 'cpa-professional';
+    const isAuditor = templateId === 'auditor';
+    const isExecutive = templateId === 'accounting-executive';
+
+    return {
+      personalInfo: {
+        fullName: isAuditor ? "Michael Anderson" : "Sarah Johnson",
+        title: isExecutive ? "Chief Financial Officer" : isCPA ? "Certified Public Accountant" : isAuditor ? "Senior Internal Auditor" : "Senior Financial Analyst",
+        email: isAuditor ? "m.anderson@email.com" : "sarah.johnson@email.com",
+        phone: "+1 (555) 345-6789",
+        location: isExecutive ? "Chicago, IL" : "New York, NY",
+        summary: isExecutive
+          ? "Strategic finance executive with 15+ years driving financial performance and business growth. CPA with expertise in financial planning, risk management, and corporate governance. Track record of optimizing operations and delivering shareholder value."
+          : isCPA
+          ? "Licensed CPA with 8+ years providing comprehensive accounting and tax services. Expertise in financial reporting, tax compliance, and audit preparation. Committed to delivering accurate, timely financial solutions."
+          : isAuditor
+          ? "Experienced internal auditor with 7+ years evaluating organizational controls and processes. Skilled in risk assessment, compliance testing, and audit reporting. Strong analytical abilities and attention to detail."
+          : "Results-driven financial analyst with 6+ years providing strategic insights and financial modeling. Proficient in financial planning, budgeting, and forecasting. Strong analytical skills with focus on driving business decisions.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: isExecutive ? "Fortune 500 Corporation" : isCPA ? "Anderson & Associates CPA" : isAuditor ? "Global Enterprises Inc" : "Investment Group LLC",
+          position: isExecutive ? "Chief Financial Officer" : isCPA ? "Senior CPA" : isAuditor ? "Senior Internal Auditor" : "Senior Financial Analyst",
+          startDate: isExecutive ? "2019-01" : "2021-03",
+          endDate: "present",
+          current: true,
+          description: isExecutive
+            ? "Oversee all financial operations for $2B revenue organization\nLead financial planning and analysis for strategic initiatives\nManage team of 50+ finance and accounting professionals\nPresent financial results to board of directors and investors"
+            : isCPA
+            ? "Prepare and review financial statements and tax returns\nConduct audit engagements for diverse client portfolio\nProvide tax planning and compliance services\nAdvise clients on financial reporting and internal controls"
+            : isAuditor
+            ? "Plan and execute internal audit engagements across organization\nAssess effectiveness of internal controls and risk management\nPrepare detailed audit reports with findings and recommendations\nMonitor remediation of audit issues and control deficiencies"
+            : "Develop financial models and forecasts to support strategic planning\nAnalyze financial performance and identify trends and variances\nPrepare monthly financial reports and executive presentations\nCollaborate with business units on budgeting and planning",
+        },
+        {
+          id: "exp-2",
+          company: isExecutive ? "Technology Innovations Inc" : isCPA ? "Big Four Accounting Firm" : isAuditor ? "Regional Bank Corp" : "Manufacturing Company",
+          position: isExecutive ? "VP of Finance" : isCPA ? "Staff Accountant" : isAuditor ? "Internal Auditor" : "Financial Analyst",
+          startDate: isExecutive ? "2014-06" : isCPA ? "2018-01" : "2019-06",
+          endDate: isExecutive ? "2018-12" : isCPA ? "2021-02" : "2021-02",
+          current: false,
+          description: isExecutive
+            ? "Managed accounting, treasury, and financial planning functions\nLed successful IPO preparation and financial due diligence\nImplemented financial systems improving reporting efficiency\nReduced operating costs by 20% through process improvements"
+            : isCPA
+            ? "Performed audit procedures and prepared working papers\nAssisted in preparation of tax returns and financial statements\nConducted research on accounting and tax matters\nSupported senior staff on complex client engagements"
+            : isAuditor
+            ? "Conducted audit testing of financial and operational controls\nDocumented business processes and control procedures\nAssisted in fraud investigations and special projects\nPrepared audit work papers and documentation"
+            : "Analyzed financial data and prepared variance reports\nAssisted in annual budgeting and quarterly forecasting\nCreated presentations for management review meetings\nSupported month-end close and financial reporting processes",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: isExecutive ? "Wharton School of Business" : "University of Illinois",
+          degree: isExecutive ? "Master of Business Administration" : "Bachelor of Science",
+          field: isExecutive ? "Finance" : "Accounting",
+          startDate: isExecutive ? "2011-09" : "2014-09",
+          endDate: isExecutive ? "2013-06" : "2018-05",
+        },
+      ],
+      skills: isCPA
+        ? [
+            { id: "skill-1", name: "GAAP" },
+            { id: "skill-2", name: "Tax Preparation" },
+            { id: "skill-3", name: "Financial Auditing" },
+            { id: "skill-4", name: "QuickBooks" },
+            { id: "skill-5", name: "Excel" },
+            { id: "skill-6", name: "Financial Reporting" },
+            { id: "skill-7", name: "CPA License" },
+            { id: "skill-8", name: "Internal Controls" },
+          ]
+        : isAuditor
+        ? [
+            { id: "skill-1", name: "Internal Auditing" },
+            { id: "skill-2", name: "Risk Assessment" },
+            { id: "skill-3", name: "COSO Framework" },
+            { id: "skill-4", name: "SOX Compliance" },
+            { id: "skill-5", name: "Data Analytics" },
+            { id: "skill-6", name: "Audit Planning" },
+            { id: "skill-7", name: "Report Writing" },
+            { id: "skill-8", name: "ACL/IDEA" },
+          ]
+        : [
+            { id: "skill-1", name: "Financial Modeling" },
+            { id: "skill-2", name: "Financial Analysis" },
+            { id: "skill-3", name: "Excel" },
+            { id: "skill-4", name: "Budgeting & Forecasting" },
+            { id: "skill-5", name: "SQL" },
+            { id: "skill-6", name: "PowerPoint" },
+            { id: "skill-7", name: "SAP/Oracle" },
+            { id: "skill-8", name: "Financial Reporting" },
+          ],
+      sections: [],
+    };
+  }
+
+  // Education & Teaching templates
+  if (['teacher-professional', 'academic-scholar', 'educator-modern', 'teaching-certified', 'student-educator'].includes(templateId)) {
+    const isAcademic = templateId === 'academic-scholar';
+
+    return {
+      personalInfo: {
+        fullName: "Lisa Martinez",
+        title: isAcademic ? "Professor of English Literature" : "High School Mathematics Teacher",
+        email: "lisa.martinez@email.com",
+        phone: "+1 (555) 456-7890",
+        location: isAcademic ? "Cambridge, MA" : "Portland, OR",
+        summary: isAcademic
+          ? "Distinguished scholar with 12+ years teaching and researching English literature. Published author with expertise in 19th century American literature. Passionate about fostering critical thinking and literary analysis skills in students."
+          : "Dedicated mathematics educator with 8+ years inspiring students to excel in STEM. Experienced in curriculum development, differentiated instruction, and student-centered learning. Committed to creating engaging, inclusive classroom environments.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: isAcademic ? "Harvard University" : "Lincoln High School",
+          position: isAcademic ? "Associate Professor" : "Mathematics Teacher",
+          startDate: isAcademic ? "2018-09" : "2019-08",
+          endDate: "present",
+          current: true,
+          description: isAcademic
+            ? "Teach undergraduate and graduate courses in American literature\nAdvise doctoral students on dissertation research\nPublished 15+ peer-reviewed articles in top academic journals\nServe on university curriculum and tenure committees"
+            : "Teach Algebra, Geometry, and AP Calculus to 150+ students\nDevelop engaging lesson plans aligned with state standards\nImplement technology-enhanced learning strategies\nMentor students participating in math competitions and STEM clubs",
+        },
+        {
+          id: "exp-2",
+          company: isAcademic ? "Boston College" : "Jefferson Middle School",
+          position: isAcademic ? "Assistant Professor" : "Math Teacher",
+          startDate: isAcademic ? "2013-09" : "2017-08",
+          endDate: isAcademic ? "2018-08" : "2019-06",
+          current: false,
+          description: isAcademic
+            ? "Taught survey courses in British and American literature\nDeveloped new curriculum for digital humanities program\nPresented research at national and international conferences\nReceived teaching excellence award in 2016"
+            : "Taught 7th and 8th grade mathematics courses\nDifferentiated instruction to meet diverse student needs\nCollaborated with colleagues on interdisciplinary projects\nSponsored after-school tutoring and math club",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: isAcademic ? "Yale University" : "State University",
+          degree: isAcademic ? "Ph.D." : "Master of Arts in Teaching",
+          field: isAcademic ? "English Literature" : "Mathematics Education",
+          startDate: isAcademic ? "2007-09" : "2015-09",
+          endDate: isAcademic ? "2013-05" : "2017-05",
+        },
+      ],
+      skills: isAcademic
+        ? [
+            { id: "skill-1", name: "Literary Analysis" },
+            { id: "skill-2", name: "Research & Writing" },
+            { id: "skill-3", name: "Curriculum Development" },
+            { id: "skill-4", name: "Academic Publishing" },
+            { id: "skill-5", name: "Student Advising" },
+            { id: "skill-6", name: "Public Speaking" },
+            { id: "skill-7", name: "Digital Humanities" },
+            { id: "skill-8", name: "Grant Writing" },
+          ]
+        : [
+            { id: "skill-1", name: "Mathematics Instruction" },
+            { id: "skill-2", name: "Curriculum Development" },
+            { id: "skill-3", name: "Classroom Management" },
+            { id: "skill-4", name: "Differentiated Instruction" },
+            { id: "skill-5", name: "Google Classroom" },
+            { id: "skill-6", name: "Student Assessment" },
+            { id: "skill-7", name: "Parent Communication" },
+            { id: "skill-8", name: "STEM Integration" },
+          ],
+      sections: [],
+    };
+  }
+
+  // Sales & Marketing templates
+  if (['sales-executive', 'marketing-professional', 'sales-marketing-hybrid', 'digital-marketer', 'sales-manager'].includes(templateId)) {
+    const isDigital = templateId === 'digital-marketer';
+    const isSales = ['sales-executive', 'sales-manager'].includes(templateId);
+
+    return {
+      personalInfo: {
+        fullName: isSales ? "James Patterson" : "Amanda Chen",
+        title: isSales ? "Sales Director" : isDigital ? "Digital Marketing Manager" : "Marketing Manager",
+        email: isSales ? "j.patterson@email.com" : "amanda.chen@email.com",
+        phone: "+1 (555) 567-8901",
+        location: isSales ? "Atlanta, GA" : "Los Angeles, CA",
+        summary: isSales
+          ? "Dynamic sales leader with 10+ years driving revenue growth and building high-performing teams. Proven track record exceeding quotas and expanding market share. Expert in consultative selling and strategic account management."
+          : isDigital
+          ? "Results-driven digital marketer with 6+ years creating data-driven campaigns. Expert in SEO, SEM, social media, and content marketing. Passionate about leveraging analytics to optimize marketing ROI."
+          : "Strategic marketing professional with 7+ years developing integrated marketing campaigns. Experience in brand management, content strategy, and digital marketing. Strong analytical and creative problem-solving skills.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: isSales ? "Enterprise Software Solutions" : isDigital ? "E-commerce Startup" : "Consumer Brands Inc",
+          position: isSales ? "Sales Director" : isDigital ? "Digital Marketing Manager" : "Marketing Manager",
+          startDate: "2020-03",
+          endDate: "present",
+          current: true,
+          description: isSales
+            ? "Lead sales team of 25 representatives achieving $50M annual revenue\nDevelop and execute strategic sales plans expanding into new markets\nManage key enterprise accounts and C-level relationships\nExceeded annual quota by average of 125% for 4 consecutive years"
+            : isDigital
+            ? "Manage digital marketing budget of $2M across multiple channels\nDevelop and execute SEO strategy increasing organic traffic by 150%\nRun paid advertising campaigns on Google, Facebook, and LinkedIn\nAnalyze campaign performance and optimize for ROI improvements"
+            : "Develop and execute integrated marketing campaigns for product launches\nManage brand positioning and messaging across all channels\nOversee content creation for website, social media, and email marketing\nAnalyze market trends and competitive landscape to inform strategy",
+        },
+        {
+          id: "exp-2",
+          company: isSales ? "Tech Sales Corp" : isDigital ? "Digital Agency" : "Marketing Solutions LLC",
+          position: isSales ? "Senior Sales Representative" : isDigital ? "SEO Specialist" : "Marketing Coordinator",
+          startDate: isSales ? "2016-01" : "2019-06",
+          endDate: isSales ? "2020-02" : "2020-02",
+          current: false,
+          description: isSales
+            ? "Managed territory generating $8M in annual sales revenue\nProspected and closed new business with Fortune 500 companies\nConsistently ranked top 3 sales performer company-wide\nMentored new sales representatives on best practices"
+            : isDigital
+            ? "Conducted keyword research and on-page SEO optimization\nCreated SEO content strategy improving search rankings\nManaged Google Analytics and Search Console reporting\nCollaborated with content team on SEO-optimized blog posts"
+            : "Assisted in planning and executing marketing campaigns\nCreated content for social media and email newsletters\nCoordinated events and trade show participation\nTracked marketing metrics and prepared performance reports",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: isSales ? "University of Georgia" : "University of Southern California",
+          degree: "Bachelor of Business Administration",
+          field: isSales ? "Sales & Marketing" : "Marketing",
+          startDate: "2012-09",
+          endDate: "2016-05",
+        },
+      ],
+      skills: isSales
+        ? [
+            { id: "skill-1", name: "B2B Sales" },
+            { id: "skill-2", name: "Account Management" },
+            { id: "skill-3", name: "Salesforce" },
+            { id: "skill-4", name: "Negotiation" },
+            { id: "skill-5", name: "Pipeline Management" },
+            { id: "skill-6", name: "Sales Strategy" },
+            { id: "skill-7", name: "Team Leadership" },
+            { id: "skill-8", name: "Consultative Selling" },
+          ]
+        : isDigital
+        ? [
+            { id: "skill-1", name: "SEO/SEM" },
+            { id: "skill-2", name: "Google Analytics" },
+            { id: "skill-3", name: "Google Ads" },
+            { id: "skill-4", name: "Facebook Ads" },
+            { id: "skill-5", name: "Email Marketing" },
+            { id: "skill-6", name: "Content Marketing" },
+            { id: "skill-7", name: "Marketing Automation" },
+            { id: "skill-8", name: "Data Analysis" },
+          ]
+        : [
+            { id: "skill-1", name: "Marketing Strategy" },
+            { id: "skill-2", name: "Brand Management" },
+            { id: "skill-3", name: "Digital Marketing" },
+            { id: "skill-4", name: "Content Creation" },
+            { id: "skill-5", name: "Social Media Marketing" },
+            { id: "skill-6", name: "Market Research" },
+            { id: "skill-7", name: "Campaign Management" },
+            { id: "skill-8", name: "Adobe Creative Suite" },
+          ],
+      sections: [],
+    };
+  }
+
+  // Legal & Consulting templates
+  if (['attorney-professional', 'legal-counsel', 'consultant', 'legal-executive', 'paralegal'].includes(templateId)) {
+    const isParalegal = templateId === 'paralegal';
+    const isConsultant = templateId === 'consultant';
+
+    return {
+      personalInfo: {
+        fullName: isParalegal ? "Maria Garcia" : isConsultant ? "David Thompson" : "Robert Mitchell",
+        title: isParalegal ? "Senior Paralegal" : isConsultant ? "Management Consultant" : "Corporate Attorney",
+        email: isParalegal ? "m.garcia@email.com" : isConsultant ? "d.thompson@email.com" : "r.mitchell@email.com",
+        phone: "+1 (555) 678-9012",
+        location: isConsultant ? "San Francisco, CA" : "Washington, DC",
+        summary: isParalegal
+          ? "Experienced paralegal with 7+ years supporting complex litigation and corporate matters. Skilled in legal research, document preparation, and case management. Detail-oriented professional committed to excellence in legal support."
+          : isConsultant
+          ? "Strategic management consultant with 9+ years advising Fortune 500 clients. Expertise in business transformation, operational excellence, and change management. Proven track record delivering measurable results and client value."
+          : "Accomplished corporate attorney with 12+ years advising on mergers, acquisitions, and securities matters. Juris Doctor from top-tier law school. Trusted advisor to C-suite executives on complex business transactions.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: isParalegal ? "Smith & Associates Law Firm" : isConsultant ? "McKinsey & Company" : "Wilson & Partners LLP",
+          position: isParalegal ? "Senior Paralegal" : isConsultant ? "Senior Consultant" : "Partner",
+          startDate: isParalegal ? "2020-03" : isConsultant ? "2019-06" : "2021-01",
+          endDate: "present",
+          current: true,
+          description: isParalegal
+            ? "Manage case files and coordinate discovery for complex litigation\nConduct legal research and draft memoranda and pleadings\nOrganize and maintain document databases using e-discovery platforms\nLiaison with clients, courts, and opposing counsel"
+            : isConsultant
+            ? "Lead consulting engagements for Fortune 500 clients across industries\nDevelop business strategies and operational improvement recommendations\nManage project teams and client relationships\nDeliver executive presentations and implementation support"
+            : "Advise clients on mergers, acquisitions, and corporate governance\nNegotiate and draft complex transaction documents\nManage multimillion-dollar deals from due diligence to closing\nLead team of 5 associates on high-profile matters",
+        },
+        {
+          id: "exp-2",
+          company: isParalegal ? "Corporate Legal Department" : isConsultant ? "Bain & Company" : "Morrison & Foerster LLP",
+          position: isParalegal ? "Paralegal" : isConsultant ? "Consultant" : "Senior Associate",
+          startDate: isParalegal ? "2018-01" : isConsultant ? "2016-09" : "2015-09",
+          endDate: isParalegal ? "2020-02" : isConsultant ? "2019-05" : "2020-12",
+          current: false,
+          description: isParalegal
+            ? "Supported corporate legal team on contracts and compliance\nDrafted and reviewed commercial agreements and amendments\nMaintained corporate records and regulatory filings\nAssisted with intellectual property matters and trademark searches"
+            : isConsultant
+            ? "Analyzed business operations and identified improvement opportunities\nConducted market research and competitive analysis\nDeveloped financial models and business cases\nPresented findings and recommendations to client executives"
+            : "Represented clients in securities offerings and corporate transactions\nConducted legal research and drafted transaction documents\nPerformed due diligence for public and private company deals\nAdvised on SEC compliance and corporate governance matters",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: isParalegal ? "Georgetown University" : isConsultant ? "Harvard Business School" : "Yale Law School",
+          degree: isParalegal ? "Paralegal Certificate" : isConsultant ? "Master of Business Administration" : "Juris Doctor",
+          field: isParalegal ? "Paralegal Studies" : isConsultant ? "Business Administration" : "Law",
+          startDate: isParalegal ? "2016-09" : isConsultant ? "2014-09" : "2012-09",
+          endDate: isParalegal ? "2017-12" : isConsultant ? "2016-06" : "2015-05",
+        },
+      ],
+      skills: isParalegal
+        ? [
+            { id: "skill-1", name: "Legal Research" },
+            { id: "skill-2", name: "Litigation Support" },
+            { id: "skill-3", name: "Document Management" },
+            { id: "skill-4", name: "E-Discovery" },
+            { id: "skill-5", name: "Contract Review" },
+            { id: "skill-6", name: "Case Management" },
+            { id: "skill-7", name: "Legal Writing" },
+            { id: "skill-8", name: "Westlaw/LexisNexis" },
+          ]
+        : isConsultant
+        ? [
+            { id: "skill-1", name: "Strategy Consulting" },
+            { id: "skill-2", name: "Business Analysis" },
+            { id: "skill-3", name: "Financial Modeling" },
+            { id: "skill-4", name: "Change Management" },
+            { id: "skill-5", name: "Project Management" },
+            { id: "skill-6", name: "Data Analysis" },
+            { id: "skill-7", name: "PowerPoint" },
+            { id: "skill-8", name: "Stakeholder Management" },
+          ]
+        : [
+            { id: "skill-1", name: "Corporate Law" },
+            { id: "skill-2", name: "M&A Transactions" },
+            { id: "skill-3", name: "Securities Law" },
+            { id: "skill-4", name: "Contract Negotiation" },
+            { id: "skill-5", name: "Due Diligence" },
+            { id: "skill-6", name: "Legal Research" },
+            { id: "skill-7", name: "Corporate Governance" },
+            { id: "skill-8", name: "Legal Writing" },
+          ],
+      sections: [],
+    };
+  }
+
+  // Operations & Project Management templates
+  if (['project-manager-pmp', 'operations-manager', 'pm-executive', 'agile-scrum', 'operations-two-column'].includes(templateId)) {
+    const isOperations = ['operations-manager', 'operations-two-column'].includes(templateId);
+
+    return {
+      personalInfo: {
+        fullName: isOperations ? "Daniel Brown" : "Jessica Williams",
+        title: isOperations ? "Operations Manager" : "Senior Project Manager, PMP",
+        email: isOperations ? "d.brown@email.com" : "j.williams@email.com",
+        phone: "+1 (555) 789-0123",
+        location: isOperations ? "Dallas, TX" : "Seattle, WA",
+        summary: isOperations
+          ? "Results-oriented operations manager with 10+ years optimizing business processes and driving operational excellence. Expert in supply chain management, process improvement, and team leadership. Track record of reducing costs and improving efficiency."
+          : "Certified Project Management Professional with 8+ years leading complex technology projects. Expertise in Agile methodologies, stakeholder management, and cross-functional team leadership. Proven ability to deliver projects on time and within budget.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: isOperations ? "Manufacturing Solutions Inc" : "Tech Innovations Corp",
+          position: isOperations ? "Operations Manager" : "Senior Project Manager",
+          startDate: "2019-06",
+          endDate: "present",
+          current: true,
+          description: isOperations
+            ? "Oversee daily operations for 200-employee manufacturing facility\nManage production planning, inventory, and supply chain operations\nImplement lean manufacturing principles reducing waste by 30%\nLead continuous improvement initiatives improving productivity"
+            : "Manage portfolio of enterprise software development projects\nLead Agile/Scrum teams of 15+ developers and QA engineers\nCoordinate with stakeholders on project scope and requirements\nDeliver $5M+ projects on time with 95% stakeholder satisfaction",
+        },
+        {
+          id: "exp-2",
+          company: isOperations ? "Logistics Company LLC" : "Digital Solutions Inc",
+          position: isOperations ? "Operations Supervisor" : "Project Manager",
+          startDate: isOperations ? "2015-03" : "2018-01",
+          endDate: isOperations ? "2019-05" : "2019-05",
+          current: false,
+          description: isOperations
+            ? "Supervised warehouse operations and 50-person team\nOptimized logistics processes reducing delivery times by 25%\nImplemented warehouse management system improving accuracy\nMonitored KPIs and prepared operational performance reports"
+            : "Managed software implementation projects for enterprise clients\nCreated project plans, timelines, and resource allocation\nFacilitated sprint planning and retrospective meetings\nIdentified and mitigated project risks and issues",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: isOperations ? "University of Texas" : "University of Washington",
+          degree: "Bachelor of Science",
+          field: isOperations ? "Business Administration" : "Information Systems",
+          startDate: "2011-09",
+          endDate: "2015-05",
+        },
+      ],
+      skills: isOperations
+        ? [
+            { id: "skill-1", name: "Operations Management" },
+            { id: "skill-2", name: "Supply Chain Management" },
+            { id: "skill-3", name: "Process Improvement" },
+            { id: "skill-4", name: "Lean Manufacturing" },
+            { id: "skill-5", name: "Team Leadership" },
+            { id: "skill-6", name: "Inventory Management" },
+            { id: "skill-7", name: "Budget Management" },
+            { id: "skill-8", name: "SAP/ERP Systems" },
+          ]
+        : [
+            { id: "skill-1", name: "Project Management" },
+            { id: "skill-2", name: "Agile/Scrum" },
+            { id: "skill-3", name: "PMP Certified" },
+            { id: "skill-4", name: "JIRA" },
+            { id: "skill-5", name: "Stakeholder Management" },
+            { id: "skill-6", name: "Risk Management" },
+            { id: "skill-7", name: "Team Leadership" },
+            { id: "skill-8", name: "Microsoft Project" },
+          ],
+      sections: [],
+    };
+  }
+
+  // Executive templates (sapphire-executive, luxury-timeline, corporate-executive, premium-elite)
+  if (['sapphire-executive', 'luxury-timeline', 'corporate-executive', 'premium-elite'].includes(templateId)) {
+    return {
+      personalInfo: {
+        fullName: "Victoria Sterling",
+        title: "Chief Executive Officer",
+        email: "v.sterling@email.com",
+        phone: "+1 (555) 890-1234",
+        location: "New York, NY",
+        summary: "Visionary executive leader with 20+ years driving transformational growth and innovation. Proven track record building and scaling organizations from startup to Fortune 500. Expert in strategic planning, M&A, and organizational development.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: "Global Enterprises Inc",
+          position: "Chief Executive Officer",
+          startDate: "2018-01",
+          endDate: "present",
+          current: true,
+          description: "Lead $3B organization with 5,000+ employees across 15 countries\nDrive strategic vision and corporate growth initiatives\nOversee executive team and board of directors relationships\nAchieved 150% revenue growth and successful IPO in 2020",
+        },
+        {
+          id: "exp-2",
+          company: "Innovation Corp",
+          position: "Chief Operating Officer",
+          startDate: "2013-06",
+          endDate: "2017-12",
+          current: false,
+          description: "Managed global operations and business development\nLed 10+ strategic acquisitions totaling $500M\nBuilt operational excellence programs across organization\nIncreased operating margins from 15% to 28%",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: "Harvard Business School",
+          degree: "Master of Business Administration",
+          field: "Business Administration",
+          startDate: "2009-09",
+          endDate: "2011-06",
+        },
+      ],
+      skills: [
+        { id: "skill-1", name: "Executive Leadership" },
+        { id: "skill-2", name: "Strategic Planning" },
+        { id: "skill-3", name: "M&A Strategy" },
+        { id: "skill-4", name: "P&L Management" },
+        { id: "skill-5", name: "Board Relations" },
+        { id: "skill-6", name: "Change Management" },
+        { id: "skill-7", name: "Global Operations" },
+        { id: "skill-8", name: "Business Development" },
+      ],
+      sections: [],
+    };
+  }
+
+  // Fresher variant templates
+  if (templateId.startsWith('fresher-') && !['fresher-elite'].includes(templateId)) {
+    return {
+      personalInfo: {
+        fullName: "Rahul Kumar",
+        title: "Computer Science Graduate",
+        email: "rahul.kumar@email.com",
+        phone: "+91 98765 43210",
+        location: "Mumbai, India",
+        summary: "Enthusiastic Computer Science graduate with strong programming skills and passion for technology. Completed multiple academic projects and internships. Eager to contribute to innovative software development teams.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: "Tech Solutions Pvt Ltd",
+          position: "Software Development Intern",
+          startDate: "2024-01",
+          endDate: "2024-06",
+          current: false,
+          description: "Developed web application features using React and Node.js\nWrote unit tests and participated in code reviews\nCollaborated with team using Agile methodology\nFixed bugs and improved application performance",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: "Indian Institute of Technology",
+          degree: "Bachelor of Technology",
+          field: "Computer Science and Engineering",
+          startDate: "2020-08",
+          endDate: "2024-05",
+        },
+      ],
+      skills: [
+        { id: "skill-1", name: "Java" },
+        { id: "skill-2", name: "Python" },
+        { id: "skill-3", name: "JavaScript" },
+        { id: "skill-4", name: "React" },
+        { id: "skill-5", name: "SQL" },
+        { id: "skill-6", name: "Git" },
+        { id: "skill-7", name: "Data Structures" },
+        { id: "skill-8", name: "Algorithms" },
+      ],
+      sections: [],
+    };
+  }
+
+  // Tech/software templates (tech-grid, software, modern-sidebar, minimalist-geometric, etc.)
+  if (['tech-grid', 'software', 'modern-sidebar', 'minimalist-geometric', 'bold-headline', 'dual-tone', 'contemporary-split'].includes(templateId)) {
+    return {
+      personalInfo: {
+        fullName: "Alex Morgan",
+        title: "Software Engineer",
+        email: "alex.morgan@email.com",
+        phone: "+1 (555) 901-2345",
+        location: "San Francisco, CA",
+        summary: "Innovative software engineer with 6+ years building scalable applications. Full-stack expertise in modern web technologies and cloud platforms. Passionate about clean code and user experience.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: "Tech Innovators Inc",
+          position: "Software Engineer",
+          startDate: "2020-03",
+          endDate: "present",
+          current: true,
+          description: "Develop full-stack applications using React, Node.js, and AWS\nDesign and implement RESTful APIs and microservices\nCollaborate with product team on feature development\nMentor junior developers and conduct code reviews",
+        },
+        {
+          id: "exp-2",
+          company: "Startup Solutions",
+          position: "Junior Developer",
+          startDate: "2019-01",
+          endDate: "2020-02",
+          current: false,
+          description: "Built web applications using modern JavaScript frameworks\nImplemented responsive UI components and features\nWrote unit tests and performed bug fixes\nParticipated in agile development process",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: "University of California, Berkeley",
+          degree: "Bachelor of Science",
+          field: "Computer Science",
+          startDate: "2015-09",
+          endDate: "2019-05",
+        },
+      ],
+      skills: [
+        { id: "skill-1", name: "JavaScript" },
+        { id: "skill-2", name: "React" },
+        { id: "skill-3", name: "Node.js" },
+        { id: "skill-4", name: "TypeScript" },
+        { id: "skill-5", name: "Python" },
+        { id: "skill-6", name: "AWS" },
+        { id: "skill-7", name: "Docker" },
+        { id: "skill-8", name: "Git" },
+      ],
+      sections: [],
+    };
+  }
+
+  // Creative templates (creative-accent, elegant-serif)
+  if (['creative-accent', 'elegant-serif'].includes(templateId)) {
+    return {
+      personalInfo: {
+        fullName: "Sophie Anderson",
+        title: "UX/UI Designer",
+        email: "sophie.anderson@email.com",
+        phone: "+1 (555) 012-3456",
+        location: "Portland, OR",
+        summary: "Creative designer with 5+ years crafting beautiful, user-centered digital experiences. Expert in UI/UX design, prototyping, and design systems. Passionate about solving complex problems through thoughtful design.",
+        photo: null,
+      },
+      experience: [
+        {
+          id: "exp-1",
+          company: "Design Studio Inc",
+          position: "Senior UX/UI Designer",
+          startDate: "2021-06",
+          endDate: "present",
+          current: true,
+          description: "Lead design for web and mobile applications\nConduct user research and usability testing\nCreate wireframes, prototypes, and high-fidelity designs\nCollaborate with developers on design implementation",
+        },
+        {
+          id: "exp-2",
+          company: "Creative Agency",
+          position: "UX/UI Designer",
+          startDate: "2019-03",
+          endDate: "2021-05",
+          current: false,
+          description: "Designed user interfaces for client projects\nDeveloped design systems and component libraries\nWorked with cross-functional teams on product features\nPresented designs to stakeholders and clients",
+        },
+      ],
+      education: [
+        {
+          id: "edu-1",
+          school: "Rhode Island School of Design",
+          degree: "Bachelor of Fine Arts",
+          field: "Graphic Design",
+          startDate: "2015-09",
+          endDate: "2019-05",
+        },
+      ],
+      skills: [
+        { id: "skill-1", name: "UI/UX Design" },
+        { id: "skill-2", name: "Figma" },
+        { id: "skill-3", name: "Adobe XD" },
+        { id: "skill-4", name: "Sketch" },
+        { id: "skill-5", name: "Prototyping" },
+        { id: "skill-6", name: "User Research" },
+        { id: "skill-7", name: "Design Systems" },
+        { id: "skill-8", name: "Typography" },
+      ],
+      sections: [],
+    };
+  }
+
+  // Default sample data for remaining templates (modern, minimal, professional, premium-universal, premium-pro, refined)
   return {
     personalInfo: {
       fullName: "John Smith",
