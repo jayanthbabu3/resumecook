@@ -1266,17 +1266,17 @@ const Hero = () => {
                         <div className="mb-4">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-sm font-semibold text-gray-800">Live Preview</h3>
-                            <button 
+                            <Button
                               onClick={async () => {
                                 try {
                                   // Convert demo data to proper ResumeData format
                                   const resumeData = convertToResumeData();
-                                  
+
                                   // Generate PDF using the actual ModernPDF template
                                   const blob = await pdf(
                                     <ModernPDF resumeData={resumeData} themeColor="#3b82f6" />
                                   ).toBlob();
-                                  
+
                                   // Create download link
                                   const url = URL.createObjectURL(blob);
                                   const link = document.createElement("a");
@@ -1285,20 +1285,20 @@ const Hero = () => {
                                   document.body.appendChild(link);
                                   link.click();
                                   document.body.removeChild(link);
-                                  
+
                                   // Cleanup
                                   URL.revokeObjectURL(url);
                                 } catch (error) {
                                   console.error("Download error:", error);
                                 }
                               }}
-                              className="px-3 py-1 bg-primary/10 rounded-full border border-primary/20 hover:bg-primary/20 transition-colors flex items-center gap-1"
+                              className={cn(primaryButtonClass, "h-9 px-4 text-sm")}
                             >
-                              <svg className="w-3 h-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                               </svg>
-                              <span className="text-xs text-primary font-medium">Download Resume</span>
-                            </button>
+                              <span>Download Resume</span>
+                            </Button>
                           </div>
                         </div>
 
