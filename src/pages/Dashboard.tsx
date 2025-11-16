@@ -228,55 +228,111 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Create from Scratch Card */}
+        {/* Quick Actions Section */}
         {!selectedCategory && (
-          <Card
-            className="group relative overflow-hidden border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card mb-6 md:mb-8"
-            onClick={() => navigate("/builder/scratch")}
-          >
-            <div className="relative p-4 md:p-6">
-              <div className="flex items-center gap-3 md:gap-4">
-                {/* Icon */}
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-primary/20 to-primary/10">
-                  <Sparkles className="h-6 w-6 md:h-7 md:w-7 text-primary" />
-                </div>
+          <div className="mb-8 md:mb-12">
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-4">Quick Actions</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+              {/* Create from Scratch Card */}
+              <Card
+                className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
+                onClick={() => navigate("/builder/scratch")}
+              >
+                <div className="relative p-6">
+                  {/* Icon */}
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-br from-primary to-primary/80">
+                    <Sparkles className="h-6 w-6 md:h-7 md:w-7 text-white" />
+                  </div>
 
-                {/* Content */}
-                <div className="flex-1 space-y-1">
-                  <h3 className="text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors">
-                    Create Resume from Scratch
-                  </h3>
-                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                    Build your resume with drag-and-drop sections
-                  </p>
-                </div>
+                  {/* Content */}
+                  <div className="space-y-2">
+                    <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                      Create from Scratch
+                    </h3>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                      Build your resume with drag-and-drop sections
+                    </p>
+                  </div>
 
-                {/* Arrow */}
-                <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 shrink-0" />
-              </div>
+                  {/* Arrow */}
+                  <ChevronRight className="absolute bottom-6 right-6 h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+                </div>
+              </Card>
+
+              {/* Browse All Templates Card */}
+              {(() => {
+                const allCategory = professionCategories.find((cat) => cat.isAll);
+                if (!allCategory) return null;
+                const IconComponent = allCategory.icon;
+
+                return (
+                  <Card
+                    key={allCategory.id}
+                    className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
+                    onClick={() => setSelectedCategory(allCategory.id)}
+                  >
+                    <div className="relative p-6">
+                      {/* Icon */}
+                      <div
+                        className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+                        style={{
+                          background: `linear-gradient(135deg, ${allCategory.gradientFrom} 0%, ${allCategory.gradientTo} 100%)`,
+                        }}
+                      >
+                        <IconComponent className="h-6 w-6 md:h-7 md:w-7 text-white" />
+                      </div>
+
+                      {/* Content */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                            {allCategory.name}
+                          </h3>
+                          <span
+                            className="text-xs font-semibold px-2 py-1 rounded-full"
+                            style={{
+                              backgroundColor: `${allCategory.color}15`,
+                              color: allCategory.color,
+                            }}
+                          >
+                            {allCategory.templateIds.length}
+                          </span>
+                        </div>
+                        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                          {allCategory.description}
+                        </p>
+                      </div>
+
+                      {/* Arrow */}
+                      <ChevronRight className="absolute bottom-6 right-6 h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+                    </div>
+                  </Card>
+                );
+              })()}
             </div>
-          </Card>
+          </div>
         )}
 
         {/* Profession Categories Grid */}
         {!selectedCategory && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {professionCategories.map((category, index) => {
-              const IconComponent = category.icon;
+          <div>
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-4">Browse by Profession</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {professionCategories
+                .filter((category) => !category.isAll)
+                .map((category) => {
+                  const IconComponent = category.icon;
 
-              // Special rendering for "All" card
-              if (category.isAll) {
-                return (
-                  <Card
-                    key={category.id}
-                    className="group relative overflow-hidden border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card sm:col-span-2 lg:col-span-3 xl:col-span-4"
-                    onClick={() => setSelectedCategory(category.id)}
-                  >
-                    <div className="relative p-4 md:p-6">
-                      <div className="flex items-center gap-3 md:gap-4">
+                  return (
+                    <Card
+                      key={category.id}
+                      className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
+                      onClick={() => setSelectedCategory(category.id)}
+                    >
+                      <div className="relative p-6">
                         {/* Icon */}
                         <div
-                          className="w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300"
+                          className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
                           style={{
                             background: `linear-gradient(135deg, ${category.gradientFrom} 0%, ${category.gradientTo} 100%)`,
                           }}
@@ -285,93 +341,33 @@ const Dashboard = () => {
                         </div>
 
                         {/* Content */}
-                        <div className="flex-1 space-y-1">
-                          <h3 className="text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                        <div className="space-y-2">
+                          <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors">
                             {category.name}
                           </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                          <p className="text-xs md:text-sm text-muted-foreground leading-relaxed line-clamp-2">
                             {category.description}
                           </p>
-                        </div>
 
-                        {/* Template Count & Arrow */}
-                        <div className="flex items-center gap-2 shrink-0">
-                          <span
-                            className="text-xs font-semibold px-3 py-1.5 rounded-full"
-                            style={{
-                              backgroundColor: `${category.color}15`,
-                              color: category.color,
-                            }}
-                          >
-                            {category.templateIds.length}
-                          </span>
-                          <ChevronRight
-                            className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300"
-                            style={{ color: category.color }}
-                          />
+                          {/* Template Count Badge */}
+                          <div className="flex items-center justify-between pt-3">
+                            <span
+                              className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                              style={{
+                                backgroundColor: `${category.color}15`,
+                                color: category.color,
+                              }}
+                            >
+                              {category.templateIds.length} templates
+                            </span>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
-                );
-              }
-
-              // Regular category cards
-              return (
-                <Card
-                  key={category.id}
-                  className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-xl cursor-pointer bg-card"
-                  onClick={() => setSelectedCategory(category.id)}
-                >
-                  {/* Gradient Background */}
-                  <div
-                    className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-300"
-                    style={{
-                      background: `linear-gradient(135deg, ${category.gradientFrom} 0%, ${category.gradientTo} 100%)`,
-                    }}
-                  />
-
-                  <div className="relative p-6">
-                    {/* Icon */}
-                    <div
-                      className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-                      style={{
-                        background: `linear-gradient(135deg, ${category.gradientFrom} 0%, ${category.gradientTo} 100%)`,
-                      }}
-                    >
-                      <IconComponent className="h-6 w-6 md:h-7 md:w-7 text-white" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="space-y-2">
-                      <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                        {category.name}
-                      </h3>
-                      <p className="text-xs md:text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                        {category.description}
-                      </p>
-
-                      {/* Template Count Badge */}
-                      <div className="flex items-center justify-between pt-3">
-                        <span
-                          className="text-xs font-semibold px-3 py-1.5 rounded-full"
-                          style={{
-                            backgroundColor: `${category.color}15`,
-                            color: category.color,
-                          }}
-                        >
-                          {category.templateIds.length} templates
-                        </span>
-                        <ChevronRight
-                          className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300"
-                          style={{ color: category.color }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
+                    </Card>
+                  );
+                })}
+            </div>
           </div>
         )}
 
