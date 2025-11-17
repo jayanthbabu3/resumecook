@@ -15,7 +15,6 @@ export const TechStackProTemplate = ({
   themeColor = "#3b82f6",
   editable = false,
 }: TechStackProTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12">
@@ -24,29 +23,29 @@ export const TechStackProTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="text-5xl font-bold mb-2"
             as="h1"
           />
         ) : (
           <h1 className="text-5xl font-bold mb-2">
-            {personalInfo.fullName}
+            {resumeData.personalInfo.fullName}
           </h1>
         )}
 
-        {personalInfo.title && (
+        {resumeData.personalInfo.title && (
           <div className="mb-6">
             {editable ? (
               <InlineEditableText
                 path="personalInfo.title"
-                value={personalInfo.title}
+                value={resumeData.personalInfo.title}
                 className="text-xl font-medium"
                 as="p"
                 style={{ color: themeColor }}
               />
             ) : (
               <p className="text-xl font-medium" style={{ color: themeColor }}>
-                {personalInfo.title}
+                {resumeData.personalInfo.title}
               </p>
             )}
           </div>
@@ -54,45 +53,45 @@ export const TechStackProTemplate = ({
 
         {/* Contact Info */}
         <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-          {personalInfo.email && (
+          {resumeData.personalInfo.email && (
             <div>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.email"
-                  value={personalInfo.email}
+                  value={resumeData.personalInfo.email}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.email}</span>
+                <span>{resumeData.personalInfo.email}</span>
               )}
             </div>
           )}
-          {personalInfo.phone && (
+          {resumeData.personalInfo.phone && (
             <div>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.phone"
-                  value={personalInfo.phone}
+                  value={resumeData.personalInfo.phone}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.phone}</span>
+                <span>{resumeData.personalInfo.phone}</span>
               )}
             </div>
           )}
-          {personalInfo.location && (
+          {resumeData.personalInfo.location && (
             <div>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.location"
-                  value={personalInfo.location}
+                  value={resumeData.personalInfo.location}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.location}</span>
+                <span>{resumeData.personalInfo.location}</span>
               )}
             </div>
           )}
@@ -100,16 +99,16 @@ export const TechStackProTemplate = ({
       </div>
 
       {/* Tech Stack - Prominent Display */}
-      {skills && skills.length > 0 && (
+      {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-10 p-6 rounded-lg" style={{ backgroundColor: `${themeColor}15` }}>
           <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: themeColor }}>
             Technology Stack
           </h2>
           {editable ? (
-            <InlineEditableSkills path="skills" skills={skills} />
+            <InlineEditableSkills path="skills" skills={resumeData.skills} />
           ) : (
             <div className="grid grid-cols-5 gap-3">
-              {skills.map((skill, index) => (
+              {resumeData.skills.map((skill, index) => (
                 <div
                   key={index}
                   className="text-center px-3 py-3 bg-white rounded-lg shadow-sm border-2 font-medium text-sm"
@@ -124,7 +123,7 @@ export const TechStackProTemplate = ({
       )}
 
       {/* Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-10">
           <h2 className="text-2xl font-bold mb-4" style={{ color: themeColor }}>
             Professional Summary
@@ -132,30 +131,30 @@ export const TechStackProTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-gray-700 leading-relaxed"
               as="p"
             />
           ) : (
-            <p className="text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+            <p className="text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
       {/* Experience */}
-      {experience && experience.length > 0 && (
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-10">
           <h2 className="text-2xl font-bold mb-6" style={{ color: themeColor }}>
             Experience
           </h2>
           <div className="space-y-8">
-            {experience.map((exp, index) => (
+            {resumeData.experience.map((exp, index) => (
               <div key={index} className="relative pl-6 border-l-4" style={{ borderColor: themeColor }}>
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex-1">
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.position`}
+                        path={`experience[${index}].position`}
                         value={exp.position}
                         className="text-xl font-bold text-gray-900"
                         as="h3"
@@ -165,7 +164,7 @@ export const TechStackProTemplate = ({
                     )}
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.company`}
+                        path={`experience[${index}].company`}
                         value={exp.company}
                         className="text-lg font-medium"
                         as="p"
@@ -186,7 +185,7 @@ export const TechStackProTemplate = ({
                   <div className="text-gray-700 mt-3">
                     {editable ? (
                       <InlineEditableList
-                        path={`experience.${index}.description`}
+                        path={`experience[${index}].description`}
                         items={exp.description.split("\n")}
                       />
                     ) : (
@@ -205,18 +204,18 @@ export const TechStackProTemplate = ({
       )}
 
       {/* Education */}
-      {education && education.length > 0 && (
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-10">
           <h2 className="text-2xl font-bold mb-6" style={{ color: themeColor }}>
             Education
           </h2>
           <div className="space-y-4">
-            {education.map((edu, index) => (
+            {resumeData.education.map((edu, index) => (
               <div key={index} className="flex justify-between items-start">
                 <div className="flex-1">
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.degree`}
+                      path={`education[${index}].degree`}
                       value={edu.degree}
                       className="text-lg font-bold text-gray-900"
                       as="h3"
@@ -226,7 +225,7 @@ export const TechStackProTemplate = ({
                   )}
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.institution`}
+                      path={`education[${index}].institution`}
                       value={edu.institution}
                       className="text-gray-700"
                       as="p"
@@ -245,8 +244,8 @@ export const TechStackProTemplate = ({
       )}
 
       {/* Custom Sections */}
-      {sections &&
-        sections.map((section, index) => (
+      {resumeData.sections &&
+        resumeData.sections.map((section, index) => (
           <div key={index} className="mb-8">
             <h2 className="text-2xl font-bold mb-4" style={{ color: themeColor }}>
               {section.title}
