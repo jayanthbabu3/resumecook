@@ -12,7 +12,7 @@ interface TemplateProps {
 
 export const DesignSphereTemplate = ({
   resumeData,
-  themeColor = "#3b82f6",
+  themeColor = "#ec4899",
   editable = false,
 }: TemplateProps) => {
   const { personalInfo, experience, education, skills, sections } = resumeData;
@@ -26,9 +26,13 @@ export const DesignSphereTemplate = ({
   };
 
   return (
-    <div className="w-full h-full bg-white text-gray-900 p-10 text-[13px] leading-relaxed">
-      {/* Header */}
-      <div className="mb-8 pb-6 border-b-2" style={{ borderColor: themeColor }}>
+    <div className="w-full h-full bg-white text-gray-900 p-10 text-[13px] leading-relaxed relative">
+      {/* Decorative circles */}
+      <div className="absolute top-10 right-10 w-32 h-32 rounded-full opacity-5" style={{ backgroundColor: themeColor }}></div>
+      <div className="absolute bottom-20 left-20 w-24 h-24 rounded-full opacity-5" style={{ backgroundColor: themeColor }}></div>
+
+      {/* Header with Circular Design */}
+      <div className="mb-8 text-center relative">
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
@@ -42,85 +46,96 @@ export const DesignSphereTemplate = ({
             {personalInfo.fullName || "Your Name"}
           </h1>
         )}
+
         {personalInfo.title && (
           editable ? (
             <InlineEditableText
               path="personalInfo.title"
               value={personalInfo.title}
-              className="text-[14px] text-gray-600 mb-4 font-light block"
+              className="text-[14px] text-gray-600 mb-4 block"
               as="h2"
             />
           ) : (
-            <h2 className="text-[14px] text-gray-600 mb-4 font-light">
+            <h2 className="text-[14px] text-gray-600 mb-4">
               {personalInfo.title}
             </h2>
           )
         )}
-        <div className="flex gap-6 text-[12px] text-gray-700">
+
+        <div className="flex gap-4 text-[12px] text-gray-700 justify-center flex-wrap items-center">
           {personalInfo.email && (
-            editable ? (
-              <InlineEditableText
-                path="personalInfo.email"
-                value={personalInfo.email}
-                className="inline-block"
-              />
-            ) : (
-              <span>{personalInfo.email}</span>
-            )
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: themeColor }}></div>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.email"
+                  value={personalInfo.email}
+                  className="inline-block"
+                />
+              ) : (
+                <span>{personalInfo.email}</span>
+              )}
+            </div>
           )}
-          {personalInfo.email && personalInfo.phone && <span>•</span>}
           {personalInfo.phone && (
-            editable ? (
-              <InlineEditableText
-                path="personalInfo.phone"
-                value={personalInfo.phone}
-                className="inline-block"
-              />
-            ) : (
-              <span>{personalInfo.phone}</span>
-            )
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: themeColor }}></div>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.phone"
+                  value={personalInfo.phone}
+                  className="inline-block"
+                />
+              ) : (
+                <span>{personalInfo.phone}</span>
+              )}
+            </div>
           )}
-          {personalInfo.location && (personalInfo.email || personalInfo.phone) && <span>•</span>}
           {personalInfo.location && (
-            editable ? (
-              <InlineEditableText
-                path="personalInfo.location"
-                value={personalInfo.location}
-                className="inline-block"
-              />
-            ) : (
-              <span>{personalInfo.location}</span>
-            )
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: themeColor }}></div>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.location"
+                  value={personalInfo.location}
+                  className="inline-block"
+                />
+              ) : (
+                <span>{personalInfo.location}</span>
+              )}
+            </div>
           )}
         </div>
       </div>
 
-      {/* Summary */}
+      {/* Summary with Rounded Design */}
       {personalInfo.summary && (
-        <div className="mb-8">
-          <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wide" style={{ color: themeColor }}>
-            Professional Summary
+        <div className="mb-8 max-w-3xl mx-auto">
+          <h2 className="text-[15px] font-bold mb-4 text-center uppercase tracking-wide" style={{ color: themeColor }}>
+            Profile
           </h2>
-          {editable ? (
-            <InlineEditableText
-              path="personalInfo.summary"
-              value={personalInfo.summary}
-              className="text-[12.5px] text-gray-700 leading-[1.7] block"
-              multiline
-              as="p"
-            />
-          ) : (
-            <p className="text-[12.5px] text-gray-700 leading-[1.7]">
-              {personalInfo.summary}
-            </p>
-          )}
+          <div className="p-6 rounded-3xl" style={{ backgroundColor: `${themeColor}08`, border: `2px solid ${themeColor}20` }}>
+            {editable ? (
+              <InlineEditableText
+                path="personalInfo.summary"
+                value={personalInfo.summary}
+                className="text-[12.5px] text-gray-700 leading-[1.7] block text-center"
+                multiline
+                as="p"
+              />
+            ) : (
+              <p className="text-[12.5px] text-gray-700 leading-[1.7] text-center">
+                {personalInfo.summary}
+              </p>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Experience */}
+      {/* Experience with Circular Bullets */}
       {experience && experience.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-[15px] font-bold mb-4 uppercase tracking-wide" style={{ color: themeColor }}>
+        <div className="mb-8 max-w-3xl mx-auto">
+          <h2 className="text-[15px] font-bold mb-6 text-center uppercase tracking-wide" style={{ color: themeColor }}>
             Experience
           </h2>
           {editable ? (
@@ -138,77 +153,85 @@ export const DesignSphereTemplate = ({
               }}
               addButtonLabel="Add Experience"
               renderItem={(exp, index) => (
-                <div className="mb-6 last:mb-0">
-                  <div className="flex justify-between items-baseline mb-2">
-                    <div className="flex-1">
+                <div className="mb-6 last:mb-0 relative pl-8">
+                  <div className="absolute left-0 top-2 w-4 h-4 rounded-full" style={{ backgroundColor: themeColor }}></div>
+                  <div className="p-5 rounded-2xl" style={{ backgroundColor: `${themeColor}05` }}>
+                    <div className="flex justify-between items-start mb-2 flex-wrap gap-2">
+                      <div className="flex-1 min-w-0">
+                        <InlineEditableText
+                          path={`experience[${index}].position`}
+                          value={exp.position || "Position Title"}
+                          className="text-[15px] font-bold block"
+                          style={{ color: themeColor }}
+                          as="h3"
+                        />
+                        <InlineEditableText
+                          path={`experience[${index}].company`}
+                          value={exp.company || "Company Name"}
+                          className="text-[13px] font-semibold text-gray-700 block"
+                          as="p"
+                        />
+                      </div>
+                      <div className="text-[12px] text-gray-600 font-medium whitespace-nowrap px-4 py-1.5 rounded-full" style={{ backgroundColor: `${themeColor}15` }}>
+                        <div className="flex items-center gap-1">
+                          <InlineEditableDate
+                            path={`experience[${index}].startDate`}
+                            value={exp.startDate}
+                            formatDisplay={formatDate}
+                            className="inline-block"
+                          />
+                          <span> - </span>
+                          {exp.current ? (
+                            <span>Present</span>
+                          ) : (
+                            <InlineEditableDate
+                              path={`experience[${index}].endDate`}
+                              value={exp.endDate}
+                              formatDisplay={formatDate}
+                              className="inline-block"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    {exp.description && (
                       <InlineEditableText
-                        path={`experience[${index}].position`}
-                        value={exp.position || "Position Title"}
-                        className="text-[15px] font-bold block"
-                        style={{ color: themeColor }}
-                        as="h3"
-                      />
-                      <InlineEditableText
-                        path={`experience[${index}].company`}
-                        value={exp.company || "Company Name"}
-                        className="text-[13px] font-semibold text-gray-700 block"
+                        path={`experience[${index}].description`}
+                        value={exp.description}
+                        className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
+                        multiline
                         as="p"
                       />
-                    </div>
-                    <div className="text-[12px] text-gray-600 font-medium whitespace-nowrap flex items-center gap-1">
-                      <InlineEditableDate
-                        path={`experience[${index}].startDate`}
-                        value={exp.startDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                      <span> - </span>
-                      {exp.current ? (
-                        <span>Present</span>
-                      ) : (
-                        <InlineEditableDate
-                          path={`experience[${index}].endDate`}
-                          value={exp.endDate}
-                          formatDisplay={formatDate}
-                          className="inline-block"
-                        />
-                      )}
-                    </div>
+                    )}
                   </div>
-                  {exp.description && (
-                    <InlineEditableText
-                      path={`experience[${index}].description`}
-                      value={exp.description}
-                      className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
-                      multiline
-                      as="p"
-                    />
-                  )}
                 </div>
               )}
             />
           ) : (
             <div className="space-y-6">
               {experience.map((exp) => (
-                <div key={exp.id} className="mb-6 last:mb-0">
-                  <div className="flex justify-between items-baseline mb-2">
-                    <div className="flex-1">
-                      <h3 className="text-[15px] font-bold" style={{ color: themeColor }}>
-                        {exp.position || "Position Title"}
-                      </h3>
-                      <p className="text-[13px] font-semibold text-gray-700">
-                        {exp.company || "Company Name"}
-                      </p>
+                <div key={exp.id} className="relative pl-8">
+                  <div className="absolute left-0 top-2 w-4 h-4 rounded-full" style={{ backgroundColor: themeColor }}></div>
+                  <div className="p-5 rounded-2xl" style={{ backgroundColor: `${themeColor}05` }}>
+                    <div className="flex justify-between items-start mb-2 flex-wrap gap-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-[15px] font-bold" style={{ color: themeColor }}>
+                          {exp.position || "Position Title"}
+                        </h3>
+                        <p className="text-[13px] font-semibold text-gray-700">
+                          {exp.company || "Company Name"}
+                        </p>
+                      </div>
+                      <span className="text-[12px] text-gray-600 font-medium whitespace-nowrap px-4 py-1.5 rounded-full" style={{ backgroundColor: `${themeColor}15` }}>
+                        {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
+                      </span>
                     </div>
-                    <span className="text-[12px] text-gray-600 font-medium whitespace-nowrap">
-                      {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-                    </span>
+                    {exp.description && (
+                      <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
+                        {exp.description}
+                      </p>
+                    )}
                   </div>
-                  {exp.description && (
-                    <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
-                      {exp.description}
-                    </p>
-                  )}
                 </div>
               ))}
             </div>
@@ -216,11 +239,11 @@ export const DesignSphereTemplate = ({
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-8">
-        {/* Skills */}
+      <div className="grid grid-cols-2 gap-8 max-w-3xl mx-auto">
+        {/* Skills with Circular Pills */}
         {skills && skills.length > 0 && (
           <div>
-            <h2 className="text-[15px] font-bold mb-4 uppercase tracking-wide" style={{ color: themeColor }}>
+            <h2 className="text-[15px] font-bold mb-4 uppercase tracking-wide text-center" style={{ color: themeColor }}>
               Skills
             </h2>
             {editable ? (
@@ -229,17 +252,25 @@ export const DesignSphereTemplate = ({
                 skills={skills}
                 renderSkill={(skill) =>
                   skill.name ? (
-                    <div className="px-3 py-2 rounded text-[12px] font-medium text-center" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
+                    <div className="px-4 py-2 rounded-full text-[12px] font-medium text-center" style={{
+                      backgroundColor: `${themeColor}15`,
+                      color: themeColor,
+                      border: `1px solid ${themeColor}30`
+                    }}>
                       {skill.name}
                     </div>
                   ) : null
                 }
               />
             ) : (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-wrap gap-2 justify-center">
                 {skills.map((skill) =>
                   skill.name ? (
-                    <div key={skill.id} className="px-3 py-2 rounded text-[12px] font-medium text-center" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
+                    <div key={skill.id} className="px-4 py-2 rounded-full text-[12px] font-medium text-center" style={{
+                      backgroundColor: `${themeColor}15`,
+                      color: themeColor,
+                      border: `1px solid ${themeColor}30`
+                    }}>
                       {skill.name}
                     </div>
                   ) : null
@@ -252,7 +283,7 @@ export const DesignSphereTemplate = ({
         {/* Education */}
         {education && education.length > 0 && (
           <div>
-            <h2 className="text-[15px] font-bold mb-4 uppercase tracking-wide" style={{ color: themeColor }}>
+            <h2 className="text-[15px] font-bold mb-4 uppercase tracking-wide text-center" style={{ color: themeColor }}>
               Education
             </h2>
             {editable ? (
@@ -269,28 +300,28 @@ export const DesignSphereTemplate = ({
                 }}
                 addButtonLabel="Add Education"
                 renderItem={(edu, index) => (
-                  <div className="mb-4 last:mb-0">
+                  <div className="mb-5 last:mb-0 text-center">
                     <InlineEditableText
                       path={`education[${index}].degree`}
                       value={edu.degree || "Degree"}
-                      className="text-[14px] font-bold text-gray-900 block"
+                      className="text-[13px] font-bold text-gray-900 block"
                       as="h3"
                     />
                     {edu.field && (
                       <InlineEditableText
                         path={`education[${index}].field`}
                         value={edu.field}
-                        className="text-[13px] text-gray-700 block"
+                        className="text-[12px] text-gray-700 block"
                         as="p"
                       />
                     )}
                     <InlineEditableText
                       path={`education[${index}].school`}
                       value={edu.school || "School Name"}
-                      className="text-[13px] text-gray-600 italic block"
+                      className="text-[12.5px] text-gray-600 block"
                       as="p"
                     />
-                    <div className="text-[12px] text-gray-500 flex items-center gap-1">
+                    <div className="text-[12px] text-gray-500 flex items-center gap-1 mt-1 justify-center">
                       <InlineEditableDate
                         path={`education[${index}].startDate`}
                         value={edu.startDate}
@@ -309,13 +340,13 @@ export const DesignSphereTemplate = ({
                 )}
               />
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {education.map((edu) => (
-                  <div key={edu.id} className="mb-4 last:mb-0">
-                    <h3 className="text-[14px] font-bold text-gray-900">{edu.degree || "Degree"}</h3>
-                    {edu.field && <p className="text-[13px] text-gray-700">{edu.field}</p>}
-                    <p className="text-[13px] text-gray-600 italic">{edu.school || "School Name"}</p>
-                    <span className="text-[12px] text-gray-500">
+                  <div key={edu.id} className="text-center">
+                    <h3 className="text-[13px] font-bold text-gray-900">{edu.degree || "Degree"}</h3>
+                    {edu.field && <p className="text-[12px] text-gray-700">{edu.field}</p>}
+                    <p className="text-[12.5px] text-gray-600">{edu.school || "School Name"}</p>
+                    <span className="text-[12px] text-gray-500 block mt-1">
                       {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                     </span>
                   </div>
@@ -328,20 +359,20 @@ export const DesignSphereTemplate = ({
 
       {/* Additional Sections */}
       {sections && sections.length > 0 && sections.map((section) => (
-        <div key={section.id} className="mt-8">
-          <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wide" style={{ color: themeColor }}>
+        <div key={section.id} className="mt-8 max-w-3xl mx-auto">
+          <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wide text-center" style={{ color: themeColor }}>
             {section.title}
           </h2>
           {editable ? (
             <InlineEditableText
               path={`sections[${sections.indexOf(section)}].content`}
               value={section.content}
-              className="text-[13px] text-gray-700 block"
+              className="text-[12.5px] text-gray-700 leading-[1.7] block text-center"
               multiline
               as="p"
             />
           ) : (
-            <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">{section.content}</p>
+            <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line text-center">{section.content}</p>
           )}
         </div>
       ))}

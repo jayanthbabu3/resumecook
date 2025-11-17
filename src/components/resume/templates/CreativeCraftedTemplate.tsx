@@ -12,7 +12,7 @@ interface TemplateProps {
 
 export const CreativeCraftedTemplate = ({
   resumeData,
-  themeColor = "#10b981",
+  themeColor = "#84cc16",
   editable = false,
 }: TemplateProps) => {
   const { personalInfo, experience, education, skills, sections } = resumeData;
@@ -27,8 +27,13 @@ export const CreativeCraftedTemplate = ({
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-10 text-[13px] leading-relaxed">
-      {/* Header */}
-      <div className="mb-8 pb-6 border-b-2" style={{ borderColor: themeColor }}>
+      {/* Header with Stitched Border Effect */}
+      <div className="mb-8 pb-6 relative">
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{
+          background: `repeating-linear-gradient(90deg, ${themeColor} 0, ${themeColor} 10px, transparent 10px, transparent 20px)`,
+          height: '2px'
+        }}></div>
+
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
@@ -42,21 +47,23 @@ export const CreativeCraftedTemplate = ({
             {personalInfo.fullName || "Your Name"}
           </h1>
         )}
+
         {personalInfo.title && (
           editable ? (
             <InlineEditableText
               path="personalInfo.title"
               value={personalInfo.title}
-              className="text-[14px] text-gray-600 mb-4 font-light block"
+              className="text-[14px] text-gray-600 mb-4 font-medium block"
               as="h2"
             />
           ) : (
-            <h2 className="text-[14px] text-gray-600 mb-4 font-light">
+            <h2 className="text-[14px] text-gray-600 mb-4 font-medium">
               {personalInfo.title}
             </h2>
           )
         )}
-        <div className="flex gap-6 text-[12px] text-gray-700">
+
+        <div className="flex gap-5 text-[12px] text-gray-700 flex-wrap">
           {personalInfo.email && (
             editable ? (
               <InlineEditableText
@@ -68,7 +75,7 @@ export const CreativeCraftedTemplate = ({
               <span>{personalInfo.email}</span>
             )
           )}
-          {personalInfo.email && personalInfo.phone && <span>•</span>}
+          {personalInfo.email && personalInfo.phone && <span className="text-gray-400">•</span>}
           {personalInfo.phone && (
             editable ? (
               <InlineEditableText
@@ -80,7 +87,7 @@ export const CreativeCraftedTemplate = ({
               <span>{personalInfo.phone}</span>
             )
           )}
-          {personalInfo.location && (personalInfo.email || personalInfo.phone) && <span>•</span>}
+          {personalInfo.location && (personalInfo.email || personalInfo.phone) && <span className="text-gray-400">•</span>}
           {personalInfo.location && (
             editable ? (
               <InlineEditableText
@@ -95,11 +102,14 @@ export const CreativeCraftedTemplate = ({
         </div>
       </div>
 
-      {/* Summary */}
+      {/* Summary with Textured Box */}
       {personalInfo.summary && (
-        <div className="mb-8">
+        <div className="mb-8 p-5 relative" style={{
+          backgroundColor: `${themeColor}08`,
+          border: `2px dashed ${themeColor}40`
+        }}>
           <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wide" style={{ color: themeColor }}>
-            Professional Summary
+            Handcrafted Profile
           </h2>
           {editable ? (
             <InlineEditableText
@@ -117,11 +127,11 @@ export const CreativeCraftedTemplate = ({
         </div>
       )}
 
-      {/* Experience */}
+      {/* Experience with Artisan Cards */}
       {experience && experience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-[15px] font-bold mb-4 uppercase tracking-wide" style={{ color: themeColor }}>
-            Experience
+          <h2 className="text-[15px] font-bold mb-6 uppercase tracking-wide" style={{ color: themeColor }}>
+            Work Portfolio
           </h2>
           {editable ? (
             <InlineEditableList
@@ -138,8 +148,11 @@ export const CreativeCraftedTemplate = ({
               }}
               addButtonLabel="Add Experience"
               renderItem={(exp, index) => (
-                <div className="mb-6 last:mb-0">
-                  <div className="flex justify-between items-baseline mb-2">
+                <div className="mb-6 last:mb-0 p-5 border-2 rounded-lg" style={{
+                  borderColor: `${themeColor}30`,
+                  backgroundColor: `${themeColor}05`
+                }}>
+                  <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">
                       <InlineEditableText
                         path={`experience[${index}].position`}
@@ -155,31 +168,36 @@ export const CreativeCraftedTemplate = ({
                         as="p"
                       />
                     </div>
-                    <div className="text-[12px] text-gray-600 font-medium whitespace-nowrap flex items-center gap-1">
-                      <InlineEditableDate
-                        path={`experience[${index}].startDate`}
-                        value={exp.startDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                      <span> - </span>
-                      {exp.current ? (
-                        <span>Present</span>
-                      ) : (
+                    <div className="text-[12px] text-gray-600 font-medium whitespace-nowrap ml-4 px-3 py-1 rounded-full" style={{
+                      backgroundColor: `${themeColor}20`,
+                      border: `1px solid ${themeColor}`
+                    }}>
+                      <div className="flex items-center gap-1">
                         <InlineEditableDate
-                          path={`experience[${index}].endDate`}
-                          value={exp.endDate}
+                          path={`experience[${index}].startDate`}
+                          value={exp.startDate}
                           formatDisplay={formatDate}
                           className="inline-block"
                         />
-                      )}
+                        <span> - </span>
+                        {exp.current ? (
+                          <span>Present</span>
+                        ) : (
+                          <InlineEditableDate
+                            path={`experience[${index}].endDate`}
+                            value={exp.endDate}
+                            formatDisplay={formatDate}
+                            className="inline-block"
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                   {exp.description && (
                     <InlineEditableText
                       path={`experience[${index}].description`}
                       value={exp.description}
-                      className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
+                      className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block mt-3"
                       multiline
                       as="p"
                     />
@@ -190,8 +208,11 @@ export const CreativeCraftedTemplate = ({
           ) : (
             <div className="space-y-6">
               {experience.map((exp) => (
-                <div key={exp.id} className="mb-6 last:mb-0">
-                  <div className="flex justify-between items-baseline mb-2">
+                <div key={exp.id} className="p-5 border-2 rounded-lg" style={{
+                  borderColor: `${themeColor}30`,
+                  backgroundColor: `${themeColor}05`
+                }}>
+                  <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">
                       <h3 className="text-[15px] font-bold" style={{ color: themeColor }}>
                         {exp.position || "Position Title"}
@@ -200,12 +221,15 @@ export const CreativeCraftedTemplate = ({
                         {exp.company || "Company Name"}
                       </p>
                     </div>
-                    <span className="text-[12px] text-gray-600 font-medium whitespace-nowrap">
+                    <span className="text-[12px] text-gray-600 font-medium whitespace-nowrap ml-4 px-3 py-1 rounded-full" style={{
+                      backgroundColor: `${themeColor}20`,
+                      border: `1px solid ${themeColor}`
+                    }}>
                       {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </span>
                   </div>
                   {exp.description && (
-                    <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
+                    <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line mt-3">
                       {exp.description}
                     </p>
                   )}
@@ -217,11 +241,11 @@ export const CreativeCraftedTemplate = ({
       )}
 
       <div className="grid grid-cols-2 gap-8">
-        {/* Skills */}
+        {/* Skills with Artisan Tags */}
         {skills && skills.length > 0 && (
           <div>
             <h2 className="text-[15px] font-bold mb-4 uppercase tracking-wide" style={{ color: themeColor }}>
-              Skills
+              Craftsman Skills
             </h2>
             {editable ? (
               <InlineEditableSkills
@@ -229,17 +253,25 @@ export const CreativeCraftedTemplate = ({
                 skills={skills}
                 renderSkill={(skill) =>
                   skill.name ? (
-                    <div className="px-3 py-2 rounded text-[12px] font-medium text-center" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
+                    <div className="px-3 py-2 text-[12px] font-medium border-2" style={{
+                      borderColor: themeColor,
+                      color: themeColor,
+                      backgroundColor: 'white'
+                    }}>
                       {skill.name}
                     </div>
                   ) : null
                 }
               />
             ) : (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-wrap gap-2">
                 {skills.map((skill) =>
                   skill.name ? (
-                    <div key={skill.id} className="px-3 py-2 rounded text-[12px] font-medium text-center" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
+                    <div key={skill.id} className="px-3 py-2 text-[12px] font-medium border-2" style={{
+                      borderColor: themeColor,
+                      color: themeColor,
+                      backgroundColor: 'white'
+                    }}>
                       {skill.name}
                     </div>
                   ) : null
@@ -269,28 +301,28 @@ export const CreativeCraftedTemplate = ({
                 }}
                 addButtonLabel="Add Education"
                 renderItem={(edu, index) => (
-                  <div className="mb-4 last:mb-0">
+                  <div className="mb-5 last:mb-0">
                     <InlineEditableText
                       path={`education[${index}].degree`}
                       value={edu.degree || "Degree"}
-                      className="text-[14px] font-bold text-gray-900 block"
+                      className="text-[13px] font-bold text-gray-900 block"
                       as="h3"
                     />
                     {edu.field && (
                       <InlineEditableText
                         path={`education[${index}].field`}
                         value={edu.field}
-                        className="text-[13px] text-gray-700 block"
+                        className="text-[12px] text-gray-700 block"
                         as="p"
                       />
                     )}
                     <InlineEditableText
                       path={`education[${index}].school`}
                       value={edu.school || "School Name"}
-                      className="text-[13px] text-gray-600 italic block"
+                      className="text-[12.5px] text-gray-600 block"
                       as="p"
                     />
-                    <div className="text-[12px] text-gray-500 flex items-center gap-1">
+                    <div className="text-[12px] text-gray-500 flex items-center gap-1 mt-1">
                       <InlineEditableDate
                         path={`education[${index}].startDate`}
                         value={edu.startDate}
@@ -309,13 +341,13 @@ export const CreativeCraftedTemplate = ({
                 )}
               />
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {education.map((edu) => (
-                  <div key={edu.id} className="mb-4 last:mb-0">
-                    <h3 className="text-[14px] font-bold text-gray-900">{edu.degree || "Degree"}</h3>
-                    {edu.field && <p className="text-[13px] text-gray-700">{edu.field}</p>}
-                    <p className="text-[13px] text-gray-600 italic">{edu.school || "School Name"}</p>
-                    <span className="text-[12px] text-gray-500">
+                  <div key={edu.id}>
+                    <h3 className="text-[13px] font-bold text-gray-900">{edu.degree || "Degree"}</h3>
+                    {edu.field && <p className="text-[12px] text-gray-700">{edu.field}</p>}
+                    <p className="text-[12.5px] text-gray-600">{edu.school || "School Name"}</p>
+                    <span className="text-[12px] text-gray-500 block mt-1">
                       {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                     </span>
                   </div>
@@ -336,7 +368,7 @@ export const CreativeCraftedTemplate = ({
             <InlineEditableText
               path={`sections[${sections.indexOf(section)}].content`}
               value={section.content}
-              className="text-[13px] text-gray-700 block"
+              className="text-[12.5px] text-gray-700 leading-[1.7] block"
               multiline
               as="p"
             />
