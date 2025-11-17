@@ -942,6 +942,166 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Universal",
     categorySlug: "all",
   },
+
+  // New Universal Templates
+  "minimalist-pro": {
+    name: "Minimalist Pro",
+    description:
+      "Ultra-clean minimalist design with subtle accents and maximum whitespace for modern professionals.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "sidebar-accent": {
+    name: "Sidebar Accent",
+    description:
+      "Professional left sidebar layout with bold accent colors and organized information hierarchy.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "geometric-modern": {
+    name: "Geometric Modern",
+    description:
+      "Contemporary design featuring geometric shapes and clean lines for a modern professional look.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "two-tone-classic": {
+    name: "Two-Tone Classic",
+    description:
+      "Elegant two-tone color scheme with classic typography and sophisticated styling.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "bordered-elegance": {
+    name: "Bordered Elegance",
+    description:
+      "Refined design with decorative borders and elegant details for distinguished professionals.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "column-divide": {
+    name: "Column Divide",
+    description:
+      "Balanced 50/50 column layout with clear vertical separator and organized content sections.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+  "compact-professional": {
+    name: "Compact Professional",
+    description:
+      "Space-efficient professional design that maximizes content while maintaining readability.",
+    category: "Universal",
+    categorySlug: "all",
+  },
+
+  // New Software Engineering Templates
+  "code-minimal": {
+    name: "Code Minimal",
+    description:
+      "Minimal tech-focused design with monospace accents perfect for software developers.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "tech-stack-pro": {
+    name: "Tech Stack Pro",
+    description:
+      "Showcase your technology stack prominently with organized skill categorization.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "github-style": {
+    name: "GitHub Style",
+    description:
+      "GitHub-inspired clean design familiar to developers with contribution-focused layout.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "developer-grid": {
+    name: "Developer Grid",
+    description:
+      "Grid-based layout optimized for showcasing projects and technical skills effectively.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "terminal-theme": {
+    name: "Terminal Theme",
+    description:
+      "Terminal/CLI inspired design with dark accents appealing to command-line enthusiasts.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "algo-engineer": {
+    name: "Algo Engineer",
+    description:
+      "Algorithm and problem-solving focused layout ideal for competitive programmers.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "fullstack-modern": {
+    name: "Full-Stack Modern",
+    description:
+      "Modern template designed for full-stack developers showcasing both frontend and backend skills.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "cloud-architect": {
+    name: "Cloud Architect",
+    description:
+      "Cloud and architecture focused design highlighting infrastructure and system design expertise.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "devops-pro": {
+    name: "DevOps Pro",
+    description:
+      "DevOps and SRE specialized template emphasizing automation and reliability engineering.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "ml-engineer": {
+    name: "ML Engineer",
+    description:
+      "Machine Learning engineer focused template with data science and AI project highlights.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+
+  // New Creative Templates
+  "artistic-bold": {
+    name: "Artistic Bold",
+    description:
+      "Bold artistic design with creative typography and unique visual elements for creatives.",
+    category: "Creative",
+    categorySlug: "all",
+  },
+  "designer-showcase": {
+    name: "Designer Showcase",
+    description:
+      "Portfolio-style showcase layout perfect for designers displaying their creative work.",
+    category: "Creative",
+    categorySlug: "all",
+  },
+  "creative-timeline": {
+    name: "Creative Timeline",
+    description:
+      "Visual timeline design with artistic elements and creative career progression display.",
+    category: "Creative",
+    categorySlug: "all",
+  },
+  "colorful-modern": {
+    name: "Colorful Modern",
+    description:
+      "Vibrant colors and modern design elements for creative professionals who stand out.",
+    category: "Creative",
+    categorySlug: "all",
+  },
+  "asymmetric-creative": {
+    name: "Asymmetric Creative",
+    description:
+      "Asymmetric layout with creative sections breaking traditional resume conventions.",
+    category: "Creative",
+    categorySlug: "all",
+  },
 };
 
 export const categoryLabelMap: Record<string, string> = {

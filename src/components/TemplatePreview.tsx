@@ -140,6 +140,29 @@ import { BusinessEliteTemplate } from "./resume/templates/BusinessEliteTemplate"
 import { CorporateCleanTemplate } from "./resume/templates/CorporateCleanTemplate";
 import { ProfessionalClassicTemplate } from "./resume/templates/ProfessionalClassicTemplate";
 import { ModernBusinessTemplate } from "./resume/templates/ModernBusinessTemplate";
+// New Professional Templates (22 new imports)
+import { AlgoEngineerTemplate } from "./resume/templates/AlgoEngineerTemplate";
+import { ArtisticBoldTemplate } from "./resume/templates/ArtisticBoldTemplate";
+import { AsymmetricCreativeTemplate } from "./resume/templates/AsymmetricCreativeTemplate";
+import { BorderedEleganceTemplate } from "./resume/templates/BorderedEleganceTemplate";
+import { CodeMinimalTemplate } from "./resume/templates/CodeMinimalTemplate";
+import { ColorfulModernTemplate } from "./resume/templates/ColorfulModernTemplate";
+import { ColumnDivideTemplate } from "./resume/templates/ColumnDivideTemplate";
+import { CompactProfessionalTemplate } from "./resume/templates/CompactProfessionalTemplate";
+import { CreativeTimelineTemplate } from "./resume/templates/CreativeTimelineTemplate";
+import { DesignerShowcaseTemplate } from "./resume/templates/DesignerShowcaseTemplate";
+import { DeveloperGridTemplate } from "./resume/templates/DeveloperGridTemplate";
+import { DevOpsProTemplate } from "./resume/templates/DevOpsProTemplate";
+import { ExecutiveMinimalTemplate } from "./resume/templates/ExecutiveMinimalTemplate";
+import { FullStackModernTemplate } from "./resume/templates/FullStackModernTemplate";
+import { GeometricModernTemplate } from "./resume/templates/GeometricModernTemplate";
+import { GitHubStyleTemplate } from "./resume/templates/GitHubStyleTemplate";
+import { MLEngineerTemplate } from "./resume/templates/MLEngineerTemplate";
+import { SidebarAccentTemplate } from "./resume/templates/SidebarAccentTemplate";
+import { TechStackProTemplate } from "./resume/templates/TechStackProTemplate";
+import { TerminalThemeTemplate } from "./resume/templates/TerminalThemeTemplate";
+import { TimelineEleganceTemplate } from "./resume/templates/TimelineEleganceTemplate";
+import { TwoToneClassicTemplate } from "./resume/templates/TwoToneClassicTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -1491,6 +1514,29 @@ const templates = {
   "corporate-clean": CorporateCleanTemplate,
   "professional-classic": ProfessionalClassicTemplate,
   "modern-business": ModernBusinessTemplate,
+  // New Professional Templates (22 templates)
+  "algo-engineer": AlgoEngineerTemplate,
+  "artistic-bold": ArtisticBoldTemplate,
+  "asymmetric-creative": AsymmetricCreativeTemplate,
+  "bordered-elegance": BorderedEleganceTemplate,
+  "code-minimal": CodeMinimalTemplate,
+  "colorful-modern": ColorfulModernTemplate,
+  "column-divide": ColumnDivideTemplate,
+  "compact-professional": CompactProfessionalTemplate,
+  "creative-timeline": CreativeTimelineTemplate,
+  "designer-showcase": DesignerShowcaseTemplate,
+  "developer-grid": DeveloperGridTemplate,
+  "devops-pro": DevOpsProTemplate,
+  "executive-minimal": ExecutiveMinimalTemplate,
+  "fullstack-modern": FullStackModernTemplate,
+  "geometric-modern": GeometricModernTemplate,
+  "github-style": GitHubStyleTemplate,
+  "ml-engineer": MLEngineerTemplate,
+  "sidebar-accent": SidebarAccentTemplate,
+  "tech-stack-pro": TechStackProTemplate,
+  "terminal-theme": TerminalThemeTemplate,
+  "timeline-elegance": TimelineEleganceTemplate,
+  "two-tone-classic": TwoToneClassicTemplate,
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({

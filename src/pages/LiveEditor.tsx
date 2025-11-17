@@ -109,6 +109,29 @@ import { BusinessElitePDF } from "@/components/resume/pdf/BusinessElitePDF";
 import { CorporateCleanPDF } from "@/components/resume/pdf/CorporateCleanPDF";
 import { ProfessionalClassicPDF } from "@/components/resume/pdf/ProfessionalClassicPDF";
 import { ModernBusinessPDF } from "@/components/resume/pdf/ModernBusinessPDF";
+// New Professional PDF Templates (22 new imports)
+import { AlgoEngineerPDF } from "@/components/resume/pdf/AlgoEngineerPDF";
+import { ArtisticBoldPDF } from "@/components/resume/pdf/ArtisticBoldPDF";
+import { AsymmetricCreativePDF } from "@/components/resume/pdf/AsymmetricCreativePDF";
+import { BorderedElegancePDF } from "@/components/resume/pdf/BorderedElegancePDF";
+import { CodeMinimalPDF } from "@/components/resume/pdf/CodeMinimalPDF";
+import { ColorfulModernPDF } from "@/components/resume/pdf/ColorfulModernPDF";
+import { ColumnDividePDF } from "@/components/resume/pdf/ColumnDividePDF";
+import { CompactProfessionalPDF } from "@/components/resume/pdf/CompactProfessionalPDF";
+import { CreativeTimelinePDF } from "@/components/resume/pdf/CreativeTimelinePDF";
+import { DesignerShowcasePDF } from "@/components/resume/pdf/DesignerShowcasePDF";
+import { DeveloperGridPDF } from "@/components/resume/pdf/DeveloperGridPDF";
+import { DevOpsProPDF } from "@/components/resume/pdf/DevOpsProPDF";
+import { ExecutiveMinimalPDF } from "@/components/resume/pdf/ExecutiveMinimalPDF";
+import { FullStackModernPDF } from "@/components/resume/pdf/FullStackModernPDF";
+import { GeometricModernPDF } from "@/components/resume/pdf/GeometricModernPDF";
+import { GitHubStylePDF } from "@/components/resume/pdf/GitHubStylePDF";
+import { MLEngineerPDF } from "@/components/resume/pdf/MLEngineerPDF";
+import { SidebarAccentPDF } from "@/components/resume/pdf/SidebarAccentPDF";
+import { TechStackProPDF } from "@/components/resume/pdf/TechStackProPDF";
+import { TerminalThemePDF } from "@/components/resume/pdf/TerminalThemePDF";
+import { TimelineElegancePDF } from "@/components/resume/pdf/TimelineElegancePDF";
+import { TwoToneClassicPDF } from "@/components/resume/pdf/TwoToneClassicPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { getTemplateDefaults, type ResumeData } from "@/pages/Editor";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
@@ -257,6 +280,29 @@ import { BusinessEliteTemplate } from "@/components/resume/templates/BusinessEli
 import { CorporateCleanTemplate } from "@/components/resume/templates/CorporateCleanTemplate";
 import { ProfessionalClassicTemplate } from "@/components/resume/templates/ProfessionalClassicTemplate";
 import { ModernBusinessTemplate } from "@/components/resume/templates/ModernBusinessTemplate";
+// New Professional HTML Templates (22 new imports)
+import { AlgoEngineerTemplate } from "@/components/resume/templates/AlgoEngineerTemplate";
+import { ArtisticBoldTemplate } from "@/components/resume/templates/ArtisticBoldTemplate";
+import { AsymmetricCreativeTemplate } from "@/components/resume/templates/AsymmetricCreativeTemplate";
+import { BorderedEleganceTemplate } from "@/components/resume/templates/BorderedEleganceTemplate";
+import { CodeMinimalTemplate } from "@/components/resume/templates/CodeMinimalTemplate";
+import { ColorfulModernTemplate } from "@/components/resume/templates/ColorfulModernTemplate";
+import { ColumnDivideTemplate } from "@/components/resume/templates/ColumnDivideTemplate";
+import { CompactProfessionalTemplate } from "@/components/resume/templates/CompactProfessionalTemplate";
+import { CreativeTimelineTemplate } from "@/components/resume/templates/CreativeTimelineTemplate";
+import { DesignerShowcaseTemplate } from "@/components/resume/templates/DesignerShowcaseTemplate";
+import { DeveloperGridTemplate } from "@/components/resume/templates/DeveloperGridTemplate";
+import { DevOpsProTemplate } from "@/components/resume/templates/DevOpsProTemplate";
+import { ExecutiveMinimalTemplate } from "@/components/resume/templates/ExecutiveMinimalTemplate";
+import { FullStackModernTemplate } from "@/components/resume/templates/FullStackModernTemplate";
+import { GeometricModernTemplate } from "@/components/resume/templates/GeometricModernTemplate";
+import { GitHubStyleTemplate } from "@/components/resume/templates/GitHubStyleTemplate";
+import { MLEngineerTemplate } from "@/components/resume/templates/MLEngineerTemplate";
+import { SidebarAccentTemplate } from "@/components/resume/templates/SidebarAccentTemplate";
+import { TechStackProTemplate } from "@/components/resume/templates/TechStackProTemplate";
+import { TerminalThemeTemplate } from "@/components/resume/templates/TerminalThemeTemplate";
+import { TimelineEleganceTemplate } from "@/components/resume/templates/TimelineEleganceTemplate";
+import { TwoToneClassicTemplate } from "@/components/resume/templates/TwoToneClassicTemplate";
 
 const pdfTemplates: Record<string, any> = {
   professional: ProfessionalPDF,
@@ -366,6 +412,29 @@ const pdfTemplates: Record<string, any> = {
   "corporate-clean": CorporateCleanPDF,
   "professional-classic": ProfessionalClassicPDF,
   "modern-business": ModernBusinessPDF,
+  // New Professional Templates (22 new registrations)
+  "algo-engineer": AlgoEngineerPDF,
+  "artistic-bold": ArtisticBoldPDF,
+  "asymmetric-creative": AsymmetricCreativePDF,
+  "bordered-elegance": BorderedElegancePDF,
+  "code-minimal": CodeMinimalPDF,
+  "colorful-modern": ColorfulModernPDF,
+  "column-divide": ColumnDividePDF,
+  "compact-professional": CompactProfessionalPDF,
+  "creative-timeline": CreativeTimelinePDF,
+  "designer-showcase": DesignerShowcasePDF,
+  "developer-grid": DeveloperGridPDF,
+  "devops-pro": DevOpsProPDF,
+  "executive-minimal": ExecutiveMinimalPDF,
+  "fullstack-modern": FullStackModernPDF,
+  "geometric-modern": GeometricModernPDF,
+  "github-style": GitHubStylePDF,
+  "ml-engineer": MLEngineerPDF,
+  "sidebar-accent": SidebarAccentPDF,
+  "tech-stack-pro": TechStackProPDF,
+  "terminal-theme": TerminalThemePDF,
+  "timeline-elegance": TimelineElegancePDF,
+  "two-tone-classic": TwoToneClassicPDF,
 };
 
 // Templates that support inline editing
@@ -423,7 +492,15 @@ const inlineEditableTemplates = [
   "minimalist-pro", "classic-elegant", "business-modern",
   "professional-timeline", "clean-corporate", "modern-professional",
   "elegant-professional", "professional-grid", "business-elite",
-  "corporate-clean", "professional-classic", "modern-business"
+  "corporate-clean", "professional-classic", "modern-business",
+  // New Professional Templates (22 templates - all support inline editing)
+  "algo-engineer", "artistic-bold", "asymmetric-creative",
+  "bordered-elegance", "code-minimal", "colorful-modern",
+  "column-divide", "compact-professional", "creative-timeline",
+  "designer-showcase", "developer-grid", "devops-pro",
+  "executive-minimal", "fullstack-modern", "geometric-modern", "github-style",
+  "ml-engineer", "sidebar-accent", "tech-stack-pro",
+  "terminal-theme", "timeline-elegance", "two-tone-classic"
 ];
 
 const displayTemplates: Record<string, any> = {
@@ -570,6 +647,29 @@ const displayTemplates: Record<string, any> = {
   "corporate-clean": CorporateCleanTemplate,
   "professional-classic": ProfessionalClassicTemplate,
   "modern-business": ModernBusinessTemplate,
+  // New Professional Templates (22 new registrations)
+  "algo-engineer": AlgoEngineerTemplate,
+  "artistic-bold": ArtisticBoldTemplate,
+  "asymmetric-creative": AsymmetricCreativeTemplate,
+  "bordered-elegance": BorderedEleganceTemplate,
+  "code-minimal": CodeMinimalTemplate,
+  "colorful-modern": ColorfulModernTemplate,
+  "column-divide": ColumnDivideTemplate,
+  "compact-professional": CompactProfessionalTemplate,
+  "creative-timeline": CreativeTimelineTemplate,
+  "designer-showcase": DesignerShowcaseTemplate,
+  "developer-grid": DeveloperGridTemplate,
+  "devops-pro": DevOpsProTemplate,
+  "executive-minimal": ExecutiveMinimalTemplate,
+  "fullstack-modern": FullStackModernTemplate,
+  "geometric-modern": GeometricModernTemplate,
+  "github-style": GitHubStyleTemplate,
+  "ml-engineer": MLEngineerTemplate,
+  "sidebar-accent": SidebarAccentTemplate,
+  "tech-stack-pro": TechStackProTemplate,
+  "terminal-theme": TerminalThemeTemplate,
+  "timeline-elegance": TimelineEleganceTemplate,
+  "two-tone-classic": TwoToneClassicTemplate,
 };
 
 const LiveEditor = () => {

@@ -109,6 +109,29 @@ import { BusinessElitePDF } from "@/components/resume/pdf/BusinessElitePDF";
 import { CorporateCleanPDF } from "@/components/resume/pdf/CorporateCleanPDF";
 import { ProfessionalClassicPDF } from "@/components/resume/pdf/ProfessionalClassicPDF";
 import { ModernBusinessPDF } from "@/components/resume/pdf/ModernBusinessPDF";
+// New Professional PDF Templates (22 new imports)
+import { AlgoEngineerPDF } from "@/components/resume/pdf/AlgoEngineerPDF";
+import { ArtisticBoldPDF } from "@/components/resume/pdf/ArtisticBoldPDF";
+import { AsymmetricCreativePDF } from "@/components/resume/pdf/AsymmetricCreativePDF";
+import { BorderedElegancePDF } from "@/components/resume/pdf/BorderedElegancePDF";
+import { CodeMinimalPDF } from "@/components/resume/pdf/CodeMinimalPDF";
+import { ColorfulModernPDF } from "@/components/resume/pdf/ColorfulModernPDF";
+import { ColumnDividePDF } from "@/components/resume/pdf/ColumnDividePDF";
+import { CompactProfessionalPDF } from "@/components/resume/pdf/CompactProfessionalPDF";
+import { CreativeTimelinePDF } from "@/components/resume/pdf/CreativeTimelinePDF";
+import { DesignerShowcasePDF } from "@/components/resume/pdf/DesignerShowcasePDF";
+import { DeveloperGridPDF } from "@/components/resume/pdf/DeveloperGridPDF";
+import { DevOpsProPDF } from "@/components/resume/pdf/DevOpsProPDF";
+import { ExecutiveMinimalPDF } from "@/components/resume/pdf/ExecutiveMinimalPDF";
+import { FullStackModernPDF } from "@/components/resume/pdf/FullStackModernPDF";
+import { GeometricModernPDF } from "@/components/resume/pdf/GeometricModernPDF";
+import { GitHubStylePDF } from "@/components/resume/pdf/GitHubStylePDF";
+import { MLEngineerPDF } from "@/components/resume/pdf/MLEngineerPDF";
+import { SidebarAccentPDF } from "@/components/resume/pdf/SidebarAccentPDF";
+import { TechStackProPDF } from "@/components/resume/pdf/TechStackProPDF";
+import { TerminalThemePDF } from "@/components/resume/pdf/TerminalThemePDF";
+import { TimelineElegancePDF } from "@/components/resume/pdf/TimelineElegancePDF";
+import { TwoToneClassicPDF } from "@/components/resume/pdf/TwoToneClassicPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
 import { analyzeResumeForATS, type AtsReport } from "@/lib/atsAnalyzer";
@@ -1861,6 +1884,37 @@ export const getTemplateDefaults = (templateId: string): ResumeData => {
     },
   };
 
+  // For new templates without specific defaults, use professional template data
+  const newTemplatesUsingProfessionalDefaults = [
+    "timeline-elegance",
+    "executive-minimal",
+    "sidebar-accent",
+    "geometric-modern",
+    "two-tone-classic",
+    "bordered-elegance",
+    "column-divide",
+    "compact-professional",
+    "code-minimal",
+    "tech-stack-pro",
+    "github-style",
+    "developer-grid",
+    "terminal-theme",
+    "algo-engineer",
+    "fullstack-modern",
+    "devops-pro",
+    "ml-engineer",
+    "artistic-bold",
+    "designer-showcase",
+    "creative-timeline",
+    "colorful-modern",
+    "asymmetric-creative",
+  ];
+
+  // Add all new templates using professional defaults
+  newTemplatesUsingProfessionalDefaults.forEach(id => {
+    templates[id] = templates.professional;
+  });
+
   return templates[templateId] || templates.professional;
 };
 
@@ -2170,6 +2224,29 @@ const Editor = () => {
         "corporate-clean": CorporateCleanPDF,
         "professional-classic": ProfessionalClassicPDF,
         "modern-business": ModernBusinessPDF,
+        // New Professional Templates (22 new registrations)
+        "algo-engineer": AlgoEngineerPDF,
+        "artistic-bold": ArtisticBoldPDF,
+        "asymmetric-creative": AsymmetricCreativePDF,
+        "bordered-elegance": BorderedElegancePDF,
+        "code-minimal": CodeMinimalPDF,
+        "colorful-modern": ColorfulModernPDF,
+        "column-divide": ColumnDividePDF,
+        "compact-professional": CompactProfessionalPDF,
+        "creative-timeline": CreativeTimelinePDF,
+        "designer-showcase": DesignerShowcasePDF,
+        "developer-grid": DeveloperGridPDF,
+        "devops-pro": DevOpsProPDF,
+        "executive-minimal": ExecutiveMinimalPDF,
+        "fullstack-modern": FullStackModernPDF,
+        "geometric-modern": GeometricModernPDF,
+        "github-style": GitHubStylePDF,
+        "ml-engineer": MLEngineerPDF,
+        "sidebar-accent": SidebarAccentPDF,
+        "tech-stack-pro": TechStackProPDF,
+        "terminal-theme": TerminalThemePDF,
+        "timeline-elegance": TimelineElegancePDF,
+        "two-tone-classic": TwoToneClassicPDF,
       };
 
       const PDFTemplate =
