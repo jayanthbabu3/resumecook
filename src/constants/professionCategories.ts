@@ -184,6 +184,8 @@ export const professionCategories: ProfessionCategory[] = [
       "professional-classic",
       "modern-business",
       // New Professional Templates (22 new templates)
+      "timeline-elegance",
+      "executive-minimal",
       "sidebar-accent",
       "geometric-modern",
       "two-tone-classic",
@@ -244,6 +246,8 @@ export const professionCategories: ProfessionCategory[] = [
       "professional-classic",
       "modern-business",
       // New Universal Templates
+      "timeline-elegance",
+      "executive-minimal",
       "sidebar-accent",
       "geometric-modern",
       "two-tone-classic",
