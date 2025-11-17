@@ -359,7 +359,7 @@ export const CreativePulseTemplate = ({
       </div>
 
       {/* Additional Sections */}
-      {sections && sections.length > 0 && sections.map((section) => (
+      {sections && sections.length > 0 && sections.map((section, index) => (
         <div key={section.id} className="mt-8 relative">
           <div className="absolute -left-10 top-0 w-24 h-0.5 -rotate-12" style={{ backgroundColor: `${themeColor}60` }}></div>
           <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wider" style={{ color: themeColor }}>
@@ -367,7 +367,7 @@ export const CreativePulseTemplate = ({
           </h2>
           {editable ? (
             <InlineEditableText
-              path={`sections[${sections.indexOf(section)}].content`}
+              path={`sections[${index}].content`}
               value={section.content}
               className="text-[12.5px] text-gray-700 leading-[1.7] block"
               multiline

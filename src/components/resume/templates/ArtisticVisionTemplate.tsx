@@ -363,7 +363,7 @@ export const ArtisticVisionTemplate = ({
           )}
 
           {/* Additional Sections */}
-          {sections && sections.length > 0 && sections.map((section) => (
+          {sections && sections.length > 0 && sections.map((section, index) => (
             <div key={section.id} className="mt-8">
               <div className="flex items-center mb-4">
                 <div className="w-2 h-2 rotate-45 mr-3" style={{ backgroundColor: themeColor }}></div>
@@ -374,7 +374,7 @@ export const ArtisticVisionTemplate = ({
               </div>
               {editable ? (
                 <InlineEditableText
-                  path={`sections[${sections.indexOf(section)}].content`}
+                  path={`sections[${index}].content`}
                   value={section.content}
                   className="text-[12.5px] text-gray-700 leading-[1.7] block pl-6"
                   multiline

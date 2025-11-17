@@ -355,7 +355,7 @@ export const ArtisticMomentumTemplate = ({
       </div>
 
       {/* Additional Sections */}
-      {sections && sections.length > 0 && sections.map((section) => (
+      {sections && sections.length > 0 && sections.map((section, index) => (
         <div key={section.id} className="mt-8">
           <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wider flex items-center gap-2" style={{ color: themeColor }}>
             <div className="w-0 h-0 border-t-4 border-t-transparent border-b-4 border-b-transparent border-l-4" style={{ borderLeftColor: themeColor }}></div>
@@ -363,7 +363,7 @@ export const ArtisticMomentumTemplate = ({
           </h2>
           {editable ? (
             <InlineEditableText
-              path={`sections[${sections.indexOf(section)}].content`}
+              path={`sections[${index}].content`}
               value={section.content}
               className="text-[12.5px] text-gray-700 leading-[1.7] block"
               multiline

@@ -377,7 +377,7 @@ export const CreativeCanvasTemplate = ({
         )}
 
         {/* Custom Sections */}
-        {sections && sections.map((section) => (
+        {sections && sections.map((section, index) => (
           <div key={section.id} className="mb-8 p-6 bg-white shadow-md">
             <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wide" style={{ color: themeColor }}>
               {section.title}

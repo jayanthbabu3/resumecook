@@ -147,7 +147,7 @@ export const CreativeTimelineTemplate = ({
                     <div className="mb-3">
                       {editable ? (
                         <InlineEditableText
-                          path={`experience.${index}.position`}
+                          path={`experience[${index}].position`}
                           value={exp.position}
                           className="text-[16px] font-bold text-gray-900"
                           as="h3"
@@ -157,7 +157,7 @@ export const CreativeTimelineTemplate = ({
                       )}
                       {editable ? (
                         <InlineEditableText
-                          path={`experience.${index}.company`}
+                          path={`experience[${index}].company`}
                           value={exp.company}
                           className="text-[13px] font-medium"
                           as="p"
@@ -177,7 +177,7 @@ export const CreativeTimelineTemplate = ({
                       <div className="text-gray-700 leading-relaxed">
                         {editable ? (
                           <InlineEditableList
-                            path={`experience.${index}.description`}
+                            path={`experience[${index}].description`}
                             items={exp.description.split("\n")}
                           />
                         ) : (
@@ -236,7 +236,7 @@ export const CreativeTimelineTemplate = ({
                 <div className="flex-1 bg-gray-50 p-6 rounded-lg shadow-md">
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.degree`}
+                      path={`education[${index}].degree`}
                       value={edu.degree}
                       className="text-[13px] font-bold text-gray-900 mb-1"
                       as="h3"
@@ -246,7 +246,7 @@ export const CreativeTimelineTemplate = ({
                   )}
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.institution`}
+                      path={`education[${index}].institution`}
                       value={edu.institution}
                       className="text-lg text-gray-700 mb-1"
                       as="p"

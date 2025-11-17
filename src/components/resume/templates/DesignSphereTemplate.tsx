@@ -358,14 +358,14 @@ export const DesignSphereTemplate = ({
       </div>
 
       {/* Additional Sections */}
-      {sections && sections.length > 0 && sections.map((section) => (
+      {sections && sections.length > 0 && sections.map((section, index) => (
         <div key={section.id} className="mt-8 max-w-3xl mx-auto">
           <h2 className="text-[15px] font-bold mb-3 uppercase tracking-wide text-center" style={{ color: themeColor }}>
             {section.title}
           </h2>
           {editable ? (
             <InlineEditableText
-              path={`sections[${sections.indexOf(section)}].content`}
+              path={`sections[${index}].content`}
               value={section.content}
               className="text-[12.5px] text-gray-700 leading-[1.7] block text-center"
               multiline

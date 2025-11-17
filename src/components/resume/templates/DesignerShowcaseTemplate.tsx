@@ -173,7 +173,7 @@ export const DesignerShowcaseTemplate = ({
                       <div className="mb-3">
                         {editable ? (
                           <InlineEditableText
-                            path={`experience.${index}.position`}
+                            path={`experience[${index}].position`}
                             value={exp.position}
                             className="text-[15px] font-bold text-gray-900"
                             as="h3"
@@ -183,7 +183,7 @@ export const DesignerShowcaseTemplate = ({
                         )}
                         {editable ? (
                           <InlineEditableText
-                            path={`experience.${index}.company`}
+                            path={`experience[${index}].company`}
                             value={exp.company}
                             className="text-[13px] font-medium"
                             as="p"
@@ -203,7 +203,7 @@ export const DesignerShowcaseTemplate = ({
                         <div className="text-gray-700">
                           {editable ? (
                             <InlineEditableList
-                              path={`experience.${index}.description`}
+                              path={`experience[${index}].description`}
                               items={exp.description.split("\n")}
                             />
                           ) : (
@@ -235,7 +235,7 @@ export const DesignerShowcaseTemplate = ({
                 <div key={index} className="bg-white p-6 rounded-2xl shadow-lg">
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.degree`}
+                      path={`education[${index}].degree`}
                       value={edu.degree}
                       className="text-xl font-bold text-gray-900 mb-2"
                       as="h3"
@@ -245,7 +245,7 @@ export const DesignerShowcaseTemplate = ({
                   )}
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.institution`}
+                      path={`education[${index}].institution`}
                       value={edu.institution}
                       className="text-gray-700 mb-2"
                       as="p"

@@ -347,14 +347,14 @@ export const ArtisticHorizonTemplate = ({
         </div>
 
         {/* Additional Sections */}
-        {sections && sections.length > 0 && sections.map((section) => (
+        {sections && sections.length > 0 && sections.map((section, index) => (
           <div key={section.id} className="mb-8 pb-6 border-b" style={{ borderColor: `${themeColor}30` }}>
             <h2 className="text-[15px] font-bold mb-3 uppercase tracking-widest" style={{ color: themeColor }}>
               {section.title}
             </h2>
             {editable ? (
               <InlineEditableText
-                path={`sections[${sections.indexOf(section)}].content`}
+                path={`sections[${index}].content`}
                 value={section.content}
                 className="text-[12.5px] text-gray-700 leading-[1.7] block"
                 multiline
