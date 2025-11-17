@@ -141,6 +141,51 @@ import { BusinessEliteTemplate } from "./templates/BusinessEliteTemplate";
 import { CorporateCleanTemplate } from "./templates/CorporateCleanTemplate";
 import { ProfessionalClassicTemplate } from "./templates/ProfessionalClassicTemplate";
 import { ModernBusinessTemplate } from "./templates/ModernBusinessTemplate";
+import { StrategicExecutiveTemplate } from "./templates/StrategicExecutiveTemplate";
+import { ProfessionalSphereTemplate } from "./templates/ProfessionalSphereTemplate";
+import { GlobalProfessionalTemplate } from "./templates/GlobalProfessionalTemplate";
+import { ProfessionalHorizonTemplate } from "./templates/ProfessionalHorizonTemplate";
+import { ExecutivePrimeTemplate } from "./templates/ExecutivePrimeTemplate";
+import { CorporateMomentumTemplate } from "./templates/CorporateMomentumTemplate";
+import { ProfessionalAscendTemplate } from "./templates/ProfessionalAscendTemplate";
+import { GlobalEliteTemplate } from "./templates/GlobalEliteTemplate";
+import { ExecutiveVisionTemplate } from "./templates/ExecutiveVisionTemplate";
+import { CorporateFusionTemplate } from "./templates/CorporateFusionTemplate";
+import { ProfessionalZenithTemplate } from "./templates/ProfessionalZenithTemplate";
+import { ExecutiveCoreTemplate } from "./templates/ExecutiveCoreTemplate";
+import { CodeCraftsmanTemplate } from "./templates/CodeCraftsmanTemplate";
+import { TechPioneerTemplate } from "./templates/TechPioneerTemplate";
+import { DevArchitectureTemplate } from "./templates/DevArchitectureTemplate";
+import { SoftwareMasterTemplate } from "./templates/SoftwareMasterTemplate";
+import { TechVanguardTemplate } from "./templates/TechVanguardTemplate";
+import { CodeSphereTemplate } from "./templates/CodeSphereTemplate";
+import { DevEliteTemplate } from "./templates/DevEliteTemplate";
+import { TechHorizonTemplate } from "./templates/TechHorizonTemplate";
+import { SoftwareCraftsmanTemplate } from "./templates/SoftwareCraftsmanTemplate";
+import { CodeVisionTemplate } from "./templates/CodeVisionTemplate";
+import { DevPrimeTemplate } from "./templates/DevPrimeTemplate";
+import { TechCraftedTemplate } from "./templates/TechCraftedTemplate";
+import { SoftwareVisionTemplate } from "./templates/SoftwareVisionTemplate";
+import { CodePinnacleTemplate } from "./templates/CodePinnacleTemplate";
+import { DevMomentumTemplate } from "./templates/DevMomentumTemplate";
+import { CreativeCanvasTemplate } from "./templates/CreativeCanvasTemplate";
+import { DesignMaestroTemplate } from "./templates/DesignMaestroTemplate";
+import { ArtisticVisionTemplate } from "./templates/ArtisticVisionTemplate";
+import { CreativePulseTemplate } from "./templates/CreativePulseTemplate";
+import { DesignPinnacleTemplate } from "./templates/DesignPinnacleTemplate";
+import { ArtisticHorizonTemplate } from "./templates/ArtisticHorizonTemplate";
+import { CreativeCraftedTemplate } from "./templates/CreativeCraftedTemplate";
+import { DesignSphereTemplate } from "./templates/DesignSphereTemplate";
+import { ArtisticMomentumTemplate } from "./templates/ArtisticMomentumTemplate";
+import { CreativeHorizonTemplate } from "./templates/CreativeHorizonTemplate";
+import { GraduateMomentumTemplate } from "./templates/GraduateMomentumTemplate";
+import { EntryEliteTemplate } from "./templates/EntryEliteTemplate";
+import { FreshersVisionTemplate } from "./templates/FreshersVisionTemplate";
+import { GraduatePrimeTemplate } from "./templates/GraduatePrimeTemplate";
+import { EntryHorizonTemplate } from "./templates/EntryHorizonTemplate";
+import { FreshersCraftedTemplate } from "./templates/FreshersCraftedTemplate";
+import { GraduateZenithTemplate } from "./templates/GraduateZenithTemplate";
+import { EntrySphereTemplate } from "./templates/EntrySphereTemplate";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -296,6 +341,51 @@ export const ResumePreview = ({
     "corporate-clean": CorporateCleanTemplate,
     "professional-classic": ProfessionalClassicTemplate,
     "modern-business": ModernBusinessTemplate,
+    "strategic-executive": StrategicExecutiveTemplate,
+    "professional-sphere": ProfessionalSphereTemplate,
+    "global-professional": GlobalProfessionalTemplate,
+    "professional-horizon": ProfessionalHorizonTemplate,
+    "executive-prime": ExecutivePrimeTemplate,
+    "corporate-momentum": CorporateMomentumTemplate,
+    "professional-ascend": ProfessionalAscendTemplate,
+    "global-elite": GlobalEliteTemplate,
+    "executive-vision": ExecutiveVisionTemplate,
+    "corporate-fusion": CorporateFusionTemplate,
+    "professional-zenith": ProfessionalZenithTemplate,
+    "executive-core": ExecutiveCoreTemplate,
+    "code-craftsman": CodeCraftsmanTemplate,
+    "tech-pioneer": TechPioneerTemplate,
+    "dev-architecture": DevArchitectureTemplate,
+    "software-master": SoftwareMasterTemplate,
+    "tech-vanguard": TechVanguardTemplate,
+    "code-sphere": CodeSphereTemplate,
+    "dev-elite": DevEliteTemplate,
+    "tech-horizon": TechHorizonTemplate,
+    "software-craftsman": SoftwareCraftsmanTemplate,
+    "code-vision": CodeVisionTemplate,
+    "dev-prime": DevPrimeTemplate,
+    "tech-crafted": TechCraftedTemplate,
+    "software-vision": SoftwareVisionTemplate,
+    "code-pinnacle": CodePinnacleTemplate,
+    "dev-momentum": DevMomentumTemplate,
+    "creative-canvas": CreativeCanvasTemplate,
+    "design-maestro": DesignMaestroTemplate,
+    "artistic-vision": ArtisticVisionTemplate,
+    "creative-pulse": CreativePulseTemplate,
+    "design-pinnacle": DesignPinnacleTemplate,
+    "artistic-horizon": ArtisticHorizonTemplate,
+    "creative-crafted": CreativeCraftedTemplate,
+    "design-sphere": DesignSphereTemplate,
+    "artistic-momentum": ArtisticMomentumTemplate,
+    "creative-horizon": CreativeHorizonTemplate,
+    "graduate-momentum": GraduateMomentumTemplate,
+    "entry-elite": EntryEliteTemplate,
+    "freshers-vision": FreshersVisionTemplate,
+    "graduate-prime": GraduatePrimeTemplate,
+    "entry-horizon": EntryHorizonTemplate,
+    "freshers-crafted": FreshersCraftedTemplate,
+    "graduate-zenith": GraduateZenithTemplate,
+    "entry-sphere": EntrySphereTemplate,
   };
 
   const Template =

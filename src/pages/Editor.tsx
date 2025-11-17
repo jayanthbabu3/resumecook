@@ -132,6 +132,51 @@ import { TechStackProPDF } from "@/components/resume/pdf/TechStackProPDF";
 import { TerminalThemePDF } from "@/components/resume/pdf/TerminalThemePDF";
 import { TimelineElegancePDF } from "@/components/resume/pdf/TimelineElegancePDF";
 import { TwoToneClassicPDF } from "@/components/resume/pdf/TwoToneClassicPDF";
+import { StrategicExecutivePDF } from "@/components/resume/pdf/StrategicExecutivePDF";
+import { ProfessionalSpherePDF } from "@/components/resume/pdf/ProfessionalSpherePDF";
+import { GlobalProfessionalPDF } from "@/components/resume/pdf/GlobalProfessionalPDF";
+import { ProfessionalHorizonPDF } from "@/components/resume/pdf/ProfessionalHorizonPDF";
+import { ExecutivePrimePDF } from "@/components/resume/pdf/ExecutivePrimePDF";
+import { CorporateMomentumPDF } from "@/components/resume/pdf/CorporateMomentumPDF";
+import { ProfessionalAscendPDF } from "@/components/resume/pdf/ProfessionalAscendPDF";
+import { GlobalElitePDF } from "@/components/resume/pdf/GlobalElitePDF";
+import { ExecutiveVisionPDF } from "@/components/resume/pdf/ExecutiveVisionPDF";
+import { CorporateFusionPDF } from "@/components/resume/pdf/CorporateFusionPDF";
+import { ProfessionalZenithPDF } from "@/components/resume/pdf/ProfessionalZenithPDF";
+import { ExecutiveCorePDF } from "@/components/resume/pdf/ExecutiveCorePDF";
+import { CodeCraftsmanPDF } from "@/components/resume/pdf/CodeCraftsmanPDF";
+import { TechPioneerPDF } from "@/components/resume/pdf/TechPioneerPDF";
+import { DevArchitecturePDF } from "@/components/resume/pdf/DevArchitecturePDF";
+import { SoftwareMasterPDF } from "@/components/resume/pdf/SoftwareMasterPDF";
+import { TechVanguardPDF } from "@/components/resume/pdf/TechVanguardPDF";
+import { CodeSpherePDF } from "@/components/resume/pdf/CodeSpherePDF";
+import { DevElitePDF } from "@/components/resume/pdf/DevElitePDF";
+import { TechHorizonPDF } from "@/components/resume/pdf/TechHorizonPDF";
+import { SoftwareCraftsmanPDF } from "@/components/resume/pdf/SoftwareCraftsmanPDF";
+import { CodeVisionPDF } from "@/components/resume/pdf/CodeVisionPDF";
+import { DevPrimePDF } from "@/components/resume/pdf/DevPrimePDF";
+import { TechCraftedPDF } from "@/components/resume/pdf/TechCraftedPDF";
+import { SoftwareVisionPDF } from "@/components/resume/pdf/SoftwareVisionPDF";
+import { CodePinnaclePDF } from "@/components/resume/pdf/CodePinnaclePDF";
+import { DevMomentumPDF } from "@/components/resume/pdf/DevMomentumPDF";
+import { CreativeCanvasPDF } from "@/components/resume/pdf/CreativeCanvasPDF";
+import { DesignMaestroPDF } from "@/components/resume/pdf/DesignMaestroPDF";
+import { ArtisticVisionPDF } from "@/components/resume/pdf/ArtisticVisionPDF";
+import { CreativePulsePDF } from "@/components/resume/pdf/CreativePulsePDF";
+import { DesignPinnaclePDF } from "@/components/resume/pdf/DesignPinnaclePDF";
+import { ArtisticHorizonPDF } from "@/components/resume/pdf/ArtisticHorizonPDF";
+import { CreativeCraftedPDF } from "@/components/resume/pdf/CreativeCraftedPDF";
+import { DesignSpherePDF } from "@/components/resume/pdf/DesignSpherePDF";
+import { ArtisticMomentumPDF } from "@/components/resume/pdf/ArtisticMomentumPDF";
+import { CreativeHorizonPDF } from "@/components/resume/pdf/CreativeHorizonPDF";
+import { GraduateMomentumPDF } from "@/components/resume/pdf/GraduateMomentumPDF";
+import { EntryElitePDF } from "@/components/resume/pdf/EntryElitePDF";
+import { FreshersVisionPDF } from "@/components/resume/pdf/FreshersVisionPDF";
+import { GraduatePrimePDF } from "@/components/resume/pdf/GraduatePrimePDF";
+import { EntryHorizonPDF } from "@/components/resume/pdf/EntryHorizonPDF";
+import { FreshersCraftedPDF } from "@/components/resume/pdf/FreshersCraftedPDF";
+import { GraduateZenithPDF } from "@/components/resume/pdf/GraduateZenithPDF";
+import { EntrySpherePDF } from "@/components/resume/pdf/EntrySpherePDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
 import { analyzeResumeForATS, type AtsReport } from "@/lib/atsAnalyzer";
@@ -1908,6 +1953,52 @@ export const getTemplateDefaults = (templateId: string): ResumeData => {
     "creative-timeline",
     "colorful-modern",
     "asymmetric-creative",
+    // New 2024 Templates
+    "strategic-executive",
+    "professional-sphere",
+    "global-professional",
+    "professional-horizon",
+    "executive-prime",
+    "corporate-momentum",
+    "professional-ascend",
+    "global-elite",
+    "executive-vision",
+    "corporate-fusion",
+    "professional-zenith",
+    "executive-core",
+    "code-craftsman",
+    "tech-pioneer",
+    "dev-architecture",
+    "software-master",
+    "tech-vanguard",
+    "code-sphere",
+    "dev-elite",
+    "tech-horizon",
+    "software-craftsman",
+    "code-vision",
+    "dev-prime",
+    "tech-crafted",
+    "software-vision",
+    "code-pinnacle",
+    "dev-momentum",
+    "creative-canvas",
+    "design-maestro",
+    "artistic-vision",
+    "creative-pulse",
+    "design-pinnacle",
+    "artistic-horizon",
+    "creative-crafted",
+    "design-sphere",
+    "artistic-momentum",
+    "creative-horizon",
+    "graduate-momentum",
+    "entry-elite",
+    "freshers-vision",
+    "graduate-prime",
+    "entry-horizon",
+    "freshers-crafted",
+    "graduate-zenith",
+    "entry-sphere",
   ];
 
   // Add all new templates using professional defaults
@@ -2247,6 +2338,51 @@ const Editor = () => {
         "terminal-theme": TerminalThemePDF,
         "timeline-elegance": TimelineElegancePDF,
         "two-tone-classic": TwoToneClassicPDF,
+        "strategic-executive": StrategicExecutivePDF,
+        "professional-sphere": ProfessionalSpherePDF,
+        "global-professional": GlobalProfessionalPDF,
+        "professional-horizon": ProfessionalHorizonPDF,
+        "executive-prime": ExecutivePrimePDF,
+        "corporate-momentum": CorporateMomentumPDF,
+        "professional-ascend": ProfessionalAscendPDF,
+        "global-elite": GlobalElitePDF,
+        "executive-vision": ExecutiveVisionPDF,
+        "corporate-fusion": CorporateFusionPDF,
+        "professional-zenith": ProfessionalZenithPDF,
+        "executive-core": ExecutiveCorePDF,
+        "code-craftsman": CodeCraftsmanPDF,
+        "tech-pioneer": TechPioneerPDF,
+        "dev-architecture": DevArchitecturePDF,
+        "software-master": SoftwareMasterPDF,
+        "tech-vanguard": TechVanguardPDF,
+        "code-sphere": CodeSpherePDF,
+        "dev-elite": DevElitePDF,
+        "tech-horizon": TechHorizonPDF,
+        "software-craftsman": SoftwareCraftsmanPDF,
+        "code-vision": CodeVisionPDF,
+        "dev-prime": DevPrimePDF,
+        "tech-crafted": TechCraftedPDF,
+        "software-vision": SoftwareVisionPDF,
+        "code-pinnacle": CodePinnaclePDF,
+        "dev-momentum": DevMomentumPDF,
+        "creative-canvas": CreativeCanvasPDF,
+        "design-maestro": DesignMaestroPDF,
+        "artistic-vision": ArtisticVisionPDF,
+        "creative-pulse": CreativePulsePDF,
+        "design-pinnacle": DesignPinnaclePDF,
+        "artistic-horizon": ArtisticHorizonPDF,
+        "creative-crafted": CreativeCraftedPDF,
+        "design-sphere": DesignSpherePDF,
+        "artistic-momentum": ArtisticMomentumPDF,
+        "creative-horizon": CreativeHorizonPDF,
+        "graduate-momentum": GraduateMomentumPDF,
+        "entry-elite": EntryElitePDF,
+        "freshers-vision": FreshersVisionPDF,
+        "graduate-prime": GraduatePrimePDF,
+        "entry-horizon": EntryHorizonPDF,
+        "freshers-crafted": FreshersCraftedPDF,
+        "graduate-zenith": GraduateZenithPDF,
+        "entry-sphere": EntrySpherePDF,
       };
 
       const PDFTemplate =
