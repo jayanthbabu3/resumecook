@@ -140,7 +140,7 @@ import { BusinessEliteTemplate } from "./resume/templates/BusinessEliteTemplate"
 import { CorporateCleanTemplate } from "./resume/templates/CorporateCleanTemplate";
 import { ProfessionalClassicTemplate } from "./resume/templates/ProfessionalClassicTemplate";
 import { ModernBusinessTemplate } from "./resume/templates/ModernBusinessTemplate";
-// New Professional Templates (20 new imports - 2 templates reuse existing imports)
+// New Professional Templates (22 new imports)
 import { AlgoEngineerTemplate } from "./resume/templates/AlgoEngineerTemplate";
 import { ArtisticBoldTemplate } from "./resume/templates/ArtisticBoldTemplate";
 import { AsymmetricCreativeTemplate } from "./resume/templates/AsymmetricCreativeTemplate";
@@ -153,6 +153,7 @@ import { CreativeTimelineTemplate } from "./resume/templates/CreativeTimelineTem
 import { DesignerShowcaseTemplate } from "./resume/templates/DesignerShowcaseTemplate";
 import { DeveloperGridTemplate } from "./resume/templates/DeveloperGridTemplate";
 import { DevOpsProTemplate } from "./resume/templates/DevOpsProTemplate";
+import { ExecutiveMinimalTemplate } from "./resume/templates/ExecutiveMinimalTemplate";
 import { FullStackModernTemplate } from "./resume/templates/FullStackModernTemplate";
 import { GeometricModernTemplate } from "./resume/templates/GeometricModernTemplate";
 import { GitHubStyleTemplate } from "./resume/templates/GitHubStyleTemplate";
@@ -160,6 +161,7 @@ import { MLEngineerTemplate } from "./resume/templates/MLEngineerTemplate";
 import { SidebarAccentTemplate } from "./resume/templates/SidebarAccentTemplate";
 import { TechStackProTemplate } from "./resume/templates/TechStackProTemplate";
 import { TerminalThemeTemplate } from "./resume/templates/TerminalThemeTemplate";
+import { TimelineEleganceTemplate } from "./resume/templates/TimelineEleganceTemplate";
 import { TwoToneClassicTemplate } from "./resume/templates/TwoToneClassicTemplate";
 
 interface TemplatePreviewProps {
@@ -1525,6 +1527,7 @@ const templates = {
   "designer-showcase": DesignerShowcaseTemplate,
   "developer-grid": DeveloperGridTemplate,
   "devops-pro": DevOpsProTemplate,
+  "executive-minimal": ExecutiveMinimalTemplate,
   "fullstack-modern": FullStackModernTemplate,
   "geometric-modern": GeometricModernTemplate,
   "github-style": GitHubStyleTemplate,
@@ -1532,6 +1535,7 @@ const templates = {
   "sidebar-accent": SidebarAccentTemplate,
   "tech-stack-pro": TechStackProTemplate,
   "terminal-theme": TerminalThemeTemplate,
+  "timeline-elegance": TimelineEleganceTemplate,
   "two-tone-classic": TwoToneClassicTemplate,
 };
 

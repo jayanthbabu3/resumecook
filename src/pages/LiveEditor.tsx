@@ -109,7 +109,7 @@ import { BusinessElitePDF } from "@/components/resume/pdf/BusinessElitePDF";
 import { CorporateCleanPDF } from "@/components/resume/pdf/CorporateCleanPDF";
 import { ProfessionalClassicPDF } from "@/components/resume/pdf/ProfessionalClassicPDF";
 import { ModernBusinessPDF } from "@/components/resume/pdf/ModernBusinessPDF";
-// New Professional PDF Templates (20 new imports)
+// New Professional PDF Templates (22 new imports)
 import { AlgoEngineerPDF } from "@/components/resume/pdf/AlgoEngineerPDF";
 import { ArtisticBoldPDF } from "@/components/resume/pdf/ArtisticBoldPDF";
 import { AsymmetricCreativePDF } from "@/components/resume/pdf/AsymmetricCreativePDF";
@@ -122,6 +122,7 @@ import { CreativeTimelinePDF } from "@/components/resume/pdf/CreativeTimelinePDF
 import { DesignerShowcasePDF } from "@/components/resume/pdf/DesignerShowcasePDF";
 import { DeveloperGridPDF } from "@/components/resume/pdf/DeveloperGridPDF";
 import { DevOpsProPDF } from "@/components/resume/pdf/DevOpsProPDF";
+import { ExecutiveMinimalPDF } from "@/components/resume/pdf/ExecutiveMinimalPDF";
 import { FullStackModernPDF } from "@/components/resume/pdf/FullStackModernPDF";
 import { GeometricModernPDF } from "@/components/resume/pdf/GeometricModernPDF";
 import { GitHubStylePDF } from "@/components/resume/pdf/GitHubStylePDF";
@@ -129,6 +130,7 @@ import { MLEngineerPDF } from "@/components/resume/pdf/MLEngineerPDF";
 import { SidebarAccentPDF } from "@/components/resume/pdf/SidebarAccentPDF";
 import { TechStackProPDF } from "@/components/resume/pdf/TechStackProPDF";
 import { TerminalThemePDF } from "@/components/resume/pdf/TerminalThemePDF";
+import { TimelineElegancePDF } from "@/components/resume/pdf/TimelineElegancePDF";
 import { TwoToneClassicPDF } from "@/components/resume/pdf/TwoToneClassicPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { getTemplateDefaults, type ResumeData } from "@/pages/Editor";
@@ -278,7 +280,7 @@ import { BusinessEliteTemplate } from "@/components/resume/templates/BusinessEli
 import { CorporateCleanTemplate } from "@/components/resume/templates/CorporateCleanTemplate";
 import { ProfessionalClassicTemplate } from "@/components/resume/templates/ProfessionalClassicTemplate";
 import { ModernBusinessTemplate } from "@/components/resume/templates/ModernBusinessTemplate";
-// New Professional HTML Templates (20 new imports)
+// New Professional HTML Templates (22 new imports)
 import { AlgoEngineerTemplate } from "@/components/resume/templates/AlgoEngineerTemplate";
 import { ArtisticBoldTemplate } from "@/components/resume/templates/ArtisticBoldTemplate";
 import { AsymmetricCreativeTemplate } from "@/components/resume/templates/AsymmetricCreativeTemplate";
@@ -291,6 +293,7 @@ import { CreativeTimelineTemplate } from "@/components/resume/templates/Creative
 import { DesignerShowcaseTemplate } from "@/components/resume/templates/DesignerShowcaseTemplate";
 import { DeveloperGridTemplate } from "@/components/resume/templates/DeveloperGridTemplate";
 import { DevOpsProTemplate } from "@/components/resume/templates/DevOpsProTemplate";
+import { ExecutiveMinimalTemplate } from "@/components/resume/templates/ExecutiveMinimalTemplate";
 import { FullStackModernTemplate } from "@/components/resume/templates/FullStackModernTemplate";
 import { GeometricModernTemplate } from "@/components/resume/templates/GeometricModernTemplate";
 import { GitHubStyleTemplate } from "@/components/resume/templates/GitHubStyleTemplate";
@@ -298,6 +301,7 @@ import { MLEngineerTemplate } from "@/components/resume/templates/MLEngineerTemp
 import { SidebarAccentTemplate } from "@/components/resume/templates/SidebarAccentTemplate";
 import { TechStackProTemplate } from "@/components/resume/templates/TechStackProTemplate";
 import { TerminalThemeTemplate } from "@/components/resume/templates/TerminalThemeTemplate";
+import { TimelineEleganceTemplate } from "@/components/resume/templates/TimelineEleganceTemplate";
 import { TwoToneClassicTemplate } from "@/components/resume/templates/TwoToneClassicTemplate";
 
 const pdfTemplates: Record<string, any> = {
@@ -408,7 +412,7 @@ const pdfTemplates: Record<string, any> = {
   "corporate-clean": CorporateCleanPDF,
   "professional-classic": ProfessionalClassicPDF,
   "modern-business": ModernBusinessPDF,
-  // New Professional Templates (20 new registrations)
+  // New Professional Templates (22 new registrations)
   "algo-engineer": AlgoEngineerPDF,
   "artistic-bold": ArtisticBoldPDF,
   "asymmetric-creative": AsymmetricCreativePDF,
@@ -421,6 +425,7 @@ const pdfTemplates: Record<string, any> = {
   "designer-showcase": DesignerShowcasePDF,
   "developer-grid": DeveloperGridPDF,
   "devops-pro": DevOpsProPDF,
+  "executive-minimal": ExecutiveMinimalPDF,
   "fullstack-modern": FullStackModernPDF,
   "geometric-modern": GeometricModernPDF,
   "github-style": GitHubStylePDF,
@@ -428,6 +433,7 @@ const pdfTemplates: Record<string, any> = {
   "sidebar-accent": SidebarAccentPDF,
   "tech-stack-pro": TechStackProPDF,
   "terminal-theme": TerminalThemePDF,
+  "timeline-elegance": TimelineElegancePDF,
   "two-tone-classic": TwoToneClassicPDF,
 };
 
@@ -492,9 +498,9 @@ const inlineEditableTemplates = [
   "bordered-elegance", "code-minimal", "colorful-modern",
   "column-divide", "compact-professional", "creative-timeline",
   "designer-showcase", "developer-grid", "devops-pro",
-  "fullstack-modern", "geometric-modern", "github-style",
+  "executive-minimal", "fullstack-modern", "geometric-modern", "github-style",
   "ml-engineer", "sidebar-accent", "tech-stack-pro",
-  "terminal-theme", "two-tone-classic"
+  "terminal-theme", "timeline-elegance", "two-tone-classic"
 ];
 
 const displayTemplates: Record<string, any> = {
@@ -641,7 +647,7 @@ const displayTemplates: Record<string, any> = {
   "corporate-clean": CorporateCleanTemplate,
   "professional-classic": ProfessionalClassicTemplate,
   "modern-business": ModernBusinessTemplate,
-  // New Professional Templates (20 new registrations)
+  // New Professional Templates (22 new registrations)
   "algo-engineer": AlgoEngineerTemplate,
   "artistic-bold": ArtisticBoldTemplate,
   "asymmetric-creative": AsymmetricCreativeTemplate,
@@ -654,6 +660,7 @@ const displayTemplates: Record<string, any> = {
   "designer-showcase": DesignerShowcaseTemplate,
   "developer-grid": DeveloperGridTemplate,
   "devops-pro": DevOpsProTemplate,
+  "executive-minimal": ExecutiveMinimalTemplate,
   "fullstack-modern": FullStackModernTemplate,
   "geometric-modern": GeometricModernTemplate,
   "github-style": GitHubStyleTemplate,
@@ -661,6 +668,7 @@ const displayTemplates: Record<string, any> = {
   "sidebar-accent": SidebarAccentTemplate,
   "tech-stack-pro": TechStackProTemplate,
   "terminal-theme": TerminalThemeTemplate,
+  "timeline-elegance": TimelineEleganceTemplate,
   "two-tone-classic": TwoToneClassicTemplate,
 };
 

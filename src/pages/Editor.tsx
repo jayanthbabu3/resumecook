@@ -109,7 +109,7 @@ import { BusinessElitePDF } from "@/components/resume/pdf/BusinessElitePDF";
 import { CorporateCleanPDF } from "@/components/resume/pdf/CorporateCleanPDF";
 import { ProfessionalClassicPDF } from "@/components/resume/pdf/ProfessionalClassicPDF";
 import { ModernBusinessPDF } from "@/components/resume/pdf/ModernBusinessPDF";
-// New Professional PDF Templates (20 new imports)
+// New Professional PDF Templates (22 new imports)
 import { AlgoEngineerPDF } from "@/components/resume/pdf/AlgoEngineerPDF";
 import { ArtisticBoldPDF } from "@/components/resume/pdf/ArtisticBoldPDF";
 import { AsymmetricCreativePDF } from "@/components/resume/pdf/AsymmetricCreativePDF";
@@ -122,6 +122,7 @@ import { CreativeTimelinePDF } from "@/components/resume/pdf/CreativeTimelinePDF
 import { DesignerShowcasePDF } from "@/components/resume/pdf/DesignerShowcasePDF";
 import { DeveloperGridPDF } from "@/components/resume/pdf/DeveloperGridPDF";
 import { DevOpsProPDF } from "@/components/resume/pdf/DevOpsProPDF";
+import { ExecutiveMinimalPDF } from "@/components/resume/pdf/ExecutiveMinimalPDF";
 import { FullStackModernPDF } from "@/components/resume/pdf/FullStackModernPDF";
 import { GeometricModernPDF } from "@/components/resume/pdf/GeometricModernPDF";
 import { GitHubStylePDF } from "@/components/resume/pdf/GitHubStylePDF";
@@ -129,6 +130,7 @@ import { MLEngineerPDF } from "@/components/resume/pdf/MLEngineerPDF";
 import { SidebarAccentPDF } from "@/components/resume/pdf/SidebarAccentPDF";
 import { TechStackProPDF } from "@/components/resume/pdf/TechStackProPDF";
 import { TerminalThemePDF } from "@/components/resume/pdf/TerminalThemePDF";
+import { TimelineElegancePDF } from "@/components/resume/pdf/TimelineElegancePDF";
 import { TwoToneClassicPDF } from "@/components/resume/pdf/TwoToneClassicPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
@@ -2191,7 +2193,7 @@ const Editor = () => {
         "corporate-clean": CorporateCleanPDF,
         "professional-classic": ProfessionalClassicPDF,
         "modern-business": ModernBusinessPDF,
-        // New Professional Templates (20 new registrations)
+        // New Professional Templates (22 new registrations)
         "algo-engineer": AlgoEngineerPDF,
         "artistic-bold": ArtisticBoldPDF,
         "asymmetric-creative": AsymmetricCreativePDF,
@@ -2204,6 +2206,7 @@ const Editor = () => {
         "designer-showcase": DesignerShowcasePDF,
         "developer-grid": DeveloperGridPDF,
         "devops-pro": DevOpsProPDF,
+        "executive-minimal": ExecutiveMinimalPDF,
         "fullstack-modern": FullStackModernPDF,
         "geometric-modern": GeometricModernPDF,
         "github-style": GitHubStylePDF,
@@ -2211,6 +2214,7 @@ const Editor = () => {
         "sidebar-accent": SidebarAccentPDF,
         "tech-stack-pro": TechStackProPDF,
         "terminal-theme": TerminalThemePDF,
+        "timeline-elegance": TimelineElegancePDF,
         "two-tone-classic": TwoToneClassicPDF,
       };
 
