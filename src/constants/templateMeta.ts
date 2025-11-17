@@ -944,13 +944,6 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
   },
 
   // New Universal Templates
-  "minimalist-pro": {
-    name: "Minimalist Pro",
-    description:
-      "Ultra-clean minimalist design with subtle accents and maximum whitespace for modern professionals.",
-    category: "Universal",
-    categorySlug: "all",
-  },
   "sidebar-accent": {
     name: "Sidebar Accent",
     description:
@@ -1041,13 +1034,6 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     name: "Full-Stack Modern",
     description:
       "Modern template designed for full-stack developers showcasing both frontend and backend skills.",
-    category: "Engineering",
-    categorySlug: "software",
-  },
-  "cloud-architect": {
-    name: "Cloud Architect",
-    description:
-      "Cloud and architecture focused design highlighting infrastructure and system design expertise.",
     category: "Engineering",
     categorySlug: "software",
   },

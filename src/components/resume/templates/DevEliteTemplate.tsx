@@ -1,10 +1,8 @@
 import React from "react";
 import type { ResumeData } from "@/pages/Editor";
-import {
-  InlineEditableText,
-  InlineEditableList,
-  InlineEditableSkills,
-} from "../";
+import { InlineEditableText } from "@/components/resume/InlineEditableText";
+import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;

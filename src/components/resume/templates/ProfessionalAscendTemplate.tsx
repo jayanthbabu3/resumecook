@@ -4,7 +4,9 @@ import {
   InlineEditableText,
   InlineEditableList,
   InlineEditableSkills,
-} from "../";
+} from "@/components/resume/InlineEditableText";
+import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;

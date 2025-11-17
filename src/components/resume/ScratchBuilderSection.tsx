@@ -2784,7 +2784,6 @@ export function ScratchBuilderSection({
 
       // Helper sections - render with variant support
       case 'languages':
-      case 'projects':
       case 'awards':
       case 'publications':
       case 'volunteer':
