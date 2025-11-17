@@ -191,6 +191,25 @@ import { EntryHorizonTemplate } from "./templates/EntryHorizonTemplate";
 import { FreshersCraftedTemplate } from "./templates/FreshersCraftedTemplate";
 import { GraduateZenithTemplate } from "./templates/GraduateZenithTemplate";
 import { EntrySphereTemplate } from "./templates/EntrySphereTemplate";
+// Missing Software Engineering Templates
+import { CodeMinimalTemplate } from "./templates/CodeMinimalTemplate";
+import { TechStackProTemplate } from "./templates/TechStackProTemplate";
+import { GitHubStyleTemplate } from "./templates/GitHubStyleTemplate";
+import { DeveloperGridTemplate } from "./templates/DeveloperGridTemplate";
+import { TerminalThemeTemplate } from "./templates/TerminalThemeTemplate";
+import { AlgoEngineerTemplate } from "./templates/AlgoEngineerTemplate";
+import { FullStackModernTemplate } from "./templates/FullStackModernTemplate";
+import { DevOpsProTemplate } from "./templates/DevOpsProTemplate";
+import { MLEngineerTemplate } from "./templates/MLEngineerTemplate";
+// Missing Universal Professional Templates
+import { TimelineEleganceTemplate } from "./templates/TimelineEleganceTemplate";
+import { ExecutiveMinimalTemplate } from "./templates/ExecutiveMinimalTemplate";
+import { SidebarAccentTemplate } from "./templates/SidebarAccentTemplate";
+import { GeometricModernTemplate } from "./templates/GeometricModernTemplate";
+import { TwoToneClassicTemplate } from "./templates/TwoToneClassicTemplate";
+import { BorderedEleganceTemplate } from "./templates/BorderedEleganceTemplate";
+import { ColumnDivideTemplate } from "./templates/ColumnDivideTemplate";
+import { CompactProfessionalTemplate } from "./templates/CompactProfessionalTemplate";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -358,6 +377,15 @@ export const ResumePreview = ({
     "corporate-fusion": CorporateFusionTemplate,
     "professional-zenith": ProfessionalZenithTemplate,
     "executive-core": ExecutiveCoreTemplate,
+    // Missing Universal Professional Templates
+    "timeline-elegance": TimelineEleganceTemplate,
+    "executive-minimal": ExecutiveMinimalTemplate,
+    "sidebar-accent": SidebarAccentTemplate,
+    "geometric-modern": GeometricModernTemplate,
+    "two-tone-classic": TwoToneClassicTemplate,
+    "bordered-elegance": BorderedEleganceTemplate,
+    "column-divide": ColumnDivideTemplate,
+    "compact-professional": CompactProfessionalTemplate,
     "code-craftsman": CodeCraftsmanTemplate,
     "tech-pioneer": TechPioneerTemplate,
     "dev-architecture": DevArchitectureTemplate,
@@ -373,6 +401,16 @@ export const ResumePreview = ({
     "software-vision": SoftwareVisionTemplate,
     "code-pinnacle": CodePinnacleTemplate,
     "dev-momentum": DevMomentumTemplate,
+    // Missing Software Templates
+    "code-minimal": CodeMinimalTemplate,
+    "tech-stack-pro": TechStackProTemplate,
+    "github-style": GitHubStyleTemplate,
+    "developer-grid": DeveloperGridTemplate,
+    "terminal-theme": TerminalThemeTemplate,
+    "algo-engineer": AlgoEngineerTemplate,
+    "fullstack-modern": FullStackModernTemplate,
+    "devops-pro": DevOpsProTemplate,
+    "ml-engineer": MLEngineerTemplate,
     "artistic-bold": ArtisticBoldTemplate,
     "designer-showcase": DesignerShowcaseTemplate,
     "creative-timeline": CreativeTimelineTemplate,
