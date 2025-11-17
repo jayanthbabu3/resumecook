@@ -92,6 +92,7 @@ import { PlatformEngineerPDF } from "@/components/resume/pdf/PlatformEngineerPDF
 import { SiteReliabilityEngineerPDF } from "@/components/resume/pdf/SiteReliabilityEngineerPDF";
 import { BackendAPISpecialistPDF } from "@/components/resume/pdf/BackendAPISpecialistPDF";
 import { FrontendArchitectPDF } from "@/components/resume/pdf/FrontendArchitectPDF";
+import { TechGridPDF } from "@/components/resume/pdf/TechGridPDF";
 // New Universal Professional Templates
 import { ExecutiveModernPDF } from "@/components/resume/pdf/ExecutiveModernPDF";
 import { CorporateBluePDF } from "@/components/resume/pdf/CorporateBluePDF";
@@ -288,7 +289,7 @@ const pdfTemplates: Record<string, any> = {
   "bold-headline": BoldHeadlineTemplate,
   "dual-tone": DualToneTemplate,
   "elegant-serif": ElegantSerifTemplate,
-  "tech-grid": TechGridTemplate,
+  "tech-grid": TechGridPDF,
   "contemporary-split": ContemporarySplitTemplate,
   "luxury-timeline": LuxuryTimelineTemplate,
   "fresher-minimal-grid": FresherMinimalGridPDF,
