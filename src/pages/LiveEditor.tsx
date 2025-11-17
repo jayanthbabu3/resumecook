@@ -76,6 +76,23 @@ import { NodeJSDeveloperPDF } from "@/components/resume/pdf/NodeJSDeveloperPDF";
 import { ReactDeveloperPDF } from "@/components/resume/pdf/ReactDeveloperPDF";
 import { GoDeveloperPDF } from "@/components/resume/pdf/GoDeveloperPDF";
 import { KubernetesEngineerPDF } from "@/components/resume/pdf/KubernetesEngineerPDF";
+// Senior/Lead Software Engineering PDF Templates
+import { SeniorJavaDeveloperPDF } from "@/components/resume/pdf/SeniorJavaDeveloperPDF";
+import { SeniorDotNetDeveloperPDF } from "@/components/resume/pdf/SeniorDotNetDeveloperPDF";
+import { SeniorDevOpsEngineerPDF } from "@/components/resume/pdf/SeniorDevOpsEngineerPDF";
+import { LeadBackendEngineerPDF } from "@/components/resume/pdf/LeadBackendEngineerPDF";
+import { LeadFrontendEngineerPDF } from "@/components/resume/pdf/LeadFrontendEngineerPDF";
+import { SeniorFullStackDeveloperPDF } from "@/components/resume/pdf/SeniorFullStackDeveloperPDF";
+import { PrincipalSoftwareEngineerPDF } from "@/components/resume/pdf/PrincipalSoftwareEngineerPDF";
+import { StaffEngineerPDF } from "@/components/resume/pdf/StaffEngineerPDF";
+import { EngineeringManagerPDF } from "@/components/resume/pdf/EngineeringManagerPDF";
+import { SolutionsArchitectPDF } from "@/components/resume/pdf/SolutionsArchitectPDF";
+import { SeniorMobileEngineerPDF } from "@/components/resume/pdf/SeniorMobileEngineerPDF";
+import { PlatformEngineerPDF } from "@/components/resume/pdf/PlatformEngineerPDF";
+import { SiteReliabilityEngineerPDF } from "@/components/resume/pdf/SiteReliabilityEngineerPDF";
+import { BackendAPISpecialistPDF } from "@/components/resume/pdf/BackendAPISpecialistPDF";
+import { FrontendArchitectPDF } from "@/components/resume/pdf/FrontendArchitectPDF";
+import { TechGridPDF } from "@/components/resume/pdf/TechGridPDF";
 // New Universal Professional Templates
 import { ExecutiveModernPDF } from "@/components/resume/pdf/ExecutiveModernPDF";
 import { CorporateBluePDF } from "@/components/resume/pdf/CorporateBluePDF";
@@ -208,6 +225,22 @@ import { NodeJSDeveloperTemplate } from "@/components/resume/templates/NodeJSDev
 import { ReactDeveloperTemplate } from "@/components/resume/templates/ReactDeveloperTemplate";
 import { GoDeveloperTemplate } from "@/components/resume/templates/GoDeveloperTemplate";
 import { KuberneteEngineerTemplate } from "@/components/resume/templates/KuberneteEngineerTemplate";
+// Senior/Lead Software Engineering Templates
+import { SeniorJavaDeveloperTemplate } from "@/components/resume/templates/SeniorJavaDeveloperTemplate";
+import { SeniorDotNetDeveloperTemplate } from "@/components/resume/templates/SeniorDotNetDeveloperTemplate";
+import { SeniorDevOpsEngineerTemplate } from "@/components/resume/templates/SeniorDevOpsEngineerTemplate";
+import { LeadBackendEngineerTemplate } from "@/components/resume/templates/LeadBackendEngineerTemplate";
+import { LeadFrontendEngineerTemplate } from "@/components/resume/templates/LeadFrontendEngineerTemplate";
+import { SeniorFullStackDeveloperTemplate } from "@/components/resume/templates/SeniorFullStackDeveloperTemplate";
+import { PrincipalSoftwareEngineerTemplate } from "@/components/resume/templates/PrincipalSoftwareEngineerTemplate";
+import { StaffEngineerTemplate } from "@/components/resume/templates/StaffEngineerTemplate";
+import { EngineeringManagerTemplate } from "@/components/resume/templates/EngineeringManagerTemplate";
+import { SolutionsArchitectTemplate } from "@/components/resume/templates/SolutionsArchitectTemplate";
+import { SeniorMobileEngineerTemplate } from "@/components/resume/templates/SeniorMobileEngineerTemplate";
+import { PlatformEngineerTemplate } from "@/components/resume/templates/PlatformEngineerTemplate";
+import { SiteReliabilityEngineerTemplate } from "@/components/resume/templates/SiteReliabilityEngineerTemplate";
+import { BackendAPISpecialistTemplate } from "@/components/resume/templates/BackendAPISpecialistTemplate";
+import { FrontendArchitectTemplate } from "@/components/resume/templates/FrontendArchitectTemplate";
 // New Universal Professional Templates
 import { ExecutiveModernTemplate } from "@/components/resume/templates/ExecutiveModernTemplate";
 import { CorporateBlueTemplate } from "@/components/resume/templates/CorporateBlueTemplate";
@@ -256,7 +289,7 @@ const pdfTemplates: Record<string, any> = {
   "bold-headline": BoldHeadlineTemplate,
   "dual-tone": DualToneTemplate,
   "elegant-serif": ElegantSerifTemplate,
-  "tech-grid": TechGridTemplate,
+  "tech-grid": TechGridPDF,
   "contemporary-split": ContemporarySplitTemplate,
   "luxury-timeline": LuxuryTimelineTemplate,
   "fresher-minimal-grid": FresherMinimalGridPDF,
@@ -301,6 +334,22 @@ const pdfTemplates: Record<string, any> = {
   "react-developer": ReactDeveloperPDF,
   "go-developer": GoDeveloperPDF,
   "kubernetes-engineer": KubernetesEngineerPDF,
+  // Senior/Lead Software Engineering Templates
+  "senior-java-developer": SeniorJavaDeveloperPDF,
+  "senior-dotnet-developer": SeniorDotNetDeveloperPDF,
+  "senior-devops-engineer": SeniorDevOpsEngineerPDF,
+  "lead-backend-engineer": LeadBackendEngineerPDF,
+  "lead-frontend-engineer": LeadFrontendEngineerPDF,
+  "senior-fullstack-developer": SeniorFullStackDeveloperPDF,
+  "principal-software-engineer": PrincipalSoftwareEngineerPDF,
+  "staff-engineer": StaffEngineerPDF,
+  "engineering-manager": EngineeringManagerPDF,
+  "solutions-architect": SolutionsArchitectPDF,
+  "senior-mobile-engineer": SeniorMobileEngineerPDF,
+  "platform-engineer": PlatformEngineerPDF,
+  "site-reliability-engineer": SiteReliabilityEngineerPDF,
+  "backend-api-specialist": BackendAPISpecialistPDF,
+  "frontend-architect": FrontendArchitectPDF,
   // New Universal Professional Templates
   "executive-modern": ExecutiveModernPDF,
   "corporate-blue": CorporateBluePDF,
@@ -363,6 +412,12 @@ const inlineEditableTemplates = [
   "data-engineer", "machine-learning-engineer", "qa-automation-engineer",
   "security-engineer", "python-developer", "nodejs-developer",
   "react-developer", "go-developer", "kubernetes-engineer",
+  // Senior/Lead Software Engineering Templates
+  "senior-java-developer", "senior-dotnet-developer", "senior-devops-engineer",
+  "lead-backend-engineer", "lead-frontend-engineer", "senior-fullstack-developer",
+  "principal-software-engineer", "staff-engineer", "engineering-manager",
+  "solutions-architect", "senior-mobile-engineer", "platform-engineer",
+  "site-reliability-engineer", "backend-api-specialist", "frontend-architect",
   // New Universal Professional Templates
   "executive-modern", "corporate-blue", "professional-sidebar",
   "minimalist-pro", "classic-elegant", "business-modern",
@@ -483,6 +538,22 @@ const displayTemplates: Record<string, any> = {
   "react-developer": ReactDeveloperTemplate,
   "go-developer": GoDeveloperTemplate,
   "kubernetes-engineer": KuberneteEngineerTemplate,
+  // Senior/Lead Software Engineering Templates
+  "senior-java-developer": SeniorJavaDeveloperTemplate,
+  "senior-dotnet-developer": SeniorDotNetDeveloperTemplate,
+  "senior-devops-engineer": SeniorDevOpsEngineerTemplate,
+  "lead-backend-engineer": LeadBackendEngineerTemplate,
+  "lead-frontend-engineer": LeadFrontendEngineerTemplate,
+  "senior-fullstack-developer": SeniorFullStackDeveloperTemplate,
+  "principal-software-engineer": PrincipalSoftwareEngineerTemplate,
+  "staff-engineer": StaffEngineerTemplate,
+  "engineering-manager": EngineeringManagerTemplate,
+  "solutions-architect": SolutionsArchitectTemplate,
+  "senior-mobile-engineer": SeniorMobileEngineerTemplate,
+  "platform-engineer": PlatformEngineerTemplate,
+  "site-reliability-engineer": SiteReliabilityEngineerTemplate,
+  "backend-api-specialist": BackendAPISpecialistTemplate,
+  "frontend-architect": FrontendArchitectTemplate,
   // New Universal Professional Templates
   "executive-modern": ExecutiveModernTemplate,
   "corporate-blue": CorporateBlueTemplate,
