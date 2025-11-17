@@ -29,18 +29,18 @@ const createStyles = (color: string) =>
       borderBottomColor: "#d1d5db",
     },
     comment: {
-      fontSize: 8,
+      fontSize: 12,
       color: "#9ca3af",
       marginBottom: 4,
     },
     name: {
-      fontSize: 26,
+      fontSize: 36,
       fontWeight: 700,
       color: color,
       marginBottom: 6,
     },
     roleLine: {
-      fontSize: 10,
+      fontSize: 14,
       color: "#4b5563",
       marginBottom: 8,
     },
@@ -48,7 +48,7 @@ const createStyles = (color: string) =>
       color: "#9ca3af",
     },
     contactInfo: {
-      fontSize: 9,
+      fontSize: 14,
       color: "#6b7280",
     },
     contactItem: {
@@ -58,17 +58,17 @@ const createStyles = (color: string) =>
       marginBottom: 18,
     },
     sectionComment: {
-      fontSize: 8,
+      fontSize: 12,
       color: "#9ca3af",
       marginBottom: 8,
     },
     arrayLine: {
-      fontSize: 8,
+      fontSize: 12,
       color: "#9ca3af",
       marginBottom: 6,
     },
     skillItem: {
-      fontSize: 9,
+      fontSize: 14,
       color: color,
       marginBottom: 2,
       paddingLeft: 15,
@@ -81,21 +81,21 @@ const createStyles = (color: string) =>
       marginBottom: 12,
     },
     position: {
-      fontSize: 11,
+      fontSize: 16,
       fontWeight: 700,
       color: color,
     },
     company: {
-      fontSize: 10,
+      fontSize: 14,
       color: "#4b5563",
       marginTop: 2,
     },
     dateRange: {
-      fontSize: 8,
+      fontSize: 12,
       color: "#9ca3af",
     },
     description: {
-      fontSize: 9,
+      fontSize: 14,
       color: "#4b5563",
       lineHeight: 1.5,
       marginTop: 6,
