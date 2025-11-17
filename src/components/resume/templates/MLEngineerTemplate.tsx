@@ -15,7 +15,6 @@ export const MLEngineerTemplate = ({
   themeColor = "#7c3aed",
   editable = false,
 }: MLEngineerTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12">
@@ -40,29 +39,29 @@ export const MLEngineerTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.fullName"
-              value={personalInfo.fullName}
+              value={resumeData.personalInfo.fullName}
               className="text-5xl font-bold mb-3"
               as="h1"
             />
           ) : (
             <h1 className="text-5xl font-bold mb-3">
-              {personalInfo.fullName}
+              {resumeData.personalInfo.fullName}
             </h1>
           )}
 
-          {personalInfo.title && (
+          {resumeData.personalInfo.title && (
             <div className="mb-6">
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.title"
-                  value={personalInfo.title}
+                  value={resumeData.personalInfo.title}
                   className="text-2xl font-medium"
                   as="p"
                   style={{ color: themeColor }}
                 />
               ) : (
                 <p className="text-2xl font-medium" style={{ color: themeColor }}>
-                  {personalInfo.title}
+                  {resumeData.personalInfo.title}
                 </p>
               )}
             </div>
@@ -70,48 +69,48 @@ export const MLEngineerTemplate = ({
 
           {/* Contact Info */}
           <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-            {personalInfo.email && (
+            {resumeData.personalInfo.email && (
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: themeColor }} />
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.email}</span>
+                  <span>{resumeData.personalInfo.email}</span>
                 )}
               </div>
             )}
-            {personalInfo.phone && (
+            {resumeData.personalInfo.phone && (
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: themeColor }} />
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.phone}</span>
+                  <span>{resumeData.personalInfo.phone}</span>
                 )}
               </div>
             )}
-            {personalInfo.location && (
+            {resumeData.personalInfo.location && (
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: themeColor }} />
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.location"
-                    value={personalInfo.location}
+                    value={resumeData.personalInfo.location}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.location}</span>
+                  <span>{resumeData.personalInfo.location}</span>
                 )}
               </div>
             )}
@@ -120,7 +119,7 @@ export const MLEngineerTemplate = ({
       </div>
 
       {/* Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-10">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-3" style={{ color: themeColor }}>
             <div className="w-8 h-1 rounded" style={{ backgroundColor: themeColor }} />
@@ -129,28 +128,28 @@ export const MLEngineerTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-gray-700 leading-relaxed"
               as="p"
             />
           ) : (
-            <p className="text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+            <p className="text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
       {/* Skills - ML Stack Focus */}
-      {skills && skills.length > 0 && (
+      {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-10">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-3" style={{ color: themeColor }}>
             <div className="w-8 h-1 rounded" style={{ backgroundColor: themeColor }} />
             ML & Technical Stack
           </h2>
           {editable ? (
-            <InlineEditableSkills path="skills" skills={skills} />
+            <InlineEditableSkills path="skills" skills={resumeData.skills} />
           ) : (
             <div className="grid grid-cols-3 gap-4">
-              {skills.map((skill, index) => (
+              {resumeData.skills.map((skill, index) => (
                 <div
                   key={index}
                   className="relative p-4 border-2 rounded-lg bg-gradient-to-br from-white to-gray-50"
@@ -166,21 +165,21 @@ export const MLEngineerTemplate = ({
       )}
 
       {/* Experience */}
-      {experience && experience.length > 0 && (
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-10">
           <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: themeColor }}>
             <div className="w-8 h-1 rounded" style={{ backgroundColor: themeColor }} />
             Professional Experience
           </h2>
           <div className="space-y-8">
-            {experience.map((exp, index) => (
+            {resumeData.experience.map((exp, index) => (
               <div key={index} className="relative pl-6">
                 <div className="absolute left-0 top-3 w-3 h-3 rounded-full border-4 border-white shadow-lg" style={{ backgroundColor: themeColor }} />
 
                 <div className="mb-2">
                   {editable ? (
                     <InlineEditableText
-                      path={`experience.${index}.position`}
+                      path={`experience[${index}].position`}
                       value={exp.position}
                       className="text-xl font-bold text-gray-900"
                       as="h3"
@@ -191,7 +190,7 @@ export const MLEngineerTemplate = ({
                   <div className="flex items-center gap-3 mt-1">
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.company`}
+                        path={`experience[${index}].company`}
                         value={exp.company}
                         className="text-lg font-medium"
                         as="span"
@@ -213,7 +212,7 @@ export const MLEngineerTemplate = ({
                   <div className="text-gray-700 mt-3 bg-gray-50 p-4 rounded-lg">
                     {editable ? (
                       <InlineEditableList
-                        path={`experience.${index}.description`}
+                        path={`experience[${index}].description`}
                         items={exp.description.split("\n")}
                       />
                     ) : (
@@ -232,18 +231,18 @@ export const MLEngineerTemplate = ({
       )}
 
       {/* Education */}
-      {education && education.length > 0 && (
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-10">
           <h2 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: themeColor }}>
             <div className="w-8 h-1 rounded" style={{ backgroundColor: themeColor }} />
             Education
           </h2>
           <div className="space-y-4">
-            {education.map((edu, index) => (
+            {resumeData.education.map((edu, index) => (
               <div key={index} className="p-4 border-l-4 bg-gray-50" style={{ borderColor: themeColor }}>
                 {editable ? (
                   <InlineEditableText
-                    path={`education.${index}.degree`}
+                    path={`education[${index}].degree`}
                     value={edu.degree}
                     className="text-lg font-bold text-gray-900 mb-1"
                     as="h3"
@@ -254,7 +253,7 @@ export const MLEngineerTemplate = ({
                 <div className="flex items-center gap-3">
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.institution`}
+                      path={`education[${index}].institution`}
                       value={edu.institution}
                       className="text-gray-700"
                       as="span"
@@ -272,8 +271,8 @@ export const MLEngineerTemplate = ({
       )}
 
       {/* Custom Sections */}
-      {sections &&
-        sections.map((section, index) => (
+      {resumeData.sections &&
+        resumeData.sections.map((section, index) => (
           <div key={index} className="mb-8">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-3" style={{ color: themeColor }}>
               <div className="w-8 h-1 rounded" style={{ backgroundColor: themeColor }} />

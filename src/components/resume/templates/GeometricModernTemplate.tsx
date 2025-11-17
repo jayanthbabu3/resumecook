@@ -15,7 +15,6 @@ export const GeometricModernTemplate = ({
   themeColor = "#6366f1",
   editable = false,
 }: GeometricModernTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12">
@@ -34,29 +33,29 @@ export const GeometricModernTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.fullName"
-              value={personalInfo.fullName}
+              value={resumeData.personalInfo.fullName}
               className="text-5xl font-bold mb-2"
               as="h1"
             />
           ) : (
             <h1 className="text-5xl font-bold mb-2">
-              {personalInfo.fullName}
+              {resumeData.personalInfo.fullName}
             </h1>
           )}
 
-          {personalInfo.title && (
+          {resumeData.personalInfo.title && (
             <div className="mb-6">
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.title"
-                  value={personalInfo.title}
+                  value={resumeData.personalInfo.title}
                   className="text-lg font-medium"
                   as="p"
                   style={{ color: themeColor }}
                 />
               ) : (
                 <p className="text-lg font-medium" style={{ color: themeColor }}>
-                  {personalInfo.title}
+                  {resumeData.personalInfo.title}
                 </p>
               )}
             </div>
@@ -64,47 +63,47 @@ export const GeometricModernTemplate = ({
 
           {/* Contact Info with Geometric Separators */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-            {personalInfo.email && (
+            {resumeData.personalInfo.email && (
               <>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.email}</span>
+                  <span>{resumeData.personalInfo.email}</span>
                 )}
                 <div className="w-1 h-1 rounded-full bg-gray-400" />
               </>
             )}
-            {personalInfo.phone && (
+            {resumeData.personalInfo.phone && (
               <>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.phone}</span>
+                  <span>{resumeData.personalInfo.phone}</span>
                 )}
                 <div className="w-1 h-1 rounded-full bg-gray-400" />
               </>
             )}
-            {personalInfo.location && (
+            {resumeData.personalInfo.location && (
               <>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.location"
-                    value={personalInfo.location}
+                    value={resumeData.personalInfo.location}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.location}</span>
+                  <span>{resumeData.personalInfo.location}</span>
                 )}
               </>
             )}
@@ -113,7 +112,7 @@ export const GeometricModernTemplate = ({
       </div>
 
       {/* Summary with Geometric Accent */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-10 relative pl-6">
           <div
             className="absolute left-0 top-0 w-1 h-full"
@@ -122,18 +121,18 @@ export const GeometricModernTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-gray-700 leading-relaxed"
               as="p"
             />
           ) : (
-            <p className="text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+            <p className="text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
       {/* Experience with Geometric Design */}
-      {experience && experience.length > 0 && (
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-10">
           <div className="flex items-center gap-4 mb-6">
             <div
@@ -145,7 +144,7 @@ export const GeometricModernTemplate = ({
             </h2>
           </div>
           <div className="space-y-8">
-            {experience.map((exp, index) => (
+            {resumeData.experience.map((exp, index) => (
               <div key={index} className="relative pl-6 border-l-2 border-gray-200">
                 <div
                   className="absolute -left-[5px] top-2 w-2 h-2 rotate-45"
@@ -156,7 +155,7 @@ export const GeometricModernTemplate = ({
                   <div className="flex-1">
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.position`}
+                        path={`experience[${index}].position`}
                         value={exp.position}
                         className="text-xl font-bold text-gray-900"
                         as="h3"
@@ -166,7 +165,7 @@ export const GeometricModernTemplate = ({
                     )}
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.company`}
+                        path={`experience[${index}].company`}
                         value={exp.company}
                         className="text-lg"
                         as="p"
@@ -187,7 +186,7 @@ export const GeometricModernTemplate = ({
                   <div className="text-gray-700 mt-3">
                     {editable ? (
                       <InlineEditableList
-                        path={`experience.${index}.description`}
+                        path={`experience[${index}].description`}
                         items={exp.description.split("\n")}
                       />
                     ) : (
@@ -206,7 +205,7 @@ export const GeometricModernTemplate = ({
       )}
 
       {/* Education */}
-      {education && education.length > 0 && (
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-10">
           <div className="flex items-center gap-4 mb-6">
             <div
@@ -218,12 +217,12 @@ export const GeometricModernTemplate = ({
             </h2>
           </div>
           <div className="space-y-6">
-            {education.map((edu, index) => (
+            {resumeData.education.map((edu, index) => (
               <div key={index} className="flex justify-between items-start">
                 <div className="flex-1">
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.degree`}
+                      path={`education[${index}].degree`}
                       value={edu.degree}
                       className="text-lg font-bold text-gray-900"
                       as="h3"
@@ -233,7 +232,7 @@ export const GeometricModernTemplate = ({
                   )}
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.institution`}
+                      path={`education[${index}].institution`}
                       value={edu.institution}
                       className="text-gray-700"
                       as="p"
@@ -252,7 +251,7 @@ export const GeometricModernTemplate = ({
       )}
 
       {/* Skills with Geometric Layout */}
-      {skills && skills.length > 0 && (
+      {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-10">
           <div className="flex items-center gap-4 mb-6">
             <div
@@ -264,10 +263,10 @@ export const GeometricModernTemplate = ({
             </h2>
           </div>
           {editable ? (
-            <InlineEditableSkills path="skills" skills={skills} />
+            <InlineEditableSkills path="skills" skills={resumeData.skills} />
           ) : (
             <div className="grid grid-cols-3 gap-4">
-              {skills.map((skill, index) => (
+              {resumeData.skills.map((skill, index) => (
                 <div
                   key={index}
                   className="relative pl-4 py-2 border-l-2"
@@ -288,8 +287,8 @@ export const GeometricModernTemplate = ({
       )}
 
       {/* Custom Sections */}
-      {sections &&
-        sections.map((section, index) => (
+      {resumeData.sections &&
+        resumeData.sections.map((section, index) => (
           <div key={index} className="mb-8">
             <div className="flex items-center gap-4 mb-6">
               <div

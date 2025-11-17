@@ -15,7 +15,6 @@ export const AsymmetricCreativeTemplate = ({
   themeColor = "#14b8a6",
   editable = false,
 }: AsymmetricCreativeTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900">
@@ -30,29 +29,29 @@ export const AsymmetricCreativeTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.fullName"
-                value={personalInfo.fullName}
+                value={resumeData.personalInfo.fullName}
                 className="text-[32px] font-bold mb-3 text-gray-900"
                 as="h1"
               />
             ) : (
               <h1 className="text-[32px] font-bold mb-3 text-gray-900">
-                {personalInfo.fullName}
+                {resumeData.personalInfo.fullName}
               </h1>
             )}
 
-            {personalInfo.title && (
+            {resumeData.personalInfo.title && (
               <div className="mb-6">
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.title"
-                    value={personalInfo.title}
+                    value={resumeData.personalInfo.title}
                     className="text-[16px] font-medium"
                     as="p"
                     style={{ color: themeColor }}
                   />
                 ) : (
                   <p className="text-[16px] font-medium" style={{ color: themeColor }}>
-                    {personalInfo.title}
+                    {resumeData.personalInfo.title}
                   </p>
                 )}
               </div>
@@ -60,45 +59,45 @@ export const AsymmetricCreativeTemplate = ({
 
             {/* Contact Info */}
             <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <div>
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.email"
-                      value={personalInfo.email}
+                      value={resumeData.personalInfo.email}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.email}</span>
+                    <span>{resumeData.personalInfo.email}</span>
                   )}
                 </div>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <div>
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.phone"
-                      value={personalInfo.phone}
+                      value={resumeData.personalInfo.phone}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.phone}</span>
+                    <span>{resumeData.personalInfo.phone}</span>
                   )}
                 </div>
               )}
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <div>
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.location"
-                      value={personalInfo.location}
+                      value={resumeData.personalInfo.location}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.location}</span>
+                    <span>{resumeData.personalInfo.location}</span>
                   )}
                 </div>
               )}
@@ -109,7 +108,7 @@ export const AsymmetricCreativeTemplate = ({
 
       <div className="px-12">
         {/* Summary - Offset Layout */}
-        {personalInfo.summary && (
+        {resumeData.personalInfo.summary && (
           <div className="mb-12 ml-20">
             <div className="relative">
               <div
@@ -122,25 +121,25 @@ export const AsymmetricCreativeTemplate = ({
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.summary"
-                  value={personalInfo.summary}
+                  value={resumeData.personalInfo.summary}
                   className="text-lg text-gray-700 leading-relaxed max-w-3xl"
                   as="p"
                 />
               ) : (
-                <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">{personalInfo.summary}</p>
+                <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">{resumeData.personalInfo.summary}</p>
               )}
             </div>
           </div>
         )}
 
         {/* Experience - Asymmetric Layout */}
-        {experience && experience.length > 0 && (
+        {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-12">
             <h2 className="text-[15px] font-bold mb-8" style={{ color: themeColor }}>
               Experience
             </h2>
             <div className="space-y-10">
-              {experience.map((exp, index) => (
+              {resumeData.experience.map((exp, index) => (
                 <div
                   key={index}
                   className={`relative ${index % 2 === 0 ? 'ml-0' : 'ml-20'}`}
@@ -204,16 +203,16 @@ export const AsymmetricCreativeTemplate = ({
         )}
 
         {/* Skills - Asymmetric Grid */}
-        {skills && skills.length > 0 && (
+        {resumeData.skills && resumeData.skills.length > 0 && (
           <div className="mb-12 mr-20">
             <h2 className="text-[15px] font-bold mb-8 text-right" style={{ color: themeColor }}>
               Skills
             </h2>
             {editable ? (
-              <InlineEditableSkills path="skills" skills={skills} />
+              <InlineEditableSkills path="skills" skills={resumeData.skills} />
             ) : (
               <div className="flex flex-wrap justify-end gap-3">
-                {skills.map((skill, index) => (
+                {resumeData.skills.map((skill, index) => (
                   <div
                     key={index}
                     className="px-6 py-3 rounded-full text-white font-bold shadow-lg"
@@ -228,13 +227,13 @@ export const AsymmetricCreativeTemplate = ({
         )}
 
         {/* Education - Offset */}
-        {education && education.length > 0 && (
+        {resumeData.education && resumeData.education.length > 0 && (
           <div className="mb-12 ml-20">
             <h2 className="text-[15px] font-bold mb-8" style={{ color: themeColor }}>
               Education
             </h2>
             <div className="space-y-6 max-w-3xl">
-              {education.map((edu, index) => (
+              {resumeData.education.map((edu, index) => (
                 <div key={index} className="bg-gray-50 p-6 rounded-2xl shadow-lg">
                   {editable ? (
                     <InlineEditableText
@@ -266,8 +265,8 @@ export const AsymmetricCreativeTemplate = ({
         )}
 
         {/* Custom Sections */}
-        {sections &&
-          sections.map((section, index) => (
+        {resumeData.sections &&
+          resumeData.sections.map((section, index) => (
             <div key={index} className={`mb-12 ${index % 2 === 0 ? 'ml-0' : 'mr-20 text-right'}`}>
               <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
                 {section.title}

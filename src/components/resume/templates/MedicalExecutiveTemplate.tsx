@@ -16,7 +16,6 @@ export const MedicalExecutiveTemplate = ({
   themeColor = "#2c3e50",
   editable = false,
 }: MedicalExecutiveTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white p-12 font-serif text-gray-900">
@@ -27,79 +26,79 @@ export const MedicalExecutiveTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.fullName"
-                value={personalInfo.fullName}
+                value={resumeData.personalInfo.fullName}
                 className="mb-2 text-5xl font-bold"
                 as="h1"
                 style={{ color: themeColor }}
               />
             ) : (
               <h1 className="mb-2 text-5xl font-bold" style={{ color: themeColor }}>
-                {personalInfo.fullName}
+                {resumeData.personalInfo.fullName}
               </h1>
             )}
             {editable ? (
               <InlineEditableText
                 path="personalInfo.title"
-                value={personalInfo.title}
+                value={resumeData.personalInfo.title}
                 className="mb-4 text-2xl font-light text-gray-700"
                 as="h2"
               />
             ) : (
               <h2 className="mb-4 text-2xl font-light text-gray-700">
-                {personalInfo.title}
+                {resumeData.personalInfo.title}
               </h2>
             )}
             <div className="text-sm text-gray-600">
               {editable ? (
                 <>
-                  {personalInfo.location && (
+                  {resumeData.personalInfo.location && (
                     <>
                       <InlineEditableText
                         path="personalInfo.location"
-                        value={personalInfo.location}
+                        value={resumeData.personalInfo.location}
                         className="text-sm text-gray-600 inline"
                         as="span"
                       />
                       {" • "}
                     </>
                   )}
-                  {personalInfo.phone && (
+                  {resumeData.personalInfo.phone && (
                     <>
                       <InlineEditableText
                         path="personalInfo.phone"
-                        value={personalInfo.phone}
+                        value={resumeData.personalInfo.phone}
                         className="text-sm text-gray-600 inline"
                         as="span"
                       />
                       {" • "}
                     </>
                   )}
-                  {personalInfo.email && (
+                  {resumeData.personalInfo.email && (
                     <InlineEditableText
                       path="personalInfo.email"
-                      value={personalInfo.email}
+                      value={resumeData.personalInfo.email}
                       className="text-sm text-gray-600 inline"
                       as="span"
                     />
                   )}
                 </>
               ) : (
-                [personalInfo.location, personalInfo.phone, personalInfo.email]
+                [resumeData.personalInfo.location, resumeData.personalInfo.phone, resumeData.personalInfo.email]
                   .filter(Boolean)
                   .join(" • ")
               )}
             </div>
           </div>
-          {personalInfo.photo && (
+          {resumeData.personalInfo.photo && (
             <div className="ml-8">
-              <ProfilePhoto src={personalInfo.photo} sizeClass="h-36 w-36" />
+              <ProfilePhoto src={resumeData.personalInfo.photo} sizeClass="h-36 w-36" />
             </div>
           )}
         </div>
       </div>
 
       {/* Executive Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-8">
           <h3
             className="mb-4 text-xl font-bold uppercase tracking-wide"
@@ -110,21 +109,21 @@ export const MedicalExecutiveTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-base leading-relaxed text-gray-700"
               as="p"
               multiline
             />
           ) : (
             <p className="text-base leading-relaxed text-gray-700">
-              {personalInfo.summary}
+              {resumeData.personalInfo.summary}
             </p>
           )}
         </div>
       )}
 
       {/* Leadership Experience */}
-      {experience.length > 0 && (
+      {resumeData.experience.length > 0 && (
         <div className="mb-8">
           <h3
             className="mb-4 text-xl font-bold uppercase tracking-wide"
@@ -135,7 +134,7 @@ export const MedicalExecutiveTemplate = ({
           {editable ? (
             <InlineEditableList
               path="experience"
-              items={experience}
+              items={resumeData.experience}
               defaultItem={{
                 id: Date.now().toString(),
                 company: "Healthcare Organization",
@@ -197,7 +196,7 @@ export const MedicalExecutiveTemplate = ({
             />
           ) : (
             <div className="space-y-6">
-              {experience.map((exp) => (
+              {resumeData.experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="mb-2 flex items-baseline justify-between">
                     <h4 className="text-lg font-bold text-gray-900">{exp.position}</h4>
@@ -221,7 +220,7 @@ export const MedicalExecutiveTemplate = ({
       )}
 
       {/* Education & Credentials */}
-      {education.length > 0 && (
+      {resumeData.education.length > 0 && (
         <div className="mb-8">
           <h3
             className="mb-4 text-xl font-bold uppercase tracking-wide"
@@ -232,7 +231,7 @@ export const MedicalExecutiveTemplate = ({
           {editable ? (
             <InlineEditableList
               path="education"
-              items={education}
+              items={resumeData.education}
               defaultItem={{
                 id: Date.now().toString(),
                 degree: "Degree",
@@ -289,7 +288,7 @@ export const MedicalExecutiveTemplate = ({
             />
           ) : (
             <div className="space-y-3">
-              {education.map((edu) => (
+              {resumeData.education.map((edu) => (
                 <div key={edu.id}>
                   <div className="flex items-baseline justify-between">
                     <h4 className="text-base font-bold text-gray-900">
@@ -308,7 +307,7 @@ export const MedicalExecutiveTemplate = ({
       )}
 
       {/* Core Competencies */}
-      {skills.length > 0 && (
+      {resumeData.skills.length > 0 && (
         <div className="mb-8">
           <h3
             className="mb-4 text-xl font-bold uppercase tracking-wide"
@@ -319,7 +318,7 @@ export const MedicalExecutiveTemplate = ({
           {editable ? (
             <InlineEditableSkills
               path="skills"
-              skills={skills}
+              skills={resumeData.skills}
               renderSkill={(skill, index) => (
                 <div className="text-sm text-gray-700">
                   {skill.name}
@@ -328,7 +327,7 @@ export const MedicalExecutiveTemplate = ({
             />
           ) : (
             <div className="grid grid-cols-3 gap-x-8 gap-y-3">
-              {skills.map((skill) => (
+              {resumeData.skills.map((skill) => (
                 <div key={skill.id} className="text-sm text-gray-700">
                   • {skill.name}
                 </div>
@@ -342,7 +341,7 @@ export const MedicalExecutiveTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections}
+          items={resumeData.sections}
           defaultItem={{
             id: Date.now().toString(),
             title: "Section Title",
@@ -369,7 +368,7 @@ export const MedicalExecutiveTemplate = ({
           )}
         />
       ) : (
-        sections.map((section) => (
+        resumeData.sections.map((section) => (
           <div key={section.id} className="mb-8">
             <h3
               className="mb-4 text-xl font-bold uppercase tracking-wide"

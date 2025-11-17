@@ -15,7 +15,6 @@ export const GitHubStyleTemplate = ({
   themeColor = "#238636",
   editable = false,
 }: GitHubStyleTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900">
@@ -26,75 +25,75 @@ export const GitHubStyleTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.fullName"
-                value={personalInfo.fullName}
+                value={resumeData.personalInfo.fullName}
                 className="text-4xl font-semibold mb-2"
                 as="h1"
               />
             ) : (
               <h1 className="text-4xl font-semibold mb-2">
-                {personalInfo.fullName}
+                {resumeData.personalInfo.fullName}
               </h1>
             )}
 
-            {personalInfo.title && (
+            {resumeData.personalInfo.title && (
               <div className="mb-4">
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.title"
-                    value={personalInfo.title}
+                    value={resumeData.personalInfo.title}
                     className="text-xl text-gray-600"
                     as="p"
                   />
                 ) : (
-                  <p className="text-xl text-gray-600">{personalInfo.title}</p>
+                  <p className="text-xl text-gray-600">{resumeData.personalInfo.title}</p>
                 )}
               </div>
             )}
 
             {/* Contact Info - GitHub Style */}
             <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <div className="flex items-center gap-2">
                   <span>📧</span>
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.email"
-                      value={personalInfo.email}
+                      value={resumeData.personalInfo.email}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.email}</span>
+                    <span>{resumeData.personalInfo.email}</span>
                   )}
                 </div>
               )}
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <div className="flex items-center gap-2">
                   <span>📍</span>
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.location"
-                      value={personalInfo.location}
+                      value={resumeData.personalInfo.location}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.location}</span>
+                    <span>{resumeData.personalInfo.location}</span>
                   )}
                 </div>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <div className="flex items-center gap-2">
                   <span>📞</span>
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.phone"
-                      value={personalInfo.phone}
+                      value={resumeData.personalInfo.phone}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.phone}</span>
+                    <span>{resumeData.personalInfo.phone}</span>
                   )}
                 </div>
               )}
@@ -105,35 +104,35 @@ export const GitHubStyleTemplate = ({
 
       <div className="px-12 py-8">
         {/* Summary */}
-        {personalInfo.summary && (
+        {resumeData.personalInfo.summary && (
           <div className="mb-10 p-4 border border-gray-300 rounded-lg bg-gray-50">
             {editable ? (
               <InlineEditableText
                 path="personalInfo.summary"
-                value={personalInfo.summary}
+                value={resumeData.personalInfo.summary}
                 className="text-gray-700 leading-relaxed"
                 as="p"
               />
             ) : (
-              <p className="text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+              <p className="text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
             )}
           </div>
         )}
 
         {/* Experience - GitHub Contribution Style */}
-        {experience && experience.length > 0 && (
+        {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-10">
             <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
               <span style={{ color: themeColor }}>▶</span> Experience
             </h2>
             <div className="space-y-6">
-              {experience.map((exp, index) => (
+              {resumeData.experience.map((exp, index) => (
                 <div key={index} className="border border-gray-300 rounded-lg p-6">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       {editable ? (
                         <InlineEditableText
-                          path={`experience.${index}.position`}
+                          path={`experience[${index}].position`}
                           value={exp.position}
                           className="text-xl font-semibold text-gray-900"
                           as="h3"
@@ -143,7 +142,7 @@ export const GitHubStyleTemplate = ({
                       )}
                       {editable ? (
                         <InlineEditableText
-                          path={`experience.${index}.company`}
+                          path={`experience[${index}].company`}
                           value={exp.company}
                           className="font-medium"
                           as="p"
@@ -164,7 +163,7 @@ export const GitHubStyleTemplate = ({
                     <div className="text-gray-700 mt-3">
                       {editable ? (
                         <InlineEditableList
-                          path={`experience.${index}.description`}
+                          path={`experience[${index}].description`}
                           items={exp.description.split("\n")}
                         />
                       ) : (
@@ -183,16 +182,16 @@ export const GitHubStyleTemplate = ({
         )}
 
         {/* Skills - GitHub Tag Style */}
-        {skills && skills.length > 0 && (
+        {resumeData.skills && resumeData.skills.length > 0 && (
           <div className="mb-10">
             <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
               <span style={{ color: themeColor }}>▶</span> Skills
             </h2>
             {editable ? (
-              <InlineEditableSkills path="skills" skills={skills} />
+              <InlineEditableSkills path="skills" skills={resumeData.skills} />
             ) : (
               <div className="flex flex-wrap gap-2">
-                {skills.map((skill, index) => (
+                {resumeData.skills.map((skill, index) => (
                   <span
                     key={index}
                     className="px-3 py-1 text-sm border border-gray-300 rounded-full bg-gray-50 text-gray-700"
@@ -206,19 +205,19 @@ export const GitHubStyleTemplate = ({
         )}
 
         {/* Education */}
-        {education && education.length > 0 && (
+        {resumeData.education && resumeData.education.length > 0 && (
           <div className="mb-10">
             <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
               <span style={{ color: themeColor }}>▶</span> Education
             </h2>
             <div className="space-y-4">
-              {education.map((edu, index) => (
+              {resumeData.education.map((edu, index) => (
                 <div key={index} className="border border-gray-300 rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       {editable ? (
                         <InlineEditableText
-                          path={`education.${index}.degree`}
+                          path={`education[${index}].degree`}
                           value={edu.degree}
                           className="text-lg font-semibold text-gray-900"
                           as="h3"
@@ -228,7 +227,7 @@ export const GitHubStyleTemplate = ({
                       )}
                       {editable ? (
                         <InlineEditableText
-                          path={`education.${index}.institution`}
+                          path={`education[${index}].institution`}
                           value={edu.institution}
                           className="text-gray-700"
                           as="p"
@@ -248,8 +247,8 @@ export const GitHubStyleTemplate = ({
         )}
 
         {/* Custom Sections */}
-        {sections &&
-          sections.map((section, index) => (
+        {resumeData.sections &&
+          resumeData.sections.map((section, index) => (
             <div key={index} className="mb-8">
               <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
                 <span style={{ color: themeColor }}>▶</span> {section.title}

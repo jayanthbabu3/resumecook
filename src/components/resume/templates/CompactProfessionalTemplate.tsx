@@ -15,7 +15,6 @@ export const CompactProfessionalTemplate = ({
   themeColor = "#059669",
   editable = false,
 }: CompactProfessionalTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900 px-10 py-8">
@@ -26,29 +25,29 @@ export const CompactProfessionalTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.fullName"
-                value={personalInfo.fullName}
+                value={resumeData.personalInfo.fullName}
                 className="text-3xl font-bold mb-1"
                 as="h1"
               />
             ) : (
               <h1 className="text-3xl font-bold mb-1">
-                {personalInfo.fullName}
+                {resumeData.personalInfo.fullName}
               </h1>
             )}
 
-            {personalInfo.title && (
+            {resumeData.personalInfo.title && (
               <div>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.title"
-                    value={personalInfo.title}
+                    value={resumeData.personalInfo.title}
                     className="text-base font-medium"
                     as="p"
                     style={{ color: themeColor }}
                   />
                 ) : (
                   <p className="text-base font-medium" style={{ color: themeColor }}>
-                    {personalInfo.title}
+                    {resumeData.personalInfo.title}
                   </p>
                 )}
               </div>
@@ -57,45 +56,45 @@ export const CompactProfessionalTemplate = ({
 
           {/* Contact Info - Compact Right Side */}
           <div className="text-xs text-gray-600 text-right space-y-1">
-            {personalInfo.email && (
+            {resumeData.personalInfo.email && (
               <div>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className=""
                     as="div"
                   />
                 ) : (
-                  <div>{personalInfo.email}</div>
+                  <div>{resumeData.personalInfo.email}</div>
                 )}
               </div>
             )}
-            {personalInfo.phone && (
+            {resumeData.personalInfo.phone && (
               <div>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className=""
                     as="div"
                   />
                 ) : (
-                  <div>{personalInfo.phone}</div>
+                  <div>{resumeData.personalInfo.phone}</div>
                 )}
               </div>
             )}
-            {personalInfo.location && (
+            {resumeData.personalInfo.location && (
               <div>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.location"
-                    value={personalInfo.location}
+                    value={resumeData.personalInfo.location}
                     className=""
                     as="div"
                   />
                 ) : (
-                  <div>{personalInfo.location}</div>
+                  <div>{resumeData.personalInfo.location}</div>
                 )}
               </div>
             )}
@@ -104,35 +103,35 @@ export const CompactProfessionalTemplate = ({
       </div>
 
       {/* Summary - Compact */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-6">
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-xs text-gray-700 leading-relaxed"
               as="p"
             />
           ) : (
-            <p className="text-xs text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+            <p className="text-xs text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
       {/* Experience - Compact */}
-      {experience && experience.length > 0 && (
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-6">
           <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
             Experience
           </h2>
           <div className="space-y-4">
-            {experience.map((exp, index) => (
+            {resumeData.experience.map((exp, index) => (
               <div key={index}>
                 <div className="flex justify-between items-baseline mb-1">
                   <div className="flex-1">
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.position`}
+                        path={`experience[${index}].position`}
                         value={exp.position}
                         className="text-sm font-bold text-gray-900"
                         as="h3"
@@ -147,7 +146,7 @@ export const CompactProfessionalTemplate = ({
                 </div>
                 {editable ? (
                   <InlineEditableText
-                    path={`experience.${index}.company`}
+                    path={`experience[${index}].company`}
                     value={exp.company}
                     className="text-xs font-medium mb-2"
                     as="p"
@@ -163,7 +162,7 @@ export const CompactProfessionalTemplate = ({
                   <div className="text-xs text-gray-700 leading-snug">
                     {editable ? (
                       <InlineEditableList
-                        path={`experience.${index}.description`}
+                        path={`experience[${index}].description`}
                         items={exp.description.split("\n")}
                       />
                     ) : (
@@ -182,16 +181,16 @@ export const CompactProfessionalTemplate = ({
       )}
 
       {/* Skills - Compact Grid */}
-      {skills && skills.length > 0 && (
+      {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-6">
           <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
             Skills
           </h2>
           {editable ? (
-            <InlineEditableSkills path="skills" skills={skills} />
+            <InlineEditableSkills path="skills" skills={resumeData.skills} />
           ) : (
             <div className="grid grid-cols-4 gap-2">
-              {skills.map((skill, index) => (
+              {resumeData.skills.map((skill, index) => (
                 <div
                   key={index}
                   className="text-xs px-2 py-1 bg-gray-100 text-center rounded"
@@ -205,18 +204,18 @@ export const CompactProfessionalTemplate = ({
       )}
 
       {/* Education - Compact */}
-      {education && education.length > 0 && (
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-6">
           <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
             Education
           </h2>
           <div className="space-y-2">
-            {education.map((edu, index) => (
+            {resumeData.education.map((edu, index) => (
               <div key={index} className="flex justify-between items-baseline">
                 <div className="flex-1">
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.degree`}
+                      path={`education[${index}].degree`}
                       value={edu.degree}
                       className="text-sm font-bold text-gray-900"
                       as="h3"
@@ -226,7 +225,7 @@ export const CompactProfessionalTemplate = ({
                   )}
                   {editable ? (
                     <InlineEditableText
-                      path={`education.${index}.institution`}
+                      path={`education[${index}].institution`}
                       value={edu.institution}
                       className="text-xs text-gray-700"
                       as="p"
@@ -245,8 +244,8 @@ export const CompactProfessionalTemplate = ({
       )}
 
       {/* Custom Sections - Compact */}
-      {sections &&
-        sections.map((section, index) => (
+      {resumeData.sections &&
+        resumeData.sections.map((section, index) => (
           <div key={index} className="mb-6">
             <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
               {section.title}

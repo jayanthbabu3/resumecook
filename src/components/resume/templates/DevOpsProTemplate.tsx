@@ -15,7 +15,6 @@ export const DevOpsProTemplate = ({
   themeColor = "#dc2626",
   editable = false,
 }: DevOpsProTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-gray-900 text-gray-100 p-12">
@@ -33,77 +32,77 @@ export const DevOpsProTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="text-5xl font-bold mb-3"
             as="h1"
             style={{ color: themeColor }}
           />
         ) : (
           <h1 className="text-5xl font-bold mb-3" style={{ color: themeColor }}>
-            {personalInfo.fullName}
+            {resumeData.personalInfo.fullName}
           </h1>
         )}
 
-        {personalInfo.title && (
+        {resumeData.personalInfo.title && (
           <div className="mb-6 font-mono">
             <span className="text-gray-500">$ echo </span>
             {editable ? (
               <InlineEditableText
                 path="personalInfo.title"
-                value={personalInfo.title}
+                value={resumeData.personalInfo.title}
                 className="text-xl"
                 as="span"
               />
             ) : (
-              <span className="text-xl">"{personalInfo.title}"</span>
+              <span className="text-xl">"{resumeData.personalInfo.title}"</span>
             )}
           </div>
         )}
 
         {/* Contact Info - DevOps Style */}
         <div className="space-y-1 text-sm font-mono text-gray-400">
-          {personalInfo.email && (
+          {resumeData.personalInfo.email && (
             <div>
               <span className="text-gray-600">email:</span>{" "}
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.email"
-                  value={personalInfo.email}
+                  value={resumeData.personalInfo.email}
                   className="text-gray-300"
                   as="span"
                 />
               ) : (
-                <span className="text-gray-300">{personalInfo.email}</span>
+                <span className="text-gray-300">{resumeData.personalInfo.email}</span>
               )}
             </div>
           )}
-          {personalInfo.phone && (
+          {resumeData.personalInfo.phone && (
             <div>
               <span className="text-gray-600">phone:</span>{" "}
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.phone"
-                  value={personalInfo.phone}
+                  value={resumeData.personalInfo.phone}
                   className="text-gray-300"
                   as="span"
                 />
               ) : (
-                <span className="text-gray-300">{personalInfo.phone}</span>
+                <span className="text-gray-300">{resumeData.personalInfo.phone}</span>
               )}
             </div>
           )}
-          {personalInfo.location && (
+          {resumeData.personalInfo.location && (
             <div>
               <span className="text-gray-600">location:</span>{" "}
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.location"
-                  value={personalInfo.location}
+                  value={resumeData.personalInfo.location}
                   className="text-gray-300"
                   as="span"
                 />
               ) : (
-                <span className="text-gray-300">{personalInfo.location}</span>
+                <span className="text-gray-300">{resumeData.personalInfo.location}</span>
               )}
             </div>
           )}
@@ -111,7 +110,7 @@ export const DevOpsProTemplate = ({
       </div>
 
       {/* Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-10">
           <div className="text-xs font-mono mb-2" style={{ color: themeColor }}>
             ## PROFILE
@@ -119,27 +118,27 @@ export const DevOpsProTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-sm text-gray-300 leading-relaxed"
               as="p"
             />
           ) : (
-            <p className="text-sm text-gray-300 leading-relaxed">{personalInfo.summary}</p>
+            <p className="text-sm text-gray-300 leading-relaxed">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
       {/* Skills - Pipeline Style */}
-      {skills && skills.length > 0 && (
+      {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-10">
           <div className="text-xs font-mono mb-4" style={{ color: themeColor }}>
             ## SKILLS & TOOLS
           </div>
           {editable ? (
-            <InlineEditableSkills path="skills" skills={skills} />
+            <InlineEditableSkills path="skills" skills={resumeData.skills} />
           ) : (
             <div className="grid grid-cols-3 gap-3">
-              {skills.map((skill, index) => (
+              {resumeData.skills.map((skill, index) => (
                 <div
                   key={index}
                   className="flex items-center gap-2 p-3 bg-gray-800 rounded border-l-4"
@@ -155,19 +154,19 @@ export const DevOpsProTemplate = ({
       )}
 
       {/* Experience */}
-      {experience && experience.length > 0 && (
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-10">
           <div className="text-xs font-mono mb-6" style={{ color: themeColor }}>
             ## EXPERIENCE
           </div>
           <div className="space-y-8">
-            {experience.map((exp, index) => (
+            {resumeData.experience.map((exp, index) => (
               <div key={index} className="bg-gray-800 p-6 rounded-lg border-l-4" style={{ borderColor: themeColor }}>
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.position`}
+                        path={`experience[${index}].position`}
                         value={exp.position}
                         className="text-xl font-bold"
                         as="h3"
@@ -178,7 +177,7 @@ export const DevOpsProTemplate = ({
                     )}
                     {editable ? (
                       <InlineEditableText
-                        path={`experience.${index}.company`}
+                        path={`experience[${index}].company`}
                         value={exp.company}
                         className="text-lg text-gray-300"
                         as="p"
@@ -196,7 +195,7 @@ export const DevOpsProTemplate = ({
                   <div className="text-sm text-gray-300 mt-3">
                     {editable ? (
                       <InlineEditableList
-                        path={`experience.${index}.description`}
+                        path={`experience[${index}].description`}
                         items={exp.description.split("\n")}
                       />
                     ) : (
@@ -218,17 +217,17 @@ export const DevOpsProTemplate = ({
       )}
 
       {/* Education */}
-      {education && education.length > 0 && (
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-10">
           <div className="text-xs font-mono mb-4" style={{ color: themeColor }}>
             ## EDUCATION
           </div>
           <div className="space-y-4">
-            {education.map((edu, index) => (
+            {resumeData.education.map((edu, index) => (
               <div key={index} className="bg-gray-800 p-4 rounded-lg">
                 {editable ? (
                   <InlineEditableText
-                    path={`education.${index}.degree`}
+                    path={`education[${index}].degree`}
                     value={edu.degree}
                     className="text-lg font-bold mb-1"
                     as="h3"
@@ -239,7 +238,7 @@ export const DevOpsProTemplate = ({
                 )}
                 {editable ? (
                   <InlineEditableText
-                    path={`education.${index}.institution`}
+                    path={`education[${index}].institution`}
                     value={edu.institution}
                     className="text-gray-300"
                     as="p"
@@ -255,8 +254,8 @@ export const DevOpsProTemplate = ({
       )}
 
       {/* Custom Sections */}
-      {sections &&
-        sections.map((section, index) => (
+      {resumeData.sections &&
+        resumeData.sections.map((section, index) => (
           <div key={index} className="mb-8">
             <div className="text-xs font-mono mb-4" style={{ color: themeColor }}>
               ## {section.title.toUpperCase()}

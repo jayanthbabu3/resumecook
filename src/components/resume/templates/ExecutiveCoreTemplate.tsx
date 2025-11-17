@@ -15,7 +15,6 @@ export const ExecutiveCoreTemplate = ({
   themeColor = "#0f766e",
   editable = false,
 }: TemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900">
@@ -25,38 +24,38 @@ export const ExecutiveCoreTemplate = ({
           <div className="flex justify-center items-center gap-4 mb-4">
             <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
             <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-black" style={{ backgroundColor: themeColor }}>
-              {personalInfo.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+              {resumeData.personalInfo.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
           </div>
 
           <InlineEditableText
-            text={personalInfo.fullName}
+            text={resumeData.personalInfo.fullName}
             className="text-5xl font-black mb-3 tracking-tight"
             style={{ color: themeColor }}
             editable={editable}
-            field="personalInfo.fullName"
+            field="resumeData.personalInfo.fullName"
           />
           <InlineEditableText
-            text={personalInfo.title}
+            text={resumeData.personalInfo.title}
             className="text-2xl text-gray-600 mb-6 font-light"
             editable={editable}
-            field="personalInfo.title"
+            field="resumeData.personalInfo.title"
           />
 
           <div className="flex justify-center items-center gap-6 text-sm font-semibold">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }}></div>
-              <InlineEditableText text={personalInfo.email} editable={editable} field="personalInfo.email" />
+              <InlineEditableText text={resumeData.personalInfo.email} editable={editable} field="resumeData.personalInfo.email" />
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }}></div>
-              <InlineEditableText text={personalInfo.phone} editable={editable} field="personalInfo.phone" />
+              <InlineEditableText text={resumeData.personalInfo.phone} editable={editable} field="resumeData.personalInfo.phone" />
             </div>
-            {personalInfo.location && (
+            {resumeData.personalInfo.location && (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }}></div>
-                <InlineEditableText text={personalInfo.location} editable={editable} field="personalInfo.location" />
+                <InlineEditableText text={resumeData.personalInfo.location} editable={editable} field="resumeData.personalInfo.location" />
               </div>
             )}
           </div>
@@ -65,7 +64,7 @@ export const ExecutiveCoreTemplate = ({
 
       <div className="p-12">
         {/* Core Summary */}
-        {personalInfo.summary && (
+        {resumeData.personalInfo.summary && (
           <div className="mb-10 max-w-4xl mx-auto">
             <div className="flex items-center justify-center gap-4 mb-4">
               <div className="w-24 h-px" style={{ backgroundColor: themeColor }}></div>
@@ -75,16 +74,16 @@ export const ExecutiveCoreTemplate = ({
               <div className="w-24 h-px" style={{ backgroundColor: themeColor }}></div>
             </div>
             <InlineEditableText
-              text={personalInfo.summary}
+              text={resumeData.personalInfo.summary}
               className="text-gray-700 leading-relaxed text-center"
               editable={editable}
-              field="personalInfo.summary"
+              field="resumeData.personalInfo.summary"
             />
           </div>
         )}
 
         {/* Experience */}
-        {experience && experience.length > 0 && (
+        {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center justify-center gap-4 mb-8">
               <div className="w-24 h-px" style={{ backgroundColor: themeColor }}></div>
@@ -95,7 +94,7 @@ export const ExecutiveCoreTemplate = ({
             </div>
 
             <div className="max-w-5xl mx-auto space-y-8">
-              {experience.map((exp, index) => (
+              {resumeData.experience.map((exp, index) => (
                 <div key={exp.id} className="relative">
                   <div className="absolute left-1/2 transform -translate-x-1/2 -top-4 w-8 h-8 rounded-full border-4 border-white shadow-lg" style={{ backgroundColor: themeColor }}></div>
 
@@ -106,19 +105,19 @@ export const ExecutiveCoreTemplate = ({
                         className="text-2xl font-bold block mb-1"
                         style={{ color: themeColor }}
                         editable={editable}
-                        field={`experience.${index}.position`}
+                        field={`resumeData.experience[${index}].position`}
                       />
                       <InlineEditableText
                         text={exp.company}
                         className="text-lg font-semibold text-gray-700 block mb-2"
                         editable={editable}
-                        field={`experience.${index}.company`}
+                        field={`resumeData.experience[${index}].company`}
                       />
                       <div className="inline-block px-4 py-1 rounded-full text-xs font-bold text-white" style={{ backgroundColor: themeColor }}>
                         <InlineEditableText
                           text={`${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`}
                           editable={editable}
-                          field={`experience.${index}.startDate`}
+                          field={`resumeData.experience[${index}].startDate`}
                         />
                       </div>
                     </div>
@@ -126,7 +125,7 @@ export const ExecutiveCoreTemplate = ({
                       items={exp.description.split("\n").filter((item) => item.trim())}
                       className="text-sm text-gray-700 space-y-2 max-w-3xl mx-auto"
                       editable={editable}
-                      field={`experience.${index}.description`}
+                      field={`resumeData.experience[${index}].description`}
                     />
                   </div>
                 </div>
@@ -137,7 +136,7 @@ export const ExecutiveCoreTemplate = ({
 
         <div className="grid grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Skills */}
-          {skills && skills.length > 0 && (
+          {resumeData.skills && resumeData.skills.length > 0 && (
             <div>
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
@@ -147,7 +146,7 @@ export const ExecutiveCoreTemplate = ({
                 <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
               </div>
               <InlineEditableSkills
-                skills={skills}
+                skills={resumeData.skills}
                 className="grid grid-cols-2 gap-3"
                 editable={editable}
                 renderSkill={(skill) => (
@@ -160,7 +159,7 @@ export const ExecutiveCoreTemplate = ({
           )}
 
           {/* Education */}
-          {education && education.length > 0 && (
+          {resumeData.education && resumeData.education.length > 0 && (
             <div>
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
@@ -169,33 +168,33 @@ export const ExecutiveCoreTemplate = ({
                 </h2>
                 <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
               </div>
-              {education.map((edu, index) => (
+              {resumeData.education.map((edu, index) => (
                 <div key={edu.id} className="mb-5 last:mb-0 p-5 rounded-lg text-center" style={{ backgroundColor: `${themeColor}08` }}>
                   <InlineEditableText
                     text={edu.degree}
                     className="font-bold text-gray-900 block"
                     editable={editable}
-                    field={`education.${index}.degree`}
+                    field={`resumeData.education[${index}].degree`}
                   />
                   {edu.field && (
                     <InlineEditableText
                       text={edu.field}
                       className="text-gray-700 block"
                       editable={editable}
-                      field={`education.${index}.field`}
+                      field={`resumeData.education[${index}].field`}
                     />
                   )}
                   <InlineEditableText
                     text={edu.school}
                     className="text-gray-600 italic block"
                     editable={editable}
-                    field={`education.${index}.school`}
+                    field={`resumeData.education[${index}].school`}
                   />
                   <InlineEditableText
                     text={`${edu.startDate} - ${edu.endDate}`}
                     className="text-sm text-gray-500 block mt-1"
                     editable={editable}
-                    field={`education.${index}.startDate`}
+                    field={`resumeData.education[${index}].startDate`}
                   />
                 </div>
               ))}
@@ -204,7 +203,7 @@ export const ExecutiveCoreTemplate = ({
         </div>
 
         {/* Additional Sections */}
-        {sections && sections.length > 0 && sections.map((section, index) => (
+        {resumeData.sections && resumeData.sections.length > 0 && resumeData.sections.map((section, index) => (
           <div key={section.id} className="mt-10">
             <div className="flex items-center justify-center gap-4 mb-6">
               <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
@@ -212,7 +211,7 @@ export const ExecutiveCoreTemplate = ({
                 <InlineEditableText
                   text={section.title}
                   editable={editable}
-                  field={`sections.${index}.title`}
+                  field={`resumeData.sections.${index}.title`}
                 />
               </h2>
               <div className="w-16 h-px" style={{ backgroundColor: themeColor }}></div>
@@ -221,7 +220,7 @@ export const ExecutiveCoreTemplate = ({
               text={section.content}
               className="text-gray-700 text-center max-w-3xl mx-auto"
               editable={editable}
-              field={`sections.${index}.content`}
+              field={`resumeData.sections.${index}.content`}
             />
           </div>
         ))}

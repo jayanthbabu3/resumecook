@@ -15,7 +15,6 @@ export const DesignerShowcaseTemplate = ({
   themeColor = "#8b5cf6",
   editable = false,
 }: DesignerShowcaseTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-gray-50 text-gray-900">
@@ -23,35 +22,35 @@ export const DesignerShowcaseTemplate = ({
       <div className="bg-white p-12 shadow-xl">
         <div className="flex items-center gap-10">
           <div className="w-32 h-32 rounded-full flex items-center justify-center text-white text-5xl font-bold" style={{ backgroundColor: themeColor }}>
-            {personalInfo.fullName.charAt(0)}
+            {resumeData.personalInfo.fullName.charAt(0)}
           </div>
           <div className="flex-1">
             {editable ? (
               <InlineEditableText
                 path="personalInfo.fullName"
-                value={personalInfo.fullName}
+                value={resumeData.personalInfo.fullName}
                 className="text-[32px] font-bold mb-2"
                 as="h1"
               />
             ) : (
               <h1 className="text-[32px] font-bold mb-2">
-                {personalInfo.fullName}
+                {resumeData.personalInfo.fullName}
               </h1>
             )}
 
-            {personalInfo.title && (
+            {resumeData.personalInfo.title && (
               <div className="mb-4">
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.title"
-                    value={personalInfo.title}
+                    value={resumeData.personalInfo.title}
                     className="text-[16px]"
                     as="p"
                     style={{ color: themeColor }}
                   />
                 ) : (
                   <p className="text-[16px]" style={{ color: themeColor }}>
-                    {personalInfo.title}
+                    {resumeData.personalInfo.title}
                   </p>
                 )}
               </div>
@@ -59,48 +58,48 @@ export const DesignerShowcaseTemplate = ({
 
             {/* Contact Info */}
             <div className="flex flex-wrap gap-6 text-sm text-gray-600">
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }} />
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.email"
-                      value={personalInfo.email}
+                      value={resumeData.personalInfo.email}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.email}</span>
+                    <span>{resumeData.personalInfo.email}</span>
                   )}
                 </div>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }} />
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.phone"
-                      value={personalInfo.phone}
+                      value={resumeData.personalInfo.phone}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.phone}</span>
+                    <span>{resumeData.personalInfo.phone}</span>
                   )}
                 </div>
               )}
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColor }} />
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.location"
-                      value={personalInfo.location}
+                      value={resumeData.personalInfo.location}
                       className=""
                       as="span"
                     />
                   ) : (
-                    <span>{personalInfo.location}</span>
+                    <span>{resumeData.personalInfo.location}</span>
                   )}
                 </div>
               )}
@@ -111,7 +110,7 @@ export const DesignerShowcaseTemplate = ({
 
       <div className="p-12">
         {/* Summary - Showcase Style */}
-        {personalInfo.summary && (
+        {resumeData.personalInfo.summary && (
           <div className="mb-10 bg-white p-8 rounded-2xl shadow-lg">
             <div className="w-16 h-1 mb-4 rounded" style={{ backgroundColor: themeColor }} />
             <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor }}>
@@ -120,28 +119,28 @@ export const DesignerShowcaseTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.summary"
-                value={personalInfo.summary}
+                value={resumeData.personalInfo.summary}
                 className="text-[12.5px] text-gray-700 leading-relaxed"
                 as="p"
               />
             ) : (
-              <p className="text-[12.5px] text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+              <p className="text-[12.5px] text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
             )}
           </div>
         )}
 
         {/* Skills - Visual Grid */}
-        {skills && skills.length > 0 && (
+        {resumeData.skills && resumeData.skills.length > 0 && (
           <div className="mb-10">
             <div className="w-16 h-1 mb-4 rounded" style={{ backgroundColor: themeColor }} />
             <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
               Skills & Expertise
             </h2>
             {editable ? (
-              <InlineEditableSkills path="skills" skills={skills} />
+              <InlineEditableSkills path="skills" skills={resumeData.skills} />
             ) : (
               <div className="grid grid-cols-5 gap-4">
-                {skills.map((skill, index) => (
+                {resumeData.skills.map((skill, index) => (
                   <div
                     key={index}
                     className="bg-white p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform"
@@ -156,14 +155,14 @@ export const DesignerShowcaseTemplate = ({
         )}
 
         {/* Experience - Portfolio Cards */}
-        {experience && experience.length > 0 && (
+        {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-10">
             <div className="w-16 h-1 mb-4 rounded" style={{ backgroundColor: themeColor }} />
             <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
               Work Experience
             </h2>
             <div className="grid grid-cols-1 gap-6">
-              {experience.map((exp, index) => (
+              {resumeData.experience.map((exp, index) => (
                 <div key={index} className="bg-white p-8 rounded-2xl shadow-lg">
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0 w-16 h-16 rounded-lg flex items-center justify-center text-white text-2xl font-bold" style={{ backgroundColor: themeColor }}>
@@ -224,14 +223,14 @@ export const DesignerShowcaseTemplate = ({
         )}
 
         {/* Education */}
-        {education && education.length > 0 && (
+        {resumeData.education && resumeData.education.length > 0 && (
           <div className="mb-10">
             <div className="w-16 h-1 mb-4 rounded" style={{ backgroundColor: themeColor }} />
             <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
               Education
             </h2>
             <div className="grid grid-cols-2 gap-6">
-              {education.map((edu, index) => (
+              {resumeData.education.map((edu, index) => (
                 <div key={index} className="bg-white p-6 rounded-2xl shadow-lg">
                   {editable ? (
                     <InlineEditableText
@@ -261,8 +260,8 @@ export const DesignerShowcaseTemplate = ({
         )}
 
         {/* Custom Sections */}
-        {sections &&
-          sections.map((section, index) => (
+        {resumeData.sections &&
+          resumeData.sections.map((section, index) => (
             <div key={index} className="mb-10">
               <div className="w-16 h-1 mb-4 rounded" style={{ backgroundColor: themeColor }} />
               <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>

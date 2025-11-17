@@ -16,7 +16,6 @@ export const FinanceTwoColumnTemplate = ({
   themeColor = "#2e7d32",
   editable = false,
 }: FinanceTwoColumnTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white font-sans text-gray-900">
@@ -24,66 +23,66 @@ export const FinanceTwoColumnTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="mb-2 text-4xl font-bold text-white"
             as="h1"
           />
         ) : (
-          <h1 className="mb-2 text-4xl font-bold text-white">{personalInfo.fullName}</h1>
+          <h1 className="mb-2 text-4xl font-bold text-white">{resumeData.personalInfo.fullName}</h1>
         )}
         {editable ? (
           <InlineEditableText
             path="personalInfo.title"
-            value={personalInfo.title}
+            value={resumeData.personalInfo.title}
             className="mb-3 text-xl text-white/90"
             as="h2"
           />
         ) : (
-          <h2 className="mb-3 text-xl text-white/90">{personalInfo.title}</h2>
+          <h2 className="mb-3 text-xl text-white/90">{resumeData.personalInfo.title}</h2>
         )}
         <div className="text-sm text-white/80">
           {editable ? (
             <>
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <>
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className="text-sm text-white/80 inline"
                     as="span"
                   />
                   {" | "}
                 </>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <>
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className="text-sm text-white/80 inline"
                     as="span"
                   />
                   {" | "}
                 </>
               )}
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <InlineEditableText
                   path="personalInfo.location"
-                  value={personalInfo.location}
+                  value={resumeData.personalInfo.location}
                   className="text-sm text-white/80 inline"
                   as="span"
                 />
               )}
             </>
           ) : (
-            [personalInfo.email, personalInfo.phone, personalInfo.location].filter(Boolean).join(" | ")
+            [resumeData.personalInfo.email, resumeData.personalInfo.phone, resumeData.personalInfo.location].filter(Boolean).join(" | ")
           )}
         </div>
       </div>
 
       <div className="grid grid-cols-3 gap-6 p-8">
         <div className="col-span-1 space-y-6">
-          {skills.length > 0 && (
+          {resumeData.skills.length > 0 && (
             <div>
               <h3 className="mb-3 text-sm font-bold uppercase border-b-2 pb-1" style={{ color: themeColor, borderColor: themeColor }}>
                 Skills
@@ -91,14 +90,14 @@ export const FinanceTwoColumnTemplate = ({
               {editable ? (
                 <InlineEditableSkills
                   path="skills"
-                  skills={skills}
+                  skills={resumeData.skills}
                   renderSkill={(skill, index) => (
                     <div className="mb-2 text-sm text-gray-700">• {skill.name}</div>
                   )}
                 />
               ) : (
                 <div className="space-y-2">
-                  {skills.map((skill) => (
+                  {resumeData.skills.map((skill) => (
                     <div key={skill.id} className="text-sm text-gray-700">• {skill.name}</div>
                   ))}
                 </div>
@@ -106,7 +105,7 @@ export const FinanceTwoColumnTemplate = ({
             </div>
           )}
 
-          {education.length > 0 && (
+          {resumeData.education.length > 0 && (
             <div>
               <h3 className="mb-3 text-sm font-bold uppercase border-b-2 pb-1" style={{ color: themeColor, borderColor: themeColor }}>
                 Education
@@ -114,7 +113,7 @@ export const FinanceTwoColumnTemplate = ({
               {editable ? (
                 <InlineEditableList
                   path="education"
-                  items={education}
+                  items={resumeData.education}
                   defaultItem={{
                     id: Date.now().toString(),
                     degree: "Degree",
@@ -145,7 +144,7 @@ export const FinanceTwoColumnTemplate = ({
                 />
               ) : (
                 <div className="space-y-3">
-                  {education.map((edu) => (
+                  {resumeData.education.map((edu) => (
                     <div key={edu.id}>
                       <h4 className="font-bold text-sm text-gray-900">{edu.degree}</h4>
                       <p className="text-xs text-gray-700">{edu.school}</p>
@@ -158,7 +157,7 @@ export const FinanceTwoColumnTemplate = ({
         </div>
 
         <div className="col-span-2 space-y-6">
-          {personalInfo.summary && (
+          {resumeData.personalInfo.summary && (
             <div>
               <h3 className="mb-3 text-sm font-bold uppercase border-b-2 pb-1" style={{ color: themeColor, borderColor: themeColor }}>
                 Summary
@@ -166,18 +165,18 @@ export const FinanceTwoColumnTemplate = ({
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.summary"
-                  value={personalInfo.summary}
+                  value={resumeData.personalInfo.summary}
                   className="text-sm leading-relaxed text-gray-700"
                   as="p"
                   multiline
                 />
               ) : (
-                <p className="text-sm leading-relaxed text-gray-700">{personalInfo.summary}</p>
+                <p className="text-sm leading-relaxed text-gray-700">{resumeData.personalInfo.summary}</p>
               )}
             </div>
           )}
 
-          {experience.length > 0 && (
+          {resumeData.experience.length > 0 && (
             <div>
               <h3 className="mb-3 text-sm font-bold uppercase border-b-2 pb-1" style={{ color: themeColor, borderColor: themeColor }}>
                 Experience
@@ -185,7 +184,7 @@ export const FinanceTwoColumnTemplate = ({
               {editable ? (
                 <InlineEditableList
                   path="experience"
-                  items={experience}
+                  items={resumeData.experience}
                   defaultItem={{
                     id: Date.now().toString(),
                     company: "Company",
@@ -245,7 +244,7 @@ export const FinanceTwoColumnTemplate = ({
                 />
               ) : (
                 <div className="space-y-4">
-                  {experience.map((exp) => (
+                  {resumeData.experience.map((exp) => (
                     <div key={exp.id}>
                       <div className="flex items-baseline justify-between">
                         <h4 className="font-bold text-gray-900">{exp.position}</h4>
@@ -271,7 +270,7 @@ export const FinanceTwoColumnTemplate = ({
           {editable ? (
             <InlineEditableList
               path="sections"
-              items={sections}
+              items={resumeData.sections}
               defaultItem={{
                 id: Date.now().toString(),
                 title: "Section Title",
@@ -298,7 +297,7 @@ export const FinanceTwoColumnTemplate = ({
               )}
             />
           ) : (
-            sections.map((section) => (
+            resumeData.sections.map((section) => (
               <div key={section.id}>
                 <h3 className="mb-3 text-sm font-bold uppercase border-b-2 pb-1" style={{ color: themeColor, borderColor: themeColor }}>
                   {section.title}

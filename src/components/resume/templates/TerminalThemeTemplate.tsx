@@ -15,7 +15,6 @@ export const TerminalThemeTemplate = ({
   themeColor = "#00ff00",
   editable = false,
 }: TerminalThemeTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-gray-900 text-green-400 p-12 font-mono">
@@ -27,77 +26,77 @@ export const TerminalThemeTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="text-4xl font-bold mb-2"
             as="h1"
             style={{ color: themeColor }}
           />
         ) : (
           <h1 className="text-4xl font-bold mb-2" style={{ color: themeColor }}>
-            {personalInfo.fullName}
+            {resumeData.personalInfo.fullName}
           </h1>
         )}
 
-        {personalInfo.title && (
+        {resumeData.personalInfo.title && (
           <div className="mb-4">
             <span className="text-green-400/60">role@system:~$ </span>
             {editable ? (
               <InlineEditableText
                 path="personalInfo.title"
-                value={personalInfo.title}
+                value={resumeData.personalInfo.title}
                 className="text-lg"
                 as="span"
               />
             ) : (
-              <span className="text-lg">{personalInfo.title}</span>
+              <span className="text-lg">{resumeData.personalInfo.title}</span>
             )}
           </div>
         )}
 
         {/* Contact Info - Terminal Style */}
         <div className="space-y-1 text-sm text-green-400/80">
-          {personalInfo.email && (
+          {resumeData.personalInfo.email && (
             <div>
               <span className="text-green-400/60">email: </span>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.email"
-                  value={personalInfo.email}
+                  value={resumeData.personalInfo.email}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.email}</span>
+                <span>{resumeData.personalInfo.email}</span>
               )}
             </div>
           )}
-          {personalInfo.phone && (
+          {resumeData.personalInfo.phone && (
             <div>
               <span className="text-green-400/60">phone: </span>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.phone"
-                  value={personalInfo.phone}
+                  value={resumeData.personalInfo.phone}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.phone}</span>
+                <span>{resumeData.personalInfo.phone}</span>
               )}
             </div>
           )}
-          {personalInfo.location && (
+          {resumeData.personalInfo.location && (
             <div>
               <span className="text-green-400/60">location: </span>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.location"
-                  value={personalInfo.location}
+                  value={resumeData.personalInfo.location}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.location}</span>
+                <span>{resumeData.personalInfo.location}</span>
               )}
             </div>
           )}
@@ -105,7 +104,7 @@ export const TerminalThemeTemplate = ({
       </div>
 
       {/* Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-8">
           <div className="text-xs mb-2 text-green-400/60">
             $ cat about.txt
@@ -113,27 +112,27 @@ export const TerminalThemeTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-sm leading-relaxed text-green-400/90"
               as="p"
             />
           ) : (
-            <p className="text-sm leading-relaxed text-green-400/90">{personalInfo.summary}</p>
+            <p className="text-sm leading-relaxed text-green-400/90">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
       {/* Skills - Terminal List */}
-      {skills && skills.length > 0 && (
+      {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-8">
           <div className="text-xs mb-3 text-green-400/60">
-            $ ls skills/
+            $ ls resumeData.skills/
           </div>
           {editable ? (
-            <InlineEditableSkills path="skills" skills={skills} />
+            <InlineEditableSkills path="skills" skills={resumeData.skills} />
           ) : (
             <div className="grid grid-cols-3 gap-2 text-sm">
-              {skills.map((skill, index) => (
+              {resumeData.skills.map((skill, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <span style={{ color: themeColor }}>▸</span>
                   <span className="text-green-400/90">{skill.name}</span>
@@ -145,18 +144,18 @@ export const TerminalThemeTemplate = ({
       )}
 
       {/* Experience */}
-      {experience && experience.length > 0 && (
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-8">
           <div className="text-xs mb-4 text-green-400/60">
-            $ cat experience.log
+            $ cat resumeData.experience.log
           </div>
           <div className="space-y-6">
-            {experience.map((exp, index) => (
+            {resumeData.experience.map((exp, index) => (
               <div key={index} className="border-l-2 border-green-400/30 pl-4">
                 <div className="mb-2">
                   {editable ? (
                     <InlineEditableText
-                      path={`experience.${index}.position`}
+                      path={`experience[${index}].position`}
                       value={exp.position}
                       className="text-lg font-bold"
                       as="h3"
@@ -167,7 +166,7 @@ export const TerminalThemeTemplate = ({
                   )}
                   {editable ? (
                     <InlineEditableText
-                      path={`experience.${index}.company`}
+                      path={`experience[${index}].company`}
                       value={exp.company}
                       className="text-sm text-green-400/80"
                       as="p"
@@ -184,7 +183,7 @@ export const TerminalThemeTemplate = ({
                   <div className="text-sm text-green-400/90 mt-2">
                     {editable ? (
                       <InlineEditableList
-                        path={`experience.${index}.description`}
+                        path={`experience[${index}].description`}
                         items={exp.description.split("\n")}
                       />
                     ) : (
@@ -206,17 +205,17 @@ export const TerminalThemeTemplate = ({
       )}
 
       {/* Education */}
-      {education && education.length > 0 && (
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-8">
           <div className="text-xs mb-4 text-green-400/60">
-            $ cat education.txt
+            $ cat resumeData.education.txt
           </div>
           <div className="space-y-3">
-            {education.map((edu, index) => (
+            {resumeData.education.map((edu, index) => (
               <div key={index}>
                 {editable ? (
                   <InlineEditableText
-                    path={`education.${index}.degree`}
+                    path={`education[${index}].degree`}
                     value={edu.degree}
                     className="text-base font-bold"
                     as="h3"
@@ -227,7 +226,7 @@ export const TerminalThemeTemplate = ({
                 )}
                 {editable ? (
                   <InlineEditableText
-                    path={`education.${index}.institution`}
+                    path={`education[${index}].institution`}
                     value={edu.institution}
                     className="text-sm text-green-400/80"
                     as="p"
@@ -243,8 +242,8 @@ export const TerminalThemeTemplate = ({
       )}
 
       {/* Custom Sections */}
-      {sections &&
-        sections.map((section, index) => (
+      {resumeData.sections &&
+        resumeData.sections.map((section, index) => (
           <div key={index} className="mb-8">
             <div className="text-xs mb-3 text-green-400/60">
               $ cat {section.title.toLowerCase().replace(/\s+/g, '_')}.txt

@@ -15,7 +15,6 @@ export const CreativeTimelineTemplate = ({
   themeColor = "#f59e0b",
   editable = false,
 }: CreativeTimelineTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12">
@@ -26,76 +25,76 @@ export const CreativeTimelineTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.fullName"
-              value={personalInfo.fullName}
+              value={resumeData.personalInfo.fullName}
               className="text-[32px] font-bold mb-3"
               as="h1"
               style={{ color: themeColor }}
             />
           ) : (
             <h1 className="text-[32px] font-bold mb-3" style={{ color: themeColor }}>
-              {personalInfo.fullName}
+              {resumeData.personalInfo.fullName}
             </h1>
           )}
 
-          {personalInfo.title && (
+          {resumeData.personalInfo.title && (
             <div className="mb-6">
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.title"
-                  value={personalInfo.title}
+                  value={resumeData.personalInfo.title}
                   className="text-[16px] font-medium text-gray-700"
                   as="p"
                 />
               ) : (
-                <p className="text-[16px] font-medium text-gray-700">{personalInfo.title}</p>
+                <p className="text-[16px] font-medium text-gray-700">{resumeData.personalInfo.title}</p>
               )}
             </div>
           )}
 
           {/* Contact Info */}
           <div className="flex flex-wrap gap-6 text-sm text-gray-600">
-            {personalInfo.email && (
+            {resumeData.personalInfo.email && (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2" style={{ backgroundColor: themeColor }} />
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.email}</span>
+                  <span>{resumeData.personalInfo.email}</span>
                 )}
               </div>
             )}
-            {personalInfo.phone && (
+            {resumeData.personalInfo.phone && (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2" style={{ backgroundColor: themeColor }} />
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.phone}</span>
+                  <span>{resumeData.personalInfo.phone}</span>
                 )}
               </div>
             )}
-            {personalInfo.location && (
+            {resumeData.personalInfo.location && (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2" style={{ backgroundColor: themeColor }} />
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.location"
-                    value={personalInfo.location}
+                    value={resumeData.personalInfo.location}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.location}</span>
+                  <span>{resumeData.personalInfo.location}</span>
                 )}
               </div>
             )}
@@ -104,7 +103,7 @@ export const CreativeTimelineTemplate = ({
       </div>
 
       {/* Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-12">
           <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor }}>
             My Story
@@ -112,18 +111,18 @@ export const CreativeTimelineTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-lg text-gray-700 leading-relaxed italic"
               as="p"
             />
           ) : (
-            <p className="text-lg text-gray-700 leading-relaxed italic">{personalInfo.summary}</p>
+            <p className="text-lg text-gray-700 leading-relaxed italic">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
       {/* Experience - Visual Timeline */}
-      {experience && experience.length > 0 && (
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-12">
           <h2 className="text-[15px] font-bold mb-8" style={{ color: themeColor }}>
             Journey
@@ -133,7 +132,7 @@ export const CreativeTimelineTemplate = ({
             <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-200" />
 
             <div className="space-y-12">
-              {experience.map((exp, index) => (
+              {resumeData.experience.map((exp, index) => (
                 <div key={index} className="relative pl-20">
                   {/* Timeline marker */}
                   <div
@@ -198,16 +197,16 @@ export const CreativeTimelineTemplate = ({
       )}
 
       {/* Skills - Creative Display */}
-      {skills && skills.length > 0 && (
+      {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-12">
           <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
             Toolkit
           </h2>
           {editable ? (
-            <InlineEditableSkills path="skills" skills={skills} />
+            <InlineEditableSkills path="skills" skills={resumeData.skills} />
           ) : (
             <div className="flex flex-wrap gap-4">
-              {skills.map((skill, index) => (
+              {resumeData.skills.map((skill, index) => (
                 <div
                   key={index}
                   className="relative px-6 py-3 bg-gray-50 rounded-full text-gray-900 font-semibold shadow-md"
@@ -222,13 +221,13 @@ export const CreativeTimelineTemplate = ({
       )}
 
       {/* Education */}
-      {education && education.length > 0 && (
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-12">
           <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
             Learning Path
           </h2>
           <div className="space-y-6">
-            {education.map((edu, index) => (
+            {resumeData.education.map((edu, index) => (
               <div key={index} className="flex items-start gap-6">
                 <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: themeColor }}>
                   {index + 1}
@@ -263,8 +262,8 @@ export const CreativeTimelineTemplate = ({
       )}
 
       {/* Custom Sections */}
-      {sections &&
-        sections.map((section, index) => (
+      {resumeData.sections &&
+        resumeData.sections.map((section, index) => (
           <div key={index} className="mb-12">
             <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
               {section.title}

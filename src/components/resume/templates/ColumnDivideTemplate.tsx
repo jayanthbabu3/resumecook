@@ -15,7 +15,6 @@ export const ColumnDivideTemplate = ({
   themeColor = "#0891b2",
   editable = false,
 }: ColumnDivideTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12">
@@ -24,29 +23,29 @@ export const ColumnDivideTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="text-5xl font-bold mb-3"
             as="h1"
           />
         ) : (
           <h1 className="text-5xl font-bold mb-3">
-            {personalInfo.fullName}
+            {resumeData.personalInfo.fullName}
           </h1>
         )}
 
-        {personalInfo.title && (
+        {resumeData.personalInfo.title && (
           <div className="mb-4">
             {editable ? (
               <InlineEditableText
                 path="personalInfo.title"
-                value={personalInfo.title}
+                value={resumeData.personalInfo.title}
                 className="text-xl"
                 as="p"
                 style={{ color: themeColor }}
               />
             ) : (
               <p className="text-xl" style={{ color: themeColor }}>
-                {personalInfo.title}
+                {resumeData.personalInfo.title}
               </p>
             )}
           </div>
@@ -54,45 +53,45 @@ export const ColumnDivideTemplate = ({
 
         {/* Contact Info */}
         <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-          {personalInfo.email && (
+          {resumeData.personalInfo.email && (
             <div>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.email"
-                  value={personalInfo.email}
+                  value={resumeData.personalInfo.email}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.email}</span>
+                <span>{resumeData.personalInfo.email}</span>
               )}
             </div>
           )}
-          {personalInfo.phone && (
+          {resumeData.personalInfo.phone && (
             <div>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.phone"
-                  value={personalInfo.phone}
+                  value={resumeData.personalInfo.phone}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.phone}</span>
+                <span>{resumeData.personalInfo.phone}</span>
               )}
             </div>
           )}
-          {personalInfo.location && (
+          {resumeData.personalInfo.location && (
             <div>
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.location"
-                  value={personalInfo.location}
+                  value={resumeData.personalInfo.location}
                   className=""
                   as="span"
                 />
               ) : (
-                <span>{personalInfo.location}</span>
+                <span>{resumeData.personalInfo.location}</span>
               )}
             </div>
           )}
@@ -100,17 +99,17 @@ export const ColumnDivideTemplate = ({
       </div>
 
       {/* Summary - Full Width */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-10">
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-gray-700 leading-relaxed text-center"
               as="p"
             />
           ) : (
-            <p className="text-gray-700 leading-relaxed text-center">{personalInfo.summary}</p>
+            <p className="text-gray-700 leading-relaxed text-center">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
@@ -120,18 +119,18 @@ export const ColumnDivideTemplate = ({
         {/* Left Column - 50% */}
         <div className="w-1/2">
           {/* Experience */}
-          {experience && experience.length > 0 && (
+          {resumeData.experience && resumeData.experience.length > 0 && (
             <div className="mb-10">
               <h2 className="text-2xl font-bold mb-6 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
                 Experience
               </h2>
               <div className="space-y-6">
-                {experience.map((exp, index) => (
+                {resumeData.experience.map((exp, index) => (
                   <div key={index}>
                     <div className="mb-2">
                       {editable ? (
                         <InlineEditableText
-                          path={`experience.${index}.position`}
+                          path={`experience[${index}].position`}
                           value={exp.position}
                           className="text-lg font-bold text-gray-900"
                           as="h3"
@@ -141,7 +140,7 @@ export const ColumnDivideTemplate = ({
                       )}
                       {editable ? (
                         <InlineEditableText
-                          path={`experience.${index}.company`}
+                          path={`experience[${index}].company`}
                           value={exp.company}
                           className="font-medium"
                           as="p"
@@ -161,7 +160,7 @@ export const ColumnDivideTemplate = ({
                       <div className="text-sm text-gray-700">
                         {editable ? (
                           <InlineEditableList
-                            path={`experience.${index}.description`}
+                            path={`experience[${index}].description`}
                             items={exp.description.split("\n")}
                           />
                         ) : (
@@ -180,8 +179,8 @@ export const ColumnDivideTemplate = ({
           )}
 
           {/* Custom Sections (Left) */}
-          {sections &&
-            sections.filter((_, index) => index % 2 === 0).map((section, index) => (
+          {resumeData.sections &&
+            resumeData.sections.filter((_, index) => index % 2 === 0).map((section, index) => (
               <div key={index} className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
                   {section.title}
@@ -199,16 +198,16 @@ export const ColumnDivideTemplate = ({
         {/* Right Column - 50% */}
         <div className="w-1/2">
           {/* Skills */}
-          {skills && skills.length > 0 && (
+          {resumeData.skills && resumeData.skills.length > 0 && (
             <div className="mb-10">
               <h2 className="text-2xl font-bold mb-6 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
                 Skills
               </h2>
               {editable ? (
-                <InlineEditableSkills path="skills" skills={skills} />
+                <InlineEditableSkills path="skills" skills={resumeData.skills} />
               ) : (
                 <div className="space-y-2">
-                  {skills.map((skill, index) => (
+                  {resumeData.skills.map((skill, index) => (
                     <div
                       key={index}
                       className="px-4 py-2 border-l-4 text-sm font-medium"
@@ -223,17 +222,17 @@ export const ColumnDivideTemplate = ({
           )}
 
           {/* Education */}
-          {education && education.length > 0 && (
+          {resumeData.education && resumeData.education.length > 0 && (
             <div className="mb-10">
               <h2 className="text-2xl font-bold mb-6 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
                 Education
               </h2>
               <div className="space-y-4">
-                {education.map((edu, index) => (
+                {resumeData.education.map((edu, index) => (
                   <div key={index}>
                     {editable ? (
                       <InlineEditableText
-                        path={`education.${index}.degree`}
+                        path={`education[${index}].degree`}
                         value={edu.degree}
                         className="text-lg font-bold text-gray-900"
                         as="h3"
@@ -243,7 +242,7 @@ export const ColumnDivideTemplate = ({
                     )}
                     {editable ? (
                       <InlineEditableText
-                        path={`education.${index}.institution`}
+                        path={`education[${index}].institution`}
                         value={edu.institution}
                         className="text-gray-700"
                         as="p"
@@ -259,8 +258,8 @@ export const ColumnDivideTemplate = ({
           )}
 
           {/* Custom Sections (Right) */}
-          {sections &&
-            sections.filter((_, index) => index % 2 === 1).map((section, index) => (
+          {resumeData.sections &&
+            resumeData.sections.filter((_, index) => index % 2 === 1).map((section, index) => (
               <div key={index} className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
                   {section.title}

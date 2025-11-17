@@ -16,7 +16,6 @@ export const ClinicalMinimalTemplate = ({
   themeColor = "#455a64",
   editable = false,
 }: ClinicalMinimalTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white p-12 font-sans text-gray-900">
@@ -25,64 +24,64 @@ export const ClinicalMinimalTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="mb-1 text-3xl font-light tracking-wide"
             as="h1"
             style={{ color: themeColor }}
           />
         ) : (
           <h1 className="mb-1 text-3xl font-light tracking-wide" style={{ color: themeColor }}>
-            {personalInfo.fullName}
+            {resumeData.personalInfo.fullName}
           </h1>
         )}
         {editable ? (
           <InlineEditableText
             path="personalInfo.title"
-            value={personalInfo.title}
+            value={resumeData.personalInfo.title}
             className="mb-4 text-base font-normal text-gray-600"
             as="h2"
           />
         ) : (
           <h2 className="mb-4 text-base font-normal text-gray-600">
-            {personalInfo.title}
+            {resumeData.personalInfo.title}
           </h2>
         )}
         <div className="border-t border-gray-300 pt-3 text-xs text-gray-600">
           {editable ? (
             <>
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <>
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className="text-xs text-gray-600 inline"
                     as="span"
                   />
                   {" | "}
                 </>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <>
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className="text-xs text-gray-600 inline"
                     as="span"
                   />
                   {" | "}
                 </>
               )}
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <InlineEditableText
                   path="personalInfo.location"
-                  value={personalInfo.location}
+                  value={resumeData.personalInfo.location}
                   className="text-xs text-gray-600 inline"
                   as="span"
                 />
               )}
             </>
           ) : (
-            [personalInfo.email, personalInfo.phone, personalInfo.location]
+            [resumeData.personalInfo.email, resumeData.personalInfo.phone, resumeData.personalInfo.location]
               .filter(Boolean)
               .join(" | ")
           )}
@@ -90,19 +89,19 @@ export const ClinicalMinimalTemplate = ({
       </div>
 
       {/* Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-6">
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-sm leading-relaxed text-gray-700"
               as="p"
               multiline
             />
           ) : (
             <p className="text-sm leading-relaxed text-gray-700">
-              {personalInfo.summary}
+              {resumeData.personalInfo.summary}
             </p>
           )}
         </div>
@@ -112,7 +111,7 @@ export const ClinicalMinimalTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections.filter(s => s.title === "Licenses & Certifications")}
+          items={resumeData.sections.filter(s => s.title === "Licenses & Certifications")}
           defaultItem={{
             id: Date.now().toString(),
             title: "Licenses & Certifications",
@@ -138,7 +137,7 @@ export const ClinicalMinimalTemplate = ({
           )}
         />
       ) : (
-        sections
+        resumeData.sections
           .filter(s => s.title === "Licenses & Certifications")
           .map((section) => (
             <div key={section.id} className="mb-6">
@@ -157,7 +156,7 @@ export const ClinicalMinimalTemplate = ({
       )}
 
       {/* Experience */}
-      {experience.length > 0 && (
+      {resumeData.experience.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-500">
             Experience
@@ -165,7 +164,7 @@ export const ClinicalMinimalTemplate = ({
           {editable ? (
             <InlineEditableList
               path="experience"
-              items={experience}
+              items={resumeData.experience}
               defaultItem={{
                 id: Date.now().toString(),
                 company: "Facility",
@@ -227,7 +226,7 @@ export const ClinicalMinimalTemplate = ({
             />
           ) : (
             <div className="space-y-4">
-              {experience.map((exp) => (
+              {resumeData.experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="mb-1 flex items-baseline justify-between">
                     <div>
@@ -253,7 +252,7 @@ export const ClinicalMinimalTemplate = ({
       )}
 
       {/* Education */}
-      {education.length > 0 && (
+      {resumeData.education.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-500">
             Education
@@ -261,7 +260,7 @@ export const ClinicalMinimalTemplate = ({
           {editable ? (
             <InlineEditableList
               path="education"
-              items={education}
+              items={resumeData.education}
               defaultItem={{
                 id: Date.now().toString(),
                 degree: "Degree",
@@ -314,7 +313,7 @@ export const ClinicalMinimalTemplate = ({
             />
           ) : (
             <div className="space-y-3">
-              {education.map((edu) => (
+              {resumeData.education.map((edu) => (
                 <div key={edu.id}>
                   <div className="flex items-baseline justify-between">
                     <div>
@@ -333,7 +332,7 @@ export const ClinicalMinimalTemplate = ({
       )}
 
       {/* Skills */}
-      {skills.length > 0 && (
+      {resumeData.skills.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-500">
             Skills
@@ -341,7 +340,7 @@ export const ClinicalMinimalTemplate = ({
           {editable ? (
             <InlineEditableSkills
               path="skills"
-              skills={skills}
+              skills={resumeData.skills}
               renderSkill={(skill, index) => (
                 <span className="text-sm text-gray-700">
                   {skill.name}
@@ -350,7 +349,7 @@ export const ClinicalMinimalTemplate = ({
             />
           ) : (
             <p className="text-sm text-gray-700">
-              {skills.map(skill => skill.name).join(" • ")}
+              {resumeData.skills.map(skill => skill.name).join(" • ")}
             </p>
           )}
         </div>
@@ -360,7 +359,7 @@ export const ClinicalMinimalTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections}
+          items={resumeData.sections}
           defaultItem={{
             id: Date.now().toString(),
             title: "Section Title",
@@ -386,7 +385,7 @@ export const ClinicalMinimalTemplate = ({
           )}
         />
       ) : (
-        sections
+        resumeData.sections
           .filter(s => s.title !== "Licenses & Certifications")
           .map((section) => (
             <div key={section.id} className="mb-6">

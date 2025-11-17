@@ -15,7 +15,6 @@ export const ArtisticBoldTemplate = ({
   themeColor = "#ec4899",
   editable = false,
 }: ArtisticBoldTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="w-full h-full bg-white text-gray-900">
@@ -29,28 +28,28 @@ export const ArtisticBoldTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.fullName"
-              value={personalInfo.fullName}
+              value={resumeData.personalInfo.fullName}
               className="text-[32px] font-black mb-4 tracking-tight"
               as="h1"
             />
           ) : (
             <h1 className="text-[32px] font-black mb-4 tracking-tight">
-              {personalInfo.fullName}
+              {resumeData.personalInfo.fullName}
             </h1>
           )}
 
-          {personalInfo.title && (
+          {resumeData.personalInfo.title && (
             <div className="mb-6">
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.title"
-                  value={personalInfo.title}
+                  value={resumeData.personalInfo.title}
                   className="text-[16px] font-bold uppercase tracking-wider opacity-90"
                   as="p"
                 />
               ) : (
                 <p className="text-[16px] font-bold uppercase tracking-wider opacity-90">
-                  {personalInfo.title}
+                  {resumeData.personalInfo.title}
                 </p>
               )}
             </div>
@@ -58,45 +57,45 @@ export const ArtisticBoldTemplate = ({
 
           {/* Contact Info */}
           <div className="flex flex-wrap gap-6 text-[12px] opacity-90">
-            {personalInfo.email && (
+            {resumeData.personalInfo.email && (
               <div>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.email}</span>
+                  <span>{resumeData.personalInfo.email}</span>
                 )}
               </div>
             )}
-            {personalInfo.phone && (
+            {resumeData.personalInfo.phone && (
               <div>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.phone}</span>
+                  <span>{resumeData.personalInfo.phone}</span>
                 )}
               </div>
             )}
-            {personalInfo.location && (
+            {resumeData.personalInfo.location && (
               <div>
                 {editable ? (
                   <InlineEditableText
                     path="personalInfo.location"
-                    value={personalInfo.location}
+                    value={resumeData.personalInfo.location}
                     className=""
                     as="span"
                   />
                 ) : (
-                  <span>{personalInfo.location}</span>
+                  <span>{resumeData.personalInfo.location}</span>
                 )}
               </div>
             )}
@@ -106,7 +105,7 @@ export const ArtisticBoldTemplate = ({
 
       <div className="px-12 py-10">
         {/* Summary */}
-        {personalInfo.summary && (
+        {resumeData.personalInfo.summary && (
           <div className="mb-10">
             <h2 className="text-[15px] font-black mb-6 uppercase" style={{ color: themeColor }}>
               About
@@ -114,24 +113,24 @@ export const ArtisticBoldTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.summary"
-                value={personalInfo.summary}
+                value={resumeData.personalInfo.summary}
                 className="text-[12.5px] text-gray-700 leading-relaxed"
                 as="p"
               />
             ) : (
-              <p className="text-[12.5px] text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+              <p className="text-[12.5px] text-gray-700 leading-relaxed">{resumeData.personalInfo.summary}</p>
             )}
           </div>
         )}
 
         {/* Experience */}
-        {experience && experience.length > 0 && (
+        {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-10">
             <h2 className="text-[15px] font-black mb-8 uppercase" style={{ color: themeColor }}>
               Experience
             </h2>
             <div className="space-y-10">
-              {experience.map((exp, index) => (
+              {resumeData.experience.map((exp, index) => (
                 <div key={index} className="relative pl-8 border-l-8" style={{ borderColor: `${themeColor}30` }}>
                   <div className="absolute -left-3 top-2 w-6 h-6 rounded-full" style={{ backgroundColor: themeColor }} />
 
@@ -187,16 +186,16 @@ export const ArtisticBoldTemplate = ({
         )}
 
         {/* Skills */}
-        {skills && skills.length > 0 && (
+        {resumeData.skills && resumeData.skills.length > 0 && (
           <div className="mb-10">
             <h2 className="text-[15px] font-black mb-8 uppercase" style={{ color: themeColor }}>
               Skills
             </h2>
             {editable ? (
-              <InlineEditableSkills path="skills" skills={skills} />
+              <InlineEditableSkills path="skills" skills={resumeData.skills} />
             ) : (
               <div className="flex flex-wrap gap-4">
-                {skills.map((skill, index) => (
+                {resumeData.skills.map((skill, index) => (
                   <span
                     key={index}
                     className="px-6 py-3 text-white text-[12px] font-bold uppercase rounded-lg shadow-lg"
@@ -211,13 +210,13 @@ export const ArtisticBoldTemplate = ({
         )}
 
         {/* Education */}
-        {education && education.length > 0 && (
+        {resumeData.education && resumeData.education.length > 0 && (
           <div className="mb-10">
             <h2 className="text-[15px] font-black mb-8 uppercase" style={{ color: themeColor }}>
               Education
             </h2>
             <div className="space-y-6">
-              {education.map((edu, index) => (
+              {resumeData.education.map((edu, index) => (
                 <div key={index}>
                   {editable ? (
                     <InlineEditableText
@@ -249,8 +248,8 @@ export const ArtisticBoldTemplate = ({
         )}
 
         {/* Custom Sections */}
-        {sections &&
-          sections.map((section, index) => (
+        {resumeData.sections &&
+          resumeData.sections.map((section, index) => (
             <div key={index} className="mb-10">
               <h2 className="text-[15px] font-black mb-6 uppercase" style={{ color: themeColor }}>
                 {section.title}

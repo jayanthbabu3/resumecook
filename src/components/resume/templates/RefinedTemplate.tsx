@@ -16,7 +16,6 @@ export const RefinedTemplate = ({
   themeColor = "#4f46e5",
   editable = false,
 }: RefinedTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white font-sans text-gray-900">
@@ -24,9 +23,9 @@ export const RefinedTemplate = ({
         {/* Left Sidebar */}
         <div className="px-8 py-12" style={{ backgroundColor: `${themeColor}15` }}>
           {/* Photo */}
-          {personalInfo.photo && (
+          {resumeData.personalInfo.photo && (
             <div className="mb-8">
-              <ProfilePhoto src={personalInfo.photo} sizeClass="h-40 w-40 mx-auto" />
+              <ProfilePhoto src={resumeData.personalInfo.photo} sizeClass="h-40 w-40 mx-auto" />
             </div>
           )}
 
@@ -36,7 +35,7 @@ export const RefinedTemplate = ({
               Contact
             </h3>
             <div className="space-y-3 text-xs text-gray-700">
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <div className="break-words">
                   <div className="mb-1 font-semibold" style={{ color: themeColor }}>
                     Email
@@ -44,16 +43,16 @@ export const RefinedTemplate = ({
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.email"
-                      value={personalInfo.email}
+                      value={resumeData.personalInfo.email}
                       className="font-light text-xs text-gray-700"
                       as="div"
                     />
                   ) : (
-                    <div className="font-light">{personalInfo.email}</div>
+                    <div className="font-light">{resumeData.personalInfo.email}</div>
                   )}
                 </div>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <div>
                   <div className="mb-1 font-semibold" style={{ color: themeColor }}>
                     Phone
@@ -61,16 +60,16 @@ export const RefinedTemplate = ({
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.phone"
-                      value={personalInfo.phone}
+                      value={resumeData.personalInfo.phone}
                       className="font-light text-xs text-gray-700"
                       as="div"
                     />
                   ) : (
-                    <div className="font-light">{personalInfo.phone}</div>
+                    <div className="font-light">{resumeData.personalInfo.phone}</div>
                   )}
                 </div>
               )}
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <div>
                   <div className="mb-1 font-semibold" style={{ color: themeColor }}>
                     Location
@@ -78,12 +77,12 @@ export const RefinedTemplate = ({
                   {editable ? (
                     <InlineEditableText
                       path="personalInfo.location"
-                      value={personalInfo.location}
+                      value={resumeData.personalInfo.location}
                       className="font-light text-xs text-gray-700"
                       as="div"
                     />
                   ) : (
-                    <div className="font-light">{personalInfo.location}</div>
+                    <div className="font-light">{resumeData.personalInfo.location}</div>
                   )}
                 </div>
               )}
@@ -91,7 +90,7 @@ export const RefinedTemplate = ({
           </div>
 
           {/* Skills */}
-          {skills.length > 0 && (
+          {resumeData.skills.length > 0 && (
             <div className="mb-8">
               <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-900">
                 Skills
@@ -99,7 +98,7 @@ export const RefinedTemplate = ({
               {editable ? (
                 <InlineEditableSkills
                   path="skills"
-                  skills={skills}
+                  skills={resumeData.skills}
                   renderSkill={(skill, index) => (
                     <div className="text-xs font-light text-gray-700 leading-relaxed">
                       {skill.name}
@@ -108,7 +107,7 @@ export const RefinedTemplate = ({
                 />
               ) : (
                 <div className="space-y-2">
-                  {skills.map((skill) => (
+                  {resumeData.skills.map((skill) => (
                     <div
                       key={skill.id}
                       className="text-xs font-light text-gray-700 leading-relaxed"
@@ -122,7 +121,7 @@ export const RefinedTemplate = ({
           )}
 
           {/* Education */}
-          {education.length > 0 && (
+          {resumeData.education.length > 0 && (
             <div className="mb-8">
               <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-900">
                 Education
@@ -130,7 +129,7 @@ export const RefinedTemplate = ({
               {editable ? (
                 <InlineEditableList
                   path="education"
-                  items={education}
+                  items={resumeData.education}
                   defaultItem={{
                     id: Date.now().toString(),
                     degree: "Degree",
@@ -183,7 +182,7 @@ export const RefinedTemplate = ({
                 />
               ) : (
                 <div className="space-y-4">
-                  {education.map((edu) => (
+                  {resumeData.education.map((edu) => (
                     <div key={edu.id}>
                       <div className="text-xs font-semibold text-gray-900 mb-1">
                         {edu.degree}
@@ -214,7 +213,7 @@ export const RefinedTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.fullName"
-                value={personalInfo.fullName}
+                value={resumeData.personalInfo.fullName}
                 className="mb-3 text-6xl font-normal tracking-tight leading-none"
                 as="h1"
                 style={{ color: themeColor }}
@@ -224,40 +223,40 @@ export const RefinedTemplate = ({
                 className="mb-3 text-6xl font-normal tracking-tight leading-none"
                 style={{ color: themeColor }}
               >
-                {personalInfo.fullName}
+                {resumeData.personalInfo.fullName}
               </h1>
             )}
             {editable ? (
               <InlineEditableText
                 path="personalInfo.title"
-                value={personalInfo.title}
+                value={resumeData.personalInfo.title}
                 className="mb-6 text-lg font-semibold uppercase tracking-wider text-gray-700"
                 as="h2"
               />
             ) : (
               <h2 className="mb-6 text-lg font-semibold uppercase tracking-wider text-gray-700">
-                {personalInfo.title}
+                {resumeData.personalInfo.title}
               </h2>
             )}
-            {personalInfo.summary && (
+            {resumeData.personalInfo.summary && (
               editable ? (
                 <InlineEditableText
                   path="personalInfo.summary"
-                  value={personalInfo.summary}
+                  value={resumeData.personalInfo.summary}
                   className="text-sm leading-relaxed text-gray-700 font-light"
                   as="p"
                   multiline
                 />
               ) : (
                 <p className="text-sm leading-relaxed text-gray-700 font-light">
-                  {personalInfo.summary}
+                  {resumeData.personalInfo.summary}
                 </p>
               )
             )}
           </div>
 
           {/* Professional Experience */}
-          {experience.length > 0 && (
+          {resumeData.experience.length > 0 && (
             <div className="mb-10">
               <h3 className="mb-6 text-xs font-bold uppercase tracking-widest text-gray-900 pb-2 border-b-2" style={{ borderColor: themeColor }}>
                 Professional Experience
@@ -265,7 +264,7 @@ export const RefinedTemplate = ({
               {editable ? (
                 <InlineEditableList
                   path="experience"
-                  items={experience}
+                  items={resumeData.experience}
                   defaultItem={{
                     id: Date.now().toString(),
                     company: "Company Name",
@@ -326,7 +325,7 @@ export const RefinedTemplate = ({
                 />
               ) : (
                 <div className="space-y-6">
-                  {experience.map((exp) => (
+                  {resumeData.experience.map((exp) => (
                     <div key={exp.id}>
                       <div className="mb-3">
                         <h4 className="text-base font-semibold text-gray-900 mb-1">
@@ -359,7 +358,7 @@ export const RefinedTemplate = ({
           {editable ? (
             <InlineEditableList
               path="sections"
-              items={sections}
+              items={resumeData.sections}
               defaultItem={{
                 id: Date.now().toString(),
                 title: "Section Title",
@@ -386,7 +385,7 @@ export const RefinedTemplate = ({
               )}
             />
           ) : (
-            sections.map((section) => (
+            resumeData.sections.map((section) => (
               <div key={section.id} className="mb-10">
                 <h3 className="mb-6 text-xs font-bold uppercase tracking-widest text-gray-900 pb-2 border-b-2" style={{ borderColor: themeColor }}>
                   {section.title}

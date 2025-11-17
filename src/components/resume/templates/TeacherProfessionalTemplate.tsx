@@ -16,7 +16,6 @@ export const TeacherProfessionalTemplate = ({
   themeColor = "#0d47a1",
   editable = false,
 }: TeacherProfessionalTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white p-12 font-sans text-gray-900">
@@ -27,79 +26,79 @@ export const TeacherProfessionalTemplate = ({
             {editable ? (
               <InlineEditableText
                 path="personalInfo.fullName"
-                value={personalInfo.fullName}
+                value={resumeData.personalInfo.fullName}
                 className="mb-2 text-4xl font-bold"
                 as="h1"
                 style={{ color: themeColor }}
               />
             ) : (
               <h1 className="mb-2 text-4xl font-bold" style={{ color: themeColor }}>
-                {personalInfo.fullName}
+                {resumeData.personalInfo.fullName}
               </h1>
             )}
             {editable ? (
               <InlineEditableText
                 path="personalInfo.title"
-                value={personalInfo.title}
+                value={resumeData.personalInfo.title}
                 className="mb-3 text-xl font-semibold text-gray-700"
                 as="h2"
               />
             ) : (
               <h2 className="mb-3 text-xl font-semibold text-gray-700">
-                {personalInfo.title}
+                {resumeData.personalInfo.title}
               </h2>
             )}
             <p className="text-sm text-gray-600">
               {editable ? (
                 <>
-                  {personalInfo.location && (
+                  {resumeData.personalInfo.location && (
                     <>
                       <InlineEditableText
                         path="personalInfo.location"
-                        value={personalInfo.location}
+                        value={resumeData.personalInfo.location}
                         className="text-sm text-gray-600 inline"
                         as="span"
                       />
                       {" | "}
                     </>
                   )}
-                  {personalInfo.phone && (
+                  {resumeData.personalInfo.phone && (
                     <>
                       <InlineEditableText
                         path="personalInfo.phone"
-                        value={personalInfo.phone}
+                        value={resumeData.personalInfo.phone}
                         className="text-sm text-gray-600 inline"
                         as="span"
                       />
                       {" | "}
                     </>
                   )}
-                  {personalInfo.email && (
+                  {resumeData.personalInfo.email && (
                     <InlineEditableText
                       path="personalInfo.email"
-                      value={personalInfo.email}
+                      value={resumeData.personalInfo.email}
                       className="text-sm text-gray-600 inline"
                       as="span"
                     />
                   )}
                 </>
               ) : (
-                [personalInfo.location, personalInfo.phone, personalInfo.email]
+                [resumeData.personalInfo.location, resumeData.personalInfo.phone, resumeData.personalInfo.email]
                   .filter(Boolean)
                   .join(" | ")
               )}
             </p>
           </div>
-          {personalInfo.photo && (
+          {resumeData.personalInfo.photo && (
             <div className="ml-8">
-              <ProfilePhoto src={personalInfo.photo} sizeClass="h-32 w-32" />
+              <ProfilePhoto src={resumeData.personalInfo.photo} sizeClass="h-32 w-32" />
             </div>
           )}
         </div>
       </div>
 
       {/* Professional Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-6">
           <h3 className="mb-3 text-lg font-bold" style={{ color: themeColor }}>
             Professional Summary
@@ -107,21 +106,21 @@ export const TeacherProfessionalTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-sm leading-relaxed text-gray-700"
               as="p"
               multiline
             />
           ) : (
             <p className="text-sm leading-relaxed text-gray-700">
-              {personalInfo.summary}
+              {resumeData.personalInfo.summary}
             </p>
           )}
         </div>
       )}
 
       {/* Education - Prominent for Teachers */}
-      {education.length > 0 && (
+      {resumeData.education.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-3 text-lg font-bold" style={{ color: themeColor }}>
             Education
@@ -129,7 +128,7 @@ export const TeacherProfessionalTemplate = ({
           {editable ? (
             <InlineEditableList
               path="education"
-              items={education}
+              items={resumeData.education}
               defaultItem={{
                 id: Date.now().toString(),
                 degree: "Bachelor of Education",
@@ -186,7 +185,7 @@ export const TeacherProfessionalTemplate = ({
             />
           ) : (
             <div className="space-y-3">
-              {education.map((edu) => (
+              {resumeData.education.map((edu) => (
                 <div key={edu.id}>
                   <div className="flex items-baseline justify-between">
                     <h4 className="font-bold text-gray-900">
@@ -208,7 +207,7 @@ export const TeacherProfessionalTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections.filter(s => s.title === "Certifications")}
+          items={resumeData.sections.filter(s => s.title === "Certifications")}
           defaultItem={{
             id: Date.now().toString(),
             title: "Certifications",
@@ -235,7 +234,7 @@ export const TeacherProfessionalTemplate = ({
           )}
         />
       ) : (
-        sections
+        resumeData.sections
           .filter(s => s.title === "Certifications")
           .map((section) => (
             <div key={section.id} className="mb-6">
@@ -254,7 +253,7 @@ export const TeacherProfessionalTemplate = ({
       )}
 
       {/* Teaching Experience */}
-      {experience.length > 0 && (
+      {resumeData.experience.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-3 text-lg font-bold" style={{ color: themeColor }}>
             Teaching Experience
@@ -262,7 +261,7 @@ export const TeacherProfessionalTemplate = ({
           {editable ? (
             <InlineEditableList
               path="experience"
-              items={experience}
+              items={resumeData.experience}
               defaultItem={{
                 id: Date.now().toString(),
                 company: "School Name",
@@ -324,7 +323,7 @@ export const TeacherProfessionalTemplate = ({
             />
           ) : (
             <div className="space-y-4">
-              {experience.map((exp) => (
+              {resumeData.experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="mb-1 flex items-baseline justify-between">
                     <h4 className="font-bold text-gray-900">{exp.position}</h4>
@@ -348,7 +347,7 @@ export const TeacherProfessionalTemplate = ({
       )}
 
       {/* Skills */}
-      {skills.length > 0 && (
+      {resumeData.skills.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-3 text-lg font-bold" style={{ color: themeColor }}>
             Skills & Competencies
@@ -356,7 +355,7 @@ export const TeacherProfessionalTemplate = ({
           {editable ? (
             <InlineEditableSkills
               path="skills"
-              skills={skills}
+              skills={resumeData.skills}
               renderSkill={(skill, index) => (
                 <div className="text-sm text-gray-700">
                   {skill.name}
@@ -365,7 +364,7 @@ export const TeacherProfessionalTemplate = ({
             />
           ) : (
             <div className="grid grid-cols-3 gap-x-6 gap-y-2">
-              {skills.map((skill) => (
+              {resumeData.skills.map((skill) => (
                 <div key={skill.id} className="text-sm text-gray-700">
                   • {skill.name}
                 </div>
@@ -379,7 +378,7 @@ export const TeacherProfessionalTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections}
+          items={resumeData.sections}
           defaultItem={{
             id: Date.now().toString(),
             title: "Section Title",
@@ -406,7 +405,7 @@ export const TeacherProfessionalTemplate = ({
           )}
         />
       ) : (
-        sections
+        resumeData.sections
           .filter(s => s.title !== "Certifications")
           .map((section) => (
             <div key={section.id} className="mb-6">

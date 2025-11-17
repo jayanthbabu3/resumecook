@@ -16,7 +16,6 @@ export const EliteTemplate = ({
   themeColor = "#7c3aed",
   editable = false,
 }: EliteTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white font-sans text-gray-900">
@@ -34,7 +33,7 @@ export const EliteTemplate = ({
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.fullName"
-                  value={personalInfo.fullName}
+                  value={resumeData.personalInfo.fullName}
                   className="mb-2 text-5xl font-light tracking-tight"
                   as="h1"
                   style={{ color: themeColor }}
@@ -44,78 +43,78 @@ export const EliteTemplate = ({
                   className="mb-2 text-5xl font-light tracking-tight"
                   style={{ color: themeColor }}
                 >
-                  {personalInfo.fullName}
+                  {resumeData.personalInfo.fullName}
                 </h1>
               )}
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.title"
-                  value={personalInfo.title}
+                  value={resumeData.personalInfo.title}
                   className="mb-4 text-lg font-semibold uppercase tracking-widest text-gray-800"
                   as="h2"
                 />
               ) : (
                 <h2 className="mb-4 text-lg font-semibold uppercase tracking-widest text-gray-800">
-                  {personalInfo.title}
+                  {resumeData.personalInfo.title}
                 </h2>
               )}
               <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                {personalInfo.location && (
+                {resumeData.personalInfo.location && (
                   <span className="flex items-center gap-1">
                     📍{" "}
                     {editable ? (
                       <InlineEditableText
                         path="personalInfo.location"
-                        value={personalInfo.location}
+                        value={resumeData.personalInfo.location}
                         className="text-sm text-gray-600 inline"
                         as="span"
                       />
                     ) : (
-                      personalInfo.location
+                      resumeData.personalInfo.location
                     )}
                   </span>
                 )}
-                {personalInfo.phone && (
+                {resumeData.personalInfo.phone && (
                   <span className="flex items-center gap-1">
                     📞{" "}
                     {editable ? (
                       <InlineEditableText
                         path="personalInfo.phone"
-                        value={personalInfo.phone}
+                        value={resumeData.personalInfo.phone}
                         className="text-sm text-gray-600 inline"
                         as="span"
                       />
                     ) : (
-                      personalInfo.phone
+                      resumeData.personalInfo.phone
                     )}
                   </span>
                 )}
-                {personalInfo.email && (
+                {resumeData.personalInfo.email && (
                   <span className="flex items-center gap-1">
                     ✉️{" "}
                     {editable ? (
                       <InlineEditableText
                         path="personalInfo.email"
-                        value={personalInfo.email}
+                        value={resumeData.personalInfo.email}
                         className="text-sm text-gray-600 inline"
                         as="span"
                       />
                     ) : (
-                      personalInfo.email
+                      resumeData.personalInfo.email
                     )}
                   </span>
                 )}
               </div>
             </div>
-            {personalInfo.photo && (
+            {resumeData.personalInfo.photo && (
               <div className="ml-8">
-                <ProfilePhoto src={personalInfo.photo} sizeClass="h-36 w-36" />
+                <ProfilePhoto src={resumeData.personalInfo.photo} sizeClass="h-36 w-36" />
               </div>
             )}
           </div>
 
           {/* Professional Summary */}
-          {personalInfo.summary && (
+          {resumeData.personalInfo.summary && (
             <div className="mb-8">
               <h3
                 className="mb-4 flex items-center text-xl font-bold uppercase tracking-wide"
@@ -127,21 +126,21 @@ export const EliteTemplate = ({
               {editable ? (
                 <InlineEditableText
                   path="personalInfo.summary"
-                  value={personalInfo.summary}
+                  value={resumeData.personalInfo.summary}
                   className="text-sm leading-relaxed text-gray-700 pl-15"
                   as="p"
                   multiline
                 />
               ) : (
                 <p className="text-sm leading-relaxed text-gray-700 pl-15">
-                  {personalInfo.summary}
+                  {resumeData.personalInfo.summary}
                 </p>
               )}
             </div>
           )}
 
           {/* Professional Experience */}
-          {experience.length > 0 && (
+          {resumeData.experience.length > 0 && (
             <div className="mb-8">
               <h3
                 className="mb-4 flex items-center text-xl font-bold uppercase tracking-wide"
@@ -153,7 +152,7 @@ export const EliteTemplate = ({
               {editable ? (
                 <InlineEditableList
                   path="experience"
-                  items={experience}
+                  items={resumeData.experience}
                   defaultItem={{
                     id: Date.now().toString(),
                     company: "Company Name",
@@ -214,7 +213,7 @@ export const EliteTemplate = ({
                 />
               ) : (
                 <div className="space-y-6 pl-15">
-                  {experience.map((exp) => (
+                  {resumeData.experience.map((exp) => (
                     <div key={exp.id} className="relative">
                       <div className="mb-2 flex items-start justify-between">
                         <div>
@@ -244,7 +243,7 @@ export const EliteTemplate = ({
           )}
 
           {/* Education */}
-          {education.length > 0 && (
+          {resumeData.education.length > 0 && (
             <div className="mb-8">
               <h3
                 className="mb-4 flex items-center text-xl font-bold uppercase tracking-wide"
@@ -256,7 +255,7 @@ export const EliteTemplate = ({
               {editable ? (
                 <InlineEditableList
                   path="education"
-                  items={education}
+                  items={resumeData.education}
                   defaultItem={{
                     id: Date.now().toString(),
                     degree: "Degree",
@@ -316,7 +315,7 @@ export const EliteTemplate = ({
                 />
               ) : (
                 <div className="space-y-4 pl-15">
-                  {education.map((edu) => (
+                  {resumeData.education.map((edu) => (
                     <div key={edu.id}>
                       <div className="flex items-start justify-between">
                         <div>
@@ -339,7 +338,7 @@ export const EliteTemplate = ({
           )}
 
           {/* Skills */}
-          {skills.length > 0 && (
+          {resumeData.skills.length > 0 && (
             <div className="mb-8">
               <h3
                 className="mb-4 flex items-center text-xl font-bold uppercase tracking-wide"
@@ -351,7 +350,7 @@ export const EliteTemplate = ({
               {editable ? (
                 <InlineEditableSkills
                   path="skills"
-                  skills={skills}
+                  skills={resumeData.skills}
                   renderSkill={(skill, index) => (
                     <div
                       className="flex items-center text-sm text-gray-700 pl-15"
@@ -363,7 +362,7 @@ export const EliteTemplate = ({
                 />
               ) : (
                 <div className="grid grid-cols-3 gap-x-6 gap-y-2 pl-15">
-                  {skills.map((skill) => (
+                  {resumeData.skills.map((skill) => (
                     <div
                       key={skill.id}
                       className="flex items-center text-sm text-gray-700"
@@ -381,7 +380,7 @@ export const EliteTemplate = ({
           {editable ? (
             <InlineEditableList
               path="sections"
-              items={sections}
+              items={resumeData.sections}
               defaultItem={{
                 id: Date.now().toString(),
                 title: "Section Title",
@@ -414,7 +413,7 @@ export const EliteTemplate = ({
               )}
             />
           ) : (
-            sections.map((section) => (
+            resumeData.sections.map((section) => (
               <div key={section.id} className="mb-8">
                 <h3
                   className="mb-4 flex items-center text-xl font-bold uppercase tracking-wide"

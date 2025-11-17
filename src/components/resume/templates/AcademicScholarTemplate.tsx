@@ -16,7 +16,6 @@ export const AcademicScholarTemplate = ({
   themeColor = "#1a237e",
   editable = false,
 }: AcademicScholarTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white p-12 font-serif text-gray-900">
@@ -25,64 +24,64 @@ export const AcademicScholarTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="mb-2 text-4xl font-bold"
             as="h1"
             style={{ color: themeColor }}
           />
         ) : (
           <h1 className="mb-2 text-4xl font-bold" style={{ color: themeColor }}>
-            {personalInfo.fullName}
+            {resumeData.personalInfo.fullName}
           </h1>
         )}
         {editable ? (
           <InlineEditableText
             path="personalInfo.title"
-            value={personalInfo.title}
+            value={resumeData.personalInfo.title}
             className="mb-4 text-lg font-light text-gray-700"
             as="h2"
           />
         ) : (
           <h2 className="mb-4 text-lg font-light text-gray-700">
-            {personalInfo.title}
+            {resumeData.personalInfo.title}
           </h2>
         )}
         <div className="border-t border-b border-gray-300 py-2 text-sm text-gray-600">
           {editable ? (
             <>
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <>
                   <InlineEditableText
                     path="personalInfo.email"
-                    value={personalInfo.email}
+                    value={resumeData.personalInfo.email}
                     className="text-sm text-gray-600 inline"
                     as="span"
                   />
                   {" • "}
                 </>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <>
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className="text-sm text-gray-600 inline"
                     as="span"
                   />
                   {" • "}
                 </>
               )}
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <InlineEditableText
                   path="personalInfo.location"
-                  value={personalInfo.location}
+                  value={resumeData.personalInfo.location}
                   className="text-sm text-gray-600 inline"
                   as="span"
                 />
               )}
             </>
           ) : (
-            [personalInfo.email, personalInfo.phone, personalInfo.location]
+            [resumeData.personalInfo.email, resumeData.personalInfo.phone, resumeData.personalInfo.location]
               .filter(Boolean)
               .join(" • ")
           )}
@@ -90,7 +89,7 @@ export const AcademicScholarTemplate = ({
       </div>
 
       {/* Academic Summary */}
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-6">
           <h3
             className="mb-3 text-base font-bold uppercase tracking-wide"
@@ -101,21 +100,21 @@ export const AcademicScholarTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-sm leading-relaxed text-gray-700"
               as="p"
               multiline
             />
           ) : (
             <p className="text-sm leading-relaxed text-gray-700">
-              {personalInfo.summary}
+              {resumeData.personalInfo.summary}
             </p>
           )}
         </div>
       )}
 
       {/* Education */}
-      {education.length > 0 && (
+      {resumeData.education.length > 0 && (
         <div className="mb-6">
           <h3
             className="mb-3 text-base font-bold uppercase tracking-wide"
@@ -126,7 +125,7 @@ export const AcademicScholarTemplate = ({
           {editable ? (
             <InlineEditableList
               path="education"
-              items={education}
+              items={resumeData.education}
               defaultItem={{
                 id: Date.now().toString(),
                 degree: "Ph.D.",
@@ -184,7 +183,7 @@ export const AcademicScholarTemplate = ({
             />
           ) : (
             <div className="space-y-4">
-              {education.map((edu) => (
+              {resumeData.education.map((edu) => (
                 <div key={edu.id}>
                   <h4 className="font-bold text-gray-900">
                     {edu.degree} {edu.field && `in ${edu.field}`}
@@ -200,7 +199,7 @@ export const AcademicScholarTemplate = ({
       )}
 
       {/* Academic Experience */}
-      {experience.length > 0 && (
+      {resumeData.experience.length > 0 && (
         <div className="mb-6">
           <h3
             className="mb-3 text-base font-bold uppercase tracking-wide"
@@ -211,7 +210,7 @@ export const AcademicScholarTemplate = ({
           {editable ? (
             <InlineEditableList
               path="experience"
-              items={experience}
+              items={resumeData.experience}
               defaultItem={{
                 id: Date.now().toString(),
                 company: "University/Institution",
@@ -271,7 +270,7 @@ export const AcademicScholarTemplate = ({
             />
           ) : (
             <div className="space-y-4">
-              {experience.map((exp) => (
+              {resumeData.experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="flex items-baseline justify-between">
                     <h4 className="font-bold text-gray-900">{exp.position}</h4>
@@ -298,7 +297,7 @@ export const AcademicScholarTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections.filter(s => s.title === "Publications")}
+          items={resumeData.sections.filter(s => s.title === "Publications")}
           defaultItem={{
             id: Date.now().toString(),
             title: "Publications",
@@ -325,7 +324,7 @@ export const AcademicScholarTemplate = ({
           )}
         />
       ) : (
-        sections
+        resumeData.sections
           .filter(s => s.title === "Publications")
           .map((section) => (
             <div key={section.id} className="mb-6">
@@ -347,7 +346,7 @@ export const AcademicScholarTemplate = ({
       )}
 
       {/* Skills & Expertise */}
-      {skills.length > 0 && (
+      {resumeData.skills.length > 0 && (
         <div className="mb-6">
           <h3
             className="mb-3 text-base font-bold uppercase tracking-wide"
@@ -358,7 +357,7 @@ export const AcademicScholarTemplate = ({
           {editable ? (
             <InlineEditableSkills
               path="skills"
-              skills={skills}
+              skills={resumeData.skills}
               renderSkill={(skill, index) => (
                 <div className="text-sm text-gray-700">
                   {skill.name}
@@ -367,7 +366,7 @@ export const AcademicScholarTemplate = ({
             />
           ) : (
             <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-              {skills.map((skill) => (
+              {resumeData.skills.map((skill) => (
                 <div key={skill.id} className="text-sm text-gray-700">
                   • {skill.name}
                 </div>
@@ -381,7 +380,7 @@ export const AcademicScholarTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections}
+          items={resumeData.sections}
           defaultItem={{
             id: Date.now().toString(),
             title: "Section Title",
@@ -408,7 +407,7 @@ export const AcademicScholarTemplate = ({
           )}
         />
       ) : (
-        sections
+        resumeData.sections
           .filter(s => s.title !== "Publications")
           .map((section) => (
             <div key={section.id} className="mb-6">

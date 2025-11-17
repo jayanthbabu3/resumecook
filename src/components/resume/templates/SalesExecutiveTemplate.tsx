@@ -16,7 +16,6 @@ export const SalesExecutiveTemplate = ({
   themeColor = "#d84315",
   editable = false,
 }: SalesExecutiveTemplateProps) => {
-  const { personalInfo, experience, education, skills, sections } = resumeData;
 
   return (
     <div className="mx-auto bg-white p-12 font-sans text-gray-900">
@@ -24,67 +23,67 @@ export const SalesExecutiveTemplate = ({
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
-            value={personalInfo.fullName}
+            value={resumeData.personalInfo.fullName}
             className="mb-2 text-4xl font-bold uppercase"
             as="h1"
             style={{ color: themeColor }}
           />
         ) : (
           <h1 className="mb-2 text-4xl font-bold uppercase" style={{ color: themeColor }}>
-            {personalInfo.fullName}
+            {resumeData.personalInfo.fullName}
           </h1>
         )}
         {editable ? (
           <InlineEditableText
             path="personalInfo.title"
-            value={personalInfo.title}
+            value={resumeData.personalInfo.title}
             className="mb-3 text-xl font-bold text-gray-700"
             as="h2"
           />
         ) : (
-          <h2 className="mb-3 text-xl font-bold text-gray-700">{personalInfo.title}</h2>
+          <h2 className="mb-3 text-xl font-bold text-gray-700">{resumeData.personalInfo.title}</h2>
         )}
         <p className="text-sm text-gray-600">
           {editable ? (
             <>
-              {personalInfo.location && (
+              {resumeData.personalInfo.location && (
                 <>
                   <InlineEditableText
                     path="personalInfo.location"
-                    value={personalInfo.location}
+                    value={resumeData.personalInfo.location}
                     className="text-sm text-gray-600 inline"
                     as="span"
                   />
                   {" | "}
                 </>
               )}
-              {personalInfo.phone && (
+              {resumeData.personalInfo.phone && (
                 <>
                   <InlineEditableText
                     path="personalInfo.phone"
-                    value={personalInfo.phone}
+                    value={resumeData.personalInfo.phone}
                     className="text-sm text-gray-600 inline"
                     as="span"
                   />
                   {" | "}
                 </>
               )}
-              {personalInfo.email && (
+              {resumeData.personalInfo.email && (
                 <InlineEditableText
                   path="personalInfo.email"
-                  value={personalInfo.email}
+                  value={resumeData.personalInfo.email}
                   className="text-sm text-gray-600 inline"
                   as="span"
                 />
               )}
             </>
           ) : (
-            [personalInfo.location, personalInfo.phone, personalInfo.email].filter(Boolean).join(" | ")
+            [resumeData.personalInfo.location, resumeData.personalInfo.phone, resumeData.personalInfo.email].filter(Boolean).join(" | ")
           )}
         </p>
       </div>
 
-      {personalInfo.summary && (
+      {resumeData.personalInfo.summary && (
         <div className="mb-6">
           <h3 className="mb-3 text-base font-bold uppercase" style={{ color: themeColor }}>
             Professional Summary
@@ -92,18 +91,18 @@ export const SalesExecutiveTemplate = ({
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={personalInfo.summary}
+              value={resumeData.personalInfo.summary}
               className="text-sm leading-relaxed text-gray-700"
               as="p"
               multiline
             />
           ) : (
-            <p className="text-sm leading-relaxed text-gray-700">{personalInfo.summary}</p>
+            <p className="text-sm leading-relaxed text-gray-700">{resumeData.personalInfo.summary}</p>
           )}
         </div>
       )}
 
-      {experience.length > 0 && (
+      {resumeData.experience.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-3 text-base font-bold uppercase" style={{ color: themeColor }}>
             Sales Experience & Achievements
@@ -111,7 +110,7 @@ export const SalesExecutiveTemplate = ({
           {editable ? (
             <InlineEditableList
               path="experience"
-              items={experience}
+              items={resumeData.experience}
               defaultItem={{
                 id: Date.now().toString(),
                 company: "Company Name",
@@ -171,7 +170,7 @@ export const SalesExecutiveTemplate = ({
             />
           ) : (
             <div className="space-y-4">
-              {experience.map((exp) => (
+              {resumeData.experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="flex items-baseline justify-between mb-1">
                     <h4 className="font-bold text-lg text-gray-900">{exp.position}</h4>
@@ -194,7 +193,7 @@ export const SalesExecutiveTemplate = ({
         </div>
       )}
 
-      {education.length > 0 && (
+      {resumeData.education.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-3 text-base font-bold uppercase" style={{ color: themeColor }}>
             Education
@@ -202,7 +201,7 @@ export const SalesExecutiveTemplate = ({
           {editable ? (
             <InlineEditableList
               path="education"
-              items={education}
+              items={resumeData.education}
               defaultItem={{
                 id: Date.now().toString(),
                 degree: "Bachelor of Business",
@@ -244,7 +243,7 @@ export const SalesExecutiveTemplate = ({
             />
           ) : (
             <div className="space-y-3">
-              {education.map((edu) => (
+              {resumeData.education.map((edu) => (
                 <div key={edu.id}>
                   <h4 className="font-bold text-gray-900">
                     {edu.degree} {edu.field && `in ${edu.field}`}
@@ -257,7 +256,7 @@ export const SalesExecutiveTemplate = ({
         </div>
       )}
 
-      {skills.length > 0 && (
+      {resumeData.skills.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-3 text-base font-bold uppercase" style={{ color: themeColor }}>
             Core Skills
@@ -265,14 +264,14 @@ export const SalesExecutiveTemplate = ({
           {editable ? (
             <InlineEditableSkills
               path="skills"
-              skills={skills}
+              skills={resumeData.skills}
               renderSkill={(skill, index) => (
                 <div className="text-sm text-gray-700">{skill.name}</div>
               )}
             />
           ) : (
             <div className="grid grid-cols-3 gap-x-6 gap-y-2">
-              {skills.map((skill) => (
+              {resumeData.skills.map((skill) => (
                 <div key={skill.id} className="text-sm text-gray-700">
                   • {skill.name}
                 </div>
@@ -285,7 +284,7 @@ export const SalesExecutiveTemplate = ({
       {editable ? (
         <InlineEditableList
           path="sections"
-          items={sections}
+          items={resumeData.sections}
           defaultItem={{
             id: Date.now().toString(),
             title: "Section Title",
@@ -312,7 +311,7 @@ export const SalesExecutiveTemplate = ({
           )}
         />
       ) : (
-        sections.map((section) => (
+        resumeData.sections.map((section) => (
           <div key={section.id} className="mb-6">
             <h3 className="mb-3 text-base font-bold uppercase" style={{ color: themeColor }}>
               {section.title}
