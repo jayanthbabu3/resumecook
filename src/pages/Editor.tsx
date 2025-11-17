@@ -77,6 +77,22 @@ import { NodeJSDeveloperPDF } from "@/components/resume/pdf/NodeJSDeveloperPDF";
 import { ReactDeveloperPDF } from "@/components/resume/pdf/ReactDeveloperPDF";
 import { GoDeveloperPDF } from "@/components/resume/pdf/GoDeveloperPDF";
 import { KubernetesEngineerPDF } from "@/components/resume/pdf/KubernetesEngineerPDF";
+// Senior/Lead Software Engineering PDF Templates
+import { SeniorJavaDeveloperPDF } from "@/components/resume/pdf/SeniorJavaDeveloperPDF";
+import { SeniorDotNetDeveloperPDF } from "@/components/resume/pdf/SeniorDotNetDeveloperPDF";
+import { SeniorDevOpsEngineerPDF } from "@/components/resume/pdf/SeniorDevOpsEngineerPDF";
+import { LeadBackendEngineerPDF } from "@/components/resume/pdf/LeadBackendEngineerPDF";
+import { LeadFrontendEngineerPDF } from "@/components/resume/pdf/LeadFrontendEngineerPDF";
+import { SeniorFullStackDeveloperPDF } from "@/components/resume/pdf/SeniorFullStackDeveloperPDF";
+import { PrincipalSoftwareEngineerPDF } from "@/components/resume/pdf/PrincipalSoftwareEngineerPDF";
+import { StaffEngineerPDF } from "@/components/resume/pdf/StaffEngineerPDF";
+import { EngineeringManagerPDF } from "@/components/resume/pdf/EngineeringManagerPDF";
+import { SolutionsArchitectPDF } from "@/components/resume/pdf/SolutionsArchitectPDF";
+import { SeniorMobileEngineerPDF } from "@/components/resume/pdf/SeniorMobileEngineerPDF";
+import { PlatformEngineerPDF } from "@/components/resume/pdf/PlatformEngineerPDF";
+import { SiteReliabilityEngineerPDF } from "@/components/resume/pdf/SiteReliabilityEngineerPDF";
+import { BackendAPISpecialistPDF } from "@/components/resume/pdf/BackendAPISpecialistPDF";
+import { FrontendArchitectPDF } from "@/components/resume/pdf/FrontendArchitectPDF";
 // New Universal Professional Templates
 import { ExecutiveModernPDF } from "@/components/resume/pdf/ExecutiveModernPDF";
 import { CorporateBluePDF } from "@/components/resume/pdf/CorporateBluePDF";
@@ -2122,6 +2138,22 @@ const Editor = () => {
         "react-developer": ReactDeveloperPDF,
         "go-developer": GoDeveloperPDF,
         "kubernetes-engineer": KubernetesEngineerPDF,
+        // Senior/Lead Software Engineering Templates
+        "senior-java-developer": SeniorJavaDeveloperPDF,
+        "senior-dotnet-developer": SeniorDotNetDeveloperPDF,
+        "senior-devops-engineer": SeniorDevOpsEngineerPDF,
+        "lead-backend-engineer": LeadBackendEngineerPDF,
+        "lead-frontend-engineer": LeadFrontendEngineerPDF,
+        "senior-fullstack-developer": SeniorFullStackDeveloperPDF,
+        "principal-software-engineer": PrincipalSoftwareEngineerPDF,
+        "staff-engineer": StaffEngineerPDF,
+        "engineering-manager": EngineeringManagerPDF,
+        "solutions-architect": SolutionsArchitectPDF,
+        "senior-mobile-engineer": SeniorMobileEngineerPDF,
+        "platform-engineer": PlatformEngineerPDF,
+        "site-reliability-engineer": SiteReliabilityEngineerPDF,
+        "backend-api-specialist": BackendAPISpecialistPDF,
+        "frontend-architect": FrontendArchitectPDF,
         // New Universal Professional Templates
         "executive-modern": ExecutiveModernPDF,
         "corporate-blue": CorporateBluePDF,

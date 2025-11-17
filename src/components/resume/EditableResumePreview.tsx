@@ -110,6 +110,22 @@ import { NodeJSDeveloperTemplate } from "./templates/NodeJSDeveloperTemplate";
 import { ReactDeveloperTemplate } from "./templates/ReactDeveloperTemplate";
 import { GoDeveloperTemplate } from "./templates/GoDeveloperTemplate";
 import { KuberneteEngineerTemplate } from "./templates/KuberneteEngineerTemplate";
+// Senior/Lead Software Engineering Templates
+import { SeniorJavaDeveloperTemplate } from "./templates/SeniorJavaDeveloperTemplate";
+import { SeniorDotNetDeveloperTemplate } from "./templates/SeniorDotNetDeveloperTemplate";
+import { SeniorDevOpsEngineerTemplate } from "./templates/SeniorDevOpsEngineerTemplate";
+import { LeadBackendEngineerTemplate } from "./templates/LeadBackendEngineerTemplate";
+import { LeadFrontendEngineerTemplate } from "./templates/LeadFrontendEngineerTemplate";
+import { SeniorFullStackDeveloperTemplate } from "./templates/SeniorFullStackDeveloperTemplate";
+import { PrincipalSoftwareEngineerTemplate } from "./templates/PrincipalSoftwareEngineerTemplate";
+import { StaffEngineerTemplate } from "./templates/StaffEngineerTemplate";
+import { EngineeringManagerTemplate } from "./templates/EngineeringManagerTemplate";
+import { SolutionsArchitectTemplate } from "./templates/SolutionsArchitectTemplate";
+import { SeniorMobileEngineerTemplate } from "./templates/SeniorMobileEngineerTemplate";
+import { PlatformEngineerTemplate } from "./templates/PlatformEngineerTemplate";
+import { SiteReliabilityEngineerTemplate } from "./templates/SiteReliabilityEngineerTemplate";
+import { BackendAPISpecialistTemplate } from "./templates/BackendAPISpecialistTemplate";
+import { FrontendArchitectTemplate } from "./templates/FrontendArchitectTemplate";
 // New Universal Professional Templates
 import { ExecutiveModernTemplate } from "./templates/ExecutiveModernTemplate";
 import { CorporateBlueTemplate } from "./templates/CorporateBlueTemplate";
@@ -383,6 +399,22 @@ export const EditableResumePreview = ({
     "react-developer": ReactDeveloperTemplate,
     "go-developer": GoDeveloperTemplate,
     "kubernetes-engineer": KuberneteEngineerTemplate,
+    // Senior/Lead Software Engineering Templates
+    "senior-java-developer": SeniorJavaDeveloperTemplate,
+    "senior-dotnet-developer": SeniorDotNetDeveloperTemplate,
+    "senior-devops-engineer": SeniorDevOpsEngineerTemplate,
+    "lead-backend-engineer": LeadBackendEngineerTemplate,
+    "lead-frontend-engineer": LeadFrontendEngineerTemplate,
+    "senior-fullstack-developer": SeniorFullStackDeveloperTemplate,
+    "principal-software-engineer": PrincipalSoftwareEngineerTemplate,
+    "staff-engineer": StaffEngineerTemplate,
+    "engineering-manager": EngineeringManagerTemplate,
+    "solutions-architect": SolutionsArchitectTemplate,
+    "senior-mobile-engineer": SeniorMobileEngineerTemplate,
+    "platform-engineer": PlatformEngineerTemplate,
+    "site-reliability-engineer": SiteReliabilityEngineerTemplate,
+    "backend-api-specialist": BackendAPISpecialistTemplate,
+    "frontend-architect": FrontendArchitectTemplate,
     // New Universal Professional Templates
     "executive-modern": ExecutiveModernTemplate,
     "corporate-blue": CorporateBlueTemplate,

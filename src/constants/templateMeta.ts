@@ -730,6 +730,112 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Engineering",
     categorySlug: "software",
   },
+  // Senior/Lead Software Engineering Templates
+  "senior-java-developer": {
+    name: "Senior Java Developer",
+    description:
+      "Executive-level Java template highlighting enterprise architecture, Spring ecosystem, and team leadership in large-scale systems.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "senior-dotnet-developer": {
+    name: "Senior .NET Developer",
+    description:
+      "Leadership-focused .NET template emphasizing solution architecture, Azure cloud expertise, and mentorship in enterprise development.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "senior-devops-engineer": {
+    name: "Senior DevOps Engineer",
+    description:
+      "Advanced DevOps template showcasing infrastructure automation, CI/CD pipelines, and platform engineering leadership.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "lead-backend-engineer": {
+    name: "Lead Backend Engineer",
+    description:
+      "Technical leadership template for backend engineers emphasizing distributed systems, API design, and engineering team management.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "lead-frontend-engineer": {
+    name: "Lead Frontend Engineer",
+    description:
+      "Frontend leadership template highlighting modern frameworks, design systems, performance optimization, and cross-functional collaboration.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "senior-fullstack-developer": {
+    name: "Senior Full Stack Developer",
+    description:
+      "Comprehensive full-stack template emphasizing end-to-end architecture, technology stack mastery, and product development leadership.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "principal-software-engineer": {
+    name: "Principal Software Engineer",
+    description:
+      "Staff-level template for principal engineers showcasing technical vision, architecture decisions, and organization-wide impact.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "staff-engineer": {
+    name: "Staff Engineer",
+    description:
+      "IC leadership template highlighting technical strategy, cross-team influence, and high-impact projects for staff-level engineers.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "engineering-manager": {
+    name: "Engineering Manager",
+    description:
+      "Engineering management template emphasizing people leadership, technical direction, team growth, and delivery excellence.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "solutions-architect": {
+    name: "Solutions Architect",
+    description:
+      "Enterprise solutions template for architects designing complex systems, client-facing solutions, and technical consulting.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "senior-mobile-engineer": {
+    name: "Senior Mobile Engineer",
+    description:
+      "Mobile leadership template showcasing iOS/Android expertise, app architecture, performance optimization, and mobile platform strategy.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "platform-engineer": {
+    name: "Platform Engineer",
+    description:
+      "Platform engineering template highlighting developer experience, infrastructure platforms, and internal tooling leadership.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "site-reliability-engineer": {
+    name: "Site Reliability Engineer",
+    description:
+      "SRE template emphasizing system reliability, incident management, monitoring, and production operations at scale.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "backend-api-specialist": {
+    name: "Backend API Specialist",
+    description:
+      "API-focused template highlighting RESTful/GraphQL design, microservices architecture, and backend systems expertise.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
+  "frontend-architect": {
+    name: "Frontend Architect",
+    description:
+      "Frontend architecture template showcasing component libraries, performance engineering, build tooling, and frontend strategy.",
+    category: "Engineering",
+    categorySlug: "software",
+  },
   // New Universal Professional Templates
   "executive-modern": {
     name: "Executive Modern",

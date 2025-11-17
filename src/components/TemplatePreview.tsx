@@ -108,6 +108,22 @@ import { NodeJSDeveloperTemplate } from "./resume/templates/NodeJSDeveloperTempl
 import { ReactDeveloperTemplate } from "./resume/templates/ReactDeveloperTemplate";
 import { GoDeveloperTemplate } from "./resume/templates/GoDeveloperTemplate";
 import { KuberneteEngineerTemplate } from "./resume/templates/KuberneteEngineerTemplate";
+// Senior/Lead Software Engineering Templates
+import { SeniorJavaDeveloperTemplate } from "./resume/templates/SeniorJavaDeveloperTemplate";
+import { SeniorDotNetDeveloperTemplate } from "./resume/templates/SeniorDotNetDeveloperTemplate";
+import { SeniorDevOpsEngineerTemplate } from "./resume/templates/SeniorDevOpsEngineerTemplate";
+import { LeadBackendEngineerTemplate } from "./resume/templates/LeadBackendEngineerTemplate";
+import { LeadFrontendEngineerTemplate } from "./resume/templates/LeadFrontendEngineerTemplate";
+import { SeniorFullStackDeveloperTemplate } from "./resume/templates/SeniorFullStackDeveloperTemplate";
+import { PrincipalSoftwareEngineerTemplate } from "./resume/templates/PrincipalSoftwareEngineerTemplate";
+import { StaffEngineerTemplate } from "./resume/templates/StaffEngineerTemplate";
+import { EngineeringManagerTemplate } from "./resume/templates/EngineeringManagerTemplate";
+import { SolutionsArchitectTemplate } from "./resume/templates/SolutionsArchitectTemplate";
+import { SeniorMobileEngineerTemplate } from "./resume/templates/SeniorMobileEngineerTemplate";
+import { PlatformEngineerTemplate } from "./resume/templates/PlatformEngineerTemplate";
+import { SiteReliabilityEngineerTemplate } from "./resume/templates/SiteReliabilityEngineerTemplate";
+import { BackendAPISpecialistTemplate } from "./resume/templates/BackendAPISpecialistTemplate";
+import { FrontendArchitectTemplate } from "./resume/templates/FrontendArchitectTemplate";
 // New Universal Professional Templates
 import { ExecutiveModernTemplate } from "./resume/templates/ExecutiveModernTemplate";
 import { CorporateBlueTemplate } from "./resume/templates/CorporateBlueTemplate";
@@ -1443,6 +1459,22 @@ const templates = {
   "react-developer": ReactDeveloperTemplate,
   "go-developer": GoDeveloperTemplate,
   "kubernetes-engineer": KuberneteEngineerTemplate,
+  // Senior/Lead Software Engineering Templates
+  "senior-java-developer": SeniorJavaDeveloperTemplate,
+  "senior-dotnet-developer": SeniorDotNetDeveloperTemplate,
+  "senior-devops-engineer": SeniorDevOpsEngineerTemplate,
+  "lead-backend-engineer": LeadBackendEngineerTemplate,
+  "lead-frontend-engineer": LeadFrontendEngineerTemplate,
+  "senior-fullstack-developer": SeniorFullStackDeveloperTemplate,
+  "principal-software-engineer": PrincipalSoftwareEngineerTemplate,
+  "staff-engineer": StaffEngineerTemplate,
+  "engineering-manager": EngineeringManagerTemplate,
+  "solutions-architect": SolutionsArchitectTemplate,
+  "senior-mobile-engineer": SeniorMobileEngineerTemplate,
+  "platform-engineer": PlatformEngineerTemplate,
+  "site-reliability-engineer": SiteReliabilityEngineerTemplate,
+  "backend-api-specialist": BackendAPISpecialistTemplate,
+  "frontend-architect": FrontendArchitectTemplate,
   // New Universal Professional Templates
   "executive-modern": ExecutiveModernTemplate,
   "corporate-blue": CorporateBlueTemplate,
