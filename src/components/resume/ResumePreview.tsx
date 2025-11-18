@@ -212,6 +212,49 @@ import { FresherIconographyTemplate } from "./templates/FresherIconographyTempla
 import { FresherModernSplitTemplate } from "./templates/FresherModernSplitTemplate";
 import { FresherWaveHeaderTemplate } from "./templates/FresherWaveHeaderTemplate";
 import { FresherAcademicStyleTemplate } from "./templates/FresherAcademicStyleTemplate";
+// 2025 New Software/Tech Templates
+import { DarkModeDevTemplate } from "./templates/DarkModeDevTemplate";
+import { CodeSnippetTemplate } from "./templates/CodeSnippetTemplate";
+import { APIDocTemplate } from "./templates/APIDocTemplate";
+import { StackOverflowInspiredTemplate } from "./templates/StackOverflowInspiredTemplate";
+import { GitHubProfileTemplate } from "./templates/GitHubProfileTemplate";
+import { TerminalConsoleTemplate } from "./templates/TerminalConsoleTemplate";
+import { JsonResumeTemplate } from "./templates/JsonResumeTemplate";
+import { MonospaceTechTemplate } from "./templates/MonospaceTechTemplate";
+import { BlueprintDesignTemplate } from "./templates/BlueprintDesignTemplate";
+import { SystemArchitectTemplate } from "./templates/SystemArchitectTemplate";
+import { CloudNativeTemplate } from "./templates/CloudNativeTemplate";
+import { MicroservicesDevTemplate } from "./templates/MicroservicesDevTemplate";
+import { AgileScrumTemplate } from "./templates/AgileScrumTemplate";
+import { TechLeadTemplate } from "./templates/TechLeadTemplate";
+import { OpenSourceTemplate } from "./templates/OpenSourceTemplate";
+import { FullStackProTemplate } from "./templates/FullStackProTemplate";
+import { DataScienceTemplate } from "./templates/DataScienceTemplate";
+import { CyberSecurityTemplate } from "./templates/CyberSecurityTemplate";
+import { BlockchainDevTemplate } from "./templates/BlockchainDevTemplate";
+import { AIEngineerTemplate } from "./templates/AIEngineerTemplate";
+import { MobileDevTemplate } from "./templates/MobileDevTemplate";
+// 2025 New Creative Templates
+import { MagazineCreativeTemplate } from "./templates/MagazineCreativeTemplate";
+import { PortfolioShowcaseTemplate } from "./templates/PortfolioShowcaseTemplate";
+import { ArtisticGridTemplate } from "./templates/ArtisticGridTemplate";
+import { BoldTypographyTemplate } from "./templates/BoldTypographyTemplate";
+import { ColorSplashTemplate } from "./templates/ColorSplashTemplate";
+import { MinimalChicTemplate } from "./templates/MinimalChicTemplate";
+import { PhotographyLayoutTemplate } from "./templates/PhotographyLayoutTemplate";
+import { BrandIdentityTemplate } from "./templates/BrandIdentityTemplate";
+import { VintagePosterTemplate } from "./templates/VintagePosterTemplate";
+import { ModernArtistTemplate } from "./templates/ModernArtistTemplate";
+import { GalleryLayoutTemplate } from "./templates/GalleryLayoutTemplate";
+import { EditorialStyleTemplate } from "./templates/EditorialStyleTemplate";
+import { UrbanDesignerTemplate } from "./templates/UrbanDesignerTemplate";
+import { PastelCreativeTemplate } from "./templates/PastelCreativeTemplate";
+import { NeonArtistTemplate } from "./templates/NeonArtistTemplate";
+import { GeometricCreativeTemplate } from "./templates/GeometricCreativeTemplate";
+import { TypewriterStyleTemplate } from "./templates/TypewriterStyleTemplate";
+import { InkBrushTemplate } from "./templates/InkBrushTemplate";
+import { CollageArtTemplate } from "./templates/CollageArtTemplate";
+import { DigitalCanvasTemplate } from "./templates/DigitalCanvasTemplate";
 // Missing Software Engineering Templates
 import { CodeMinimalTemplate } from "./templates/CodeMinimalTemplate";
 import { TechStackProTemplate } from "./templates/TechStackProTemplate";
@@ -539,6 +582,49 @@ export const ResumePreview = ({
     "fresher-modern-split": FresherModernSplitTemplate,
     "fresher-wave-header": FresherWaveHeaderTemplate,
     "fresher-academic-style": FresherAcademicStyleTemplate,
+    // 2025 New Software/Tech Templates
+    "dark-mode-dev": DarkModeDevTemplate,
+    "code-snippet": CodeSnippetTemplate,
+    "api-doc": APIDocTemplate,
+    "stackoverflow-inspired": StackOverflowInspiredTemplate,
+    "github-profile": GitHubProfileTemplate,
+    "terminal-console": TerminalConsoleTemplate,
+    "json-resume": JsonResumeTemplate,
+    "monospace-tech": MonospaceTechTemplate,
+    "blueprint-design": BlueprintDesignTemplate,
+    "system-architect": SystemArchitectTemplate,
+    "cloud-native": CloudNativeTemplate,
+    "microservices-dev": MicroservicesDevTemplate,
+    "agile-scrum": AgileScrumTemplate,
+    "tech-lead": TechLeadTemplate,
+    "open-source": OpenSourceTemplate,
+    "fullstack-pro": FullStackProTemplate,
+    "data-science": DataScienceTemplate,
+    "cyber-security": CyberSecurityTemplate,
+    "blockchain-dev": BlockchainDevTemplate,
+    "ai-engineer": AIEngineerTemplate,
+    "mobile-dev": MobileDevTemplate,
+    // 2025 New Creative Templates
+    "magazine-creative": MagazineCreativeTemplate,
+    "portfolio-showcase": PortfolioShowcaseTemplate,
+    "artistic-grid": ArtisticGridTemplate,
+    "bold-typography": BoldTypographyTemplate,
+    "color-splash": ColorSplashTemplate,
+    "minimal-chic": MinimalChicTemplate,
+    "photography-layout": PhotographyLayoutTemplate,
+    "brand-identity": BrandIdentityTemplate,
+    "vintage-poster": VintagePosterTemplate,
+    "modern-artist": ModernArtistTemplate,
+    "gallery-layout": GalleryLayoutTemplate,
+    "editorial-style": EditorialStyleTemplate,
+    "urban-designer": UrbanDesignerTemplate,
+    "pastel-creative": PastelCreativeTemplate,
+    "neon-artist": NeonArtistTemplate,
+    "geometric-creative": GeometricCreativeTemplate,
+    "typewriter-style": TypewriterStyleTemplate,
+    "ink-brush": InkBrushTemplate,
+    "collage-art": CollageArtTemplate,
+    "digital-canvas": DigitalCanvasTemplate,
     // New Universal Profile Templates
     "sidebar-professional-universal": SidebarProfessionalUniversalTemplate,
     "metro-modern-universal": MetroModernUniversalTemplate,

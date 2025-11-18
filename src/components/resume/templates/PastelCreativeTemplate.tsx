@@ -5,7 +5,7 @@ import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
-interface AgileScrumTemplateProps {
+interface PastelCreativeTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
@@ -26,18 +26,18 @@ const withOpacity = (color: string | undefined, alpha: string) => {
   return `${normalized}${alpha}`;
 };
 
-export const AgileScrumTemplate = ({
+export const PastelCreativeTemplate = ({
   resumeData,
-  themeColor = "#3b82f6",
+  themeColor = "#ec4899",
   editable = false,
-}: AgileScrumTemplateProps) => {
-  const accent = normalizeHex(themeColor) ?? "#3b82f6";
+}: PastelCreativeTemplateProps) => {
+  const accent = normalizeHex(themeColor) ?? "#ec4899";
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12">
-      <div className="mb-8 pb-6 border-b-2" style={{ borderColor: accent }}>
-        <InlineEditableText text={resumeData.personalInfo.fullName} className="text-[38px] font-bold mb-2" style={{ color: accent }} editable={editable} field="resumeData.personalInfo.fullName" />
-        <InlineEditableText text={resumeData.personalInfo.title} className="text-[17px] text-gray-700 mb-4 font-medium" editable={editable} field="resumeData.personalInfo.title" />
+      <div className="mb-8 pb-6 border-b-4" style={{ borderColor: accent }}>
+        <InlineEditableText text={resumeData.personalInfo.fullName} className="text-[40px] font-black mb-2 uppercase" style={{ color: accent }} editable={editable} field="resumeData.personalInfo.fullName" />
+        <InlineEditableText text={resumeData.personalInfo.title} className="text-[18px] text-gray-700 mb-4 font-semibold" editable={editable} field="resumeData.personalInfo.title" />
         <div className="flex gap-4 text-[13px] text-gray-600 flex-wrap">
           <InlineEditableText text={resumeData.personalInfo.email} editable={editable} field="resumeData.personalInfo.email" />
           <span>•</span>
@@ -47,17 +47,17 @@ export const AgileScrumTemplate = ({
       </div>
       {resumeData.personalInfo.summary && (
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold mb-3 uppercase tracking-wider" style={{ color: accent }}>Summary</h2>
+          <h2 className="text-[18px] font-black mb-3 uppercase" style={{ color: accent }}>Profile</h2>
           <InlineEditableText text={resumeData.personalInfo.summary} className="text-[13px] text-gray-700 leading-relaxed" editable={editable} field="resumeData.personalInfo.summary" />
         </div>
       )}
       {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>Experience</h2>
+          <h2 className="text-[18px] font-black mb-4 uppercase" style={{ color: accent }}>Experience</h2>
           {resumeData.experience.map((exp, index) => (
             <div key={exp.id} className="mb-6 last:mb-0">
               <div className="flex justify-between items-baseline mb-1">
-                <InlineEditableText text={exp.position} className="text-[15px] font-bold" style={{ color: accent }} editable={editable} field={`resumeData.experience[${index}].position`} />
+                <InlineEditableText text={exp.position} className="text-[16px] font-bold" style={{ color: accent }} editable={editable} field={`resumeData.experience[${index}].position`} />
                 <InlineEditableDate date={`${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`} className="text-[12px] text-gray-600" editable={editable} field={`resumeData.experience[${index}].startDate`} />
               </div>
               <InlineEditableText text={exp.company} className="text-[14px] font-semibold text-gray-700 mb-2" editable={editable} field={`resumeData.experience[${index}].company`} />
@@ -68,10 +68,10 @@ export const AgileScrumTemplate = ({
       )}
       {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>Education</h2>
+          <h2 className="text-[18px] font-black mb-4 uppercase" style={{ color: accent }}>Education</h2>
           {resumeData.education.map((edu, index) => (
             <div key={edu.id} className="mb-5 last:mb-0">
-              <InlineEditableText text={edu.degree} className="text-[15px] font-bold mb-1" style={{ color: accent }} editable={editable} field={`resumeData.education[${index}].degree`} />
+              <InlineEditableText text={edu.degree} className="text-[16px] font-bold mb-1" style={{ color: accent }} editable={editable} field={`resumeData.education[${index}].degree`} />
               <InlineEditableText text={edu.school} className="text-[14px] font-semibold text-gray-700 mb-1" editable={editable} field={`resumeData.education[${index}].school`} />
               <div className="text-[12px] text-gray-600 flex items-center gap-2">
                 <InlineEditableDate date={edu.graduationDate} editable={editable} field={`resumeData.education[${index}].graduationDate`} />
@@ -83,18 +83,18 @@ export const AgileScrumTemplate = ({
       )}
       {resumeData.skills && resumeData.skills.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>Skills</h2>
+          <h2 className="text-[18px] font-black mb-4 uppercase" style={{ color: accent }}>Skills</h2>
           <InlineEditableSkills skills={resumeData.skills} editable={editable} themeColor={accent} />
         </div>
       )}
       {resumeData.sections && resumeData.sections.map((section, sectionIndex) => (
         <div key={section.id} className="mb-8 last:mb-0">
-          <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>
+          <h2 className="text-[18px] font-black mb-4 uppercase" style={{ color: accent }}>
             <InlineEditableText text={section.title} editable={editable} field={`resumeData.sections[${sectionIndex}].title`} />
           </h2>
           {section.items?.map((item, itemIndex) => (
             <div key={item.id} className="mb-5 last:mb-0">
-              {item.title && <InlineEditableText text={item.title} className="text-[15px] font-bold mb-1" style={{ color: accent }} editable={editable} field={`resumeData.sections[${sectionIndex}].items[${itemIndex}].title`} />}
+              {item.title && <InlineEditableText text={item.title} className="text-[16px] font-bold mb-1" style={{ color: accent }} editable={editable} field={`resumeData.sections[${sectionIndex}].items[${itemIndex}].title`} />}
               {item.subtitle && <InlineEditableText text={item.subtitle} className="text-[14px] font-semibold text-gray-700 mb-1" editable={editable} field={`resumeData.sections[${sectionIndex}].items[${itemIndex}].subtitle`} />}
               {item.description && <InlineEditableList items={item.description.split("\n").filter((line) => line.trim())} className="text-[13px] text-gray-700 space-y-1" editable={editable} field={`resumeData.sections[${sectionIndex}].items[${itemIndex}].description`} />}
             </div>

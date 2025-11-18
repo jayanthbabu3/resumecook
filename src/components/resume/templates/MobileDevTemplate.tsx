@@ -5,7 +5,7 @@ import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
-interface AgileScrumTemplateProps {
+interface MobileDevTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
@@ -26,11 +26,11 @@ const withOpacity = (color: string | undefined, alpha: string) => {
   return `${normalized}${alpha}`;
 };
 
-export const AgileScrumTemplate = ({
+export const MobileDevTemplate = ({
   resumeData,
   themeColor = "#3b82f6",
   editable = false,
-}: AgileScrumTemplateProps) => {
+}: MobileDevTemplateProps) => {
   const accent = normalizeHex(themeColor) ?? "#3b82f6";
 
   return (
