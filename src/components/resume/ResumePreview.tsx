@@ -421,6 +421,38 @@ import { AWSCloudEngineerTemplate } from "./templates/AWSCloudEngineerTemplate";
 import { AzureDevOpsSpecialistTemplate } from "./templates/AzureDevOpsSpecialistTemplate";
 import { GCPArchitectTemplate } from "./templates/GCPArchitectTemplate";
 import { ServerlessDeveloperTemplate } from "./templates/ServerlessDeveloperTemplate";
+// 2025 New Software/Tech Templates (Batch 4)
+import { RustDeveloperProTemplate } from "./templates/RustDeveloperProTemplate";
+import { ScalaEngineerTemplate } from "./templates/ScalaEngineerTemplate";
+import { ElixirDeveloperTemplate } from "./templates/ElixirDeveloperTemplate";
+import { SwiftIOSDeveloperTemplate } from "./templates/SwiftIOSDeveloperTemplate";
+import { KotlinAndroidDevTemplate } from "./templates/KotlinAndroidDevTemplate";
+import { FlutterMobileDevTemplate } from "./templates/FlutterMobileDevTemplate";
+import { ReactNativeExpertTemplate } from "./templates/ReactNativeExpertTemplate";
+import { TensorFlowMLEngineerTemplate } from "./templates/TensorFlowMLEngineerTemplate";
+import { PyTorchDeveloperTemplate } from "./templates/PyTorchDeveloperTemplate";
+import { MongoDBSpecialistTemplate } from "./templates/MongoDBSpecialistTemplate";
+import { PostgreSQLExpertTemplate } from "./templates/PostgreSQLExpertTemplate";
+import { RedisCacheSpecialistTemplate } from "./templates/RedisCacheSpecialistTemplate";
+import { ElasticsearchDevTemplate } from "./templates/ElasticsearchDevTemplate";
+import { KafkaStreamingExpertTemplate } from "./templates/KafkaStreamingExpertTemplate";
+import { CICDPipelineEngineerTemplate } from "./templates/CICDPipelineEngineerTemplate";
+// 2025 New Creative/Design Templates (Batch 2)
+import { PortfolioMinimalistTemplate } from "./templates/PortfolioMinimalistTemplate";
+import { CreativeShowcaseGridTemplate } from "./templates/CreativeShowcaseGridTemplate";
+import { ArtDirectorModernTemplate } from "./templates/ArtDirectorModernTemplate";
+import { UIUXDesignerProTemplate } from "./templates/UIUXDesignerProTemplate";
+import { GraphicDesignProTemplate } from "./templates/GraphicDesignProTemplate";
+import { BrandDesignerTemplateTemplate } from "./templates/BrandDesignerTemplateTemplate";
+import { MotionGraphicsArtistTemplate } from "./templates/MotionGraphicsArtistTemplate";
+import { IllustrationPortfolioTemplate } from "./templates/IllustrationPortfolioTemplate";
+import { PhotographyProTemplateTemplate } from "./templates/PhotographyProTemplateTemplate";
+import { VideoEditorCreativeTemplate } from "./templates/VideoEditorCreativeTemplate";
+import { ThreeDModelingArtistTemplate } from "./templates/ThreeDModelingArtistTemplate";
+import { WebDesignerModernTemplate } from "./templates/WebDesignerModernTemplate";
+import { ProductDesignerUXTemplate } from "./templates/ProductDesignerUXTemplate";
+import { InteractionDesignerTemplate } from "./templates/InteractionDesignerTemplate";
+import { VisualStorytellerTemplateTemplate } from "./templates/VisualStorytellerTemplateTemplate";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -850,6 +882,38 @@ export const ResumePreview = ({
     "azure-devops-specialist": AzureDevOpsSpecialistTemplate,
     "gcp-architect": GCPArchitectTemplate,
     "serverless-developer": ServerlessDeveloperTemplate,
+    // 2025 New Software/Tech Templates (Batch 4)
+    "rust-developer-pro": RustDeveloperProTemplate,
+    "scala-engineer": ScalaEngineerTemplate,
+    "elixir-developer": ElixirDeveloperTemplate,
+    "swift-ios-developer": SwiftIOSDeveloperTemplate,
+    "kotlin-android-dev": KotlinAndroidDevTemplate,
+    "flutter-mobile-dev": FlutterMobileDevTemplate,
+    "react-native-expert": ReactNativeExpertTemplate,
+    "tensorflow-ml-engineer": TensorFlowMLEngineerTemplate,
+    "pytorch-developer": PyTorchDeveloperTemplate,
+    "mongodb-specialist": MongoDBSpecialistTemplate,
+    "postgresql-expert": PostgreSQLExpertTemplate,
+    "redis-cache-specialist": RedisCacheSpecialistTemplate,
+    "elasticsearch-dev": ElasticsearchDevTemplate,
+    "kafka-streaming-expert": KafkaStreamingExpertTemplate,
+    "cicd-pipeline-engineer": CICDPipelineEngineerTemplate,
+    // 2025 New Creative/Design Templates (Batch 2)
+    "portfolio-minimalist": PortfolioMinimalistTemplate,
+    "creative-showcase-grid": CreativeShowcaseGridTemplate,
+    "art-director-modern": ArtDirectorModernTemplate,
+    "uiux-designer-pro": UIUXDesignerProTemplate,
+    "graphic-design-pro": GraphicDesignProTemplate,
+    "brand-designer-template": BrandDesignerTemplateTemplate,
+    "motion-graphics-artist": MotionGraphicsArtistTemplate,
+    "illustration-portfolio": IllustrationPortfolioTemplate,
+    "photography-pro-template": PhotographyProTemplateTemplate,
+    "video-editor-creative": VideoEditorCreativeTemplate,
+    "threed-modeling-artist": ThreeDModelingArtistTemplate,
+    "web-designer-modern": WebDesignerModernTemplate,
+    "product-designer-ux": ProductDesignerUXTemplate,
+    "interaction-designer": InteractionDesignerTemplate,
+    "visual-storyteller-template": VisualStorytellerTemplateTemplate,
   };
 
   const Template =
