@@ -210,6 +210,27 @@ import { TwoToneClassicTemplate } from "./templates/TwoToneClassicTemplate";
 import { BorderedEleganceTemplate } from "./templates/BorderedEleganceTemplate";
 import { ColumnDivideTemplate } from "./templates/ColumnDivideTemplate";
 import { CompactProfessionalTemplate } from "./templates/CompactProfessionalTemplate";
+// New Universal Profile Templates
+import { SidebarProfessionalUniversalTemplate } from "./templates/SidebarProfessionalUniversalTemplate";
+import { MetroModernUniversalTemplate } from "./templates/MetroModernUniversalTemplate";
+import { SwissStyleUniversalTemplate } from "./templates/SwissStyleUniversalTemplate";
+import { ExecutiveLetterheadUniversalTemplate } from "./templates/ExecutiveLetterheadUniversalTemplate";
+import { DiagonalAccentUniversalTemplate } from "./templates/DiagonalAccentUniversalTemplate";
+import { BorderFrameUniversalTemplate } from "./templates/BorderFrameUniversalTemplate";
+import { CenteredMinimalUniversalTemplate } from "./templates/CenteredMinimalUniversalTemplate";
+import { LeftAlignedProUniversalTemplate } from "./templates/LeftAlignedProUniversalTemplate";
+import { DualColumnModernUniversalTemplate } from "./templates/DualColumnModernUniversalTemplate";
+import { TimelineVerticalUniversalTemplate } from "./templates/TimelineVerticalUniversalTemplate";
+import { BadgeStyleUniversalTemplate } from "./templates/BadgeStyleUniversalTemplate";
+import { UnderlineAccentUniversalTemplate } from "./templates/UnderlineAccentUniversalTemplate";
+import { CircleIconUniversalTemplate } from "./templates/CircleIconUniversalTemplate";
+import { LinearProgressUniversalTemplate } from "./templates/LinearProgressUniversalTemplate";
+import { CardLayoutUniversalTemplate } from "./templates/CardLayoutUniversalTemplate";
+import { RibbonHeaderUniversalTemplate } from "./templates/RibbonHeaderUniversalTemplate";
+import { BoxedSectionsUniversalTemplate } from "./templates/BoxedSectionsUniversalTemplate";
+import { LeftBorderUniversalTemplate } from "./templates/LeftBorderUniversalTemplate";
+import { FloatingHeaderUniversalTemplate } from "./templates/FloatingHeaderUniversalTemplate";
+import { MonochromeElegantUniversalTemplate } from "./templates/MonochromeElegantUniversalTemplate";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -434,6 +455,27 @@ export const ResumePreview = ({
     "freshers-crafted": FreshersCraftedTemplate,
     "graduate-zenith": GraduateZenithTemplate,
     "entry-sphere": EntrySphereTemplate,
+    // New Universal Profile Templates
+    "sidebar-professional-universal": SidebarProfessionalUniversalTemplate,
+    "metro-modern-universal": MetroModernUniversalTemplate,
+    "swiss-style-universal": SwissStyleUniversalTemplate,
+    "executive-letterhead-universal": ExecutiveLetterheadUniversalTemplate,
+    "diagonal-accent-universal": DiagonalAccentUniversalTemplate,
+    "border-frame-universal": BorderFrameUniversalTemplate,
+    "centered-minimal-universal": CenteredMinimalUniversalTemplate,
+    "left-aligned-pro-universal": LeftAlignedProUniversalTemplate,
+    "dual-column-modern-universal": DualColumnModernUniversalTemplate,
+    "timeline-vertical-universal": TimelineVerticalUniversalTemplate,
+    "badge-style-universal": BadgeStyleUniversalTemplate,
+    "underline-accent-universal": UnderlineAccentUniversalTemplate,
+    "circle-icon-universal": CircleIconUniversalTemplate,
+    "linear-progress-universal": LinearProgressUniversalTemplate,
+    "card-layout-universal": CardLayoutUniversalTemplate,
+    "ribbon-header-universal": RibbonHeaderUniversalTemplate,
+    "boxed-sections-universal": BoxedSectionsUniversalTemplate,
+    "left-border-universal": LeftBorderUniversalTemplate,
+    "floating-header-universal": FloatingHeaderUniversalTemplate,
+    "monochrome-elegant-universal": MonochromeElegantUniversalTemplate,
   };
 
   const Template =
