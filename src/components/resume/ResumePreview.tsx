@@ -231,6 +231,27 @@ import { BoxedSectionsUniversalTemplate } from "./templates/BoxedSectionsUnivers
 import { LeftBorderUniversalTemplate } from "./templates/LeftBorderUniversalTemplate";
 import { FloatingHeaderUniversalTemplate } from "./templates/FloatingHeaderUniversalTemplate";
 import { MonochromeElegantUniversalTemplate } from "./templates/MonochromeElegantUniversalTemplate";
+// Second Batch Universal Profile Templates
+import { GradientHeaderUniversalTemplate } from "./templates/GradientHeaderUniversalTemplate";
+import { SplitPaneUniversalTemplate } from "./templates/SplitPaneUniversalTemplate";
+import { IconBarUniversalTemplate } from "./templates/IconBarUniversalTemplate";
+import { ModernMinimalistUniversalTemplate } from "./templates/ModernMinimalistUniversalTemplate";
+import { BoldTypographyUniversalTemplate } from "./templates/BoldTypographyUniversalTemplate";
+import { GeometricShapesUniversalTemplate } from "./templates/GeometricShapesUniversalTemplate";
+import { ColorBlockUniversalTemplate } from "./templates/ColorBlockUniversalTemplate";
+import { ThinBorderUniversalTemplate } from "./templates/ThinBorderUniversalTemplate";
+import { AsymmetricLayoutUniversalTemplate } from "./templates/AsymmetricLayoutUniversalTemplate";
+import { ClassicSerifUniversalTemplate } from "./templates/ClassicSerifUniversalTemplate";
+import { ProfessionalCompactUniversalTemplate } from "./templates/ProfessionalCompactUniversalTemplate";
+import { WideMarginUniversalTemplate } from "./templates/WideMarginUniversalTemplate";
+import { TopBarUniversalTemplate } from "./templates/TopBarUniversalTemplate";
+import { CornerAccentUniversalTemplate } from "./templates/CornerAccentUniversalTemplate";
+import { StripedBackgroundUniversalTemplate } from "./templates/StripedBackgroundUniversalTemplate";
+import { CircularElementsUniversalTemplate } from "./templates/CircularElementsUniversalTemplate";
+import { MinimalLinesUniversalTemplate } from "./templates/MinimalLinesUniversalTemplate";
+import { BoldSectionHeadersUniversalTemplate } from "./templates/BoldSectionHeadersUniversalTemplate";
+import { TwoToneSplitUniversalTemplate } from "./templates/TwoToneSplitUniversalTemplate";
+import { CleanModernUniversalTemplate } from "./templates/CleanModernUniversalTemplate";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -476,6 +497,27 @@ export const ResumePreview = ({
     "left-border-universal": LeftBorderUniversalTemplate,
     "floating-header-universal": FloatingHeaderUniversalTemplate,
     "monochrome-elegant-universal": MonochromeElegantUniversalTemplate,
+    // Second Batch Universal Profile Templates
+    "gradient-header-universal": GradientHeaderUniversalTemplate,
+    "split-pane-universal": SplitPaneUniversalTemplate,
+    "icon-bar-universal": IconBarUniversalTemplate,
+    "modern-minimalist-universal": ModernMinimalistUniversalTemplate,
+    "bold-typography-universal": BoldTypographyUniversalTemplate,
+    "geometric-shapes-universal": GeometricShapesUniversalTemplate,
+    "color-block-universal": ColorBlockUniversalTemplate,
+    "thin-border-universal": ThinBorderUniversalTemplate,
+    "asymmetric-layout-universal": AsymmetricLayoutUniversalTemplate,
+    "classic-serif-universal": ClassicSerifUniversalTemplate,
+    "professional-compact-universal": ProfessionalCompactUniversalTemplate,
+    "wide-margin-universal": WideMarginUniversalTemplate,
+    "top-bar-universal": TopBarUniversalTemplate,
+    "corner-accent-universal": CornerAccentUniversalTemplate,
+    "striped-background-universal": StripedBackgroundUniversalTemplate,
+    "circular-elements-universal": CircularElementsUniversalTemplate,
+    "minimal-lines-universal": MinimalLinesUniversalTemplate,
+    "bold-section-headers-universal": BoldSectionHeadersUniversalTemplate,
+    "two-tone-split-universal": TwoToneSplitUniversalTemplate,
+    "clean-modern-universal": CleanModernUniversalTemplate,
   };
 
   const Template =
