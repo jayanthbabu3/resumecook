@@ -65,7 +65,7 @@ import { MedicalExecutiveTemplate } from "./templates/MedicalExecutiveTemplate";
 import { ClinicalMinimalTemplate } from "./templates/ClinicalMinimalTemplate";
 // Education & Teaching Templates
 import { TeacherProfessionalTemplate } from "./templates/TeacherProfessionalTemplate";
-import { AcademicScholarTemplate } from "./templates/AcademicScholarTemplate";
+import { AcademicEducatorTemplate } from "./templates/AcademicEducatorTemplate";
 import { EducatorModernTemplate } from "./templates/EducatorModernTemplate";
 import { TeachingCertifiedTemplate } from "./templates/TeachingCertifiedTemplate";
 import { StudentEducatorTemplate } from "./templates/StudentEducatorTemplate";
@@ -225,7 +225,6 @@ import { BlueprintDesignTemplate } from "./templates/BlueprintDesignTemplate";
 import { SystemArchitectTemplate } from "./templates/SystemArchitectTemplate";
 import { CloudNativeTemplate } from "./templates/CloudNativeTemplate";
 import { MicroservicesDevTemplate } from "./templates/MicroservicesDevTemplate";
-import { AgileScrumTemplate } from "./templates/AgileScrumTemplate";
 import { TechLeadTemplate } from "./templates/TechLeadTemplate";
 import { OpenSourceTemplate } from "./templates/OpenSourceTemplate";
 import { FullStackProTemplate } from "./templates/FullStackProTemplate";
@@ -563,7 +562,7 @@ export const ResumePreview = ({
     "clinical-minimal": ClinicalMinimalTemplate,
     // Education & Teaching
     "teacher-professional": TeacherProfessionalTemplate,
-    "academic-scholar": AcademicScholarTemplate,
+    "academic-scholar": AcademicEducatorTemplate,
     "educator-modern": EducatorModernTemplate,
     "teaching-certified": TeachingCertifiedTemplate,
     "student-educator": StudentEducatorTemplate,
@@ -742,7 +741,6 @@ export const ResumePreview = ({
     "system-architect": SystemArchitectTemplate,
     "cloud-native": CloudNativeTemplate,
     "microservices-dev": MicroservicesDevTemplate,
-    "agile-scrum": AgileScrumTemplate,
     "tech-lead": TechLeadTemplate,
     "open-source": OpenSourceTemplate,
     "fullstack-pro": FullStackProTemplate,

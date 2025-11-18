@@ -66,7 +66,7 @@ import { MedicalExecutiveTemplate } from "./templates/MedicalExecutiveTemplate";
 import { ClinicalMinimalTemplate } from "./templates/ClinicalMinimalTemplate";
 // Education & Teaching Templates
 import { TeacherProfessionalTemplate } from "./templates/TeacherProfessionalTemplate";
-import { AcademicScholarTemplate } from "./templates/AcademicScholarTemplate";
+import { AcademicEducatorTemplate } from "./templates/AcademicEducatorTemplate";
 import { EducatorModernTemplate } from "./templates/EducatorModernTemplate";
 import { TeachingCertifiedTemplate } from "./templates/TeachingCertifiedTemplate";
 import { StudentEducatorTemplate } from "./templates/StudentEducatorTemplate";
@@ -355,7 +355,7 @@ export const EditableResumePreview = ({
     "clinical-minimal": ClinicalMinimalTemplate,
     // Education & Teaching
     "teacher-professional": TeacherProfessionalTemplate,
-    "academic-scholar": AcademicScholarTemplate,
+    "academic-scholar": AcademicEducatorTemplate,
     "educator-modern": EducatorModernTemplate,
     "teaching-certified": TeachingCertifiedTemplate,
     "student-educator": StudentEducatorTemplate,
