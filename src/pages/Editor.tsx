@@ -493,6 +493,208 @@ import { RealEstateAppraiserPDF } from "@/components/resume/pdf/RealEstateApprai
 import { SupplyChainManagerPDF } from "@/components/resume/pdf/SupplyChainManagerPDF";
 import { LogisticsCoordinatorPDF } from "@/components/resume/pdf/LogisticsCoordinatorPDF";
 import { ProcurementSpecialistPDF } from "@/components/resume/pdf/ProcurementSpecialistPDF";
+// 2025 Batch 4 - UI Template Imports (100 templates)
+import { CrystalExecutiveTemplate } from "@/components/resume/templates/CrystalExecutiveTemplate";
+import { QuantumProfessionalTemplate } from "@/components/resume/templates/QuantumProfessionalTemplate";
+import { ZenithCorporateTemplate } from "@/components/resume/templates/ZenithCorporateTemplate";
+import { AuroraMinimalTemplate } from "@/components/resume/templates/AuroraMinimalTemplate";
+import { NexusEliteTemplate } from "@/components/resume/templates/NexusEliteTemplate";
+import { HarmonyExecutiveTemplate } from "@/components/resume/templates/HarmonyExecutiveTemplate";
+import { PrismProfessionalTemplate } from "@/components/resume/templates/PrismProfessionalTemplate";
+import { TitanCorporateTemplate } from "@/components/resume/templates/TitanCorporateTemplate";
+import { SerenityMinimalTemplate } from "@/components/resume/templates/SerenityMinimalTemplate";
+import { VelocityExecutiveTemplate } from "@/components/resume/templates/VelocityExecutiveTemplate";
+import { EclipseProfessionalTemplate } from "@/components/resume/templates/EclipseProfessionalTemplate";
+import { SterlingExecutiveTemplate } from "@/components/resume/templates/SterlingExecutiveTemplate";
+import { MeridianCorporateTemplate } from "@/components/resume/templates/MeridianCorporateTemplate";
+import { CosmosProfessionalTemplate } from "@/components/resume/templates/CosmosProfessionalTemplate";
+import { PinnacleEliteTemplate } from "@/components/resume/templates/PinnacleEliteTemplate";
+import { FluxExecutiveTemplate } from "@/components/resume/templates/FluxExecutiveTemplate";
+import { VertexProfessionalTemplate } from "@/components/resume/templates/VertexProfessionalTemplate";
+import { RadianceCorporateTemplate } from "@/components/resume/templates/RadianceCorporateTemplate";
+import { AtlasExecutiveTemplate } from "@/components/resume/templates/AtlasExecutiveTemplate";
+import { SpectrumProfessionalTemplate } from "@/components/resume/templates/SpectrumProfessionalTemplate";
+import { CodeforgeDeveloperTemplate } from "@/components/resume/templates/CodeforgeDeveloperTemplate";
+import { QuantumCoderTemplate } from "@/components/resume/templates/QuantumCoderTemplate";
+import { NeuralEngineerTemplate } from "@/components/resume/templates/NeuralEngineerTemplate";
+import { PixelcraftDeveloperTemplate } from "@/components/resume/templates/PixelcraftDeveloperTemplate";
+import { CloudnativeArchitectTemplate } from "@/components/resume/templates/CloudnativeArchitectTemplate";
+import { BytecodeSpecialistTemplate } from "@/components/resume/templates/BytecodeSpecialistTemplate";
+import { AgileflowDeveloperTemplate } from "@/components/resume/templates/AgileflowDeveloperTemplate";
+import { StackmasterFullstackTemplate } from "@/components/resume/templates/StackmasterFullstackTemplate";
+import { GitflowEngineerTemplate } from "@/components/resume/templates/GitflowEngineerTemplate";
+import { CompileTimeDevTemplate } from "@/components/resume/templates/CompileTimeDevTemplate";
+import { MicroarchEngineerTemplate } from "@/components/resume/templates/MicroarchEngineerTemplate";
+import { ServerlessSpecialistTemplate } from "@/components/resume/templates/ServerlessSpecialistTemplate";
+import { EdgecomputeDeveloperTemplate } from "@/components/resume/templates/EdgecomputeDeveloperTemplate";
+import { WebrtcEngineerTemplate } from "@/components/resume/templates/WebrtcEngineerTemplate";
+import { GraphdbSpecialistTemplate } from "@/components/resume/templates/GraphdbSpecialistTemplate";
+import { ContaineropsEngineerTemplate } from "@/components/resume/templates/ContaineropsEngineerTemplate";
+import { ApigatewayArchitectTemplate } from "@/components/resume/templates/ApigatewayArchitectTemplate";
+import { ObservabilityEngineerTemplate } from "@/components/resume/templates/ObservabilityEngineerTemplate";
+import { EventdrivenArchitectTemplate } from "@/components/resume/templates/EventdrivenArchitectTemplate";
+import { MlopsEngineerTemplate } from "@/components/resume/templates/MlopsEngineerTemplate";
+import { LaunchpadGraduateTemplate } from "@/components/resume/templates/LaunchpadGraduateTemplate";
+import { MomentumFresherTemplate } from "@/components/resume/templates/MomentumFresherTemplate";
+import { HorizonGraduateTemplate } from "@/components/resume/templates/HorizonGraduateTemplate";
+import { CatalystFresherTemplate } from "@/components/resume/templates/CatalystFresherTemplate";
+import { PathwayGraduateTemplate } from "@/components/resume/templates/PathwayGraduateTemplate";
+import { SparkFresherTemplate } from "@/components/resume/templates/SparkFresherTemplate";
+import { AscendGraduateTemplate } from "@/components/resume/templates/AscendGraduateTemplate";
+import { PioneerFresherTemplate } from "@/components/resume/templates/PioneerFresherTemplate";
+import { KeystoneGraduateTemplate } from "@/components/resume/templates/KeystoneGraduateTemplate";
+import { VentureFresherTemplate } from "@/components/resume/templates/VentureFresherTemplate";
+import { AspireGraduateTemplate } from "@/components/resume/templates/AspireGraduateTemplate";
+import { EmergeFresherTemplate } from "@/components/resume/templates/EmergeFresherTemplate";
+import { BrightGraduateTemplate } from "@/components/resume/templates/BrightGraduateTemplate";
+import { NextstepFresherTemplate } from "@/components/resume/templates/NextstepFresherTemplate";
+import { FoundationGraduateTemplate } from "@/components/resume/templates/FoundationGraduateTemplate";
+import { ElevateFresherTemplate } from "@/components/resume/templates/ElevateFresherTemplate";
+import { GenesisGraduateTemplate } from "@/components/resume/templates/GenesisGraduateTemplate";
+import { AchieverFresherTemplate } from "@/components/resume/templates/AchieverFresherTemplate";
+import { MilestoneGraduateTemplate } from "@/components/resume/templates/MilestoneGraduateTemplate";
+import { PotentialFresherTemplate } from "@/components/resume/templates/PotentialFresherTemplate";
+import { MuseCreativeTemplate } from "@/components/resume/templates/MuseCreativeTemplate";
+import { CanvasArtistTemplate } from "@/components/resume/templates/CanvasArtistTemplate";
+import { PaletteDesignerTemplate } from "@/components/resume/templates/PaletteDesignerTemplate";
+import { VisionaryCreativeTemplate } from "@/components/resume/templates/VisionaryCreativeTemplate";
+import { StudioArtistTemplate } from "@/components/resume/templates/StudioArtistTemplate";
+import { CreativePulseTemplate } from "@/components/resume/templates/CreativePulseTemplate";
+import { ArtisanDesignerTemplate } from "@/components/resume/templates/ArtisanDesignerTemplate";
+import { ChromaticCreativeTemplate } from "@/components/resume/templates/ChromaticCreativeTemplate";
+import { ExpressionArtistTemplate } from "@/components/resume/templates/ExpressionArtistTemplate";
+import { ImaginativeDesignerTemplate } from "@/components/resume/templates/ImaginativeDesignerTemplate";
+import { AestheticCreativeTemplate } from "@/components/resume/templates/AestheticCreativeTemplate";
+import { CompositionArtistTemplate } from "@/components/resume/templates/CompositionArtistTemplate";
+import { ImpressionDesignerTemplate } from "@/components/resume/templates/ImpressionDesignerTemplate";
+import { NarrativeCreativeTemplate } from "@/components/resume/templates/NarrativeCreativeTemplate";
+import { CraftArtistTemplate } from "@/components/resume/templates/CraftArtistTemplate";
+import { VibrantDesignerTemplate } from "@/components/resume/templates/VibrantDesignerTemplate";
+import { ConceptCreativeTemplate } from "@/components/resume/templates/ConceptCreativeTemplate";
+import { EditorialArtistTemplate } from "@/components/resume/templates/EditorialArtistTemplate";
+import { VisionDesignerTemplate } from "@/components/resume/templates/VisionDesignerTemplate";
+import { CuratorCreativeTemplate } from "@/components/resume/templates/CuratorCreativeTemplate";
+import { InterfaceMasterTemplate } from "@/components/resume/templates/InterfaceMasterTemplate";
+import { DesignsystemArchitectTemplate } from "@/components/resume/templates/DesignsystemArchitectTemplate";
+import { UserflowDesignerTemplate } from "@/components/resume/templates/UserflowDesignerTemplate";
+import { PrototypeSpecialistTemplate } from "@/components/resume/templates/PrototypeSpecialistTemplate";
+import { PixelperfectDesignerTemplate } from "@/components/resume/templates/PixelperfectDesignerTemplate";
+import { ResponsiveUxTemplate } from "@/components/resume/templates/ResponsiveUxTemplate";
+import { WireframeSpecialistTemplate } from "@/components/resume/templates/WireframeSpecialistTemplate";
+import { MicrointeractionDesignerTemplate } from "@/components/resume/templates/MicrointeractionDesignerTemplate";
+import { AccessibilityUxTemplate } from "@/components/resume/templates/AccessibilityUxTemplate";
+import { UserresearchSpecialistTemplate } from "@/components/resume/templates/UserresearchSpecialistTemplate";
+import { InformationArchitectTemplate } from "@/components/resume/templates/InformationArchitectTemplate";
+import { DesignthinkingSpecialistTemplate } from "@/components/resume/templates/DesignthinkingSpecialistTemplate";
+import { ComponentuiDesignerTemplate } from "@/components/resume/templates/ComponentuiDesignerTemplate";
+import { DesignopsSpecialistTemplate } from "@/components/resume/templates/DesignopsSpecialistTemplate";
+import { MobileFirstDesignerTemplate } from "@/components/resume/templates/MobileFirstDesignerTemplate";
+import { ServicedesignSpecialistTemplate } from "@/components/resume/templates/ServicedesignSpecialistTemplate";
+import { DesignstrategyLeadTemplate } from "@/components/resume/templates/DesignstrategyLeadTemplate";
+import { ConversationalUxTemplate } from "@/components/resume/templates/ConversationalUxTemplate";
+import { MotionUiDesignerTemplate } from "@/components/resume/templates/MotionUiDesignerTemplate";
+import { DesignleadershipDirectorTemplate } from "@/components/resume/templates/DesignleadershipDirectorTemplate";
+// 2025 Batch 4 - PDF Template Imports (100 templates)
+import { PDFCrystalExecutiveTemplate } from "@/components/resume/pdf/PDFCrystalExecutiveTemplate";
+import { PDFQuantumProfessionalTemplate } from "@/components/resume/pdf/PDFQuantumProfessionalTemplate";
+import { PDFZenithCorporateTemplate } from "@/components/resume/pdf/PDFZenithCorporateTemplate";
+import { PDFAuroraMinimalTemplate } from "@/components/resume/pdf/PDFAuroraMinimalTemplate";
+import { PDFNexusEliteTemplate } from "@/components/resume/pdf/PDFNexusEliteTemplate";
+import { PDFHarmonyExecutiveTemplate } from "@/components/resume/pdf/PDFHarmonyExecutiveTemplate";
+import { PDFPrismProfessionalTemplate } from "@/components/resume/pdf/PDFPrismProfessionalTemplate";
+import { PDFTitanCorporateTemplate } from "@/components/resume/pdf/PDFTitanCorporateTemplate";
+import { PDFSerenityMinimalTemplate } from "@/components/resume/pdf/PDFSerenityMinimalTemplate";
+import { PDFVelocityExecutiveTemplate } from "@/components/resume/pdf/PDFVelocityExecutiveTemplate";
+import { PDFEclipseProfessionalTemplate } from "@/components/resume/pdf/PDFEclipseProfessionalTemplate";
+import { PDFSterlingExecutiveTemplate } from "@/components/resume/pdf/PDFSterlingExecutiveTemplate";
+import { PDFMeridianCorporateTemplate } from "@/components/resume/pdf/PDFMeridianCorporateTemplate";
+import { PDFCosmosProfessionalTemplate } from "@/components/resume/pdf/PDFCosmosProfessionalTemplate";
+import { PDFPinnacleEliteTemplate } from "@/components/resume/pdf/PDFPinnacleEliteTemplate";
+import { PDFFluxExecutiveTemplate } from "@/components/resume/pdf/PDFFluxExecutiveTemplate";
+import { PDFVertexProfessionalTemplate } from "@/components/resume/pdf/PDFVertexProfessionalTemplate";
+import { PDFRadianceCorporateTemplate } from "@/components/resume/pdf/PDFRadianceCorporateTemplate";
+import { PDFAtlasExecutiveTemplate } from "@/components/resume/pdf/PDFAtlasExecutiveTemplate";
+import { PDFSpectrumProfessionalTemplate } from "@/components/resume/pdf/PDFSpectrumProfessionalTemplate";
+import { PDFCodeforgeDeveloperTemplate } from "@/components/resume/pdf/PDFCodeforgeDeveloperTemplate";
+import { PDFQuantumCoderTemplate } from "@/components/resume/pdf/PDFQuantumCoderTemplate";
+import { PDFNeuralEngineerTemplate } from "@/components/resume/pdf/PDFNeuralEngineerTemplate";
+import { PDFPixelcraftDeveloperTemplate } from "@/components/resume/pdf/PDFPixelcraftDeveloperTemplate";
+import { PDFCloudnativeArchitectTemplate } from "@/components/resume/pdf/PDFCloudnativeArchitectTemplate";
+import { PDFBytecodeSpecialistTemplate } from "@/components/resume/pdf/PDFBytecodeSpecialistTemplate";
+import { PDFAgileflowDeveloperTemplate } from "@/components/resume/pdf/PDFAgileflowDeveloperTemplate";
+import { PDFStackmasterFullstackTemplate } from "@/components/resume/pdf/PDFStackmasterFullstackTemplate";
+import { PDFGitflowEngineerTemplate } from "@/components/resume/pdf/PDFGitflowEngineerTemplate";
+import { PDFCompileTimeDevTemplate } from "@/components/resume/pdf/PDFCompileTimeDevTemplate";
+import { PDFMicroarchEngineerTemplate } from "@/components/resume/pdf/PDFMicroarchEngineerTemplate";
+import { PDFServerlessSpecialistTemplate } from "@/components/resume/pdf/PDFServerlessSpecialistTemplate";
+import { PDFEdgecomputeDeveloperTemplate } from "@/components/resume/pdf/PDFEdgecomputeDeveloperTemplate";
+import { PDFWebrtcEngineerTemplate } from "@/components/resume/pdf/PDFWebrtcEngineerTemplate";
+import { PDFGraphdbSpecialistTemplate } from "@/components/resume/pdf/PDFGraphdbSpecialistTemplate";
+import { PDFContaineropsEngineerTemplate } from "@/components/resume/pdf/PDFContaineropsEngineerTemplate";
+import { PDFApigatewayArchitectTemplate } from "@/components/resume/pdf/PDFApigatewayArchitectTemplate";
+import { PDFObservabilityEngineerTemplate } from "@/components/resume/pdf/PDFObservabilityEngineerTemplate";
+import { PDFEventdrivenArchitectTemplate } from "@/components/resume/pdf/PDFEventdrivenArchitectTemplate";
+import { PDFMlopsEngineerTemplate } from "@/components/resume/pdf/PDFMlopsEngineerTemplate";
+import { PDFLaunchpadGraduateTemplate } from "@/components/resume/pdf/PDFLaunchpadGraduateTemplate";
+import { PDFMomentumFresherTemplate } from "@/components/resume/pdf/PDFMomentumFresherTemplate";
+import { PDFHorizonGraduateTemplate } from "@/components/resume/pdf/PDFHorizonGraduateTemplate";
+import { PDFCatalystFresherTemplate } from "@/components/resume/pdf/PDFCatalystFresherTemplate";
+import { PDFPathwayGraduateTemplate } from "@/components/resume/pdf/PDFPathwayGraduateTemplate";
+import { PDFSparkFresherTemplate } from "@/components/resume/pdf/PDFSparkFresherTemplate";
+import { PDFAscendGraduateTemplate } from "@/components/resume/pdf/PDFAscendGraduateTemplate";
+import { PDFPioneerFresherTemplate } from "@/components/resume/pdf/PDFPioneerFresherTemplate";
+import { PDFKeystoneGraduateTemplate } from "@/components/resume/pdf/PDFKeystoneGraduateTemplate";
+import { PDFVentureFresherTemplate } from "@/components/resume/pdf/PDFVentureFresherTemplate";
+import { PDFAspireGraduateTemplate } from "@/components/resume/pdf/PDFAspireGraduateTemplate";
+import { PDFEmergeFresherTemplate } from "@/components/resume/pdf/PDFEmergeFresherTemplate";
+import { PDFBrightGraduateTemplate } from "@/components/resume/pdf/PDFBrightGraduateTemplate";
+import { PDFNextstepFresherTemplate } from "@/components/resume/pdf/PDFNextstepFresherTemplate";
+import { PDFFoundationGraduateTemplate } from "@/components/resume/pdf/PDFFoundationGraduateTemplate";
+import { PDFElevateFresherTemplate } from "@/components/resume/pdf/PDFElevateFresherTemplate";
+import { PDFGenesisGraduateTemplate } from "@/components/resume/pdf/PDFGenesisGraduateTemplate";
+import { PDFAchieverFresherTemplate } from "@/components/resume/pdf/PDFAchieverFresherTemplate";
+import { PDFMilestoneGraduateTemplate } from "@/components/resume/pdf/PDFMilestoneGraduateTemplate";
+import { PDFPotentialFresherTemplate } from "@/components/resume/pdf/PDFPotentialFresherTemplate";
+import { PDFMuseCreativeTemplate } from "@/components/resume/pdf/PDFMuseCreativeTemplate";
+import { PDFCanvasArtistTemplate } from "@/components/resume/pdf/PDFCanvasArtistTemplate";
+import { PDFPaletteDesignerTemplate } from "@/components/resume/pdf/PDFPaletteDesignerTemplate";
+import { PDFVisionaryCreativeTemplate } from "@/components/resume/pdf/PDFVisionaryCreativeTemplate";
+import { PDFStudioArtistTemplate } from "@/components/resume/pdf/PDFStudioArtistTemplate";
+import { PDFCreativePulseTemplate } from "@/components/resume/pdf/PDFCreativePulseTemplate";
+import { PDFArtisanDesignerTemplate } from "@/components/resume/pdf/PDFArtisanDesignerTemplate";
+import { PDFChromaticCreativeTemplate } from "@/components/resume/pdf/PDFChromaticCreativeTemplate";
+import { PDFExpressionArtistTemplate } from "@/components/resume/pdf/PDFExpressionArtistTemplate";
+import { PDFImaginativeDesignerTemplate } from "@/components/resume/pdf/PDFImaginativeDesignerTemplate";
+import { PDFAestheticCreativeTemplate } from "@/components/resume/pdf/PDFAestheticCreativeTemplate";
+import { PDFCompositionArtistTemplate } from "@/components/resume/pdf/PDFCompositionArtistTemplate";
+import { PDFImpressionDesignerTemplate } from "@/components/resume/pdf/PDFImpressionDesignerTemplate";
+import { PDFNarrativeCreativeTemplate } from "@/components/resume/pdf/PDFNarrativeCreativeTemplate";
+import { PDFCraftArtistTemplate } from "@/components/resume/pdf/PDFCraftArtistTemplate";
+import { PDFVibrantDesignerTemplate } from "@/components/resume/pdf/PDFVibrantDesignerTemplate";
+import { PDFConceptCreativeTemplate } from "@/components/resume/pdf/PDFConceptCreativeTemplate";
+import { PDFEditorialArtistTemplate } from "@/components/resume/pdf/PDFEditorialArtistTemplate";
+import { PDFVisionDesignerTemplate } from "@/components/resume/pdf/PDFVisionDesignerTemplate";
+import { PDFCuratorCreativeTemplate } from "@/components/resume/pdf/PDFCuratorCreativeTemplate";
+import { PDFInterfaceMasterTemplate } from "@/components/resume/pdf/PDFInterfaceMasterTemplate";
+import { PDFDesignsystemArchitectTemplate } from "@/components/resume/pdf/PDFDesignsystemArchitectTemplate";
+import { PDFUserflowDesignerTemplate } from "@/components/resume/pdf/PDFUserflowDesignerTemplate";
+import { PDFPrototypeSpecialistTemplate } from "@/components/resume/pdf/PDFPrototypeSpecialistTemplate";
+import { PDFPixelperfectDesignerTemplate } from "@/components/resume/pdf/PDFPixelperfectDesignerTemplate";
+import { PDFResponsiveUxTemplate } from "@/components/resume/pdf/PDFResponsiveUxTemplate";
+import { PDFWireframeSpecialistTemplate } from "@/components/resume/pdf/PDFWireframeSpecialistTemplate";
+import { PDFMicrointeractionDesignerTemplate } from "@/components/resume/pdf/PDFMicrointeractionDesignerTemplate";
+import { PDFAccessibilityUxTemplate } from "@/components/resume/pdf/PDFAccessibilityUxTemplate";
+import { PDFUserresearchSpecialistTemplate } from "@/components/resume/pdf/PDFUserresearchSpecialistTemplate";
+import { PDFInformationArchitectTemplate } from "@/components/resume/pdf/PDFInformationArchitectTemplate";
+import { PDFDesignthinkingSpecialistTemplate } from "@/components/resume/pdf/PDFDesignthinkingSpecialistTemplate";
+import { PDFComponentuiDesignerTemplate } from "@/components/resume/pdf/PDFComponentuiDesignerTemplate";
+import { PDFDesignopsSpecialistTemplate } from "@/components/resume/pdf/PDFDesignopsSpecialistTemplate";
+import { PDFMobileFirstDesignerTemplate } from "@/components/resume/pdf/PDFMobileFirstDesignerTemplate";
+import { PDFServicedesignSpecialistTemplate } from "@/components/resume/pdf/PDFServicedesignSpecialistTemplate";
+import { PDFDesignstrategyLeadTemplate } from "@/components/resume/pdf/PDFDesignstrategyLeadTemplate";
+import { PDFConversationalUxTemplate } from "@/components/resume/pdf/PDFConversationalUxTemplate";
+import { PDFMotionUiDesignerTemplate } from "@/components/resume/pdf/PDFMotionUiDesignerTemplate";
+import { PDFDesignleadershipDirectorTemplate } from "@/components/resume/pdf/PDFDesignleadershipDirectorTemplate";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
 import { analyzeResumeForATS, type AtsReport } from "@/lib/atsAnalyzer";
@@ -2315,6 +2517,107 @@ export const getTemplateDefaults = (templateId: string): ResumeData => {
     "freshers-crafted",
     "graduate-zenith",
     "entry-sphere",
+    // 2025 Batch 4 - 100 New Templates
+    "crystal-executive",
+    "quantum-professional",
+    "zenith-corporate",
+    "aurora-minimal",
+    "nexus-elite",
+    "harmony-executive",
+    "prism-professional",
+    "titan-corporate",
+    "serenity-minimal",
+    "velocity-executive",
+    "eclipse-professional",
+    "sterling-executive",
+    "meridian-corporate",
+    "cosmos-professional",
+    "pinnacle-elite",
+    "flux-executive",
+    "vertex-professional",
+    "radiance-corporate",
+    "atlas-executive",
+    "spectrum-professional",
+    "codeforge-developer",
+    "quantum-coder",
+    "neural-engineer",
+    "pixelcraft-developer",
+    "cloudnative-architect",
+    "bytecode-specialist",
+    "agileflow-developer",
+    "stackmaster-fullstack",
+    "gitflow-engineer",
+    "compile-time-dev",
+    "microarch-engineer",
+    "serverless-specialist",
+    "edgecompute-developer",
+    "webrtc-engineer",
+    "graphdb-specialist",
+    "containerops-engineer",
+    "apigateway-architect",
+    "observability-engineer",
+    "eventdriven-architect",
+    "mlops-engineer",
+    "launchpad-graduate",
+    "momentum-fresher",
+    "horizon-graduate",
+    "catalyst-fresher",
+    "pathway-graduate",
+    "spark-fresher",
+    "ascend-graduate",
+    "pioneer-fresher",
+    "keystone-graduate",
+    "venture-fresher",
+    "aspire-graduate",
+    "emerge-fresher",
+    "bright-graduate",
+    "nextstep-fresher",
+    "foundation-graduate",
+    "elevate-fresher",
+    "genesis-graduate",
+    "achiever-fresher",
+    "milestone-graduate",
+    "potential-fresher",
+    "muse-creative",
+    "canvas-artist",
+    "palette-designer",
+    "visionary-creative",
+    "studio-artist",
+    "creative-pulse",
+    "artisan-designer",
+    "chromatic-creative",
+    "expression-artist",
+    "imaginative-designer",
+    "aesthetic-creative",
+    "composition-artist",
+    "impression-designer",
+    "narrative-creative",
+    "craft-artist",
+    "vibrant-designer",
+    "concept-creative",
+    "editorial-artist",
+    "vision-designer",
+    "curator-creative",
+    "interface-master",
+    "designsystem-architect",
+    "userflow-designer",
+    "prototype-specialist",
+    "pixelperfect-designer",
+    "responsive-ux",
+    "wireframe-specialist",
+    "microinteraction-designer",
+    "accessibility-ux",
+    "userresearch-specialist",
+    "information-architect",
+    "designthinking-specialist",
+    "componentui-designer",
+    "designops-specialist",
+    "mobile-first-designer",
+    "servicedesign-specialist",
+    "designstrategy-lead",
+    "conversational-ux",
+    "motion-ui-designer",
+    "designleadership-director",
   ];
 
   // Add all new templates using professional defaults
@@ -3015,6 +3318,107 @@ const Editor = () => {
         "supply-chain-manager": SupplyChainManagerPDF,
         "logistics-coordinator": LogisticsCoordinatorPDF,
         "procurement-specialist": ProcurementSpecialistPDF,
+        // 2025 Batch 4 - PDF Template Mappings (100 templates)
+        "crystal-executive": PDFCrystalExecutiveTemplate,
+        "quantum-professional": PDFQuantumProfessionalTemplate,
+        "zenith-corporate": PDFZenithCorporateTemplate,
+        "aurora-minimal": PDFAuroraMinimalTemplate,
+        "nexus-elite": PDFNexusEliteTemplate,
+        "harmony-executive": PDFHarmonyExecutiveTemplate,
+        "prism-professional": PDFPrismProfessionalTemplate,
+        "titan-corporate": PDFTitanCorporateTemplate,
+        "serenity-minimal": PDFSerenityMinimalTemplate,
+        "velocity-executive": PDFVelocityExecutiveTemplate,
+        "eclipse-professional": PDFEclipseProfessionalTemplate,
+        "sterling-executive": PDFSterlingExecutiveTemplate,
+        "meridian-corporate": PDFMeridianCorporateTemplate,
+        "cosmos-professional": PDFCosmosProfessionalTemplate,
+        "pinnacle-elite": PDFPinnacleEliteTemplate,
+        "flux-executive": PDFFluxExecutiveTemplate,
+        "vertex-professional": PDFVertexProfessionalTemplate,
+        "radiance-corporate": PDFRadianceCorporateTemplate,
+        "atlas-executive": PDFAtlasExecutiveTemplate,
+        "spectrum-professional": PDFSpectrumProfessionalTemplate,
+        "codeforge-developer": PDFCodeforgeDeveloperTemplate,
+        "quantum-coder": PDFQuantumCoderTemplate,
+        "neural-engineer": PDFNeuralEngineerTemplate,
+        "pixelcraft-developer": PDFPixelcraftDeveloperTemplate,
+        "cloudnative-architect": PDFCloudnativeArchitectTemplate,
+        "bytecode-specialist": PDFBytecodeSpecialistTemplate,
+        "agileflow-developer": PDFAgileflowDeveloperTemplate,
+        "stackmaster-fullstack": PDFStackmasterFullstackTemplate,
+        "gitflow-engineer": PDFGitflowEngineerTemplate,
+        "compile-time-dev": PDFCompileTimeDevTemplate,
+        "microarch-engineer": PDFMicroarchEngineerTemplate,
+        "serverless-specialist": PDFServerlessSpecialistTemplate,
+        "edgecompute-developer": PDFEdgecomputeDeveloperTemplate,
+        "webrtc-engineer": PDFWebrtcEngineerTemplate,
+        "graphdb-specialist": PDFGraphdbSpecialistTemplate,
+        "containerops-engineer": PDFContaineropsEngineerTemplate,
+        "apigateway-architect": PDFApigatewayArchitectTemplate,
+        "observability-engineer": PDFObservabilityEngineerTemplate,
+        "eventdriven-architect": PDFEventdrivenArchitectTemplate,
+        "mlops-engineer": PDFMlopsEngineerTemplate,
+        "launchpad-graduate": PDFLaunchpadGraduateTemplate,
+        "momentum-fresher": PDFMomentumFresherTemplate,
+        "horizon-graduate": PDFHorizonGraduateTemplate,
+        "catalyst-fresher": PDFCatalystFresherTemplate,
+        "pathway-graduate": PDFPathwayGraduateTemplate,
+        "spark-fresher": PDFSparkFresherTemplate,
+        "ascend-graduate": PDFAscendGraduateTemplate,
+        "pioneer-fresher": PDFPioneerFresherTemplate,
+        "keystone-graduate": PDFKeystoneGraduateTemplate,
+        "venture-fresher": PDFVentureFresherTemplate,
+        "aspire-graduate": PDFAspireGraduateTemplate,
+        "emerge-fresher": PDFEmergeFresherTemplate,
+        "bright-graduate": PDFBrightGraduateTemplate,
+        "nextstep-fresher": PDFNextstepFresherTemplate,
+        "foundation-graduate": PDFFoundationGraduateTemplate,
+        "elevate-fresher": PDFElevateFresherTemplate,
+        "genesis-graduate": PDFGenesisGraduateTemplate,
+        "achiever-fresher": PDFAchieverFresherTemplate,
+        "milestone-graduate": PDFMilestoneGraduateTemplate,
+        "potential-fresher": PDFPotentialFresherTemplate,
+        "muse-creative": PDFMuseCreativeTemplate,
+        "canvas-artist": PDFCanvasArtistTemplate,
+        "palette-designer": PDFPaletteDesignerTemplate,
+        "visionary-creative": PDFVisionaryCreativeTemplate,
+        "studio-artist": PDFStudioArtistTemplate,
+        "creative-pulse": PDFCreativePulseTemplate,
+        "artisan-designer": PDFArtisanDesignerTemplate,
+        "chromatic-creative": PDFChromaticCreativeTemplate,
+        "expression-artist": PDFExpressionArtistTemplate,
+        "imaginative-designer": PDFImaginativeDesignerTemplate,
+        "aesthetic-creative": PDFAestheticCreativeTemplate,
+        "composition-artist": PDFCompositionArtistTemplate,
+        "impression-designer": PDFImpressionDesignerTemplate,
+        "narrative-creative": PDFNarrativeCreativeTemplate,
+        "craft-artist": PDFCraftArtistTemplate,
+        "vibrant-designer": PDFVibrantDesignerTemplate,
+        "concept-creative": PDFConceptCreativeTemplate,
+        "editorial-artist": PDFEditorialArtistTemplate,
+        "vision-designer": PDFVisionDesignerTemplate,
+        "curator-creative": PDFCuratorCreativeTemplate,
+        "interface-master": PDFInterfaceMasterTemplate,
+        "designsystem-architect": PDFDesignsystemArchitectTemplate,
+        "userflow-designer": PDFUserflowDesignerTemplate,
+        "prototype-specialist": PDFPrototypeSpecialistTemplate,
+        "pixelperfect-designer": PDFPixelperfectDesignerTemplate,
+        "responsive-ux": PDFResponsiveUxTemplate,
+        "wireframe-specialist": PDFWireframeSpecialistTemplate,
+        "microinteraction-designer": PDFMicrointeractionDesignerTemplate,
+        "accessibility-ux": PDFAccessibilityUxTemplate,
+        "userresearch-specialist": PDFUserresearchSpecialistTemplate,
+        "information-architect": PDFInformationArchitectTemplate,
+        "designthinking-specialist": PDFDesignthinkingSpecialistTemplate,
+        "componentui-designer": PDFComponentuiDesignerTemplate,
+        "designops-specialist": PDFDesignopsSpecialistTemplate,
+        "mobile-first-designer": PDFMobileFirstDesignerTemplate,
+        "servicedesign-specialist": PDFServicedesignSpecialistTemplate,
+        "designstrategy-lead": PDFDesignstrategyLeadTemplate,
+        "conversational-ux": PDFConversationalUxTemplate,
+        "motion-ui-designer": PDFMotionUiDesignerTemplate,
+        "designleadership-director": PDFDesignleadershipDirectorTemplate,
       };
 
       const PDFTemplate =

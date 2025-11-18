@@ -4,7 +4,7 @@ import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
-interface CreativePulseTemplateProps {
+interface LaunchpadGraduateTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
@@ -25,14 +25,14 @@ const withOpacity = (color: string | undefined, alpha: string) => {
   return `${normalized}${alpha}`;
 };
 
-export const CreativePulseTemplate = ({
+export const LaunchpadGraduateTemplate = ({
   resumeData,
-  themeColor = "#dc2626",
+  themeColor = "#3b82f6",
   editable = false,
-}: CreativePulseTemplateProps) => {
-  const accent = normalizeHex(themeColor) ?? "#dc2626";
-  const accentLight = withOpacity(accent, "15") ?? "#dc262615";
-  const accentBorder = withOpacity(accent, "33") ?? "#dc262633";
+}: LaunchpadGraduateTemplateProps) => {
+  const accent = normalizeHex(themeColor) ?? "#3b82f6";
+  const accentLight = withOpacity(accent, "15") ?? "#3b82f615";
+  const accentBorder = withOpacity(accent, "33") ?? "#3b82f633";
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12 text-[13px] leading-relaxed">

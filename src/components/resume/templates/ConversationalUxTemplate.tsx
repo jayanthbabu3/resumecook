@@ -4,7 +4,7 @@ import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
-interface CreativePulseTemplateProps {
+interface ConversationalUxTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
@@ -25,14 +25,14 @@ const withOpacity = (color: string | undefined, alpha: string) => {
   return `${normalized}${alpha}`;
 };
 
-export const CreativePulseTemplate = ({
+export const ConversationalUxTemplate = ({
   resumeData,
-  themeColor = "#dc2626",
+  themeColor = "#ec4899",
   editable = false,
-}: CreativePulseTemplateProps) => {
-  const accent = normalizeHex(themeColor) ?? "#dc2626";
-  const accentLight = withOpacity(accent, "15") ?? "#dc262615";
-  const accentBorder = withOpacity(accent, "33") ?? "#dc262633";
+}: ConversationalUxTemplateProps) => {
+  const accent = normalizeHex(themeColor) ?? "#ec4899";
+  const accentLight = withOpacity(accent, "15") ?? "#ec489915";
+  const accentBorder = withOpacity(accent, "33") ?? "#ec489933";
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12 text-[13px] leading-relaxed">

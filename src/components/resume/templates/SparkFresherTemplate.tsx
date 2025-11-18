@@ -4,7 +4,7 @@ import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
-interface CreativePulseTemplateProps {
+interface SparkFresherTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
@@ -25,14 +25,14 @@ const withOpacity = (color: string | undefined, alpha: string) => {
   return `${normalized}${alpha}`;
 };
 
-export const CreativePulseTemplate = ({
+export const SparkFresherTemplate = ({
   resumeData,
-  themeColor = "#dc2626",
+  themeColor = "#f97316",
   editable = false,
-}: CreativePulseTemplateProps) => {
-  const accent = normalizeHex(themeColor) ?? "#dc2626";
-  const accentLight = withOpacity(accent, "15") ?? "#dc262615";
-  const accentBorder = withOpacity(accent, "33") ?? "#dc262633";
+}: SparkFresherTemplateProps) => {
+  const accent = normalizeHex(themeColor) ?? "#f97316";
+  const accentLight = withOpacity(accent, "15") ?? "#f9731615";
+  const accentBorder = withOpacity(accent, "33") ?? "#f9731633";
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12 text-[13px] leading-relaxed">

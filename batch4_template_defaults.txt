@@ -1,0 +1,500 @@
+    case "crystal-executive":
+      return {
+        ...defaultData,
+        template: "crystal-executive",
+      };
+    case "quantum-professional":
+      return {
+        ...defaultData,
+        template: "quantum-professional",
+      };
+    case "zenith-corporate":
+      return {
+        ...defaultData,
+        template: "zenith-corporate",
+      };
+    case "aurora-minimal":
+      return {
+        ...defaultData,
+        template: "aurora-minimal",
+      };
+    case "nexus-elite":
+      return {
+        ...defaultData,
+        template: "nexus-elite",
+      };
+    case "harmony-executive":
+      return {
+        ...defaultData,
+        template: "harmony-executive",
+      };
+    case "prism-professional":
+      return {
+        ...defaultData,
+        template: "prism-professional",
+      };
+    case "titan-corporate":
+      return {
+        ...defaultData,
+        template: "titan-corporate",
+      };
+    case "serenity-minimal":
+      return {
+        ...defaultData,
+        template: "serenity-minimal",
+      };
+    case "velocity-executive":
+      return {
+        ...defaultData,
+        template: "velocity-executive",
+      };
+    case "eclipse-professional":
+      return {
+        ...defaultData,
+        template: "eclipse-professional",
+      };
+    case "sterling-executive":
+      return {
+        ...defaultData,
+        template: "sterling-executive",
+      };
+    case "meridian-corporate":
+      return {
+        ...defaultData,
+        template: "meridian-corporate",
+      };
+    case "cosmos-professional":
+      return {
+        ...defaultData,
+        template: "cosmos-professional",
+      };
+    case "pinnacle-elite":
+      return {
+        ...defaultData,
+        template: "pinnacle-elite",
+      };
+    case "flux-executive":
+      return {
+        ...defaultData,
+        template: "flux-executive",
+      };
+    case "vertex-professional":
+      return {
+        ...defaultData,
+        template: "vertex-professional",
+      };
+    case "radiance-corporate":
+      return {
+        ...defaultData,
+        template: "radiance-corporate",
+      };
+    case "atlas-executive":
+      return {
+        ...defaultData,
+        template: "atlas-executive",
+      };
+    case "spectrum-professional":
+      return {
+        ...defaultData,
+        template: "spectrum-professional",
+      };
+    case "codeforge-developer":
+      return {
+        ...defaultData,
+        template: "codeforge-developer",
+      };
+    case "quantum-coder":
+      return {
+        ...defaultData,
+        template: "quantum-coder",
+      };
+    case "neural-engineer":
+      return {
+        ...defaultData,
+        template: "neural-engineer",
+      };
+    case "pixelcraft-developer":
+      return {
+        ...defaultData,
+        template: "pixelcraft-developer",
+      };
+    case "cloudnative-architect":
+      return {
+        ...defaultData,
+        template: "cloudnative-architect",
+      };
+    case "bytecode-specialist":
+      return {
+        ...defaultData,
+        template: "bytecode-specialist",
+      };
+    case "agileflow-developer":
+      return {
+        ...defaultData,
+        template: "agileflow-developer",
+      };
+    case "stackmaster-fullstack":
+      return {
+        ...defaultData,
+        template: "stackmaster-fullstack",
+      };
+    case "gitflow-engineer":
+      return {
+        ...defaultData,
+        template: "gitflow-engineer",
+      };
+    case "compile-time-dev":
+      return {
+        ...defaultData,
+        template: "compile-time-dev",
+      };
+    case "microarch-engineer":
+      return {
+        ...defaultData,
+        template: "microarch-engineer",
+      };
+    case "serverless-specialist":
+      return {
+        ...defaultData,
+        template: "serverless-specialist",
+      };
+    case "edgecompute-developer":
+      return {
+        ...defaultData,
+        template: "edgecompute-developer",
+      };
+    case "webrtc-engineer":
+      return {
+        ...defaultData,
+        template: "webrtc-engineer",
+      };
+    case "graphdb-specialist":
+      return {
+        ...defaultData,
+        template: "graphdb-specialist",
+      };
+    case "containerops-engineer":
+      return {
+        ...defaultData,
+        template: "containerops-engineer",
+      };
+    case "apigateway-architect":
+      return {
+        ...defaultData,
+        template: "apigateway-architect",
+      };
+    case "observability-engineer":
+      return {
+        ...defaultData,
+        template: "observability-engineer",
+      };
+    case "eventdriven-architect":
+      return {
+        ...defaultData,
+        template: "eventdriven-architect",
+      };
+    case "mlops-engineer":
+      return {
+        ...defaultData,
+        template: "mlops-engineer",
+      };
+    case "launchpad-graduate":
+      return {
+        ...defaultData,
+        template: "launchpad-graduate",
+      };
+    case "momentum-fresher":
+      return {
+        ...defaultData,
+        template: "momentum-fresher",
+      };
+    case "horizon-graduate":
+      return {
+        ...defaultData,
+        template: "horizon-graduate",
+      };
+    case "catalyst-fresher":
+      return {
+        ...defaultData,
+        template: "catalyst-fresher",
+      };
+    case "pathway-graduate":
+      return {
+        ...defaultData,
+        template: "pathway-graduate",
+      };
+    case "spark-fresher":
+      return {
+        ...defaultData,
+        template: "spark-fresher",
+      };
+    case "ascend-graduate":
+      return {
+        ...defaultData,
+        template: "ascend-graduate",
+      };
+    case "pioneer-fresher":
+      return {
+        ...defaultData,
+        template: "pioneer-fresher",
+      };
+    case "keystone-graduate":
+      return {
+        ...defaultData,
+        template: "keystone-graduate",
+      };
+    case "venture-fresher":
+      return {
+        ...defaultData,
+        template: "venture-fresher",
+      };
+    case "aspire-graduate":
+      return {
+        ...defaultData,
+        template: "aspire-graduate",
+      };
+    case "emerge-fresher":
+      return {
+        ...defaultData,
+        template: "emerge-fresher",
+      };
+    case "bright-graduate":
+      return {
+        ...defaultData,
+        template: "bright-graduate",
+      };
+    case "nextstep-fresher":
+      return {
+        ...defaultData,
+        template: "nextstep-fresher",
+      };
+    case "foundation-graduate":
+      return {
+        ...defaultData,
+        template: "foundation-graduate",
+      };
+    case "elevate-fresher":
+      return {
+        ...defaultData,
+        template: "elevate-fresher",
+      };
+    case "genesis-graduate":
+      return {
+        ...defaultData,
+        template: "genesis-graduate",
+      };
+    case "achiever-fresher":
+      return {
+        ...defaultData,
+        template: "achiever-fresher",
+      };
+    case "milestone-graduate":
+      return {
+        ...defaultData,
+        template: "milestone-graduate",
+      };
+    case "potential-fresher":
+      return {
+        ...defaultData,
+        template: "potential-fresher",
+      };
+    case "muse-creative":
+      return {
+        ...defaultData,
+        template: "muse-creative",
+      };
+    case "canvas-artist":
+      return {
+        ...defaultData,
+        template: "canvas-artist",
+      };
+    case "palette-designer":
+      return {
+        ...defaultData,
+        template: "palette-designer",
+      };
+    case "visionary-creative":
+      return {
+        ...defaultData,
+        template: "visionary-creative",
+      };
+    case "studio-artist":
+      return {
+        ...defaultData,
+        template: "studio-artist",
+      };
+    case "creative-pulse":
+      return {
+        ...defaultData,
+        template: "creative-pulse",
+      };
+    case "artisan-designer":
+      return {
+        ...defaultData,
+        template: "artisan-designer",
+      };
+    case "chromatic-creative":
+      return {
+        ...defaultData,
+        template: "chromatic-creative",
+      };
+    case "expression-artist":
+      return {
+        ...defaultData,
+        template: "expression-artist",
+      };
+    case "imaginative-designer":
+      return {
+        ...defaultData,
+        template: "imaginative-designer",
+      };
+    case "aesthetic-creative":
+      return {
+        ...defaultData,
+        template: "aesthetic-creative",
+      };
+    case "composition-artist":
+      return {
+        ...defaultData,
+        template: "composition-artist",
+      };
+    case "impression-designer":
+      return {
+        ...defaultData,
+        template: "impression-designer",
+      };
+    case "narrative-creative":
+      return {
+        ...defaultData,
+        template: "narrative-creative",
+      };
+    case "craft-artist":
+      return {
+        ...defaultData,
+        template: "craft-artist",
+      };
+    case "vibrant-designer":
+      return {
+        ...defaultData,
+        template: "vibrant-designer",
+      };
+    case "concept-creative":
+      return {
+        ...defaultData,
+        template: "concept-creative",
+      };
+    case "editorial-artist":
+      return {
+        ...defaultData,
+        template: "editorial-artist",
+      };
+    case "vision-designer":
+      return {
+        ...defaultData,
+        template: "vision-designer",
+      };
+    case "curator-creative":
+      return {
+        ...defaultData,
+        template: "curator-creative",
+      };
+    case "interface-master":
+      return {
+        ...defaultData,
+        template: "interface-master",
+      };
+    case "designsystem-architect":
+      return {
+        ...defaultData,
+        template: "designsystem-architect",
+      };
+    case "userflow-designer":
+      return {
+        ...defaultData,
+        template: "userflow-designer",
+      };
+    case "prototype-specialist":
+      return {
+        ...defaultData,
+        template: "prototype-specialist",
+      };
+    case "pixelperfect-designer":
+      return {
+        ...defaultData,
+        template: "pixelperfect-designer",
+      };
+    case "responsive-ux":
+      return {
+        ...defaultData,
+        template: "responsive-ux",
+      };
+    case "wireframe-specialist":
+      return {
+        ...defaultData,
+        template: "wireframe-specialist",
+      };
+    case "microinteraction-designer":
+      return {
+        ...defaultData,
+        template: "microinteraction-designer",
+      };
+    case "accessibility-ux":
+      return {
+        ...defaultData,
+        template: "accessibility-ux",
+      };
+    case "userresearch-specialist":
+      return {
+        ...defaultData,
+        template: "userresearch-specialist",
+      };
+    case "information-architect":
+      return {
+        ...defaultData,
+        template: "information-architect",
+      };
+    case "designthinking-specialist":
+      return {
+        ...defaultData,
+        template: "designthinking-specialist",
+      };
+    case "componentui-designer":
+      return {
+        ...defaultData,
+        template: "componentui-designer",
+      };
+    case "designops-specialist":
+      return {
+        ...defaultData,
+        template: "designops-specialist",
+      };
+    case "mobile-first-designer":
+      return {
+        ...defaultData,
+        template: "mobile-first-designer",
+      };
+    case "servicedesign-specialist":
+      return {
+        ...defaultData,
+        template: "servicedesign-specialist",
+      };
+    case "designstrategy-lead":
+      return {
+        ...defaultData,
+        template: "designstrategy-lead",
+      };
+    case "conversational-ux":
+      return {
+        ...defaultData,
+        template: "conversational-ux",
+      };
+    case "motion-ui-designer":
+      return {
+        ...defaultData,
+        template: "motion-ui-designer",
+      };
+    case "designleadership-director":
+      return {
+        ...defaultData,
+        template: "designleadership-director",
+      };
