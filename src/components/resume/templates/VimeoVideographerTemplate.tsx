@@ -1,221 +1,204 @@
-import type { ResumeData } from "@/pages/Editor";
-import type { ResumeSection } from "@/types/resume";
-import { Mail, Phone, MapPin, Linkedin, Github, Globe, Twitter } from "lucide-react";
-import { ProfilePhoto } from "./ProfilePhoto";
+import { ResumeData } from "@/pages/Editor";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
-import { InlineEditableDynamicSection } from "@/components/resume/InlineEditableDynamicSection";
-import { HelperSectionVariantRenderer } from "@/components/resume/HelperSectionVariantRenderer";
+import { Globe, Linkedin, Github, Twitter, Mail, Phone, MapPin } from "lucide-react";
 
-interface TemplateProps {
+interface VimeoVideographerTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
 }
 
-export const VimeoVideographerTemplate = ({ resumeData, themeColor = "#1ab7ea", editable = false }: TemplateProps) => {
-  const formatDate = (date: string) => {
-    if (!date) return "";
-    const [year, month] = date.split("-");
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    return `${monthNames[parseInt(month) - 1]} ${year}`;
-  };
+const normalizeHex = (color?: string) => {
+  if (!color || !color.startsWith("#")) return undefined;
+  if (color.length === 4) {
+    const [_, r, g, b] = color;
+    return `#${r}${r}${g}${g}${b}${b}`;
+  }
+  return color.slice(0, 7);
+};
 
-  const photo = resumeData.personalInfo.photo;
+const withOpacity = (color: string | undefined, alpha: string) => {
+  const normalized = normalizeHex(color);
+  if (!normalized) return color;
+  return `${normalized}${alpha}`;
+};
 
-  // Type assertion for social links (future-proof)
-  const personalInfoWithSocials = resumeData.personalInfo as any;
-
-  const renderDynamicSection = (section: ResumeSection, sectionIndex: number) => {
-    if (!section.enabled) return null;
-
-    if (editable) {
-      const renderNonEditableContent = () => {
-        return <HelperSectionVariantRenderer section={section} formatDate={formatDate} />;
-      };
-
-      return (
-        <div key={section.id} style={{ pageBreakInside: 'avoid' }}>
-          <InlineEditableDynamicSection
-            section={section}
-            sectionIndex={sectionIndex}
-            formatDate={formatDate}
-            renderNonEditable={renderNonEditableContent}
-          />
-        </div>
-      );
-    }
-
-    return <HelperSectionVariantRenderer key={section.id} section={section} formatDate={formatDate} />;
-  };
+export const VimeoVideographerTemplate = ({
+  resumeData,
+  themeColor = "#1ab7ea",
+  editable = false,
+}: VimeoVideographerTemplateProps) => {
+  const accent = normalizeHex(themeColor) ?? "#1ab7ea";
+  const accentLight = withOpacity(accent, "15") ?? "#1ab7ea15";
+  const accentBorder = withOpacity(accent, "33") ?? "#1ab7ea33";
 
   return (
-    <div className="w-full h-full bg-white p-12 text-gray-900" style={{ pageBreakAfter: 'auto' }}>
-      {/* Header */}
-      <div className="mb-8 pb-6 border-b-2" style={{ borderColor: themeColor, pageBreakAfter: 'avoid', pageBreakInside: 'avoid' }}>
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="flex-1">
-            {editable ? (
-              <>
-                <InlineEditableText
-                  path="personalInfo.fullName"
-                  value={resumeData.personalInfo.fullName || "Your Name"}
-                  className="text-4xl font-bold mb-2 uppercase tracking-wide block"
-                  style={{ color: themeColor }}
-                  as="h1"
-                />
-                {resumeData.personalInfo.title && (
+    <div className="w-full h-full bg-white text-gray-900 p-12 text-[13px] leading-relaxed">
+      {/* Header with Name */}
+      <div className="mb-6">
+        {editable ? (
+          <InlineEditableText
+            path="personalInfo.fullName"
+            value={resumeData.personalInfo.fullName}
+            className="text-[34px] font-bold mb-2 block tracking-tight"
+            style={{ color: accent }}
+            as="h1"
+          />
+        ) : (
+          <h1 className="text-[34px] font-bold mb-2 tracking-tight" style={{ color: accent }}>
+            {resumeData.personalInfo.fullName}
+          </h1>
+        )}
+      </div>
+
+      {/* Contact Info & Social Links */}
+      <div className="mb-8 pb-6 border-b-2" style={{ borderColor: accentBorder }}>
+        <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-[12px]">
+          {/* Left Column - Traditional Contact */}
+          <div className="space-y-1.5">
+            {resumeData.personalInfo.email && (
+              <div className="flex items-center gap-2 text-gray-700">
+                <Mail className="w-4 h-4" style={{ color: accent }} />
+                {editable ? (
                   <InlineEditableText
-                    path="personalInfo.title"
-                    value={resumeData.personalInfo.title}
-                    className="text-xl text-gray-700 font-medium block"
-                    as="p"
+                    path="personalInfo.email"
+                    value={resumeData.personalInfo.email}
+                    className="inline-block"
                   />
+                ) : (
+                  <span>{resumeData.personalInfo.email}</span>
                 )}
-              </>
-            ) : (
-              <>
-                <h1 className="text-4xl font-bold mb-2 uppercase tracking-wide" style={{ color: themeColor }}>
-                  {resumeData.personalInfo.fullName || "Your Name"}
-                </h1>
-                {resumeData.personalInfo.title && (
-                  <p className="text-xl text-gray-700 font-medium">
-                    {resumeData.personalInfo.title}
-                  </p>
-                )}
-              </>
+              </div>
             )}
-
-            {/* Contact Information */}
-            <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
-              {resumeData.personalInfo.email && (
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" style={{ color: themeColor }} />
-                  {editable ? (
-                    <InlineEditableText
-                      path="personalInfo.email"
-                      value={resumeData.personalInfo.email}
-                      className="inline-block"
-                    />
-                  ) : (
-                    <span>{resumeData.personalInfo.email}</span>
-                  )}
-                </div>
-              )}
-              {resumeData.personalInfo.phone && (
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4" style={{ color: themeColor }} />
-                  {editable ? (
-                    <InlineEditableText
-                      path="personalInfo.phone"
-                      value={resumeData.personalInfo.phone}
-                      className="inline-block"
-                    />
-                  ) : (
-                    <span>{resumeData.personalInfo.phone}</span>
-                  )}
-                </div>
-              )}
-              {resumeData.personalInfo.location && (
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" style={{ color: themeColor }} />
-                  {editable ? (
-                    <InlineEditableText
-                      path="personalInfo.location"
-                      value={resumeData.personalInfo.location}
-                      className="inline-block"
-                    />
-                  ) : (
-                    <span>{resumeData.personalInfo.location}</span>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Social Links Section */}
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-              {personalInfoWithSocials.linkedin && (
-                <a
-                  href={personalInfoWithSocials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 hover:opacity-70 transition-opacity"
-                  style={{ color: themeColor }}
-                >
-                  <Linkedin className="h-4 w-4" />
-                  <span className="font-medium">LinkedIn</span>
-                </a>
-              )}
-              {personalInfoWithSocials.github && (
-                <a
-                  href={personalInfoWithSocials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 hover:opacity-70 transition-opacity"
-                  style={{ color: themeColor }}
-                >
-                  <Github className="h-4 w-4" />
-                  <span className="font-medium">GitHub</span>
-                </a>
-              )}
-              {personalInfoWithSocials.website && (
-                <a
-                  href={personalInfoWithSocials.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 hover:opacity-70 transition-opacity"
-                  style={{ color: themeColor }}
-                >
-                  <Globe className="h-4 w-4" />
-                  <span className="font-medium">Portfolio</span>
-                </a>
-              )}
-              {personalInfoWithSocials.twitter && (
-                <a
-                  href={personalInfoWithSocials.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 hover:opacity-70 transition-opacity"
-                  style={{ color: themeColor }}
-                >
-                  <Twitter className="h-4 w-4" />
-                  <span className="font-medium">Twitter</span>
-                </a>
-              )}
-            </div>
+            {resumeData.personalInfo.phone && (
+              <div className="flex items-center gap-2 text-gray-700">
+                <Phone className="w-4 h-4" style={{ color: accent }} />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.phone"
+                    value={resumeData.personalInfo.phone}
+                    className="inline-block"
+                  />
+                ) : (
+                  <span>{resumeData.personalInfo.phone}</span>
+                )}
+              </div>
+            )}
+            {resumeData.personalInfo.location && (
+              <div className="flex items-center gap-2 text-gray-700">
+                <MapPin className="w-4 h-4" style={{ color: accent }} />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.location"
+                    value={resumeData.personalInfo.location}
+                    className="inline-block"
+                  />
+                ) : (
+                  <span>{resumeData.personalInfo.location}</span>
+                )}
+              </div>
+            )}
           </div>
-          <ProfilePhoto src={photo} borderClass="border-4" style={{ borderColor: themeColor }} />
+
+          {/* Right Column - Social/Online Presence */}
+          <div className="space-y-1.5">
+            {resumeData.personalInfo.website && (
+              <div className="flex items-center gap-2 text-gray-700">
+                <Globe className="w-4 h-4" style={{ color: accent }} />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.website"
+                    value={resumeData.personalInfo.website}
+                    className="inline-block"
+                  />
+                ) : (
+                  <a href={resumeData.personalInfo.website} className="hover:underline">
+                    {resumeData.personalInfo.website}
+                  </a>
+                )}
+              </div>
+            )}
+            {resumeData.personalInfo.linkedin && (
+              <div className="flex items-center gap-2 text-gray-700">
+                <Linkedin className="w-4 h-4" style={{ color: accent }} />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.linkedin"
+                    value={resumeData.personalInfo.linkedin}
+                    className="inline-block"
+                  />
+                ) : (
+                  <a href={resumeData.personalInfo.linkedin} className="hover:underline">
+                    {resumeData.personalInfo.linkedin}
+                  </a>
+                )}
+              </div>
+            )}
+            {resumeData.personalInfo.github && (
+              <div className="flex items-center gap-2 text-gray-700">
+                <Github className="w-4 h-4" style={{ color: accent }} />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.github"
+                    value={resumeData.personalInfo.github}
+                    className="inline-block"
+                  />
+                ) : (
+                  <a href={resumeData.personalInfo.github} className="hover:underline">
+                    {resumeData.personalInfo.github}
+                  </a>
+                )}
+              </div>
+            )}
+            {resumeData.personalInfo.portfolio && (
+              <div className="flex items-center gap-2 text-gray-700">
+                <Globe className="w-4 h-4" style={{ color: accent }} />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.portfolio"
+                    value={resumeData.personalInfo.portfolio}
+                    className="inline-block"
+                  />
+                ) : (
+                  <a href={resumeData.personalInfo.portfolio} className="hover:underline">
+                    {resumeData.personalInfo.portfolio}
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Professional Summary */}
       {resumeData.personalInfo.summary && (
-        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-          <h2 className="text-lg font-bold mb-3 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
+        <div className="mb-8">
+          <h2 className="text-[16px] font-bold mb-3 uppercase tracking-wider" style={{ color: accent }}>
             Professional Summary
           </h2>
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
               value={resumeData.personalInfo.summary}
-              className="text-sm text-gray-700 leading-relaxed block"
+              className="text-[13px] text-gray-700 leading-[1.8] block"
               multiline
               as="p"
             />
           ) : (
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p className="text-[13px] text-gray-700 leading-[1.8]">
               {resumeData.personalInfo.summary}
             </p>
           )}
         </div>
       )}
 
-      {/* Experience */}
-      {resumeData.experience.length > 0 && (
+      {/* Experience Section */}
+      {resumeData.experience && resumeData.experience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-bold mb-4 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
+          <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>
             Professional Experience
           </h2>
           {editable ? (
@@ -233,88 +216,97 @@ export const VimeoVideographerTemplate = ({ resumeData, themeColor = "#1ab7ea", 
               }}
               addButtonLabel="Add Experience"
               renderItem={(exp, index) => (
-                <div style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-2">
-                    <div>
+                <div className="mb-6 last:mb-0">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1">
                       <InlineEditableText
                         path={`experience[${index}].position`}
-                        value={exp.position || "Position Title"}
-                        className="text-base font-bold text-gray-900 block"
+                        value={exp.position}
+                        className="text-[14.5px] font-semibold text-gray-900 block mb-1"
                         as="h3"
                       />
                       <InlineEditableText
                         path={`experience[${index}].company`}
-                        value={exp.company || "Company Name"}
-                        className="text-sm font-semibold block"
-                        style={{ color: themeColor }}
+                        value={exp.company}
+                        className="text-[13px] font-medium block"
+                        style={{ color: accent }}
                         as="p"
                       />
                     </div>
-                    <div className="text-xs text-gray-600 text-right flex items-center gap-1">
-                      <InlineEditableDate
-                        path={`experience[${index}].startDate`}
-                        value={exp.startDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                      <span> - </span>
-                      {exp.current ? (
-                        <span className="font-semibold" style={{ color: themeColor }}>Present</span>
-                      ) : (
+                    <div className="text-right text-[11.5px] text-gray-600 ml-4">
+                      <div className="flex items-center gap-1.5">
                         <InlineEditableDate
-                          path={`experience[${index}].endDate`}
-                          value={exp.endDate}
-                          formatDisplay={formatDate}
+                          path={`experience[${index}].startDate`}
+                          value={exp.startDate}
                           className="inline-block"
                         />
-                      )}
+                        <span>-</span>
+                        {exp.current ? (
+                          <span className="font-medium">Present</span>
+                        ) : (
+                          <InlineEditableDate
+                            path={`experience[${index}].endDate`}
+                            value={exp.endDate}
+                            className="inline-block"
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                   {exp.description && (
                     <InlineEditableText
                       path={`experience[${index}].description`}
                       value={exp.description}
-                      className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
+                      className="text-[12.5px] text-gray-700 leading-[1.8] mt-2 block"
                       multiline
-                      as="p"
+                      as="div"
                     />
                   )}
                 </div>
               )}
             />
           ) : (
-            <div className="space-y-5">
-              {resumeData.experience.map((exp) => (
-                <div key={exp.id} style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-2">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">
-                        {exp.position || "Position Title"}
+            resumeData.experience.map((exp, index) => {
+              const bulletPoints = (exp.description || "")
+                .split("\n")
+                .map((line) => line.trim())
+                .filter(Boolean);
+
+              return (
+                <div key={index} className="mb-6 last:mb-0">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1">
+                      <h3 className="text-[14.5px] font-semibold text-gray-900 mb-1">
+                        {exp.position}
                       </h3>
-                      <p className="text-sm font-semibold" style={{ color: themeColor }}>
-                        {exp.company || "Company Name"}
+                      <p className="text-[13px] font-medium" style={{ color: accent }}>
+                        {exp.company}
                       </p>
                     </div>
-                    <div className="text-xs text-gray-600 text-right">
-                      {formatDate(exp.startDate)} - {exp.current ? <span className="font-semibold" style={{ color: themeColor }}>Present</span> : formatDate(exp.endDate)}
+                    <div className="text-right text-[11.5px] text-gray-600 ml-4">
+                      <p>
+                        {exp.startDate} - {exp.current ? "Present" : exp.endDate}
+                      </p>
                     </div>
                   </div>
-                  {exp.description && (
-                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-                      {exp.description}
-                    </p>
+                  {bulletPoints.length > 0 && (
+                    <ul className="ml-5 list-disc space-y-1.5 text-[12.5px] text-gray-700 leading-[1.8] mt-2">
+                      {bulletPoints.map((point, i) => (
+                        <li key={i}>{point}</li>
+                      ))}
+                    </ul>
                   )}
                 </div>
-              ))}
-            </div>
+              );
+            })
           )}
         </div>
       )}
 
-      {/* Education */}
-      {resumeData.education.length > 0 && (
+      {/* Education Section */}
+      {resumeData.education && resumeData.education.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-bold mb-4 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
+          <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>
             Education
           </h2>
           {editable ? (
@@ -331,107 +323,83 @@ export const VimeoVideographerTemplate = ({ resumeData, themeColor = "#1ab7ea", 
               }}
               addButtonLabel="Add Education"
               renderItem={(edu, index) => (
-                <div style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">
-                        <InlineEditableText
-                          path={`education[${index}].degree`}
-                          value={edu.degree || "Degree"}
-                          className="inline-block"
-                        />
-                        {edu.field && (
-                          <>
-                            {" in "}
-                            <InlineEditableText
-                              path={`education[${index}].field`}
-                              value={edu.field}
-                              className="inline-block"
-                            />
-                          </>
-                        )}
-                      </h3>
+                <div className="mb-4 last:mb-0">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <InlineEditableText
+                        path={`education[${index}].degree`}
+                        value={`${edu.degree}${edu.field ? ` in ${edu.field}` : ""}`}
+                        className="text-[14px] font-semibold text-gray-900 block mb-1"
+                        as="h3"
+                      />
                       <InlineEditableText
                         path={`education[${index}].school`}
-                        value={edu.school || "School Name"}
-                        className="text-sm font-semibold block"
-                        style={{ color: themeColor }}
+                        value={edu.school}
+                        className="text-[13px] text-gray-700 block"
                         as="p"
                       />
                     </div>
-                    <div className="text-xs text-gray-600 flex items-center gap-1">
-                      <InlineEditableDate
-                        path={`education[${index}].startDate`}
-                        value={edu.startDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                      <span> - </span>
-                      <InlineEditableDate
-                        path={`education[${index}].endDate`}
-                        value={edu.endDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
+                    <div className="text-right text-[11.5px] text-gray-600 ml-4">
+                      <p>
+                        {edu.startDate} - {edu.endDate}
+                      </p>
                     </div>
                   </div>
                 </div>
               )}
             />
           ) : (
-            <div className="space-y-4">
-              {resumeData.education.map((edu) => (
-                <div key={edu.id} style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">
-                        {edu.degree || "Degree"} {edu.field && `in ${edu.field}`}
-                      </h3>
-                      <p className="text-sm font-semibold" style={{ color: themeColor }}>
-                        {edu.school || "School Name"}
-                      </p>
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                    </div>
+            resumeData.education.map((edu, index) => (
+              <div key={index} className="mb-4 last:mb-0">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="text-[14px] font-semibold text-gray-900 mb-1">
+                      {edu.degree} {edu.field && `in ${edu.field}`}
+                    </h3>
+                    <p className="text-[13px] text-gray-700">{edu.school}</p>
+                  </div>
+                  <div className="text-right text-[11.5px] text-gray-600 ml-4">
+                    <p>
+                      {edu.startDate} - {edu.endDate}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           )}
         </div>
       )}
 
-      {/* Skills */}
-      {resumeData.skills.length > 0 && (
-        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-          <h2 className="text-lg font-bold mb-3 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
+      {/* Skills Section */}
+      {resumeData.skills && resumeData.skills.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>
             Skills
           </h2>
           {editable ? (
             <InlineEditableSkills
               path="skills"
               skills={resumeData.skills}
-              renderSkill={(skill, index) =>
-                skill.name && (
-                  <span className="inline-block px-3 py-1 mr-2 mb-2 rounded-full text-sm font-medium text-white" style={{ backgroundColor: themeColor }}>
-                    {skill.name}
-                  </span>
-                )
-              }
+              renderSkill={(skill, index) => (
+                <span
+                  key={index}
+                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded-md"
+                  style={{ border: `1.5px solid ${accentBorder}`, backgroundColor: accentLight }}
+                >
+                  {skill.name}
+                </span>
+              )}
             />
           ) : (
             <div className="flex flex-wrap gap-2">
-              {resumeData.skills.map((skill) => (
-                skill.name && (
-                  <span
-                    key={skill.id}
-                    className="inline-block px-3 py-1 rounded-full text-sm font-medium text-white"
-                    style={{ backgroundColor: themeColor }}
-                  >
-                    {skill.name}
-                  </span>
-                )
+              {resumeData.skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded-md"
+                  style={{ border: `1.5px solid ${accentBorder}`, backgroundColor: accentLight }}
+                >
+                  {skill.name}
+                </span>
               ))}
             </div>
           )}
@@ -439,50 +407,52 @@ export const VimeoVideographerTemplate = ({ resumeData, themeColor = "#1ab7ea", 
       )}
 
       {/* Custom Sections */}
-      {resumeData.sections.map((section, index) => (
-        <div key={section.id} className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-          <h2 className="text-lg font-bold mb-3 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
-            {editable ? (
-              <InlineEditableText
-                path={`sections[${index}].title`}
-                value={section.title}
-                className="inline-block"
-              />
-            ) : (
-              section.title
+      {resumeData.sections && resumeData.sections.length > 0 && (
+        editable ? (
+          <InlineEditableList
+            path="sections"
+            items={resumeData.sections}
+            defaultItem={{
+              id: Date.now().toString(),
+              title: "New Section",
+              content: "Section content here",
+            }}
+            addButtonLabel="Add Section"
+            renderItem={(section, sectionIndex) => (
+              <div className="mb-8">
+                <InlineEditableText
+                  path={`sections[${sectionIndex}].title`}
+                  value={section.title}
+                  className="text-[16px] font-bold mb-4 uppercase tracking-wider block"
+                  style={{ color: accent }}
+                  as="h2"
+                />
+                <InlineEditableText
+                  path={`sections[${sectionIndex}].content`}
+                  value={section.content}
+                  className="text-[13px] text-gray-700 leading-[1.8] block"
+                  multiline
+                  as="div"
+                />
+              </div>
             )}
-          </h2>
-          {editable ? (
-            <InlineEditableText
-              path={`sections[${index}].content`}
-              value={section.content}
-              className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
-              multiline
-              as="p"
-            />
-          ) : (
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-              {section.content}
-            </p>
-          )}
-        </div>
-      ))}
-
-      {/* Dynamic Sections */}
-      {resumeData.dynamicSections && Array.isArray(resumeData.dynamicSections) && resumeData.dynamicSections.length > 0 && (
-        <>
-          {resumeData.dynamicSections
-            .filter(section => section.enabled)
-            .sort((a, b) => a.order - b.order)
-            .map((section, index) => {
-              const actualIndex = resumeData.dynamicSections!.findIndex(s => s.id === section.id);
-              return (
-                <div key={section.id}>
-                  {renderDynamicSection(section, actualIndex)}
-                </div>
-              );
-            })}
-        </>
+          />
+        ) : (
+          resumeData.sections.map((section, sectionIndex) => (
+            <div key={sectionIndex} className="mb-8">
+              <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>
+                {section.title}
+              </h2>
+              <div className="text-[13px] text-gray-700 leading-[1.8]">
+                {section.content.split("\n").map((line, i) => (
+                  <p key={i} className="mb-1.5">
+                    {line}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))
+        )
       )}
     </div>
   );

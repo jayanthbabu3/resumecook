@@ -1,0 +1,500 @@
+    case "digital-professional":
+      return {
+        ...defaultData,
+        template: "digital-professional",
+      };
+    case "networked-executive":
+      return {
+        ...defaultData,
+        template: "networked-executive",
+      };
+    case "connected-professional":
+      return {
+        ...defaultData,
+        template: "connected-professional",
+      };
+    case "linkedin-optimized":
+      return {
+        ...defaultData,
+        template: "linkedin-optimized",
+      };
+    case "social-executive":
+      return {
+        ...defaultData,
+        template: "social-executive",
+      };
+    case "online-professional":
+      return {
+        ...defaultData,
+        template: "online-professional",
+      };
+    case "webpresence-executive":
+      return {
+        ...defaultData,
+        template: "webpresence-executive",
+      };
+    case "profile-centric":
+      return {
+        ...defaultData,
+        template: "profile-centric",
+      };
+    case "global-networker":
+      return {
+        ...defaultData,
+        template: "global-networker",
+      };
+    case "modern-digital":
+      return {
+        ...defaultData,
+        template: "modern-digital",
+      };
+    case "social-savvy":
+      return {
+        ...defaultData,
+        template: "social-savvy",
+      };
+    case "platform-professional":
+      return {
+        ...defaultData,
+        template: "platform-professional",
+      };
+    case "digital-executive":
+      return {
+        ...defaultData,
+        template: "digital-executive",
+      };
+    case "branded-professional":
+      return {
+        ...defaultData,
+        template: "branded-professional",
+      };
+    case "influencer-professional":
+      return {
+        ...defaultData,
+        template: "influencer-professional",
+      };
+    case "online-identity":
+      return {
+        ...defaultData,
+        template: "online-identity",
+      };
+    case "portfolio-professional":
+      return {
+        ...defaultData,
+        template: "portfolio-professional",
+      };
+    case "digital-identity":
+      return {
+        ...defaultData,
+        template: "digital-identity",
+      };
+    case "social-media-pro":
+      return {
+        ...defaultData,
+        template: "social-media-pro",
+      };
+    case "connected-leader":
+      return {
+        ...defaultData,
+        template: "connected-leader",
+      };
+    case "github-portfolio-dev":
+      return {
+        ...defaultData,
+        template: "github-portfolio-dev",
+      };
+    case "opensource-developer":
+      return {
+        ...defaultData,
+        template: "opensource-developer",
+      };
+    case "stackoverflow-dev":
+      return {
+        ...defaultData,
+        template: "stackoverflow-dev",
+      };
+    case "codepen-developer":
+      return {
+        ...defaultData,
+        template: "codepen-developer",
+      };
+    case "portfolio-coder":
+      return {
+        ...defaultData,
+        template: "portfolio-coder",
+      };
+    case "tech-blogger-dev":
+      return {
+        ...defaultData,
+        template: "tech-blogger-dev",
+      };
+    case "youtube-dev-educator":
+      return {
+        ...defaultData,
+        template: "youtube-dev-educator",
+      };
+    case "linkedin-tech-expert":
+      return {
+        ...defaultData,
+        template: "linkedin-tech-expert",
+      };
+    case "twitter-dev":
+      return {
+        ...defaultData,
+        template: "twitter-dev",
+      };
+    case "medium-tech-writer":
+      return {
+        ...defaultData,
+        template: "medium-tech-writer",
+      };
+    case "devto-contributor":
+      return {
+        ...defaultData,
+        template: "devto-contributor",
+      };
+    case "hackernews-developer":
+      return {
+        ...defaultData,
+        template: "hackernews-developer",
+      };
+    case "gitlab-developer":
+      return {
+        ...defaultData,
+        template: "gitlab-developer",
+      };
+    case "bitbucket-developer":
+      return {
+        ...defaultData,
+        template: "bitbucket-developer",
+      };
+    case "npm-package-author":
+      return {
+        ...defaultData,
+        template: "npm-package-author",
+      };
+    case "pypi-contributor":
+      return {
+        ...defaultData,
+        template: "pypi-contributor",
+      };
+    case "dockerhub-publisher":
+      return {
+        ...defaultData,
+        template: "dockerhub-publisher",
+      };
+    case "kaggle-data-scientist":
+      return {
+        ...defaultData,
+        template: "kaggle-data-scientist",
+      };
+    case "leetcode-champion":
+      return {
+        ...defaultData,
+        template: "leetcode-champion",
+      };
+    case "hackerrank-expert":
+      return {
+        ...defaultData,
+        template: "hackerrank-expert",
+      };
+    case "gen-z-graduate":
+      return {
+        ...defaultData,
+        template: "gen-z-graduate",
+      };
+    case "digital-native-grad":
+      return {
+        ...defaultData,
+        template: "digital-native-grad",
+      };
+    case "social-first-fresher":
+      return {
+        ...defaultData,
+        template: "social-first-fresher",
+      };
+    case "portfolio-graduate":
+      return {
+        ...defaultData,
+        template: "portfolio-graduate",
+      };
+    case "project-showcase-grad":
+      return {
+        ...defaultData,
+        template: "project-showcase-grad",
+      };
+    case "github-student":
+      return {
+        ...defaultData,
+        template: "github-student",
+      };
+    case "linkedin-graduate":
+      return {
+        ...defaultData,
+        template: "linkedin-graduate",
+      };
+    case "online-portfolio-fresher":
+      return {
+        ...defaultData,
+        template: "online-portfolio-fresher",
+      };
+    case "social-graduate":
+      return {
+        ...defaultData,
+        template: "social-graduate",
+      };
+    case "digital-graduate":
+      return {
+        ...defaultData,
+        template: "digital-graduate",
+      };
+    case "web-portfolio-grad":
+      return {
+        ...defaultData,
+        template: "web-portfolio-grad",
+      };
+    case "hackathon-graduate":
+      return {
+        ...defaultData,
+        template: "hackathon-graduate",
+      };
+    case "bootcamp-portfolio":
+      return {
+        ...defaultData,
+        template: "bootcamp-portfolio",
+      };
+    case "internship-showcase":
+      return {
+        ...defaultData,
+        template: "internship-showcase",
+      };
+    case "campus-influencer":
+      return {
+        ...defaultData,
+        template: "campus-influencer",
+      };
+    case "student-developer-portfolio":
+      return {
+        ...defaultData,
+        template: "student-developer-portfolio",
+      };
+    case "digital-portfolio-grad":
+      return {
+        ...defaultData,
+        template: "digital-portfolio-grad",
+      };
+    case "online-presence-fresher":
+      return {
+        ...defaultData,
+        template: "online-presence-fresher",
+      };
+    case "networked-graduate":
+      return {
+        ...defaultData,
+        template: "networked-graduate",
+      };
+    case "profile-driven-grad":
+      return {
+        ...defaultData,
+        template: "profile-driven-grad",
+      };
+    case "behance-portfolio":
+      return {
+        ...defaultData,
+        template: "behance-portfolio",
+      };
+    case "dribbble-showcase":
+      return {
+        ...defaultData,
+        template: "dribbble-showcase",
+      };
+    case "artstation-pro":
+      return {
+        ...defaultData,
+        template: "artstation-pro",
+      };
+    case "instagram-creative":
+      return {
+        ...defaultData,
+        template: "instagram-creative",
+      };
+    case "pinterest-designer":
+      return {
+        ...defaultData,
+        template: "pinterest-designer",
+      };
+    case "youtube-creator":
+      return {
+        ...defaultData,
+        template: "youtube-creator",
+      };
+    case "tiktok-content-creator":
+      return {
+        ...defaultData,
+        template: "tiktok-content-creator",
+      };
+    case "vimeo-videographer":
+      return {
+        ...defaultData,
+        template: "vimeo-videographer",
+      };
+    case "soundcloud-artist":
+      return {
+        ...defaultData,
+        template: "soundcloud-artist",
+      };
+    case "spotify-musician":
+      return {
+        ...defaultData,
+        template: "spotify-musician",
+      };
+    case "twitch-streamer-creative":
+      return {
+        ...defaultData,
+        template: "twitch-streamer-creative",
+      };
+    case "deviantart-artist":
+      return {
+        ...defaultData,
+        template: "deviantart-artist",
+      };
+    case "patreon-creative":
+      return {
+        ...defaultData,
+        template: "patreon-creative",
+      };
+    case "medium-writer-creative":
+      return {
+        ...defaultData,
+        template: "medium-writer-creative",
+      };
+    case "substack-author":
+      return {
+        ...defaultData,
+        template: "substack-author",
+      };
+    case "portfolio-website-creative":
+      return {
+        ...defaultData,
+        template: "portfolio-website-creative",
+      };
+    case "online-gallery-artist":
+      return {
+        ...defaultData,
+        template: "online-gallery-artist",
+      };
+    case "social-creative-influencer":
+      return {
+        ...defaultData,
+        template: "social-creative-influencer",
+      };
+    case "multi-platform-artist":
+      return {
+        ...defaultData,
+        template: "multi-platform-artist",
+      };
+    case "digital-artist-portfolio":
+      return {
+        ...defaultData,
+        template: "digital-artist-portfolio",
+      };
+    case "figma-designer-portfolio":
+      return {
+        ...defaultData,
+        template: "figma-designer-portfolio",
+      };
+    case "adobe-portfolio-designer":
+      return {
+        ...defaultData,
+        template: "adobe-portfolio-designer",
+      };
+    case "sketch-expert-portfolio":
+      return {
+        ...defaultData,
+        template: "sketch-expert-portfolio",
+      };
+    case "webflow-designer-portfolio":
+      return {
+        ...defaultData,
+        template: "webflow-designer-portfolio",
+      };
+    case "framer-designer-portfolio":
+      return {
+        ...defaultData,
+        template: "framer-designer-portfolio",
+      };
+    case "uxfolio-designer":
+      return {
+        ...defaultData,
+        template: "uxfolio-designer",
+      };
+    case "coroflot-portfolio":
+      return {
+        ...defaultData,
+        template: "coroflot-portfolio",
+      };
+    case "carbonmade-designer":
+      return {
+        ...defaultData,
+        template: "carbonmade-designer",
+      };
+    case "awwwards-designer":
+      return {
+        ...defaultData,
+        template: "awwwards-designer",
+      };
+    case "uiux-portfolio-pro":
+      return {
+        ...defaultData,
+        template: "uiux-portfolio-pro",
+      };
+    case "designportfolio-specialist":
+      return {
+        ...defaultData,
+        template: "designportfolio-specialist",
+      };
+    case "casestudy-designer":
+      return {
+        ...defaultData,
+        template: "casestudy-designer",
+      };
+    case "protfolio-showcase-ux":
+      return {
+        ...defaultData,
+        template: "protfolio-showcase-ux",
+      };
+    case "interactive-portfolio-designer":
+      return {
+        ...defaultData,
+        template: "interactive-portfolio-designer",
+      };
+    case "ux-researcher-portfolio":
+      return {
+        ...defaultData,
+        template: "ux-researcher-portfolio",
+      };
+    case "product-designer-showcase":
+      return {
+        ...defaultData,
+        template: "product-designer-showcase",
+      };
+    case "design-systems-portfolio":
+      return {
+        ...defaultData,
+        template: "design-systems-portfolio",
+      };
+    case "motion-designer-portfolio":
+      return {
+        ...defaultData,
+        template: "motion-designer-portfolio",
+      };
+    case "visual-designer-showcase":
+      return {
+        ...defaultData,
+        template: "visual-designer-showcase",
+      };
+    case "design-leader-portfolio":
+      return {
+        ...defaultData,
+        template: "design-leader-portfolio",
+      };
