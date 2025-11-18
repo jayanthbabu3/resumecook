@@ -204,7 +204,7 @@ import { MedicalExecutiveTemplate } from "@/components/resume/templates/MedicalE
 import { ClinicalMinimalTemplate } from "@/components/resume/templates/ClinicalMinimalTemplate";
 // Education & Teaching Templates
 import { TeacherProfessionalTemplate } from "@/components/resume/templates/TeacherProfessionalTemplate";
-import { AcademicScholarTemplate } from "@/components/resume/templates/AcademicScholarTemplate";
+import { AcademicEducatorTemplate } from "@/components/resume/templates/AcademicEducatorTemplate";
 import { EducatorModernTemplate } from "@/components/resume/templates/EducatorModernTemplate";
 import { TeachingCertifiedTemplate } from "@/components/resume/templates/TeachingCertifiedTemplate";
 import { StudentEducatorTemplate } from "@/components/resume/templates/StudentEducatorTemplate";
@@ -571,7 +571,7 @@ const displayTemplates: Record<string, any> = {
   "clinical-minimal": ClinicalMinimalTemplate,
   // Education & Teaching
   "teacher-professional": TeacherProfessionalTemplate,
-  "academic-scholar": AcademicScholarTemplate,
+  "academic-scholar": AcademicEducatorTemplate,
   "educator-modern": EducatorModernTemplate,
   "teaching-certified": TeachingCertifiedTemplate,
   "student-educator": StudentEducatorTemplate,

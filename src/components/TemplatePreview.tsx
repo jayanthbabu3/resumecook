@@ -64,7 +64,7 @@ import { MedicalExecutiveTemplate } from "./resume/templates/MedicalExecutiveTem
 import { ClinicalMinimalTemplate } from "./resume/templates/ClinicalMinimalTemplate";
 // Education & Teaching Templates
 import { TeacherProfessionalTemplate } from "./resume/templates/TeacherProfessionalTemplate";
-import { AcademicScholarTemplate } from "./resume/templates/AcademicScholarTemplate";
+import { AcademicEducatorTemplate } from "./resume/templates/AcademicEducatorTemplate";
 import { EducatorModernTemplate } from "./resume/templates/EducatorModernTemplate";
 import { TeachingCertifiedTemplate } from "./resume/templates/TeachingCertifiedTemplate";
 import { StudentEducatorTemplate } from "./resume/templates/StudentEducatorTemplate";
@@ -163,6 +163,119 @@ import { TechStackProTemplate } from "./resume/templates/TechStackProTemplate";
 import { TerminalThemeTemplate } from "./resume/templates/TerminalThemeTemplate";
 import { TimelineEleganceTemplate } from "./resume/templates/TimelineEleganceTemplate";
 import { TwoToneClassicTemplate } from "./resume/templates/TwoToneClassicTemplate";
+// 2025 Universal Profile Templates
+import { SidebarProfessionalUniversalTemplate } from "./resume/templates/SidebarProfessionalUniversalTemplate";
+import { MetroModernUniversalTemplate } from "./resume/templates/MetroModernUniversalTemplate";
+import { SwissStyleUniversalTemplate } from "./resume/templates/SwissStyleUniversalTemplate";
+import { ExecutiveLetterheadUniversalTemplate } from "./resume/templates/ExecutiveLetterheadUniversalTemplate";
+import { DiagonalAccentUniversalTemplate } from "./resume/templates/DiagonalAccentUniversalTemplate";
+import { BorderFrameUniversalTemplate } from "./resume/templates/BorderFrameUniversalTemplate";
+import { CenteredMinimalUniversalTemplate } from "./resume/templates/CenteredMinimalUniversalTemplate";
+import { LeftAlignedProUniversalTemplate } from "./resume/templates/LeftAlignedProUniversalTemplate";
+import { DualColumnModernUniversalTemplate } from "./resume/templates/DualColumnModernUniversalTemplate";
+import { TimelineVerticalUniversalTemplate } from "./resume/templates/TimelineVerticalUniversalTemplate";
+import { BadgeStyleUniversalTemplate } from "./resume/templates/BadgeStyleUniversalTemplate";
+import { UnderlineAccentUniversalTemplate } from "./resume/templates/UnderlineAccentUniversalTemplate";
+import { CircleIconUniversalTemplate } from "./resume/templates/CircleIconUniversalTemplate";
+import { LinearProgressUniversalTemplate } from "./resume/templates/LinearProgressUniversalTemplate";
+import { CardLayoutUniversalTemplate } from "./resume/templates/CardLayoutUniversalTemplate";
+import { RibbonHeaderUniversalTemplate } from "./resume/templates/RibbonHeaderUniversalTemplate";
+import { BoxedSectionsUniversalTemplate } from "./resume/templates/BoxedSectionsUniversalTemplate";
+import { LeftBorderUniversalTemplate } from "./resume/templates/LeftBorderUniversalTemplate";
+import { FloatingHeaderUniversalTemplate } from "./resume/templates/FloatingHeaderUniversalTemplate";
+import { MonochromeElegantUniversalTemplate } from "./resume/templates/MonochromeElegantUniversalTemplate";
+import { GradientHeaderUniversalTemplate } from "./resume/templates/GradientHeaderUniversalTemplate";
+import { SplitPaneUniversalTemplate } from "./resume/templates/SplitPaneUniversalTemplate";
+import { IconBarUniversalTemplate } from "./resume/templates/IconBarUniversalTemplate";
+import { ModernMinimalistUniversalTemplate } from "./resume/templates/ModernMinimalistUniversalTemplate";
+import { BoldTypographyUniversalTemplate } from "./resume/templates/BoldTypographyUniversalTemplate";
+import { GeometricShapesUniversalTemplate } from "./resume/templates/GeometricShapesUniversalTemplate";
+import { ColorBlockUniversalTemplate } from "./resume/templates/ColorBlockUniversalTemplate";
+import { ThinBorderUniversalTemplate } from "./resume/templates/ThinBorderUniversalTemplate";
+import { AsymmetricLayoutUniversalTemplate } from "./resume/templates/AsymmetricLayoutUniversalTemplate";
+import { ClassicSerifUniversalTemplate } from "./resume/templates/ClassicSerifUniversalTemplate";
+import { ProfessionalCompactUniversalTemplate } from "./resume/templates/ProfessionalCompactUniversalTemplate";
+import { WideMarginUniversalTemplate } from "./resume/templates/WideMarginUniversalTemplate";
+import { TopBarUniversalTemplate } from "./resume/templates/TopBarUniversalTemplate";
+import { CornerAccentUniversalTemplate } from "./resume/templates/CornerAccentUniversalTemplate";
+import { StripedBackgroundUniversalTemplate } from "./resume/templates/StripedBackgroundUniversalTemplate";
+import { CircularElementsUniversalTemplate } from "./resume/templates/CircularElementsUniversalTemplate";
+import { MinimalLinesUniversalTemplate } from "./resume/templates/MinimalLinesUniversalTemplate";
+import { BoldSectionHeadersUniversalTemplate } from "./resume/templates/BoldSectionHeadersUniversalTemplate";
+import { TwoToneSplitUniversalTemplate } from "./resume/templates/TwoToneSplitUniversalTemplate";
+import { CleanModernUniversalTemplate } from "./resume/templates/CleanModernUniversalTemplate";
+import { WatermarkStyleUniversalTemplate } from "./resume/templates/WatermarkStyleUniversalTemplate";
+import { MagazineLayoutUniversalTemplate } from "./resume/templates/MagazineLayoutUniversalTemplate";
+import { HexagonalPatternUniversalTemplate } from "./resume/templates/HexagonalPatternUniversalTemplate";
+import { CompactEliteUniversalTemplate } from "./resume/templates/CompactEliteUniversalTemplate";
+import { DiamondAccentUniversalTemplate } from "./resume/templates/DiamondAccentUniversalTemplate";
+import { ZigzagBorderUniversalTemplate } from "./resume/templates/ZigzagBorderUniversalTemplate";
+import { StackedSectionsUniversalTemplate } from "./resume/templates/StackedSectionsUniversalTemplate";
+import { DottedGridUniversalTemplate } from "./resume/templates/DottedGridUniversalTemplate";
+import { WavePatternUniversalTemplate } from "./resume/templates/WavePatternUniversalTemplate";
+import { ChevronAccentUniversalTemplate } from "./resume/templates/ChevronAccentUniversalTemplate";
+import { SpotlightHeaderUniversalTemplate } from "./resume/templates/SpotlightHeaderUniversalTemplate";
+import { LayeredCardsUniversalTemplate } from "./resume/templates/LayeredCardsUniversalTemplate";
+import { AngularModernUniversalTemplate } from "./resume/templates/AngularModernUniversalTemplate";
+import { RoundedCornersUniversalTemplate } from "./resume/templates/RoundedCornersUniversalTemplate";
+import { RetroProfessionalUniversalTemplate } from "./resume/templates/RetroProfessionalUniversalTemplate";
+import { NewspaperStyleUniversalTemplate } from "./resume/templates/NewspaperStyleUniversalTemplate";
+import { TriangularElementsUniversalTemplate } from "./resume/templates/TriangularElementsUniversalTemplate";
+import { ParallaxStyleUniversalTemplate } from "./resume/templates/ParallaxStyleUniversalTemplate";
+import { VerticalTimelineUniversalTemplate } from "./resume/templates/VerticalTimelineUniversalTemplate";
+import { InfinityLoopUniversalTemplate } from "./resume/templates/InfinityLoopUniversalTemplate";
+// 2025 Universal Professional Templates - Batch 5
+import { ExecutiveCornerAccentTemplate } from "./resume/templates/ExecutiveCornerAccentTemplate";
+import { MinimalEleganceUniversalTemplate } from "./resume/templates/MinimalEleganceUniversalTemplate";
+import { ProfessionalDividerTemplate } from "./resume/templates/ProfessionalDividerTemplate";
+import { ModernCorporateGridTemplate } from "./resume/templates/ModernCorporateGridTemplate";
+import { BusinessSidebarProTemplate } from "./resume/templates/BusinessSidebarProTemplate";
+import { CleanTwoColumnUniversalTemplate } from "./resume/templates/CleanTwoColumnUniversalTemplate";
+import { ProfessionalHeaderBannerTemplate } from "./resume/templates/ProfessionalHeaderBannerTemplate";
+import { ExecutiveTimelineModernTemplate } from "./resume/templates/ExecutiveTimelineModernTemplate";
+import { CorporateBorderFrameTemplate } from "./resume/templates/CorporateBorderFrameTemplate";
+import { MinimalistModernProTemplate } from "./resume/templates/MinimalistModernProTemplate";
+import { ProfessionalAccentBarTemplate } from "./resume/templates/ProfessionalAccentBarTemplate";
+import { BusinessCleanLayoutTemplate } from "./resume/templates/BusinessCleanLayoutTemplate";
+import { ExecutiveSplitDesignTemplate } from "./resume/templates/ExecutiveSplitDesignTemplate";
+import { ModernProfessionalBoxTemplate } from "./resume/templates/ModernProfessionalBoxTemplate";
+import { CorporateMinimalistProTemplate } from "./resume/templates/CorporateMinimalistProTemplate";
+import { ProfessionalVerticalLineTemplate } from "./resume/templates/ProfessionalVerticalLineTemplate";
+import { BusinessModernGridTemplate } from "./resume/templates/BusinessModernGridTemplate";
+import { ExecutiveCleanSplitTemplate } from "./resume/templates/ExecutiveCleanSplitTemplate";
+import { MinimalCorporateProTemplate } from "./resume/templates/MinimalCorporateProTemplate";
+import { ProfessionalModernEdgeTemplate } from "./resume/templates/ProfessionalModernEdgeTemplate";
+// 2025 Simple Universal Professional Templates - Batch 6
+import { CleanProfessionalSimpleTemplate } from "./resume/templates/CleanProfessionalSimpleTemplate";
+import { SimpleExecutiveLayoutTemplate } from "./resume/templates/SimpleExecutiveLayoutTemplate";
+import { MinimalProLayoutTemplate } from "./resume/templates/MinimalProLayoutTemplate";
+import { ProfessionalCleanSimpleTemplate } from "./resume/templates/ProfessionalCleanSimpleTemplate";
+import { CorporateSimpleTemplateTemplate } from "./resume/templates/CorporateSimpleTemplateTemplate";
+import { ModernSimpleProTemplate } from "./resume/templates/ModernSimpleProTemplate";
+import { ExecutiveSimpleCleanTemplate } from "./resume/templates/ExecutiveSimpleCleanTemplate";
+import { BusinessSimpleModernTemplate } from "./resume/templates/BusinessSimpleModernTemplate";
+import { ProfessionalEasyReadTemplate } from "./resume/templates/ProfessionalEasyReadTemplate";
+import { CleanCorporateSimpleTemplate } from "./resume/templates/CleanCorporateSimpleTemplate";
+import { SimpleModernExecutiveTemplate } from "./resume/templates/SimpleModernExecutiveTemplate";
+import { MinimalistProSimpleTemplate } from "./resume/templates/MinimalistProSimpleTemplate";
+import { ProfessionalStraightforwardTemplate } from "./resume/templates/ProfessionalStraightforwardTemplate";
+import { ExecutiveDirectLayoutTemplate } from "./resume/templates/ExecutiveDirectLayoutTemplate";
+import { BusinessClearTemplateTemplate } from "./resume/templates/BusinessClearTemplateTemplate";
+import { SimpleProfessionalCleanTemplate } from "./resume/templates/SimpleProfessionalCleanTemplate";
+import { CorporateEasyLayoutTemplate } from "./resume/templates/CorporateEasyLayoutTemplate";
+import { ModernClearProTemplate } from "./resume/templates/ModernClearProTemplate";
+import { ProfessionalPlainSimpleTemplate } from "./resume/templates/ProfessionalPlainSimpleTemplate";
+import { ExecutivePlainLayoutTemplate } from "./resume/templates/ExecutivePlainLayoutTemplate";
+import { SimpleBusinessCleanTemplate } from "./resume/templates/SimpleBusinessCleanTemplate";
+import { MinimalDirectTemplateTemplate } from "./resume/templates/MinimalDirectTemplateTemplate";
+import { ProfessionalBasicModernTemplate } from "./resume/templates/ProfessionalBasicModernTemplate";
+import { CleanBasicExecutiveTemplate } from "./resume/templates/CleanBasicExecutiveTemplate";
+import { SimpleClearBusinessTemplate } from "./resume/templates/SimpleClearBusinessTemplate";
+import { ModernPlainProTemplate } from "./resume/templates/ModernPlainProTemplate";
+import { ExecutiveEasyTemplateTemplate } from "./resume/templates/ExecutiveEasyTemplateTemplate";
+import { ProfessionalReadableLayoutTemplate } from "./resume/templates/ProfessionalReadableLayoutTemplate";
+import { CleanReadableProTemplate } from "./resume/templates/CleanReadableProTemplate";
+import { SimpleStructuredTemplateTemplate } from "./resume/templates/SimpleStructuredTemplateTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -1438,7 +1551,7 @@ const templates = {
   "clinical-minimal": ClinicalMinimalTemplate,
   // Education & Teaching
   "teacher-professional": TeacherProfessionalTemplate,
-  "academic-scholar": AcademicScholarTemplate,
+  "academic-scholar": AcademicEducatorTemplate,
   "educator-modern": EducatorModernTemplate,
   "teaching-certified": TeachingCertifiedTemplate,
   "student-educator": StudentEducatorTemplate,
@@ -1537,6 +1650,119 @@ const templates = {
   "terminal-theme": TerminalThemeTemplate,
   "timeline-elegance": TimelineEleganceTemplate,
   "two-tone-classic": TwoToneClassicTemplate,
+  // 2025 Universal Profile Templates
+  "sidebar-professional-universal": SidebarProfessionalUniversalTemplate,
+  "metro-modern-universal": MetroModernUniversalTemplate,
+  "swiss-style-universal": SwissStyleUniversalTemplate,
+  "executive-letterhead-universal": ExecutiveLetterheadUniversalTemplate,
+  "diagonal-accent-universal": DiagonalAccentUniversalTemplate,
+  "border-frame-universal": BorderFrameUniversalTemplate,
+  "centered-minimal-universal": CenteredMinimalUniversalTemplate,
+  "left-aligned-pro-universal": LeftAlignedProUniversalTemplate,
+  "dual-column-modern-universal": DualColumnModernUniversalTemplate,
+  "timeline-vertical-universal": TimelineVerticalUniversalTemplate,
+  "badge-style-universal": BadgeStyleUniversalTemplate,
+  "underline-accent-universal": UnderlineAccentUniversalTemplate,
+  "circle-icon-universal": CircleIconUniversalTemplate,
+  "linear-progress-universal": LinearProgressUniversalTemplate,
+  "card-layout-universal": CardLayoutUniversalTemplate,
+  "ribbon-header-universal": RibbonHeaderUniversalTemplate,
+  "boxed-sections-universal": BoxedSectionsUniversalTemplate,
+  "left-border-universal": LeftBorderUniversalTemplate,
+  "floating-header-universal": FloatingHeaderUniversalTemplate,
+  "monochrome-elegant-universal": MonochromeElegantUniversalTemplate,
+  "gradient-header-universal": GradientHeaderUniversalTemplate,
+  "split-pane-universal": SplitPaneUniversalTemplate,
+  "icon-bar-universal": IconBarUniversalTemplate,
+  "modern-minimalist-universal": ModernMinimalistUniversalTemplate,
+  "bold-typography-universal": BoldTypographyUniversalTemplate,
+  "geometric-shapes-universal": GeometricShapesUniversalTemplate,
+  "color-block-universal": ColorBlockUniversalTemplate,
+  "thin-border-universal": ThinBorderUniversalTemplate,
+  "asymmetric-layout-universal": AsymmetricLayoutUniversalTemplate,
+  "classic-serif-universal": ClassicSerifUniversalTemplate,
+  "professional-compact-universal": ProfessionalCompactUniversalTemplate,
+  "wide-margin-universal": WideMarginUniversalTemplate,
+  "top-bar-universal": TopBarUniversalTemplate,
+  "corner-accent-universal": CornerAccentUniversalTemplate,
+  "striped-background-universal": StripedBackgroundUniversalTemplate,
+  "circular-elements-universal": CircularElementsUniversalTemplate,
+  "minimal-lines-universal": MinimalLinesUniversalTemplate,
+  "bold-section-headers-universal": BoldSectionHeadersUniversalTemplate,
+  "two-tone-split-universal": TwoToneSplitUniversalTemplate,
+  "clean-modern-universal": CleanModernUniversalTemplate,
+  "watermark-style-universal": WatermarkStyleUniversalTemplate,
+  "magazine-layout-universal": MagazineLayoutUniversalTemplate,
+  "hexagonal-pattern-universal": HexagonalPatternUniversalTemplate,
+  "compact-elite-universal": CompactEliteUniversalTemplate,
+  "diamond-accent-universal": DiamondAccentUniversalTemplate,
+  "zigzag-border-universal": ZigzagBorderUniversalTemplate,
+  "stacked-sections-universal": StackedSectionsUniversalTemplate,
+  "dotted-grid-universal": DottedGridUniversalTemplate,
+  "wave-pattern-universal": WavePatternUniversalTemplate,
+  "chevron-accent-universal": ChevronAccentUniversalTemplate,
+  "spotlight-header-universal": SpotlightHeaderUniversalTemplate,
+  "layered-cards-universal": LayeredCardsUniversalTemplate,
+  "angular-modern-universal": AngularModernUniversalTemplate,
+  "rounded-corners-universal": RoundedCornersUniversalTemplate,
+  "retro-professional-universal": RetroProfessionalUniversalTemplate,
+  "newspaper-style-universal": NewspaperStyleUniversalTemplate,
+  "triangular-elements-universal": TriangularElementsUniversalTemplate,
+  "parallax-style-universal": ParallaxStyleUniversalTemplate,
+  "vertical-timeline-universal": VerticalTimelineUniversalTemplate,
+  "infinity-loop-universal": InfinityLoopUniversalTemplate,
+  // 2025 Universal Professional Templates - Batch 5
+  "executive-corner-accent": ExecutiveCornerAccentTemplate,
+  "minimal-elegance-universal": MinimalEleganceUniversalTemplate,
+  "professional-divider": ProfessionalDividerTemplate,
+  "modern-corporate-grid": ModernCorporateGridTemplate,
+  "business-sidebar-pro": BusinessSidebarProTemplate,
+  "clean-two-column-universal": CleanTwoColumnUniversalTemplate,
+  "professional-header-banner": ProfessionalHeaderBannerTemplate,
+  "executive-timeline-modern": ExecutiveTimelineModernTemplate,
+  "corporate-border-frame": CorporateBorderFrameTemplate,
+  "minimalist-modern-pro": MinimalistModernProTemplate,
+  "professional-accent-bar": ProfessionalAccentBarTemplate,
+  "business-clean-layout": BusinessCleanLayoutTemplate,
+  "executive-split-design": ExecutiveSplitDesignTemplate,
+  "modern-professional-box": ModernProfessionalBoxTemplate,
+  "corporate-minimalist-pro": CorporateMinimalistProTemplate,
+  "professional-vertical-line": ProfessionalVerticalLineTemplate,
+  "business-modern-grid": BusinessModernGridTemplate,
+  "executive-clean-split": ExecutiveCleanSplitTemplate,
+  "minimal-corporate-pro": MinimalCorporateProTemplate,
+  "professional-modern-edge": ProfessionalModernEdgeTemplate,
+  // 2025 Simple Universal Professional Templates - Batch 6
+  "clean-professional-simple": CleanProfessionalSimpleTemplate,
+  "simple-executive-layout": SimpleExecutiveLayoutTemplate,
+  "minimal-pro-layout": MinimalProLayoutTemplate,
+  "professional-clean-simple": ProfessionalCleanSimpleTemplate,
+  "corporate-simple-template": CorporateSimpleTemplateTemplate,
+  "modern-simple-pro": ModernSimpleProTemplate,
+  "executive-simple-clean": ExecutiveSimpleCleanTemplate,
+  "business-simple-modern": BusinessSimpleModernTemplate,
+  "professional-easy-read": ProfessionalEasyReadTemplate,
+  "clean-corporate-simple": CleanCorporateSimpleTemplate,
+  "simple-modern-executive": SimpleModernExecutiveTemplate,
+  "minimalist-pro-simple": MinimalistProSimpleTemplate,
+  "professional-straightforward": ProfessionalStraightforwardTemplate,
+  "executive-direct-layout": ExecutiveDirectLayoutTemplate,
+  "business-clear-template": BusinessClearTemplateTemplate,
+  "simple-professional-clean": SimpleProfessionalCleanTemplate,
+  "corporate-easy-layout": CorporateEasyLayoutTemplate,
+  "modern-clear-pro": ModernClearProTemplate,
+  "professional-plain-simple": ProfessionalPlainSimpleTemplate,
+  "executive-plain-layout": ExecutivePlainLayoutTemplate,
+  "simple-business-clean": SimpleBusinessCleanTemplate,
+  "minimal-direct-template": MinimalDirectTemplateTemplate,
+  "professional-basic-modern": ProfessionalBasicModernTemplate,
+  "clean-basic-executive": CleanBasicExecutiveTemplate,
+  "simple-clear-business": SimpleClearBusinessTemplate,
+  "modern-plain-pro": ModernPlainProTemplate,
+  "executive-easy-template": ExecutiveEasyTemplateTemplate,
+  "professional-readable-layout": ProfessionalReadableLayoutTemplate,
+  "clean-readable-pro": CleanReadableProTemplate,
+  "simple-structured-template": SimpleStructuredTemplateTemplate,
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({
