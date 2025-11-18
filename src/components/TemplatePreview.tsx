@@ -64,7 +64,7 @@ import { MedicalExecutiveTemplate } from "./resume/templates/MedicalExecutiveTem
 import { ClinicalMinimalTemplate } from "./resume/templates/ClinicalMinimalTemplate";
 // Education & Teaching Templates
 import { TeacherProfessionalTemplate } from "./resume/templates/TeacherProfessionalTemplate";
-import { AcademicScholarTemplate } from "./resume/templates/AcademicScholarTemplate";
+import { AcademicEducatorTemplate } from "./resume/templates/AcademicEducatorTemplate";
 import { EducatorModernTemplate } from "./resume/templates/EducatorModernTemplate";
 import { TeachingCertifiedTemplate } from "./resume/templates/TeachingCertifiedTemplate";
 import { StudentEducatorTemplate } from "./resume/templates/StudentEducatorTemplate";
@@ -1438,7 +1438,7 @@ const templates = {
   "clinical-minimal": ClinicalMinimalTemplate,
   // Education & Teaching
   "teacher-professional": TeacherProfessionalTemplate,
-  "academic-scholar": AcademicScholarTemplate,
+  "academic-scholar": AcademicEducatorTemplate,
   "educator-modern": EducatorModernTemplate,
   "teaching-certified": TeachingCertifiedTemplate,
   "student-educator": StudentEducatorTemplate,
