@@ -191,6 +191,27 @@ import { EntryHorizonTemplate } from "./templates/EntryHorizonTemplate";
 import { FreshersCraftedTemplate } from "./templates/FreshersCraftedTemplate";
 import { GraduateZenithTemplate } from "./templates/GraduateZenithTemplate";
 import { EntrySphereTemplate } from "./templates/EntrySphereTemplate";
+// 2025 New Fresher Templates
+import { FresherNeonAccentTemplate } from "./templates/FresherNeonAccentTemplate";
+import { FresherGlassmorphismTemplate } from "./templates/FresherGlassmorphismTemplate";
+import { FresherProgressiveTemplate } from "./templates/FresherProgressiveTemplate";
+import { FresherPolaroidStyleTemplate } from "./templates/FresherPolaroidStyleTemplate";
+import { FresherRibbonStyleTemplate } from "./templates/FresherRibbonStyleTemplate";
+import { FresherDoubleColumnTemplate } from "./templates/FresherDoubleColumnTemplate";
+import { FresherGradientBorderTemplate } from "./templates/FresherGradientBorderTemplate";
+import { FresherCircularProgressTemplate } from "./templates/FresherCircularProgressTemplate";
+import { FresherModernTabsTemplate } from "./templates/FresherModernTabsTemplate";
+import { FresherLightweightTemplate } from "./templates/FresherLightweightTemplate";
+import { FresherTimelineDotsTemplate } from "./templates/FresherTimelineDotsTemplate";
+import { FresherBoxShadowTemplate } from "./templates/FresherBoxShadowTemplate";
+import { FresherStepByStepTemplate } from "./templates/FresherStepByStepTemplate";
+import { FresherLeftStripeTemplate } from "./templates/FresherLeftStripeTemplate";
+import { FresherTopBottomTemplate } from "./templates/FresherTopBottomTemplate";
+import { FresherDashBorderTemplate } from "./templates/FresherDashBorderTemplate";
+import { FresherIconographyTemplate } from "./templates/FresherIconographyTemplate";
+import { FresherModernSplitTemplate } from "./templates/FresherModernSplitTemplate";
+import { FresherWaveHeaderTemplate } from "./templates/FresherWaveHeaderTemplate";
+import { FresherAcademicStyleTemplate } from "./templates/FresherAcademicStyleTemplate";
 // Missing Software Engineering Templates
 import { CodeMinimalTemplate } from "./templates/CodeMinimalTemplate";
 import { TechStackProTemplate } from "./templates/TechStackProTemplate";
@@ -497,6 +518,27 @@ export const ResumePreview = ({
     "freshers-crafted": FreshersCraftedTemplate,
     "graduate-zenith": GraduateZenithTemplate,
     "entry-sphere": EntrySphereTemplate,
+    // 2025 New Fresher Templates
+    "fresher-neon-accent": FresherNeonAccentTemplate,
+    "fresher-glassmorphism": FresherGlassmorphismTemplate,
+    "fresher-progressive": FresherProgressiveTemplate,
+    "fresher-polaroid-style": FresherPolaroidStyleTemplate,
+    "fresher-ribbon-style": FresherRibbonStyleTemplate,
+    "fresher-double-column": FresherDoubleColumnTemplate,
+    "fresher-gradient-border": FresherGradientBorderTemplate,
+    "fresher-circular-progress": FresherCircularProgressTemplate,
+    "fresher-modern-tabs": FresherModernTabsTemplate,
+    "fresher-lightweight": FresherLightweightTemplate,
+    "fresher-timeline-dots": FresherTimelineDotsTemplate,
+    "fresher-box-shadow": FresherBoxShadowTemplate,
+    "fresher-step-by-step": FresherStepByStepTemplate,
+    "fresher-left-stripe": FresherLeftStripeTemplate,
+    "fresher-top-bottom": FresherTopBottomTemplate,
+    "fresher-dash-border": FresherDashBorderTemplate,
+    "fresher-iconography": FresherIconographyTemplate,
+    "fresher-modern-split": FresherModernSplitTemplate,
+    "fresher-wave-header": FresherWaveHeaderTemplate,
+    "fresher-academic-style": FresherAcademicStyleTemplate,
     // New Universal Profile Templates
     "sidebar-professional-universal": SidebarProfessionalUniversalTemplate,
     "metro-modern-universal": MetroModernUniversalTemplate,
