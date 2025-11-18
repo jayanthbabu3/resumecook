@@ -252,6 +252,27 @@ import { MinimalLinesUniversalTemplate } from "./templates/MinimalLinesUniversal
 import { BoldSectionHeadersUniversalTemplate } from "./templates/BoldSectionHeadersUniversalTemplate";
 import { TwoToneSplitUniversalTemplate } from "./templates/TwoToneSplitUniversalTemplate";
 import { CleanModernUniversalTemplate } from "./templates/CleanModernUniversalTemplate";
+// Third Batch Universal Profile Templates
+import { WatermarkStyleUniversalTemplate } from "./templates/WatermarkStyleUniversalTemplate";
+import { MagazineLayoutUniversalTemplate } from "./templates/MagazineLayoutUniversalTemplate";
+import { HexagonalPatternUniversalTemplate } from "./templates/HexagonalPatternUniversalTemplate";
+import { CompactEliteUniversalTemplate } from "./templates/CompactEliteUniversalTemplate";
+import { DiamondAccentUniversalTemplate } from "./templates/DiamondAccentUniversalTemplate";
+import { ZigzagBorderUniversalTemplate } from "./templates/ZigzagBorderUniversalTemplate";
+import { StackedSectionsUniversalTemplate } from "./templates/StackedSectionsUniversalTemplate";
+import { DottedGridUniversalTemplate } from "./templates/DottedGridUniversalTemplate";
+import { WavePatternUniversalTemplate } from "./templates/WavePatternUniversalTemplate";
+import { ChevronAccentUniversalTemplate } from "./templates/ChevronAccentUniversalTemplate";
+import { SpotlightHeaderUniversalTemplate } from "./templates/SpotlightHeaderUniversalTemplate";
+import { LayeredCardsUniversalTemplate } from "./templates/LayeredCardsUniversalTemplate";
+import { AngularModernUniversalTemplate } from "./templates/AngularModernUniversalTemplate";
+import { RoundedCornersUniversalTemplate } from "./templates/RoundedCornersUniversalTemplate";
+import { RetroProfessionalUniversalTemplate } from "./templates/RetroProfessionalUniversalTemplate";
+import { NewspaperStyleUniversalTemplate } from "./templates/NewspaperStyleUniversalTemplate";
+import { TriangularElementsUniversalTemplate } from "./templates/TriangularElementsUniversalTemplate";
+import { ParallaxStyleUniversalTemplate } from "./templates/ParallaxStyleUniversalTemplate";
+import { VerticalTimelineUniversalTemplate } from "./templates/VerticalTimelineUniversalTemplate";
+import { InfinityLoopUniversalTemplate } from "./templates/InfinityLoopUniversalTemplate";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -518,6 +539,27 @@ export const ResumePreview = ({
     "bold-section-headers-universal": BoldSectionHeadersUniversalTemplate,
     "two-tone-split-universal": TwoToneSplitUniversalTemplate,
     "clean-modern-universal": CleanModernUniversalTemplate,
+    // Third Batch Universal Profile Templates
+    "watermark-style-universal": WatermarkStyleUniversalTemplate,
+    "magazine-layout-universal": MagazineLayoutUniversalTemplate,
+    "hexagonal-pattern-universal": HexagonalPatternUniversalTemplate,
+    "compact-elite-universal": CompactEliteUniversalTemplate,
+    "diamond-accent-universal": DiamondAccentUniversalTemplate,
+    "zigzag-border-universal": ZigzagBorderUniversalTemplate,
+    "stacked-sections-universal": StackedSectionsUniversalTemplate,
+    "dotted-grid-universal": DottedGridUniversalTemplate,
+    "wave-pattern-universal": WavePatternUniversalTemplate,
+    "chevron-accent-universal": ChevronAccentUniversalTemplate,
+    "spotlight-header-universal": SpotlightHeaderUniversalTemplate,
+    "layered-cards-universal": LayeredCardsUniversalTemplate,
+    "angular-modern-universal": AngularModernUniversalTemplate,
+    "rounded-corners-universal": RoundedCornersUniversalTemplate,
+    "retro-professional-universal": RetroProfessionalUniversalTemplate,
+    "newspaper-style-universal": NewspaperStyleUniversalTemplate,
+    "triangular-elements-universal": TriangularElementsUniversalTemplate,
+    "parallax-style-universal": ParallaxStyleUniversalTemplate,
+    "vertical-timeline-universal": VerticalTimelineUniversalTemplate,
+    "infinity-loop-universal": InfinityLoopUniversalTemplate,
   };
 
   const Template =
