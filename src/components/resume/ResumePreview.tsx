@@ -379,6 +379,48 @@ import { CEOProfileTemplate } from "./templates/CEOProfileTemplate";
 import { StrategicLeaderTemplate } from "./templates/StrategicLeaderTemplate";
 import { DirectorLevelTemplate } from "./templates/DirectorLevelTemplate";
 import { VPExecutiveTemplate } from "./templates/VPExecutiveTemplate";
+// 2025 New Universal Professional Templates (Batch 5)
+import { ExecutiveCornerAccentTemplate } from "./templates/ExecutiveCornerAccentTemplate";
+import { MinimalEleganceUniversalTemplate } from "./templates/MinimalEleganceUniversalTemplate";
+import { ProfessionalDividerTemplate } from "./templates/ProfessionalDividerTemplate";
+import { ModernCorporateGridTemplate } from "./templates/ModernCorporateGridTemplate";
+import { BusinessSidebarProTemplate } from "./templates/BusinessSidebarProTemplate";
+import { CleanTwoColumnUniversalTemplate } from "./templates/CleanTwoColumnUniversalTemplate";
+import { ProfessionalHeaderBannerTemplate } from "./templates/ProfessionalHeaderBannerTemplate";
+import { ExecutiveTimelineModernTemplate } from "./templates/ExecutiveTimelineModernTemplate";
+import { CorporateBorderFrameTemplate } from "./templates/CorporateBorderFrameTemplate";
+import { MinimalistModernProTemplate } from "./templates/MinimalistModernProTemplate";
+import { ProfessionalAccentBarTemplate } from "./templates/ProfessionalAccentBarTemplate";
+import { BusinessCleanLayoutTemplate } from "./templates/BusinessCleanLayoutTemplate";
+import { ExecutiveSplitDesignTemplate } from "./templates/ExecutiveSplitDesignTemplate";
+import { ModernProfessionalBoxTemplate } from "./templates/ModernProfessionalBoxTemplate";
+import { CorporateMinimalistProTemplate } from "./templates/CorporateMinimalistProTemplate";
+import { ProfessionalVerticalLineTemplate } from "./templates/ProfessionalVerticalLineTemplate";
+import { BusinessModernGridTemplate } from "./templates/BusinessModernGridTemplate";
+import { ExecutiveCleanSplitTemplate } from "./templates/ExecutiveCleanSplitTemplate";
+import { MinimalCorporateProTemplate } from "./templates/MinimalCorporateProTemplate";
+import { ProfessionalModernEdgeTemplate } from "./templates/ProfessionalModernEdgeTemplate";
+// 2025 New Software/Tech Templates (Batch 3)
+import { ReactFrontendProTemplate } from "./templates/ReactFrontendProTemplate";
+import { NodeBackendSpecialistTemplate } from "./templates/NodeBackendSpecialistTemplate";
+import { FullStackEngineerTemplate } from "./templates/FullStackEngineerTemplate";
+import { PythonDeveloperProTemplate } from "./templates/PythonDeveloperProTemplate";
+import { JavaEnterpriseTemplateTemplate } from "./templates/JavaEnterpriseTemplateTemplate";
+import { DevOpsAutomationTemplate } from "./templates/DevOpsAutomationTemplate";
+import { CloudSolutionsArchitectTemplate } from "./templates/CloudSolutionsArchitectTemplate";
+import { MicroservicesExpertTemplate } from "./templates/MicroservicesExpertTemplate";
+import { KubernetesSpecialistTemplate } from "./templates/KubernetesSpecialistTemplate";
+import { DockerContainerProTemplate } from "./templates/DockerContainerProTemplate";
+import { GraphQLDeveloperTemplate } from "./templates/GraphQLDeveloperTemplate";
+import { TypeScriptExpertTemplate } from "./templates/TypeScriptExpertTemplate";
+import { VueJSDeveloperTemplate } from "./templates/VueJSDeveloperTemplate";
+import { AngularSpecialistTemplate } from "./templates/AngularSpecialistTemplate";
+import { SpringBootDeveloperTemplate } from "./templates/SpringBootDeveloperTemplate";
+import { DjangoFrameworkProTemplate } from "./templates/DjangoFrameworkProTemplate";
+import { AWSCloudEngineerTemplate } from "./templates/AWSCloudEngineerTemplate";
+import { AzureDevOpsSpecialistTemplate } from "./templates/AzureDevOpsSpecialistTemplate";
+import { GCPArchitectTemplate } from "./templates/GCPArchitectTemplate";
+import { ServerlessDeveloperTemplate } from "./templates/ServerlessDeveloperTemplate";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -766,6 +808,48 @@ export const ResumePreview = ({
     "strategic-leader": StrategicLeaderTemplate,
     "director-level": DirectorLevelTemplate,
     "vp-executive": VPExecutiveTemplate,
+    // 2025 New Universal Professional Templates (Batch 5)
+    "executive-corner-accent": ExecutiveCornerAccentTemplate,
+    "minimal-elegance-universal": MinimalEleganceUniversalTemplate,
+    "professional-divider": ProfessionalDividerTemplate,
+    "modern-corporate-grid": ModernCorporateGridTemplate,
+    "business-sidebar-pro": BusinessSidebarProTemplate,
+    "clean-two-column-universal": CleanTwoColumnUniversalTemplate,
+    "professional-header-banner": ProfessionalHeaderBannerTemplate,
+    "executive-timeline-modern": ExecutiveTimelineModernTemplate,
+    "corporate-border-frame": CorporateBorderFrameTemplate,
+    "minimalist-modern-pro": MinimalistModernProTemplate,
+    "professional-accent-bar": ProfessionalAccentBarTemplate,
+    "business-clean-layout": BusinessCleanLayoutTemplate,
+    "executive-split-design": ExecutiveSplitDesignTemplate,
+    "modern-professional-box": ModernProfessionalBoxTemplate,
+    "corporate-minimalist-pro": CorporateMinimalistProTemplate,
+    "professional-vertical-line": ProfessionalVerticalLineTemplate,
+    "business-modern-grid": BusinessModernGridTemplate,
+    "executive-clean-split": ExecutiveCleanSplitTemplate,
+    "minimal-corporate-pro": MinimalCorporateProTemplate,
+    "professional-modern-edge": ProfessionalModernEdgeTemplate,
+    // 2025 New Software/Tech Templates (Batch 3)
+    "react-frontend-pro": ReactFrontendProTemplate,
+    "node-backend-specialist": NodeBackendSpecialistTemplate,
+    "fullstack-engineer": FullStackEngineerTemplate,
+    "python-developer-pro": PythonDeveloperProTemplate,
+    "java-enterprise-template": JavaEnterpriseTemplateTemplate,
+    "devops-automation": DevOpsAutomationTemplate,
+    "cloud-solutions-architect": CloudSolutionsArchitectTemplate,
+    "microservices-expert": MicroservicesExpertTemplate,
+    "kubernetes-specialist": KubernetesSpecialistTemplate,
+    "docker-container-pro": DockerContainerProTemplate,
+    "graphql-developer": GraphQLDeveloperTemplate,
+    "typescript-expert": TypeScriptExpertTemplate,
+    "vuejs-developer": VueJSDeveloperTemplate,
+    "angular-specialist": AngularSpecialistTemplate,
+    "springboot-developer": SpringBootDeveloperTemplate,
+    "django-framework-pro": DjangoFrameworkProTemplate,
+    "aws-cloud-engineer": AWSCloudEngineerTemplate,
+    "azure-devops-specialist": AzureDevOpsSpecialistTemplate,
+    "gcp-architect": GCPArchitectTemplate,
+    "serverless-developer": ServerlessDeveloperTemplate,
   };
 
   const Template =
