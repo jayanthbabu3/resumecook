@@ -1,7 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/pages/Editor";
 
-// Register fonts
 Font.register({
   family: "Inter",
   fonts: [
@@ -58,8 +57,6 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     marginTop: 16,
     textTransform: "uppercase",
     letterSpacing: 1.2,
-    borderBottom: "1.5px solid #6366f133",
-    paddingBottom: 8,
   },
   summary: {
     fontSize: 10.5,
@@ -69,8 +66,8 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   },
   experienceItem: {
     marginBottom: 16,
-    paddingLeft: 16,
     borderLeft: "2px solid #6366f133",
+    paddingLeft: 16,
   },
   experienceHeader: {
     flexDirection: "row",
@@ -146,7 +143,8 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     fontSize: 9.5,
     fontWeight: 500,
     color: "#111827",
-  }});
+  }
+});
 
 export const PDFGeometricModern = ({
   resumeData,
@@ -157,7 +155,6 @@ export const PDFGeometricModern = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header with background */}
         <View style={styles.headerSection}>
           <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
           <View style={styles.contactInfo}>
@@ -166,90 +163,72 @@ export const PDFGeometricModern = ({
             {resumeData.personalInfo.location && <Text>{resumeData.personalInfo.location}</Text>}
           </View>
         </View>
-
         <View style={styles.mainContent}>
-          {/* Professional Summary */}
-          {resumeData.personalInfo.summary && (
-            <View>
-              <Text style={styles.sectionTitle}>Professional Summary</Text>
-              <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
-            </View>
-          )}
-
-          {/* Experience */}
-          {resumeData.experience && resumeData.experience.length > 0 && (
-            <View>
-              <Text style={styles.sectionTitle}>Professional Experience</Text>
-              {resumeData.experience.map((exp, index) => {
-                const bulletPoints = (exp.description || "")
-                  .split("\n")
-                  .map((line) => line.trim())
-                  .filter(Boolean);
-
-                return (
-                  <View key={index} style={styles.experienceItem}>
-                    <View style={styles.experienceHeader}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.position}>{exp.position}</Text>
-                        <Text style={styles.company}>{exp.company}</Text>
-                      </View>
-                      <View>
-                        <Text style={styles.dateRange}>
-                          {exp.startDate} - {exp.current ? "Present" : exp.endDate}
-                        </Text>
-                      </View>
+        {resumeData.personalInfo.summary && (
+          <View>
+            <Text style={styles.sectionTitle}>Professional Summary</Text>
+            <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
+          </View>
+        )}
+        {resumeData.experience && resumeData.experience.length > 0 && (
+          <View>
+            <Text style={styles.sectionTitle}>Professional Experience</Text>
+            {resumeData.experience.map((exp, index) => {
+              const bulletPoints = (exp.description || "").split("\n").map((line) => line.trim()).filter(Boolean);
+              return (
+                <View key={index} style={styles.experienceItem}>
+                  <View style={styles.experienceHeader}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.position}>{exp.position}</Text>
+                      <Text style={styles.company}>{exp.company}</Text>
                     </View>
-                    {bulletPoints.length > 0 && (
-                      <View style={styles.bulletPoints}>
-                        {bulletPoints.map((point, i) => (
-                          <View key={i} style={styles.bulletPoint}>
-                            <View style={styles.bullet} />
-                            <Text style={styles.bulletText}>{point}</Text>
-                          </View>
-                        ))}
-                      </View>
-                    )}
+                    <View>
+                      <Text style={styles.dateRange}>{exp.startDate} - {exp.current ? "Present" : exp.endDate}</Text>
+                    </View>
                   </View>
-                );
-              })}
-            </View>
-          )}
-
-          {/* Education */}
-          {resumeData.education && resumeData.education.length > 0 && (
-            <View>
-              <Text style={styles.sectionTitle}>Education</Text>
-              {resumeData.education.map((edu, index) => (
-                <View key={index} style={styles.educationItem}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.degree}>
-                      {edu.degree} {edu.field && `in ${edu.field}`}
-                    </Text>
-                    <Text style={styles.school}>{edu.school}</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.dateRange}>
-                      {edu.startDate} - {edu.endDate}
-                    </Text>
-                  </View>
+                  {bulletPoints.length > 0 && (
+                    <View style={styles.bulletPoints}>
+                      {bulletPoints.map((point, i) => (
+                        <View key={i} style={styles.bulletPoint}>
+                          <View style={styles.bullet} />
+                          <Text style={styles.bulletText}>{point}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  )}
+                </View>
+              );
+            })}
+          </View>
+        )}
+        {resumeData.education && resumeData.education.length > 0 && (
+          <View>
+            <Text style={styles.sectionTitle}>Education</Text>
+            {resumeData.education.map((edu, index) => (
+              <View key={index} style={styles.educationItem}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.degree}>{edu.degree} {edu.field && `in ${edu.field}`}</Text>
+                  <Text style={styles.school}>{edu.school}</Text>
+                </View>
+                <View>
+                  <Text style={styles.dateRange}>{edu.startDate} - {edu.endDate}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+        {resumeData.skills && resumeData.skills.length > 0 && (
+          <View>
+            <Text style={styles.sectionTitle}>Skills</Text>
+            <View style={styles.skillsContainer}>
+              {resumeData.skills.map((skill, index) => (
+                <View key={index} style={styles.skillChip}>
+                  <Text style={styles.skillText}>{skill.name}</Text>
                 </View>
               ))}
             </View>
-          )}
-
-          {/* Skills */}
-          {resumeData.skills && resumeData.skills.length > 0 && (
-            <View>
-              <Text style={styles.sectionTitle}>Skills</Text>
-              <View style={styles.skillsContainer}>
-                {resumeData.skills.map((skill, index) => (
-                  <View key={index} style={styles.skillChip}>
-                    <Text style={styles.skillText}>{skill.name}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          )}
+          </View>
+        )}
         </View>
       </Page>
     </Document>

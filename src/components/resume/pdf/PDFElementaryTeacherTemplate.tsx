@@ -1,7 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/pages/Editor";
 
-// Register fonts for better typography
 Font.register({
   family: "Inter",
   fonts: [
@@ -11,65 +10,51 @@ Font.register({
   ]
 });
 
-interface PDFElementaryTeacherTemplateProps {
+interface PDFElementaryTeacherProps {
   resumeData: ResumeData;
   themeColor?: string;
 }
 
 const createStyles = (themeColor: string) => StyleSheet.create({
   page: {
-    padding: 48,
+    padding: 0,
     fontFamily: "Inter",
     fontSize: 10,
     lineHeight: 1.6,
     color: "#1f2937",
     backgroundColor: "#ffffff",
   },
-  header: {
-    marginBottom: 20,
+  headerSection: {
+    backgroundColor: "#ea580c",
+    padding: 32,
+    paddingBottom: 24,
+    marginBottom: 24,
   },
   name: {
     fontSize: 28,
     fontWeight: 700,
-    color: themeColor,
-    marginBottom: 16,
-    letterSpacing: -0.5,
+    color: "#ffffff",
+    marginBottom: 12,
+    textAlign: "left",
   },
-  contactSection: {
-    marginBottom: 20,
-    paddingBottom: 16,
-    borderBottom: `1.5px solid ${themeColor}33`,
-  },
-  contactGrid: {
+  contactInfo: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 16,
+    fontSize: 9,
+    color: "#ffffff",
+    opacity: 0.95,
+    justifyContent: "left",
   },
-  contactItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    fontSize: 9.5,
-    color: "#374151",
-    marginRight: 16,
-    marginBottom: 4,
-  },
-  contactLabel: {
-    fontWeight: 600,
-    color: themeColor,
-    marginRight: 4,
-  },
-  link: {
-    color: themeColor,
-    textDecoration: "none",
-  },
-  section: {
-    marginBottom: 20,
+  mainContent: {
+    paddingHorizontal: 40,
   },
   sectionTitle: {
     fontSize: 13,
     fontWeight: 700,
-    color: themeColor,
+    color: "#ea580c",
     marginBottom: 12,
+    marginTop: 16,
     textTransform: "uppercase",
     letterSpacing: 1.2,
   },
@@ -77,9 +62,12 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     fontSize: 10.5,
     lineHeight: 1.8,
     color: "#374151",
+    marginBottom: 16,
   },
   experienceItem: {
     marginBottom: 16,
+    borderLeft: "2px solid #ea580c33",
+    paddingLeft: 16,
   },
   experienceHeader: {
     flexDirection: "row",
@@ -95,7 +83,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   company: {
     fontSize: 10.5,
     fontWeight: 500,
-    color: themeColor,
+    color: "#ea580c",
   },
   dateRange: {
     fontSize: 9,
@@ -104,7 +92,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   },
   bulletPoints: {
     marginTop: 6,
-    marginLeft: 16,
+    marginLeft: 12,
   },
   bulletPoint: {
     flexDirection: "row",
@@ -114,7 +102,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: themeColor,
+    backgroundColor: "#ea580c",
     marginRight: 8,
     marginTop: 5,
   },
@@ -142,118 +130,51 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   skillsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6,
+    gap: 8,
   },
   skillChip: {
     paddingHorizontal: 12,
-    paddingVertical: 5,
+    paddingVertical: 6,
     borderRadius: 4,
-    border: `1.5px solid ${themeColor}33`,
-    backgroundColor: `${themeColor}15`,
+    border: "1.5px solid #ea580c33",
+    backgroundColor: "#ea580c15",
   },
   skillText: {
     fontSize: 9.5,
     fontWeight: 500,
     color: "#111827",
-  },
-  customSection: {
-    marginBottom: 20,
-  },
-  customContent: {
-    fontSize: 10.5,
-    lineHeight: 1.8,
-    color: "#374151",
-  },
+  }
 });
 
-export const PDFElementaryTeacherTemplate = ({
+export const PDFElementaryTeacher = ({
   resumeData,
-  themeColor = "#0891b2",
-}: PDFElementaryTeacherTemplateProps) => {
+  themeColor = "#ea580c",
+}: PDFElementaryTeacherProps) => {
   const styles = createStyles(themeColor);
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header with Name */}
-        <View style={styles.header}>
+        <View style={styles.headerSection}>
           <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
-        </View>
-
-        {/* Contact Info */}
-        <View style={styles.contactSection}>
-          <View style={styles.contactGrid}>
-            {resumeData.personalInfo.email && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>Email:</Text>
-                <Text>{resumeData.personalInfo.email}</Text>
-              </View>
-            )}
-            {resumeData.personalInfo.phone && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>Phone:</Text>
-                <Text>{resumeData.personalInfo.phone}</Text>
-              </View>
-            )}
-            {resumeData.personalInfo.location && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>Location:</Text>
-                <Text>{resumeData.personalInfo.location}</Text>
-              </View>
-            )}
-            {resumeData.personalInfo.website && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>Website:</Text>
-                <Link src={resumeData.personalInfo.website} style={styles.link}>
-                  <Text>{resumeData.personalInfo.website}</Text>
-                </Link>
-              </View>
-            )}
-            {resumeData.personalInfo.linkedin && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>LinkedIn:</Text>
-                <Link src={resumeData.personalInfo.linkedin} style={styles.link}>
-                  <Text>{resumeData.personalInfo.linkedin}</Text>
-                </Link>
-              </View>
-            )}
-            {resumeData.personalInfo.github && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>GitHub:</Text>
-                <Link src={resumeData.personalInfo.github} style={styles.link}>
-                  <Text>{resumeData.personalInfo.github}</Text>
-                </Link>
-              </View>
-            )}
-            {resumeData.personalInfo.portfolio && (
-              <View style={styles.contactItem}>
-                <Text style={styles.contactLabel}>Portfolio:</Text>
-                <Link src={resumeData.personalInfo.portfolio} style={styles.link}>
-                  <Text>{resumeData.personalInfo.portfolio}</Text>
-                </Link>
-              </View>
-            )}
+          <View style={styles.contactInfo}>
+            {resumeData.personalInfo.email && <Text>{resumeData.personalInfo.email}</Text>}
+            {resumeData.personalInfo.phone && <Text>{resumeData.personalInfo.phone}</Text>}
+            {resumeData.personalInfo.location && <Text>{resumeData.personalInfo.location}</Text>}
           </View>
         </View>
-
-        {/* Professional Summary */}
+        <View style={styles.mainContent}>
         {resumeData.personalInfo.summary && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Professional Summary</Text>
             <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
           </View>
         )}
-
-        {/* Experience */}
         {resumeData.experience && resumeData.experience.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Professional Experience</Text>
             {resumeData.experience.map((exp, index) => {
-              const bulletPoints = (exp.description || "")
-                .split("\n")
-                .map((line) => line.trim())
-                .filter(Boolean);
-
+              const bulletPoints = (exp.description || "").split("\n").map((line) => line.trim()).filter(Boolean);
               return (
                 <View key={index} style={styles.experienceItem}>
                   <View style={styles.experienceHeader}>
@@ -262,9 +183,7 @@ export const PDFElementaryTeacherTemplate = ({
                       <Text style={styles.company}>{exp.company}</Text>
                     </View>
                     <View>
-                      <Text style={styles.dateRange}>
-                        {exp.startDate} - {exp.current ? "Present" : exp.endDate}
-                      </Text>
+                      <Text style={styles.dateRange}>{exp.startDate} - {exp.current ? "Present" : exp.endDate}</Text>
                     </View>
                   </View>
                   {bulletPoints.length > 0 && (
@@ -282,32 +201,24 @@ export const PDFElementaryTeacherTemplate = ({
             })}
           </View>
         )}
-
-        {/* Education */}
         {resumeData.education && resumeData.education.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Education</Text>
             {resumeData.education.map((edu, index) => (
               <View key={index} style={styles.educationItem}>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.degree}>
-                    {edu.degree} {edu.field && `in ${edu.field}`}
-                  </Text>
+                  <Text style={styles.degree}>{edu.degree} {edu.field && `in ${edu.field}`}</Text>
                   <Text style={styles.school}>{edu.school}</Text>
                 </View>
                 <View>
-                  <Text style={styles.dateRange}>
-                    {edu.startDate} - {edu.endDate}
-                  </Text>
+                  <Text style={styles.dateRange}>{edu.startDate} - {edu.endDate}</Text>
                 </View>
               </View>
             ))}
           </View>
         )}
-
-        {/* Skills */}
         {resumeData.skills && resumeData.skills.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Skills</Text>
             <View style={styles.skillsContainer}>
               {resumeData.skills.map((skill, index) => (
@@ -318,14 +229,7 @@ export const PDFElementaryTeacherTemplate = ({
             </View>
           </View>
         )}
-
-        {/* Custom Sections */}
-        {resumeData.sections && resumeData.sections.map((section, index) => (
-          <View key={index} style={styles.customSection}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <Text style={styles.customContent}>{section.content}</Text>
-          </View>
-        ))}
+        </View>
       </Page>
     </Document>
   );

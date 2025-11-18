@@ -151,23 +151,13 @@ export const PDFSidebarAccent = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Sidebar */}
         <View style={styles.sidebar}>
-          {/* Contact */}
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarTitle}>Contact</Text>
-            {resumeData.personalInfo.email && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.email}</Text>
-            )}
-            {resumeData.personalInfo.phone && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.phone}</Text>
-            )}
-            {resumeData.personalInfo.location && (
-              <Text style={styles.sidebarText}>{resumeData.personalInfo.location}</Text>
-            )}
+            {resumeData.personalInfo.email && <Text style={styles.sidebarText}>{resumeData.personalInfo.email}</Text>}
+            {resumeData.personalInfo.phone && <Text style={styles.sidebarText}>{resumeData.personalInfo.phone}</Text>}
+            {resumeData.personalInfo.location && <Text style={styles.sidebarText}>{resumeData.personalInfo.location}</Text>}
           </View>
-
-          {/* Skills */}
           {resumeData.skills && resumeData.skills.length > 0 && (
             <View style={styles.sidebarSection}>
               <Text style={styles.sidebarTitle}>Skills</Text>
@@ -176,8 +166,6 @@ export const PDFSidebarAccent = ({
               ))}
             </View>
           )}
-
-          {/* Education */}
           {resumeData.education && resumeData.education.length > 0 && (
             <View style={styles.sidebarSection}>
               <Text style={styles.sidebarTitle}>Education</Text>
@@ -186,44 +174,30 @@ export const PDFSidebarAccent = ({
                   <Text style={styles.degree}>{edu.degree}</Text>
                   {edu.field && <Text style={styles.school}>{edu.field}</Text>}
                   <Text style={styles.school}>{edu.school}</Text>
-                  <Text style={styles.educationDate}>
-                    {edu.startDate} - {edu.endDate}
-                  </Text>
+                  <Text style={styles.educationDate}>{edu.startDate} - {edu.endDate}</Text>
                 </View>
               ))}
             </View>
           )}
         </View>
-
-        {/* Main Content */}
         <View style={styles.mainContent}>
           <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
-
-          {/* Summary */}
           {resumeData.personalInfo.summary && (
             <View>
               <Text style={styles.sectionTitle}>Professional Summary</Text>
               <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
             </View>
           )}
-
-          {/* Experience */}
           {resumeData.experience && resumeData.experience.length > 0 && (
             <View>
               <Text style={styles.sectionTitle}>Experience</Text>
               {resumeData.experience.map((exp, index) => {
-                const bulletPoints = (exp.description || "")
-                  .split("\\n")
-                  .map((line) => line.trim())
-                  .filter(Boolean);
-
+                const bulletPoints = (exp.description || "").split("\\n").map((line) => line.trim()).filter(Boolean);
                 return (
                   <View key={index} style={styles.experienceItem}>
                     <Text style={styles.position}>{exp.position}</Text>
                     <Text style={styles.company}>{exp.company}</Text>
-                    <Text style={styles.dateRange}>
-                      {exp.startDate} - {exp.current ? "Present" : exp.endDate}
-                    </Text>
+                    <Text style={styles.dateRange}>{exp.startDate} - {exp.current ? "Present" : exp.endDate}</Text>
                     {bulletPoints.length > 0 && (
                       <View style={styles.bulletPoints}>
                         {bulletPoints.map((point, i) => (

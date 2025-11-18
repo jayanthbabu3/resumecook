@@ -1,7 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/pages/Editor";
 
-// Register fonts
 Font.register({
   family: "Inter",
   fonts: [
@@ -11,14 +10,14 @@ Font.register({
   ]
 });
 
-interface PDFSocialGraduateTemplateProps {
+interface PDFSocialGraduateProps {
   resumeData: ResumeData;
   themeColor?: string;
 }
 
 const createStyles = (themeColor: string) => StyleSheet.create({
   page: {
-    padding: 48,
+    padding: 40,
     fontFamily: "Inter",
     fontSize: 10,
     lineHeight: 1.6,
@@ -26,54 +25,31 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 24,
+    paddingBottom: 16,
+    
+    textAlign: "left",
   },
   name: {
     fontSize: 28,
     fontWeight: 700,
-    color: themeColor,
-    marginBottom: 16,
-    letterSpacing: -0.5,
+    color: "#ec4899",
+    marginBottom: 12,
   },
-  contactSection: {
-    marginBottom: 20,
-    paddingBottom: 16,
-    borderBottom: `1.5px solid ${themeColor}33`,
-  },
-  contactGrid: {
+  contactInfo: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 32,
-  },
-  contactColumn: {
-    flex: 1,
-    gap: 6,
-  },
-  contactItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+    flexWrap: "wrap",
+    gap: 16,
     fontSize: 9.5,
-    color: "#374151",
-    marginBottom: 4,
-  },
-  contactLabel: {
-    fontWeight: 600,
-    color: themeColor,
-    minWidth: 60,
-  },
-  link: {
-    color: themeColor,
-    textDecoration: "none",
-  },
-  section: {
-    marginBottom: 20,
+    color: "#6b7280",
+    justifyContent: "left",
   },
   sectionTitle: {
     fontSize: 13,
     fontWeight: 700,
-    color: themeColor,
+    color: "#ec4899",
     marginBottom: 12,
+    marginTop: 16,
     textTransform: "uppercase",
     letterSpacing: 1.2,
   },
@@ -81,9 +57,11 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     fontSize: 10.5,
     lineHeight: 1.8,
     color: "#374151",
+    marginBottom: 16,
   },
   experienceItem: {
     marginBottom: 16,
+    
   },
   experienceHeader: {
     flexDirection: "row",
@@ -99,7 +77,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   company: {
     fontSize: 10.5,
     fontWeight: 500,
-    color: themeColor,
+    color: "#ec4899",
   },
   dateRange: {
     fontSize: 9,
@@ -108,7 +86,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   },
   bulletPoints: {
     marginTop: 6,
-    marginLeft: 16,
+    marginLeft: 12,
   },
   bulletPoint: {
     flexDirection: "row",
@@ -118,7 +96,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: themeColor,
+    backgroundColor: "#ec4899",
     marginRight: 8,
     marginTop: 5,
   },
@@ -146,125 +124,50 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   skillsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6,
+    gap: 8,
   },
   skillChip: {
     paddingHorizontal: 12,
-    paddingVertical: 5,
+    paddingVertical: 6,
     borderRadius: 4,
-    border: `1.5px solid ${themeColor}33`,
-    backgroundColor: `${themeColor}15`,
+    border: "1.5px solid #ec489933",
+    backgroundColor: "#ec489915",
   },
   skillText: {
     fontSize: 9.5,
     fontWeight: 500,
     color: "#111827",
-  },
-  customSection: {
-    marginBottom: 20,
-  },
-  customContent: {
-    fontSize: 10.5,
-    lineHeight: 1.8,
-    color: "#374151",
-  },
+  }
 });
 
-export const PDFSocialGraduateTemplate = ({
+export const PDFSocialGraduate = ({
   resumeData,
   themeColor = "#ec4899",
-}: PDFSocialGraduateTemplateProps) => {
+}: PDFSocialGraduateProps) => {
   const styles = createStyles(themeColor);
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header with Name */}
         <View style={styles.header}>
           <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
-        </View>
-
-        {/* Contact Info & Social Links */}
-        <View style={styles.contactSection}>
-          <View style={styles.contactGrid}>
-            {/* Traditional Contact */}
-            <View style={styles.contactColumn}>
-              {resumeData.personalInfo.email && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Email:</Text>
-                  <Text>{resumeData.personalInfo.email}</Text>
-                </View>
-              )}
-              {resumeData.personalInfo.phone && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Phone:</Text>
-                  <Text>{resumeData.personalInfo.phone}</Text>
-                </View>
-              )}
-              {resumeData.personalInfo.location && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Location:</Text>
-                  <Text>{resumeData.personalInfo.location}</Text>
-                </View>
-              )}
-            </View>
-
-            {/* Social/Online Presence */}
-            <View style={styles.contactColumn}>
-              {resumeData.personalInfo.website && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Website:</Text>
-                  <Link src={resumeData.personalInfo.website} style={styles.link}>
-                    <Text>{resumeData.personalInfo.website}</Text>
-                  </Link>
-                </View>
-              )}
-              {resumeData.personalInfo.linkedin && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>LinkedIn:</Text>
-                  <Link src={resumeData.personalInfo.linkedin} style={styles.link}>
-                    <Text>{resumeData.personalInfo.linkedin}</Text>
-                  </Link>
-                </View>
-              )}
-              {resumeData.personalInfo.github && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>GitHub:</Text>
-                  <Link src={resumeData.personalInfo.github} style={styles.link}>
-                    <Text>{resumeData.personalInfo.github}</Text>
-                  </Link>
-                </View>
-              )}
-              {resumeData.personalInfo.portfolio && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Portfolio:</Text>
-                  <Link src={resumeData.personalInfo.portfolio} style={styles.link}>
-                    <Text>{resumeData.personalInfo.portfolio}</Text>
-                  </Link>
-                </View>
-              )}
-            </View>
+          <View style={styles.contactInfo}>
+            {resumeData.personalInfo.email && <Text>{resumeData.personalInfo.email}</Text>}
+            {resumeData.personalInfo.phone && <Text>{resumeData.personalInfo.phone}</Text>}
+            {resumeData.personalInfo.location && <Text>{resumeData.personalInfo.location}</Text>}
           </View>
         </View>
-
-        {/* Professional Summary */}
         {resumeData.personalInfo.summary && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Professional Summary</Text>
             <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
           </View>
         )}
-
-        {/* Experience */}
         {resumeData.experience && resumeData.experience.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Professional Experience</Text>
             {resumeData.experience.map((exp, index) => {
-              const bulletPoints = (exp.description || "")
-                .split("\n")
-                .map((line) => line.trim())
-                .filter(Boolean);
-
+              const bulletPoints = (exp.description || "").split("\n").map((line) => line.trim()).filter(Boolean);
               return (
                 <View key={index} style={styles.experienceItem}>
                   <View style={styles.experienceHeader}>
@@ -273,9 +176,7 @@ export const PDFSocialGraduateTemplate = ({
                       <Text style={styles.company}>{exp.company}</Text>
                     </View>
                     <View>
-                      <Text style={styles.dateRange}>
-                        {exp.startDate} - {exp.current ? "Present" : exp.endDate}
-                      </Text>
+                      <Text style={styles.dateRange}>{exp.startDate} - {exp.current ? "Present" : exp.endDate}</Text>
                     </View>
                   </View>
                   {bulletPoints.length > 0 && (
@@ -293,32 +194,24 @@ export const PDFSocialGraduateTemplate = ({
             })}
           </View>
         )}
-
-        {/* Education */}
         {resumeData.education && resumeData.education.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Education</Text>
             {resumeData.education.map((edu, index) => (
               <View key={index} style={styles.educationItem}>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.degree}>
-                    {edu.degree} {edu.field && `in ${edu.field}`}
-                  </Text>
+                  <Text style={styles.degree}>{edu.degree} {edu.field && `in ${edu.field}`}</Text>
                   <Text style={styles.school}>{edu.school}</Text>
                 </View>
                 <View>
-                  <Text style={styles.dateRange}>
-                    {edu.startDate} - {edu.endDate}
-                  </Text>
+                  <Text style={styles.dateRange}>{edu.startDate} - {edu.endDate}</Text>
                 </View>
               </View>
             ))}
           </View>
         )}
-
-        {/* Skills */}
         {resumeData.skills && resumeData.skills.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Skills</Text>
             <View style={styles.skillsContainer}>
               {resumeData.skills.map((skill, index) => (
@@ -329,14 +222,6 @@ export const PDFSocialGraduateTemplate = ({
             </View>
           </View>
         )}
-
-        {/* Custom Sections */}
-        {resumeData.sections && resumeData.sections.map((section, index) => (
-          <View key={index} style={styles.customSection}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <Text style={styles.customContent}>{section.content}</Text>
-          </View>
-        ))}
       </Page>
     </Document>
   );

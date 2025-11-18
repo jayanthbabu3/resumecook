@@ -1,7 +1,6 @@
-import { Document, Page, Text, View, StyleSheet, Font } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/pages/Editor";
 
-// Register fonts for better typography
 Font.register({
   family: "Inter",
   fonts: [
@@ -11,14 +10,14 @@ Font.register({
   ]
 });
 
-interface PDFVisionaryCreativeTemplateProps {
+interface PDFVisionaryCreativeProps {
   resumeData: ResumeData;
   themeColor?: string;
 }
 
 const createStyles = (themeColor: string) => StyleSheet.create({
   page: {
-    padding: 48,
+    padding: 40,
     fontFamily: "Inter",
     fontSize: 10,
     lineHeight: 1.6,
@@ -27,15 +26,15 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   },
   header: {
     marginBottom: 24,
-    paddingBottom: 20,
-    borderBottom: `2px solid ${themeColor}`,
+    paddingBottom: 16,
+    
+    textAlign: "left",
   },
   name: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 700,
-    color: themeColor,
-    marginBottom: 10,
-    letterSpacing: -0.5,
+    color: "#6366f1",
+    marginBottom: 12,
   },
   contactInfo: {
     flexDirection: "row",
@@ -43,20 +42,14 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     gap: 16,
     fontSize: 9.5,
     color: "#6b7280",
-    marginTop: 8,
-  },
-  contactItem: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  section: {
-    marginBottom: 20,
+    justifyContent: "left",
   },
   sectionTitle: {
     fontSize: 13,
     fontWeight: 700,
-    color: themeColor,
+    color: "#6366f1",
     marginBottom: 12,
+    marginTop: 16,
     textTransform: "uppercase",
     letterSpacing: 1.2,
   },
@@ -64,9 +57,11 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     fontSize: 10.5,
     lineHeight: 1.8,
     color: "#374151",
+    marginBottom: 16,
   },
   experienceItem: {
     marginBottom: 16,
+    
   },
   experienceHeader: {
     flexDirection: "row",
@@ -82,7 +77,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   company: {
     fontSize: 10.5,
     fontWeight: 500,
-    color: themeColor,
+    color: "#6366f1",
   },
   dateRange: {
     fontSize: 9,
@@ -91,7 +86,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   },
   bulletPoints: {
     marginTop: 6,
-    marginLeft: 16,
+    marginLeft: 12,
   },
   bulletPoint: {
     flexDirection: "row",
@@ -101,7 +96,7 @@ const createStyles = (themeColor: string) => StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: themeColor,
+    backgroundColor: "#6366f1",
     marginRight: 8,
     marginTop: 5,
   },
@@ -129,84 +124,50 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   skillsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6,
+    gap: 8,
   },
   skillChip: {
     paddingHorizontal: 12,
-    paddingVertical: 5,
+    paddingVertical: 6,
     borderRadius: 4,
-    border: `1.5px solid ${themeColor}33`,
-    backgroundColor: `${themeColor}15`,
+    border: "1.5px solid #6366f133",
+    backgroundColor: "#6366f115",
   },
   skillText: {
     fontSize: 9.5,
     fontWeight: 500,
     color: "#111827",
-  },
-  customSection: {
-    marginBottom: 20,
-  },
-  customContent: {
-    fontSize: 10.5,
-    lineHeight: 1.8,
-    color: "#374151",
-  },
+  }
 });
 
-export const PDFVisionaryCreativeTemplate = ({
+export const PDFVisionaryCreative = ({
   resumeData,
   themeColor = "#6366f1",
-}: PDFVisionaryCreativeTemplateProps) => {
+}: PDFVisionaryCreativeProps) => {
   const styles = createStyles(themeColor);
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
           <View style={styles.contactInfo}>
-            {resumeData.personalInfo.email && (
-              <View style={styles.contactItem}>
-                <Text>{resumeData.personalInfo.email}</Text>
-              </View>
-            )}
-            {resumeData.personalInfo.phone && (
-              <View style={styles.contactItem}>
-                <Text>{resumeData.personalInfo.phone}</Text>
-              </View>
-            )}
-            {resumeData.personalInfo.location && (
-              <View style={styles.contactItem}>
-                <Text>{resumeData.personalInfo.location}</Text>
-              </View>
-            )}
-            {resumeData.personalInfo.linkedin && (
-              <View style={styles.contactItem}>
-                <Text>{resumeData.personalInfo.linkedin}</Text>
-              </View>
-            )}
+            {resumeData.personalInfo.email && <Text>{resumeData.personalInfo.email}</Text>}
+            {resumeData.personalInfo.phone && <Text>{resumeData.personalInfo.phone}</Text>}
+            {resumeData.personalInfo.location && <Text>{resumeData.personalInfo.location}</Text>}
           </View>
         </View>
-
-        {/* Professional Summary */}
         {resumeData.personalInfo.summary && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Professional Summary</Text>
             <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
           </View>
         )}
-
-        {/* Experience */}
         {resumeData.experience && resumeData.experience.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Professional Experience</Text>
             {resumeData.experience.map((exp, index) => {
-              const bulletPoints = (exp.description || "")
-                .split("\n")
-                .map((line) => line.trim())
-                .filter(Boolean);
-
+              const bulletPoints = (exp.description || "").split("\n").map((line) => line.trim()).filter(Boolean);
               return (
                 <View key={index} style={styles.experienceItem}>
                   <View style={styles.experienceHeader}>
@@ -215,9 +176,7 @@ export const PDFVisionaryCreativeTemplate = ({
                       <Text style={styles.company}>{exp.company}</Text>
                     </View>
                     <View>
-                      <Text style={styles.dateRange}>
-                        {exp.startDate} - {exp.current ? "Present" : exp.endDate}
-                      </Text>
+                      <Text style={styles.dateRange}>{exp.startDate} - {exp.current ? "Present" : exp.endDate}</Text>
                     </View>
                   </View>
                   {bulletPoints.length > 0 && (
@@ -235,32 +194,24 @@ export const PDFVisionaryCreativeTemplate = ({
             })}
           </View>
         )}
-
-        {/* Education */}
         {resumeData.education && resumeData.education.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Education</Text>
             {resumeData.education.map((edu, index) => (
               <View key={index} style={styles.educationItem}>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.degree}>
-                    {edu.degree} {edu.field && `in ${edu.field}`}
-                  </Text>
+                  <Text style={styles.degree}>{edu.degree} {edu.field && `in ${edu.field}`}</Text>
                   <Text style={styles.school}>{edu.school}</Text>
                 </View>
                 <View>
-                  <Text style={styles.dateRange}>
-                    {edu.startDate} - {edu.endDate}
-                  </Text>
+                  <Text style={styles.dateRange}>{edu.startDate} - {edu.endDate}</Text>
                 </View>
               </View>
             ))}
           </View>
         )}
-
-        {/* Skills */}
         {resumeData.skills && resumeData.skills.length > 0 && (
-          <View style={styles.section}>
+          <View>
             <Text style={styles.sectionTitle}>Skills</Text>
             <View style={styles.skillsContainer}>
               {resumeData.skills.map((skill, index) => (
@@ -271,14 +222,6 @@ export const PDFVisionaryCreativeTemplate = ({
             </View>
           </View>
         )}
-
-        {/* Custom Sections */}
-        {resumeData.sections && resumeData.sections.map((section, index) => (
-          <View key={index} style={styles.customSection}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <Text style={styles.customContent}>{section.content}</Text>
-          </View>
-        ))}
       </Page>
     </Document>
   );
