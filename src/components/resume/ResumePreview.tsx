@@ -345,7 +345,6 @@ import { MedicalResearchTemplate } from "./templates/MedicalResearchTemplate";
 // 2025 New Profession-Specific Templates - Education
 import { TeachingExcellenceTemplate } from "./templates/TeachingExcellenceTemplate";
 import { ModernEducatorProfessionTemplate } from "./templates/ModernEducatorProfessionTemplate";
-import { AcademicEducatorTemplate } from "./templates/AcademicEducatorTemplate";
 import { CurriculumDeveloperTemplate } from "./templates/CurriculumDeveloperTemplate";
 import { StudentEngagementTemplate } from "./templates/StudentEngagementTemplate";
 // 2025 New Profession-Specific Templates - Finance

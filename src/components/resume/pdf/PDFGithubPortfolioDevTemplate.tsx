@@ -1,7 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/pages/Editor";
 
-// Register fonts
 Font.register({
   family: "Inter",
   fonts: [
@@ -20,153 +19,45 @@ const createStyles = (themeColor: string) => StyleSheet.create({
   page: {
     padding: 48,
     fontFamily: "Inter",
-    fontSize: 10,
+    fontSize: 13,
     lineHeight: 1.6,
     color: "#1f2937",
     backgroundColor: "#ffffff",
+    
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 40,
   },
   name: {
-    fontSize: 28,
-    fontWeight: 700,
-    color: themeColor,
-    marginBottom: 16,
-    letterSpacing: -0.5,
-  },
-  contactSection: {
-    marginBottom: 20,
-    paddingBottom: 16,
-    borderBottom: `1.5px solid ${themeColor}33`,
-  },
-  contactGrid: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 32,
-  },
-  contactColumn: {
-    flex: 1,
-    gap: 6,
-  },
-  contactItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    fontSize: 9.5,
-    color: "#374151",
-    marginBottom: 4,
-  },
-  contactLabel: {
-    fontWeight: 600,
-    color: themeColor,
-    minWidth: 60,
-  },
-  link: {
-    color: themeColor,
-    textDecoration: "none",
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
     fontSize: 13,
     fontWeight: 700,
     color: themeColor,
-    marginBottom: 12,
-    textTransform: "uppercase",
-    letterSpacing: 1.2,
+    marginBottom: 8,
+    
   },
-  summary: {
-    fontSize: 10.5,
-    lineHeight: 1.8,
-    color: "#374151",
-  },
-  experienceItem: {
-    marginBottom: 16,
-  },
-  experienceHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 6,
-  },
-  position: {
-    fontSize: 11.5,
-    fontWeight: 600,
-    color: "#111827",
-    marginBottom: 3,
-  },
-  company: {
-    fontSize: 10.5,
-    fontWeight: 500,
-    color: themeColor,
-  },
-  dateRange: {
-    fontSize: 9,
-    color: "#6b7280",
-    textAlign: "right",
-  },
-  bulletPoints: {
-    marginTop: 6,
-    marginLeft: 16,
-  },
-  bulletPoint: {
-    flexDirection: "row",
-    marginBottom: 4,
-  },
-  bullet: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: themeColor,
-    marginRight: 8,
-    marginTop: 5,
-  },
-  bulletText: {
-    flex: 1,
-    fontSize: 10,
-    lineHeight: 1.7,
-    color: "#374151",
-  },
-  educationItem: {
-    marginBottom: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  degree: {
-    fontSize: 11,
-    fontWeight: 600,
-    color: "#111827",
-    marginBottom: 3,
-  },
-  school: {
-    fontSize: 10,
-    color: "#374151",
-  },
-  skillsContainer: {
+  contactInfo: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6,
+    gap: 24,
+    fontSize: 12,
+    color: "#6b7280",
+    
   },
-  skillChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 4,
-    border: `1.5px solid ${themeColor}33`,
-    backgroundColor: `${themeColor}15`,
+  section: {
+    marginBottom: 40,
   },
-  skillText: {
-    fontSize: 9.5,
-    fontWeight: 500,
-    color: "#111827",
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 700,
+    color: themeColor,
+    marginBottom: 16,
   },
-  customSection: {
-    marginBottom: 20,
+  twoColumnGrid: {
+    flexDirection: "row",
+    gap: 40,
   },
-  customContent: {
-    fontSize: 10.5,
-    lineHeight: 1.8,
-    color: "#374151",
+  column: {
+    flex: 1,
   },
 });
 
@@ -179,164 +70,90 @@ export const PDFGithubPortfolioDevTemplate = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header with Name */}
-        <View style={styles.header}>
-          <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
-        </View>
-
-        {/* Contact Info & Social Links */}
-        <View style={styles.contactSection}>
-          <View style={styles.contactGrid}>
-            {/* Traditional Contact */}
-            <View style={styles.contactColumn}>
-              {resumeData.personalInfo.email && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Email:</Text>
-                  <Text>{resumeData.personalInfo.email}</Text>
-                </View>
-              )}
-              {resumeData.personalInfo.phone && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Phone:</Text>
-                  <Text>{resumeData.personalInfo.phone}</Text>
-                </View>
-              )}
-              {resumeData.personalInfo.location && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Location:</Text>
-                  <Text>{resumeData.personalInfo.location}</Text>
-                </View>
-              )}
-            </View>
-
-            {/* Social/Online Presence */}
-            <View style={styles.contactColumn}>
-              {resumeData.personalInfo.website && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Website:</Text>
-                  <Link src={resumeData.personalInfo.website} style={styles.link}>
-                    <Text>{resumeData.personalInfo.website}</Text>
-                  </Link>
-                </View>
-              )}
-              {resumeData.personalInfo.linkedin && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>LinkedIn:</Text>
-                  <Link src={resumeData.personalInfo.linkedin} style={styles.link}>
-                    <Text>{resumeData.personalInfo.linkedin}</Text>
-                  </Link>
-                </View>
-              )}
-              {resumeData.personalInfo.github && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>GitHub:</Text>
-                  <Link src={resumeData.personalInfo.github} style={styles.link}>
-                    <Text>{resumeData.personalInfo.github}</Text>
-                  </Link>
-                </View>
-              )}
-              {resumeData.personalInfo.portfolio && (
-                <View style={styles.contactItem}>
-                  <Text style={styles.contactLabel}>Portfolio:</Text>
-                  <Link src={resumeData.personalInfo.portfolio} style={styles.link}>
-                    <Text>{resumeData.personalInfo.portfolio}</Text>
-                  </Link>
-                </View>
-              )}
+        <View>
+          <View style={styles.header}>
+            <Text style={styles.name}>{resumeData.personalInfo.fullName}</Text>
+            <View style={styles.contactInfo}>
+              {resumeData.personalInfo.email && <Text>{resumeData.personalInfo.email}</Text>}
+              {resumeData.personalInfo.phone && <Text>{resumeData.personalInfo.phone}</Text>}
+              {resumeData.personalInfo.location && <Text>{resumeData.personalInfo.location}</Text>}
+              {resumeData.personalInfo.linkedin && <Link src={resumeData.personalInfo.linkedin}><Text>{resumeData.personalInfo.linkedin}</Text></Link>}
+              {resumeData.personalInfo.github && <Link src={resumeData.personalInfo.github}><Text>{resumeData.personalInfo.github}</Text></Link>}
+              {resumeData.personalInfo.portfolio && <Link src={resumeData.personalInfo.portfolio}><Text>{resumeData.personalInfo.portfolio}</Text></Link>}
             </View>
           </View>
-        </View>
 
-        {/* Professional Summary */}
-        {resumeData.personalInfo.summary && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Professional Summary</Text>
-            <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
-          </View>
-        )}
+          {resumeData.personalInfo.summary && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Professional Summary</Text>
+              <Text style={{ fontSize: 13, lineHeight: 1.7, color: "#374151" }}>{resumeData.personalInfo.summary}</Text>
+            </View>
+          )}
 
-        {/* Experience */}
-        {resumeData.experience && resumeData.experience.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Professional Experience</Text>
-            {resumeData.experience.map((exp, index) => {
-              const bulletPoints = (exp.description || "")
-                .split("\n")
-                .map((line) => line.trim())
-                .filter(Boolean);
-
-              return (
-                <View key={index} style={styles.experienceItem}>
-                  <View style={styles.experienceHeader}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.position}>{exp.position}</Text>
-                      <Text style={styles.company}>{exp.company}</Text>
+          {resumeData.experience && resumeData.experience.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Professional Experience</Text>
+              {resumeData.experience.map((exp, index) => {
+                const bulletPoints = (exp.description || "").split("\n").filter(Boolean);
+                return (
+                  <View key={index} style={{ marginBottom: 24 }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ fontSize: 14, fontWeight: 600, color: "#111827", marginBottom: 4 }}>{exp.position}</Text>
+                        <Text style={{ fontSize: 13, color: "#374151" }}>{exp.company}</Text>
+                      </View>
+                      <Text style={{ fontSize: 11, color: "#6b7280" }}>{exp.startDate} - {exp.current ? "Present" : exp.endDate}</Text>
                     </View>
-                    <View>
-                      <Text style={styles.dateRange}>
-                        {exp.startDate} - {exp.current ? "Present" : exp.endDate}
-                      </Text>
-                    </View>
+                    {bulletPoints.length > 0 && (
+                      <View style={{ marginLeft: 20, marginTop: 8 }}>
+                        {bulletPoints.map((point, i) => (
+                          <View key={i} style={{ flexDirection: "row", marginBottom: 4 }}>
+                            <View style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: "#374151", marginRight: 8, marginTop: 6 }} />
+                            <Text style={{ flex: 1, fontSize: 12.5, lineHeight: 1.7, color: "#374151" }}>{point}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
                   </View>
-                  {bulletPoints.length > 0 && (
-                    <View style={styles.bulletPoints}>
-                      {bulletPoints.map((point, i) => (
-                        <View key={i} style={styles.bulletPoint}>
-                          <View style={styles.bullet} />
-                          <Text style={styles.bulletText}>{point}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  )}
-                </View>
-              );
-            })}
-          </View>
-        )}
+                );
+              })}
+            </View>
+          )}
 
-        {/* Education */}
-        {resumeData.education && resumeData.education.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {resumeData.education.map((edu, index) => (
-              <View key={index} style={styles.educationItem}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.degree}>
-                    {edu.degree} {edu.field && `in ${edu.field}`}
-                  </Text>
-                  <Text style={styles.school}>{edu.school}</Text>
-                </View>
-                <View>
-                  <Text style={styles.dateRange}>
-                    {edu.startDate} - {edu.endDate}
-                  </Text>
+          <View style={styles.twoColumnGrid}>
+            {resumeData.education && resumeData.education.length > 0 && (
+              <View style={styles.column}>
+                <Text style={styles.sectionTitle}>Education</Text>
+                {resumeData.education.map((edu, index) => (
+                  <View key={index} style={{ marginBottom: 16 }}>
+                    <Text style={{ fontSize: 14, fontWeight: 600, color: "#111827", marginBottom: 4 }}>
+                      {edu.degree} {edu.field && `in ${edu.field}`}
+                    </Text>
+                    <Text style={{ fontSize: 13, color: "#374151", marginBottom: 2 }}>{edu.school}</Text>
+                    <Text style={{ fontSize: 11, color: "#6b7280" }}>{edu.startDate} - {edu.endDate}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {resumeData.skills && resumeData.skills.length > 0 && (
+              <View style={styles.column}>
+                <Text style={styles.sectionTitle}>Skills</Text>
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+                  {resumeData.skills.map((skill, index) => (
+                    <Text key={index} style={{ fontSize: 13, color: "#111827", marginRight: 4 }}>{skill.name}</Text>
+                  ))}
                 </View>
               </View>
-            ))}
+            )}
           </View>
-        )}
-
-        {/* Skills */}
-        {resumeData.skills && resumeData.skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            <View style={styles.skillsContainer}>
-              {resumeData.skills.map((skill, index) => (
-                <View key={index} style={styles.skillChip}>
-                  <Text style={styles.skillText}>{skill.name}</Text>
-                </View>
-              ))}
+          {resumeData.sections && resumeData.sections.map((section, index) => (
+            <View key={index} style={styles.section}>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <Text style={{ fontSize: 13, lineHeight: 1.7, color: "#374151" }}>{section.content}</Text>
             </View>
-          </View>
-        )}
-
-        {/* Custom Sections */}
-        {resumeData.sections && resumeData.sections.map((section, index) => (
-          <View key={index} style={styles.customSection}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <Text style={styles.customContent}>{section.content}</Text>
-          </View>
-        ))}
+          ))}
+        </View>
       </Page>
     </Document>
   );

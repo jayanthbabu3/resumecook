@@ -1,7 +1,5 @@
 import { ResumeData } from "@/pages/Editor";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
-import { InlineEditableList } from "@/components/resume/InlineEditableList";
-import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
 interface DiamondAccentUniversalTemplateProps {

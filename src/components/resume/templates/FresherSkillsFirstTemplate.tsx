@@ -2,9 +2,9 @@ import type { ResumeData } from "@/pages/Editor";
 import { Mail, Phone, MapPin, Calendar, Code } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
+import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
-import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
 interface FresherSkillsFirstTemplateProps {
   resumeData: ResumeData;

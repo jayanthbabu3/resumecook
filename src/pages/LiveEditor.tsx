@@ -935,6 +935,493 @@ import { RealEstateAppraiserTemplate } from "@/components/resume/templates/RealE
 import { SupplyChainManagerTemplate } from "@/components/resume/templates/SupplyChainManagerTemplate";
 import { LogisticsCoordinatorTemplate } from "@/components/resume/templates/LogisticsCoordinatorTemplate";
 import { ProcurementSpecialistTemplate } from "@/components/resume/templates/ProcurementSpecialistTemplate";
+import { AIEngineerTemplate } from "@/components/resume/templates/AIEngineerTemplate";
+import { APIDocTemplate } from "@/components/resume/templates/APIDocTemplate";
+import { AWSCloudEngineerTemplate } from "@/components/resume/templates/AWSCloudEngineerTemplate";
+import { AccessibilityUxTemplate } from "@/components/resume/templates/AccessibilityUxTemplate";
+import { AccountingProTemplate } from "@/components/resume/templates/AccountingProTemplate";
+import { AchieverFresherTemplate } from "@/components/resume/templates/AchieverFresherTemplate";
+import { AdobePortfolioDesignerTemplate } from "@/components/resume/templates/AdobePortfolioDesignerTemplate";
+import { AestheticCreativeTemplate } from "@/components/resume/templates/AestheticCreativeTemplate";
+import { AgileProjectLeadTemplate } from "@/components/resume/templates/AgileProjectLeadTemplate";
+import { AgileflowDeveloperTemplate } from "@/components/resume/templates/AgileflowDeveloperTemplate";
+import { AngularModernUniversalTemplate } from "@/components/resume/templates/AngularModernUniversalTemplate";
+import { ApigatewayArchitectTemplate } from "@/components/resume/templates/ApigatewayArchitectTemplate";
+import { ArtDirectorModernTemplate } from "@/components/resume/templates/ArtDirectorModernTemplate";
+import { ArtisanDesignerTemplate } from "@/components/resume/templates/ArtisanDesignerTemplate";
+import { ArtisticGridTemplate } from "@/components/resume/templates/ArtisticGridTemplate";
+import { ArtisticHorizonTemplate } from "@/components/resume/templates/ArtisticHorizonTemplate";
+import { ArtisticMomentumTemplate } from "@/components/resume/templates/ArtisticMomentumTemplate";
+import { ArtisticVisionTemplate } from "@/components/resume/templates/ArtisticVisionTemplate";
+import { ArtstationProTemplate } from "@/components/resume/templates/ArtstationProTemplate";
+import { AscendGraduateTemplate } from "@/components/resume/templates/AscendGraduateTemplate";
+import { AspireGraduateTemplate } from "@/components/resume/templates/AspireGraduateTemplate";
+import { AsymmetricLayoutUniversalTemplate } from "@/components/resume/templates/AsymmetricLayoutUniversalTemplate";
+import { AtlasExecutiveTemplate } from "@/components/resume/templates/AtlasExecutiveTemplate";
+import { AuditExpertTemplate } from "@/components/resume/templates/AuditExpertTemplate";
+import { AuroraMinimalTemplate } from "@/components/resume/templates/AuroraMinimalTemplate";
+import { AwwwardsDesignerTemplate } from "@/components/resume/templates/AwwwardsDesignerTemplate";
+import { AzureDevOpsSpecialistTemplate } from "@/components/resume/templates/AzureDevOpsSpecialistTemplate";
+import { BadgeStyleUniversalTemplate } from "@/components/resume/templates/BadgeStyleUniversalTemplate";
+import { BehancePortfolioTemplate } from "@/components/resume/templates/BehancePortfolioTemplate";
+import { BitbucketDeveloperTemplate } from "@/components/resume/templates/BitbucketDeveloperTemplate";
+import { BlockchainDevTemplate } from "@/components/resume/templates/BlockchainDevTemplate";
+import { BlueprintDesignTemplate } from "@/components/resume/templates/BlueprintDesignTemplate";
+import { BoldSectionHeadersUniversalTemplate } from "@/components/resume/templates/BoldSectionHeadersUniversalTemplate";
+import { BoldTypographyTemplate } from "@/components/resume/templates/BoldTypographyTemplate";
+import { BoldTypographyUniversalTemplate } from "@/components/resume/templates/BoldTypographyUniversalTemplate";
+import { BootcampPortfolioTemplate } from "@/components/resume/templates/BootcampPortfolioTemplate";
+import { BorderFrameUniversalTemplate } from "@/components/resume/templates/BorderFrameUniversalTemplate";
+import { BoxedSectionsUniversalTemplate } from "@/components/resume/templates/BoxedSectionsUniversalTemplate";
+import { BrandDesignerTemplateTemplate } from "@/components/resume/templates/BrandDesignerTemplateTemplate";
+import { BrandIdentityTemplate } from "@/components/resume/templates/BrandIdentityTemplate";
+import { BrandManagerTemplate } from "@/components/resume/templates/BrandManagerTemplate";
+import { BrandedProfessionalTemplate } from "@/components/resume/templates/BrandedProfessionalTemplate";
+import { BrightGraduateTemplate } from "@/components/resume/templates/BrightGraduateTemplate";
+import { BusinessCleanLayoutTemplate } from "@/components/resume/templates/BusinessCleanLayoutTemplate";
+import { BusinessClearTemplateTemplate } from "@/components/resume/templates/BusinessClearTemplateTemplate";
+import { BusinessModernGridTemplate } from "@/components/resume/templates/BusinessModernGridTemplate";
+import { BusinessSidebarProTemplate } from "@/components/resume/templates/BusinessSidebarProTemplate";
+import { BusinessSimpleModernTemplate } from "@/components/resume/templates/BusinessSimpleModernTemplate";
+import { BytecodeSpecialistTemplate } from "@/components/resume/templates/BytecodeSpecialistTemplate";
+import { CEOProfileTemplate } from "@/components/resume/templates/CEOProfileTemplate";
+import { CICDPipelineEngineerTemplate } from "@/components/resume/templates/CICDPipelineEngineerTemplate";
+import { CampusInfluencerTemplate } from "@/components/resume/templates/CampusInfluencerTemplate";
+import { CanvasArtistTemplate } from "@/components/resume/templates/CanvasArtistTemplate";
+import { CarbonmadeDesignerTemplate } from "@/components/resume/templates/CarbonmadeDesignerTemplate";
+import { CardLayoutUniversalTemplate } from "@/components/resume/templates/CardLayoutUniversalTemplate";
+import { CasestudyDesignerTemplate } from "@/components/resume/templates/CasestudyDesignerTemplate";
+import { CatalystFresherTemplate } from "@/components/resume/templates/CatalystFresherTemplate";
+import { CenteredMinimalUniversalTemplate } from "@/components/resume/templates/CenteredMinimalUniversalTemplate";
+import { ChevronAccentUniversalTemplate } from "@/components/resume/templates/ChevronAccentUniversalTemplate";
+import { ChromaticCreativeTemplate } from "@/components/resume/templates/ChromaticCreativeTemplate";
+import { CircleIconUniversalTemplate } from "@/components/resume/templates/CircleIconUniversalTemplate";
+import { CircularElementsUniversalTemplate } from "@/components/resume/templates/CircularElementsUniversalTemplate";
+import { ClassicSerifUniversalTemplate } from "@/components/resume/templates/ClassicSerifUniversalTemplate";
+import { CleanBasicExecutiveTemplate } from "@/components/resume/templates/CleanBasicExecutiveTemplate";
+import { CleanCorporateSimpleTemplate } from "@/components/resume/templates/CleanCorporateSimpleTemplate";
+import { CleanModernUniversalTemplate } from "@/components/resume/templates/CleanModernUniversalTemplate";
+import { CleanProfessionalSimpleTemplate } from "@/components/resume/templates/CleanProfessionalSimpleTemplate";
+import { CleanReadableProTemplate } from "@/components/resume/templates/CleanReadableProTemplate";
+import { CleanTwoColumnUniversalTemplate } from "@/components/resume/templates/CleanTwoColumnUniversalTemplate";
+import { ClinicalExcellenceTemplate } from "@/components/resume/templates/ClinicalExcellenceTemplate";
+import { CloudNativeTemplate } from "@/components/resume/templates/CloudNativeTemplate";
+import { CloudSolutionsArchitectTemplate } from "@/components/resume/templates/CloudSolutionsArchitectTemplate";
+import { CloudnativeArchitectTemplate } from "@/components/resume/templates/CloudnativeArchitectTemplate";
+import { CodeCraftsmanTemplate } from "@/components/resume/templates/CodeCraftsmanTemplate";
+import { CodePinnacleTemplate } from "@/components/resume/templates/CodePinnacleTemplate";
+import { CodeSnippetTemplate } from "@/components/resume/templates/CodeSnippetTemplate";
+import { CodeSphereTemplate } from "@/components/resume/templates/CodeSphereTemplate";
+import { CodeVisionTemplate } from "@/components/resume/templates/CodeVisionTemplate";
+import { CodeforgeDeveloperTemplate } from "@/components/resume/templates/CodeforgeDeveloperTemplate";
+import { CodepenDeveloperTemplate } from "@/components/resume/templates/CodepenDeveloperTemplate";
+import { CollageArtTemplate } from "@/components/resume/templates/CollageArtTemplate";
+import { ColorBlockUniversalTemplate } from "@/components/resume/templates/ColorBlockUniversalTemplate";
+import { ColorSplashTemplate } from "@/components/resume/templates/ColorSplashTemplate";
+import { CompactEliteUniversalTemplate } from "@/components/resume/templates/CompactEliteUniversalTemplate";
+import { CompileTimeDevTemplate } from "@/components/resume/templates/CompileTimeDevTemplate";
+import { ComplianceOfficerTemplate } from "@/components/resume/templates/ComplianceOfficerTemplate";
+import { ComponentuiDesignerTemplate } from "@/components/resume/templates/ComponentuiDesignerTemplate";
+import { CompositionArtistTemplate } from "@/components/resume/templates/CompositionArtistTemplate";
+import { ConceptCreativeTemplate } from "@/components/resume/templates/ConceptCreativeTemplate";
+import { ConnectedLeaderTemplate } from "@/components/resume/templates/ConnectedLeaderTemplate";
+import { ConnectedProfessionalTemplate } from "@/components/resume/templates/ConnectedProfessionalTemplate";
+import { ContaineropsEngineerTemplate } from "@/components/resume/templates/ContaineropsEngineerTemplate";
+import { ConversationalUxTemplate } from "@/components/resume/templates/ConversationalUxTemplate";
+import { CornerAccentUniversalTemplate } from "@/components/resume/templates/CornerAccentUniversalTemplate";
+import { CoroflotPortfolioTemplate } from "@/components/resume/templates/CoroflotPortfolioTemplate";
+import { CorporateBorderFrameTemplate } from "@/components/resume/templates/CorporateBorderFrameTemplate";
+import { CorporateEasyLayoutTemplate } from "@/components/resume/templates/CorporateEasyLayoutTemplate";
+import { CorporateEliteTemplate } from "@/components/resume/templates/CorporateEliteTemplate";
+import { CorporateFusionTemplate } from "@/components/resume/templates/CorporateFusionTemplate";
+import { CorporateLawTemplate } from "@/components/resume/templates/CorporateLawTemplate";
+import { CorporateLegalCounselTemplate } from "@/components/resume/templates/CorporateLegalCounselTemplate";
+import { CorporateMinimalistProTemplate } from "@/components/resume/templates/CorporateMinimalistProTemplate";
+import { CorporateMomentumTemplate } from "@/components/resume/templates/CorporateMomentumTemplate";
+import { CorporateSimpleTemplateTemplate } from "@/components/resume/templates/CorporateSimpleTemplateTemplate";
+import { CorporateVisionTemplate } from "@/components/resume/templates/CorporateVisionTemplate";
+import { CosmosProfessionalTemplate } from "@/components/resume/templates/CosmosProfessionalTemplate";
+import { CraftArtistTemplate } from "@/components/resume/templates/CraftArtistTemplate";
+import { CreativeCanvasTemplate } from "@/components/resume/templates/CreativeCanvasTemplate";
+import { CreativeCraftedTemplate } from "@/components/resume/templates/CreativeCraftedTemplate";
+import { CreativeHorizonTemplate } from "@/components/resume/templates/CreativeHorizonTemplate";
+import { CreativePulseTemplate } from "@/components/resume/templates/CreativePulseTemplate";
+import { CreativeShowcaseGridTemplate } from "@/components/resume/templates/CreativeShowcaseGridTemplate";
+import { CrystalExecutiveTemplate } from "@/components/resume/templates/CrystalExecutiveTemplate";
+import { CuratorCreativeTemplate } from "@/components/resume/templates/CuratorCreativeTemplate";
+import { CyberSecurityTemplate } from "@/components/resume/templates/CyberSecurityTemplate";
+import { DarkModeDevTemplate } from "@/components/resume/templates/DarkModeDevTemplate";
+import { DataScienceTemplate } from "@/components/resume/templates/DataScienceTemplate";
+import { DesignLeaderPortfolioTemplate } from "@/components/resume/templates/DesignLeaderPortfolioTemplate";
+import { DesignMaestroTemplate } from "@/components/resume/templates/DesignMaestroTemplate";
+import { DesignPinnacleTemplate } from "@/components/resume/templates/DesignPinnacleTemplate";
+import { DesignSphereTemplate } from "@/components/resume/templates/DesignSphereTemplate";
+import { DesignSystemsPortfolioTemplate } from "@/components/resume/templates/DesignSystemsPortfolioTemplate";
+import { DesignleadershipDirectorTemplate } from "@/components/resume/templates/DesignleadershipDirectorTemplate";
+import { DesignopsSpecialistTemplate } from "@/components/resume/templates/DesignopsSpecialistTemplate";
+import { DesignportfolioSpecialistTemplate } from "@/components/resume/templates/DesignportfolioSpecialistTemplate";
+import { DesignstrategyLeadTemplate } from "@/components/resume/templates/DesignstrategyLeadTemplate";
+import { DesignsystemArchitectTemplate } from "@/components/resume/templates/DesignsystemArchitectTemplate";
+import { DesignthinkingSpecialistTemplate } from "@/components/resume/templates/DesignthinkingSpecialistTemplate";
+import { DevArchitectureTemplate } from "@/components/resume/templates/DevArchitectureTemplate";
+import { DevEliteTemplate } from "@/components/resume/templates/DevEliteTemplate";
+import { DevMomentumTemplate } from "@/components/resume/templates/DevMomentumTemplate";
+import { DevOpsAutomationTemplate } from "@/components/resume/templates/DevOpsAutomationTemplate";
+import { DevPrimeTemplate } from "@/components/resume/templates/DevPrimeTemplate";
+import { DeviantartArtistTemplate } from "@/components/resume/templates/DeviantartArtistTemplate";
+import { DevtoContributorTemplate } from "@/components/resume/templates/DevtoContributorTemplate";
+import { DiagonalAccentUniversalTemplate } from "@/components/resume/templates/DiagonalAccentUniversalTemplate";
+import { DiamondAccentUniversalTemplate } from "@/components/resume/templates/DiamondAccentUniversalTemplate";
+import { DigitalArtistPortfolioTemplate } from "@/components/resume/templates/DigitalArtistPortfolioTemplate";
+import { DigitalCanvasTemplate } from "@/components/resume/templates/DigitalCanvasTemplate";
+import { DigitalExecutiveTemplate } from "@/components/resume/templates/DigitalExecutiveTemplate";
+import { DigitalGraduateTemplate } from "@/components/resume/templates/DigitalGraduateTemplate";
+import { DigitalIdentityTemplate } from "@/components/resume/templates/DigitalIdentityTemplate";
+import { DigitalMarketingProTemplate } from "@/components/resume/templates/DigitalMarketingProTemplate";
+import { DigitalNativeGradTemplate } from "@/components/resume/templates/DigitalNativeGradTemplate";
+import { DigitalPortfolioGradTemplate } from "@/components/resume/templates/DigitalPortfolioGradTemplate";
+import { DigitalProfessionalTemplate } from "@/components/resume/templates/DigitalProfessionalTemplate";
+import { DirectorLevelTemplate } from "@/components/resume/templates/DirectorLevelTemplate";
+import { DjangoFrameworkProTemplate } from "@/components/resume/templates/DjangoFrameworkProTemplate";
+import { DockerContainerProTemplate } from "@/components/resume/templates/DockerContainerProTemplate";
+import { DockerhubPublisherTemplate } from "@/components/resume/templates/DockerhubPublisherTemplate";
+import { DottedGridUniversalTemplate } from "@/components/resume/templates/DottedGridUniversalTemplate";
+import { DribbbleShowcaseTemplate } from "@/components/resume/templates/DribbbleShowcaseTemplate";
+import { DualColumnModernUniversalTemplate } from "@/components/resume/templates/DualColumnModernUniversalTemplate";
+import { EclipseProfessionalTemplate } from "@/components/resume/templates/EclipseProfessionalTemplate";
+import { EdgecomputeDeveloperTemplate } from "@/components/resume/templates/EdgecomputeDeveloperTemplate";
+import { EditorialArtistTemplate } from "@/components/resume/templates/EditorialArtistTemplate";
+import { EditorialStyleTemplate } from "@/components/resume/templates/EditorialStyleTemplate";
+import { ElasticsearchDevTemplate } from "@/components/resume/templates/ElasticsearchDevTemplate";
+import { ElevateFresherTemplate } from "@/components/resume/templates/ElevateFresherTemplate";
+import { EmergeFresherTemplate } from "@/components/resume/templates/EmergeFresherTemplate";
+import { EntryEliteTemplate } from "@/components/resume/templates/EntryEliteTemplate";
+import { EntryHorizonTemplate } from "@/components/resume/templates/EntryHorizonTemplate";
+import { EntrySphereTemplate } from "@/components/resume/templates/EntrySphereTemplate";
+import { EventdrivenArchitectTemplate } from "@/components/resume/templates/EventdrivenArchitectTemplate";
+import { ExecutiveCleanSplitTemplate } from "@/components/resume/templates/ExecutiveCleanSplitTemplate";
+import { ExecutiveCoreTemplate } from "@/components/resume/templates/ExecutiveCoreTemplate";
+import { ExecutiveCornerAccentTemplate } from "@/components/resume/templates/ExecutiveCornerAccentTemplate";
+import { ExecutiveDirectLayoutTemplate } from "@/components/resume/templates/ExecutiveDirectLayoutTemplate";
+import { ExecutiveEasyTemplateTemplate } from "@/components/resume/templates/ExecutiveEasyTemplateTemplate";
+import { ExecutiveLeadershipTemplate } from "@/components/resume/templates/ExecutiveLeadershipTemplate";
+import { ExecutiveLetterheadUniversalTemplate } from "@/components/resume/templates/ExecutiveLetterheadUniversalTemplate";
+import { ExecutivePlainLayoutTemplate } from "@/components/resume/templates/ExecutivePlainLayoutTemplate";
+import { ExecutivePrimeTemplate } from "@/components/resume/templates/ExecutivePrimeTemplate";
+import { ExecutiveSalesLeaderTemplate } from "@/components/resume/templates/ExecutiveSalesLeaderTemplate";
+import { ExecutiveSimpleCleanTemplate } from "@/components/resume/templates/ExecutiveSimpleCleanTemplate";
+import { ExecutiveSplitDesignTemplate } from "@/components/resume/templates/ExecutiveSplitDesignTemplate";
+import { ExecutiveTimelineModernTemplate } from "@/components/resume/templates/ExecutiveTimelineModernTemplate";
+import { ExecutiveVisionTemplate } from "@/components/resume/templates/ExecutiveVisionTemplate";
+import { ExpressionArtistTemplate } from "@/components/resume/templates/ExpressionArtistTemplate";
+import { FigmaDesignerPortfolioTemplate } from "@/components/resume/templates/FigmaDesignerPortfolioTemplate";
+import { FinancialAnalystTemplate } from "@/components/resume/templates/FinancialAnalystTemplate";
+import { FloatingHeaderUniversalTemplate } from "@/components/resume/templates/FloatingHeaderUniversalTemplate";
+import { FlutterMobileDevTemplate } from "@/components/resume/templates/FlutterMobileDevTemplate";
+import { FluxExecutiveTemplate } from "@/components/resume/templates/FluxExecutiveTemplate";
+import { FoundationGraduateTemplate } from "@/components/resume/templates/FoundationGraduateTemplate";
+import { FramerDesignerPortfolioTemplate } from "@/components/resume/templates/FramerDesignerPortfolioTemplate";
+import { FresherAcademicStyleTemplate } from "@/components/resume/templates/FresherAcademicStyleTemplate";
+import { FresherBoxShadowTemplate } from "@/components/resume/templates/FresherBoxShadowTemplate";
+import { FresherCircularProgressTemplate } from "@/components/resume/templates/FresherCircularProgressTemplate";
+import { FresherDashBorderTemplate } from "@/components/resume/templates/FresherDashBorderTemplate";
+import { FresherDoubleColumnTemplate } from "@/components/resume/templates/FresherDoubleColumnTemplate";
+import { FresherGlassmorphismTemplate } from "@/components/resume/templates/FresherGlassmorphismTemplate";
+import { FresherGradientBorderTemplate } from "@/components/resume/templates/FresherGradientBorderTemplate";
+import { FresherIconographyTemplate } from "@/components/resume/templates/FresherIconographyTemplate";
+import { FresherLeftStripeTemplate } from "@/components/resume/templates/FresherLeftStripeTemplate";
+import { FresherLightweightTemplate } from "@/components/resume/templates/FresherLightweightTemplate";
+import { FresherModernSplitTemplate } from "@/components/resume/templates/FresherModernSplitTemplate";
+import { FresherModernTabsTemplate } from "@/components/resume/templates/FresherModernTabsTemplate";
+import { FresherNeonAccentTemplate } from "@/components/resume/templates/FresherNeonAccentTemplate";
+import { FresherPolaroidStyleTemplate } from "@/components/resume/templates/FresherPolaroidStyleTemplate";
+import { FresherProgressiveTemplate } from "@/components/resume/templates/FresherProgressiveTemplate";
+import { FresherRibbonStyleTemplate } from "@/components/resume/templates/FresherRibbonStyleTemplate";
+import { FresherStepByStepTemplate } from "@/components/resume/templates/FresherStepByStepTemplate";
+import { FresherTimelineDotsTemplate } from "@/components/resume/templates/FresherTimelineDotsTemplate";
+import { FresherTopBottomTemplate } from "@/components/resume/templates/FresherTopBottomTemplate";
+import { FresherWaveHeaderTemplate } from "@/components/resume/templates/FresherWaveHeaderTemplate";
+import { FreshersCraftedTemplate } from "@/components/resume/templates/FreshersCraftedTemplate";
+import { FreshersVisionTemplate } from "@/components/resume/templates/FreshersVisionTemplate";
+import { FullStackEngineerTemplate } from "@/components/resume/templates/FullStackEngineerTemplate";
+import { FullStackProTemplate } from "@/components/resume/templates/FullStackProTemplate";
+import { GCPArchitectTemplate } from "@/components/resume/templates/GCPArchitectTemplate";
+import { GalleryLayoutTemplate } from "@/components/resume/templates/GalleryLayoutTemplate";
+import { GenZGraduateTemplate } from "@/components/resume/templates/GenZGraduateTemplate";
+import { GenesisGraduateTemplate } from "@/components/resume/templates/GenesisGraduateTemplate";
+import { GeometricCreativeTemplate } from "@/components/resume/templates/GeometricCreativeTemplate";
+import { GeometricShapesUniversalTemplate } from "@/components/resume/templates/GeometricShapesUniversalTemplate";
+import { GitHubProfileTemplate } from "@/components/resume/templates/GitHubProfileTemplate";
+import { GitflowEngineerTemplate } from "@/components/resume/templates/GitflowEngineerTemplate";
+import { GithubPortfolioDevTemplate } from "@/components/resume/templates/GithubPortfolioDevTemplate";
+import { GithubStudentTemplate } from "@/components/resume/templates/GithubStudentTemplate";
+import { GitlabDeveloperTemplate } from "@/components/resume/templates/GitlabDeveloperTemplate";
+import { GlobalEliteTemplate } from "@/components/resume/templates/GlobalEliteTemplate";
+import { GlobalNetworkerTemplate } from "@/components/resume/templates/GlobalNetworkerTemplate";
+import { GlobalProfessionalTemplate } from "@/components/resume/templates/GlobalProfessionalTemplate";
+import { GradientHeaderUniversalTemplate } from "@/components/resume/templates/GradientHeaderUniversalTemplate";
+import { GraduateMomentumTemplate } from "@/components/resume/templates/GraduateMomentumTemplate";
+import { GraduatePrimeTemplate } from "@/components/resume/templates/GraduatePrimeTemplate";
+import { GraduateZenithTemplate } from "@/components/resume/templates/GraduateZenithTemplate";
+import { GraphQLDeveloperTemplate } from "@/components/resume/templates/GraphQLDeveloperTemplate";
+import { GraphdbSpecialistTemplate } from "@/components/resume/templates/GraphdbSpecialistTemplate";
+import { GraphicDesignProTemplate } from "@/components/resume/templates/GraphicDesignProTemplate";
+import { HackathonGraduateTemplate } from "@/components/resume/templates/HackathonGraduateTemplate";
+import { HackernewsDeveloperTemplate } from "@/components/resume/templates/HackernewsDeveloperTemplate";
+import { HackerrankExpertTemplate } from "@/components/resume/templates/HackerrankExpertTemplate";
+import { HarmonyExecutiveTemplate } from "@/components/resume/templates/HarmonyExecutiveTemplate";
+import { HealthcareProfessionalTemplate } from "@/components/resume/templates/HealthcareProfessionalTemplate";
+import { HexagonalPatternUniversalTemplate } from "@/components/resume/templates/HexagonalPatternUniversalTemplate";
+import { HorizonGraduateTemplate } from "@/components/resume/templates/HorizonGraduateTemplate";
+import { IconBarUniversalTemplate } from "@/components/resume/templates/IconBarUniversalTemplate";
+import { IllustrationPortfolioTemplate } from "@/components/resume/templates/IllustrationPortfolioTemplate";
+import { ImaginativeDesignerTemplate } from "@/components/resume/templates/ImaginativeDesignerTemplate";
+import { ImpressionDesignerTemplate } from "@/components/resume/templates/ImpressionDesignerTemplate";
+import { InfinityLoopUniversalTemplate } from "@/components/resume/templates/InfinityLoopUniversalTemplate";
+import { InfluencerProfessionalTemplate } from "@/components/resume/templates/InfluencerProfessionalTemplate";
+import { InformationArchitectTemplate } from "@/components/resume/templates/InformationArchitectTemplate";
+import { InkBrushTemplate } from "@/components/resume/templates/InkBrushTemplate";
+import { InstagramCreativeTemplate } from "@/components/resume/templates/InstagramCreativeTemplate";
+import { InteractivePortfolioDesignerTemplate } from "@/components/resume/templates/InteractivePortfolioDesignerTemplate";
+import { InterfaceMasterTemplate } from "@/components/resume/templates/InterfaceMasterTemplate";
+import { InternshipShowcaseTemplate } from "@/components/resume/templates/InternshipShowcaseTemplate";
+import { JavaEnterpriseTemplateTemplate } from "@/components/resume/templates/JavaEnterpriseTemplateTemplate";
+import { JsonResumeTemplate } from "@/components/resume/templates/JsonResumeTemplate";
+import { KafkaStreamingExpertTemplate } from "@/components/resume/templates/KafkaStreamingExpertTemplate";
+import { KaggleDataScientistTemplate } from "@/components/resume/templates/KaggleDataScientistTemplate";
+import { KeystoneGraduateTemplate } from "@/components/resume/templates/KeystoneGraduateTemplate";
+import { KubernetesSpecialistTemplate } from "@/components/resume/templates/KubernetesSpecialistTemplate";
+import { LaunchpadGraduateTemplate } from "@/components/resume/templates/LaunchpadGraduateTemplate";
+import { LayeredCardsUniversalTemplate } from "@/components/resume/templates/LayeredCardsUniversalTemplate";
+import { LeetcodeChampionTemplate } from "@/components/resume/templates/LeetcodeChampionTemplate";
+import { LeftAlignedProUniversalTemplate } from "@/components/resume/templates/LeftAlignedProUniversalTemplate";
+import { LeftBorderUniversalTemplate } from "@/components/resume/templates/LeftBorderUniversalTemplate";
+import { LegalAdvisorTemplate } from "@/components/resume/templates/LegalAdvisorTemplate";
+import { LinearProgressUniversalTemplate } from "@/components/resume/templates/LinearProgressUniversalTemplate";
+import { LinkedinGraduateTemplate } from "@/components/resume/templates/LinkedinGraduateTemplate";
+import { LinkedinOptimizedTemplate } from "@/components/resume/templates/LinkedinOptimizedTemplate";
+import { LinkedinTechExpertTemplate } from "@/components/resume/templates/LinkedinTechExpertTemplate";
+import { MagazineCreativeTemplate } from "@/components/resume/templates/MagazineCreativeTemplate";
+import { MagazineLayoutUniversalTemplate } from "@/components/resume/templates/MagazineLayoutUniversalTemplate";
+import { MarketingStrategistTemplate } from "@/components/resume/templates/MarketingStrategistTemplate";
+import { MedicalCertificationTemplate } from "@/components/resume/templates/MedicalCertificationTemplate";
+import { MedicalResearchTemplate } from "@/components/resume/templates/MedicalResearchTemplate";
+import { MediumTechWriterTemplate } from "@/components/resume/templates/MediumTechWriterTemplate";
+import { MediumWriterCreativeTemplate } from "@/components/resume/templates/MediumWriterCreativeTemplate";
+import { MeridianCorporateTemplate } from "@/components/resume/templates/MeridianCorporateTemplate";
+import { MetroModernUniversalTemplate } from "@/components/resume/templates/MetroModernUniversalTemplate";
+import { MicroarchEngineerTemplate } from "@/components/resume/templates/MicroarchEngineerTemplate";
+import { MicrointeractionDesignerTemplate } from "@/components/resume/templates/MicrointeractionDesignerTemplate";
+import { MicroservicesDevTemplate } from "@/components/resume/templates/MicroservicesDevTemplate";
+import { MicroservicesExpertTemplate } from "@/components/resume/templates/MicroservicesExpertTemplate";
+import { MilestoneGraduateTemplate } from "@/components/resume/templates/MilestoneGraduateTemplate";
+import { MinimalChicTemplate } from "@/components/resume/templates/MinimalChicTemplate";
+import { MinimalCorporateProTemplate } from "@/components/resume/templates/MinimalCorporateProTemplate";
+import { MinimalDirectTemplateTemplate } from "@/components/resume/templates/MinimalDirectTemplateTemplate";
+import { MinimalEleganceUniversalTemplate } from "@/components/resume/templates/MinimalEleganceUniversalTemplate";
+import { MinimalLinesUniversalTemplate } from "@/components/resume/templates/MinimalLinesUniversalTemplate";
+import { MinimalProLayoutTemplate } from "@/components/resume/templates/MinimalProLayoutTemplate";
+import { MinimalistModernProTemplate } from "@/components/resume/templates/MinimalistModernProTemplate";
+import { MinimalistProSimpleTemplate } from "@/components/resume/templates/MinimalistProSimpleTemplate";
+import { MlopsEngineerTemplate } from "@/components/resume/templates/MlopsEngineerTemplate";
+import { MobileDevTemplate } from "@/components/resume/templates/MobileDevTemplate";
+import { MobileFirstDesignerTemplate } from "@/components/resume/templates/MobileFirstDesignerTemplate";
+import { ModernArtistTemplate } from "@/components/resume/templates/ModernArtistTemplate";
+import { ModernClearProTemplate } from "@/components/resume/templates/ModernClearProTemplate";
+import { ModernCorporateGridTemplate } from "@/components/resume/templates/ModernCorporateGridTemplate";
+import { ModernDigitalTemplate } from "@/components/resume/templates/ModernDigitalTemplate";
+import { ModernEducatorProfessionTemplate } from "@/components/resume/templates/ModernEducatorProfessionTemplate";
+import { ModernMinimalistUniversalTemplate } from "@/components/resume/templates/ModernMinimalistUniversalTemplate";
+import { ModernPlainProTemplate } from "@/components/resume/templates/ModernPlainProTemplate";
+import { ModernProfessionalBoxTemplate } from "@/components/resume/templates/ModernProfessionalBoxTemplate";
+import { ModernSimpleProTemplate } from "@/components/resume/templates/ModernSimpleProTemplate";
+import { MomentumFresherTemplate } from "@/components/resume/templates/MomentumFresherTemplate";
+import { MonochromeElegantUniversalTemplate } from "@/components/resume/templates/MonochromeElegantUniversalTemplate";
+import { MonospaceTechTemplate } from "@/components/resume/templates/MonospaceTechTemplate";
+import { MotionDesignerPortfolioTemplate } from "@/components/resume/templates/MotionDesignerPortfolioTemplate";
+import { MotionGraphicsArtistTemplate } from "@/components/resume/templates/MotionGraphicsArtistTemplate";
+import { MotionUiDesignerTemplate } from "@/components/resume/templates/MotionUiDesignerTemplate";
+import { MultiPlatformArtistTemplate } from "@/components/resume/templates/MultiPlatformArtistTemplate";
+import { MuseCreativeTemplate } from "@/components/resume/templates/MuseCreativeTemplate";
+import { NarrativeCreativeTemplate } from "@/components/resume/templates/NarrativeCreativeTemplate";
+import { NeonArtistTemplate } from "@/components/resume/templates/NeonArtistTemplate";
+import { NetworkedExecutiveTemplate } from "@/components/resume/templates/NetworkedExecutiveTemplate";
+import { NetworkedGraduateTemplate } from "@/components/resume/templates/NetworkedGraduateTemplate";
+import { NeuralEngineerTemplate } from "@/components/resume/templates/NeuralEngineerTemplate";
+import { NewspaperStyleUniversalTemplate } from "@/components/resume/templates/NewspaperStyleUniversalTemplate";
+import { NextstepFresherTemplate } from "@/components/resume/templates/NextstepFresherTemplate";
+import { NexusEliteTemplate } from "@/components/resume/templates/NexusEliteTemplate";
+import { NodeBackendSpecialistTemplate } from "@/components/resume/templates/NodeBackendSpecialistTemplate";
+import { NpmPackageAuthorTemplate } from "@/components/resume/templates/NpmPackageAuthorTemplate";
+import { NursingSpecialistTemplate } from "@/components/resume/templates/NursingSpecialistTemplate";
+import { ObservabilityEngineerTemplate } from "@/components/resume/templates/ObservabilityEngineerTemplate";
+import { OnlineGalleryArtistTemplate } from "@/components/resume/templates/OnlineGalleryArtistTemplate";
+import { OnlineIdentityTemplate } from "@/components/resume/templates/OnlineIdentityTemplate";
+import { OnlinePortfolioFresherTemplate } from "@/components/resume/templates/OnlinePortfolioFresherTemplate";
+import { OnlinePresenceFresherTemplate } from "@/components/resume/templates/OnlinePresenceFresherTemplate";
+import { OnlineProfessionalTemplate } from "@/components/resume/templates/OnlineProfessionalTemplate";
+import { OpenSourceTemplate } from "@/components/resume/templates/OpenSourceTemplate";
+import { OpensourceDeveloperTemplate } from "@/components/resume/templates/OpensourceDeveloperTemplate";
+import { OperationsExcellenceTemplate } from "@/components/resume/templates/OperationsExcellenceTemplate";
+import { PaletteDesignerTemplate } from "@/components/resume/templates/PaletteDesignerTemplate";
+import { ParallaxStyleUniversalTemplate } from "@/components/resume/templates/ParallaxStyleUniversalTemplate";
+import { PastelCreativeTemplate } from "@/components/resume/templates/PastelCreativeTemplate";
+import { PathwayGraduateTemplate } from "@/components/resume/templates/PathwayGraduateTemplate";
+import { PatreonCreativeTemplate } from "@/components/resume/templates/PatreonCreativeTemplate";
+import { PhotographyLayoutTemplate } from "@/components/resume/templates/PhotographyLayoutTemplate";
+import { PhotographyProTemplateTemplate } from "@/components/resume/templates/PhotographyProTemplateTemplate";
+import { PinnacleEliteTemplate } from "@/components/resume/templates/PinnacleEliteTemplate";
+import { PinterestDesignerTemplate } from "@/components/resume/templates/PinterestDesignerTemplate";
+import { PioneerFresherTemplate } from "@/components/resume/templates/PioneerFresherTemplate";
+import { PixelcraftDeveloperTemplate } from "@/components/resume/templates/PixelcraftDeveloperTemplate";
+import { PixelperfectDesignerTemplate } from "@/components/resume/templates/PixelperfectDesignerTemplate";
+import { PlatformProfessionalTemplate } from "@/components/resume/templates/PlatformProfessionalTemplate";
+import { PortfolioCoderTemplate } from "@/components/resume/templates/PortfolioCoderTemplate";
+import { PortfolioGraduateTemplate } from "@/components/resume/templates/PortfolioGraduateTemplate";
+import { PortfolioMinimalistTemplate } from "@/components/resume/templates/PortfolioMinimalistTemplate";
+import { PortfolioProfessionalTemplate } from "@/components/resume/templates/PortfolioProfessionalTemplate";
+import { PortfolioShowcaseTemplate } from "@/components/resume/templates/PortfolioShowcaseTemplate";
+import { PortfolioWebsiteCreativeTemplate } from "@/components/resume/templates/PortfolioWebsiteCreativeTemplate";
+import { PostgreSQLExpertTemplate } from "@/components/resume/templates/PostgreSQLExpertTemplate";
+import { PotentialFresherTemplate } from "@/components/resume/templates/PotentialFresherTemplate";
+import { PrismProfessionalTemplate } from "@/components/resume/templates/PrismProfessionalTemplate";
+import { ProcessImprovementTemplate } from "@/components/resume/templates/ProcessImprovementTemplate";
+import { ProductDesignerShowcaseTemplate } from "@/components/resume/templates/ProductDesignerShowcaseTemplate";
+import { ProductDesignerUXTemplate } from "@/components/resume/templates/ProductDesignerUXTemplate";
+import { ProfessionalAccentBarTemplate } from "@/components/resume/templates/ProfessionalAccentBarTemplate";
+import { ProfessionalAscendTemplate } from "@/components/resume/templates/ProfessionalAscendTemplate";
+import { ProfessionalBasicModernTemplate } from "@/components/resume/templates/ProfessionalBasicModernTemplate";
+import { ProfessionalCleanSimpleTemplate } from "@/components/resume/templates/ProfessionalCleanSimpleTemplate";
+import { ProfessionalCompactUniversalTemplate } from "@/components/resume/templates/ProfessionalCompactUniversalTemplate";
+import { ProfessionalDividerTemplate } from "@/components/resume/templates/ProfessionalDividerTemplate";
+import { ProfessionalEasyReadTemplate } from "@/components/resume/templates/ProfessionalEasyReadTemplate";
+import { ProfessionalHeaderBannerTemplate } from "@/components/resume/templates/ProfessionalHeaderBannerTemplate";
+import { ProfessionalHorizonTemplate } from "@/components/resume/templates/ProfessionalHorizonTemplate";
+import { ProfessionalModernEdgeTemplate } from "@/components/resume/templates/ProfessionalModernEdgeTemplate";
+import { ProfessionalPlainSimpleTemplate } from "@/components/resume/templates/ProfessionalPlainSimpleTemplate";
+import { ProfessionalReadableLayoutTemplate } from "@/components/resume/templates/ProfessionalReadableLayoutTemplate";
+import { ProfessionalSphereTemplate } from "@/components/resume/templates/ProfessionalSphereTemplate";
+import { ProfessionalStraightforwardTemplate } from "@/components/resume/templates/ProfessionalStraightforwardTemplate";
+import { ProfessionalVerticalLineTemplate } from "@/components/resume/templates/ProfessionalVerticalLineTemplate";
+import { ProfessionalZenithTemplate } from "@/components/resume/templates/ProfessionalZenithTemplate";
+import { ProfileCentricTemplate } from "@/components/resume/templates/ProfileCentricTemplate";
+import { ProfileDrivenGradTemplate } from "@/components/resume/templates/ProfileDrivenGradTemplate";
+import { ProjectManagerProTemplate } from "@/components/resume/templates/ProjectManagerProTemplate";
+import { ProjectShowcaseGradTemplate } from "@/components/resume/templates/ProjectShowcaseGradTemplate";
+import { ProtfolioShowcaseUxTemplate } from "@/components/resume/templates/ProtfolioShowcaseUxTemplate";
+import { PrototypeSpecialistTemplate } from "@/components/resume/templates/PrototypeSpecialistTemplate";
+import { PyTorchDeveloperTemplate } from "@/components/resume/templates/PyTorchDeveloperTemplate";
+import { PypiContributorTemplate } from "@/components/resume/templates/PypiContributorTemplate";
+import { PythonDeveloperProTemplate } from "@/components/resume/templates/PythonDeveloperProTemplate";
+import { QuantumCoderTemplate } from "@/components/resume/templates/QuantumCoderTemplate";
+import { QuantumProfessionalTemplate } from "@/components/resume/templates/QuantumProfessionalTemplate";
+import { RadianceCorporateTemplate } from "@/components/resume/templates/RadianceCorporateTemplate";
+import { ReactFrontendProTemplate } from "@/components/resume/templates/ReactFrontendProTemplate";
+import { ReactNativeExpertTemplate } from "@/components/resume/templates/ReactNativeExpertTemplate";
+import { RedisCacheSpecialistTemplate } from "@/components/resume/templates/RedisCacheSpecialistTemplate";
+import { ResponsiveUxTemplate } from "@/components/resume/templates/ResponsiveUxTemplate";
+import { RetroProfessionalUniversalTemplate } from "@/components/resume/templates/RetroProfessionalUniversalTemplate";
+import { RibbonHeaderUniversalTemplate } from "@/components/resume/templates/RibbonHeaderUniversalTemplate";
+import { RoundedCornersUniversalTemplate } from "@/components/resume/templates/RoundedCornersUniversalTemplate";
+import { RustDeveloperProTemplate } from "@/components/resume/templates/RustDeveloperProTemplate";
+import { SalesAchievementTemplate } from "@/components/resume/templates/SalesAchievementTemplate";
+import { ScalaEngineerTemplate } from "@/components/resume/templates/ScalaEngineerTemplate";
+import { SerenityMinimalTemplate } from "@/components/resume/templates/SerenityMinimalTemplate";
+import { ServerlessDeveloperTemplate } from "@/components/resume/templates/ServerlessDeveloperTemplate";
+import { ServerlessSpecialistTemplate } from "@/components/resume/templates/ServerlessSpecialistTemplate";
+import { ServicedesignSpecialistTemplate } from "@/components/resume/templates/ServicedesignSpecialistTemplate";
+import { SidebarProfessionalUniversalTemplate } from "@/components/resume/templates/SidebarProfessionalUniversalTemplate";
+import { SimpleBusinessCleanTemplate } from "@/components/resume/templates/SimpleBusinessCleanTemplate";
+import { SimpleClearBusinessTemplate } from "@/components/resume/templates/SimpleClearBusinessTemplate";
+import { SimpleExecutiveLayoutTemplate } from "@/components/resume/templates/SimpleExecutiveLayoutTemplate";
+import { SimpleModernExecutiveTemplate } from "@/components/resume/templates/SimpleModernExecutiveTemplate";
+import { SimpleProfessionalCleanTemplate } from "@/components/resume/templates/SimpleProfessionalCleanTemplate";
+import { SimpleStructuredTemplateTemplate } from "@/components/resume/templates/SimpleStructuredTemplateTemplate";
+import { SketchExpertPortfolioTemplate } from "@/components/resume/templates/SketchExpertPortfolioTemplate";
+import { SocialCreativeInfluencerTemplate } from "@/components/resume/templates/SocialCreativeInfluencerTemplate";
+import { SocialExecutiveTemplate } from "@/components/resume/templates/SocialExecutiveTemplate";
+import { SocialFirstFresherTemplate } from "@/components/resume/templates/SocialFirstFresherTemplate";
+import { SocialGraduateTemplate } from "@/components/resume/templates/SocialGraduateTemplate";
+import { SocialMediaProTemplate } from "@/components/resume/templates/SocialMediaProTemplate";
+import { SocialSavvyTemplate } from "@/components/resume/templates/SocialSavvyTemplate";
+import { SoftwareCraftsmanTemplate } from "@/components/resume/templates/SoftwareCraftsmanTemplate";
+import { SoftwareMasterTemplate } from "@/components/resume/templates/SoftwareMasterTemplate";
+import { SoftwareVisionTemplate } from "@/components/resume/templates/SoftwareVisionTemplate";
+import { SoundcloudArtistTemplate } from "@/components/resume/templates/SoundcloudArtistTemplate";
+import { SparkFresherTemplate } from "@/components/resume/templates/SparkFresherTemplate";
+import { SpectrumProfessionalTemplate } from "@/components/resume/templates/SpectrumProfessionalTemplate";
+import { SplitPaneUniversalTemplate } from "@/components/resume/templates/SplitPaneUniversalTemplate";
+import { SpotifyMusicianTemplate } from "@/components/resume/templates/SpotifyMusicianTemplate";
+import { SpotlightHeaderUniversalTemplate } from "@/components/resume/templates/SpotlightHeaderUniversalTemplate";
+import { StackOverflowInspiredTemplate } from "@/components/resume/templates/StackOverflowInspiredTemplate";
+import { StackedSectionsUniversalTemplate } from "@/components/resume/templates/StackedSectionsUniversalTemplate";
+import { StackmasterFullstackTemplate } from "@/components/resume/templates/StackmasterFullstackTemplate";
+import { StackoverflowDevTemplate } from "@/components/resume/templates/StackoverflowDevTemplate";
+import { SterlingExecutiveTemplate } from "@/components/resume/templates/SterlingExecutiveTemplate";
+import { StrategicExecutiveTemplate } from "@/components/resume/templates/StrategicExecutiveTemplate";
+import { StrategicLeaderTemplate } from "@/components/resume/templates/StrategicLeaderTemplate";
+import { StripedBackgroundUniversalTemplate } from "@/components/resume/templates/StripedBackgroundUniversalTemplate";
+import { StudentDeveloperPortfolioTemplate } from "@/components/resume/templates/StudentDeveloperPortfolioTemplate";
+import { StudentEngagementTemplate } from "@/components/resume/templates/StudentEngagementTemplate";
+import { StudioArtistTemplate } from "@/components/resume/templates/StudioArtistTemplate";
+import { SubstackAuthorTemplate } from "@/components/resume/templates/SubstackAuthorTemplate";
+import { SwissStyleUniversalTemplate } from "@/components/resume/templates/SwissStyleUniversalTemplate";
+import { SystemArchitectTemplate } from "@/components/resume/templates/SystemArchitectTemplate";
+import { TaxSpecialistTemplate } from "@/components/resume/templates/TaxSpecialistTemplate";
+import { TeachingExcellenceTemplate } from "@/components/resume/templates/TeachingExcellenceTemplate";
+import { TechBloggerDevTemplate } from "@/components/resume/templates/TechBloggerDevTemplate";
+import { TechCraftedTemplate } from "@/components/resume/templates/TechCraftedTemplate";
+import { TechHorizonTemplate } from "@/components/resume/templates/TechHorizonTemplate";
+import { TechLeadTemplate } from "@/components/resume/templates/TechLeadTemplate";
+import { TechPioneerTemplate } from "@/components/resume/templates/TechPioneerTemplate";
+import { TechVanguardTemplate } from "@/components/resume/templates/TechVanguardTemplate";
+import { TensorFlowMLEngineerTemplate } from "@/components/resume/templates/TensorFlowMLEngineerTemplate";
+import { TerminalConsoleTemplate } from "@/components/resume/templates/TerminalConsoleTemplate";
+import { ThinBorderUniversalTemplate } from "@/components/resume/templates/ThinBorderUniversalTemplate";
+import { ThreeDModelingArtistTemplate } from "@/components/resume/templates/ThreeDModelingArtistTemplate";
+import { TiktokContentCreatorTemplate } from "@/components/resume/templates/TiktokContentCreatorTemplate";
+import { TimelineVerticalUniversalTemplate } from "@/components/resume/templates/TimelineVerticalUniversalTemplate";
+import { TitanCorporateTemplate } from "@/components/resume/templates/TitanCorporateTemplate";
+import { TopBarUniversalTemplate } from "@/components/resume/templates/TopBarUniversalTemplate";
+import { TriangularElementsUniversalTemplate } from "@/components/resume/templates/TriangularElementsUniversalTemplate";
+import { TwitchStreamerCreativeTemplate } from "@/components/resume/templates/TwitchStreamerCreativeTemplate";
+import { TwitterDevTemplate } from "@/components/resume/templates/TwitterDevTemplate";
+import { TwoToneSplitUniversalTemplate } from "@/components/resume/templates/TwoToneSplitUniversalTemplate";
+import { TypewriterStyleTemplate } from "@/components/resume/templates/TypewriterStyleTemplate";
+import { UIUXDesignerProTemplate } from "@/components/resume/templates/UIUXDesignerProTemplate";
+import { UiuxPortfolioProTemplate } from "@/components/resume/templates/UiuxPortfolioProTemplate";
+import { UnderlineAccentUniversalTemplate } from "@/components/resume/templates/UnderlineAccentUniversalTemplate";
+import { UrbanDesignerTemplate } from "@/components/resume/templates/UrbanDesignerTemplate";
+import { UserflowDesignerTemplate } from "@/components/resume/templates/UserflowDesignerTemplate";
+import { UserresearchSpecialistTemplate } from "@/components/resume/templates/UserresearchSpecialistTemplate";
+import { UxResearcherPortfolioTemplate } from "@/components/resume/templates/UxResearcherPortfolioTemplate";
+import { UxfolioDesignerTemplate } from "@/components/resume/templates/UxfolioDesignerTemplate";
+import { VPExecutiveTemplate } from "@/components/resume/templates/VPExecutiveTemplate";
+import { VelocityExecutiveTemplate } from "@/components/resume/templates/VelocityExecutiveTemplate";
+import { VentureFresherTemplate } from "@/components/resume/templates/VentureFresherTemplate";
+import { VertexProfessionalTemplate } from "@/components/resume/templates/VertexProfessionalTemplate";
+import { VerticalTimelineUniversalTemplate } from "@/components/resume/templates/VerticalTimelineUniversalTemplate";
+import { VibrantDesignerTemplate } from "@/components/resume/templates/VibrantDesignerTemplate";
+import { VideoEditorCreativeTemplate } from "@/components/resume/templates/VideoEditorCreativeTemplate";
+import { VintagePosterTemplate } from "@/components/resume/templates/VintagePosterTemplate";
+import { VisionDesignerTemplate } from "@/components/resume/templates/VisionDesignerTemplate";
+import { VisionaryCreativeTemplate } from "@/components/resume/templates/VisionaryCreativeTemplate";
+import { VisualDesignerShowcaseTemplate } from "@/components/resume/templates/VisualDesignerShowcaseTemplate";
+import { VisualStorytellerTemplateTemplate } from "@/components/resume/templates/VisualStorytellerTemplateTemplate";
+import { VueJSDeveloperTemplate } from "@/components/resume/templates/VueJSDeveloperTemplate";
+import { WatermarkStyleUniversalTemplate } from "@/components/resume/templates/WatermarkStyleUniversalTemplate";
+import { WavePatternUniversalTemplate } from "@/components/resume/templates/WavePatternUniversalTemplate";
+import { WebDesignerModernTemplate } from "@/components/resume/templates/WebDesignerModernTemplate";
+import { WebPortfolioGradTemplate } from "@/components/resume/templates/WebPortfolioGradTemplate";
+import { WebflowDesignerPortfolioTemplate } from "@/components/resume/templates/WebflowDesignerPortfolioTemplate";
+import { WebpresenceExecutiveTemplate } from "@/components/resume/templates/WebpresenceExecutiveTemplate";
+import { WebrtcEngineerTemplate } from "@/components/resume/templates/WebrtcEngineerTemplate";
+import { WideMarginUniversalTemplate } from "@/components/resume/templates/WideMarginUniversalTemplate";
+import { WireframeSpecialistTemplate } from "@/components/resume/templates/WireframeSpecialistTemplate";
+import { YoutubeCreatorTemplate } from "@/components/resume/templates/YoutubeCreatorTemplate";
+import { YoutubeDevEducatorTemplate } from "@/components/resume/templates/YoutubeDevEducatorTemplate";
+import { ZenithCorporateTemplate } from "@/components/resume/templates/ZenithCorporateTemplate";
+import { ZigzagBorderUniversalTemplate } from "@/components/resume/templates/ZigzagBorderUniversalTemplate";
 
 const pdfTemplates: Record<string, any> = {
   professional: ProfessionalPDF,
@@ -2042,6 +2529,531 @@ const displayTemplates: Record<string, any> = {
   "supply-chain-manager": SupplyChainManagerTemplate,
   "logistics-coordinator": LogisticsCoordinatorTemplate,
   "procurement-specialist": ProcurementSpecialistTemplate,
+
+  "ai-engineer": AIEngineerTemplate,
+  "api-doc": APIDocTemplate,
+  "aws-cloud-engineer": AWSCloudEngineerTemplate,
+  "academic-educator": AcademicEducatorTemplate,
+  "accessibility-ux": AccessibilityUxTemplate,
+  "accounting-pro": AccountingProTemplate,
+  "achiever-fresher": AchieverFresherTemplate,
+  "adobe-portfolio-designer": AdobePortfolioDesignerTemplate,
+  "aesthetic-creative": AestheticCreativeTemplate,
+  "agile-project-lead": AgileProjectLeadTemplate,
+  "agileflow-developer": AgileflowDeveloperTemplate,
+  "angular-modern-universal": AngularModernUniversalTemplate,
+  "apigateway-architect": ApigatewayArchitectTemplate,
+  "art-director-modern": ArtDirectorModernTemplate,
+  "art-station-artist": ArtStationArtistTemplate,
+  "artisan-designer": ArtisanDesignerTemplate,
+  "artistic-grid": ArtisticGridTemplate,
+  "artistic-horizon": ArtisticHorizonTemplate,
+  "artistic-momentum": ArtisticMomentumTemplate,
+  "artistic-vision": ArtisticVisionTemplate,
+  "artstation-pro": ArtstationProTemplate,
+  "ascend-graduate": AscendGraduateTemplate,
+  "aspire-graduate": AspireGraduateTemplate,
+  "asymmetric-layout-universal": AsymmetricLayoutUniversalTemplate,
+  "atlas-executive": AtlasExecutiveTemplate,
+  "audit-expert": AuditExpertTemplate,
+  "aurora-minimal": AuroraMinimalTemplate,
+  "awwwards-designer": AwwwardsDesignerTemplate,
+  "azure-dev-ops-pro": AzureDevOpsProTemplate,
+  "azure-dev-ops-specialist": AzureDevOpsSpecialistTemplate,
+  "badge-style-universal": BadgeStyleUniversalTemplate,
+  "behance-portfolio": BehancePortfolioTemplate,
+  "bitbucket-developer": BitbucketDeveloperTemplate,
+  "blockchain-dev": BlockchainDevTemplate,
+  "blueprint-design": BlueprintDesignTemplate,
+  "bold-section-headers-universal": BoldSectionHeadersUniversalTemplate,
+  "bold-typography": BoldTypographyTemplate,
+  "bold-typography-universal": BoldTypographyUniversalTemplate,
+  "bootcamp-portfolio": BootcampPortfolioTemplate,
+  "border-frame-universal": BorderFrameUniversalTemplate,
+  "boxed-sections-universal": BoxedSectionsUniversalTemplate,
+  "brand-designer": BrandDesignerTemplateTemplate,
+  "brand-identity": BrandIdentityTemplate,
+  "brand-manager": BrandManagerTemplate,
+  "branded-professional": BrandedProfessionalTemplate,
+  "bright-graduate": BrightGraduateTemplate,
+  "business-clean-layout": BusinessCleanLayoutTemplate,
+  "business-clear": BusinessClearTemplateTemplate,
+  "business-modern-grid": BusinessModernGridTemplate,
+  "business-sidebar-pro": BusinessSidebarProTemplate,
+  "business-simple-modern": BusinessSimpleModernTemplate,
+  "bytecode-specialist": BytecodeSpecialistTemplate,
+  "ceo-profile": CEOProfileTemplate,
+  "cicd-pipeline-engineer": CICDPipelineEngineerTemplate,
+  "campus-influencer": CampusInfluencerTemplate,
+  "canvas-artist": CanvasArtistTemplate,
+  "carbonmade-designer": CarbonmadeDesignerTemplate,
+  "card-layout-universal": CardLayoutUniversalTemplate,
+  "casestudy-designer": CasestudyDesignerTemplate,
+  "catalyst-fresher": CatalystFresherTemplate,
+  "centered-minimal-universal": CenteredMinimalUniversalTemplate,
+  "chevron-accent-universal": ChevronAccentUniversalTemplate,
+  "chromatic-creative": ChromaticCreativeTemplate,
+  "circle-icon-universal": CircleIconUniversalTemplate,
+  "circular-elements-universal": CircularElementsUniversalTemplate,
+  "classic-serif-universal": ClassicSerifUniversalTemplate,
+  "clean-basic-executive": CleanBasicExecutiveTemplate,
+  "clean-corporate-simple": CleanCorporateSimpleTemplate,
+  "clean-modern-universal": CleanModernUniversalTemplate,
+  "clean-professional-simple": CleanProfessionalSimpleTemplate,
+  "clean-readable-pro": CleanReadableProTemplate,
+  "clean-two-column-universal": CleanTwoColumnUniversalTemplate,
+  "clinical-excellence": ClinicalExcellenceTemplate,
+  "cloud-native": CloudNativeTemplate,
+  "cloud-solutions-architect": CloudSolutionsArchitectTemplate,
+  "cloudnative-architect": CloudnativeArchitectTemplate,
+  "code-craftsman": CodeCraftsmanTemplate,
+  "code-pinnacle": CodePinnacleTemplate,
+  "code-snippet": CodeSnippetTemplate,
+  "code-sphere": CodeSphereTemplate,
+  "code-vision": CodeVisionTemplate,
+  "codeforge-developer": CodeforgeDeveloperTemplate,
+  "codepen-developer": CodepenDeveloperTemplate,
+  "collage-art": CollageArtTemplate,
+  "color-block-universal": ColorBlockUniversalTemplate,
+  "color-splash": ColorSplashTemplate,
+  "compact-elite-universal": CompactEliteUniversalTemplate,
+  "compile-time-dev": CompileTimeDevTemplate,
+  "compliance-officer": ComplianceOfficerTemplate,
+  "componentui-designer": ComponentuiDesignerTemplate,
+  "composition-artist": CompositionArtistTemplate,
+  "concept-creative": ConceptCreativeTemplate,
+  "connected-leader": ConnectedLeaderTemplate,
+  "connected-professional": ConnectedProfessionalTemplate,
+  "containerops-engineer": ContaineropsEngineerTemplate,
+  "conversational-ux": ConversationalUxTemplate,
+  "corner-accent-universal": CornerAccentUniversalTemplate,
+  "coroflot-portfolio": CoroflotPortfolioTemplate,
+  "corporate-border-frame": CorporateBorderFrameTemplate,
+  "corporate-easy-layout": CorporateEasyLayoutTemplate,
+  "corporate-elite": CorporateEliteTemplate,
+  "corporate-fusion": CorporateFusionTemplate,
+  "corporate-law": CorporateLawTemplate,
+  "corporate-legal-counsel": CorporateLegalCounselTemplate,
+  "corporate-minimalist-pro": CorporateMinimalistProTemplate,
+  "corporate-momentum": CorporateMomentumTemplate,
+  "corporate-simple": CorporateSimpleTemplateTemplate,
+  "corporate-vision": CorporateVisionTemplate,
+  "cosmos-professional": CosmosProfessionalTemplate,
+  "craft-artist": CraftArtistTemplate,
+  "creative-canvas": CreativeCanvasTemplate,
+  "creative-crafted": CreativeCraftedTemplate,
+  "creative-horizon": CreativeHorizonTemplate,
+  "creative-pulse": CreativePulseTemplate,
+  "creative-showcase-grid": CreativeShowcaseGridTemplate,
+  "crystal-executive": CrystalExecutiveTemplate,
+  "curator-creative": CuratorCreativeTemplate,
+  "cyber-security": CyberSecurityTemplate,
+  "dark-mode-dev": DarkModeDevTemplate,
+  "data-science": DataScienceTemplate,
+  "design-leader-portfolio": DesignLeaderPortfolioTemplate,
+  "design-maestro": DesignMaestroTemplate,
+  "design-pinnacle": DesignPinnacleTemplate,
+  "design-sphere": DesignSphereTemplate,
+  "design-systems-portfolio": DesignSystemsPortfolioTemplate,
+  "designleadership-director": DesignleadershipDirectorTemplate,
+  "designops-specialist": DesignopsSpecialistTemplate,
+  "designportfolio-specialist": DesignportfolioSpecialistTemplate,
+  "designstrategy-lead": DesignstrategyLeadTemplate,
+  "designsystem-architect": DesignsystemArchitectTemplate,
+  "designthinking-specialist": DesignthinkingSpecialistTemplate,
+  "dev-architecture": DevArchitectureTemplate,
+  "dev-elite": DevEliteTemplate,
+  "dev-momentum": DevMomentumTemplate,
+  "dev-ops-automation": DevOpsAutomationTemplate,
+  "dev-ops-engineer": DevOpsEngineerTemplate,
+  "dev-ops-pro": DevOpsProTemplate,
+  "dev-prime": DevPrimeTemplate,
+  "dev-sec-ops-engineer": DevSecOpsEngineerTemplate,
+  "deviant-art-creator": DeviantArtCreatorTemplate,
+  "deviantart-artist": DeviantartArtistTemplate,
+  "devto-contributor": DevtoContributorTemplate,
+  "diagonal-accent-universal": DiagonalAccentUniversalTemplate,
+  "diamond-accent-universal": DiamondAccentUniversalTemplate,
+  "digital-artist-portfolio": DigitalArtistPortfolioTemplate,
+  "digital-canvas": DigitalCanvasTemplate,
+  "digital-executive": DigitalExecutiveTemplate,
+  "digital-graduate": DigitalGraduateTemplate,
+  "digital-identity": DigitalIdentityTemplate,
+  "digital-marketing-pro": DigitalMarketingProTemplate,
+  "digital-native-grad": DigitalNativeGradTemplate,
+  "digital-portfolio-grad": DigitalPortfolioGradTemplate,
+  "digital-professional": DigitalProfessionalTemplate,
+  "director-level": DirectorLevelTemplate,
+  "django-framework-pro": DjangoFrameworkProTemplate,
+  "docker-container-pro": DockerContainerProTemplate,
+  "dockerhub-publisher": DockerhubPublisherTemplate,
+  "dot-net-core-developer": DotNetCoreDeveloperTemplate,
+  "dot-net-developer": DotNetDeveloperTemplate,
+  "dotted-grid-universal": DottedGridUniversalTemplate,
+  "dribbble-showcase": DribbbleShowcaseTemplate,
+  "dual-column-modern-universal": DualColumnModernUniversalTemplate,
+  "eclipse-professional": EclipseProfessionalTemplate,
+  "edgecompute-developer": EdgecomputeDeveloperTemplate,
+  "editorial-artist": EditorialArtistTemplate,
+  "editorial-style": EditorialStyleTemplate,
+  "elasticsearch-dev": ElasticsearchDevTemplate,
+  "elevate-fresher": ElevateFresherTemplate,
+  "emerge-fresher": EmergeFresherTemplate,
+  "entry-elite": EntryEliteTemplate,
+  "entry-horizon": EntryHorizonTemplate,
+  "entry-sphere": EntrySphereTemplate,
+  "eventdriven-architect": EventdrivenArchitectTemplate,
+  "executive-clean-split": ExecutiveCleanSplitTemplate,
+  "executive-core": ExecutiveCoreTemplate,
+  "executive-corner-accent": ExecutiveCornerAccentTemplate,
+  "executive-direct-layout": ExecutiveDirectLayoutTemplate,
+  "executive-easy": ExecutiveEasyTemplateTemplate,
+  "executive-leadership": ExecutiveLeadershipTemplate,
+  "executive-letterhead-universal": ExecutiveLetterheadUniversalTemplate,
+  "executive-plain-layout": ExecutivePlainLayoutTemplate,
+  "executive-prime": ExecutivePrimeTemplate,
+  "executive-sales-leader": ExecutiveSalesLeaderTemplate,
+  "executive-simple-clean": ExecutiveSimpleCleanTemplate,
+  "executive-split-design": ExecutiveSplitDesignTemplate,
+  "executive-timeline-modern": ExecutiveTimelineModernTemplate,
+  "executive-vision": ExecutiveVisionTemplate,
+  "expression-artist": ExpressionArtistTemplate,
+  "figma-designer-portfolio": FigmaDesignerPortfolioTemplate,
+  "financial-analyst": FinancialAnalystTemplate,
+  "floating-header-universal": FloatingHeaderUniversalTemplate,
+  "flutter-mobile-dev": FlutterMobileDevTemplate,
+  "flux-executive": FluxExecutiveTemplate,
+  "foundation-graduate": FoundationGraduateTemplate,
+  "framer-designer-portfolio": FramerDesignerPortfolioTemplate,
+  "fresher-academic-style": FresherAcademicStyleTemplate,
+  "fresher-box-shadow": FresherBoxShadowTemplate,
+  "fresher-circular-progress": FresherCircularProgressTemplate,
+  "fresher-dash-border": FresherDashBorderTemplate,
+  "fresher-double-column": FresherDoubleColumnTemplate,
+  "fresher-glassmorphism": FresherGlassmorphismTemplate,
+  "fresher-gradient-border": FresherGradientBorderTemplate,
+  "fresher-iconography": FresherIconographyTemplate,
+  "fresher-left-stripe": FresherLeftStripeTemplate,
+  "fresher-lightweight": FresherLightweightTemplate,
+  "fresher-modern-split": FresherModernSplitTemplate,
+  "fresher-modern-tabs": FresherModernTabsTemplate,
+  "fresher-neon-accent": FresherNeonAccentTemplate,
+  "fresher-polaroid-style": FresherPolaroidStyleTemplate,
+  "fresher-progressive": FresherProgressiveTemplate,
+  "fresher-ribbon-style": FresherRibbonStyleTemplate,
+  "fresher-step-by-step": FresherStepByStepTemplate,
+  "fresher-timeline-dots": FresherTimelineDotsTemplate,
+  "fresher-top-bottom": FresherTopBottomTemplate,
+  "fresher-wave-header": FresherWaveHeaderTemplate,
+  "freshers-crafted": FreshersCraftedTemplate,
+  "freshers-vision": FreshersVisionTemplate,
+  "full-stack-engineer": FullStackEngineerTemplate,
+  "full-stack-modern": FullStackModernTemplate,
+  "full-stack-pro": FullStackProTemplate,
+  "fullstack-java-script": FullstackJavaScriptTemplate,
+  "gcp-architect": GCPArchitectTemplate,
+  "gallery-layout": GalleryLayoutTemplate,
+  "gen-z-graduate": GenZGraduateTemplate,
+  "genesis-graduate": GenesisGraduateTemplate,
+  "geometric-creative": GeometricCreativeTemplate,
+  "geometric-shapes-universal": GeometricShapesUniversalTemplate,
+  "git-hub-developer": GitHubDeveloperTemplate,
+  "git-hub-profile": GitHubProfileTemplate,
+  "git-hub-student-developer": GitHubStudentDeveloperTemplate,
+  "git-hub-style": GitHubStyleTemplate,
+  "gitflow-engineer": GitflowEngineerTemplate,
+  "github-portfolio-dev": GithubPortfolioDevTemplate,
+  "github-student": GithubStudentTemplate,
+  "gitlab-developer": GitlabDeveloperTemplate,
+  "global-elite": GlobalEliteTemplate,
+  "global-networker": GlobalNetworkerTemplate,
+  "global-professional": GlobalProfessionalTemplate,
+  "gradient-header-universal": GradientHeaderUniversalTemplate,
+  "graduate-momentum": GraduateMomentumTemplate,
+  "graduate-prime": GraduatePrimeTemplate,
+  "graduate-zenith": GraduateZenithTemplate,
+  "graph-ql-architect": GraphQLArchitectTemplate,
+  "graph-ql-developer": GraphQLDeveloperTemplate,
+  "graphdb-specialist": GraphdbSpecialistTemplate,
+  "graphic-design-pro": GraphicDesignProTemplate,
+  "hackathon-graduate": HackathonGraduateTemplate,
+  "hackernews-developer": HackernewsDeveloperTemplate,
+  "hackerrank-expert": HackerrankExpertTemplate,
+  "harmony-executive": HarmonyExecutiveTemplate,
+  "healthcare-professional": HealthcareProfessionalTemplate,
+  "hexagonal-pattern-universal": HexagonalPatternUniversalTemplate,
+  "horizon-graduate": HorizonGraduateTemplate,
+  "icon-bar-universal": IconBarUniversalTemplate,
+  "illustration-portfolio": IllustrationPortfolioTemplate,
+  "imaginative-designer": ImaginativeDesignerTemplate,
+  "impression-designer": ImpressionDesignerTemplate,
+  "in-vision-prototyper": InVisionPrototyperTemplate,
+  "infinity-loop-universal": InfinityLoopUniversalTemplate,
+  "influencer-professional": InfluencerProfessionalTemplate,
+  "information-architect": InformationArchitectTemplate,
+  "ink-brush": InkBrushTemplate,
+  "instagram-creative": InstagramCreativeTemplate,
+  "interactive-portfolio-designer": InteractivePortfolioDesignerTemplate,
+  "interface-master": InterfaceMasterTemplate,
+  "internship-showcase": InternshipShowcaseTemplate,
+  "jam-stack-developer": JAMStackDeveloperTemplate,
+  "java-enterprise": JavaEnterpriseTemplateTemplate,
+  "json-resume": JsonResumeTemplate,
+  "kafka-streaming-expert": KafkaStreamingExpertTemplate,
+  "kaggle-data-scientist": KaggleDataScientistTemplate,
+  "keystone-graduate": KeystoneGraduateTemplate,
+  "kubernete-engineer": KuberneteEngineerTemplate,
+  "kubernetes-specialist": KubernetesSpecialistTemplate,
+  "launchpad-graduate": LaunchpadGraduateTemplate,
+  "layered-cards-universal": LayeredCardsUniversalTemplate,
+  "leetcode-champion": LeetcodeChampionTemplate,
+  "left-aligned-pro-universal": LeftAlignedProUniversalTemplate,
+  "left-border-universal": LeftBorderUniversalTemplate,
+  "legal-advisor": LegalAdvisorTemplate,
+  "linear-progress-universal": LinearProgressUniversalTemplate,
+  "linked-in-ready-graduate": LinkedInReadyGraduateTemplate,
+  "linked-in-tech-pro": LinkedInTechProTemplate,
+  "linkedin-graduate": LinkedinGraduateTemplate,
+  "linkedin-optimized": LinkedinOptimizedTemplate,
+  "linkedin-tech-expert": LinkedinTechExpertTemplate,
+  "magazine-creative": MagazineCreativeTemplate,
+  "magazine-layout-universal": MagazineLayoutUniversalTemplate,
+  "marketing-strategist": MarketingStrategistTemplate,
+  "medical-certification": MedicalCertificationTemplate,
+  "medical-research": MedicalResearchTemplate,
+  "medium-tech-writer": MediumTechWriterTemplate,
+  "medium-writer-creative": MediumWriterCreativeTemplate,
+  "meridian-corporate": MeridianCorporateTemplate,
+  "metro-modern-universal": MetroModernUniversalTemplate,
+  "microarch-engineer": MicroarchEngineerTemplate,
+  "microinteraction-designer": MicrointeractionDesignerTemplate,
+  "microservices-dev": MicroservicesDevTemplate,
+  "microservices-expert": MicroservicesExpertTemplate,
+  "milestone-graduate": MilestoneGraduateTemplate,
+  "minimal-chic": MinimalChicTemplate,
+  "minimal-corporate-pro": MinimalCorporateProTemplate,
+  "minimal-direct": MinimalDirectTemplateTemplate,
+  "minimal-elegance-universal": MinimalEleganceUniversalTemplate,
+  "minimal-lines-universal": MinimalLinesUniversalTemplate,
+  "minimal-pro-layout": MinimalProLayoutTemplate,
+  "minimalist-modern-pro": MinimalistModernProTemplate,
+  "minimalist-pro-simple": MinimalistProSimpleTemplate,
+  "mlops-engineer": MlopsEngineerTemplate,
+  "mobile-dev": MobileDevTemplate,
+  "mobile-first-designer": MobileFirstDesignerTemplate,
+  "modern-artist": ModernArtistTemplate,
+  "modern-clear-pro": ModernClearProTemplate,
+  "modern-corporate-grid": ModernCorporateGridTemplate,
+  "modern-digital": ModernDigitalTemplate,
+  "modern-educator-profession": ModernEducatorProfessionTemplate,
+  "modern-minimalist-universal": ModernMinimalistUniversalTemplate,
+  "modern-plain-pro": ModernPlainProTemplate,
+  "modern-professional-box": ModernProfessionalBoxTemplate,
+  "modern-simple-pro": ModernSimpleProTemplate,
+  "momentum-fresher": MomentumFresherTemplate,
+  "mongo-db-specialist": MongoDBSpecialistTemplate,
+  "monochrome-elegant-universal": MonochromeElegantUniversalTemplate,
+  "monospace-tech": MonospaceTechTemplate,
+  "motion-designer-portfolio": MotionDesignerPortfolioTemplate,
+  "motion-graphics-artist": MotionGraphicsArtistTemplate,
+  "motion-ui-designer": MotionUiDesignerTemplate,
+  "multi-platform-artist": MultiPlatformArtistTemplate,
+  "muse-creative": MuseCreativeTemplate,
+  "narrative-creative": NarrativeCreativeTemplate,
+  "neon-artist": NeonArtistTemplate,
+  "nest-js-backend": NestJSBackendTemplate,
+  "networked-executive": NetworkedExecutiveTemplate,
+  "networked-graduate": NetworkedGraduateTemplate,
+  "neural-engineer": NeuralEngineerTemplate,
+  "newspaper-style-universal": NewspaperStyleUniversalTemplate,
+  "next-js-fullstack": NextJSFullstackTemplate,
+  "nextstep-fresher": NextstepFresherTemplate,
+  "nexus-elite": NexusEliteTemplate,
+  "node-backend-specialist": NodeBackendSpecialistTemplate,
+  "node-js-developer": NodeJSDeveloperTemplate,
+  "npm-package-author": NpmPackageAuthorTemplate,
+  "nursing-specialist": NursingSpecialistTemplate,
+  "observability-engineer": ObservabilityEngineerTemplate,
+  "online-gallery-artist": OnlineGalleryArtistTemplate,
+  "online-identity": OnlineIdentityTemplate,
+  "online-portfolio-fresher": OnlinePortfolioFresherTemplate,
+  "online-presence-fresher": OnlinePresenceFresherTemplate,
+  "online-professional": OnlineProfessionalTemplate,
+  "open-source": OpenSourceTemplate,
+  "opensource-developer": OpensourceDeveloperTemplate,
+  "operations-excellence": OperationsExcellenceTemplate,
+  "palette-designer": PaletteDesignerTemplate,
+  "parallax-style-universal": ParallaxStyleUniversalTemplate,
+  "pastel-creative": PastelCreativeTemplate,
+  "pathway-graduate": PathwayGraduateTemplate,
+  "patreon-creative": PatreonCreativeTemplate,
+  "ph-d-candidate": PhDCandidateTemplate,
+  "photography-layout": PhotographyLayoutTemplate,
+  "photography-pro": PhotographyProTemplateTemplate,
+  "pinnacle-elite": PinnacleEliteTemplate,
+  "pinterest-designer": PinterestDesignerTemplate,
+  "pioneer-fresher": PioneerFresherTemplate,
+  "pixelcraft-developer": PixelcraftDeveloperTemplate,
+  "pixelperfect-designer": PixelperfectDesignerTemplate,
+  "platform-professional": PlatformProfessionalTemplate,
+  "portfolio-coder": PortfolioCoderTemplate,
+  "portfolio-graduate": PortfolioGraduateTemplate,
+  "portfolio-minimalist": PortfolioMinimalistTemplate,
+  "portfolio-professional": PortfolioProfessionalTemplate,
+  "portfolio-showcase": PortfolioShowcaseTemplate,
+  "portfolio-website-creative": PortfolioWebsiteCreativeTemplate,
+  "postgre-sqldba": PostgreSQLDBATemplate,
+  "postgre-sql-expert": PostgreSQLExpertTemplate,
+  "potential-fresher": PotentialFresherTemplate,
+  "prism-professional": PrismProfessionalTemplate,
+  "process-improvement": ProcessImprovementTemplate,
+  "product-designer-showcase": ProductDesignerShowcaseTemplate,
+  "product-designer-ux": ProductDesignerUXTemplate,
+  "professional-accent-bar": ProfessionalAccentBarTemplate,
+  "professional-ascend": ProfessionalAscendTemplate,
+  "professional-basic-modern": ProfessionalBasicModernTemplate,
+  "professional-clean-simple": ProfessionalCleanSimpleTemplate,
+  "professional-compact-universal": ProfessionalCompactUniversalTemplate,
+  "professional-divider": ProfessionalDividerTemplate,
+  "professional-easy-read": ProfessionalEasyReadTemplate,
+  "professional-header-banner": ProfessionalHeaderBannerTemplate,
+  "professional-horizon": ProfessionalHorizonTemplate,
+  "professional-modern-edge": ProfessionalModernEdgeTemplate,
+  "professional-plain-simple": ProfessionalPlainSimpleTemplate,
+  "professional-readable-layout": ProfessionalReadableLayoutTemplate,
+  "professional-sphere": ProfessionalSphereTemplate,
+  "professional-straightforward": ProfessionalStraightforwardTemplate,
+  "professional-vertical-line": ProfessionalVerticalLineTemplate,
+  "professional-zenith": ProfessionalZenithTemplate,
+  "profile-centric": ProfileCentricTemplate,
+  "profile-driven-grad": ProfileDrivenGradTemplate,
+  "project-manager-pro": ProjectManagerProTemplate,
+  "project-showcase-grad": ProjectShowcaseGradTemplate,
+  "protfolio-showcase-ux": ProtfolioShowcaseUxTemplate,
+  "prototype-specialist": PrototypeSpecialistTemplate,
+  "py-torch-developer": PyTorchDeveloperTemplate,
+  "pypi-contributor": PypiContributorTemplate,
+  "python-developer-pro": PythonDeveloperProTemplate,
+  "quantum-coder": QuantumCoderTemplate,
+  "quantum-professional": QuantumProfessionalTemplate,
+  "rabbit-mq-specialist": RabbitMQSpecialistTemplate,
+  "radiance-corporate": RadianceCorporateTemplate,
+  "react-frontend-pro": ReactFrontendProTemplate,
+  "react-native-expert": ReactNativeExpertTemplate,
+  "redis-cache-specialist": RedisCacheSpecialistTemplate,
+  "responsive-ux": ResponsiveUxTemplate,
+  "retro-professional-universal": RetroProfessionalUniversalTemplate,
+  "ribbon-header-universal": RibbonHeaderUniversalTemplate,
+  "rounded-corners-universal": RoundedCornersUniversalTemplate,
+  "rust-developer-pro": RustDeveloperProTemplate,
+  "sales-achievement": SalesAchievementTemplate,
+  "scala-engineer": ScalaEngineerTemplate,
+  "senior-dev-ops-engineer": SeniorDevOpsEngineerTemplate,
+  "senior-dot-net-developer": SeniorDotNetDeveloperTemplate,
+  "senior-full-stack-developer": SeniorFullStackDeveloperTemplate,
+  "serenity-minimal": SerenityMinimalTemplate,
+  "serverless-developer": ServerlessDeveloperTemplate,
+  "serverless-specialist": ServerlessSpecialistTemplate,
+  "servicedesign-specialist": ServicedesignSpecialistTemplate,
+  "sidebar-professional-universal": SidebarProfessionalUniversalTemplate,
+  "simple-business-clean": SimpleBusinessCleanTemplate,
+  "simple-clear-business": SimpleClearBusinessTemplate,
+  "simple-executive-layout": SimpleExecutiveLayoutTemplate,
+  "simple-modern-executive": SimpleModernExecutiveTemplate,
+  "simple-professional-clean": SimpleProfessionalCleanTemplate,
+  "simple-structured": SimpleStructuredTemplateTemplate,
+  "sketch-expert-portfolio": SketchExpertPortfolioTemplate,
+  "social-creative-influencer": SocialCreativeInfluencerTemplate,
+  "social-executive": SocialExecutiveTemplate,
+  "social-first-fresher": SocialFirstFresherTemplate,
+  "social-graduate": SocialGraduateTemplate,
+  "social-media-pro": SocialMediaProTemplate,
+  "social-savvy": SocialSavvyTemplate,
+  "software-craftsman": SoftwareCraftsmanTemplate,
+  "software-master": SoftwareMasterTemplate,
+  "software-vision": SoftwareVisionTemplate,
+  "sound-cloud-producer": SoundCloudProducerTemplate,
+  "soundcloud-artist": SoundcloudArtistTemplate,
+  "spark-fresher": SparkFresherTemplate,
+  "spectrum-professional": SpectrumProfessionalTemplate,
+  "split-pane-universal": SplitPaneUniversalTemplate,
+  "spotify-musician": SpotifyMusicianTemplate,
+  "spotlight-header-universal": SpotlightHeaderUniversalTemplate,
+  "stack-overflow-inspired": StackOverflowInspiredTemplate,
+  "stacked-sections-universal": StackedSectionsUniversalTemplate,
+  "stackmaster-fullstack": StackmasterFullstackTemplate,
+  "stackoverflow-dev": StackoverflowDevTemplate,
+  "sterling-executive": SterlingExecutiveTemplate,
+  "strategic-executive": StrategicExecutiveTemplate,
+  "strategic-leader": StrategicLeaderTemplate,
+  "striped-background-universal": StripedBackgroundUniversalTemplate,
+  "student-developer-portfolio": StudentDeveloperPortfolioTemplate,
+  "student-engagement": StudentEngagementTemplate,
+  "studio-artist": StudioArtistTemplate,
+  "substack-author": SubstackAuthorTemplate,
+  "swiss-style-universal": SwissStyleUniversalTemplate,
+  "system-architect": SystemArchitectTemplate,
+  "tax-specialist": TaxSpecialistTemplate,
+  "teaching-excellence": TeachingExcellenceTemplate,
+  "tech-blogger-dev": TechBloggerDevTemplate,
+  "tech-crafted": TechCraftedTemplate,
+  "tech-horizon": TechHorizonTemplate,
+  "tech-lead": TechLeadTemplate,
+  "tech-pioneer": TechPioneerTemplate,
+  "tech-vanguard": TechVanguardTemplate,
+  "tensor-flow-ml-engineer": TensorFlowMLEngineerTemplate,
+  "terminal-console": TerminalConsoleTemplate,
+  "terraform-dev-ops": TerraformDevOpsTemplate,
+  "thin-border-universal": ThinBorderUniversalTemplate,
+  "three-d-modeling-artist": ThreeDModelingArtistTemplate,
+  "tik-tok-creator": TikTokCreatorTemplate,
+  "tiktok-content-creator": TiktokContentCreatorTemplate,
+  "timeline-vertical-universal": TimelineVerticalUniversalTemplate,
+  "titan-corporate": TitanCorporateTemplate,
+  "top-bar-universal": TopBarUniversalTemplate,
+  "triangular-elements-universal": TriangularElementsUniversalTemplate,
+  "twitch-streamer-creative": TwitchStreamerCreativeTemplate,
+  "twitter-dev": TwitterDevTemplate,
+  "two-tone-split-universal": TwoToneSplitUniversalTemplate,
+  "type-script-expert": TypeScriptExpertTemplate,
+  "typewriter-style": TypewriterStyleTemplate,
+  "uiux-designer-pro": UIUXDesignerProTemplate,
+  "uiux-portfolio-pro": UiuxPortfolioProTemplate,
+  "underline-accent-universal": UnderlineAccentUniversalTemplate,
+  "urban-designer": UrbanDesignerTemplate,
+  "userflow-designer": UserflowDesignerTemplate,
+  "userresearch-specialist": UserresearchSpecialistTemplate,
+  "ux-researcher-portfolio": UxResearcherPortfolioTemplate,
+  "uxfolio-designer": UxfolioDesignerTemplate,
+  "vp-executive": VPExecutiveTemplate,
+  "velocity-executive": VelocityExecutiveTemplate,
+  "venture-fresher": VentureFresherTemplate,
+  "vertex-professional": VertexProfessionalTemplate,
+  "vertical-timeline-universal": VerticalTimelineUniversalTemplate,
+  "vibrant-designer": VibrantDesignerTemplate,
+  "video-editor-creative": VideoEditorCreativeTemplate,
+  "vintage-poster": VintagePosterTemplate,
+  "vision-designer": VisionDesignerTemplate,
+  "visionary-creative": VisionaryCreativeTemplate,
+  "visual-designer-showcase": VisualDesignerShowcaseTemplate,
+  "visual-storyteller": VisualStorytellerTemplateTemplate,
+  "vue-js-developer": VueJSDeveloperTemplate,
+  "watermark-style-universal": WatermarkStyleUniversalTemplate,
+  "wave-pattern-universal": WavePatternUniversalTemplate,
+  "web-assembly-engineer": WebAssemblyEngineerTemplate,
+  "web-designer-modern": WebDesignerModernTemplate,
+  "web-portfolio-grad": WebPortfolioGradTemplate,
+  "webflow-designer-portfolio": WebflowDesignerPortfolioTemplate,
+  "webpresence-executive": WebpresenceExecutiveTemplate,
+  "webrtc-engineer": WebrtcEngineerTemplate,
+  "wide-margin-universal": WideMarginUniversalTemplate,
+  "wireframe-specialist": WireframeSpecialistTemplate,
+  "you-tube-educator": YouTubeEducatorTemplate,
+  "youtube-creator": YoutubeCreatorTemplate,
+  "youtube-dev-educator": YoutubeDevEducatorTemplate,
+  "zenith-corporate": ZenithCorporateTemplate,
+  "zigzag-border-universal": ZigzagBorderUniversalTemplate,
+  "i-os-swift-engineer": iOSSwiftEngineerTemplate,
 };
 
 const LiveEditor = () => {

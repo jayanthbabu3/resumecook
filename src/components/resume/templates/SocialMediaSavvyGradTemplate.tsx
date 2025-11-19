@@ -3,10 +3,10 @@ import type { ResumeSection } from "@/types/resume";
 import { Mail, Phone, MapPin, Linkedin, Github, Globe, Twitter } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
-import { InlineEditableList } from "@/components/resume/InlineEditableList";
-import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableDynamicSection } from "@/components/resume/InlineEditableDynamicSection";
+import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { HelperSectionVariantRenderer } from "@/components/resume/HelperSectionVariantRenderer";
 
 interface TemplateProps {

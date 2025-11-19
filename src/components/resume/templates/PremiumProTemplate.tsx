@@ -1,9 +1,8 @@
 import type { ResumeData } from "@/pages/Editor";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
-import { InlineEditableList } from "@/components/resume/InlineEditableList";
-import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
+import { InlineEditableList } from "@/components/resume/InlineEditableList";
 
 interface PremiumProTemplateProps {
   resumeData: ResumeData;

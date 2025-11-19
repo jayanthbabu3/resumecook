@@ -1,8 +1,8 @@
 import React from "react";
 import type { ResumeData } from "@/pages/Editor";
 import { InlineEditableText } from "../InlineEditableText";
-import { InlineEditableList } from "../InlineEditableList";
-import { InlineEditableSkills } from "../InlineEditableSkills";
+import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface SidebarAccentTemplateProps {
   resumeData: ResumeData;

@@ -1,9 +1,9 @@
 import React from "react";
 import type { ResumeData } from "@/pages/Editor";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
+import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
-import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 
 interface PhotographyProTemplateTemplateProps {
   resumeData: ResumeData;

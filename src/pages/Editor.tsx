@@ -897,6 +897,341 @@ import { PDFDesignSystemsPortfolioTemplate } from "@/components/resume/pdf/PDFDe
 import { PDFMotionDesignerPortfolioTemplate } from "@/components/resume/pdf/PDFMotionDesignerPortfolioTemplate";
 import { PDFVisualDesignerShowcaseTemplate } from "@/components/resume/pdf/PDFVisualDesignerShowcaseTemplate";
 import { PDFDesignLeaderPortfolioTemplate } from "@/components/resume/pdf/PDFDesignLeaderPortfolioTemplate";
+import { PDFAIEngineerTemplate } from "@/components/resume/pdf/PDFAIEngineerTemplate";
+import { PDFAPIDocTemplate } from "@/components/resume/pdf/PDFAPIDocTemplate";
+import { PDFAWSCloudEngineerTemplate } from "@/components/resume/pdf/PDFAWSCloudEngineerTemplate";
+import { PDFAcademicEducatorTemplate } from "@/components/resume/pdf/PDFAcademicEducatorTemplate";
+import { PDFAccountingExecutiveTemplate } from "@/components/resume/pdf/PDFAccountingExecutiveTemplate";
+import { PDFAccountingProTemplate } from "@/components/resume/pdf/PDFAccountingProTemplate";
+import { PDFAgileProjectLeadTemplate } from "@/components/resume/pdf/PDFAgileProjectLeadTemplate";
+import { PDFAgileScrumTemplate } from "@/components/resume/pdf/PDFAgileScrumTemplate";
+import { PDFAnalystTemplate } from "@/components/resume/pdf/PDFAnalystTemplate";
+import { PDFAngularModernUniversalTemplate } from "@/components/resume/pdf/PDFAngularModernUniversalTemplate";
+import { PDFArtDirectorModernTemplate } from "@/components/resume/pdf/PDFArtDirectorModernTemplate";
+import { PDFArtStationArtistTemplate } from "@/components/resume/pdf/PDFArtStationArtistTemplate";
+import { PDFArtisticGridTemplate } from "@/components/resume/pdf/PDFArtisticGridTemplate";
+import { PDFAsymmetricLayoutUniversalTemplate } from "@/components/resume/pdf/PDFAsymmetricLayoutUniversalTemplate";
+import { PDFAttorneyProfessionalTemplate } from "@/components/resume/pdf/PDFAttorneyProfessionalTemplate";
+import { PDFAuditExpertTemplate } from "@/components/resume/pdf/PDFAuditExpertTemplate";
+import { PDFAuditorTemplate } from "@/components/resume/pdf/PDFAuditorTemplate";
+import { PDFAzureDevOpsProTemplate } from "@/components/resume/pdf/PDFAzureDevOpsProTemplate";
+import { PDFAzureDevOpsSpecialistTemplate } from "@/components/resume/pdf/PDFAzureDevOpsSpecialistTemplate";
+import { PDFBackendTemplate } from "@/components/resume/pdf/PDFBackendTemplate";
+import { PDFBadgeStyleUniversalTemplate } from "@/components/resume/pdf/PDFBadgeStyleUniversalTemplate";
+import { PDFBlockchainDevTemplate } from "@/components/resume/pdf/PDFBlockchainDevTemplate";
+import { PDFBlueprintDesignTemplate } from "@/components/resume/pdf/PDFBlueprintDesignTemplate";
+import { PDFBoldHeadlineTemplate } from "@/components/resume/pdf/PDFBoldHeadlineTemplate";
+import { PDFBoldSectionHeadersUniversalTemplate } from "@/components/resume/pdf/PDFBoldSectionHeadersUniversalTemplate";
+import { PDFBoldTypographyTemplate } from "@/components/resume/pdf/PDFBoldTypographyTemplate";
+import { PDFBoldTypographyUniversalTemplate } from "@/components/resume/pdf/PDFBoldTypographyUniversalTemplate";
+import { PDFBorderFrameUniversalTemplate } from "@/components/resume/pdf/PDFBorderFrameUniversalTemplate";
+import { PDFBoxedSectionsUniversalTemplate } from "@/components/resume/pdf/PDFBoxedSectionsUniversalTemplate";
+import { PDFBrandDesignerTemplate } from "@/components/resume/pdf/PDFBrandDesignerTemplate";
+import { PDFBrandIdentityTemplate } from "@/components/resume/pdf/PDFBrandIdentityTemplate";
+import { PDFBrandManagerTemplate } from "@/components/resume/pdf/PDFBrandManagerTemplate";
+import { PDFBusinessCleanLayoutTemplate } from "@/components/resume/pdf/PDFBusinessCleanLayoutTemplate";
+import { PDFBusinessClearTemplate } from "@/components/resume/pdf/PDFBusinessClearTemplate";
+import { PDFBusinessModernGridTemplate } from "@/components/resume/pdf/PDFBusinessModernGridTemplate";
+import { PDFBusinessSidebarProTemplate } from "@/components/resume/pdf/PDFBusinessSidebarProTemplate";
+import { PDFBusinessSimpleModernTemplate } from "@/components/resume/pdf/PDFBusinessSimpleModernTemplate";
+import { PDFCEOProfileTemplate } from "@/components/resume/pdf/PDFCEOProfileTemplate";
+import { PDFCICDPipelineEngineerTemplate } from "@/components/resume/pdf/PDFCICDPipelineEngineerTemplate";
+import { PDFCPAProfessionalTemplate } from "@/components/resume/pdf/PDFCPAProfessionalTemplate";
+import { PDFCardLayoutUniversalTemplate } from "@/components/resume/pdf/PDFCardLayoutUniversalTemplate";
+import { PDFCenteredMinimalUniversalTemplate } from "@/components/resume/pdf/PDFCenteredMinimalUniversalTemplate";
+import { PDFChevronAccentUniversalTemplate } from "@/components/resume/pdf/PDFChevronAccentUniversalTemplate";
+import { PDFCircleIconUniversalTemplate } from "@/components/resume/pdf/PDFCircleIconUniversalTemplate";
+import { PDFCircularElementsUniversalTemplate } from "@/components/resume/pdf/PDFCircularElementsUniversalTemplate";
+import { PDFClassicSerifUniversalTemplate } from "@/components/resume/pdf/PDFClassicSerifUniversalTemplate";
+import { PDFCleanBasicExecutiveTemplate } from "@/components/resume/pdf/PDFCleanBasicExecutiveTemplate";
+import { PDFCleanCorporateSimpleTemplate } from "@/components/resume/pdf/PDFCleanCorporateSimpleTemplate";
+import { PDFCleanModernUniversalTemplate } from "@/components/resume/pdf/PDFCleanModernUniversalTemplate";
+import { PDFCleanProfessionalSimpleTemplate } from "@/components/resume/pdf/PDFCleanProfessionalSimpleTemplate";
+import { PDFCleanReadableProTemplate } from "@/components/resume/pdf/PDFCleanReadableProTemplate";
+import { PDFCleanTwoColumnUniversalTemplate } from "@/components/resume/pdf/PDFCleanTwoColumnUniversalTemplate";
+import { PDFClinicalExcellenceTemplate } from "@/components/resume/pdf/PDFClinicalExcellenceTemplate";
+import { PDFClinicalMinimalTemplate } from "@/components/resume/pdf/PDFClinicalMinimalTemplate";
+import { PDFCloudNativeTemplate } from "@/components/resume/pdf/PDFCloudNativeTemplate";
+import { PDFCloudSolutionsArchitectTemplate } from "@/components/resume/pdf/PDFCloudSolutionsArchitectTemplate";
+import { PDFCodeSnippetTemplate } from "@/components/resume/pdf/PDFCodeSnippetTemplate";
+import { PDFCollageArtTemplate } from "@/components/resume/pdf/PDFCollageArtTemplate";
+import { PDFColorBlockUniversalTemplate } from "@/components/resume/pdf/PDFColorBlockUniversalTemplate";
+import { PDFColorSplashTemplate } from "@/components/resume/pdf/PDFColorSplashTemplate";
+import { PDFCompactEliteUniversalTemplate } from "@/components/resume/pdf/PDFCompactEliteUniversalTemplate";
+import { PDFComplianceOfficerTemplate } from "@/components/resume/pdf/PDFComplianceOfficerTemplate";
+import { PDFConsultantTemplate } from "@/components/resume/pdf/PDFConsultantTemplate";
+import { PDFContemporarySplitTemplate } from "@/components/resume/pdf/PDFContemporarySplitTemplate";
+import { PDFCornerAccentUniversalTemplate } from "@/components/resume/pdf/PDFCornerAccentUniversalTemplate";
+import { PDFCorporateBorderFrameTemplate } from "@/components/resume/pdf/PDFCorporateBorderFrameTemplate";
+import { PDFCorporateEasyLayoutTemplate } from "@/components/resume/pdf/PDFCorporateEasyLayoutTemplate";
+import { PDFCorporateEliteTemplate } from "@/components/resume/pdf/PDFCorporateEliteTemplate";
+import { PDFCorporateLawTemplate } from "@/components/resume/pdf/PDFCorporateLawTemplate";
+import { PDFCorporateLegalCounselTemplate } from "@/components/resume/pdf/PDFCorporateLegalCounselTemplate";
+import { PDFCorporateMinimalistProTemplate } from "@/components/resume/pdf/PDFCorporateMinimalistProTemplate";
+import { PDFCorporateSimpleTemplate } from "@/components/resume/pdf/PDFCorporateSimpleTemplate";
+import { PDFCorporateVisionTemplate } from "@/components/resume/pdf/PDFCorporateVisionTemplate";
+import { PDFCreativeAccentTemplate } from "@/components/resume/pdf/PDFCreativeAccentTemplate";
+import { PDFCreativeShowcaseGridTemplate } from "@/components/resume/pdf/PDFCreativeShowcaseGridTemplate";
+import { PDFCyberSecurityTemplate } from "@/components/resume/pdf/PDFCyberSecurityTemplate";
+import { PDFDarkModeDevTemplate } from "@/components/resume/pdf/PDFDarkModeDevTemplate";
+import { PDFDataScienceTemplate } from "@/components/resume/pdf/PDFDataScienceTemplate";
+import { PDFDevOpsAutomationTemplate } from "@/components/resume/pdf/PDFDevOpsAutomationTemplate";
+import { PDFDevOpsEngineerTemplate } from "@/components/resume/pdf/PDFDevOpsEngineerTemplate";
+import { PDFDevOpsProTemplate } from "@/components/resume/pdf/PDFDevOpsProTemplate";
+import { PDFDevSecOpsEngineerTemplate } from "@/components/resume/pdf/PDFDevSecOpsEngineerTemplate";
+import { PDFDeviantArtCreatorTemplate } from "@/components/resume/pdf/PDFDeviantArtCreatorTemplate";
+import { PDFDiagonalAccentUniversalTemplate } from "@/components/resume/pdf/PDFDiagonalAccentUniversalTemplate";
+import { PDFDiamondAccentUniversalTemplate } from "@/components/resume/pdf/PDFDiamondAccentUniversalTemplate";
+import { PDFDigitalCanvasTemplate } from "@/components/resume/pdf/PDFDigitalCanvasTemplate";
+import { PDFDigitalMarketerTemplate } from "@/components/resume/pdf/PDFDigitalMarketerTemplate";
+import { PDFDigitalMarketingProTemplate } from "@/components/resume/pdf/PDFDigitalMarketingProTemplate";
+import { PDFDirectorLevelTemplate } from "@/components/resume/pdf/PDFDirectorLevelTemplate";
+import { PDFDjangoFrameworkProTemplate } from "@/components/resume/pdf/PDFDjangoFrameworkProTemplate";
+import { PDFDockerContainerProTemplate } from "@/components/resume/pdf/PDFDockerContainerProTemplate";
+import { PDFDotNetCoreDeveloperTemplate } from "@/components/resume/pdf/PDFDotNetCoreDeveloperTemplate";
+import { PDFDotNetDeveloperTemplate } from "@/components/resume/pdf/PDFDotNetDeveloperTemplate";
+import { PDFDottedGridUniversalTemplate } from "@/components/resume/pdf/PDFDottedGridUniversalTemplate";
+import { PDFDualColumnModernUniversalTemplate } from "@/components/resume/pdf/PDFDualColumnModernUniversalTemplate";
+import { PDFDualToneTemplate } from "@/components/resume/pdf/PDFDualToneTemplate";
+import { PDFEditorialStyleTemplate } from "@/components/resume/pdf/PDFEditorialStyleTemplate";
+import { PDFEducatorModernTemplate } from "@/components/resume/pdf/PDFEducatorModernTemplate";
+import { PDFElasticsearchDevTemplate } from "@/components/resume/pdf/PDFElasticsearchDevTemplate";
+import { PDFElegantSerifTemplate } from "@/components/resume/pdf/PDFElegantSerifTemplate";
+import { PDFEliteTemplate } from "@/components/resume/pdf/PDFEliteTemplate";
+import { PDFExecutiveTemplate } from "@/components/resume/pdf/PDFExecutiveTemplate";
+import { PDFExecutiveCleanSplitTemplate } from "@/components/resume/pdf/PDFExecutiveCleanSplitTemplate";
+import { PDFExecutiveCornerAccentTemplate } from "@/components/resume/pdf/PDFExecutiveCornerAccentTemplate";
+import { PDFExecutiveDirectLayoutTemplate } from "@/components/resume/pdf/PDFExecutiveDirectLayoutTemplate";
+import { PDFExecutiveEasyTemplate } from "@/components/resume/pdf/PDFExecutiveEasyTemplate";
+import { PDFExecutiveLeadershipTemplate } from "@/components/resume/pdf/PDFExecutiveLeadershipTemplate";
+import { PDFExecutiveLetterheadUniversalTemplate } from "@/components/resume/pdf/PDFExecutiveLetterheadUniversalTemplate";
+import { PDFExecutivePlainLayoutTemplate } from "@/components/resume/pdf/PDFExecutivePlainLayoutTemplate";
+import { PDFExecutiveSalesLeaderTemplate } from "@/components/resume/pdf/PDFExecutiveSalesLeaderTemplate";
+import { PDFExecutiveSimpleCleanTemplate } from "@/components/resume/pdf/PDFExecutiveSimpleCleanTemplate";
+import { PDFExecutiveSplitDesignTemplate } from "@/components/resume/pdf/PDFExecutiveSplitDesignTemplate";
+import { PDFExecutiveTimelineModernTemplate } from "@/components/resume/pdf/PDFExecutiveTimelineModernTemplate";
+import { PDFFinanceAnalystTemplate } from "@/components/resume/pdf/PDFFinanceAnalystTemplate";
+import { PDFFinanceTwoColumnTemplate } from "@/components/resume/pdf/PDFFinanceTwoColumnTemplate";
+import { PDFFinancialAnalystTemplate } from "@/components/resume/pdf/PDFFinancialAnalystTemplate";
+import { PDFFloatingHeaderUniversalTemplate } from "@/components/resume/pdf/PDFFloatingHeaderUniversalTemplate";
+import { PDFFlutterMobileDevTemplate } from "@/components/resume/pdf/PDFFlutterMobileDevTemplate";
+import { PDFFresherTemplate } from "@/components/resume/pdf/PDFFresherTemplate";
+import { PDFFresherAcademicStyleTemplate } from "@/components/resume/pdf/PDFFresherAcademicStyleTemplate";
+import { PDFFresherBoxShadowTemplate } from "@/components/resume/pdf/PDFFresherBoxShadowTemplate";
+import { PDFFresherCircularProgressTemplate } from "@/components/resume/pdf/PDFFresherCircularProgressTemplate";
+import { PDFFresherDashBorderTemplate } from "@/components/resume/pdf/PDFFresherDashBorderTemplate";
+import { PDFFresherDoubleColumnTemplate } from "@/components/resume/pdf/PDFFresherDoubleColumnTemplate";
+import { PDFFresherGlassmorphismTemplate } from "@/components/resume/pdf/PDFFresherGlassmorphismTemplate";
+import { PDFFresherGradientBorderTemplate } from "@/components/resume/pdf/PDFFresherGradientBorderTemplate";
+import { PDFFresherIconographyTemplate } from "@/components/resume/pdf/PDFFresherIconographyTemplate";
+import { PDFFresherLeftStripeTemplate } from "@/components/resume/pdf/PDFFresherLeftStripeTemplate";
+import { PDFFresherLightweightTemplate } from "@/components/resume/pdf/PDFFresherLightweightTemplate";
+import { PDFFresherModernSplitTemplate } from "@/components/resume/pdf/PDFFresherModernSplitTemplate";
+import { PDFFresherModernTabsTemplate } from "@/components/resume/pdf/PDFFresherModernTabsTemplate";
+import { PDFFresherNeonAccentTemplate } from "@/components/resume/pdf/PDFFresherNeonAccentTemplate";
+import { PDFFresherPolaroidStyleTemplate } from "@/components/resume/pdf/PDFFresherPolaroidStyleTemplate";
+import { PDFFresherProgressiveTemplate } from "@/components/resume/pdf/PDFFresherProgressiveTemplate";
+import { PDFFresherRibbonStyleTemplate } from "@/components/resume/pdf/PDFFresherRibbonStyleTemplate";
+import { PDFFresherStepByStepTemplate } from "@/components/resume/pdf/PDFFresherStepByStepTemplate";
+import { PDFFresherTimelineDotsTemplate } from "@/components/resume/pdf/PDFFresherTimelineDotsTemplate";
+import { PDFFresherTopBottomTemplate } from "@/components/resume/pdf/PDFFresherTopBottomTemplate";
+import { PDFFresherWaveHeaderTemplate } from "@/components/resume/pdf/PDFFresherWaveHeaderTemplate";
+import { PDFFrontendTemplate } from "@/components/resume/pdf/PDFFrontendTemplate";
+import { PDFFullStackEngineerTemplate } from "@/components/resume/pdf/PDFFullStackEngineerTemplate";
+import { PDFFullStackModernTemplate } from "@/components/resume/pdf/PDFFullStackModernTemplate";
+import { PDFFullStackProTemplate } from "@/components/resume/pdf/PDFFullStackProTemplate";
+import { PDFFullstackTemplate } from "@/components/resume/pdf/PDFFullstackTemplate";
+import { PDFFullstackJavaScriptTemplate } from "@/components/resume/pdf/PDFFullstackJavaScriptTemplate";
+import { PDFGCPArchitectTemplate } from "@/components/resume/pdf/PDFGCPArchitectTemplate";
+import { PDFGalleryLayoutTemplate } from "@/components/resume/pdf/PDFGalleryLayoutTemplate";
+import { PDFGeometricCreativeTemplate } from "@/components/resume/pdf/PDFGeometricCreativeTemplate";
+import { PDFGeometricShapesUniversalTemplate } from "@/components/resume/pdf/PDFGeometricShapesUniversalTemplate";
+import { PDFGitHubDeveloperTemplate } from "@/components/resume/pdf/PDFGitHubDeveloperTemplate";
+import { PDFGitHubProfileTemplate } from "@/components/resume/pdf/PDFGitHubProfileTemplate";
+import { PDFGitHubStudentDeveloperTemplate } from "@/components/resume/pdf/PDFGitHubStudentDeveloperTemplate";
+import { PDFGitHubStyleTemplate } from "@/components/resume/pdf/PDFGitHubStyleTemplate";
+import { PDFGradientHeaderUniversalTemplate } from "@/components/resume/pdf/PDFGradientHeaderUniversalTemplate";
+import { PDFGraduateTemplate } from "@/components/resume/pdf/PDFGraduateTemplate";
+import { PDFGraphQLArchitectTemplate } from "@/components/resume/pdf/PDFGraphQLArchitectTemplate";
+import { PDFGraphQLDeveloperTemplate } from "@/components/resume/pdf/PDFGraphQLDeveloperTemplate";
+import { PDFGraphicDesignProTemplate } from "@/components/resume/pdf/PDFGraphicDesignProTemplate";
+import { PDFHealthcareProfessionalTemplate } from "@/components/resume/pdf/PDFHealthcareProfessionalTemplate";
+import { PDFHealthcareTwoColumnTemplate } from "@/components/resume/pdf/PDFHealthcareTwoColumnTemplate";
+import { PDFHexagonalPatternUniversalTemplate } from "@/components/resume/pdf/PDFHexagonalPatternUniversalTemplate";
+import { PDFIconBarUniversalTemplate } from "@/components/resume/pdf/PDFIconBarUniversalTemplate";
+import { PDFIllustrationPortfolioTemplate } from "@/components/resume/pdf/PDFIllustrationPortfolioTemplate";
+import { PDFInVisionPrototyperTemplate } from "@/components/resume/pdf/PDFInVisionPrototyperTemplate";
+import { PDFInfinityLoopUniversalTemplate } from "@/components/resume/pdf/PDFInfinityLoopUniversalTemplate";
+import { PDFInkBrushTemplate } from "@/components/resume/pdf/PDFInkBrushTemplate";
+import { PDFJAMStackDeveloperTemplate } from "@/components/resume/pdf/PDFJAMStackDeveloperTemplate";
+import { PDFJavaEnterpriseTemplate } from "@/components/resume/pdf/PDFJavaEnterpriseTemplate";
+import { PDFJsonResumeTemplate } from "@/components/resume/pdf/PDFJsonResumeTemplate";
+import { PDFKafkaStreamingExpertTemplate } from "@/components/resume/pdf/PDFKafkaStreamingExpertTemplate";
+import { PDFKuberneteEngineerTemplate } from "@/components/resume/pdf/PDFKuberneteEngineerTemplate";
+import { PDFKubernetesSpecialistTemplate } from "@/components/resume/pdf/PDFKubernetesSpecialistTemplate";
+import { PDFLayeredCardsUniversalTemplate } from "@/components/resume/pdf/PDFLayeredCardsUniversalTemplate";
+import { PDFLeftAlignedProUniversalTemplate } from "@/components/resume/pdf/PDFLeftAlignedProUniversalTemplate";
+import { PDFLeftBorderUniversalTemplate } from "@/components/resume/pdf/PDFLeftBorderUniversalTemplate";
+import { PDFLegalAdvisorTemplate } from "@/components/resume/pdf/PDFLegalAdvisorTemplate";
+import { PDFLegalCounselTemplate } from "@/components/resume/pdf/PDFLegalCounselTemplate";
+import { PDFLegalExecutiveTemplate } from "@/components/resume/pdf/PDFLegalExecutiveTemplate";
+import { PDFLinearProgressUniversalTemplate } from "@/components/resume/pdf/PDFLinearProgressUniversalTemplate";
+import { PDFLinkedInReadyGraduateTemplate } from "@/components/resume/pdf/PDFLinkedInReadyGraduateTemplate";
+import { PDFLinkedInTechProTemplate } from "@/components/resume/pdf/PDFLinkedInTechProTemplate";
+import { PDFLuxuryTimelineTemplate } from "@/components/resume/pdf/PDFLuxuryTimelineTemplate";
+import { PDFMagazineCreativeTemplate } from "@/components/resume/pdf/PDFMagazineCreativeTemplate";
+import { PDFMagazineLayoutUniversalTemplate } from "@/components/resume/pdf/PDFMagazineLayoutUniversalTemplate";
+import { PDFMarketingProfessionalTemplate } from "@/components/resume/pdf/PDFMarketingProfessionalTemplate";
+import { PDFMarketingStrategistTemplate } from "@/components/resume/pdf/PDFMarketingStrategistTemplate";
+import { PDFMedicalCertificationTemplate } from "@/components/resume/pdf/PDFMedicalCertificationTemplate";
+import { PDFMedicalExecutiveTemplate } from "@/components/resume/pdf/PDFMedicalExecutiveTemplate";
+import { PDFMedicalProfessionalTemplate } from "@/components/resume/pdf/PDFMedicalProfessionalTemplate";
+import { PDFMedicalResearchTemplate } from "@/components/resume/pdf/PDFMedicalResearchTemplate";
+import { PDFMetroModernUniversalTemplate } from "@/components/resume/pdf/PDFMetroModernUniversalTemplate";
+import { PDFMicroservicesDevTemplate } from "@/components/resume/pdf/PDFMicroservicesDevTemplate";
+import { PDFMicroservicesExpertTemplate } from "@/components/resume/pdf/PDFMicroservicesExpertTemplate";
+import { PDFMinimalTemplate } from "@/components/resume/pdf/PDFMinimalTemplate";
+import { PDFMinimalChicTemplate } from "@/components/resume/pdf/PDFMinimalChicTemplate";
+import { PDFMinimalCorporateProTemplate } from "@/components/resume/pdf/PDFMinimalCorporateProTemplate";
+import { PDFMinimalDirectTemplate } from "@/components/resume/pdf/PDFMinimalDirectTemplate";
+import { PDFMinimalEleganceUniversalTemplate } from "@/components/resume/pdf/PDFMinimalEleganceUniversalTemplate";
+import { PDFMinimalLinesUniversalTemplate } from "@/components/resume/pdf/PDFMinimalLinesUniversalTemplate";
+import { PDFMinimalProLayoutTemplate } from "@/components/resume/pdf/PDFMinimalProLayoutTemplate";
+import { PDFMinimalistGeometricTemplate } from "@/components/resume/pdf/PDFMinimalistGeometricTemplate";
+import { PDFMinimalistModernProTemplate } from "@/components/resume/pdf/PDFMinimalistModernProTemplate";
+import { PDFMinimalistProSimpleTemplate } from "@/components/resume/pdf/PDFMinimalistProSimpleTemplate";
+import { PDFMobileDevTemplate } from "@/components/resume/pdf/PDFMobileDevTemplate";
+import { PDFModernTemplate } from "@/components/resume/pdf/PDFModernTemplate";
+import { PDFModernArtistTemplate } from "@/components/resume/pdf/PDFModernArtistTemplate";
+import { PDFModernClearProTemplate } from "@/components/resume/pdf/PDFModernClearProTemplate";
+import { PDFModernCorporateGridTemplate } from "@/components/resume/pdf/PDFModernCorporateGridTemplate";
+import { PDFModernEducatorProfessionTemplate } from "@/components/resume/pdf/PDFModernEducatorProfessionTemplate";
+import { PDFModernMinimalistUniversalTemplate } from "@/components/resume/pdf/PDFModernMinimalistUniversalTemplate";
+import { PDFModernPlainProTemplate } from "@/components/resume/pdf/PDFModernPlainProTemplate";
+import { PDFModernProfessionalBoxTemplate } from "@/components/resume/pdf/PDFModernProfessionalBoxTemplate";
+import { PDFModernSidebarTemplate } from "@/components/resume/pdf/PDFModernSidebarTemplate";
+import { PDFModernSimpleProTemplate } from "@/components/resume/pdf/PDFModernSimpleProTemplate";
+import { PDFMongoDBSpecialistTemplate } from "@/components/resume/pdf/PDFMongoDBSpecialistTemplate";
+import { PDFMonochromeElegantUniversalTemplate } from "@/components/resume/pdf/PDFMonochromeElegantUniversalTemplate";
+import { PDFMonospaceTechTemplate } from "@/components/resume/pdf/PDFMonospaceTechTemplate";
+import { PDFMotionGraphicsArtistTemplate } from "@/components/resume/pdf/PDFMotionGraphicsArtistTemplate";
+import { PDFNeonArtistTemplate } from "@/components/resume/pdf/PDFNeonArtistTemplate";
+import { PDFNestJSBackendTemplate } from "@/components/resume/pdf/PDFNestJSBackendTemplate";
+import { PDFNewspaperStyleUniversalTemplate } from "@/components/resume/pdf/PDFNewspaperStyleUniversalTemplate";
+import { PDFNextJSFullstackTemplate } from "@/components/resume/pdf/PDFNextJSFullstackTemplate";
+import { PDFNodeBackendSpecialistTemplate } from "@/components/resume/pdf/PDFNodeBackendSpecialistTemplate";
+import { PDFNodeJSDeveloperTemplate } from "@/components/resume/pdf/PDFNodeJSDeveloperTemplate";
+import { PDFNurseSpecialistTemplate } from "@/components/resume/pdf/PDFNurseSpecialistTemplate";
+import { PDFNursingSpecialistTemplate } from "@/components/resume/pdf/PDFNursingSpecialistTemplate";
+import { PDFOpenSourceTemplate } from "@/components/resume/pdf/PDFOpenSourceTemplate";
+import { PDFOperationsExcellenceTemplate } from "@/components/resume/pdf/PDFOperationsExcellenceTemplate";
+import { PDFOperationsManagerTemplate } from "@/components/resume/pdf/PDFOperationsManagerTemplate";
+import { PDFOperationsTwoColumnTemplate } from "@/components/resume/pdf/PDFOperationsTwoColumnTemplate";
+import { PDFPMExecutiveTemplate } from "@/components/resume/pdf/PDFPMExecutiveTemplate";
+import { PDFParalegalTemplate } from "@/components/resume/pdf/PDFParalegalTemplate";
+import { PDFParallaxStyleUniversalTemplate } from "@/components/resume/pdf/PDFParallaxStyleUniversalTemplate";
+import { PDFPastelCreativeTemplate } from "@/components/resume/pdf/PDFPastelCreativeTemplate";
+import { PDFPhDCandidateTemplate } from "@/components/resume/pdf/PDFPhDCandidateTemplate";
+import { PDFPhotographyLayoutTemplate } from "@/components/resume/pdf/PDFPhotographyLayoutTemplate";
+import { PDFPhotographyProTemplate } from "@/components/resume/pdf/PDFPhotographyProTemplate";
+import { PDFPortfolioMinimalistTemplate } from "@/components/resume/pdf/PDFPortfolioMinimalistTemplate";
+import { PDFPortfolioShowcaseTemplate } from "@/components/resume/pdf/PDFPortfolioShowcaseTemplate";
+import { PDFPostgreSQLDBATemplate } from "@/components/resume/pdf/PDFPostgreSQLDBATemplate";
+import { PDFPostgreSQLExpertTemplate } from "@/components/resume/pdf/PDFPostgreSQLExpertTemplate";
+import { PDFProcessImprovementTemplate } from "@/components/resume/pdf/PDFProcessImprovementTemplate";
+import { PDFProductDesignerUXTemplate } from "@/components/resume/pdf/PDFProductDesignerUXTemplate";
+import { PDFProfessionalTemplate } from "@/components/resume/pdf/PDFProfessionalTemplate";
+import { PDFProfessionalAccentBarTemplate } from "@/components/resume/pdf/PDFProfessionalAccentBarTemplate";
+import { PDFProfessionalBasicModernTemplate } from "@/components/resume/pdf/PDFProfessionalBasicModernTemplate";
+import { PDFProfessionalCleanSimpleTemplate } from "@/components/resume/pdf/PDFProfessionalCleanSimpleTemplate";
+import { PDFProfessionalCompactUniversalTemplate } from "@/components/resume/pdf/PDFProfessionalCompactUniversalTemplate";
+import { PDFProfessionalDividerTemplate } from "@/components/resume/pdf/PDFProfessionalDividerTemplate";
+import { PDFProfessionalEasyReadTemplate } from "@/components/resume/pdf/PDFProfessionalEasyReadTemplate";
+import { PDFProfessionalHeaderBannerTemplate } from "@/components/resume/pdf/PDFProfessionalHeaderBannerTemplate";
+import { PDFProfessionalModernEdgeTemplate } from "@/components/resume/pdf/PDFProfessionalModernEdgeTemplate";
+import { PDFProfessionalPlainSimpleTemplate } from "@/components/resume/pdf/PDFProfessionalPlainSimpleTemplate";
+import { PDFProfessionalReadableLayoutTemplate } from "@/components/resume/pdf/PDFProfessionalReadableLayoutTemplate";
+import { PDFProfessionalStraightforwardTemplate } from "@/components/resume/pdf/PDFProfessionalStraightforwardTemplate";
+import { PDFProfessionalVerticalLineTemplate } from "@/components/resume/pdf/PDFProfessionalVerticalLineTemplate";
+import { PDFProjectManagerPMPTemplate } from "@/components/resume/pdf/PDFProjectManagerPMPTemplate";
+import { PDFProjectManagerProTemplate } from "@/components/resume/pdf/PDFProjectManagerProTemplate";
+import { PDFPyTorchDeveloperTemplate } from "@/components/resume/pdf/PDFPyTorchDeveloperTemplate";
+import { PDFPythonDeveloperProTemplate } from "@/components/resume/pdf/PDFPythonDeveloperProTemplate";
+import { PDFRabbitMQSpecialistTemplate } from "@/components/resume/pdf/PDFRabbitMQSpecialistTemplate";
+import { PDFReactFrontendProTemplate } from "@/components/resume/pdf/PDFReactFrontendProTemplate";
+import { PDFReactNativeExpertTemplate } from "@/components/resume/pdf/PDFReactNativeExpertTemplate";
+import { PDFRedisCacheSpecialistTemplate } from "@/components/resume/pdf/PDFRedisCacheSpecialistTemplate";
+import { PDFRefinedTemplate } from "@/components/resume/pdf/PDFRefinedTemplate";
+import { PDFRetroProfessionalUniversalTemplate } from "@/components/resume/pdf/PDFRetroProfessionalUniversalTemplate";
+import { PDFRibbonHeaderUniversalTemplate } from "@/components/resume/pdf/PDFRibbonHeaderUniversalTemplate";
+import { PDFRoundedCornersUniversalTemplate } from "@/components/resume/pdf/PDFRoundedCornersUniversalTemplate";
+import { PDFRustDeveloperProTemplate } from "@/components/resume/pdf/PDFRustDeveloperProTemplate";
+import { PDFSalesAchievementTemplate } from "@/components/resume/pdf/PDFSalesAchievementTemplate";
+import { PDFSalesExecutiveTemplate } from "@/components/resume/pdf/PDFSalesExecutiveTemplate";
+import { PDFSalesManagerTemplate } from "@/components/resume/pdf/PDFSalesManagerTemplate";
+import { PDFSalesMarketingHybridTemplate } from "@/components/resume/pdf/PDFSalesMarketingHybridTemplate";
+import { PDFSapphireExecutiveTemplate } from "@/components/resume/pdf/PDFSapphireExecutiveTemplate";
+import { PDFScalaEngineerTemplate } from "@/components/resume/pdf/PDFScalaEngineerTemplate";
+import { PDFSeniorTemplate } from "@/components/resume/pdf/PDFSeniorTemplate";
+import { PDFSeniorDevOpsEngineerTemplate } from "@/components/resume/pdf/PDFSeniorDevOpsEngineerTemplate";
+import { PDFSeniorDotNetDeveloperTemplate } from "@/components/resume/pdf/PDFSeniorDotNetDeveloperTemplate";
+import { PDFSeniorFullStackDeveloperTemplate } from "@/components/resume/pdf/PDFSeniorFullStackDeveloperTemplate";
+import { PDFServerlessDeveloperTemplate } from "@/components/resume/pdf/PDFServerlessDeveloperTemplate";
+import { PDFSidebarProfessionalUniversalTemplate } from "@/components/resume/pdf/PDFSidebarProfessionalUniversalTemplate";
+import { PDFSimpleBusinessCleanTemplate } from "@/components/resume/pdf/PDFSimpleBusinessCleanTemplate";
+import { PDFSimpleClearBusinessTemplate } from "@/components/resume/pdf/PDFSimpleClearBusinessTemplate";
+import { PDFSimpleExecutiveLayoutTemplate } from "@/components/resume/pdf/PDFSimpleExecutiveLayoutTemplate";
+import { PDFSimpleModernExecutiveTemplate } from "@/components/resume/pdf/PDFSimpleModernExecutiveTemplate";
+import { PDFSimpleProfessionalCleanTemplate } from "@/components/resume/pdf/PDFSimpleProfessionalCleanTemplate";
+import { PDFSimpleStructuredTemplate } from "@/components/resume/pdf/PDFSimpleStructuredTemplate";
+import { PDFSoftwareTemplate } from "@/components/resume/pdf/PDFSoftwareTemplate";
+import { PDFSoundCloudProducerTemplate } from "@/components/resume/pdf/PDFSoundCloudProducerTemplate";
+import { PDFSplitPaneUniversalTemplate } from "@/components/resume/pdf/PDFSplitPaneUniversalTemplate";
+import { PDFSpotlightHeaderUniversalTemplate } from "@/components/resume/pdf/PDFSpotlightHeaderUniversalTemplate";
+import { PDFStackOverflowInspiredTemplate } from "@/components/resume/pdf/PDFStackOverflowInspiredTemplate";
+import { PDFStackedSectionsUniversalTemplate } from "@/components/resume/pdf/PDFStackedSectionsUniversalTemplate";
+import { PDFStarterTemplate } from "@/components/resume/pdf/PDFStarterTemplate";
+import { PDFStrategicLeaderTemplate } from "@/components/resume/pdf/PDFStrategicLeaderTemplate";
+import { PDFStripedBackgroundUniversalTemplate } from "@/components/resume/pdf/PDFStripedBackgroundUniversalTemplate";
+import { PDFStudentEducatorTemplate } from "@/components/resume/pdf/PDFStudentEducatorTemplate";
+import { PDFStudentEngagementTemplate } from "@/components/resume/pdf/PDFStudentEngagementTemplate";
+import { PDFSwissStyleUniversalTemplate } from "@/components/resume/pdf/PDFSwissStyleUniversalTemplate";
+import { PDFSystemArchitectTemplate } from "@/components/resume/pdf/PDFSystemArchitectTemplate";
+import { PDFTaxSpecialistTemplate } from "@/components/resume/pdf/PDFTaxSpecialistTemplate";
+import { PDFTeacherProfessionalTemplate } from "@/components/resume/pdf/PDFTeacherProfessionalTemplate";
+import { PDFTeachingCertifiedTemplate } from "@/components/resume/pdf/PDFTeachingCertifiedTemplate";
+import { PDFTeachingExcellenceTemplate } from "@/components/resume/pdf/PDFTeachingExcellenceTemplate";
+import { PDFTechGridTemplate } from "@/components/resume/pdf/PDFTechGridTemplate";
+import { PDFTechLeadTemplate } from "@/components/resume/pdf/PDFTechLeadTemplate";
+import { PDFTensorFlowMLEngineerTemplate } from "@/components/resume/pdf/PDFTensorFlowMLEngineerTemplate";
+import { PDFTerminalConsoleTemplate } from "@/components/resume/pdf/PDFTerminalConsoleTemplate";
+import { PDFTerraformDevOpsTemplate } from "@/components/resume/pdf/PDFTerraformDevOpsTemplate";
+import { PDFThinBorderUniversalTemplate } from "@/components/resume/pdf/PDFThinBorderUniversalTemplate";
+import { PDFThreeDModelingArtistTemplate } from "@/components/resume/pdf/PDFThreeDModelingArtistTemplate";
+import { PDFTikTokCreatorTemplate } from "@/components/resume/pdf/PDFTikTokCreatorTemplate";
+import { PDFTimelineVerticalUniversalTemplate } from "@/components/resume/pdf/PDFTimelineVerticalUniversalTemplate";
+import { PDFTopBarUniversalTemplate } from "@/components/resume/pdf/PDFTopBarUniversalTemplate";
+import { PDFTriangularElementsUniversalTemplate } from "@/components/resume/pdf/PDFTriangularElementsUniversalTemplate";
+import { PDFTwoToneSplitUniversalTemplate } from "@/components/resume/pdf/PDFTwoToneSplitUniversalTemplate";
+import { PDFTypeScriptExpertTemplate } from "@/components/resume/pdf/PDFTypeScriptExpertTemplate";
+import { PDFTypewriterStyleTemplate } from "@/components/resume/pdf/PDFTypewriterStyleTemplate";
+import { PDFUIUXDesignerProTemplate } from "@/components/resume/pdf/PDFUIUXDesignerProTemplate";
+import { PDFUnderlineAccentUniversalTemplate } from "@/components/resume/pdf/PDFUnderlineAccentUniversalTemplate";
+import { PDFUrbanDesignerTemplate } from "@/components/resume/pdf/PDFUrbanDesignerTemplate";
+import { PDFVPExecutiveTemplate } from "@/components/resume/pdf/PDFVPExecutiveTemplate";
+import { PDFVerticalTimelineUniversalTemplate } from "@/components/resume/pdf/PDFVerticalTimelineUniversalTemplate";
+import { PDFVideoEditorCreativeTemplate } from "@/components/resume/pdf/PDFVideoEditorCreativeTemplate";
+import { PDFVintagePosterTemplate } from "@/components/resume/pdf/PDFVintagePosterTemplate";
+import { PDFVisualStorytellerTemplate } from "@/components/resume/pdf/PDFVisualStorytellerTemplate";
+import { PDFVueJSDeveloperTemplate } from "@/components/resume/pdf/PDFVueJSDeveloperTemplate";
+import { PDFWatermarkStyleUniversalTemplate } from "@/components/resume/pdf/PDFWatermarkStyleUniversalTemplate";
+import { PDFWavePatternUniversalTemplate } from "@/components/resume/pdf/PDFWavePatternUniversalTemplate";
+import { PDFWebAssemblyEngineerTemplate } from "@/components/resume/pdf/PDFWebAssemblyEngineerTemplate";
+import { PDFWebDesignerModernTemplate } from "@/components/resume/pdf/PDFWebDesignerModernTemplate";
+import { PDFWideMarginUniversalTemplate } from "@/components/resume/pdf/PDFWideMarginUniversalTemplate";
+import { PDFYouTubeEducatorTemplate } from "@/components/resume/pdf/PDFYouTubeEducatorTemplate";
+import { PDFZigzagBorderUniversalTemplate } from "@/components/resume/pdf/PDFZigzagBorderUniversalTemplate";
+import { PDFiOSSwiftEngineerTemplate } from "@/components/resume/pdf/PDFiOSSwiftEngineerTemplate";
 import { registerPDFFonts } from "@/lib/pdfFonts";
 import { templateMetaMap, categoryLabelMap } from "@/constants/templateMeta";
 import { analyzeResumeForATS, type AtsReport } from "@/lib/atsAnalyzer";
@@ -3823,6 +4158,540 @@ const Editor = () => {
         "motion-designer-portfolio": PDFMotionDesignerPortfolioTemplate,
         "visual-designer-showcase": PDFVisualDesignerShowcaseTemplate,
         "design-leader-portfolio": PDFDesignLeaderPortfolioTemplate,
+      
+        "ai-engineer": PDFAIEngineerTemplate,
+        "api-doc": PDFAPIDocTemplate,
+        "aws-cloud-engineer": PDFAWSCloudEngineerTemplate,
+        "academic-educator": PDFAcademicEducatorTemplate,
+        "accessibility-ux": PDFAccessibilityUxTemplate,
+        "accounting-executive": PDFAccountingExecutiveTemplate,
+        "accounting-pro": PDFAccountingProTemplate,
+        "achiever-fresher": PDFAchieverFresherTemplate,
+        "adobe-portfolio-designer": PDFAdobePortfolioDesignerTemplate,
+        "aesthetic-creative": PDFAestheticCreativeTemplate,
+        "agile-project-lead": PDFAgileProjectLeadTemplate,
+        "agile-scrum": PDFAgileScrumTemplate,
+        "agileflow-developer": PDFAgileflowDeveloperTemplate,
+        "analyst": PDFAnalystTemplate,
+        "angular-modern-universal": PDFAngularModernUniversalTemplate,
+        "apigateway-architect": PDFApigatewayArchitectTemplate,
+        "art-director-modern": PDFArtDirectorModernTemplate,
+        "art-station-artist": PDFArtStationArtistTemplate,
+        "artisan-designer": PDFArtisanDesignerTemplate,
+        "artistic-grid": PDFArtisticGridTemplate,
+        "artstation-pro": PDFArtstationProTemplate,
+        "ascend-graduate": PDFAscendGraduateTemplate,
+        "aspire-graduate": PDFAspireGraduateTemplate,
+        "asymmetric-layout-universal": PDFAsymmetricLayoutUniversalTemplate,
+        "atlas-executive": PDFAtlasExecutiveTemplate,
+        "attorney-professional": PDFAttorneyProfessionalTemplate,
+        "audit-expert": PDFAuditExpertTemplate,
+        "auditor": PDFAuditorTemplate,
+        "aurora-minimal": PDFAuroraMinimalTemplate,
+        "awwwards-designer": PDFAwwwardsDesignerTemplate,
+        "azure-dev-ops-pro": PDFAzureDevOpsProTemplate,
+        "azure-dev-ops-specialist": PDFAzureDevOpsSpecialistTemplate,
+        "backend": PDFBackendTemplate,
+        "badge-style-universal": PDFBadgeStyleUniversalTemplate,
+        "behance-portfolio": PDFBehancePortfolioTemplate,
+        "bitbucket-developer": PDFBitbucketDeveloperTemplate,
+        "blockchain-dev": PDFBlockchainDevTemplate,
+        "blueprint-design": PDFBlueprintDesignTemplate,
+        "bold-headline": PDFBoldHeadlineTemplate,
+        "bold-section-headers-universal": PDFBoldSectionHeadersUniversalTemplate,
+        "bold-typography": PDFBoldTypographyTemplate,
+        "bold-typography-universal": PDFBoldTypographyUniversalTemplate,
+        "bootcamp-portfolio": PDFBootcampPortfolioTemplate,
+        "border-frame-universal": PDFBorderFrameUniversalTemplate,
+        "boxed-sections-universal": PDFBoxedSectionsUniversalTemplate,
+        "brand-designer": PDFBrandDesignerTemplate,
+        "brand-identity": PDFBrandIdentityTemplate,
+        "brand-manager": PDFBrandManagerTemplate,
+        "branded-professional": PDFBrandedProfessionalTemplate,
+        "bright-graduate": PDFBrightGraduateTemplate,
+        "business-clean-layout": PDFBusinessCleanLayoutTemplate,
+        "business-clear": PDFBusinessClearTemplate,
+        "business-modern-grid": PDFBusinessModernGridTemplate,
+        "business-sidebar-pro": PDFBusinessSidebarProTemplate,
+        "business-simple-modern": PDFBusinessSimpleModernTemplate,
+        "bytecode-specialist": PDFBytecodeSpecialistTemplate,
+        "ceo-profile": PDFCEOProfileTemplate,
+        "cicd-pipeline-engineer": PDFCICDPipelineEngineerTemplate,
+        "cpa-professional": PDFCPAProfessionalTemplate,
+        "campus-influencer": PDFCampusInfluencerTemplate,
+        "canvas-artist": PDFCanvasArtistTemplate,
+        "carbonmade-designer": PDFCarbonmadeDesignerTemplate,
+        "card-layout-universal": PDFCardLayoutUniversalTemplate,
+        "casestudy-designer": PDFCasestudyDesignerTemplate,
+        "catalyst-fresher": PDFCatalystFresherTemplate,
+        "centered-minimal-universal": PDFCenteredMinimalUniversalTemplate,
+        "chevron-accent-universal": PDFChevronAccentUniversalTemplate,
+        "chromatic-creative": PDFChromaticCreativeTemplate,
+        "circle-icon-universal": PDFCircleIconUniversalTemplate,
+        "circular-elements-universal": PDFCircularElementsUniversalTemplate,
+        "classic-serif-universal": PDFClassicSerifUniversalTemplate,
+        "clean-basic-executive": PDFCleanBasicExecutiveTemplate,
+        "clean-corporate-simple": PDFCleanCorporateSimpleTemplate,
+        "clean-modern-universal": PDFCleanModernUniversalTemplate,
+        "clean-professional-simple": PDFCleanProfessionalSimpleTemplate,
+        "clean-readable-pro": PDFCleanReadableProTemplate,
+        "clean-two-column-universal": PDFCleanTwoColumnUniversalTemplate,
+        "clinical-excellence": PDFClinicalExcellenceTemplate,
+        "clinical-minimal": PDFClinicalMinimalTemplate,
+        "cloud-native": PDFCloudNativeTemplate,
+        "cloud-solutions-architect": PDFCloudSolutionsArchitectTemplate,
+        "cloudnative-architect": PDFCloudnativeArchitectTemplate,
+        "code-snippet": PDFCodeSnippetTemplate,
+        "codeforge-developer": PDFCodeforgeDeveloperTemplate,
+        "codepen-developer": PDFCodepenDeveloperTemplate,
+        "collage-art": PDFCollageArtTemplate,
+        "color-block-universal": PDFColorBlockUniversalTemplate,
+        "color-splash": PDFColorSplashTemplate,
+        "compact-elite-universal": PDFCompactEliteUniversalTemplate,
+        "compile-time-dev": PDFCompileTimeDevTemplate,
+        "compliance-officer": PDFComplianceOfficerTemplate,
+        "componentui-designer": PDFComponentuiDesignerTemplate,
+        "composition-artist": PDFCompositionArtistTemplate,
+        "concept-creative": PDFConceptCreativeTemplate,
+        "connected-leader": PDFConnectedLeaderTemplate,
+        "connected-professional": PDFConnectedProfessionalTemplate,
+        "consultant": PDFConsultantTemplate,
+        "containerops-engineer": PDFContaineropsEngineerTemplate,
+        "contemporary-split": PDFContemporarySplitTemplate,
+        "conversational-ux": PDFConversationalUxTemplate,
+        "corner-accent-universal": PDFCornerAccentUniversalTemplate,
+        "coroflot-portfolio": PDFCoroflotPortfolioTemplate,
+        "corporate-border-frame": PDFCorporateBorderFrameTemplate,
+        "corporate-easy-layout": PDFCorporateEasyLayoutTemplate,
+        "corporate-elite": PDFCorporateEliteTemplate,
+        "corporate-law": PDFCorporateLawTemplate,
+        "corporate-legal-counsel": PDFCorporateLegalCounselTemplate,
+        "corporate-minimalist-pro": PDFCorporateMinimalistProTemplate,
+        "corporate-simple": PDFCorporateSimpleTemplate,
+        "corporate-vision": PDFCorporateVisionTemplate,
+        "cosmos-professional": PDFCosmosProfessionalTemplate,
+        "craft-artist": PDFCraftArtistTemplate,
+        "creative-accent": PDFCreativeAccentTemplate,
+        "creative-showcase-grid": PDFCreativeShowcaseGridTemplate,
+        "crystal-executive": PDFCrystalExecutiveTemplate,
+        "curator-creative": PDFCuratorCreativeTemplate,
+        "cyber-security": PDFCyberSecurityTemplate,
+        "dark-mode-dev": PDFDarkModeDevTemplate,
+        "data-science": PDFDataScienceTemplate,
+        "design-leader-portfolio": PDFDesignLeaderPortfolioTemplate,
+        "design-systems-portfolio": PDFDesignSystemsPortfolioTemplate,
+        "designleadership-director": PDFDesignleadershipDirectorTemplate,
+        "designops-specialist": PDFDesignopsSpecialistTemplate,
+        "designportfolio-specialist": PDFDesignportfolioSpecialistTemplate,
+        "designstrategy-lead": PDFDesignstrategyLeadTemplate,
+        "designsystem-architect": PDFDesignsystemArchitectTemplate,
+        "designthinking-specialist": PDFDesignthinkingSpecialistTemplate,
+        "dev-ops-automation": PDFDevOpsAutomationTemplate,
+        "dev-ops-engineer": PDFDevOpsEngineerTemplate,
+        "dev-ops-pro": PDFDevOpsProTemplate,
+        "dev-sec-ops-engineer": PDFDevSecOpsEngineerTemplate,
+        "deviant-art-creator": PDFDeviantArtCreatorTemplate,
+        "deviantart-artist": PDFDeviantartArtistTemplate,
+        "devto-contributor": PDFDevtoContributorTemplate,
+        "diagonal-accent-universal": PDFDiagonalAccentUniversalTemplate,
+        "diamond-accent-universal": PDFDiamondAccentUniversalTemplate,
+        "digital-artist-portfolio": PDFDigitalArtistPortfolioTemplate,
+        "digital-canvas": PDFDigitalCanvasTemplate,
+        "digital-executive": PDFDigitalExecutiveTemplate,
+        "digital-graduate": PDFDigitalGraduateTemplate,
+        "digital-identity": PDFDigitalIdentityTemplate,
+        "digital-marketer": PDFDigitalMarketerTemplate,
+        "digital-marketing-pro": PDFDigitalMarketingProTemplate,
+        "digital-native-grad": PDFDigitalNativeGradTemplate,
+        "digital-portfolio-grad": PDFDigitalPortfolioGradTemplate,
+        "digital-professional": PDFDigitalProfessionalTemplate,
+        "director-level": PDFDirectorLevelTemplate,
+        "django-framework-pro": PDFDjangoFrameworkProTemplate,
+        "docker-container-pro": PDFDockerContainerProTemplate,
+        "dockerhub-publisher": PDFDockerhubPublisherTemplate,
+        "dot-net-core-developer": PDFDotNetCoreDeveloperTemplate,
+        "dot-net-developer": PDFDotNetDeveloperTemplate,
+        "dotted-grid-universal": PDFDottedGridUniversalTemplate,
+        "dribbble-showcase": PDFDribbbleShowcaseTemplate,
+        "dual-column-modern-universal": PDFDualColumnModernUniversalTemplate,
+        "dual-tone": PDFDualToneTemplate,
+        "eclipse-professional": PDFEclipseProfessionalTemplate,
+        "edgecompute-developer": PDFEdgecomputeDeveloperTemplate,
+        "editorial-artist": PDFEditorialArtistTemplate,
+        "editorial-style": PDFEditorialStyleTemplate,
+        "educator-modern": PDFEducatorModernTemplate,
+        "elasticsearch-dev": PDFElasticsearchDevTemplate,
+        "elegant-serif": PDFElegantSerifTemplate,
+        "elevate-fresher": PDFElevateFresherTemplate,
+        "elite": PDFEliteTemplate,
+        "emerge-fresher": PDFEmergeFresherTemplate,
+        "eventdriven-architect": PDFEventdrivenArchitectTemplate,
+        "executive": PDFExecutiveTemplate,
+        "executive-clean-split": PDFExecutiveCleanSplitTemplate,
+        "executive-corner-accent": PDFExecutiveCornerAccentTemplate,
+        "executive-direct-layout": PDFExecutiveDirectLayoutTemplate,
+        "executive-easy": PDFExecutiveEasyTemplate,
+        "executive-leadership": PDFExecutiveLeadershipTemplate,
+        "executive-letterhead-universal": PDFExecutiveLetterheadUniversalTemplate,
+        "executive-plain-layout": PDFExecutivePlainLayoutTemplate,
+        "executive-sales-leader": PDFExecutiveSalesLeaderTemplate,
+        "executive-simple-clean": PDFExecutiveSimpleCleanTemplate,
+        "executive-split-design": PDFExecutiveSplitDesignTemplate,
+        "executive-timeline-modern": PDFExecutiveTimelineModernTemplate,
+        "expression-artist": PDFExpressionArtistTemplate,
+        "figma-designer-portfolio": PDFFigmaDesignerPortfolioTemplate,
+        "finance-analyst": PDFFinanceAnalystTemplate,
+        "finance-two-column": PDFFinanceTwoColumnTemplate,
+        "financial-analyst": PDFFinancialAnalystTemplate,
+        "floating-header-universal": PDFFloatingHeaderUniversalTemplate,
+        "flutter-mobile-dev": PDFFlutterMobileDevTemplate,
+        "flux-executive": PDFFluxExecutiveTemplate,
+        "foundation-graduate": PDFFoundationGraduateTemplate,
+        "framer-designer-portfolio": PDFFramerDesignerPortfolioTemplate,
+        "fresher": PDFFresherTemplate,
+        "fresher-academic-style": PDFFresherAcademicStyleTemplate,
+        "fresher-box-shadow": PDFFresherBoxShadowTemplate,
+        "fresher-circular-progress": PDFFresherCircularProgressTemplate,
+        "fresher-dash-border": PDFFresherDashBorderTemplate,
+        "fresher-double-column": PDFFresherDoubleColumnTemplate,
+        "fresher-glassmorphism": PDFFresherGlassmorphismTemplate,
+        "fresher-gradient-border": PDFFresherGradientBorderTemplate,
+        "fresher-iconography": PDFFresherIconographyTemplate,
+        "fresher-left-stripe": PDFFresherLeftStripeTemplate,
+        "fresher-lightweight": PDFFresherLightweightTemplate,
+        "fresher-modern-split": PDFFresherModernSplitTemplate,
+        "fresher-modern-tabs": PDFFresherModernTabsTemplate,
+        "fresher-neon-accent": PDFFresherNeonAccentTemplate,
+        "fresher-polaroid-style": PDFFresherPolaroidStyleTemplate,
+        "fresher-progressive": PDFFresherProgressiveTemplate,
+        "fresher-ribbon-style": PDFFresherRibbonStyleTemplate,
+        "fresher-step-by-step": PDFFresherStepByStepTemplate,
+        "fresher-timeline-dots": PDFFresherTimelineDotsTemplate,
+        "fresher-top-bottom": PDFFresherTopBottomTemplate,
+        "fresher-wave-header": PDFFresherWaveHeaderTemplate,
+        "frontend": PDFFrontendTemplate,
+        "full-stack-engineer": PDFFullStackEngineerTemplate,
+        "full-stack-modern": PDFFullStackModernTemplate,
+        "full-stack-pro": PDFFullStackProTemplate,
+        "fullstack": PDFFullstackTemplate,
+        "fullstack-java-script": PDFFullstackJavaScriptTemplate,
+        "gcp-architect": PDFGCPArchitectTemplate,
+        "gallery-layout": PDFGalleryLayoutTemplate,
+        "gen-z-graduate": PDFGenZGraduateTemplate,
+        "genesis-graduate": PDFGenesisGraduateTemplate,
+        "geometric-creative": PDFGeometricCreativeTemplate,
+        "geometric-shapes-universal": PDFGeometricShapesUniversalTemplate,
+        "git-hub-developer": PDFGitHubDeveloperTemplate,
+        "git-hub-profile": PDFGitHubProfileTemplate,
+        "git-hub-student-developer": PDFGitHubStudentDeveloperTemplate,
+        "git-hub-style": PDFGitHubStyleTemplate,
+        "gitflow-engineer": PDFGitflowEngineerTemplate,
+        "github-portfolio-dev": PDFGithubPortfolioDevTemplate,
+        "github-student": PDFGithubStudentTemplate,
+        "gitlab-developer": PDFGitlabDeveloperTemplate,
+        "global-networker": PDFGlobalNetworkerTemplate,
+        "gradient-header-universal": PDFGradientHeaderUniversalTemplate,
+        "graduate": PDFGraduateTemplate,
+        "graph-ql-architect": PDFGraphQLArchitectTemplate,
+        "graph-ql-developer": PDFGraphQLDeveloperTemplate,
+        "graphdb-specialist": PDFGraphdbSpecialistTemplate,
+        "graphic-design-pro": PDFGraphicDesignProTemplate,
+        "hackathon-graduate": PDFHackathonGraduateTemplate,
+        "hackernews-developer": PDFHackernewsDeveloperTemplate,
+        "hackerrank-expert": PDFHackerrankExpertTemplate,
+        "harmony-executive": PDFHarmonyExecutiveTemplate,
+        "healthcare-professional": PDFHealthcareProfessionalTemplate,
+        "healthcare-two-column": PDFHealthcareTwoColumnTemplate,
+        "hexagonal-pattern-universal": PDFHexagonalPatternUniversalTemplate,
+        "horizon-graduate": PDFHorizonGraduateTemplate,
+        "icon-bar-universal": PDFIconBarUniversalTemplate,
+        "illustration-portfolio": PDFIllustrationPortfolioTemplate,
+        "imaginative-designer": PDFImaginativeDesignerTemplate,
+        "impression-designer": PDFImpressionDesignerTemplate,
+        "in-vision-prototyper": PDFInVisionPrototyperTemplate,
+        "infinity-loop-universal": PDFInfinityLoopUniversalTemplate,
+        "influencer-professional": PDFInfluencerProfessionalTemplate,
+        "information-architect": PDFInformationArchitectTemplate,
+        "ink-brush": PDFInkBrushTemplate,
+        "instagram-creative": PDFInstagramCreativeTemplate,
+        "interactive-portfolio-designer": PDFInteractivePortfolioDesignerTemplate,
+        "interface-master": PDFInterfaceMasterTemplate,
+        "internship-showcase": PDFInternshipShowcaseTemplate,
+        "jam-stack-developer": PDFJAMStackDeveloperTemplate,
+        "java-enterprise": PDFJavaEnterpriseTemplate,
+        "json-resume": PDFJsonResumeTemplate,
+        "kafka-streaming-expert": PDFKafkaStreamingExpertTemplate,
+        "kaggle-data-scientist": PDFKaggleDataScientistTemplate,
+        "keystone-graduate": PDFKeystoneGraduateTemplate,
+        "kubernete-engineer": PDFKuberneteEngineerTemplate,
+        "kubernetes-specialist": PDFKubernetesSpecialistTemplate,
+        "launchpad-graduate": PDFLaunchpadGraduateTemplate,
+        "layered-cards-universal": PDFLayeredCardsUniversalTemplate,
+        "leetcode-champion": PDFLeetcodeChampionTemplate,
+        "left-aligned-pro-universal": PDFLeftAlignedProUniversalTemplate,
+        "left-border-universal": PDFLeftBorderUniversalTemplate,
+        "legal-advisor": PDFLegalAdvisorTemplate,
+        "legal-counsel": PDFLegalCounselTemplate,
+        "legal-executive": PDFLegalExecutiveTemplate,
+        "linear-progress-universal": PDFLinearProgressUniversalTemplate,
+        "linked-in-ready-graduate": PDFLinkedInReadyGraduateTemplate,
+        "linked-in-tech-pro": PDFLinkedInTechProTemplate,
+        "linkedin-graduate": PDFLinkedinGraduateTemplate,
+        "linkedin-optimized": PDFLinkedinOptimizedTemplate,
+        "linkedin-tech-expert": PDFLinkedinTechExpertTemplate,
+        "luxury-timeline": PDFLuxuryTimelineTemplate,
+        "magazine-creative": PDFMagazineCreativeTemplate,
+        "magazine-layout-universal": PDFMagazineLayoutUniversalTemplate,
+        "marketing-professional": PDFMarketingProfessionalTemplate,
+        "marketing-strategist": PDFMarketingStrategistTemplate,
+        "medical-certification": PDFMedicalCertificationTemplate,
+        "medical-executive": PDFMedicalExecutiveTemplate,
+        "medical-professional": PDFMedicalProfessionalTemplate,
+        "medical-research": PDFMedicalResearchTemplate,
+        "medium-tech-writer": PDFMediumTechWriterTemplate,
+        "medium-writer-creative": PDFMediumWriterCreativeTemplate,
+        "meridian-corporate": PDFMeridianCorporateTemplate,
+        "metro-modern-universal": PDFMetroModernUniversalTemplate,
+        "microarch-engineer": PDFMicroarchEngineerTemplate,
+        "microinteraction-designer": PDFMicrointeractionDesignerTemplate,
+        "microservices-dev": PDFMicroservicesDevTemplate,
+        "microservices-expert": PDFMicroservicesExpertTemplate,
+        "milestone-graduate": PDFMilestoneGraduateTemplate,
+        "minimal": PDFMinimalTemplate,
+        "minimal-chic": PDFMinimalChicTemplate,
+        "minimal-corporate-pro": PDFMinimalCorporateProTemplate,
+        "minimal-direct": PDFMinimalDirectTemplate,
+        "minimal-elegance-universal": PDFMinimalEleganceUniversalTemplate,
+        "minimal-lines-universal": PDFMinimalLinesUniversalTemplate,
+        "minimal-pro-layout": PDFMinimalProLayoutTemplate,
+        "minimalist-geometric": PDFMinimalistGeometricTemplate,
+        "minimalist-modern-pro": PDFMinimalistModernProTemplate,
+        "minimalist-pro-simple": PDFMinimalistProSimpleTemplate,
+        "mlops-engineer": PDFMlopsEngineerTemplate,
+        "mobile-dev": PDFMobileDevTemplate,
+        "mobile-first-designer": PDFMobileFirstDesignerTemplate,
+        "modern": PDFModernTemplate,
+        "modern-artist": PDFModernArtistTemplate,
+        "modern-clear-pro": PDFModernClearProTemplate,
+        "modern-corporate-grid": PDFModernCorporateGridTemplate,
+        "modern-digital": PDFModernDigitalTemplate,
+        "modern-educator-profession": PDFModernEducatorProfessionTemplate,
+        "modern-minimalist-universal": PDFModernMinimalistUniversalTemplate,
+        "modern-plain-pro": PDFModernPlainProTemplate,
+        "modern-professional-box": PDFModernProfessionalBoxTemplate,
+        "modern-sidebar": PDFModernSidebarTemplate,
+        "modern-simple-pro": PDFModernSimpleProTemplate,
+        "momentum-fresher": PDFMomentumFresherTemplate,
+        "mongo-db-specialist": PDFMongoDBSpecialistTemplate,
+        "monochrome-elegant-universal": PDFMonochromeElegantUniversalTemplate,
+        "monospace-tech": PDFMonospaceTechTemplate,
+        "motion-designer-portfolio": PDFMotionDesignerPortfolioTemplate,
+        "motion-graphics-artist": PDFMotionGraphicsArtistTemplate,
+        "motion-ui-designer": PDFMotionUiDesignerTemplate,
+        "multi-platform-artist": PDFMultiPlatformArtistTemplate,
+        "muse-creative": PDFMuseCreativeTemplate,
+        "narrative-creative": PDFNarrativeCreativeTemplate,
+        "neon-artist": PDFNeonArtistTemplate,
+        "nest-js-backend": PDFNestJSBackendTemplate,
+        "networked-executive": PDFNetworkedExecutiveTemplate,
+        "networked-graduate": PDFNetworkedGraduateTemplate,
+        "neural-engineer": PDFNeuralEngineerTemplate,
+        "newspaper-style-universal": PDFNewspaperStyleUniversalTemplate,
+        "next-js-fullstack": PDFNextJSFullstackTemplate,
+        "nextstep-fresher": PDFNextstepFresherTemplate,
+        "nexus-elite": PDFNexusEliteTemplate,
+        "node-backend-specialist": PDFNodeBackendSpecialistTemplate,
+        "node-js-developer": PDFNodeJSDeveloperTemplate,
+        "npm-package-author": PDFNpmPackageAuthorTemplate,
+        "nurse-specialist": PDFNurseSpecialistTemplate,
+        "nursing-specialist": PDFNursingSpecialistTemplate,
+        "observability-engineer": PDFObservabilityEngineerTemplate,
+        "online-gallery-artist": PDFOnlineGalleryArtistTemplate,
+        "online-identity": PDFOnlineIdentityTemplate,
+        "online-portfolio-fresher": PDFOnlinePortfolioFresherTemplate,
+        "online-presence-fresher": PDFOnlinePresenceFresherTemplate,
+        "online-professional": PDFOnlineProfessionalTemplate,
+        "open-source": PDFOpenSourceTemplate,
+        "opensource-developer": PDFOpensourceDeveloperTemplate,
+        "operations-excellence": PDFOperationsExcellenceTemplate,
+        "operations-manager": PDFOperationsManagerTemplate,
+        "operations-two-column": PDFOperationsTwoColumnTemplate,
+        "pm-executive": PDFPMExecutiveTemplate,
+        "palette-designer": PDFPaletteDesignerTemplate,
+        "paralegal": PDFParalegalTemplate,
+        "parallax-style-universal": PDFParallaxStyleUniversalTemplate,
+        "pastel-creative": PDFPastelCreativeTemplate,
+        "pathway-graduate": PDFPathwayGraduateTemplate,
+        "patreon-creative": PDFPatreonCreativeTemplate,
+        "ph-d-candidate": PDFPhDCandidateTemplate,
+        "photography-layout": PDFPhotographyLayoutTemplate,
+        "photography-pro": PDFPhotographyProTemplate,
+        "pinnacle-elite": PDFPinnacleEliteTemplate,
+        "pinterest-designer": PDFPinterestDesignerTemplate,
+        "pioneer-fresher": PDFPioneerFresherTemplate,
+        "pixelcraft-developer": PDFPixelcraftDeveloperTemplate,
+        "pixelperfect-designer": PDFPixelperfectDesignerTemplate,
+        "platform-professional": PDFPlatformProfessionalTemplate,
+        "portfolio-coder": PDFPortfolioCoderTemplate,
+        "portfolio-graduate": PDFPortfolioGraduateTemplate,
+        "portfolio-minimalist": PDFPortfolioMinimalistTemplate,
+        "portfolio-professional": PDFPortfolioProfessionalTemplate,
+        "portfolio-showcase": PDFPortfolioShowcaseTemplate,
+        "portfolio-website-creative": PDFPortfolioWebsiteCreativeTemplate,
+        "postgre-sqldba": PDFPostgreSQLDBATemplate,
+        "postgre-sql-expert": PDFPostgreSQLExpertTemplate,
+        "potential-fresher": PDFPotentialFresherTemplate,
+        "prism-professional": PDFPrismProfessionalTemplate,
+        "process-improvement": PDFProcessImprovementTemplate,
+        "product-designer-showcase": PDFProductDesignerShowcaseTemplate,
+        "product-designer-ux": PDFProductDesignerUXTemplate,
+        "professional": PDFProfessionalTemplate,
+        "professional-accent-bar": PDFProfessionalAccentBarTemplate,
+        "professional-basic-modern": PDFProfessionalBasicModernTemplate,
+        "professional-clean-simple": PDFProfessionalCleanSimpleTemplate,
+        "professional-compact-universal": PDFProfessionalCompactUniversalTemplate,
+        "professional-divider": PDFProfessionalDividerTemplate,
+        "professional-easy-read": PDFProfessionalEasyReadTemplate,
+        "professional-header-banner": PDFProfessionalHeaderBannerTemplate,
+        "professional-modern-edge": PDFProfessionalModernEdgeTemplate,
+        "professional-plain-simple": PDFProfessionalPlainSimpleTemplate,
+        "professional-readable-layout": PDFProfessionalReadableLayoutTemplate,
+        "professional-straightforward": PDFProfessionalStraightforwardTemplate,
+        "professional-vertical-line": PDFProfessionalVerticalLineTemplate,
+        "profile-centric": PDFProfileCentricTemplate,
+        "profile-driven-grad": PDFProfileDrivenGradTemplate,
+        "project-manager-pmp": PDFProjectManagerPMPTemplate,
+        "project-manager-pro": PDFProjectManagerProTemplate,
+        "project-showcase-grad": PDFProjectShowcaseGradTemplate,
+        "protfolio-showcase-ux": PDFProtfolioShowcaseUxTemplate,
+        "prototype-specialist": PDFPrototypeSpecialistTemplate,
+        "py-torch-developer": PDFPyTorchDeveloperTemplate,
+        "pypi-contributor": PDFPypiContributorTemplate,
+        "python-developer-pro": PDFPythonDeveloperProTemplate,
+        "quantum-coder": PDFQuantumCoderTemplate,
+        "quantum-professional": PDFQuantumProfessionalTemplate,
+        "rabbit-mq-specialist": PDFRabbitMQSpecialistTemplate,
+        "radiance-corporate": PDFRadianceCorporateTemplate,
+        "react-frontend-pro": PDFReactFrontendProTemplate,
+        "react-native-expert": PDFReactNativeExpertTemplate,
+        "redis-cache-specialist": PDFRedisCacheSpecialistTemplate,
+        "refined": PDFRefinedTemplate,
+        "responsive-ux": PDFResponsiveUxTemplate,
+        "retro-professional-universal": PDFRetroProfessionalUniversalTemplate,
+        "ribbon-header-universal": PDFRibbonHeaderUniversalTemplate,
+        "rounded-corners-universal": PDFRoundedCornersUniversalTemplate,
+        "rust-developer-pro": PDFRustDeveloperProTemplate,
+        "sales-achievement": PDFSalesAchievementTemplate,
+        "sales-executive": PDFSalesExecutiveTemplate,
+        "sales-manager": PDFSalesManagerTemplate,
+        "sales-marketing-hybrid": PDFSalesMarketingHybridTemplate,
+        "sapphire-executive": PDFSapphireExecutiveTemplate,
+        "scala-engineer": PDFScalaEngineerTemplate,
+        "senior": PDFSeniorTemplate,
+        "senior-dev-ops-engineer": PDFSeniorDevOpsEngineerTemplate,
+        "senior-dot-net-developer": PDFSeniorDotNetDeveloperTemplate,
+        "senior-full-stack-developer": PDFSeniorFullStackDeveloperTemplate,
+        "serenity-minimal": PDFSerenityMinimalTemplate,
+        "serverless-developer": PDFServerlessDeveloperTemplate,
+        "serverless-specialist": PDFServerlessSpecialistTemplate,
+        "servicedesign-specialist": PDFServicedesignSpecialistTemplate,
+        "sidebar-professional-universal": PDFSidebarProfessionalUniversalTemplate,
+        "simple-business-clean": PDFSimpleBusinessCleanTemplate,
+        "simple-clear-business": PDFSimpleClearBusinessTemplate,
+        "simple-executive-layout": PDFSimpleExecutiveLayoutTemplate,
+        "simple-modern-executive": PDFSimpleModernExecutiveTemplate,
+        "simple-professional-clean": PDFSimpleProfessionalCleanTemplate,
+        "simple-structured": PDFSimpleStructuredTemplate,
+        "sketch-expert-portfolio": PDFSketchExpertPortfolioTemplate,
+        "social-creative-influencer": PDFSocialCreativeInfluencerTemplate,
+        "social-executive": PDFSocialExecutiveTemplate,
+        "social-first-fresher": PDFSocialFirstFresherTemplate,
+        "social-graduate": PDFSocialGraduateTemplate,
+        "social-media-pro": PDFSocialMediaProTemplate,
+        "social-savvy": PDFSocialSavvyTemplate,
+        "software": PDFSoftwareTemplate,
+        "sound-cloud-producer": PDFSoundCloudProducerTemplate,
+        "soundcloud-artist": PDFSoundcloudArtistTemplate,
+        "spark-fresher": PDFSparkFresherTemplate,
+        "spectrum-professional": PDFSpectrumProfessionalTemplate,
+        "split-pane-universal": PDFSplitPaneUniversalTemplate,
+        "spotify-musician": PDFSpotifyMusicianTemplate,
+        "spotlight-header-universal": PDFSpotlightHeaderUniversalTemplate,
+        "stack-overflow-inspired": PDFStackOverflowInspiredTemplate,
+        "stacked-sections-universal": PDFStackedSectionsUniversalTemplate,
+        "stackmaster-fullstack": PDFStackmasterFullstackTemplate,
+        "stackoverflow-dev": PDFStackoverflowDevTemplate,
+        "starter": PDFStarterTemplate,
+        "sterling-executive": PDFSterlingExecutiveTemplate,
+        "strategic-leader": PDFStrategicLeaderTemplate,
+        "striped-background-universal": PDFStripedBackgroundUniversalTemplate,
+        "student-developer-portfolio": PDFStudentDeveloperPortfolioTemplate,
+        "student-educator": PDFStudentEducatorTemplate,
+        "student-engagement": PDFStudentEngagementTemplate,
+        "studio-artist": PDFStudioArtistTemplate,
+        "substack-author": PDFSubstackAuthorTemplate,
+        "swiss-style-universal": PDFSwissStyleUniversalTemplate,
+        "system-architect": PDFSystemArchitectTemplate,
+        "tax-specialist": PDFTaxSpecialistTemplate,
+        "teacher-professional": PDFTeacherProfessionalTemplate,
+        "teaching-certified": PDFTeachingCertifiedTemplate,
+        "teaching-excellence": PDFTeachingExcellenceTemplate,
+        "tech-blogger-dev": PDFTechBloggerDevTemplate,
+        "tech-grid": PDFTechGridTemplate,
+        "tech-lead": PDFTechLeadTemplate,
+        "tensor-flow-ml-engineer": PDFTensorFlowMLEngineerTemplate,
+        "terminal-console": PDFTerminalConsoleTemplate,
+        "terraform-dev-ops": PDFTerraformDevOpsTemplate,
+        "thin-border-universal": PDFThinBorderUniversalTemplate,
+        "three-d-modeling-artist": PDFThreeDModelingArtistTemplate,
+        "tik-tok-creator": PDFTikTokCreatorTemplate,
+        "tiktok-content-creator": PDFTiktokContentCreatorTemplate,
+        "timeline-vertical-universal": PDFTimelineVerticalUniversalTemplate,
+        "titan-corporate": PDFTitanCorporateTemplate,
+        "top-bar-universal": PDFTopBarUniversalTemplate,
+        "triangular-elements-universal": PDFTriangularElementsUniversalTemplate,
+        "twitch-streamer-creative": PDFTwitchStreamerCreativeTemplate,
+        "twitter-dev": PDFTwitterDevTemplate,
+        "two-tone-split-universal": PDFTwoToneSplitUniversalTemplate,
+        "type-script-expert": PDFTypeScriptExpertTemplate,
+        "typewriter-style": PDFTypewriterStyleTemplate,
+        "uiux-designer-pro": PDFUIUXDesignerProTemplate,
+        "uiux-portfolio-pro": PDFUiuxPortfolioProTemplate,
+        "underline-accent-universal": PDFUnderlineAccentUniversalTemplate,
+        "urban-designer": PDFUrbanDesignerTemplate,
+        "userflow-designer": PDFUserflowDesignerTemplate,
+        "userresearch-specialist": PDFUserresearchSpecialistTemplate,
+        "ux-researcher-portfolio": PDFUxResearcherPortfolioTemplate,
+        "uxfolio-designer": PDFUxfolioDesignerTemplate,
+        "vp-executive": PDFVPExecutiveTemplate,
+        "velocity-executive": PDFVelocityExecutiveTemplate,
+        "venture-fresher": PDFVentureFresherTemplate,
+        "vertex-professional": PDFVertexProfessionalTemplate,
+        "vertical-timeline-universal": PDFVerticalTimelineUniversalTemplate,
+        "vibrant-designer": PDFVibrantDesignerTemplate,
+        "video-editor-creative": PDFVideoEditorCreativeTemplate,
+        "vintage-poster": PDFVintagePosterTemplate,
+        "vision-designer": PDFVisionDesignerTemplate,
+        "visionary-creative": PDFVisionaryCreativeTemplate,
+        "visual-designer-showcase": PDFVisualDesignerShowcaseTemplate,
+        "visual-storyteller": PDFVisualStorytellerTemplate,
+        "vue-js-developer": PDFVueJSDeveloperTemplate,
+        "watermark-style-universal": PDFWatermarkStyleUniversalTemplate,
+        "wave-pattern-universal": PDFWavePatternUniversalTemplate,
+        "web-assembly-engineer": PDFWebAssemblyEngineerTemplate,
+        "web-designer-modern": PDFWebDesignerModernTemplate,
+        "web-portfolio-grad": PDFWebPortfolioGradTemplate,
+        "webflow-designer-portfolio": PDFWebflowDesignerPortfolioTemplate,
+        "webpresence-executive": PDFWebpresenceExecutiveTemplate,
+        "webrtc-engineer": PDFWebrtcEngineerTemplate,
+        "wide-margin-universal": PDFWideMarginUniversalTemplate,
+        "wireframe-specialist": PDFWireframeSpecialistTemplate,
+        "you-tube-educator": PDFYouTubeEducatorTemplate,
+        "youtube-creator": PDFYoutubeCreatorTemplate,
+        "youtube-dev-educator": PDFYoutubeDevEducatorTemplate,
+        "zenith-corporate": PDFZenithCorporateTemplate,
+        "zigzag-border-universal": PDFZigzagBorderUniversalTemplate,
+        "i-os-swift-engineer": PDFiOSSwiftEngineerTemplate,
       };
 
       const PDFTemplate =

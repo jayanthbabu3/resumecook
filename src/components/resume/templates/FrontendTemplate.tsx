@@ -2,9 +2,9 @@ import type { ResumeData } from "@/pages/Editor";
 import { Mail, Phone, MapPin, Globe, Github, Linkedin } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "../InlineEditableText";
-import { InlineEditableList } from "../InlineEditableList";
-import { InlineEditableSkills } from "../InlineEditableSkills";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
+import { InlineEditableList } from "@/components/resume/InlineEditableList";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface TemplateProps {
   resumeData: ResumeData;
