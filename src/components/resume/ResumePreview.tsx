@@ -141,18 +141,6 @@ import { BusinessEliteTemplate } from "./templates/BusinessEliteTemplate";
 import { CorporateCleanTemplate } from "./templates/CorporateCleanTemplate";
 import { ProfessionalClassicTemplate } from "./templates/ProfessionalClassicTemplate";
 import { ModernBusinessTemplate } from "./templates/ModernBusinessTemplate";
-import { StrategicExecutiveTemplate } from "./templates/StrategicExecutiveTemplate";
-import { ProfessionalSphereTemplate } from "./templates/ProfessionalSphereTemplate";
-import { GlobalProfessionalTemplate } from "./templates/GlobalProfessionalTemplate";
-import { ProfessionalHorizonTemplate } from "./templates/ProfessionalHorizonTemplate";
-import { ExecutivePrimeTemplate } from "./templates/ExecutivePrimeTemplate";
-import { CorporateMomentumTemplate } from "./templates/CorporateMomentumTemplate";
-import { ProfessionalAscendTemplate } from "./templates/ProfessionalAscendTemplate";
-import { GlobalEliteTemplate } from "./templates/GlobalEliteTemplate";
-import { ExecutiveVisionTemplate } from "./templates/ExecutiveVisionTemplate";
-import { CorporateFusionTemplate } from "./templates/CorporateFusionTemplate";
-import { ProfessionalZenithTemplate } from "./templates/ProfessionalZenithTemplate";
-import { ExecutiveCoreTemplate } from "./templates/ExecutiveCoreTemplate";
 import { CodeCraftsmanTemplate } from "./templates/CodeCraftsmanTemplate";
 import { TechPioneerTemplate } from "./templates/TechPioneerTemplate";
 import { DevArchitectureTemplate } from "./templates/DevArchitectureTemplate";
@@ -637,18 +625,6 @@ export const ResumePreview = ({
     "corporate-clean": CorporateCleanTemplate,
     "professional-classic": ProfessionalClassicTemplate,
     "modern-business": ModernBusinessTemplate,
-    "strategic-executive": StrategicExecutiveTemplate,
-    "professional-sphere": ProfessionalSphereTemplate,
-    "global-professional": GlobalProfessionalTemplate,
-    "professional-horizon": ProfessionalHorizonTemplate,
-    "executive-prime": ExecutivePrimeTemplate,
-    "corporate-momentum": CorporateMomentumTemplate,
-    "professional-ascend": ProfessionalAscendTemplate,
-    "global-elite": GlobalEliteTemplate,
-    "executive-vision": ExecutiveVisionTemplate,
-    "corporate-fusion": CorporateFusionTemplate,
-    "professional-zenith": ProfessionalZenithTemplate,
-    "executive-core": ExecutiveCoreTemplate,
     // Missing Universal Professional Templates
     "timeline-elegance": TimelineEleganceTemplate,
     "executive-minimal": ExecutiveMinimalTemplate,

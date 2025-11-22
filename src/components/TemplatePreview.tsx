@@ -1,5 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import type { ResumeData } from "@/pages/Editor";
+import { InlineEditProvider } from "@/contexts/InlineEditContext";
 import { ProfessionalTemplate } from "./resume/templates/ProfessionalTemplate";
 import { ModernTemplate } from "./resume/templates/ModernTemplate";
 import { MinimalTemplate } from "./resume/templates/MinimalTemplate";
@@ -592,6 +593,41 @@ import { RealEstateAppraiserTemplate } from "./resume/templates/RealEstateApprai
 import { SupplyChainManagerTemplate } from "./resume/templates/SupplyChainManagerTemplate";
 import { LogisticsCoordinatorTemplate } from "./resume/templates/LogisticsCoordinatorTemplate";
 import { ProcurementSpecialistTemplate } from "./resume/templates/ProcurementSpecialistTemplate";
+// Critical Missing Templates
+import { PremiumEliteTemplate } from "./resume/templates/PremiumEliteTemplate";
+import { CorporateExecutiveTemplate } from "./resume/templates/CorporateExecutiveTemplate";
+// Additional Universal Professional Templates
+import { AIEngineerTemplate } from "./resume/templates/AIEngineerTemplate";
+import { APIDocTemplate } from "./resume/templates/APIDocTemplate";
+import { AWSCloudEngineerTemplate } from "./resume/templates/AWSCloudEngineerTemplate";
+import { AccountingProTemplate } from "./resume/templates/AccountingProTemplate";
+import { AgileProjectLeadTemplate } from "./resume/templates/AgileProjectLeadTemplate";
+import { ArtDirectorModernTemplate } from "./resume/templates/ArtDirectorModernTemplate";
+import { ArtisticGridTemplate } from "./resume/templates/ArtisticGridTemplate";
+import { ArtisticHorizonTemplate } from "./resume/templates/ArtisticHorizonTemplate";
+import { ArtisticMomentumTemplate } from "./resume/templates/ArtisticMomentumTemplate";
+import { ArtisticVisionTemplate } from "./resume/templates/ArtisticVisionTemplate";
+import { AuditExpertTemplate } from "./resume/templates/AuditExpertTemplate";
+import { AzureDevOpsSpecialistTemplate } from "./resume/templates/AzureDevOpsSpecialistTemplate";
+import { BlockchainDevTemplate } from "./resume/templates/BlockchainDevTemplate";
+import { BlueprintDesignTemplate } from "./resume/templates/BlueprintDesignTemplate";
+import { BoldTypographyTemplate } from "./resume/templates/BoldTypographyTemplate";
+import { BrandIdentityTemplate } from "./resume/templates/BrandIdentityTemplate";
+import { BrandManagerTemplate } from "./resume/templates/BrandManagerTemplate";
+import { CEOProfileTemplate } from "./resume/templates/CEOProfileTemplate";
+import { CICDPipelineEngineerTemplate } from "./resume/templates/CICDPipelineEngineerTemplate";
+import { ClinicalExcellenceTemplate } from "./resume/templates/ClinicalExcellenceTemplate";
+import { CloudNativeTemplate } from "./resume/templates/CloudNativeTemplate";
+import { CloudSolutionsArchitectTemplate } from "./resume/templates/CloudSolutionsArchitectTemplate";
+import { CodeSnippetTemplate } from "./resume/templates/CodeSnippetTemplate";
+import { CollageArtTemplate } from "./resume/templates/CollageArtTemplate";
+import { ColorSplashTemplate } from "./resume/templates/ColorSplashTemplate";
+import { ComplianceOfficerTemplate } from "./resume/templates/ComplianceOfficerTemplate";
+import { CorporateLawTemplate } from "./resume/templates/CorporateLawTemplate";
+import { CorporateLegalCounselTemplate } from "./resume/templates/CorporateLegalCounselTemplate";
+import { CyberSecurityTemplate } from "./resume/templates/CyberSecurityTemplate";
+import { DarkModeDevTemplate } from "./resume/templates/DarkModeDevTemplate";
+import { DataScienceTemplate } from "./resume/templates/DataScienceTemplate";
 
 interface TemplatePreviewProps {
   templateId: string;
@@ -2395,6 +2431,42 @@ const templates = {
   "supply-chain-manager": SupplyChainManagerTemplate,
   "logistics-coordinator": LogisticsCoordinatorTemplate,
   "procurement-specialist": ProcurementSpecialistTemplate,
+  // Critical Missing Templates (previously causing fallback to ProfessionalTemplate)
+  "premium-elite": PremiumEliteTemplate,
+  "corporate-executive": CorporateExecutiveTemplate,
+  // Additional Universal Professional Templates
+  "ai-engineer": AIEngineerTemplate,
+  "api-doc": APIDocTemplate,
+  "aws-cloud-engineer": AWSCloudEngineerTemplate,
+  "accounting-pro": AccountingProTemplate,
+  "agile-project-lead": AgileProjectLeadTemplate,
+  "art-director-modern": ArtDirectorModernTemplate,
+  "artistic-grid": ArtisticGridTemplate,
+  "artistic-horizon": ArtisticHorizonTemplate,
+  "artistic-momentum": ArtisticMomentumTemplate,
+  "artistic-vision": ArtisticVisionTemplate,
+  "audit-expert": AuditExpertTemplate,
+  "azure-dev-ops-specialist": AzureDevOpsSpecialistTemplate,
+  "blockchain-dev": BlockchainDevTemplate,
+  "blueprint-design": BlueprintDesignTemplate,
+  "bold-typography": BoldTypographyTemplate,
+  "brand-identity": BrandIdentityTemplate,
+  "brand-manager": BrandManagerTemplate,
+  "ceo-profile": CEOProfileTemplate,
+  "cicd-pipeline-engineer": CICDPipelineEngineerTemplate,
+  "clinical-excellence": ClinicalExcellenceTemplate,
+  "cloud-native": CloudNativeTemplate,
+  "cloud-solutions-architect": CloudSolutionsArchitectTemplate,
+  "code-snippet": CodeSnippetTemplate,
+  "collage-art": CollageArtTemplate,
+  "color-splash": ColorSplashTemplate,
+  "compliance-officer": ComplianceOfficerTemplate,
+  "corporate-law": CorporateLawTemplate,
+  "corporate-legal-counsel": CorporateLegalCounselTemplate,
+  "cyber-security": CyberSecurityTemplate,
+  "dark-mode-dev": DarkModeDevTemplate,
+  "data-science": DataScienceTemplate,
+  // Universal Professional Templates (were previously excluded; now fully supported)
 };
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({
@@ -2405,19 +2477,22 @@ export const TemplatePreview = memo<TemplatePreviewProps>(({
 }) => {
   const Template = templates[templateId as keyof typeof templates] || ProfessionalTemplate;
   const resumeData = sampleData || getTemplateSpecificData(templateId);
+  const [previewData, setPreviewData] = useState(resumeData);
 
   return (
     <div className={`relative w-full h-full overflow-hidden bg-white ${className}`}>
       <div className="absolute inset-0 overflow-hidden">
-        <div 
+        <div
           className="w-full origin-top-left"
-          style={{ 
+          style={{
             transform: 'scale(0.35)',
             width: '285.7%',
             minHeight: '285.7%'
           }}
         >
-          <Template resumeData={resumeData} themeColor={themeColor} />
+          <InlineEditProvider resumeData={previewData} setResumeData={setPreviewData}>
+            <Template resumeData={previewData} themeColor={themeColor} editable={false} />
+          </InlineEditProvider>
         </div>
       </div>
     </div>

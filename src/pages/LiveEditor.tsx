@@ -1033,11 +1033,9 @@ import { CoroflotPortfolioTemplate } from "@/components/resume/templates/Coroflo
 import { CorporateBorderFrameTemplate } from "@/components/resume/templates/CorporateBorderFrameTemplate";
 import { CorporateEasyLayoutTemplate } from "@/components/resume/templates/CorporateEasyLayoutTemplate";
 import { CorporateEliteTemplate } from "@/components/resume/templates/CorporateEliteTemplate";
-import { CorporateFusionTemplate } from "@/components/resume/templates/CorporateFusionTemplate";
 import { CorporateLawTemplate } from "@/components/resume/templates/CorporateLawTemplate";
 import { CorporateLegalCounselTemplate } from "@/components/resume/templates/CorporateLegalCounselTemplate";
 import { CorporateMinimalistProTemplate } from "@/components/resume/templates/CorporateMinimalistProTemplate";
-import { CorporateMomentumTemplate } from "@/components/resume/templates/CorporateMomentumTemplate";
 import { CorporateSimpleTemplateTemplate } from "@/components/resume/templates/CorporateSimpleTemplateTemplate";
 import { CorporateVisionTemplate } from "@/components/resume/templates/CorporateVisionTemplate";
 import { CosmosProfessionalTemplate } from "@/components/resume/templates/CosmosProfessionalTemplate";
@@ -1100,19 +1098,16 @@ import { EntryHorizonTemplate } from "@/components/resume/templates/EntryHorizon
 import { EntrySphereTemplate } from "@/components/resume/templates/EntrySphereTemplate";
 import { EventdrivenArchitectTemplate } from "@/components/resume/templates/EventdrivenArchitectTemplate";
 import { ExecutiveCleanSplitTemplate } from "@/components/resume/templates/ExecutiveCleanSplitTemplate";
-import { ExecutiveCoreTemplate } from "@/components/resume/templates/ExecutiveCoreTemplate";
 import { ExecutiveCornerAccentTemplate } from "@/components/resume/templates/ExecutiveCornerAccentTemplate";
 import { ExecutiveDirectLayoutTemplate } from "@/components/resume/templates/ExecutiveDirectLayoutTemplate";
 import { ExecutiveEasyTemplateTemplate } from "@/components/resume/templates/ExecutiveEasyTemplateTemplate";
 import { ExecutiveLeadershipTemplate } from "@/components/resume/templates/ExecutiveLeadershipTemplate";
 import { ExecutiveLetterheadUniversalTemplate } from "@/components/resume/templates/ExecutiveLetterheadUniversalTemplate";
 import { ExecutivePlainLayoutTemplate } from "@/components/resume/templates/ExecutivePlainLayoutTemplate";
-import { ExecutivePrimeTemplate } from "@/components/resume/templates/ExecutivePrimeTemplate";
 import { ExecutiveSalesLeaderTemplate } from "@/components/resume/templates/ExecutiveSalesLeaderTemplate";
 import { ExecutiveSimpleCleanTemplate } from "@/components/resume/templates/ExecutiveSimpleCleanTemplate";
 import { ExecutiveSplitDesignTemplate } from "@/components/resume/templates/ExecutiveSplitDesignTemplate";
 import { ExecutiveTimelineModernTemplate } from "@/components/resume/templates/ExecutiveTimelineModernTemplate";
-import { ExecutiveVisionTemplate } from "@/components/resume/templates/ExecutiveVisionTemplate";
 import { ExpressionArtistTemplate } from "@/components/resume/templates/ExpressionArtistTemplate";
 import { FigmaDesignerPortfolioTemplate } from "@/components/resume/templates/FigmaDesignerPortfolioTemplate";
 import { FinancialAnalystTemplate } from "@/components/resume/templates/FinancialAnalystTemplate";
@@ -1156,9 +1151,7 @@ import { GitflowEngineerTemplate } from "@/components/resume/templates/GitflowEn
 import { GithubPortfolioDevTemplate } from "@/components/resume/templates/GithubPortfolioDevTemplate";
 import { GithubStudentTemplate } from "@/components/resume/templates/GithubStudentTemplate";
 import { GitlabDeveloperTemplate } from "@/components/resume/templates/GitlabDeveloperTemplate";
-import { GlobalEliteTemplate } from "@/components/resume/templates/GlobalEliteTemplate";
 import { GlobalNetworkerTemplate } from "@/components/resume/templates/GlobalNetworkerTemplate";
-import { GlobalProfessionalTemplate } from "@/components/resume/templates/GlobalProfessionalTemplate";
 import { GradientHeaderUniversalTemplate } from "@/components/resume/templates/GradientHeaderUniversalTemplate";
 import { GraduateMomentumTemplate } from "@/components/resume/templates/GraduateMomentumTemplate";
 import { GraduatePrimeTemplate } from "@/components/resume/templates/GraduatePrimeTemplate";
@@ -1289,21 +1282,17 @@ import { ProcessImprovementTemplate } from "@/components/resume/templates/Proces
 import { ProductDesignerShowcaseTemplate } from "@/components/resume/templates/ProductDesignerShowcaseTemplate";
 import { ProductDesignerUXTemplate } from "@/components/resume/templates/ProductDesignerUXTemplate";
 import { ProfessionalAccentBarTemplate } from "@/components/resume/templates/ProfessionalAccentBarTemplate";
-import { ProfessionalAscendTemplate } from "@/components/resume/templates/ProfessionalAscendTemplate";
 import { ProfessionalBasicModernTemplate } from "@/components/resume/templates/ProfessionalBasicModernTemplate";
 import { ProfessionalCleanSimpleTemplate } from "@/components/resume/templates/ProfessionalCleanSimpleTemplate";
 import { ProfessionalCompactUniversalTemplate } from "@/components/resume/templates/ProfessionalCompactUniversalTemplate";
 import { ProfessionalDividerTemplate } from "@/components/resume/templates/ProfessionalDividerTemplate";
 import { ProfessionalEasyReadTemplate } from "@/components/resume/templates/ProfessionalEasyReadTemplate";
 import { ProfessionalHeaderBannerTemplate } from "@/components/resume/templates/ProfessionalHeaderBannerTemplate";
-import { ProfessionalHorizonTemplate } from "@/components/resume/templates/ProfessionalHorizonTemplate";
 import { ProfessionalModernEdgeTemplate } from "@/components/resume/templates/ProfessionalModernEdgeTemplate";
 import { ProfessionalPlainSimpleTemplate } from "@/components/resume/templates/ProfessionalPlainSimpleTemplate";
 import { ProfessionalReadableLayoutTemplate } from "@/components/resume/templates/ProfessionalReadableLayoutTemplate";
-import { ProfessionalSphereTemplate } from "@/components/resume/templates/ProfessionalSphereTemplate";
 import { ProfessionalStraightforwardTemplate } from "@/components/resume/templates/ProfessionalStraightforwardTemplate";
 import { ProfessionalVerticalLineTemplate } from "@/components/resume/templates/ProfessionalVerticalLineTemplate";
-import { ProfessionalZenithTemplate } from "@/components/resume/templates/ProfessionalZenithTemplate";
 import { ProfileCentricTemplate } from "@/components/resume/templates/ProfileCentricTemplate";
 import { ProfileDrivenGradTemplate } from "@/components/resume/templates/ProfileDrivenGradTemplate";
 import { ProjectManagerProTemplate } from "@/components/resume/templates/ProjectManagerProTemplate";
@@ -1358,7 +1347,6 @@ import { StackedSectionsUniversalTemplate } from "@/components/resume/templates/
 import { StackmasterFullstackTemplate } from "@/components/resume/templates/StackmasterFullstackTemplate";
 import { StackoverflowDevTemplate } from "@/components/resume/templates/StackoverflowDevTemplate";
 import { SterlingExecutiveTemplate } from "@/components/resume/templates/SterlingExecutiveTemplate";
-import { StrategicExecutiveTemplate } from "@/components/resume/templates/StrategicExecutiveTemplate";
 import { StrategicLeaderTemplate } from "@/components/resume/templates/StrategicLeaderTemplate";
 import { StripedBackgroundUniversalTemplate } from "@/components/resume/templates/StripedBackgroundUniversalTemplate";
 import { StudentDeveloperPortfolioTemplate } from "@/components/resume/templates/StudentDeveloperPortfolioTemplate";
@@ -1867,188 +1855,6 @@ const pdfTemplates: Record<string, any> = {
   "logistics-coordinator": LogisticsCoordinatorPDF,
   "procurement-specialist": ProcurementSpecialistPDF,
 };
-
-// Templates that support inline editing
-const inlineEditableTemplates = [
-  "professional", "modern", "senior",
-  "minimal", "executive", "frontend", "fullstack",
-  "backend", "graduate", "starter", "fresher", "premium-fresher",
-  "senior-frontend", "senior-backend", "software", "premium-universal",
-  "premium-pro", "fresher-elite", "analyst", "elite", "corporate-executive",
-  "refined", "premium-elite", "sapphire-executive", "creative-accent",
-  "modern-sidebar", "minimalist-geometric", "bold-headline", "dual-tone",
-  "elegant-serif", "tech-grid", "contemporary-split", "luxury-timeline",
-  "fresher-minimal-grid", "fresher-dark-professional", "fresher-color-accent",
-  "fresher-timeline", "fresher-skills-first", "fresher-card-based",
-  "fresher-two-tone", "fresher-centered-elegant", "fresher-geometric",
-  "fresher-achievement",
-  // New Fresher Templates
-  "fresher-modern-two-column", "fresher-professional-sidebar", "fresher-clean-modern",
-  "fresher-tech-split", "fresher-executive-style", "fresher-bold-header",
-  "fresher-minimalist-two-column", "fresher-creative-edge", "fresher-professional-grid",
-  "fresher-modern-classic", "fresher-split-layout", "fresher-compact-pro",
-  "fresher-elegant-sidebar", "fresher-tech-modern", "fresher-professional-minimal",
-  // Healthcare & Medical
-  "medical-professional", "healthcare-two-column", "nurse-specialist",
-  "medical-executive", "clinical-minimal",
-  // Education & Teaching
-  "teacher-professional", "academic-scholar", "educator-modern",
-  "teaching-certified", "student-educator",
-  // Finance & Accounting
-  "cpa-professional", "finance-analyst", "accounting-executive",
-  "auditor", "finance-two-column",
-  // Sales & Marketing
-  "sales-executive", "marketing-professional", "sales-marketing-hybrid",
-  "digital-marketer", "sales-manager",
-  // Legal & Consulting
-  "attorney-professional", "legal-counsel", "consultant",
-  "legal-executive", "paralegal",
-  // Operations & Project Management
-  "project-manager-pmp", "operations-manager", "pm-executive",
-  "agile-scrum", "operations-two-column",
-  // New Software Development Templates
-  "java-developer", "dotnet-developer", "devops-engineer",
-  "cloud-architect", "mobile-developer", "react-native-developer",
-  "data-engineer", "machine-learning-engineer", "qa-automation-engineer",
-  "security-engineer", "python-developer", "nodejs-developer",
-  "react-developer", "go-developer", "kubernetes-engineer",
-  // Senior/Lead Software Engineering Templates
-  "senior-java-developer", "senior-dotnet-developer", "senior-devops-engineer",
-  "lead-backend-engineer", "lead-frontend-engineer", "senior-fullstack-developer",
-  "principal-software-engineer", "staff-engineer", "engineering-manager",
-  "solutions-architect", "senior-mobile-engineer", "platform-engineer",
-  "site-reliability-engineer", "backend-api-specialist", "frontend-architect",
-  // New Universal Professional Templates
-  "executive-modern", "corporate-blue", "professional-sidebar",
-  "minimalist-pro", "classic-elegant", "business-modern",
-  "professional-timeline", "clean-corporate", "modern-professional",
-  "elegant-professional", "professional-grid", "business-elite",
-  "corporate-clean", "professional-classic", "modern-business",
-  // New Professional Templates (22 templates - all support inline editing)
-  "algo-engineer", "artistic-bold", "asymmetric-creative",
-  "bordered-elegance", "code-minimal", "colorful-modern",
-  "column-divide", "compact-professional", "creative-timeline",
-  "designer-showcase", "developer-grid", "devops-pro",
-  "executive-minimal", "fullstack-modern", "geometric-modern", "github-style",
-  "ml-engineer", "sidebar-accent", "tech-stack-pro",
-  "terminal-theme", "timeline-elegance", "two-tone-classic",
-  // 2025 New Templates (100 inline editable entries)
-  "strategic-leadership", "corporate-excellence", "executive-prestige",
-  "global-executive-pro", "premium-corporate-edge", "enterprise-leader",
-  "boardroom-ready", "c-suite-modern", "executive-impact",
-  "corporate-visionary", "platinum-executive", "global-leadership",
-  "senior-executive-pro", "corporate-elite-plus", "executive-pinnacle",
-  "corporate-distinction", "leadership-summit", "executive-authority",
-  "corporate-premier", "global-enterprise", "executive-signature",
-  "corporate-apex", "strategic-executive-plus", "corporate-paradigm",
-  "executive-magnitude", "corporate-sovereign", "leadership-zenith",
-  "executive-nexus", "corporate-vanguard", "executive-ascendancy",
-  "vue-specialist", "svelte-developer", "flutter-engineer",
-  "swift-ios-developer", "rust-systems-engineer", "scala-backend-engineer",
-  "elixir-developer", "graphql-architect", "typescript-expert",
-  "nextjs-fullstack", "nestjs-backend", "django-fullstack",
-  "spring-boot-developer", "postgresql-dba", "mongodb-specialist",
-  "redis-engineer", "elasticsearch-expert", "terraform-devops",
-  "ansible-automation", "jenkins-cicd", "kafka-streaming",
-  "rabbitmq-specialist", "grpc-developer", "webassembly-engineer",
-  "unity-game-developer", "academic-achiever", "graduate-innovator",
-  "campus-leader", "scholarship-graduate", "honors-student",
-  "stem-graduate", "internship-ready", "research-graduate",
-  "entrepreneurial-graduate", "volunteer-leader", "coding-bootcamp-grad",
-  "liberal-arts-graduate", "business-graduate", "engineering-fresher",
-  "design-school-grad", "masters-graduate", "phd-candidate",
-  "student-athlete", "study-abroad-graduate", "dual-degree-graduate",
-  "portfolio-artist", "motion-designer", "brand-strategist",
-  "content-creator", "illustrator-artist", "video-producer",
-  "copywriter-creative", "art-director-pro", "photographer-pro",
-  "typographer-specialist", "digital-artist", "creative-director-elite",
-  "social-media-creative", "animation-artist", "multimedia-designer",
-  "ux-researcher", "ui-specialist", "product-designer-pro",
-  "interaction-designer", "service-designer", "design-systems-architect",
-  "accessibility-designer", "design-lead", "design-strategist",
-  "visual-designer-pro",
-  // 2025 Batch 2 - New Inline Editable Templates (100 templates)
-  "sapphire-professional", "emerald-executive", "ruby-corporate",
-  "onyx-leadership", "platinum-prestige", "azure-professional",
-  "amber-executive", "violet-corporate", "jade-professional",
-  "crimson-leadership", "slate-minimalist", "teal-modern",
-  "indigo-executive", "rose-professional", "navy-corporate",
-  "gold-prestige", "charcoal-professional", "coral-executive",
-  "pewter-minimalist", "forest-professional", "burgundy-executive",
-  "sky-modern", "plum-professional", "bronze-corporate",
-  "mint-professional", "obsidian-executive", "tangerine-modern",
-  "steel-professional", "lavender-executive", "cobalt-professional",
-  "github-developer", "linkedin-tech-pro", "laravel-artisan",
-  "rails-developer", "angular-specialist", "vue-master",
-  "kotlin-android-dev", "ios-swift-engineer", "docker-specialist",
-  "aws-solutions-architect", "gcp-cloud-engineer", "azure-devops-pro",
-  "react-native-dev", "flutter-ui-specialist", "dotnet-core-developer",
-  "golang-backend-engineer", "python-ml-engineer", "data-scientist-pro",
-  "blockchain-engineer", "solidity-developer", "cybersecurity-analyst",
-  "devsecops-engineer", "fullstack-javascript", "jamstack-developer",
-  "headless-cms-developer", "digital-native-graduate", "tech-savvy-fresher",
-  "linkedin-ready-graduate", "github-student-developer", "portfolio-first-graduate",
-  "connected-graduate", "social-media-savvy-grad", "open-source-contributor",
-  "hackathon-winner", "coding-challenge-champion", "capstone-showcase",
-  "research-publication-grad", "conference-presenter", "startup-intern",
-  "faang-aspirant", "bootcamp-success-story", "remote-work-ready",
-  "community-builder", "tech-blogger-graduate", "youtube-educator",
-  "behance-designer", "dribbble-creative", "instagram-influencer",
-  "pinterest-curator", "vimeo-videographer", "medium-writer",
-  "tiktok-creator", "twitch-streamer", "soundcloud-producer",
-  "spotify-artist", "artstation-artist", "deviantart-creator",
-  "patreon-creator", "substack-writer", "clubhouse-moderator",
-  "figma-expert", "sketch-specialist", "adobe-xd-designer",
-  "framer-designer", "webflow-developer", "principle-animator",
-  "invision-prototyper", "marvel-app-designer", "zeplin-handoff-specialist",
-  "abstract-version-designer",
-  // 2025 Batch 3 - Healthcare & Medical (15 templates)
-  "registered-nurse-pro", "physician-specialist", "dental-professional",
-  "pharmacist-clinical", "physical-therapist", "medical-technologist",
-  "radiology-technician", "healthcare-administrator", "mental-health-counselor",
-  "occupational-therapist", "speech-pathologist", "veterinary-doctor",
-  "nutritionist-dietitian", "medical-assistant", "paramedic-emt",
-  // 2025 Batch 3 - Engineering (15 templates)
-  "mechanical-engineer-pro", "civil-engineer-pe", "electrical-engineer",
-  "chemical-engineer-pro", "aerospace-engineer", "biomedical-engineer",
-  "industrial-engineer", "environmental-engineer", "petroleum-engineer",
-  "structural-engineer", "manufacturing-engineer", "quality-assurance-engineer",
-  "automation-engineer", "robotics-engineer", "hvac-engineer",
-  // 2025 Batch 3 - Sales & Marketing (15 templates)
-  "sales-executive-pro", "account-manager-enterprise", "digital-marketing-specialist",
-  "brand-manager-strategic", "seo-specialist-pro", "growth-marketing-manager",
-  "email-marketing-specialist", "product-marketing-manager", "business-development-manager",
-  "inside-sales-representative", "field-sales-specialist", "customer-success-manager",
-  "marketing-analytics-manager", "ecommerce-manager", "affiliate-marketing-manager",
-  // 2025 Batch 3 - Finance & Accounting (12 templates)
-  "financial-analyst-cfa", "investment-banker", "certified-public-accountant",
-  "tax-specialist-pro", "financial-controller", "portfolio-manager",
-  "risk-management-analyst", "treasury-analyst", "forensic-accountant",
-  "internal-auditor", "budget-analyst", "equity-research-analyst",
-  // 2025 Batch 3 - Education & Teaching (10 templates)
-  "university-professor", "elementary-teacher", "high-school-teacher",
-  "special-education-teacher", "esl-teacher-certified", "curriculum-developer",
-  "instructional-designer", "academic-advisor", "online-course-instructor",
-  "private-tutor-specialist",
-  // 2025 Batch 3 - Legal (8 templates)
-  "corporate-attorney", "litigation-attorney", "paralegal-certified",
-  "legal-consultant", "compliance-officer-legal", "contract-specialist",
-  "intellectual-property-attorney", "legal-operations-manager",
-  // 2025 Batch 3 - Human Resources (8 templates)
-  "hr-business-partner", "talent-acquisition-specialist", "compensation-benefits-manager",
-  "learning-development-manager", "employee-relations-specialist", "hr-analytics-manager",
-  "organizational-development", "diversity-inclusion-manager",
-  // 2025 Batch 3 - Hospitality & Culinary (7 templates)
-  "executive-chef", "hotel-manager-operations", "restaurant-manager",
-  "event-planner-coordinator", "sommelier-wine-specialist", "pastry-chef",
-  "hospitality-director",
-  // 2025 Batch 3 - Real Estate & Construction (7 templates)
-  "real-estate-broker", "property-manager-commercial", "construction-project-manager",
-  "architect-registered", "general-contractor", "estimator-cost-analyst",
-  "real-estate-appraiser",
-  // 2025 Batch 3 - Operations & Logistics (3 templates)
-  "supply-chain-manager", "logistics-coordinator", "procurement-specialist"
-];
 
 const displayTemplates: Record<string, any> = {
   professional: ProfessionalTemplate,
@@ -2631,11 +2437,9 @@ const displayTemplates: Record<string, any> = {
   "corporate-border-frame": CorporateBorderFrameTemplate,
   "corporate-easy-layout": CorporateEasyLayoutTemplate,
   "corporate-elite": CorporateEliteTemplate,
-  "corporate-fusion": CorporateFusionTemplate,
   "corporate-law": CorporateLawTemplate,
   "corporate-legal-counsel": CorporateLegalCounselTemplate,
   "corporate-minimalist-pro": CorporateMinimalistProTemplate,
-  "corporate-momentum": CorporateMomentumTemplate,
   "corporate-simple": CorporateSimpleTemplateTemplate,
   "corporate-vision": CorporateVisionTemplate,
   "cosmos-professional": CosmosProfessionalTemplate,
@@ -2704,19 +2508,16 @@ const displayTemplates: Record<string, any> = {
   "entry-sphere": EntrySphereTemplate,
   "eventdriven-architect": EventdrivenArchitectTemplate,
   "executive-clean-split": ExecutiveCleanSplitTemplate,
-  "executive-core": ExecutiveCoreTemplate,
   "executive-corner-accent": ExecutiveCornerAccentTemplate,
   "executive-direct-layout": ExecutiveDirectLayoutTemplate,
   "executive-easy": ExecutiveEasyTemplateTemplate,
   "executive-leadership": ExecutiveLeadershipTemplate,
   "executive-letterhead-universal": ExecutiveLetterheadUniversalTemplate,
   "executive-plain-layout": ExecutivePlainLayoutTemplate,
-  "executive-prime": ExecutivePrimeTemplate,
   "executive-sales-leader": ExecutiveSalesLeaderTemplate,
   "executive-simple-clean": ExecutiveSimpleCleanTemplate,
   "executive-split-design": ExecutiveSplitDesignTemplate,
   "executive-timeline-modern": ExecutiveTimelineModernTemplate,
-  "executive-vision": ExecutiveVisionTemplate,
   "expression-artist": ExpressionArtistTemplate,
   "figma-designer-portfolio": FigmaDesignerPortfolioTemplate,
   "financial-analyst": FinancialAnalystTemplate,
@@ -2765,9 +2566,7 @@ const displayTemplates: Record<string, any> = {
   "github-portfolio-dev": GithubPortfolioDevTemplate,
   "github-student": GithubStudentTemplate,
   "gitlab-developer": GitlabDeveloperTemplate,
-  "global-elite": GlobalEliteTemplate,
   "global-networker": GlobalNetworkerTemplate,
-  "global-professional": GlobalProfessionalTemplate,
   "gradient-header-universal": GradientHeaderUniversalTemplate,
   "graduate-momentum": GraduateMomentumTemplate,
   "graduate-prime": GraduatePrimeTemplate,
@@ -2910,21 +2709,17 @@ const displayTemplates: Record<string, any> = {
   "product-designer-showcase": ProductDesignerShowcaseTemplate,
   "product-designer-ux": ProductDesignerUXTemplate,
   "professional-accent-bar": ProfessionalAccentBarTemplate,
-  "professional-ascend": ProfessionalAscendTemplate,
   "professional-basic-modern": ProfessionalBasicModernTemplate,
   "professional-clean-simple": ProfessionalCleanSimpleTemplate,
   "professional-compact-universal": ProfessionalCompactUniversalTemplate,
   "professional-divider": ProfessionalDividerTemplate,
   "professional-easy-read": ProfessionalEasyReadTemplate,
   "professional-header-banner": ProfessionalHeaderBannerTemplate,
-  "professional-horizon": ProfessionalHorizonTemplate,
   "professional-modern-edge": ProfessionalModernEdgeTemplate,
   "professional-plain-simple": ProfessionalPlainSimpleTemplate,
   "professional-readable-layout": ProfessionalReadableLayoutTemplate,
-  "professional-sphere": ProfessionalSphereTemplate,
   "professional-straightforward": ProfessionalStraightforwardTemplate,
   "professional-vertical-line": ProfessionalVerticalLineTemplate,
-  "professional-zenith": ProfessionalZenithTemplate,
   "profile-centric": ProfileCentricTemplate,
   "profile-driven-grad": ProfileDrivenGradTemplate,
   "project-manager-pro": ProjectManagerProTemplate,
@@ -2984,7 +2779,6 @@ const displayTemplates: Record<string, any> = {
   "stackmaster-fullstack": StackmasterFullstackTemplate,
   "stackoverflow-dev": StackoverflowDevTemplate,
   "sterling-executive": SterlingExecutiveTemplate,
-  "strategic-executive": StrategicExecutiveTemplate,
   "strategic-leader": StrategicLeaderTemplate,
   "striped-background-universal": StripedBackgroundUniversalTemplate,
   "student-developer-portfolio": StudentDeveloperPortfolioTemplate,
@@ -3055,6 +2849,9 @@ const displayTemplates: Record<string, any> = {
   "zigzag-border-universal": ZigzagBorderUniversalTemplate,
   "i-os-swift-engineer": iOSSwiftEngineerTemplate,
 };
+
+// Templates that support inline editing (all display templates)
+const inlineEditableTemplates = Object.keys(displayTemplates);
 
 const LiveEditor = () => {
   const { templateId, professionId } = useParams<{ templateId: string; professionId?: string }>();

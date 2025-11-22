@@ -3,33 +3,43 @@ import { useInlineEdit } from "@/contexts/InlineEditContext";
 import { cn } from "@/lib/utils";
 
 interface InlineEditableDateProps {
-  path: string;
-  value: string;
+  path?: string;
+  field?: string; // legacy prop name
+  value?: string;
+  date?: string; // legacy prop name
   className?: string;
   placeholder?: string;
   as?: keyof JSX.IntrinsicElements;
   style?: React.CSSProperties;
   formatDisplay?: (date: string) => string;
+  editable?: boolean;
 }
 
 export const InlineEditableDate = ({
   path,
+  field,
   value,
+  date,
   className,
   placeholder = "Click to edit",
   as: Component = "span",
   style,
   formatDisplay,
+  editable = true,
 }: InlineEditableDateProps) => {
+  const resolvedPath = (path ?? field)?.replace(/^resumeData\./, "");
+  const resolvedValue = value ?? date ?? "";
+  const canEdit = editable && Boolean(resolvedPath);
   const { updateField } = useInlineEdit();
+
   const [isEditing, setIsEditing] = useState(false);
-  const [localValue, setLocalValue] = useState(value);
+  const [localValue, setLocalValue] = useState(resolvedValue);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    setLocalValue(value);
-  }, [value]);
+    setLocalValue(resolvedValue);
+  }, [resolvedValue]);
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -38,6 +48,7 @@ export const InlineEditableDate = ({
   }, [isEditing]);
 
   const handleClick = (e: React.MouseEvent) => {
+    if (!canEdit) return;
     e.stopPropagation();
     setIsEditing(true);
   };
@@ -45,8 +56,9 @@ export const InlineEditableDate = ({
   const handleBlur = () => {
     setIsEditing(false);
     setIsFocused(false);
-    if (localValue !== value) {
-      updateField(path, localValue);
+    if (!canEdit) return;
+    if (localValue !== resolvedValue && resolvedPath) {
+      updateField(resolvedPath, localValue);
     }
   };
 
@@ -56,13 +68,13 @@ export const InlineEditableDate = ({
       handleBlur();
     }
     if (e.key === "Escape") {
-      setLocalValue(value);
+      setLocalValue(resolvedValue);
       setIsEditing(false);
       setIsFocused(false);
     }
   };
 
-  if (isEditing) {
+  if (canEdit && isEditing) {
     return (
       <input
         ref={inputRef}
@@ -80,21 +92,22 @@ export const InlineEditableDate = ({
     );
   }
 
-  const displayValue = formatDisplay ? formatDisplay(value) : value;
+  const displayValue = formatDisplay ? formatDisplay(resolvedValue) : resolvedValue;
 
   return (
     <Component
       onClick={handleClick}
-      onMouseEnter={() => setIsFocused(true)}
-      onMouseLeave={() => setIsFocused(false)}
+      onMouseEnter={() => canEdit && setIsFocused(true)}
+      onMouseLeave={() => canEdit && setIsFocused(false)}
       className={cn(
-        "cursor-pointer transition-all rounded px-1",
-        isFocused && "bg-blue-50 outline outline-1 outline-blue-300",
-        !value && "text-gray-400 italic",
+        canEdit ? "cursor-pointer" : "cursor-default",
+        "transition-all rounded px-1",
+        canEdit && isFocused && "bg-blue-50 outline outline-1 outline-blue-300",
+        !resolvedValue && "text-gray-400 italic",
         className
       )}
       style={style}
-      title="Click to edit date"
+      title={canEdit ? "Click to edit date" : undefined}
     >
       {displayValue || placeholder}
     </Component>

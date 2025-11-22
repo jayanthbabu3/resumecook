@@ -18,6 +18,7 @@ import { registerPDFFonts } from "@/lib/pdfFonts";
 import { cn } from "@/lib/utils";
 import { useAppStats } from "@/hooks/useAppStats";
 import { formatCount, incrementDownloadsCount } from "@/lib/firestore/statsService";
+import type { ResumeData } from "@/types/resume";
 
 // Register fonts for PDF generation
 registerPDFFonts();
@@ -83,7 +84,7 @@ const Hero = () => {
   const livePreviewContentRef = useRef<HTMLDivElement | null>(null);
 
   // State for Live Editor in ResumeData format (for InlineEditProvider)
-  const [liveResumeData, setLiveResumeData] = useState(() => ({
+  const [liveResumeData, setLiveResumeData] = useState<ResumeData>(() => ({
     personalInfo: {
       fullName: "Michael Chen",
       email: "michael.chen@email.com",
@@ -114,11 +115,11 @@ const Hero = () => {
     ],
     education: [],
     skills: [
-      { id: "skill-0", name: "Strategic Planning", level: 10, category: "core" as const },
-      { id: "skill-1", name: "Cloud Architecture", level: 9, category: "core" as const },
-      { id: "skill-2", name: "Team Leadership", level: 8, category: "core" as const },
-      { id: "skill-3", name: "Digital Transformation", level: 7, category: "core" as const },
-      { id: "skill-4", name: "Product Strategy", level: 7, category: "core" as const }
+      { id: "skill-0", name: "Strategic Planning", level: 10, category: "core" },
+      { id: "skill-1", name: "Cloud Architecture", level: 9, category: "core" },
+      { id: "skill-2", name: "Team Leadership", level: 8, category: "core" },
+      { id: "skill-3", name: "Digital Transformation", level: 7, category: "core" },
+      { id: "skill-4", name: "Product Strategy", level: 7, category: "core" }
     ],
     sections: []
   }));

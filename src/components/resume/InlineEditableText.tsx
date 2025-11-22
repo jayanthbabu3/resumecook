@@ -3,35 +3,45 @@ import { useInlineEdit } from "@/contexts/InlineEditContext";
 import { cn } from "@/lib/utils";
 
 interface InlineEditableTextProps {
-  path: string;
-  value: string;
+  path?: string;
+  field?: string; // legacy prop name
+  value?: string;
+  text?: string; // legacy prop name
   className?: string;
   multiline?: boolean;
   placeholder?: string;
   as?: keyof JSX.IntrinsicElements;
   style?: React.CSSProperties;
   onCustomUpdate?: (value: string) => void; // Custom update handler
+  editable?: boolean;
 }
 
 export const InlineEditableText = ({
   path,
+  field,
   value,
+  text,
   className,
   multiline = false,
   placeholder = "Click to edit",
   as: Component = "span",
   style,
   onCustomUpdate,
+  editable = true,
 }: InlineEditableTextProps) => {
+  const resolvedPath = (path ?? field)?.replace(/^resumeData\./, "");
+  const resolvedValue = value ?? text ?? "";
+  const canEdit = editable && Boolean(resolvedPath);
   const { updateField } = useInlineEdit();
+
   const [isEditing, setIsEditing] = useState(false);
-  const [localValue, setLocalValue] = useState(value);
+  const [localValue, setLocalValue] = useState(resolvedValue);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    setLocalValue(value);
-  }, [value]);
+    setLocalValue(resolvedValue);
+  }, [resolvedValue]);
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -41,6 +51,7 @@ export const InlineEditableText = ({
   }, [isEditing]);
 
   const handleClick = (e: React.MouseEvent) => {
+    if (!canEdit) return;
     e.stopPropagation();
     setIsEditing(true);
   };
@@ -48,11 +59,13 @@ export const InlineEditableText = ({
   const handleBlur = () => {
     setIsEditing(false);
     setIsFocused(false);
-    if (localValue !== value) {
+    if (!canEdit) return;
+
+    if (localValue !== resolvedValue) {
       if (onCustomUpdate) {
         onCustomUpdate(localValue);
-      } else {
-        updateField(path, localValue);
+      } else if (resolvedPath) {
+        updateField(resolvedPath, localValue);
       }
     }
   };
@@ -63,7 +76,7 @@ export const InlineEditableText = ({
       handleBlur();
     }
     if (e.key === "Escape") {
-      setLocalValue(value);
+      setLocalValue(resolvedValue);
       setIsEditing(false);
       setIsFocused(false);
     }
@@ -94,18 +107,19 @@ export const InlineEditableText = ({
   return (
     <Component
       onClick={handleClick}
-      onMouseEnter={() => setIsFocused(true)}
-      onMouseLeave={() => setIsFocused(false)}
+      onMouseEnter={() => canEdit && setIsFocused(true)}
+      onMouseLeave={() => canEdit && setIsFocused(false)}
       className={cn(
-        "cursor-pointer transition-all rounded",
-        isFocused && "bg-blue-50 outline outline-1 outline-blue-300",
-        !value && "text-gray-400 italic",
+        canEdit ? "cursor-pointer" : "cursor-default",
+        "transition-all rounded",
+        canEdit && isFocused && "bg-blue-50 outline outline-1 outline-blue-300",
+        !resolvedValue && "text-gray-400 italic",
         className
       )}
       style={style}
-      title="Click to edit"
+      title={canEdit ? "Click to edit" : undefined}
     >
-      {value || placeholder}
+      {resolvedValue || placeholder}
     </Component>
   );
 };
