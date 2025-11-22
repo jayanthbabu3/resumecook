@@ -24,7 +24,6 @@ import { RefinedTemplate } from "./templates/RefinedTemplate";
 import { PremiumEliteTemplate } from "./templates/PremiumEliteTemplate";
 import { SapphireExecutiveTemplate } from "./templates/SapphireExecutiveTemplate";
 import { CreativeAccentTemplate } from "./templates/CreativeAccentTemplate";
-import { MinimalistGeometricTemplate } from "./templates/MinimalistGeometricTemplate";
 import { BoldHeadlineTemplate } from "./templates/BoldHeadlineTemplate";
 import { DualToneTemplate } from "./templates/DualToneTemplate";
 import { ElegantSerifTemplate } from "./templates/ElegantSerifTemplate";
@@ -311,7 +310,6 @@ export const EditableResumePreview = ({
     "premium-elite": PremiumEliteTemplate,
     "sapphire-executive": SapphireExecutiveTemplate,
     "creative-accent": CreativeAccentTemplate,
-    "minimalist-geometric": MinimalistGeometricTemplate,
     "bold-headline": BoldHeadlineTemplate,
     "dual-tone": DualToneTemplate,
     "elegant-serif": ElegantSerifTemplate,

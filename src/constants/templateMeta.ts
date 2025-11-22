@@ -170,13 +170,6 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Creative",
     categorySlug: "all",
   },
-  "minimalist-geometric": {
-    name: "Minimalist Geometric",
-    description:
-      "Clean minimalist design with geometric accents, light typography, and exceptional white space for modern professionals.",
-    category: "Universal",
-    categorySlug: "all",
-  },
   "bold-headline": {
     name: "Bold Headline",
     description:

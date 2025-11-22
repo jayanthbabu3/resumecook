@@ -476,7 +476,6 @@ import { PremiumEliteTemplate } from "@/components/resume/templates/PremiumElite
 import { SeniorBackendTemplate } from "@/components/resume/templates/SeniorBackendTemplate";
 import { SapphireExecutiveTemplate } from "@/components/resume/templates/SapphireExecutiveTemplate";
 import { CreativeAccentTemplate } from "@/components/resume/templates/CreativeAccentTemplate";
-import { MinimalistGeometricTemplate } from "@/components/resume/templates/MinimalistGeometricTemplate";
 import { BoldHeadlineTemplate } from "@/components/resume/templates/BoldHeadlineTemplate";
 import { DualToneTemplate } from "@/components/resume/templates/DualToneTemplate";
 import { ElegantSerifTemplate } from "@/components/resume/templates/ElegantSerifTemplate";
@@ -1433,7 +1432,6 @@ const pdfTemplates: Record<string, any> = {
   "premium-elite": PremiumElitePDF,
   "sapphire-executive": SapphireExecutiveTemplate,
   "creative-accent": CreativeAccentTemplate,
-  "minimalist-geometric": MinimalistGeometricTemplate,
   "bold-headline": BoldHeadlineTemplate,
   "dual-tone": DualToneTemplate,
   "elegant-serif": ElegantSerifTemplate,
@@ -1876,7 +1874,6 @@ const displayTemplates: Record<string, any> = {
   "premium-elite": PremiumEliteTemplate,
   "sapphire-executive": SapphireExecutiveTemplate,
   "creative-accent": CreativeAccentTemplate,
-  "minimalist-geometric": MinimalistGeometricTemplate,
   "bold-headline": BoldHeadlineTemplate,
   "dual-tone": DualToneTemplate,
   "elegant-serif": ElegantSerifTemplate,

@@ -1084,7 +1084,6 @@ import { PDFMinimalDirectTemplate } from "@/components/resume/pdf/PDFMinimalDire
 import { PDFMinimalEleganceUniversalTemplate } from "@/components/resume/pdf/PDFMinimalEleganceUniversalTemplate";
 import { PDFMinimalLinesUniversalTemplate } from "@/components/resume/pdf/PDFMinimalLinesUniversalTemplate";
 import { PDFMinimalProLayoutTemplate } from "@/components/resume/pdf/PDFMinimalProLayoutTemplate";
-import { PDFMinimalistGeometricTemplate } from "@/components/resume/pdf/PDFMinimalistGeometricTemplate";
 import { PDFMinimalistModernProTemplate } from "@/components/resume/pdf/PDFMinimalistModernProTemplate";
 import { PDFMinimalistProSimpleTemplate } from "@/components/resume/pdf/PDFMinimalistProSimpleTemplate";
 import { PDFMobileDevTemplate } from "@/components/resume/pdf/PDFMobileDevTemplate";
