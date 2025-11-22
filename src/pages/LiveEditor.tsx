@@ -30,7 +30,6 @@ import { PremiumUniversalPDF } from "@/components/resume/pdf/PremiumUniversalPDF
 import { PremiumProPDF } from "@/components/resume/pdf/PremiumProPDF";
 import { FresherElitePDF } from "@/components/resume/pdf/FresherElitePDF";
 import { AnalystPDF } from "@/components/resume/pdf/AnalystPDF";
-import { ElitePDF } from "@/components/resume/pdf/ElitePDF";
 import { CorporateExecutivePDF } from "@/components/resume/pdf/CorporateExecutivePDF";
 import { RefinedPDF } from "@/components/resume/pdf/RefinedPDF";
 import { PremiumElitePDF } from "@/components/resume/pdf/PremiumElitePDF";
@@ -471,7 +470,6 @@ import { PremiumUniversalTemplate } from "@/components/resume/templates/PremiumU
 import { PremiumProTemplate } from "@/components/resume/templates/PremiumProTemplate";
 import { FresherEliteTemplate } from "@/components/resume/templates/FresherEliteTemplate";
 import { AnalystTemplate } from "@/components/resume/templates/AnalystTemplate";
-import { EliteTemplate } from "@/components/resume/templates/EliteTemplate";
 import { CorporateExecutiveTemplate } from "@/components/resume/templates/CorporateExecutiveTemplate";
 import { RefinedTemplate } from "@/components/resume/templates/RefinedTemplate";
 import { PremiumEliteTemplate } from "@/components/resume/templates/PremiumEliteTemplate";
@@ -1431,7 +1429,6 @@ const pdfTemplates: Record<string, any> = {
   "premium-pro": PremiumProPDF,
   "fresher-elite": FresherElitePDF,
   analyst: AnalystPDF,
-  elite: ElitePDF,
   "corporate-executive": CorporateExecutivePDF,
   refined: RefinedPDF,
   "premium-elite": PremiumElitePDF,
@@ -1876,7 +1873,6 @@ const displayTemplates: Record<string, any> = {
   "premium-pro": PremiumProTemplate,
   "fresher-elite": FresherEliteTemplate,
   analyst: AnalystTemplate,
-  elite: EliteTemplate,
   "corporate-executive": CorporateExecutiveTemplate,
   refined: RefinedTemplate,
   "premium-elite": PremiumEliteTemplate,
@@ -3161,7 +3157,7 @@ const LiveEditor = () => {
       </div>
 
       <div className="flex-1 overflow-auto md:p-8">
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto" style={{ maxWidth: '210mm', width: '100%' }}>
           <div className="bg-white shadow-none md:shadow-2xl rounded-none md:rounded-lg overflow-hidden">
             {(() => {
               const currentTemplateId = templateId || "professional";

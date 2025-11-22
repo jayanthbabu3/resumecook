@@ -135,13 +135,6 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Corporate",
     categorySlug: "all",
   },
-  elite: {
-    name: "Elite Professional",
-    description:
-      "Premium elegant template with left accent bar and sophisticated typography for all professions.",
-    category: "Universal",
-    categorySlug: "all",
-  },
   "corporate-executive": {
     name: "Corporate Executive",
     description:

@@ -20,7 +20,6 @@ import { PremiumUniversalTemplate } from "./resume/templates/PremiumUniversalTem
 import { PremiumProTemplate } from "./resume/templates/PremiumProTemplate";
 import { FresherEliteTemplate } from "./resume/templates/FresherEliteTemplate";
 import { AnalystTemplate } from "./resume/templates/AnalystTemplate";
-import { EliteTemplate } from "./resume/templates/EliteTemplate";
 import { RefinedTemplate } from "./resume/templates/RefinedTemplate";
 import { SapphireExecutiveTemplate } from "./resume/templates/SapphireExecutiveTemplate";
 import { CreativeAccentTemplate } from "./resume/templates/CreativeAccentTemplate";
@@ -939,7 +938,7 @@ const getTemplateSpecificData = (templateId: string): ResumeData => {
   }
 
   // Senior/Elite templates
-  if (templateId === 'senior' || templateId === 'elite') {
+  if (templateId === 'senior') {
     return {
       personalInfo: {
         fullName: "Robert Martinez",
@@ -1858,7 +1857,6 @@ const templates = {
   "premium-pro": PremiumProTemplate,
   "fresher-elite": FresherEliteTemplate,
   analyst: AnalystTemplate,
-  elite: EliteTemplate,
   refined: RefinedTemplate,
   "sapphire-executive": SapphireExecutiveTemplate,
   "creative-accent": CreativeAccentTemplate,

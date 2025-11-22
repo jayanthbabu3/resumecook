@@ -33,7 +33,6 @@ import { PremiumUniversalPDF } from "@/components/resume/pdf/PremiumUniversalPDF
 import { PremiumProPDF } from "@/components/resume/pdf/PremiumProPDF";
 import { FresherElitePDF } from "@/components/resume/pdf/FresherElitePDF";
 import { AnalystPDF } from "@/components/resume/pdf/AnalystPDF";
-import { ElitePDF } from "@/components/resume/pdf/ElitePDF";
 import { CorporateExecutivePDF } from "@/components/resume/pdf/CorporateExecutivePDF";
 import { RefinedPDF } from "@/components/resume/pdf/RefinedPDF";
 import { PremiumElitePDF } from "@/components/resume/pdf/PremiumElitePDF";
@@ -986,7 +985,6 @@ import { PDFEditorialStyleTemplate } from "@/components/resume/pdf/PDFEditorialS
 import { PDFEducatorModernTemplate } from "@/components/resume/pdf/PDFEducatorModernTemplate";
 import { PDFElasticsearchDevTemplate } from "@/components/resume/pdf/PDFElasticsearchDevTemplate";
 import { PDFElegantSerifTemplate } from "@/components/resume/pdf/PDFElegantSerifTemplate";
-import { PDFEliteTemplate } from "@/components/resume/pdf/PDFEliteTemplate";
 import { PDFExecutiveTemplate } from "@/components/resume/pdf/PDFExecutiveTemplate";
 import { PDFExecutiveCleanSplitTemplate } from "@/components/resume/pdf/PDFExecutiveCleanSplitTemplate";
 import { PDFExecutiveCornerAccentTemplate } from "@/components/resume/pdf/PDFExecutiveCornerAccentTemplate";
@@ -2783,100 +2781,6 @@ export const getTemplateDefaults = (templateId: string): ResumeData => {
         },
       ],
     },
-    elite: {
-      personalInfo: {
-        fullName: "Victoria Sterling",
-        email: "v.sterling@professional.com",
-        phone: "+1 (555) 789-0123",
-        location: "Seattle, WA",
-        title: "Executive Business Consultant",
-        summary:
-          "Strategic business consultant with 12+ years of experience driving transformational change and delivering measurable results for Fortune 500 companies. Specialized in operational excellence, change management, and strategic planning. Proven track record of leading cross-functional teams and implementing solutions that increase revenue and reduce costs.",
-        photo: "",
-      },
-      experience: [
-        {
-          id: "1",
-          company: "Global Consulting Partners",
-          position: "Senior Business Consultant",
-          startDate: "Mar 2019",
-          endDate: "",
-          current: true,
-          description:
-            "Lead strategic initiatives for enterprise clients with annual revenues exceeding $1B\nDeveloped and implemented operational strategies resulting in 35% efficiency improvement\nManaged portfolio of 8 concurrent client engagements with 100% satisfaction rating\nMentored team of 12 junior consultants and facilitated professional development programs\nPresented findings and recommendations to C-suite executives and board members",
-        },
-        {
-          id: "2",
-          company: "Strategic Solutions Inc",
-          position: "Business Analyst & Consultant",
-          startDate: "Jun 2015",
-          endDate: "Feb 2019",
-          current: false,
-          description:
-            "Conducted comprehensive business analysis and market research for clients across multiple industries\nDesigned and executed change management strategies for organizational restructuring\nFacilitated stakeholder workshops and strategy sessions with executive leadership\nDeveloped data-driven recommendations that increased client profitability by average of 28%",
-        },
-        {
-          id: "3",
-          company: "Innovation Corp",
-          position: "Junior Business Analyst",
-          startDate: "Sep 2012",
-          endDate: "May 2015",
-          current: false,
-          description:
-            "Analyzed business processes and identified opportunities for optimization\nCreated detailed reports and presentations for senior management\nCollaborated with IT teams to implement process automation solutions\nSupported senior consultants in client-facing engagements and project delivery",
-        },
-      ],
-      education: [
-        {
-          id: "1",
-          school: "Harvard Business School",
-          degree: "Master of Business Administration",
-          field: "Strategy & Operations",
-          startDate: "2010-09",
-          endDate: "2012-06",
-        },
-        {
-          id: "2",
-          school: "University of Washington",
-          degree: "Bachelor of Science",
-          field: "Business Administration",
-          startDate: "2006-09",
-          endDate: "2010-06",
-        },
-      ],
-      skills: buildSkills(
-        "elite",
-        [
-          "Strategic Planning",
-          "Change Management",
-          "Business Analysis",
-          "Project Management",
-          "Stakeholder Engagement",
-          "Process Optimization",
-          "Financial Modeling",
-          "Data Analytics",
-          "Leadership & Mentoring",
-          "Executive Presentations",
-          "Risk Management",
-          "Agile Methodologies",
-        ],
-        [10, 9, 9, 9, 9, 8, 8, 8, 9, 9, 8, 7],
-      ),
-      sections: [
-        {
-          id: "1",
-          title: "Certifications & Awards",
-          content:
-            "Project Management Professional (PMP) - PMI Certified\nCertified Management Consultant (CMC) - Institute of Management Consultants\nLean Six Sigma Black Belt\nConsultant of the Year Award 2022 - Global Consulting Partners\nTop 40 Under 40 Business Leaders - Seattle Business Journal 2021",
-        },
-        {
-          id: "2",
-          title: "Speaking & Publications",
-          content:
-            "Keynote Speaker - Annual Business Transformation Summit 2023\nPublished Article: 'Digital Transformation in Enterprise' - Harvard Business Review\nGuest Lecturer - University of Washington Business School (2020-Present)\nPanelist - Women in Leadership Conference 2022",
-        },
-      ],
-    },
     "corporate-executive": {
       personalInfo: {
         fullName: "Robert Anderson",
@@ -3271,7 +3175,6 @@ const Editor = () => {
       software: "#2563eb",
       "premium-fresher": "#7C3AED",
       analyst: "#2563eb",
-      elite: "#7c3aed",
     };
 
     return defaultThemeColors[templateId || ""] || "#7c3aed"; // default purple
@@ -3472,7 +3375,6 @@ const Editor = () => {
         "premium-pro": PremiumProPDF,
         "fresher-elite": FresherElitePDF,
         analyst: AnalystPDF,
-        elite: ElitePDF,
         "corporate-executive": CorporateExecutivePDF,
         refined: RefinedPDF,
         "premium-elite": PremiumElitePDF,
