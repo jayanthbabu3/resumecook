@@ -11,6 +11,14 @@ interface DualToneTemplateProps {
   editable?: boolean;
 }
 
+// Helper to convert hex color with opacity to rgba
+const hexToRgba = (hex: string, opacity: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+};
+
 export const DualToneTemplate = ({
   resumeData,
   themeColor = "#10b981",
@@ -18,16 +26,17 @@ export const DualToneTemplate = ({
 }: DualToneTemplateProps) => {
   const photo = resumeData.personalInfo.photo;
   const accent = themeColor;
-  const accentLight = `${accent}15`;
+  const accentLight = hexToRgba(accent, 0.08);
+  const accentLight15 = hexToRgba(accent, 0.15);
 
   return (
     <div className="w-full h-full bg-white text-gray-900 flex">
       {/* Left Panel - Light Accent 40% */}
-      <div className="w-[40%] p-8" style={{ backgroundColor: `${accent}08` }}>
+      <div className="w-[40%] pt-8 pb-8 pl-8 pr-5" style={{ backgroundColor: accentLight }}>
         {/* Photo */}
         {photo && (
           <div className="mb-8">
-            <div className="w-32 h-32 mx-auto rounded-2xl overflow-hidden border-4 shadow-lg" style={{ borderColor: accent }}>
+            <div className="w-32 h-32 mx-auto rounded-2xl overflow-hidden border shadow-lg" style={{ borderColor: accent }}>
               <ProfilePhoto
                 src={photo}
                 borderClass=""
@@ -39,7 +48,7 @@ export const DualToneTemplate = ({
 
         {/* Contact Info */}
         <div className="mb-8">
-          <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b-2" style={{ borderColor: accent, color: accent }}>
+          <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b" style={{ borderColor: accent, color: accent }}>
             Contact
           </h2>
           <div className="space-y-3 text-[11.5px] text-gray-700">
@@ -100,7 +109,7 @@ export const DualToneTemplate = ({
         {/* Skills */}
         {resumeData.skills && resumeData.skills.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b-2" style={{ borderColor: accent, color: accent }}>
+            <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b" style={{ borderColor: accent, color: accent }}>
               Skills
             </h2>
             {editable ? (
@@ -132,9 +141,9 @@ export const DualToneTemplate = ({
         {/* Education */}
         {resumeData.education && resumeData.education.length > 0 && (
           <div>
-            <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b-2" style={{ borderColor: accent, color: accent }}>
-              Education
-            </h2>
+              <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b" style={{ borderColor: accent, color: accent }}>
+                Education
+              </h2>
             {editable ? (
               <InlineEditableList
                 path="education"
@@ -210,9 +219,9 @@ export const DualToneTemplate = ({
       </div>
 
       {/* Right Panel - Main Content 60% */}
-      <div className="w-[60%] p-10">
+      <div className="w-[60%] pt-10 pb-10 pr-10 pl-5">
         {/* Header */}
-        <div className="mb-8 pb-6 border-b-2" style={{ borderColor: accent }}>
+        <div className="mb-8 pb-6 border-b" style={{ borderColor: accent }}>
           {editable ? (
             <InlineEditableText
               path="personalInfo.fullName"
@@ -289,7 +298,7 @@ export const DualToneTemplate = ({
                 }}
                 addButtonLabel="Add Experience"
                 renderItem={(exp, index) => (
-                  <div className="mb-6 last:mb-0 p-4 rounded-lg bg-gray-50 border-l-4" style={{ borderColor: accent }}>
+                  <div className="mb-6 last:mb-0 p-4 rounded-lg bg-gray-50 border-l" style={{ borderColor: accent }}>
                     <div className="flex justify-between items-baseline mb-2">
                       <InlineEditableText
                         path={`experience[${index}].position`}
@@ -297,7 +306,7 @@ export const DualToneTemplate = ({
                         className="text-[14.5px] font-bold text-gray-900"
                         as="h3"
                       />
-                      <div className="text-[11px] font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: accentLight, color: accent }}>
+                      <div className="text-[11px] font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: accentLight15, color: accent }}>
                         <div className="flex items-center gap-1">
                           <InlineEditableDate
                             path={`experience[${index}].startDate`}
@@ -339,12 +348,12 @@ export const DualToneTemplate = ({
             ) : (
               <div className="space-y-6">
                 {resumeData.experience.map((exp, index) => (
-                  <div key={index} className="p-4 rounded-lg bg-gray-50 border-l-4" style={{ borderColor: accent }}>
+                  <div key={index} className="p-4 rounded-lg bg-gray-50 border-l" style={{ borderColor: accent }}>
                     <div className="flex justify-between items-baseline mb-2">
                       <h3 className="text-[14.5px] font-bold text-gray-900">
                         {exp.position}
                       </h3>
-                      <div className="text-[11px] font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: accentLight, color: accent }}>
+                      <div className="text-[11px] font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: accentLight15, color: accent }}>
                         {exp.startDate} - {exp.current ? "Present" : exp.endDate}
                       </div>
                     </div>

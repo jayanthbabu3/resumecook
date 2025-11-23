@@ -95,7 +95,6 @@ import { TechGridPDF } from "@/components/resume/pdf/TechGridPDF";
 // New Universal Professional Templates
 import { ExecutiveModernPDF } from "@/components/resume/pdf/ExecutiveModernPDF";
 import { CorporateBluePDF } from "@/components/resume/pdf/CorporateBluePDF";
-import { ProfessionalSidebarPDF } from "@/components/resume/pdf/ProfessionalSidebarPDF";
 import { MinimalistProPDF } from "@/components/resume/pdf/MinimalistProPDF";
 import { ClassicElegantPDF } from "@/components/resume/pdf/ClassicElegantPDF";
 import { BusinessModernPDF } from "@/components/resume/pdf/BusinessModernPDF";
@@ -585,7 +584,6 @@ import { FrontendArchitectTemplate } from "@/components/resume/templates/Fronten
 // New Universal Professional Templates
 import { ExecutiveModernTemplate } from "@/components/resume/templates/ExecutiveModernTemplate";
 import { CorporateBlueTemplate } from "@/components/resume/templates/CorporateBlueTemplate";
-import { ProfessionalSidebarTemplate } from "@/components/resume/templates/ProfessionalSidebarTemplate";
 import { MinimalistProTemplate } from "@/components/resume/templates/MinimalistProTemplate";
 import { ClassicElegantTemplate } from "@/components/resume/templates/ClassicElegantTemplate";
 import { BusinessModernTemplate } from "@/components/resume/templates/BusinessModernTemplate";
@@ -1505,7 +1503,6 @@ const pdfTemplates: Record<string, any> = {
   // New Universal Professional Templates
   "executive-modern": ExecutiveModernPDF,
   "corporate-blue": CorporateBluePDF,
-  "professional-sidebar": ProfessionalSidebarPDF,
   "minimalist-pro": MinimalistProPDF,
   "classic-elegant": ClassicElegantPDF,
   "business-modern": BusinessModernPDF,
@@ -1983,7 +1980,6 @@ const displayTemplates: Record<string, any> = {
   // New Universal Professional Templates
   "executive-modern": ExecutiveModernTemplate,
   "corporate-blue": CorporateBlueTemplate,
-  "professional-sidebar": ProfessionalSidebarTemplate,
   "minimalist-pro": MinimalistProTemplate,
   "classic-elegant": ClassicElegantTemplate,
   "business-modern": BusinessModernTemplate,

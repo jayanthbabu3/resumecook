@@ -96,7 +96,6 @@ import { FrontendArchitectPDF } from "@/components/resume/pdf/FrontendArchitectP
 // New Universal Professional Templates
 import { ExecutiveModernPDF } from "@/components/resume/pdf/ExecutiveModernPDF";
 import { CorporateBluePDF } from "@/components/resume/pdf/CorporateBluePDF";
-import { ProfessionalSidebarPDF } from "@/components/resume/pdf/ProfessionalSidebarPDF";
 import { MinimalistProPDF } from "@/components/resume/pdf/MinimalistProPDF";
 import { ClassicElegantPDF } from "@/components/resume/pdf/ClassicElegantPDF";
 import { BusinessModernPDF } from "@/components/resume/pdf/BusinessModernPDF";
@@ -3436,7 +3435,6 @@ const Editor = () => {
         // New Universal Professional Templates
         "executive-modern": ExecutiveModernPDF,
         "corporate-blue": CorporateBluePDF,
-        "professional-sidebar": ProfessionalSidebarPDF,
         "minimalist-pro": MinimalistProPDF,
         "classic-elegant": ClassicElegantPDF,
         "business-modern": BusinessModernPDF,

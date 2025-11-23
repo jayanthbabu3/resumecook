@@ -104,7 +104,7 @@ export const ExecutiveModernTemplate = ({ resumeData, themeColor = "#1e3a8a", ed
           {/* Skills */}
           {resumeData.skills.length > 0 && (
             <div>
-              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Skills
               </h2>
               {editable ? (
@@ -136,7 +136,7 @@ export const ExecutiveModernTemplate = ({ resumeData, themeColor = "#1e3a8a", ed
           {/* Education */}
           {resumeData.education.length > 0 && (
             <div>
-              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Education
               </h2>
               {editable ? (
@@ -215,7 +215,7 @@ export const ExecutiveModernTemplate = ({ resumeData, themeColor = "#1e3a8a", ed
           {/* Summary */}
           {resumeData.personalInfo.summary && (
             <div>
-              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Executive Summary
               </h2>
               {editable ? (
@@ -237,7 +237,7 @@ export const ExecutiveModernTemplate = ({ resumeData, themeColor = "#1e3a8a", ed
           {/* Experience */}
           {resumeData.experience.length > 0 && (
             <div>
-              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Professional Experience
               </h2>
               {editable ? (
@@ -255,7 +255,7 @@ export const ExecutiveModernTemplate = ({ resumeData, themeColor = "#1e3a8a", ed
                   }}
                   addButtonLabel="Add Experience"
                   renderItem={(exp, index) => (
-                    <div className="relative pl-6 border-l-4 pb-6" style={{ borderColor: themeColor }}>
+                    <div className="relative pl-6 border-l pb-6" style={{ borderColor: themeColor }}>
                       <div className="absolute left-[-8px] top-[6px] w-3 h-3 rounded-full" style={{ backgroundColor: themeColor }}></div>
                       <div className="flex justify-between items-start mb-2 gap-4">
                         <div className="flex-1">
@@ -308,7 +308,7 @@ export const ExecutiveModernTemplate = ({ resumeData, themeColor = "#1e3a8a", ed
               ) : (
                 <div className="space-y-0">
                   {resumeData.experience.map((exp) => (
-                    <div key={exp.id} className="relative pl-6 border-l-4 pb-6" style={{ borderColor: themeColor }}>
+                    <div key={exp.id} className="relative pl-6 border-l pb-6" style={{ borderColor: themeColor }}>
                       <div className="absolute left-[-8px] top-[6px] w-3 h-3 rounded-full" style={{ backgroundColor: themeColor }}></div>
                       <div className="flex justify-between items-start mb-2 gap-4">
                         <div className="flex-1">
@@ -334,7 +334,7 @@ export const ExecutiveModernTemplate = ({ resumeData, themeColor = "#1e3a8a", ed
           {/* Custom Sections */}
           {resumeData.sections.map((section) => (
             <div key={section.id}>
-              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-[15px] font-bold mb-4 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 {section.title}
               </h2>
               <p className="text-[13px] text-gray-700 leading-[1.7] whitespace-pre-line">

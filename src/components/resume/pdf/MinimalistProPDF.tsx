@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   header: {
-    marginBottom: 36,
+    marginBottom: 20,
   },
   name: {
     fontSize: 30,
@@ -29,23 +29,25 @@ const styles = StyleSheet.create({
   },
   contactContainer: {
     flexDirection: 'row',
-    gap: 18,
     fontSize: 9,
     color: '#6b7280',
+  },
+  contactItem: {
+    marginRight: 18,
   },
   divider: {
     height: 1,
     backgroundColor: '#47556930',
-    marginBottom: 18,
+    marginBottom: 12,
   },
   section: {
-    marginBottom: 36,
+    marginBottom: 16,
   },
   sectionTitle: {
     fontSize: 11,
     fontWeight: 600,
     color: '#475569',
-    marginBottom: 18,
+    marginBottom: 12,
   },
   summary: {
     fontSize: 10,
@@ -53,14 +55,13 @@ const styles = StyleSheet.create({
     color: '#374151',
   },
   experienceItem: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   experienceHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginBottom: 8,
-    gap: 10,
   },
   position: {
     fontSize: 11,
@@ -84,17 +85,18 @@ const styles = StyleSheet.create({
   skillsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 18,
+    marginBottom: 0,
   },
   skillItem: {
     fontSize: 9.5,
     color: '#374151',
+    marginRight: 18,
+    marginBottom: 4,
   },
   educationItem: {
-    marginBottom: 18,
+    marginBottom: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 10,
   },
   educationContent: {
     flex: 1,
@@ -146,10 +148,10 @@ export const MinimalistProPDF = ({ resumeData, themeColor = "#475569" }: Props) 
           {/* Contact */}
           <View style={styles.contactContainer}>
             {hasContent(resumeData.personalInfo.email) && (
-              <Text>{resumeData.personalInfo.email}</Text>
+              <Text style={styles.contactItem}>{resumeData.personalInfo.email}</Text>
             )}
             {hasContent(resumeData.personalInfo.phone) && (
-              <Text>{resumeData.personalInfo.phone}</Text>
+              <Text style={styles.contactItem}>{resumeData.personalInfo.phone}</Text>
             )}
             {hasContent(resumeData.personalInfo.location) && (
               <Text>{resumeData.personalInfo.location}</Text>

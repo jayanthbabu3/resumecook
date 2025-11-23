@@ -171,7 +171,6 @@ export const professionCategories: ProfessionCategory[] = [
       // New Universal Professional Templates
       "executive-modern",
       "corporate-blue",
-      "professional-sidebar",
       "minimalist-pro",
       "classic-elegant",
       "business-modern",
@@ -1054,7 +1053,6 @@ export const professionCategories: ProfessionCategory[] = [
       // New Universal Professional Templates
       "executive-modern",
       "corporate-blue",
-      "professional-sidebar",
       "minimalist-pro",
       "classic-elegant",
       "business-modern",

@@ -4,19 +4,16 @@ import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: PDF_PAGE_MARGINS.top,
-    paddingRight: PDF_PAGE_MARGINS.right,
     paddingBottom: PDF_PAGE_MARGINS.bottom,
-    paddingLeft: PDF_PAGE_MARGINS.left,
     fontFamily: 'Inter',
     fontSize: 10,
     backgroundColor: '#ffffff',
   },
   header: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingHorizontal: 32,
+    paddingVertical: 40,
     backgroundColor: '#1e3a8a',
-    marginBottom: 24,
+    marginBottom: 0,
   },
   headerContent: {
     flexDirection: 'row',
@@ -52,7 +49,8 @@ const styles = StyleSheet.create({
   mainContent: {
     flexDirection: 'row',
     gap: 20,
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
+    paddingVertical: 32,
   },
   sidebar: {
     width: '33%',
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
     color: '#1e3a8a',
     marginBottom: 12,
     paddingBottom: 6,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomColor: '#1e3a8a',
   },
   summary: {
@@ -80,7 +78,7 @@ const styles = StyleSheet.create({
   experienceItem: {
     position: 'relative',
     paddingLeft: 18,
-    borderLeftWidth: 3,
+    borderLeftWidth: 1,
     borderLeftColor: '#1e3a8a',
     marginBottom: 20,
   },

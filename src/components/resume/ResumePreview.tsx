@@ -125,7 +125,6 @@ import { FrontendArchitectTemplate } from "./templates/FrontendArchitectTemplate
 // New Universal Professional Templates
 import { ExecutiveModernTemplate } from "./templates/ExecutiveModernTemplate";
 import { CorporateBlueTemplate } from "./templates/CorporateBlueTemplate";
-import { ProfessionalSidebarTemplate } from "./templates/ProfessionalSidebarTemplate";
 import { MinimalistProTemplate } from "./templates/MinimalistProTemplate";
 import { ClassicElegantTemplate } from "./templates/ClassicElegantTemplate";
 import { BusinessModernTemplate } from "./templates/BusinessModernTemplate";
@@ -606,7 +605,6 @@ export const ResumePreview = ({
     // New Universal Professional Templates
     "executive-modern": ExecutiveModernTemplate,
     "corporate-blue": CorporateBlueTemplate,
-    "professional-sidebar": ProfessionalSidebarTemplate,
     "minimalist-pro": MinimalistProTemplate,
     "classic-elegant": ClassicElegantTemplate,
     "business-modern": BusinessModernTemplate,

@@ -54,19 +54,19 @@ const styles = StyleSheet.create({
   experienceItem: {
     position: 'relative',
     paddingLeft: 24,
-    borderLeftWidth: 2,
+    borderLeftWidth: 1,
     borderLeftColor: '#059669',
     marginBottom: 24,
   },
   timelineDot: {
     position: 'absolute',
-    left: -7,
+    left: -6,
     top: 4,
     width: 12,
     height: 12,
     borderRadius: 6,
     backgroundColor: '#ffffff',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#059669',
   },
   experienceHeader: {

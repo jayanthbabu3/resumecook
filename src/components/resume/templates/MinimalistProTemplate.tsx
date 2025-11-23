@@ -24,7 +24,7 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
   return (
     <div className="w-full bg-white text-gray-900 p-12 text-[13px] leading-relaxed">
       {/* Header - Minimal */}
-      <div className="mb-12">
+      <div className="mb-8">
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
@@ -91,7 +91,7 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
 
       {/* Summary */}
       {resumeData.personalInfo.summary && (
-        <div className="mb-12">
+        <div className="mb-8">
           <div className="h-px w-full mb-6" style={{ backgroundColor: `${themeColor}30` }}></div>
           {editable ? (
             <InlineEditableText
@@ -111,7 +111,7 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
 
       {/* Experience */}
       {resumeData.experience.length > 0 && (
-        <div className="mb-12">
+        <div className="mb-8">
           <h2 className="text-[14px] font-semibold mb-6" style={{ color: themeColor }}>
             Experience
           </h2>
@@ -205,7 +205,7 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
-        <div className="mb-12">
+        <div className="mb-8">
           <h2 className="text-[14px] font-semibold mb-6" style={{ color: themeColor }}>
             Skills
           </h2>
@@ -237,7 +237,7 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
 
       {/* Education */}
       {resumeData.education.length > 0 && (
-        <div className="mb-12">
+        <div className="mb-8">
           <h2 className="text-[14px] font-semibold mb-6" style={{ color: themeColor }}>
             Education
           </h2>
@@ -318,16 +318,47 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       )}
 
       {/* Custom Sections */}
-      {resumeData.sections.map((section) => (
-        <div key={section.id} className="mb-12">
-          <h2 className="text-[14px] font-semibold mb-6" style={{ color: themeColor }}>
-            {section.title}
-          </h2>
-          <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
-            {section.content}
-          </p>
-        </div>
-      ))}
+      {editable ? (
+        <InlineEditableList
+          path="sections"
+          items={resumeData.sections || []}
+          defaultItem={{
+            id: Date.now().toString(),
+            title: "Certifications",
+            content: "Certification Name",
+          }}
+          addButtonLabel="Add Section"
+          renderItem={(section, index) => (
+            <div key={section.id} className="mb-8">
+              <InlineEditableText
+                path={`sections[${index}].title`}
+                value={section.title}
+                className="text-[14px] font-semibold mb-6 block"
+                style={{ color: themeColor }}
+                as="h2"
+              />
+              <InlineEditableText
+                path={`sections[${index}].content`}
+                value={section.content}
+                className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
+                multiline
+                as="p"
+              />
+            </div>
+          )}
+        />
+      ) : (
+        resumeData.sections.map((section) => (
+          <div key={section.id} className="mb-8">
+            <h2 className="text-[14px] font-semibold mb-6" style={{ color: themeColor }}>
+              {section.title}
+            </h2>
+            <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
+              {section.content}
+            </p>
+          </div>
+        ))
+      )}
     </div>
   );
 };

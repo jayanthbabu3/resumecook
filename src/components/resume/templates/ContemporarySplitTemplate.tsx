@@ -11,6 +11,14 @@ interface ContemporarySplitTemplateProps {
   editable?: boolean;
 }
 
+// Helper to convert hex color with opacity to rgba
+const hexToRgba = (hex: string, opacity: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+};
+
 export const ContemporarySplitTemplate = ({
   resumeData,
   themeColor = "#f59e0b",
@@ -18,16 +26,16 @@ export const ContemporarySplitTemplate = ({
 }: ContemporarySplitTemplateProps) => {
   const photo = resumeData.personalInfo.photo;
   const accent = themeColor;
-  const accentLight = `${accent}15`;
+  const accentLight = hexToRgba(accent, 0.15);
 
   return (
     <div className="w-full h-full bg-white text-gray-900 flex">
       {/* Left Side - Dark Background 50% */}
-      <div className="w-[50%] bg-[#1f2937] text-white p-10">
+      <div className="w-[50%] bg-[#1f2937] text-white pt-10 pb-10 pl-10 pr-5">
         {/* Photo */}
         {photo && (
           <div className="mb-8">
-            <div className="w-36 h-36 mx-auto rounded-2xl overflow-hidden border-4 shadow-2xl" style={{ borderColor: accent }}>
+            <div className="w-36 h-36 mx-auto rounded-2xl overflow-hidden border shadow-2xl" style={{ borderColor: accent }}>
               <ProfilePhoto
                 src={photo}
                 borderClass=""
@@ -251,11 +259,11 @@ export const ContemporarySplitTemplate = ({
       </div>
 
       {/* Right Side - White Background 50% */}
-      <div className="w-[50%] bg-white p-10">
+      <div className="w-[50%] bg-white pt-10 pb-10 pr-10 pl-5">
         {/* Professional Experience */}
         {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-[14px] font-bold uppercase tracking-wider mb-5 pb-2 border-b-2 text-gray-900" style={{ borderColor: accent }}>
+            <h2 className="text-[14px] font-bold uppercase tracking-wider mb-5 pb-2 border-b text-gray-900" style={{ borderColor: accent }}>
               Professional Experience
             </h2>
             {editable ? (
@@ -369,7 +377,7 @@ export const ContemporarySplitTemplate = ({
                 <InlineEditableText
                   path={`sections[${index}].title`}
                   value={section.title}
-                  className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b-2 text-gray-900"
+                  className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b text-gray-900"
                   as="h2"
                   style={{ borderColor: accent }}
                 />
@@ -387,7 +395,7 @@ export const ContemporarySplitTemplate = ({
           resumeData.sections &&
           resumeData.sections.map((section, index) => (
             <div key={index} className="mb-8">
-              <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b-2 text-gray-900" style={{ borderColor: accent }}>
+              <h2 className="text-[14px] font-bold uppercase tracking-wider mb-4 pb-2 border-b text-gray-900" style={{ borderColor: accent }}>
                 {section.title}
               </h2>
               <div className="text-[12px] text-gray-700 leading-[1.75] whitespace-pre-line">

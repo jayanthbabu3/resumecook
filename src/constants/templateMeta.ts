@@ -830,13 +830,6 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Universal",
     categorySlug: "all",
   },
-  "professional-sidebar": {
-    name: "Professional Sidebar",
-    description:
-      "Modern two-column design with left sidebar for skills and contact information.",
-    category: "Universal",
-    categorySlug: "all",
-  },
   "minimalist-pro": {
     name: "Minimalist Pro",
     description:

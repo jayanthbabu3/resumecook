@@ -323,16 +323,47 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
       )}
 
       {/* Custom Sections */}
-      {resumeData.sections.map((section) => (
-        <div key={section.id} className="mb-8">
-          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor }}>
-            {section.title}
-          </h2>
-          <p className="text-[13px] text-gray-700 leading-[1.7] whitespace-pre-line">
-            {section.content}
-          </p>
-        </div>
-      ))}
+      {editable ? (
+        <InlineEditableList
+          path="sections"
+          items={resumeData.sections || []}
+          defaultItem={{
+            id: Date.now().toString(),
+            title: "Certifications",
+            content: "Certification Name",
+          }}
+          addButtonLabel="Add Section"
+          renderItem={(section, index) => (
+            <div key={section.id} className="mb-8">
+              <InlineEditableText
+                path={`sections[${index}].title`}
+                value={section.title}
+                className="text-[15px] font-bold mb-4 block"
+                style={{ color: themeColor }}
+                as="h2"
+              />
+              <InlineEditableText
+                path={`sections[${index}].content`}
+                value={section.content}
+                className="text-[13px] text-gray-700 leading-[1.7] whitespace-pre-line block"
+                multiline
+                as="p"
+              />
+            </div>
+          )}
+        />
+      ) : (
+        resumeData.sections.map((section) => (
+          <div key={section.id} className="mb-8">
+            <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor }}>
+              {section.title}
+            </h2>
+            <p className="text-[13px] text-gray-700 leading-[1.7] whitespace-pre-line">
+              {section.content}
+            </p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
