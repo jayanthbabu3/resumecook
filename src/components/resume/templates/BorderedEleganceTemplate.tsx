@@ -19,7 +19,7 @@ export const BorderedEleganceTemplate = ({
   return (
     <div className="w-full h-full bg-white text-gray-900 p-8">
       {/* Outer Decorative Border */}
-      <div className="border-4 border-double h-full p-10" style={{ borderColor: themeColor }}>
+      <div className="border border-double h-full p-10" style={{ borderColor: themeColor }}>
         {/* Inner Content */}
         <div className="h-full">
           {/* Header with Decorative Elements */}
@@ -130,7 +130,7 @@ export const BorderedEleganceTemplate = ({
               </h2>
               <div className="space-y-6">
                 {resumeData.experience.map((exp, index) => (
-                  <div key={index} className="border-l-4 pl-6 py-2" style={{ borderColor: themeColor }}>
+                  <div key={index} className="border-l pl-6 py-2" style={{ borderColor: themeColor }}>
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex-1">
                         {editable ? (
@@ -165,9 +165,12 @@ export const BorderedEleganceTemplate = ({
                     {exp.description && (
                       <div className="text-gray-700 mt-2">
                         {editable ? (
-                          <InlineEditableList
+                          <InlineEditableText
                             path={`experience[${index}].description`}
-                            items={exp.description.split("\n")}
+                            value={exp.description}
+                            className="whitespace-pre-line"
+                            multiline
+                            as="div"
                           />
                         ) : (
                           <ul className="list-disc list-inside space-y-1">
@@ -233,7 +236,7 @@ export const BorderedEleganceTemplate = ({
                   {resumeData.skills.map((skill, index) => (
                     <span
                       key={index}
-                      className="px-4 py-2 border-2 font-medium"
+                      className="px-4 py-2 border font-medium"
                       style={{ borderColor: themeColor, color: themeColor }}
                     >
                       {skill.name}
@@ -245,9 +248,40 @@ export const BorderedEleganceTemplate = ({
           )}
 
           {/* Custom Sections */}
-          {resumeData.sections &&
+          {editable ? (
+            <InlineEditableList
+              path="sections"
+              items={resumeData.sections || []}
+              addButtonLabel="Add Section"
+              defaultItem={{
+                id: Date.now().toString(),
+                title: "Custom Section",
+                content: "Add details here",
+              }}
+              renderItem={(section, index) => (
+                <div key={section.id || index} className="mb-8">
+                  <InlineEditableText
+                    path={`sections[${index}].title`}
+                    value={section.title}
+                    className="text-2xl font-serif font-bold text-center mb-6 pb-2 border-b block"
+                    style={{ color: themeColor, borderColor: themeColor }}
+                    as="h2"
+                  />
+                  <InlineEditableText
+                    path={`sections[${index}].content`}
+                    value={section.content}
+                    className="text-gray-700 leading-relaxed whitespace-pre-line block"
+                    multiline
+                    as="div"
+                  />
+                </div>
+              )}
+            />
+          ) : (
+            resumeData.sections &&
+            resumeData.sections.length > 0 &&
             resumeData.sections.map((section, index) => (
-              <div key={index} className="mb-8">
+              <div key={section.id || index} className="mb-8">
                 <h2 className="text-2xl font-serif font-bold text-center mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                   {section.title}
                 </h2>
@@ -255,7 +289,8 @@ export const BorderedEleganceTemplate = ({
                   {section.content}
                 </div>
               </div>
-            ))}
+            ))
+          )}
         </div>
       </div>
     </div>

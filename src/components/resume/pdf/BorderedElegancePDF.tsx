@@ -22,7 +22,9 @@ const createStyles = (color: string) =>
       padding: 15,
     },
     border: {
-      border: `3px double ${color}`,
+      borderWidth: 1,
+      borderColor: color,
+      borderStyle: "solid",
       padding: 20,
       height: "100%",
     },
@@ -30,7 +32,7 @@ const createStyles = (color: string) =>
       textAlign: "center",
       marginBottom: 20,
       paddingBottom: 15,
-      borderBottomWidth: 2,
+      borderBottomWidth: 1,
       borderBottomColor: color,
     },
     name: {
@@ -49,9 +51,12 @@ const createStyles = (color: string) =>
       flexDirection: "row",
       justifyContent: "center",
       flexWrap: "wrap",
-      gap: 8,
       fontSize: 9,
       color: "#6b7280",
+    },
+    contactInfoItem: {
+      marginHorizontal: 4,
+      marginBottom: 4,
     },
     section: {
       marginBottom: 18,
@@ -76,7 +81,7 @@ const createStyles = (color: string) =>
     experienceItem: {
       marginBottom: 12,
       paddingLeft: 12,
-      borderLeftWidth: 4,
+      borderLeftWidth: 1,
       borderLeftColor: color,
       paddingVertical: 4,
     },
@@ -108,14 +113,22 @@ const createStyles = (color: string) =>
       textAlign: "center",
       marginBottom: 10,
     },
+    skillsContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      marginHorizontal: -3,
+    },
     skillChip: {
       paddingHorizontal: 10,
       paddingVertical: 5,
-      borderWidth: 2,
+      borderWidth: 1,
       borderColor: color,
       color: color,
       fontSize: 9,
       fontWeight: 500,
+      marginHorizontal: 3,
+      marginBottom: 6,
     },
   });
 
@@ -137,9 +150,15 @@ export const BorderedElegancePDF = ({
               <Text style={styles.title}>{personalInfo.title}</Text>
             )}
             <View style={styles.contactInfo}>
-              {personalInfo.email && <Text>{personalInfo.email}</Text>}
-              {personalInfo.phone && <Text> | {personalInfo.phone}</Text>}
-              {personalInfo.location && <Text> | {personalInfo.location}</Text>}
+              {personalInfo.email && (
+                <Text style={styles.contactInfoItem}>{personalInfo.email}</Text>
+              )}
+              {personalInfo.phone && (
+                <Text style={styles.contactInfoItem}>{personalInfo.phone}</Text>
+              )}
+              {personalInfo.location && (
+                <Text style={styles.contactInfoItem}>{personalInfo.location}</Text>
+              )}
             </View>
           </View>
 
@@ -193,7 +212,7 @@ export const BorderedElegancePDF = ({
           {skills && skills.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Skills & Expertise</Text>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 6 }}>
+              <View style={styles.skillsContainer}>
                 {skills.map((skill, index) => (
                   <Text key={index} style={styles.skillChip}>{skill.name}</Text>
                 ))}

@@ -1,7 +1,6 @@
 import React from "react";
 import type { ResumeData } from "@/pages/Editor";
 import { InlineEditableText } from "../InlineEditableText";
-import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 
 interface ColumnDivideTemplateProps {
@@ -15,11 +14,62 @@ export const ColumnDivideTemplate = ({
   themeColor = "#0891b2",
   editable = false,
 }: ColumnDivideTemplateProps) => {
+  const sectionsWithIndex =
+    (resumeData.sections || []).map((section, index) => ({
+      section,
+      originalIndex: index,
+    })) || [];
+  const leftSections = sectionsWithIndex.filter(
+    ({ originalIndex }) => originalIndex % 2 === 0,
+  );
+  const rightSections = sectionsWithIndex.filter(
+    ({ originalIndex }) => originalIndex % 2 === 1,
+  );
+
+  const renderSectionBlock = ({
+    section,
+    originalIndex,
+  }: {
+    section: { title: string; content: string; id?: string };
+    originalIndex: number;
+  }) => (
+    <div key={section.id || originalIndex} className="mb-8">
+      {editable ? (
+        <InlineEditableText
+          path={`sections[${originalIndex}].title`}
+          value={section.title}
+          className="text-2xl font-bold mb-4 pb-2 border-b block"
+          style={{ color: themeColor, borderColor: themeColor }}
+          as="h2"
+        />
+      ) : (
+        <h2
+          className="text-2xl font-bold mb-4 pb-2 border-b"
+          style={{ color: themeColor, borderColor: themeColor }}
+        >
+          {section.title}
+        </h2>
+      )}
+      {editable ? (
+        <InlineEditableText
+          path={`sections[${originalIndex}].content`}
+          value={section.content}
+          className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
+          multiline
+          as="div"
+        />
+      ) : (
+        <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+          {section.content}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-12">
       {/* Header */}
-      <div className="text-center mb-10 pb-8 border-b-2" style={{ borderColor: themeColor }}>
+      <div className="text-center mb-10 pb-8 border-b" style={{ borderColor: themeColor }}>
         {editable ? (
           <InlineEditableText
             path="personalInfo.fullName"
@@ -121,7 +171,7 @@ export const ColumnDivideTemplate = ({
           {/* Experience */}
           {resumeData.experience && resumeData.experience.length > 0 && (
             <div className="mb-10">
-              <h2 className="text-2xl font-bold mb-6 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Experience
               </h2>
               <div className="space-y-6">
@@ -159,9 +209,12 @@ export const ColumnDivideTemplate = ({
                     {exp.description && (
                       <div className="text-sm text-gray-700">
                         {editable ? (
-                          <InlineEditableList
+                          <InlineEditableText
                             path={`experience[${index}].description`}
-                            items={exp.description.split("\n")}
+                            value={exp.description}
+                            className="whitespace-pre-line"
+                            multiline
+                            as="div"
                           />
                         ) : (
                           <ul className="list-disc list-inside space-y-1">
@@ -179,17 +232,7 @@ export const ColumnDivideTemplate = ({
           )}
 
           {/* Custom Sections (Left) */}
-          {resumeData.sections &&
-            resumeData.sections.filter((_, index) => index % 2 === 0).map((section, index) => (
-              <div key={index} className="mb-8">
-                <h2 className="text-2xl font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
-                  {section.title}
-                </h2>
-                <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                  {section.content}
-                </div>
-              </div>
-            ))}
+          {leftSections.map(renderSectionBlock)}
         </div>
 
         {/* Vertical Divider */}
@@ -200,7 +243,7 @@ export const ColumnDivideTemplate = ({
           {/* Skills */}
           {resumeData.skills && resumeData.skills.length > 0 && (
             <div className="mb-10">
-              <h2 className="text-2xl font-bold mb-6 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Skills
               </h2>
               {editable ? (
@@ -210,7 +253,7 @@ export const ColumnDivideTemplate = ({
                   {resumeData.skills.map((skill, index) => (
                     <div
                       key={index}
-                      className="px-4 py-2 border-l-4 text-sm font-medium"
+                      className="px-4 py-2 border-l text-sm font-medium"
                       style={{ borderColor: themeColor }}
                     >
                       {skill.name}
@@ -224,7 +267,7 @@ export const ColumnDivideTemplate = ({
           {/* Education */}
           {resumeData.education && resumeData.education.length > 0 && (
             <div className="mb-10">
-              <h2 className="text-2xl font-bold mb-6 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
+              <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Education
               </h2>
               <div className="space-y-4">
@@ -250,7 +293,41 @@ export const ColumnDivideTemplate = ({
                     ) : (
                       <p className="text-gray-700">{edu.institution}</p>
                     )}
-                    <p className="text-sm text-gray-500">{edu.graduationDate}</p>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`education[${index}].field`}
+                        value={edu.field}
+                        className="text-sm text-gray-600 block"
+                        as="p"
+                      />
+                    ) : (
+                      edu.field && <p className="text-sm text-gray-600">{edu.field}</p>
+                    )}
+                    <div className="text-sm text-gray-500 flex flex-wrap gap-2">
+                      {editable ? (
+                        <>
+                          <InlineEditableText
+                            path={`education[${index}].startDate`}
+                            value={edu.startDate}
+                            className="block"
+                            as="span"
+                          />
+                          <span>-</span>
+                          <InlineEditableText
+                            path={`education[${index}].endDate`}
+                            value={edu.endDate}
+                            className="block"
+                            as="span"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <span>{edu.startDate}</span>
+                          <span>-</span>
+                          <span>{edu.endDate || edu.graduationDate}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -258,17 +335,7 @@ export const ColumnDivideTemplate = ({
           )}
 
           {/* Custom Sections (Right) */}
-          {resumeData.sections &&
-            resumeData.sections.filter((_, index) => index % 2 === 1).map((section, index) => (
-              <div key={index} className="mb-8">
-                <h2 className="text-2xl font-bold mb-4 pb-2 border-b-2" style={{ color: themeColor, borderColor: themeColor }}>
-                  {section.title}
-                </h2>
-                <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                  {section.content}
-                </div>
-              </div>
-            ))}
+          {rightSections.map(renderSectionBlock)}
         </div>
       </div>
     </div>

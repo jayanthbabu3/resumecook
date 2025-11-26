@@ -19,13 +19,16 @@ const createStyles = (color: string) =>
       fontFamily: "Inter",
       fontSize: 10,
       backgroundColor: "#ffffff",
-      padding: PDF_PAGE_MARGINS,
+      paddingTop: PDF_PAGE_MARGINS.top,
+      paddingBottom: PDF_PAGE_MARGINS.bottom,
+      paddingLeft: PDF_PAGE_MARGINS.left,
+      paddingRight: PDF_PAGE_MARGINS.right,
     },
     header: {
       textAlign: "center",
       marginBottom: 20,
       paddingBottom: 15,
-      borderBottomWidth: 2,
+      borderBottomWidth: 1,
       borderBottomColor: color,
     },
     name: {
@@ -42,9 +45,12 @@ const createStyles = (color: string) =>
       flexDirection: "row",
       justifyContent: "center",
       flexWrap: "wrap",
-      gap: 8,
       fontSize: 9,
       color: "#6b7280",
+    },
+    contactInfoItem: {
+      marginHorizontal: 6,
+      marginBottom: 4,
     },
     summary: {
       fontSize: 10,
@@ -55,14 +61,19 @@ const createStyles = (color: string) =>
     },
     columnsContainer: {
       flexDirection: "row",
-      gap: 15,
     },
-    column: {
+    columnLeft: {
       flex: 1,
+      paddingRight: 12,
+    },
+    columnRight: {
+      flex: 1,
+      paddingLeft: 12,
     },
     divider: {
       width: 1,
       backgroundColor: color,
+      marginHorizontal: 8,
     },
     section: {
       marginBottom: 18,
@@ -73,7 +84,7 @@ const createStyles = (color: string) =>
       color: color,
       marginBottom: 12,
       paddingBottom: 4,
-      borderBottomWidth: 2,
+      borderBottomWidth: 1,
       borderBottomColor: color,
     },
     experienceItem: {
@@ -108,9 +119,14 @@ const createStyles = (color: string) =>
       fontSize: 9,
       paddingLeft: 8,
       paddingVertical: 4,
-      borderLeftWidth: 4,
+      borderLeftWidth: 1,
       borderLeftColor: color,
       marginBottom: 4,
+    },
+    educationField: {
+      fontSize: 9,
+      color: "#4b5563",
+      marginBottom: 2,
     },
   });
 
@@ -131,9 +147,15 @@ export const ColumnDividePDF = ({
             <Text style={styles.title}>{personalInfo.title}</Text>
           )}
           <View style={styles.contactInfo}>
-            {personalInfo.email && <Text>{personalInfo.email}</Text>}
-            {personalInfo.phone && <Text>{personalInfo.phone}</Text>}
-            {personalInfo.location && <Text>{personalInfo.location}</Text>}
+            {personalInfo.email && (
+              <Text style={styles.contactInfoItem}>{personalInfo.email}</Text>
+            )}
+            {personalInfo.phone && (
+              <Text style={styles.contactInfoItem}>{personalInfo.phone}</Text>
+            )}
+            {personalInfo.location && (
+              <Text style={styles.contactInfoItem}>{personalInfo.location}</Text>
+            )}
           </View>
         </View>
 
@@ -145,7 +167,7 @@ export const ColumnDividePDF = ({
         {/* Two Column Layout */}
         <View style={styles.columnsContainer}>
           {/* Left Column */}
-          <View style={styles.column}>
+          <View style={styles.columnLeft}>
             {/* Experience */}
             {experience && experience.length > 0 && (
               <View style={styles.section}>
@@ -172,7 +194,7 @@ export const ColumnDividePDF = ({
           <View style={styles.divider} />
 
           {/* Right Column */}
-          <View style={styles.column}>
+          <View style={styles.columnRight}>
             {/* Skills */}
             {skills && skills.length > 0 && (
               <View style={styles.section}>
@@ -190,8 +212,13 @@ export const ColumnDividePDF = ({
                 {education.map((edu, index) => (
                   <View key={index} style={{ marginBottom: 10 }}>
                     <Text style={styles.position}>{edu.degree}</Text>
-                    <Text style={[styles.company, { color: "#4b5563" }]}>{edu.institution}</Text>
-                    <Text style={styles.dateRange}>{edu.graduationDate}</Text>
+                    <Text style={[styles.company, { color: "#4b5563" }]}>
+                      {edu.institution || edu.school}
+                    </Text>
+                    {edu.field && <Text style={styles.educationField}>{edu.field}</Text>}
+                    <Text style={styles.dateRange}>
+                      {edu.startDate} - {edu.endDate || edu.graduationDate}
+                    </Text>
                   </View>
                 ))}
               </View>
