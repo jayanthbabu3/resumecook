@@ -233,6 +233,57 @@ function verifyTemplate(templateName) {
     warnings.push('May not format dates correctly');
   }
   
+  // 7.5. Check Education section completeness
+  log('\n🎓 Education Section Completeness:', 'cyan');
+  if (templateContent.includes('education') || templateContent.includes('Education')) {
+    // Check for all required fields
+    const educationChecks = [
+      { pattern: 'edu.degree|education.*degree', name: 'Degree field' },
+      { pattern: 'edu.field|education.*field', name: 'Field of Study field' },
+      { pattern: 'edu.school|education.*school', name: 'School field' },
+      { pattern: 'edu.gpa|education.*gpa', name: 'GPA field' },
+      { pattern: 'edu.startDate|education.*startDate', name: 'Start Date field' },
+      { pattern: 'edu.endDate|education.*endDate', name: 'End Date field' },
+    ];
+    
+    educationChecks.forEach(check => {
+      const regex = new RegExp(check.pattern, 'i');
+      if (regex.test(templateContent)) {
+        success(`${check.name} found`);
+      } else {
+        if (check.name === 'GPA field' || check.name === 'Field of Study field') {
+          warning(`${check.name} not found (optional but should render if exists)`);
+          warnings.push(`Education section may not display ${check.name}`);
+        } else {
+          error(`${check.name} missing`);
+          issues.push(`Education section missing: ${check.name}`);
+        }
+      }
+    });
+    
+    // Check if education uses InlineEditableDate for dates (not raw dates)
+    if (templateContent.includes('education') && templateContent.includes('InlineEditableDate')) {
+      success('Education dates use InlineEditableDate');
+    } else if (templateContent.includes('education') && !templateContent.includes('InlineEditableDate')) {
+      // Check if dates are formatted (not raw)
+      if (templateContent.includes('formatDate') && templateContent.includes('edu.startDate') && templateContent.includes('edu.endDate')) {
+        warning('Education dates may not be editable (check if using InlineEditableDate)');
+        warnings.push('Education dates should use InlineEditableDate for editability');
+      } else {
+        error('Education dates not using InlineEditableDate or formatDate');
+        issues.push('Education dates must use InlineEditableDate with formatDate');
+      }
+    }
+    
+    // Check if education uses InlineEditableList
+    if (templateContent.includes('InlineEditableList') && templateContent.includes('path="education"') || templateContent.includes("path='education'")) {
+      success('Education uses InlineEditableList for editability');
+    } else {
+      warning('Education may not use InlineEditableList (check editable mode)');
+      warnings.push('Education section should use InlineEditableList for editability');
+    }
+  }
+  
   // 8. Check PDF template matching
   if (pdfContent) {
     log('\n📄 PDF Template Matching:', 'cyan');
@@ -263,6 +314,32 @@ function verifyTemplate(templateName) {
         warnings.push(`PDF may not render ${section} section`);
       }
     });
+    
+    // Check if PDF education section has all fields
+    if (pdfContent.includes('education') || pdfContent.includes('Education')) {
+      const pdfEducationChecks = [
+        { pattern: 'edu\\.degree|education.*degree', name: 'Degree in PDF' },
+        { pattern: 'edu\\.field|education.*field', name: 'Field in PDF' },
+        { pattern: 'edu\\.gpa|education.*gpa', name: 'GPA in PDF' },
+        { pattern: 'formatDate.*startDate|startDate.*formatDate', name: 'Start Date formatting in PDF' },
+        { pattern: 'formatDate.*endDate|endDate.*formatDate', name: 'End Date formatting in PDF' },
+      ];
+      
+      pdfEducationChecks.forEach(check => {
+        const regex = new RegExp(check.pattern, 'i');
+        if (regex.test(pdfContent)) {
+          success(`${check.name} found`);
+        } else {
+          if (check.name === 'GPA in PDF' || check.name === 'Field in PDF') {
+            warning(`${check.name} not found (optional but should render if exists)`);
+            warnings.push(`PDF education section may not display ${check.name}`);
+          } else {
+            error(`${check.name} missing`);
+            issues.push(`PDF education section missing: ${check.name}`);
+          }
+        }
+      });
+    }
   }
   
   // 9. Check registration files

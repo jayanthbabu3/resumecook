@@ -5,7 +5,7 @@ import {
   Document,
   StyleSheet,
 } from "@react-pdf/renderer";
-import type { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 interface ExecutiveMinimalPDFProps {
@@ -59,6 +59,7 @@ const createStyles = (color: string) =>
     summaryContainer: {
       marginBottom: 24,
       alignItems: "center",
+      pageBreakInside: 'avoid',
     },
     summary: {
       textAlign: "center",
@@ -77,10 +78,12 @@ const createStyles = (color: string) =>
       borderBottomColor: "#000",
       paddingBottom: 4,
       marginBottom: 16,
+      pageBreakAfter: 'avoid',
     },
     section: {
       marginBottom: 24,
       alignItems: "center",
+      pageBreakInside: 'avoid',
     },
     experienceItemWrapper: {
       alignItems: "center",
@@ -160,6 +163,13 @@ export const ExecutiveMinimalPDF = ({
   const styles = createStyles(themeColor);
   const { personalInfo, experience, education, skills, sections } = resumeData;
 
+  const formatDate = (date: string) => {
+    if (!date) return "";
+    const [year, month] = date.split("-");
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${monthNames[parseInt(month) - 1]} ${year}`;
+  };
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -196,16 +206,19 @@ export const ExecutiveMinimalPDF = ({
                       <Text style={styles.company}>{exp.company}</Text>
                     </View>
                     <Text style={styles.dateRange}>
-                      {exp.startDate} - {exp.endDate || "Present"}
+                      {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </Text>
                   </View>
-                  {exp.description && (
+                  {/* Bullet Points */}
+                  {exp.bulletPoints && exp.bulletPoints.length > 0 && (
                     <View style={styles.description}>
-                      {exp.description.split("\n").map((item, i) => (
-                        <View key={i} style={styles.descriptionItem}>
-                          <Text style={styles.bullet}>—</Text>
-                          <Text style={styles.bulletText}>{item}</Text>
-                        </View>
+                      {exp.bulletPoints.map((bullet, bulletIndex) => (
+                        bullet && (
+                          <View key={bulletIndex} style={styles.descriptionItem}>
+                            <Text style={styles.bullet}>—</Text>
+                            <Text style={styles.bulletText}>{bullet}</Text>
+                          </View>
+                        )
                       ))}
                     </View>
                   )}
@@ -225,9 +238,17 @@ export const ExecutiveMinimalPDF = ({
                   <View style={styles.experienceHeader}>
                     <View>
                       <Text style={styles.position}>{edu.degree}</Text>
+                      {hasContent(edu.field) && (
+                        <Text style={styles.company}>{edu.field}</Text>
+                      )}
                       <Text style={styles.company}>{edu.school}</Text>
+                      {hasContent(edu.gpa) && (
+                        <Text style={[styles.company, { marginTop: 2 }]}>GPA: {edu.gpa}</Text>
+                      )}
                     </View>
-                    <Text style={styles.dateRange}>{edu.graduationDate}</Text>
+                    <Text style={styles.dateRange}>
+                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    </Text>
                   </View>
                 </View>
               </View>

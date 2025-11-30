@@ -4,8 +4,12 @@ import {
   View,
   Document,
   StyleSheet,
+  Svg,
+  Path,
+  Rect,
+  Circle,
 } from "@react-pdf/renderer";
-import type { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 import { PDF_PAGE_MARGINS } from "@/lib/pdfConfig";
 
 interface SidebarAccentPDFProps {
@@ -107,6 +111,20 @@ const createStyles = (color: string) =>
       marginBottom: 2,
       paddingLeft: 10,
     },
+    socialLinksContainer: {
+      marginBottom: 12,
+    },
+    socialLinkItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 6,
+      gap: 4,
+    },
+    socialLinkText: {
+      fontSize: 8,
+      color: '#ffffff',
+      opacity: 0.9,
+    },
   });
 
 export const SidebarAccentPDF = ({
@@ -115,6 +133,13 @@ export const SidebarAccentPDF = ({
 }: SidebarAccentPDFProps) => {
   const styles = createStyles(themeColor);
   const { personalInfo, experience, education, skills, sections } = resumeData;
+
+  const formatDate = (date: string) => {
+    if (!date) return "";
+    const [year, month] = date.split("-");
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${monthNames[parseInt(month) - 1]} ${year}`;
+  };
 
   return (
     <Document>
@@ -159,6 +184,41 @@ export const SidebarAccentPDF = ({
             </View>
           )}
 
+          {/* Social Links */}
+          {personalInfo.linkedin || personalInfo.portfolio || personalInfo.github ? (
+            <View style={styles.socialLinksContainer}>
+              <Text style={styles.sidebarSectionTitle}>Social Links</Text>
+              <View style={styles.sidebarSectionBorder} />
+              {personalInfo.linkedin && (
+                <View style={styles.socialLinkItem}>
+                  <Svg width="8" height="8" viewBox="0 0 24 24">
+                    <Path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" fill="none" stroke="#ffffff" strokeWidth="2" />
+                    <Rect x="2" y="9" width="4" height="12" fill="none" stroke="#ffffff" strokeWidth="2" />
+                    <Circle cx="4" cy="4" r="2" fill="none" stroke="#ffffff" strokeWidth="2" />
+                  </Svg>
+                  <Text style={styles.socialLinkText}>{personalInfo.linkedin}</Text>
+                </View>
+              )}
+              {personalInfo.portfolio && (
+                <View style={styles.socialLinkItem}>
+                  <Svg width="8" height="8" viewBox="0 0 24 24">
+                    <Circle cx="12" cy="12" r="10" fill="none" stroke="#ffffff" strokeWidth="2" />
+                    <Path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" fill="none" stroke="#ffffff" strokeWidth="2" />
+                  </Svg>
+                  <Text style={styles.socialLinkText}>{personalInfo.portfolio}</Text>
+                </View>
+              )}
+              {personalInfo.github && (
+                <View style={styles.socialLinkItem}>
+                  <Svg width="8" height="8" viewBox="0 0 24 24">
+                    <Path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" fill="none" stroke="#ffffff" strokeWidth="2" />
+                  </Svg>
+                  <Text style={styles.socialLinkText}>{personalInfo.github}</Text>
+                </View>
+              )}
+            </View>
+          ) : null}
+
           {/* Education */}
           {education && education.length > 0 && (
             <View style={styles.sidebarSection}>
@@ -167,9 +227,15 @@ export const SidebarAccentPDF = ({
               {education.map((edu, index) => (
                 <View key={index} style={{ marginBottom: 10, fontSize: 9 }}>
                   <Text style={{ fontWeight: 600, marginBottom: 2 }}>{edu.degree}</Text>
+                  {hasContent(edu.field) && (
+                    <Text style={{ opacity: 0.9, marginBottom: 2 }}>{edu.field}</Text>
+                  )}
                   <Text style={{ opacity: 0.9, marginBottom: 2 }}>{edu.school}</Text>
+                  {hasContent(edu.gpa) && (
+                    <Text style={{ fontSize: 8, opacity: 0.75, marginBottom: 2 }}>GPA: {edu.gpa}</Text>
+                  )}
                   <Text style={{ fontSize: 8, opacity: 0.75 }}>
-                    {edu.startDate} - {edu.endDate}
+                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                   </Text>
                 </View>
               ))}
@@ -198,12 +264,15 @@ export const SidebarAccentPDF = ({
                       <Text style={styles.position}>{exp.position}</Text>
                       <Text style={styles.company}>{exp.company}</Text>
                     </View>
-                    <Text style={styles.dateRange}>{exp.startDate} - {exp.endDate || "Present"}</Text>
+                    <Text style={styles.dateRange}>{formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}</Text>
                   </View>
-                  {exp.description && (
+                  {/* Bullet Points */}
+                  {exp.bulletPoints && exp.bulletPoints.length > 0 && (
                     <View style={styles.description}>
-                      {exp.description.split("\n").map((item, i) => (
-                        <Text key={i} style={styles.descriptionItem}>• {item}</Text>
+                      {exp.bulletPoints.map((bullet, bulletIndex) => (
+                        bullet && (
+                          <Text key={bulletIndex} style={styles.descriptionItem}>• {bullet}</Text>
+                        )
                       ))}
                     </View>
                   )}

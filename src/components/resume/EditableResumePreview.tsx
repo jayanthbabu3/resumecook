@@ -135,6 +135,9 @@ import { BusinessEliteTemplate } from "./templates/BusinessEliteTemplate";
 import { CorporateCleanTemplate } from "./templates/CorporateCleanTemplate";
 import { ProfessionalClassicTemplate } from "./templates/ProfessionalClassicTemplate";
 import { ModernBusinessTemplate } from "./templates/ModernBusinessTemplate";
+import { ExecutiveMinimalTemplate } from "./templates/ExecutiveMinimalTemplate";
+import { SidebarAccentTemplate } from "./templates/SidebarAccentTemplate";
+import { TwoToneClassicTemplate } from "./templates/TwoToneClassicTemplate";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
@@ -417,6 +420,9 @@ export const EditableResumePreview = ({
     "corporate-clean": CorporateCleanTemplate,
     "professional-classic": ProfessionalClassicTemplate,
     "modern-business": ModernBusinessTemplate,
+    "executive-minimal": ExecutiveMinimalTemplate,
+    "sidebar-accent": SidebarAccentTemplate,
+    "two-tone-classic": TwoToneClassicTemplate,
   };
 
   const Template =

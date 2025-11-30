@@ -1,17 +1,21 @@
-import type { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { Plus, X, Linkedin, Globe, Github } from "lucide-react";
 
 interface TemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
+  onAddBulletPoint?: (expId: string) => void;
+  onRemoveBulletPoint?: (expId: string, bulletIndex: number) => void;
+  showSkillRatings?: boolean;
 }
 
-export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669", editable = false }: TemplateProps) => {
+export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669", editable = false, onAddBulletPoint, onRemoveBulletPoint, showSkillRatings = false }: TemplateProps) => {
   const formatDate = (date: string) => {
     if (!date) return "";
     const [year, month] = date.split("-");
@@ -91,8 +95,8 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
 
       {/* Summary */}
       {resumeData.personalInfo.summary && (
-        <div className="mb-8">
-          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor }}>
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
             Professional Summary
           </h2>
           {editable ? (
@@ -111,10 +115,69 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
         </div>
       )}
 
+      {/* Social Links */}
+      {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
+            Social Links
+          </h2>
+          <div className="flex flex-wrap gap-4 text-[12.5px] text-gray-600">
+            {resumeData.personalInfo.linkedin && (
+              <div className="flex items-center gap-2">
+                <Linkedin className="h-4 w-4" />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.linkedin"
+                    value={resumeData.personalInfo.linkedin}
+                    className="inline-block"
+                  />
+                ) : (
+                  <a href={resumeData.personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    LinkedIn
+                  </a>
+                )}
+              </div>
+            )}
+            {resumeData.personalInfo.portfolio && (
+              <div className="flex items-center gap-2">
+                <Globe className="h-4 w-4" />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.portfolio"
+                    value={resumeData.personalInfo.portfolio}
+                    className="inline-block"
+                  />
+                ) : (
+                  <a href={resumeData.personalInfo.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    Portfolio
+                  </a>
+                )}
+              </div>
+            )}
+            {resumeData.personalInfo.github && (
+              <div className="flex items-center gap-2">
+                <Github className="h-4 w-4" />
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.github"
+                    value={resumeData.personalInfo.github}
+                    className="inline-block"
+                  />
+                ) : (
+                  <a href={resumeData.personalInfo.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    GitHub
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Experience - Timeline */}
       {resumeData.experience.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor }}>
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-[15px] font-bold mb-6" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
             Career Timeline
           </h2>
           {editable ? (
@@ -170,7 +233,75 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
                       )}
                     </div>
                   </div>
-                  {exp.description && (
+                  {/* Bullet Points Priority: Check bulletPoints first, then description */}
+                  {(!exp.bulletPoints || exp.bulletPoints.length === 0) && editable && onAddBulletPoint && exp.id && (
+                    <div className="mt-3">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (onAddBulletPoint && exp.id) {
+                            onAddBulletPoint(exp.id);
+                          }
+                        }}
+                        className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-light"
+                      >
+                        <Plus className="h-3 w-3" />
+                        Add Achievement
+                      </button>
+                    </div>
+                  )}
+                  {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                    <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+                      <ul className="space-y-1">
+                        {exp.bulletPoints.map((bullet, bulletIndex) => (
+                          <li key={bulletIndex} className="text-[13px] text-gray-700 leading-[1.7] flex items-start group">
+                            <span className="mr-2 mt-1">•</span>
+                            <div className="flex-1 flex items-center gap-2">
+                              <InlineEditableText
+                                path={`experience[${index}].bulletPoints[${bulletIndex}]`}
+                                value={bullet || ""}
+                                placeholder="Click to add achievement..."
+                                className="text-[13px] text-gray-700 leading-[1.7] flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
+                                multiline
+                                as="span"
+                              />
+                              {editable && onRemoveBulletPoint && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    onRemoveBulletPoint(exp.id, bulletIndex);
+                                  }}
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 rounded"
+                                >
+                                  <X className="h-3 w-3 text-red-500" />
+                                </button>
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                      {editable && onAddBulletPoint && exp.id && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (onAddBulletPoint && exp.id) {
+                              onAddBulletPoint(exp.id);
+                            }
+                          }}
+                          className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-light"
+                        >
+                          <Plus className="h-3 w-3" />
+                          Add Achievement
+                        </button>
+                      )}
+                    </div>
+                  )}
+                  {/* Fallback to description if no bullet points */}
+                  {(!exp.bulletPoints || exp.bulletPoints.length === 0) && exp.description && (
                     <InlineEditableText
                       path={`experience[${index}].description`}
                       value={exp.description}
@@ -196,7 +327,19 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
                       {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </span>
                   </div>
-                  {exp.description && (
+                  {/* Bullet Points Priority: Check bulletPoints first, then description */}
+                  {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                    <ul className="mt-3 space-y-1">
+                      {exp.bulletPoints.map((bullet, bulletIndex) => (
+                        <li key={bulletIndex} className="text-[13px] text-gray-700 leading-[1.7]">
+                          <span className="mr-2">•</span>
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {/* Fallback to description if no bullet points */}
+                  {(!exp.bulletPoints || exp.bulletPoints.length === 0) && exp.description && (
                     <p className="text-[13px] text-gray-700 leading-[1.7] whitespace-pre-line">
                       {exp.description}
                     </p>
@@ -210,18 +353,20 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor }}>
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
             Skills
           </h2>
           {editable ? (
             <InlineEditableSkills
               path="skills"
               skills={resumeData.skills}
+              showRating={showSkillRatings}
               renderSkill={(skill) => {
                 return skill.name ? (
                   <span className="inline-block px-3 py-1.5 mr-2 mb-2 rounded-full text-[12px] font-medium" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
                     {skill.name}
+                    {showSkillRatings && skill.rating && <span className="ml-1 text-xs text-gray-500">({skill.rating})</span>}
                   </span>
                 ) : null;
               }}
@@ -232,6 +377,7 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
                 skill.name ? (
                   <span key={skill.id} className="px-3 py-1.5 mr-2 mb-2 rounded-full text-[12px] font-medium" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
                     {skill.name}
+                    {showSkillRatings && skill.rating && <span className="ml-1 text-xs text-gray-500">({skill.rating})</span>}
                   </span>
                 ) : null
               ))}
@@ -242,8 +388,8 @@ export const ProfessionalTimelineTemplate = ({ resumeData, themeColor = "#059669
 
       {/* Education */}
       {resumeData.education.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor }}>
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-[15px] font-bold mb-4" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
             Education
           </h2>
           {editable ? (

@@ -1,19 +1,25 @@
 import React from "react";
-import type { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 import { InlineEditableText } from "../InlineEditableText";
+import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { Plus, X, Linkedin, Globe, Github } from "lucide-react";
 
 interface TwoToneClassicTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
+  onAddBulletPoint?: (expId: string) => void;
+  onRemoveBulletPoint?: (expId: string, bulletIndex: number) => void;
 }
 
 export const TwoToneClassicTemplate = ({
   resumeData,
   themeColor = "#334155",
   editable = false,
+  onAddBulletPoint,
+  onRemoveBulletPoint,
 }: TwoToneClassicTemplateProps) => {
   const hexToRgba = (hex: string, alpha = 1) => {
     const cleanedHex = hex.replace("#", "");
@@ -27,6 +33,13 @@ export const TwoToneClassicTemplate = ({
   };
 
   const lightTone = hexToRgba(themeColor, 0.08);
+
+  const formatDate = (date: string) => {
+    if (!date) return "";
+    const [year, month] = date.split("-");
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${monthNames[parseInt(month) - 1]} ${year}`;
+  };
 
   return (
     <div className="w-full h-full bg-white text-gray-900">
@@ -135,6 +148,65 @@ export const TwoToneClassicTemplate = ({
           </div>
         )}
 
+        {/* Social Links */}
+        {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
+          <div className="mb-10 p-6 rounded" style={{ backgroundColor: lightTone }}>
+            <h2 className="text-xl font-bold mb-3" style={{ color: themeColor }}>
+              Social Links
+            </h2>
+            <div className="flex flex-wrap gap-4 text-sm text-gray-700">
+              {resumeData.personalInfo.linkedin && (
+                <div className="flex items-center gap-2">
+                  <Linkedin className="h-4 w-4" />
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.linkedin"
+                      value={resumeData.personalInfo.linkedin}
+                      className="inline-block"
+                    />
+                  ) : (
+                    <a href={resumeData.personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                      LinkedIn
+                    </a>
+                  )}
+                </div>
+              )}
+              {resumeData.personalInfo.portfolio && (
+                <div className="flex items-center gap-2">
+                  <Globe className="h-4 w-4" />
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.portfolio"
+                      value={resumeData.personalInfo.portfolio}
+                      className="inline-block"
+                    />
+                  ) : (
+                    <a href={resumeData.personalInfo.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                      Portfolio
+                    </a>
+                  )}
+                </div>
+              )}
+              {resumeData.personalInfo.github && (
+                <div className="flex items-center gap-2">
+                  <Github className="h-4 w-4" />
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.github"
+                      value={resumeData.personalInfo.github}
+                      className="inline-block"
+                    />
+                  ) : (
+                    <a href={resumeData.personalInfo.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Experience */}
         {resumeData.experience && resumeData.experience.length > 0 && (
           <div className="mb-10">
@@ -143,7 +215,7 @@ export const TwoToneClassicTemplate = ({
             </h2>
             <div className="space-y-6">
               {resumeData.experience.map((exp, index) => (
-                <div key={index} className={index % 2 === 0 ? "p-6 rounded" : "p-6"} style={index % 2 === 0 ? { backgroundColor: lightTone } : {}}>
+                <div key={index} className={index % 2 === 0 ? "p-6 rounded group" : "p-6 group"} style={index % 2 === 0 ? { backgroundColor: lightTone } : {}}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">
                       {editable ? (
@@ -171,28 +243,56 @@ export const TwoToneClassicTemplate = ({
                       )}
                     </div>
                     <div className="text-sm text-gray-500 ml-4 whitespace-nowrap">
-                      {exp.startDate} - {exp.endDate || "Present"}
+                      {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </div>
                   </div>
 
-                  {exp.description && (
-                    <div className="text-gray-700 mt-3">
-                      {editable ? (
-                        <InlineEditableText
-                          path={`experience[${index}].description`}
-                          value={exp.description}
-                          className="whitespace-pre-line"
-                          multiline
-                          as="div"
-                        />
-                      ) : (
-                        <ul className="list-disc list-inside space-y-1">
-                          {exp.description.split("\n").map((item, i) => (
-                            <li key={i}>{item}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
+                  {/* Bullet Points */}
+                  {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                    <ul className="space-y-2 list-none mt-3">
+                      {exp.bulletPoints.map((bullet, bulletIndex) => (
+                        <li key={bulletIndex} className="text-gray-700 leading-relaxed flex items-start">
+                          <span className="mr-2" style={{ color: themeColor }}>•</span>
+                          {editable ? (
+                            <InlineEditableText
+                              path={`experience[${index}].bulletPoints[${bulletIndex}]`}
+                              value={bullet || ""}
+                              placeholder="Click to add achievement..."
+                              className="text-gray-700 leading-relaxed flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
+                              multiline
+                              as="span"
+                            />
+                          ) : (
+                            bullet && <span>{bullet}</span>
+                          )}
+                          {editable && onRemoveBulletPoint && (
+                            <button
+                              onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}
+                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 rounded ml-2"
+                            >
+                              <X className="h-3 w-3 text-red-500" />
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {/* Add bullet point button */}
+                  {editable && onAddBulletPoint && exp.id && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (onAddBulletPoint && exp.id) {
+                          onAddBulletPoint(exp.id);
+                        }
+                      }}
+                      className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Plus className="h-3 w-3" />
+                      Add Achievement
+                    </button>
                   )}
                 </div>
               ))}

@@ -131,10 +131,17 @@ This checklist applies to **any template layout**:
 - [ ] Fallback to description if no bullet points
 
 ### ✅ Step 8: Education Section
-- [ ] Uses `InlineEditableList` for editable mode
-- [ ] Degree, field, school, GPA all editable
-- [ ] Date fields use `InlineEditableDate`
+- [ ] **CRITICAL**: Uses `InlineEditableList` for editable mode
+- [ ] **CRITICAL**: All education fields must be displayed:
+  - [ ] Degree (required)
+  - [ ] Field of Study (optional, but must render if exists)
+  - [ ] School (required)
+  - [ ] GPA (optional, but must render if exists)
+  - [ ] Start Date (required, must use `InlineEditableDate` with `formatDate`)
+  - [ ] End Date (required, must use `InlineEditableDate` with `formatDate`)
+- [ ] Date fields use `InlineEditableDate` with `formatDate` helper (not raw dates)
 - [ ] Proper spacing between education items
+- [ ] **CRITICAL**: PDF template must match UI template - all fields must render in PDF
 
 ### ✅ Step 9: Skills Section
 - [ ] Uses `InlineEditableSkills` for editable mode
@@ -692,30 +699,95 @@ socialLinkItem: {
 
 ### Pattern 3: Education Section (Any Layout)
 
+**CRITICAL**: All education fields must be displayed and editable.
+
+**UI Template Pattern:**
 ```tsx
 {resumeData.education.length > 0 && (
-  <div className="..."> {/* Layout-specific wrapper */}
-    <h2 className="..."> {/* Layout-specific heading style */}
+  <div className="..." style={{ pageBreakInside: 'avoid' }}>
+    <h2 className="..." style={{ pageBreakAfter: 'avoid' }}>
       EDUCATION
     </h2>
     {editable ? (
       <InlineEditableList
         path="education"
         items={resumeData.education}
-        defaultItem={{...}}
+        defaultItem={{
+          id: Date.now().toString(),
+          school: "School Name",
+          degree: "Degree",
+          field: "Field of Study",
+          startDate: "2019-09",
+          endDate: "2023-05",
+        }}
         addButtonLabel="Add Education"
         renderItem={(edu, index) => (
-          <div>
-            {/* Degree, Field, School, GPA, Dates - layout-specific styling */}
-            {/* All fields editable with InlineEditableText/Date */}
+          <div className="mb-4">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex-1">
+                <InlineEditableText
+                  path={`education[${index}].degree`}
+                  value={edu.degree}
+                  className="text-[13px] font-semibold text-gray-900 block"
+                  as="h3"
+                />
+                {edu.field && (
+                  <InlineEditableText
+                    path={`education[${index}].field`}
+                    value={edu.field}
+                    className="text-[12px] text-gray-600 block"
+                    as="p"
+                  />
+                )}
+                <InlineEditableText
+                  path={`education[${index}].school`}
+                  value={edu.school}
+                  className="text-[12.5px] text-gray-700 block"
+                  as="p"
+                />
+                {edu.gpa && (
+                  <InlineEditableText
+                    path={`education[${index}].gpa`}
+                    value={`GPA: ${edu.gpa}`}
+                    className="text-[11px] text-gray-500 block mt-0.5"
+                    as="p"
+                  />
+                )}
+              </div>
+              <div className="text-[12px] text-gray-500 whitespace-nowrap flex items-center gap-1">
+                <InlineEditableDate
+                  path={`education[${index}].startDate`}
+                  value={edu.startDate}
+                  formatDisplay={formatDate}
+                  className="inline-block"
+                />
+                <span> - </span>
+                <InlineEditableDate
+                  path={`education[${index}].endDate`}
+                  value={edu.endDate}
+                  formatDisplay={formatDate}
+                  className="inline-block"
+                />
+              </div>
+            </div>
           </div>
         )}
       />
     ) : (
       <div>
         {resumeData.education.map((edu) => (
-          <div key={edu.id}>
-            {/* Render degree, field, school, GPA, dates */}
+          <div key={edu.id} className="mb-4">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex-1">
+                <h3 className="text-[13px] font-semibold text-gray-900">{edu.degree}</h3>
+                {edu.field && <p className="text-[12px] text-gray-600">{edu.field}</p>}
+                <p className="text-[12.5px] text-gray-700">{edu.school}</p>
+                {edu.gpa && <p className="text-[11px] text-gray-500 mt-0.5">GPA: {edu.gpa}</p>}
+              </div>
+              <span className="text-[12px] text-gray-500 whitespace-nowrap">
+                {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+              </span>
+            </div>
           </div>
         ))}
       </div>
@@ -723,6 +795,39 @@ socialLinkItem: {
   </div>
 )}
 ```
+
+**PDF Template Pattern:**
+```tsx
+{resumeData.education.length > 0 && (
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>Education</Text>
+    {resumeData.education.map((edu) => (
+      <View key={edu.id} style={styles.educationItem}>
+        <View style={styles.educationContent}>
+          <Text style={styles.educationDegree}>{edu.degree}</Text>
+          {hasContent(edu.field) && <Text style={styles.educationField}>{edu.field}</Text>}
+          <Text style={styles.educationSchool}>{edu.school}</Text>
+          {hasContent(edu.gpa) && (
+            <Text style={[styles.educationField, { marginTop: 2 }]}>GPA: {edu.gpa}</Text>
+          )}
+        </View>
+        <Text style={styles.educationDate}>
+          {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+        </Text>
+      </View>
+    ))}
+  </View>
+)}
+```
+
+**Key Points:**
+- ✅ **CRITICAL**: Must use `InlineEditableList` for editable mode
+- ✅ **CRITICAL**: All fields must be displayed: degree, field (if exists), school, GPA (if exists), startDate, endDate
+- ✅ **CRITICAL**: Dates must use `InlineEditableDate` with `formatDate` helper (not raw dates)
+- ✅ **CRITICAL**: PDF template must match UI template - all fields must render in PDF
+- ✅ Field and GPA are optional but must render if they exist
+- ✅ Use conditional rendering: `{edu.field && ...}` and `{edu.gpa && ...}`
+- ✅ Use `hasContent()` helper in PDF templates for optional fields
 
 ### Pattern 4: Custom Sections (Any Layout)
 
@@ -922,16 +1027,20 @@ A template is **production-ready** when:
 7. ✅ **Social Links section is implemented** (not missing)
 8. ✅ **Default custom section is included** in template defaults (`getTemplateDefaults` in `resumeUtils.ts`)
 9. ✅ **Custom sections render in PDF** (not missing)
-10. ✅ PDF export matches preview (structurally, not necessarily pixel-perfect)
-11. ✅ **PDF alignment matches live preview** (left-aligned sections, not centered)
-12. ✅ Font sizes are readable and proportional
-13. ✅ Spacing is consistent within the template
-14. ✅ All registrations complete
-15. ✅ No TypeScript errors
-16. ✅ No console errors
-17. ✅ **No infinite render loops** (page doesn't freeze)
-18. ✅ **Event handlers properly prevent propagation** (buttons don't trigger navigation)
-19. ✅ Sync works between Form and Live editors
+10. ✅ **Education section displays all fields**: degree, field (if exists), school, GPA (if exists), startDate, endDate
+11. ✅ **Education dates use `InlineEditableDate` with `formatDate`** (not raw dates)
+12. ✅ **Education section uses `InlineEditableList`** for editable mode
+13. ✅ **PDF education section matches UI** - all fields render in PDF
+14. ✅ PDF export matches preview (structurally, not necessarily pixel-perfect)
+15. ✅ **PDF alignment matches live preview** (left-aligned sections, not centered)
+16. ✅ Font sizes are readable and proportional
+17. ✅ Spacing is consistent within the template
+18. ✅ All registrations complete
+19. ✅ No TypeScript errors
+20. ✅ No console errors
+21. ✅ **No infinite render loops** (page doesn't freeze)
+22. ✅ **Event handlers properly prevent propagation** (buttons don't trigger navigation)
+23. ✅ Sync works between Form and Live editors
 
 ---
 

@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   name: {
-    fontSize: 34,
+    fontSize: 28,
     fontWeight: 700,
     color: '#1f2937',
     marginBottom: 6,
   },
   title: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#6b7280',
     marginBottom: 12,
   },
@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
-    fontSize: 9.5,
+    fontSize: 9,
     color: '#6b7280',
   },
   section: {
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 700,
     color: '#1f2937',
     marginBottom: 12,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   position: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: 700,
     color: '#111827',
     marginBottom: 3,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     color: '#1f2937',
   },
   experienceDate: {
-    fontSize: 9,
+    fontSize: 8.5,
     color: '#6b7280',
   },
   description: {
@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   bullet: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#1f2937',
     marginRight: 6,
   },
   bulletText: {
-    fontSize: 10,
+    fontSize: 9,
     lineHeight: 1.6,
     color: '#374151',
     flex: 1,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
-    fontSize: 9.5,
+    fontSize: 9,
     fontWeight: 600,
     color: '#1f2937',
   },
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   educationDegree: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: 700,
     color: '#111827',
     marginBottom: 2,
@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   educationSchool: {
-    fontSize: 9.5,
+    fontSize: 9,
     color: '#374151',
   },
   educationDate: {
-    fontSize: 9,
+    fontSize: 8.5,
     color: '#6b7280',
   },
   socialLinksContainer: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
     gap: 12,
-    fontSize: 9.5,
+    fontSize: 9,
     color: '#374151',
     marginTop: 8,
   },
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   linkText: {
-    fontSize: 9.5,
+    fontSize: 9,
     color: '#0066cc',
   },
 });
@@ -189,6 +189,13 @@ export const BusinessModernPDF = ({ resumeData, themeColor = "#1f2937" }: Props)
             {hasContent(resumeData.personalInfo.location) && <Text>{resumeData.personalInfo.location}</Text>}
           </View>
         </View>
+
+        {hasContent(resumeData.personalInfo.summary) && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: themeColor }]}>Professional Summary</Text>
+            <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
+          </View>
+        )}
 
         {/* Social Links */}
         {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
@@ -223,13 +230,6 @@ export const BusinessModernPDF = ({ resumeData, themeColor = "#1f2937" }: Props)
                 </View>
               )}
             </View>
-          </View>
-        )}
-
-        {hasContent(resumeData.personalInfo.summary) && (
-          <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: themeColor }]}>Professional Summary</Text>
-            <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
           </View>
         )}
 

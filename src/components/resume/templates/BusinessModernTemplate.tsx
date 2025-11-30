@@ -92,6 +92,28 @@ export const BusinessModernTemplate = ({ resumeData, themeColor = "#1f2937", edi
         </div>
       </div>
 
+      {/* Summary */}
+      {resumeData.personalInfo.summary && (
+        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
+          <h2 className="text-[15px] font-bold mb-4 uppercase" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
+            Professional Summary
+          </h2>
+          {editable ? (
+            <InlineEditableText
+              path="personalInfo.summary"
+              value={resumeData.personalInfo.summary}
+              className="text-[13px] text-gray-700 leading-[1.7] block"
+              multiline
+              as="p"
+            />
+          ) : (
+            <p className="text-[13px] text-gray-700 leading-[1.7]">
+              {resumeData.personalInfo.summary}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Social Links */}
       {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
         <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
@@ -148,28 +170,6 @@ export const BusinessModernTemplate = ({ resumeData, themeColor = "#1f2937", edi
               </div>
             )}
           </div>
-        </div>
-      )}
-
-      {/* Summary */}
-      {resumeData.personalInfo.summary && (
-        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-          <h2 className="text-[15px] font-bold mb-4 uppercase" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
-            Professional Summary
-          </h2>
-          {editable ? (
-            <InlineEditableText
-              path="personalInfo.summary"
-              value={resumeData.personalInfo.summary}
-              className="text-[13px] text-gray-700 leading-[1.7] block"
-              multiline
-              as="p"
-            />
-          ) : (
-            <p className="text-[13px] text-gray-700 leading-[1.7]">
-              {resumeData.personalInfo.summary}
-            </p>
-          )}
         </div>
       )}
 
