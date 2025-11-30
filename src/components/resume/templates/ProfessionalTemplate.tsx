@@ -15,9 +15,10 @@ interface TemplateProps {
   editable?: boolean;
   onAddBulletPoint?: (expId: string) => void;
   onRemoveBulletPoint?: (expId: string, bulletIndex: number) => void;
+  showSkillRatings?: boolean; // Enable skill ratings (default: false)
 }
 
-export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false, onAddBulletPoint, onRemoveBulletPoint }: TemplateProps) => {
+export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false, onAddBulletPoint, onRemoveBulletPoint, showSkillRatings = false }: TemplateProps) => {
   const formatDate = (date: string) => {
     if (!date) return "";
     const [year, month] = date.split("-");

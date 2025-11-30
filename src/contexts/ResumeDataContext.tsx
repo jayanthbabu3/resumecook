@@ -34,25 +34,9 @@ export const ResumeDataProvider: React.FC<ResumeDataProviderProps> = ({
     if (typeof data === 'function') {
       setResumeDataState((prev) => {
         const updated = data(prev);
-        console.log("🟣 ResumeDataContext: Received functional update, updated data:", {
-          experienceCount: updated.experience.length,
-          firstExp: updated.experience[0] ? {
-            id: updated.experience[0].id,
-            bulletPoints: updated.experience[0].bulletPoints
-          } : null
-        });
-        const sanitized = sanitizeResumeData(updated);
-        console.log("🟣 ResumeDataContext: After sanitization:", {
-          experienceCount: sanitized.experience.length,
-          firstExp: sanitized.experience[0] ? {
-            id: sanitized.experience[0].id,
-            bulletPoints: sanitized.experience[0].bulletPoints
-          } : null
-        });
-        return sanitized;
+        return sanitizeResumeData(updated);
       });
     } else {
-      console.log("🟣 ResumeDataContext: Received direct data update");
       const sanitizedData = sanitizeResumeData(data);
       setResumeDataState(sanitizedData);
     }
@@ -73,9 +57,11 @@ export const ResumeDataProvider: React.FC<ResumeDataProviderProps> = ({
     }
   }, [resumeData, templateId]);
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount - only once per templateId
+  const loadedTemplatesRef = React.useRef<Set<string>>(new Set());
+  
   useEffect(() => {
-    if (templateId) {
+    if (templateId && !loadedTemplatesRef.current.has(templateId)) {
       const savedData = localStorage.getItem(`resume-data-${templateId}`);
       if (savedData) {
         try {
@@ -85,6 +71,7 @@ export const ResumeDataProvider: React.FC<ResumeDataProviderProps> = ({
           console.error('Error loading saved resume data:', error);
         }
       }
+      loadedTemplatesRef.current.add(templateId);
     }
   }, [templateId]);
 

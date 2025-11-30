@@ -8,7 +8,8 @@
     "build": "NODE_OPTIONS='--max-old-space-size=8192' vite build",
     "build:dev": "NODE_OPTIONS='--max-old-space-size=8192' vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "verify-template": "node scripts/verify-template.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

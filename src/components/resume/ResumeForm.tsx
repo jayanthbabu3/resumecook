@@ -151,7 +151,11 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
     });
   };
 
-  const addBulletPoint = (expId: string) => {
+  const addBulletPoint = (expId: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setResumeData({
       ...resumeData,
       experience: resumeData.experience.map((exp) =>
@@ -814,7 +818,7 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                   <div className="space-y-3 pt-2">
                     <Label className="text-sm font-semibold text-foreground/80">Key Achievements</Label>
                     
-                    <div className="space-y-2">
+                    <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                       {(exp.bulletPoints || []).map((bullet, index) => (
                         <div key={index} className="group flex items-start gap-2">
                           <div className="pt-3">
@@ -853,7 +857,11 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                               type="button"
                               variant="ghost"
                               size="icon"
-                              onClick={() => removeBulletPoint(exp.id, index)}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                removeBulletPoint(exp.id, index);
+                              }}
                               className="absolute right-1 top-1 h-6 w-6 text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-all rounded-full"
                             >
                               <X className="h-3 w-3" />
@@ -862,16 +870,22 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                         </div>
                       ))}
                       
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => addBulletPoint(exp.id)}
-                        className="h-8 px-2 text-xs font-medium text-primary hover:bg-primary/10"
-                      >
-                        <Plus className="mr-1.5 h-3 w-3" />
-                        Add Achievement
-                      </Button>
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            addBulletPoint(exp.id, e);
+                          }}
+                          className="h-8 px-2 text-xs font-medium text-primary hover:bg-primary/10"
+                        >
+                          <Plus className="mr-1.5 h-3 w-3" />
+                          Add Achievement
+                        </Button>
+                      </div>
                     </div>
                     
                     <div className="text-[11px] text-muted-foreground/70 pl-1">

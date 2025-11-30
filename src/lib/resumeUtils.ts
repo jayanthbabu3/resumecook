@@ -174,7 +174,13 @@ export const getTemplateDefaults = (templateId: string): ResumeData => {
       ],
       ["9", "9", "8", "8", "8", "8", "7", "7"],
     ),
-    sections: [],
+    sections: [
+      {
+        id: "default-section-1",
+        title: "Certifications",
+        content: "Certification Name - Issuing Organization (Year)\nAdditional certifications can be added here",
+      },
+    ],
     dynamicSections: [],
   };
 

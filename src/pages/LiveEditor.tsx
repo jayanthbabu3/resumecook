@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save, Plus } from "lucide-react";
@@ -94,7 +94,6 @@ import { TechGridPDF } from "@/components/resume/pdf/TechGridPDF";
 // New Universal Professional Templates
 import { CorporateBluePDF } from "@/components/resume/pdf/CorporateBluePDF";
 import { MinimalistProPDF } from "@/components/resume/pdf/MinimalistProPDF";
-import { ClassicElegantPDF } from "@/components/resume/pdf/ClassicElegantPDF";
 import { BusinessModernPDF } from "@/components/resume/pdf/BusinessModernPDF";
 import { ProfessionalTimelinePDF } from "@/components/resume/pdf/ProfessionalTimelinePDF";
 import { CleanCorporatePDF } from "@/components/resume/pdf/CleanCorporatePDF";
@@ -585,7 +584,6 @@ import { FrontendArchitectTemplate } from "@/components/resume/templates/Fronten
 // New Universal Professional Templates
 import { CorporateBlueTemplate } from "@/components/resume/templates/CorporateBlueTemplate";
 import { MinimalistProTemplate } from "@/components/resume/templates/MinimalistProTemplate";
-import { ClassicElegantTemplate } from "@/components/resume/templates/ClassicElegantTemplate";
 import { BusinessModernTemplate } from "@/components/resume/templates/BusinessModernTemplate";
 import { ProfessionalTimelineTemplate } from "@/components/resume/templates/ProfessionalTimelineTemplate";
 import { CleanCorporateTemplate } from "@/components/resume/templates/CleanCorporateTemplate";
@@ -1487,7 +1485,6 @@ const pdfTemplates: Record<string, any> = {
   // New Universal Professional Templates
   "corporate-blue": CorporateBluePDF,
   "minimalist-pro": MinimalistProPDF,
-  "classic-elegant": ClassicElegantPDF,
   "business-modern": BusinessModernPDF,
   "professional-timeline": ProfessionalTimelinePDF,
   "clean-corporate": CleanCorporatePDF,
@@ -1966,7 +1963,6 @@ const displayTemplates: Record<string, any> = {
   // New Universal Professional Templates
   "corporate-blue": CorporateBlueTemplate,
   "minimalist-pro": MinimalistProTemplate,
-  "classic-elegant": ClassicElegantTemplate,
   "business-modern": BusinessModernTemplate,
   "professional-timeline": ProfessionalTimelineTemplate,
   "clean-corporate": CleanCorporateTemplate,
@@ -2826,19 +2822,23 @@ const LiveEditor = () => {
   // Determine back navigation path based on whether we're in a nested route
   const backPath = professionId ? `/dashboard/${professionId}` : "/dashboard";
 
+  // Track if we've initialized this template to prevent infinite loops
+  const initializedTemplatesRef = React.useRef<Set<string>>(new Set());
+  
   useEffect(() => {
     if (templateId) {
       setTemplateId(templateId);
       
-      // If no resumeId is provided, reset to template defaults
+      // If no resumeId is provided, reset to template defaults only once per template
       // This ensures new templates load with their specific default data
-      if (!resumeId) {
+      if (!resumeId && !initializedTemplatesRef.current.has(templateId)) {
         const defaultData = getTemplateDefaults(templateId);
         setResumeData(defaultData);
-        console.log("🔄 LiveEditor: Reset to template defaults for", templateId);
+        initializedTemplatesRef.current.add(templateId);
       }
     }
-  }, [templateId, setTemplateId, resumeId, setResumeData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templateId, resumeId]); // Removed setTemplateId and setResumeData from deps to prevent infinite loops
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [editorMode, setEditorMode] = useState<"live" | "form">("live");
   const [isSaving, setIsSaving] = useState(false);
@@ -2947,61 +2947,6 @@ const LiveEditor = () => {
     navigate(professionId ? `/dashboard/${professionId}/editor/${templateId}` : `/editor/${templateId}`);
   };
 
-  const handleAddCustomSection = () => {
-    const newSection = {
-      id: Date.now().toString(),
-      type: 'custom' as const,
-      order: (resumeData.dynamicSections?.length || 0) + 1,
-      enabled: true,
-      title: "Custom Section",
-      data: {
-        type: 'custom' as const,
-        content: "Add your content here"
-      }
-    };
-    
-    setResumeData({
-      ...resumeData,
-      dynamicSections: [...(resumeData.dynamicSections || []), newSection]
-    });
-    
-    toast.success("Custom section added");
-  };
-
-  const handleAddCertificationsSection = () => {
-    // Check if certifications section already exists
-    const existingCertSection = resumeData.dynamicSections?.find(s => s.type === 'certifications');
-    if (existingCertSection) {
-      toast.error("Certifications section already exists");
-      return;
-    }
-
-    const certificationsSection = {
-      id: Date.now().toString(),
-      type: 'certifications' as const,
-      order: (resumeData.dynamicSections?.length || 0) + 1,
-      enabled: true,
-      title: "Certifications",
-      data: {
-        type: 'certifications' as const,
-        certifications: [
-          {
-            id: Date.now().toString(),
-            name: "Example Certification",
-            issuer: "Issuing Organization",
-            date: "2024-01"
-          }
-        ]
-      }
-    };
-    
-    setResumeData({
-      ...resumeData,
-      dynamicSections: [...(resumeData.dynamicSections || []), certificationsSection]
-    });
-    
-    toast.success("Certifications section added");
-  };
 
   const addBulletPoint = useCallback((expId: string) => {
     console.log("🔵 addBulletPoint called with expId:", expId);
@@ -3346,6 +3291,10 @@ const LiveEditor = () => {
 
               // Wrap with InlineEditProvider only for templates that support it
               if (supportsInlineEdit) {
+                // Templates that support skill ratings (only enable for specific templates)
+                const templatesWithSkillRatings = ['premium-pro', 'premium-elite', 'refined'];
+                const showSkillRatings = templatesWithSkillRatings.includes(currentTemplateId);
+                
                 return (
                   <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
                     <TemplateComponent 
@@ -3356,6 +3305,7 @@ const LiveEditor = () => {
                       onRemoveBulletPoint={removeBulletPoint}
                       onAddSectionItem={addSectionItem}
                       onRemoveSectionItem={removeSectionItem}
+                      showSkillRatings={showSkillRatings}
                     />
                   </InlineEditProvider>
                 );
@@ -3373,16 +3323,6 @@ const LiveEditor = () => {
                 </div>
               );
             })()}
-            <div className="p-8 border-t border-gray-100 flex justify-center gap-4 print:hidden">
-              <Button onClick={handleAddCustomSection} variant="ghost" className="gap-2 text-muted-foreground hover:text-primary">
-                <Plus className="h-4 w-4" />
-                Add Custom Section
-              </Button>
-              <Button onClick={handleAddCertificationsSection} variant="ghost" className="gap-2 text-muted-foreground hover:text-primary">
-                <Plus className="h-4 w-4" />
-                Add Certifications
-              </Button>
-            </div>
           </div>
         </div>
       </div>

@@ -125,7 +125,6 @@ import { FrontendArchitectTemplate } from "./templates/FrontendArchitectTemplate
 // New Universal Professional Templates
 import { CorporateBlueTemplate } from "./templates/CorporateBlueTemplate";
 import { MinimalistProTemplate } from "./templates/MinimalistProTemplate";
-import { ClassicElegantTemplate } from "./templates/ClassicElegantTemplate";
 import { BusinessModernTemplate } from "./templates/BusinessModernTemplate";
 import { ProfessionalTimelineTemplate } from "./templates/ProfessionalTimelineTemplate";
 import { CleanCorporateTemplate } from "./templates/CleanCorporateTemplate";
@@ -408,7 +407,6 @@ export const EditableResumePreview = ({
     // New Universal Professional Templates
     "corporate-blue": CorporateBlueTemplate,
     "minimalist-pro": MinimalistProTemplate,
-    "classic-elegant": ClassicElegantTemplate,
     "business-modern": BusinessModernTemplate,
     "professional-timeline": ProfessionalTimelineTemplate,
     "clean-corporate": CleanCorporateTemplate,

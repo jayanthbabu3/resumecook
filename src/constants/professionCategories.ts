@@ -170,7 +170,6 @@ export const professionCategories: ProfessionCategory[] = [
       // New Universal Professional Templates
       "corporate-blue",
       "minimalist-pro",
-      "classic-elegant",
       "business-modern",
       "professional-timeline",
       "clean-corporate",
@@ -1035,7 +1034,6 @@ export const professionCategories: ProfessionCategory[] = [
       // New Universal Professional Templates
       "corporate-blue",
       "minimalist-pro",
-      "classic-elegant",
       "business-modern",
       "professional-timeline",
       "clean-corporate",

@@ -124,7 +124,6 @@ import { FrontendArchitectTemplate } from "./resume/templates/FrontendArchitectT
 // New Universal Professional Templates
 import { CorporateBlueTemplate } from "./resume/templates/CorporateBlueTemplate";
 import { MinimalistProTemplate } from "./resume/templates/MinimalistProTemplate";
-import { ClassicElegantTemplate } from "./resume/templates/ClassicElegantTemplate";
 import { BusinessModernTemplate } from "./resume/templates/BusinessModernTemplate";
 import { ProfessionalTimelineTemplate } from "./resume/templates/ProfessionalTimelineTemplate";
 import { CleanCorporateTemplate } from "./resume/templates/CleanCorporateTemplate";
@@ -1941,7 +1940,6 @@ const templates = {
   // New Universal Professional Templates
   "corporate-blue": CorporateBlueTemplate,
   "minimalist-pro": MinimalistProTemplate,
-  "classic-elegant": ClassicElegantTemplate,
   "business-modern": BusinessModernTemplate,
   "professional-timeline": ProfessionalTimelineTemplate,
   "clean-corporate": CleanCorporateTemplate,

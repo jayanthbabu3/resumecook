@@ -341,24 +341,9 @@ export const PremiumUniversalPDF = ({
             <Text style={styles.sectionTitle}>Skills</Text>
             <View style={styles.skillsContainer}>
               {resumeData.skills.map((skill, index) => (
-                resumeData.skills.some(skill => skill.rating && skill.rating.trim() !== "") ? (
-                  // Vertical layout with ratings
-                  <View key={index} style={styles.skillWithRatingVertical}>
-                    <Text style={styles.skillChip}>
-                      {skill.name}
-                    </Text>
-                    {skill.rating && skill.rating.trim() !== "" && (
-                      <Text style={styles.skillRating}>
-                        {skill.rating}
-                      </Text>
-                    )}
-                  </View>
-                ) : (
-                  // Horizontal layout without ratings
-                  <Text key={index} style={styles.skillChip}>
-                    {skill.name}
-                  </Text>
-                )
+                <Text key={index} style={styles.skillChip}>
+                  {skill.name}
+                </Text>
               ))}
             </View>
           </View>

@@ -3,7 +3,6 @@ import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
-import { InlineEditableSkillsWithRating } from "@/components/resume/InlineEditableSkillsWithRating";
 import { Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -455,53 +454,28 @@ export const PremiumUniversalTemplate = ({
             Skills
           </h2>
           {editable ? (
-            <InlineEditableSkillsWithRating
+            <InlineEditableSkills
               path="skills"
               skills={resumeData.skills}
-              showRating={resumeData.skills.some(skill => skill.rating && skill.rating.trim() !== "")}
-              verticalLayout={resumeData.skills.some(skill => skill.rating && skill.rating.trim() !== "")}
               renderSkill={(skill, index) => (
                 <span
-                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded flex items-center gap-2"
+                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded"
                   style={{ border: `1px solid ${accentBorder}` }}
                 >
                   {skill.name}
-                  {skill.rating && skill.rating.trim() !== "" && (
-                    <span className="text-xs text-gray-500">({skill.rating})</span>
-                  )}
                 </span>
               )}
             />
           ) : (
-            <div className={cn(
-              resumeData.skills.some(skill => skill.rating && skill.rating.trim() !== "") ? "space-y-1" : "flex flex-wrap gap-2"
-            )}>
+            <div className="flex flex-wrap gap-2">
               {resumeData.skills.map((skill, index) => (
-                resumeData.skills.some(skill => skill.rating && skill.rating.trim() !== "") ? (
-                  // Vertical layout with ratings
-                  <div key={index} className="flex items-center justify-between py-1">
-                    <span
-                      className="text-[12px] font-medium text-gray-900"
-                      style={{ border: `1px solid ${accentBorder}`, padding: '6px 12px', borderRadius: '4px' }}
-                    >
-                      {skill.name}
-                    </span>
-                    {skill.rating && skill.rating.trim() !== "" && (
-                      <span className="text-[10px] text-gray-600 ml-3">
-                        {skill.rating}
-                      </span>
-                    )}
-                  </div>
-                ) : (
-                  // Horizontal layout without ratings
-                  <span
-                    key={index}
-                    className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded"
-                    style={{ border: `1px solid ${accentBorder}` }}
-                  >
-                    {skill.name}
-                  </span>
-                )
+                <span
+                  key={index}
+                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded"
+                  style={{ border: `1px solid ${accentBorder}` }}
+                >
+                  {skill.name}
+                </span>
               ))}
             </div>
           )}
