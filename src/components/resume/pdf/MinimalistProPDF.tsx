@@ -308,18 +308,18 @@ export const MinimalistProPDF = ({ resumeData, themeColor = "#475569" }: Props) 
         {/* Custom Sections */}
         {resumeData.sections && resumeData.sections.length > 0 && (
           <>
-            {resumeData.sections.map((section) => (
+        {resumeData.sections.map((section) => (
               hasContent(section.title) || hasContent(section.content) ? (
-                <View key={section.id} style={styles.section}>
+            <View key={section.id} style={styles.section}>
                   {hasContent(section.title) && (
                     <Text style={[styles.sectionTitle, { color: themeColor }]}>{section.title || "Section"}</Text>
                   )}
                   {hasContent(section.content) && (
-                    <Text style={styles.summary}>{section.content}</Text>
+              <Text style={styles.summary}>{section.content}</Text>
                   )}
-                </View>
+            </View>
               ) : null
-            ))}
+        ))}
           </>
         )}
       </Page>

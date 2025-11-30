@@ -342,6 +342,99 @@ function verifyTemplate(templateName) {
     }
   }
   
+  // 8.5. Check Font Sizes & Spacing Standards
+  log('\n📏 Font Sizes & Spacing Standards:', 'cyan');
+  
+  // UI Template Font Size Checks
+  const uiFontSizeChecks = [
+    { pattern: 'text-4xl|text-\\[36px\\]', name: 'Full Name (text-4xl / 36px)', element: 'name' },
+    { pattern: 'text-base|text-\\[16px\\]', name: 'Title/Position/Degree (text-base / 16px)', element: 'title/position/degree' },
+    { pattern: 'text-sm|text-\\[14px\\]', name: 'Body Text/Company (text-sm / 14px)', element: 'body/company' },
+    { pattern: 'text-xs|text-\\[12px\\]', name: 'Section Heading/Dates/Skills (text-xs / 12px)', element: 'section/dates/skills' },
+  ];
+  
+  uiFontSizeChecks.forEach(check => {
+    const regex = new RegExp(check.pattern, 'g');
+    const matches = templateContent.match(regex);
+    if (matches && matches.length > 0) {
+      success(`${check.name} found (${matches.length} occurrences)`);
+    } else {
+      warning(`${check.name} not found - may not follow standard`);
+      warnings.push(`Font size standard not met: ${check.name}`);
+    }
+  });
+  
+  // UI Template Spacing Checks
+  const uiSpacingChecks = [
+    { pattern: 'mb-8|marginBottom.*32', name: 'Section spacing (mb-8 / 32px)', element: 'section' },
+    { pattern: 'mb-5|marginBottom.*20', name: 'Section heading spacing (mb-5 / 20px)', element: 'heading' },
+  ];
+  
+  uiSpacingChecks.forEach(check => {
+    const regex = new RegExp(check.pattern, 'g');
+    const matches = templateContent.match(regex);
+    if (matches && matches.length > 0) {
+      success(`${check.name} found (${matches.length} occurrences)`);
+    } else {
+      warning(`${check.name} not found - may not follow standard`);
+      warnings.push(`Spacing standard not met: ${check.name}`);
+    }
+  });
+  
+  // PDF Template Font Size Checks
+  if (pdfContent) {
+    log('\n📏 PDF Font Sizes & Spacing:', 'cyan');
+    
+    const pdfFontSizeChecks = [
+      { pattern: 'fontSize:\\s*26|fontSize:\\s*"26"|fontSize:\\s*\'26\'', name: 'Full Name (26px)', element: 'name' },
+      { pattern: 'fontSize:\\s*11|fontSize:\\s*"11"|fontSize:\\s*\'11\'', name: 'Title/Position/Degree (11px)', element: 'title/position/degree' },
+      { pattern: 'fontSize:\\s*10|fontSize:\\s*"10"|fontSize:\\s*\'10\'', name: 'Body Text/Company (10px)', element: 'body/company' },
+      { pattern: 'fontSize:\\s*9|fontSize:\\s*"9"|fontSize:\\s*\'9\'', name: 'Dates/Skills (9px)', element: 'dates/skills' },
+    ];
+    
+    pdfFontSizeChecks.forEach(check => {
+      const regex = new RegExp(check.pattern, 'g');
+      const matches = pdfContent.match(regex);
+      if (matches && matches.length > 0) {
+        success(`${check.name} found (${matches.length} occurrences)`);
+      } else {
+        warning(`${check.name} not found - may not follow standard`);
+        warnings.push(`PDF font size standard not met: ${check.name}`);
+      }
+    });
+    
+    // PDF Template Spacing Checks
+    const pdfSpacingChecks = [
+      { pattern: 'marginBottom:\\s*20|marginBottom:\\s*"20"|marginBottom:\\s*\'20\'', name: 'Section spacing (20px)', element: 'section' },
+      { pattern: 'marginBottom:\\s*15|marginBottom:\\s*"15"|marginBottom:\\s*\'15\'', name: 'Section heading spacing (15px)', element: 'heading' },
+    ];
+    
+    pdfSpacingChecks.forEach(check => {
+      const regex = new RegExp(check.pattern, 'g');
+      const matches = pdfContent.match(regex);
+      if (matches && matches.length > 0) {
+        success(`${check.name} found (${matches.length} occurrences)`);
+      } else {
+        warning(`${check.name} not found - may not follow standard`);
+        warnings.push(`PDF spacing standard not met: ${check.name}`);
+      }
+    });
+    
+    // Check for section heading font size consistency
+    if (pdfContent.includes('sectionTitle') || pdfContent.includes('section_title')) {
+      const sectionTitleMatch = pdfContent.match(/sectionTitle[^}]*fontSize:\s*(\d+)/);
+      if (sectionTitleMatch) {
+        const fontSize = parseInt(sectionTitleMatch[1]);
+        if (fontSize === 10) {
+          success('Section heading font size is standard (10px)');
+        } else {
+          warning(`Section heading font size is ${fontSize}px (expected 10px)`);
+          warnings.push(`PDF section heading font size should be 10px, found ${fontSize}px`);
+        }
+      }
+    }
+  }
+  
   // 9. Check registration files
   log('\n📋 Registration Files:', 'cyan');
   const registrationFiles = [
@@ -402,6 +495,25 @@ function verifyTemplate(templateName) {
   } else {
     warning('Social Links icons not found (may be missing icons)');
     warnings.push('Social Links section may not have icons');
+  }
+  
+  // Check Contact Information icons (prohibit emoji, require SVG)
+  log('\n📞 Contact Information Icons:', 'cyan');
+  const hasContactInfo = templateContent.includes('personalInfo.email') || 
+                        templateContent.includes('personalInfo.phone') || 
+                        templateContent.includes('personalInfo.location');
+  
+  if (hasContactInfo) {
+    if (templateContent.includes('✉') || templateContent.includes('☎') || templateContent.includes('📍')) {
+      error('Contact icons using emoji characters - must use SVG icons');
+      issues.push('Contact information must use SVG icons instead of emoji characters');
+    } else if (templateContent.includes('<svg')) {
+      success('Contact information uses SVG icons');
+    } else {
+      info('Contact information displayed without icons (minimal design)');
+    }
+  } else {
+    info('Contact information not displayed in template header');
   }
   
   // 12. Check Custom Sections (Certifications) editability

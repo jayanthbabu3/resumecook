@@ -469,13 +469,13 @@ export const PremiumUniversalTemplate = ({
           ) : (
             <div className="flex flex-wrap gap-2">
               {resumeData.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded"
-                  style={{ border: `1px solid ${accentBorder}` }}
-                >
-                  {skill.name}
-                </span>
+                  <span
+                    key={index}
+                    className="px-4 py-1.5 text-[12px] font-medium text-gray-900 rounded"
+                    style={{ border: `1px solid ${accentBorder}` }}
+                  >
+                    {skill.name}
+                  </span>
               ))}
             </div>
           )}

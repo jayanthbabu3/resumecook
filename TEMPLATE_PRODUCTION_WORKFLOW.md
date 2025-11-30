@@ -167,7 +167,45 @@ The HTML/React preview must match the PDF layout exactly.
           </div>
         )}
         ```
-4.  **Inline Editing:** Use `InlineEditableText` components for all text fields in editable mode.
+4.  **Icon Requirements:**
+    *   **Contact Information Icons:** Use SVG icons instead of emoji characters for email, phone, and location to ensure consistency between Live Preview and PDF export.
+    *   **Prohibited:** Unicode emoji characters (✉, ☎, 📍) - these don't render reliably in PDFs.
+    *   **Required:** Inline SVG components with consistent styling.
+    
+    **Live Preview (React) - Example:**
+    ```tsx
+    // Email Icon
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+    
+    // Phone Icon  
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+    </svg>
+    
+    // Location Icon
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+    ```
+    
+    **PDF Export - Example:**
+    ```tsx
+    // Same SVG paths but using React-PDF Svg components
+    <Svg width="8" height="8" viewBox="0 0 24 24">
+      <Path d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" fill="none" stroke="#ffffff" strokeWidth="2" />
+    </Svg>
+    ```
+    
+    **Key Requirements:**
+    * Use `stroke="currentColor"` for Live Preview (inherits text color)
+    * Use `stroke="#ffffff"` for PDF (white color on colored headers)
+    * Size: 12×12 for Live Preview, 8×8 for PDF
+    * Same SVG paths for visual consistency
+    * Proper spacing with `gap-2` between icon and text
+5.  **Inline Editing:** Use `InlineEditableText` components for all text fields in editable mode.
 
 ### Step 3: Live Editor Integration (`src/pages/LiveEditor.tsx`)
 

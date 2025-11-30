@@ -299,13 +299,13 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
                   )}
                   {(!exp.bulletPoints || exp.bulletPoints.length === 0) && exp.description && (
                     <div className="mt-3">
-                      <InlineEditableText
-                        path={`experience[${index}].description`}
-                        value={exp.description}
-                        className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
-                        multiline
-                        as="p"
-                      />
+                    <InlineEditableText
+                      path={`experience[${index}].description`}
+                      value={exp.description}
+                      className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
+                      multiline
+                      as="p"
+                    />
                     </div>
                   )}
                 </div>
@@ -337,8 +337,8 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
                   ) : (
                     exp.description && (
                       <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line mt-3">
-                        {exp.description}
-                      </p>
+                      {exp.description}
+                    </p>
                     )
                   )}
                 </div>
@@ -468,54 +468,54 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       {/* Custom Sections */}
       {(resumeData.sections && resumeData.sections.length > 0) && (
         <>
-          {editable ? (
-            <InlineEditableList
-              path="sections"
+      {editable ? (
+        <InlineEditableList
+          path="sections"
               items={resumeData.sections}
-              defaultItem={{
-                id: Date.now().toString(),
-                title: "Certifications",
-                content: "Certification Name",
-              }}
-              addButtonLabel="Add Section"
-              renderItem={(section, index) => (
+          defaultItem={{
+            id: Date.now().toString(),
+            title: "Certifications",
+            content: "Certification Name",
+          }}
+          addButtonLabel="Add Section"
+          renderItem={(section, index) => (
                 <div key={section.id} className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-                  <InlineEditableText
-                    path={`sections[${index}].title`}
+              <InlineEditableText
+                path={`sections[${index}].title`}
                     value={section.title || ""}
                     placeholder="Section Title"
-                    className="text-[14px] font-semibold mb-6 block"
+                className="text-[14px] font-semibold mb-6 block"
                     style={{ color: themeColor, pageBreakAfter: 'avoid' }}
-                    as="h2"
-                  />
-                  <InlineEditableText
-                    path={`sections[${index}].content`}
+                as="h2"
+              />
+              <InlineEditableText
+                path={`sections[${index}].content`}
                     value={section.content || ""}
                     placeholder="Section content..."
-                    className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
-                    multiline
-                    as="p"
-                  />
-                </div>
-              )}
-            />
-          ) : (
-            resumeData.sections.map((section) => (
+                className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line block"
+                multiline
+                as="p"
+              />
+            </div>
+          )}
+        />
+      ) : (
+        resumeData.sections.map((section) => (
               (section.title || section.content) && (
                 <div key={section.id} className="mb-8" style={{ pageBreakInside: 'avoid' }}>
                   {section.title && (
                     <h2 className="text-[14px] font-semibold mb-6" style={{ color: themeColor, pageBreakAfter: 'avoid' }}>
-                      {section.title}
-                    </h2>
+              {section.title}
+            </h2>
                   )}
                   {section.content && (
-                    <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
-                      {section.content}
-                    </p>
+            <p className="text-[12.5px] text-gray-700 leading-[1.7] whitespace-pre-line">
+              {section.content}
+            </p>
                   )}
-                </div>
+          </div>
               )
-            ))
+        ))
           )}
         </>
       )}

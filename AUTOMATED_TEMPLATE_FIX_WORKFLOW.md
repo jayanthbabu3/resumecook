@@ -164,8 +164,15 @@ This checklist applies to **any template layout**:
 ### ✅ Step 11: PDF Template Matching
 - [ ] PDF structure matches UI template structure
 - [ ] Same data handling logic (bullet points priority, etc.)
-- [ ] Font sizes are proportional (see [Font Size Guidelines](#font-size--spacing-guidelines))
-- [ ] Spacing is proportional
+- [ ] **CRITICAL**: Font sizes follow standards (see [Font Size & Spacing Standards](#font-size--spacing-standards))
+  - [ ] Full Name: 26px (PDF) vs 36px (UI)
+  - [ ] Section Heading: 10px (PDF) vs 12px (UI)
+  - [ ] Position/Degree: 11px (PDF) vs 16px (UI)
+  - [ ] Body Text/Company: 10px (PDF) vs 14px (UI)
+  - [ ] Dates/Skills: 9px (PDF) vs 12px (UI)
+- [ ] **CRITICAL**: Spacing follows standards (see [Font Size & Spacing Standards](#font-size--spacing-standards))
+  - [ ] Section spacing: 20px (PDF) vs 32px (UI)
+  - [ ] Section heading spacing: 15px (PDF) vs 20px (UI)
 - [ ] Uses `hasContent()` for conditional rendering
 - [ ] **CRITICAL**: Alignment matches live preview (left-aligned sections, not centered)
 - [ ] Social Links alignment: Use `justifyContent: 'flex-start'` in PDF (not `'center'`)
@@ -349,36 +356,104 @@ These patterns apply regardless of layout:
 
 ---
 
-## Font Size & Spacing Guidelines
+## Font Size & Spacing Standards
 
-### General Principles (Layout-Agnostic)
+> **Reference Template**: `minimal` - All standards are based on this template
+> **Reference URL**: http://localhost:8080/dashboard/universal-professional/editor/minimal
 
-1. **Relative Sizing**: Font sizes should be relative to each other, not absolute
-2. **Readability**: Minimum font size should be readable (typically 9px in PDF, 12px in UI)
-3. **Hierarchy**: Clear visual hierarchy (headings > subheadings > body text)
-4. **Consistency**: Same element types should have same sizes across sections
+### Standard Typography (Live Preview & Live Editor)
 
-### Recommended Size Relationships
+These standards apply to **both Live Preview and Live Editor** (UI templates):
 
-| Element Type | UI Size | PDF Size | Ratio |
-|--------------|---------|----------|-------|
-| **Main Heading** (Name) | 32-40px | 20-24px | ~0.6x |
-| **Section Heading** | 16-20px | 11-12px | ~0.6x |
-| **Subheading** (Position/Degree) | 14-16px | 10-11px | ~0.7x |
-| **Body Text** | 12-14px | 9-10px | ~0.7x |
-| **Small Text** (Dates/GPA) | 10-12px | 8-9px | ~0.75x |
+| Element Type | Tailwind Class | Pixel Size | Font Weight | Notes |
+|--------------|----------------|------------|-------------|-------|
+| **Full Name** | `text-4xl` | 36px | `font-light` | Main heading |
+| **Professional Title** | `text-base` | 16px | `font-light` | Subtitle below name |
+| **Contact Info** | `text-xs` | 12px | Default | Email, phone, location |
+| **Section Heading** | `text-xs` | 12px | `font-semibold` | Uppercase, `tracking-widest`, centered |
+| **Summary** | `text-sm` | 14px | `font-light` | Body text |
+| **Position (Experience)** | `text-base` | 16px | `font-semibold` | Job title |
+| **Company** | `text-sm` | 14px | `font-light` | Company name |
+| **Dates** | `text-xs` | 12px | `font-light` | Date ranges |
+| **Bullet Points** | `text-sm` | 14px | `font-light` | Achievement bullets |
+| **Degree (Education)** | `text-base` | 16px | `font-semibold` | Education degree |
+| **Field of Study** | `text-sm` | 14px | `font-light` | Optional field |
+| **School** | `text-sm` | 14px | `font-light` | School name |
+| **GPA** | `text-xs` | 12px | `font-light` | Optional GPA |
+| **Skills** | `text-xs` | 12px | `font-light` | Skill tags |
+| **Custom Section Content** | `text-sm` | 14px | `font-light` | Section body text |
 
-### Spacing Guidelines
+### Standard Spacing (Live Preview & Live Editor)
 
-- **Section Spacing**: Consistent margin between major sections (typically 20-32px in UI, 15-20px in PDF)
-- **Item Spacing**: Consistent spacing between items within a section (typically 12-24px in UI, 10-18px in PDF)
-- **Line Height**: 1.4-1.6 for body text, 1.2-1.4 for headings
+| Element | Tailwind Class | Pixel Size | Notes |
+|---------|----------------|------------|-------|
+| **Section Margin Bottom** | `mb-8` | 32px | Space between major sections |
+| **Section Heading Margin Bottom** | `mb-5` | 20px | Space below section heading |
+| **Experience Item Spacing** | `space-y-6` | 24px | Space between experience items |
+| **Education Item Spacing** | `space-y-4` | 16px | Space between education items |
+| **Bullet Point Spacing** | `space-y-1` | 4px | Space between bullet points |
+| **Skills Gap** | `gap-x-3 gap-y-2` | 12px horizontal, 8px vertical | Space between skill tags |
+
+### Standard Typography (PDF)
+
+These standards apply to **PDF templates** (using `@react-pdf/renderer`):
+
+| Element Type | fontSize | fontWeight | Notes |
+|--------------|----------|------------|-------|
+| **Full Name** | `26` | `300` (light) | Main heading |
+| **Professional Title** | `11` | Default | Subtitle below name |
+| **Contact Info** | `9` | Default | Email, phone, location |
+| **Section Heading** | `10` | `700` (bold) | Uppercase, `letterSpacing: 2`, centered |
+| **Summary** | `10` | Default | Body text |
+| **Position (Experience)** | `11` | `700` (bold) | Job title |
+| **Company** | `10` | Default | Company name |
+| **Dates** | `9` | Default | Date ranges |
+| **Bullet Points** | `9` | Default | Achievement bullets |
+| **Degree (Education)** | `11` | `700` (bold) | Education degree |
+| **School** | `10` | Default | School name |
+| **GPA** | `9` | Default | Optional GPA |
+| **Skills** | `9` | Default | Skill tags |
+| **Custom Section Content** | `9` | Default | Section body text |
+
+### Standard Spacing (PDF)
+
+| Element | marginBottom | Notes |
+|---------|--------------|-------|
+| **Section Margin Bottom** | `20` | Space between major sections |
+| **Section Heading Margin Bottom** | `15` | Space below section heading |
+| **Experience Item Margin Bottom** | `20` | Space between experience items |
+| **Education Item Margin Bottom** | `12` | Space between education items |
+| **Bullet Point Margin Bottom** | `4` | Space between bullet points |
+| **Skills Gap** | `8` | Space between skill tags (horizontal and vertical) |
+
+### Conversion Ratio (UI to PDF)
+
+When converting from UI to PDF, use these approximate ratios:
+
+- **Main Heading**: UI 36px → PDF 26px (0.72x ratio)
+- **Section Heading**: UI 12px → PDF 10px (0.83x ratio)
+- **Subheading**: UI 16px → PDF 11px (0.69x ratio)
+- **Body Text**: UI 14px → PDF 10px (0.71x ratio)
+- **Small Text**: UI 12px → PDF 9px (0.75x ratio)
+- **Section Spacing**: UI 32px → PDF 20px (0.63x ratio)
+- **Heading Spacing**: UI 20px → PDF 15px (0.75x ratio)
 
 ### Layout-Specific Considerations
 
-- **Two-Column Layouts**: May need smaller fonts to fit content
-- **Sidebar Layouts**: Sidebar may use different font sizes than main content
-- **Compact Templates**: May use smaller base font sizes but maintain ratios
+While the standards above are based on the `minimal` template, templates with different layouts may need adjustments:
+
+- **Two-Column Layouts**: May need smaller fonts to fit content, but maintain relative ratios
+- **Sidebar Layouts**: Sidebar may use different font sizes than main content, but maintain consistency within each area
+- **Compact Templates**: May use smaller base font sizes, but maintain the same relative hierarchy
+- **Bold/Colorful Templates**: May use different font weights or colors, but maintain the same font sizes
+
+### Critical Requirements
+
+1. **Consistency**: Same element types must have the same font sizes across all sections
+2. **Hierarchy**: Clear visual hierarchy (headings > subheadings > body text)
+3. **Readability**: Minimum font size should be readable (9px in PDF, 12px in UI)
+4. **Matching**: PDF font sizes should be proportional to UI font sizes (use conversion ratios)
+5. **Spacing**: Section spacing and heading spacing must be consistent throughout the template
 
 ---
 
@@ -1033,8 +1108,12 @@ A template is **production-ready** when:
 13. ✅ **PDF education section matches UI** - all fields render in PDF
 14. ✅ PDF export matches preview (structurally, not necessarily pixel-perfect)
 15. ✅ **PDF alignment matches live preview** (left-aligned sections, not centered)
-16. ✅ Font sizes are readable and proportional
-17. ✅ Spacing is consistent within the template
+16. ✅ **Font sizes follow standards** (see [Font Size & Spacing Standards](#font-size--spacing-standards))
+    - ✅ UI: Full Name `text-4xl` (36px), Section Heading `text-xs` (12px), Position/Degree `text-base` (16px), Body `text-sm` (14px), Dates/Skills `text-xs` (12px)
+    - ✅ PDF: Full Name 26px, Section Heading 10px, Position/Degree 11px, Body 10px, Dates/Skills 9px
+17. ✅ **Spacing follows standards** (see [Font Size & Spacing Standards](#font-size--spacing-standards))
+    - ✅ UI: Section spacing `mb-8` (32px), Section heading spacing `mb-5` (20px)
+    - ✅ PDF: Section spacing 20px, Section heading spacing 15px
 18. ✅ All registrations complete
 19. ✅ No TypeScript errors
 20. ✅ No console errors

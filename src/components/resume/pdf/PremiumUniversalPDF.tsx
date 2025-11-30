@@ -341,9 +341,9 @@ export const PremiumUniversalPDF = ({
             <Text style={styles.sectionTitle}>Skills</Text>
             <View style={styles.skillsContainer}>
               {resumeData.skills.map((skill, index) => (
-                <Text key={index} style={styles.skillChip}>
-                  {skill.name}
-                </Text>
+                  <Text key={index} style={styles.skillChip}>
+                    {skill.name}
+                  </Text>
               ))}
             </View>
           </View>

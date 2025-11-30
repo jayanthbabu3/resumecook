@@ -28,6 +28,7 @@ import { SoftwarePDF } from "@/components/resume/pdf/SoftwarePDF";
 import { PremiumUniversalPDF } from "@/components/resume/pdf/PremiumUniversalPDF";
 import { PremiumProPDF } from "@/components/resume/pdf/PremiumProPDF";
 import { FresherElitePDF } from "@/components/resume/pdf/FresherElitePDF";
+import { GradientHeaderUniversalPDF } from "@/components/resume/pdf/GradientHeaderUniversalPDF";
 import { AnalystPDF } from "@/components/resume/pdf/AnalystPDF";
 import { CorporateExecutivePDF } from "@/components/resume/pdf/CorporateExecutivePDF";
 import { RefinedPDF } from "@/components/resume/pdf/RefinedPDF";
@@ -1413,6 +1414,7 @@ const pdfTemplates: Record<string, any> = {
   "premium-universal": PremiumUniversalPDF,
   "premium-pro": PremiumProPDF,
   "fresher-elite": FresherElitePDF,
+  "gradient-header-universal": GradientHeaderUniversalPDF,
   analyst: AnalystPDF,
   "corporate-executive": CorporateExecutivePDF,
   refined: RefinedPDF,

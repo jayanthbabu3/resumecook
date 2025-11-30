@@ -332,24 +332,24 @@ export const PremiumProPDF = ({
                     const skillLevel = parseRating(skill.rating);
                     
                     return (
-                      <View key={skill.id} style={styles.skillItem}>
-                        <View style={styles.skillHeader}>
-                          <Text style={styles.skillName}>{skill.name}</Text>
+                    <View key={skill.id} style={styles.skillItem}>
+                      <View style={styles.skillHeader}>
+                        <Text style={styles.skillName}>{skill.name}</Text>
                           {skillLevel !== null && (
                             <Text style={styles.skillLevel}>{skillLevel}/10</Text>
-                          )}
-                        </View>
-                        {skillLevel !== null && (
-                          <View style={styles.skillBar}>
-                            <View
-                              style={[
-                                styles.skillBarFill,
-                                { width: `${skillLevel * 10}%` },
-                              ]}
-                            />
-                          </View>
                         )}
                       </View>
+                        {skillLevel !== null && (
+                        <View style={styles.skillBar}>
+                          <View
+                            style={[
+                              styles.skillBarFill,
+                                { width: `${skillLevel * 10}%` },
+                            ]}
+                          />
+                        </View>
+                      )}
+                    </View>
                     );
                   })}
         )                </View>

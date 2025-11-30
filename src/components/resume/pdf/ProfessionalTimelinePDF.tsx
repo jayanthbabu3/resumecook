@@ -336,10 +336,10 @@ export const ProfessionalTimelinePDF = ({ resumeData, themeColor = "#059669" }: 
           (hasContent(section.title) || hasContent(section.content)) && (
             <View key={section.id} style={styles.section}>
               {hasContent(section.title) && (
-                <Text style={[styles.sectionTitle, { color: themeColor }]}>{section.title}</Text>
+              <Text style={[styles.sectionTitle, { color: themeColor }]}>{section.title}</Text>
               )}
               {hasContent(section.content) && (
-                <Text style={styles.summary}>{section.content}</Text>
+              <Text style={styles.summary}>{section.content}</Text>
               )}
             </View>
           )

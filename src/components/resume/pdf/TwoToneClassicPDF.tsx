@@ -1,6 +1,6 @@
 import { Document, Page, StyleSheet, Text, View, Svg, Path, Rect, Circle } from "@react-pdf/renderer";
 import type { ResumeData } from "@/types/resume";
-import { PDF_PAGE_MARGINS } from "@/lib/pdfConfig";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 interface TwoToneClassicPDFProps {
   resumeData: ResumeData;
@@ -39,12 +39,12 @@ const createStyles = (color: string) =>
       marginBottom: 20,
     },
     name: {
-      fontSize: 32,
+      fontSize: 26,
       fontWeight: 700,
       marginBottom: 6,
     },
     title: {
-      fontSize: 13,
+      fontSize: 11,
       opacity: 0.9,
       marginBottom: 12,
     },
@@ -55,24 +55,33 @@ const createStyles = (color: string) =>
       opacity: 0.9,
     },
     contactInfoItem: {
+      flexDirection: "row",
+      alignItems: "center",
       marginRight: 12,
       marginBottom: 6,
     },
+    contactText: {
+      marginLeft: 4,
+      fontSize: 9,
+      opacity: 0.9,
+    },
     content: {
-      paddingHorizontal: 25,
-      paddingBottom: 25,
+      paddingHorizontal: 0,
+      paddingBottom: 20,
     },
     section: {
-      marginBottom: 18,
+      marginBottom: 20,
+      pageBreakInside: 'avoid',
     },
     sectionTitle: {
-      fontSize: 14,
+      fontSize: 10,
       fontWeight: 700,
       color: color,
-      marginBottom: 12,
+      marginBottom: 15,
       paddingBottom: 4,
       borderBottomWidth: 2,
       borderBottomColor: color,
+      pageBreakAfter: 'avoid',
     },
     lightBox: {
       backgroundColor: hexToRgba(color, 0.08),
@@ -81,15 +90,15 @@ const createStyles = (color: string) =>
     },
     experienceItem: {
       marginBottom: 12,
-      padding: 12,
+      padding: 10,
       borderRadius: 4,
     },
     position: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: 700,
     },
     company: {
-      fontSize: 11,
+      fontSize: 10,
       fontWeight: 500,
       color: color,
       marginTop: 2,
@@ -111,18 +120,18 @@ const createStyles = (color: string) =>
     skillsContainer: {
       flexDirection: "row",
       flexWrap: "wrap",
-      marginHorizontal: -3,
+      marginHorizontal: -2,
     },
     skillChip: {
-      paddingHorizontal: 10,
-      paddingVertical: 5,
+      paddingHorizontal: 8,
+      paddingVertical: 3,
       backgroundColor: color,
       color: "#ffffff",
-      fontSize: 9,
+      fontSize: 8,
       fontWeight: 500,
       borderRadius: 4,
-      marginHorizontal: 3,
-      marginBottom: 6,
+      marginHorizontal: 2,
+      marginBottom: 4,
     },
     socialLinksContainer: {
       flexDirection: 'row',
@@ -169,13 +178,29 @@ export const TwoToneClassicPDF = ({
           )}
           <View style={styles.contactInfo}>
             {personalInfo.email && (
-              <Text style={styles.contactInfoItem}>✉ {personalInfo.email}</Text>
+              <View style={styles.contactInfoItem}>
+                <Svg width="8" height="8" viewBox="0 0 24 24">
+                  <Path d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" fill="none" stroke="#ffffff" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.contactText}>{personalInfo.email}</Text>
+              </View>
             )}
             {personalInfo.phone && (
-              <Text style={styles.contactInfoItem}>☎ {personalInfo.phone}</Text>
+              <View style={styles.contactInfoItem}>
+                <Svg width="8" height="8" viewBox="0 0 24 24">
+                  <Path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" fill="none" stroke="#ffffff" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.contactText}>{personalInfo.phone}</Text>
+              </View>
             )}
             {personalInfo.location && (
-              <Text style={styles.contactInfoItem}>📍 {personalInfo.location}</Text>
+              <View style={styles.contactInfoItem}>
+                <Svg width="8" height="8" viewBox="0 0 24 24">
+                  <Path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" fill="none" stroke="#ffffff" strokeWidth="2" />
+                  <Circle cx="12" cy="10" r="3" fill="none" stroke="#ffffff" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.contactText}>{personalInfo.location}</Text>
+              </View>
             )}
           </View>
         </View>
@@ -184,7 +209,7 @@ export const TwoToneClassicPDF = ({
         <View style={styles.content}>
           {/* Summary */}
           {personalInfo.summary && (
-            <View style={styles.section}>
+            <View style={styles.section} break={false}>
               <Text style={styles.sectionTitle}>Professional Summary</Text>
               <View style={styles.lightBox}>
                 <Text style={[styles.description, { color: "#374151" }]}>{personalInfo.summary}</Text>
@@ -194,7 +219,7 @@ export const TwoToneClassicPDF = ({
 
           {/* Social Links */}
           {personalInfo.linkedin || personalInfo.portfolio || personalInfo.github ? (
-            <View style={styles.section}>
+            <View style={styles.section} break={false}>
               <Text style={styles.sectionTitle}>Social Links</Text>
               <View style={[styles.lightBox, styles.socialLinksContainer]}>
                 {personalInfo.linkedin && (
@@ -230,10 +255,10 @@ export const TwoToneClassicPDF = ({
 
           {/* Experience */}
           {experience && experience.length > 0 && (
-            <View style={styles.section}>
+            <View style={styles.section} break={experience.length > 3}>
               <Text style={styles.sectionTitle}>Professional Experience</Text>
               {experience.map((exp, index) => (
-                <View key={index} style={[styles.experienceItem, index % 2 === 0 ? styles.lightBox : {}]}>
+                <View key={index} style={[styles.experienceItem, index % 2 === 0 ? styles.lightBox : {}, { pageBreakInside: 'avoid' }]} break={index > 0}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
                     <View style={{ flex: 1 }}>
                       <Text style={styles.position}>{exp.position}</Text>
@@ -258,16 +283,20 @@ export const TwoToneClassicPDF = ({
 
           {/* Education */}
           {education && education.length > 0 && (
-            <View style={styles.section}>
+            <View style={styles.section} break={education.length > 2}>
               <Text style={styles.sectionTitle}>Education</Text>
               {education.map((edu, index) => (
-                <View key={index} style={[{ marginBottom: 8, padding: 8, borderRadius: 4 }, styles.lightBox]}>
+                <View key={index} style={[{ marginBottom: 8, padding: 6, borderRadius: 4, pageBreakInside: 'avoid' }, styles.lightBox]} break={index > 0}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
                       <Text style={styles.position}>{edu.degree}</Text>
+                      {hasContent(edu.field) && <Text style={[styles.company, { color: "#4b5563" }]}>{edu.field}</Text>}
                       <Text style={[styles.company, { color: "#4b5563" }]}>{edu.school}</Text>
+                      {hasContent(edu.gpa) && <Text style={[styles.company, { color: "#6b7280", marginTop: 2 }]}>GPA: {edu.gpa}</Text>}
                     </View>
-                    <Text style={styles.dateRange}>{edu.graduationDate}</Text>
+                    <Text style={styles.dateRange}>
+                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    </Text>
                   </View>
                 </View>
               ))}
@@ -276,7 +305,7 @@ export const TwoToneClassicPDF = ({
 
           {/* Skills */}
           {skills && skills.length > 0 && (
-            <View style={styles.section}>
+            <View style={styles.section} break={skills.length > 8}>
               <Text style={styles.sectionTitle}>Core Skills</Text>
               <View style={styles.skillsContainer}>
                 {skills.map((skill, index) => (
@@ -288,7 +317,7 @@ export const TwoToneClassicPDF = ({
 
           {/* Custom Sections */}
           {sections && sections.map((section, index) => (
-            <View key={index} style={styles.section}>
+            <View key={index} style={styles.section} break={index > 0}>
               <Text style={styles.sectionTitle}>{section.title}</Text>
               <Text style={styles.description}>{section.content}</Text>
             </View>

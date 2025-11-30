@@ -347,10 +347,10 @@ export const CleanCorporatePDF = ({ resumeData, themeColor = "#6366f1" }: Props)
           (hasContent(section.title) || hasContent(section.content)) && (
             <View key={section.id} style={styles.section}>
               {hasContent(section.title) && (
-                <Text style={styles.sectionTitle}>{section.title}</Text>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
               )}
               {hasContent(section.content) && (
-                <Text style={styles.summary}>{section.content}</Text>
+              <Text style={styles.summary}>{section.content}</Text>
               )}
             </View>
           )

@@ -54,6 +54,7 @@ import { FresherCompactProTemplate } from "./templates/FresherCompactProTemplate
 import { FresherElegantSidebarTemplate } from "./templates/FresherElegantSidebarTemplate";
 import { FresherTechModernTemplate } from "./templates/FresherTechModernTemplate";
 import { FresherProfessionalMinimalTemplate } from "./templates/FresherProfessionalMinimalTemplate";
+import { GradientHeaderUniversalTemplate } from "./templates/GradientHeaderUniversalTemplate";
 // Healthcare & Medical Templates
 import { MedicalProfessionalTemplate } from "./templates/MedicalProfessionalTemplate";
 import { HealthcareTwoColumnTemplate } from "./templates/HealthcareTwoColumnTemplate";
@@ -423,6 +424,7 @@ export const EditableResumePreview = ({
     "executive-minimal": ExecutiveMinimalTemplate,
     "sidebar-accent": SidebarAccentTemplate,
     "two-tone-classic": TwoToneClassicTemplate,
+    "gradient-header-universal": GradientHeaderUniversalTemplate,
   };
 
   const Template =

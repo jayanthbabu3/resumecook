@@ -206,7 +206,7 @@ export const SidebarAccentTemplate = ({
             <h2 className="text-[12px] font-bold mb-3 border-b border-white/30 pb-2">
               Education
             </h2>
-            {editable ? (
+                  {editable ? (
               <InlineEditableList
                 path="education"
                 items={resumeData.education}
@@ -234,7 +234,7 @@ export const SidebarAccentTemplate = ({
                         className="opacity-90 mb-1"
                         as="div"
                       />
-                    )}
+                  )}
                     <InlineEditableText
                       path={`education[${index}].school`}
                       value={edu.school}
@@ -266,8 +266,8 @@ export const SidebarAccentTemplate = ({
                     </div>
                   </div>
                 )}
-              />
-            ) : (
+                    />
+                  ) : (
               <div className="space-y-4">
                 {resumeData.education.map((edu, index) => (
                   <div key={index} className="text-[9px]">
@@ -275,12 +275,12 @@ export const SidebarAccentTemplate = ({
                     {edu.field && <div className="opacity-90 mb-1">{edu.field}</div>}
                     <div className="opacity-90 mb-1">{edu.school}</div>
                     {edu.gpa && <div className="opacity-75 mb-1 text-[8px]">GPA: {edu.gpa}</div>}
-                    <div className="text-[8px] opacity-75">
+                  <div className="text-[8px] opacity-75">
                       {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
+            </div>
             )}
           </div>
         )}

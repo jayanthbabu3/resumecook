@@ -275,11 +275,11 @@ export const PremiumProTemplate = ({
                       const skillLevel = parseRating(skill.rating);
                       
                       return (
-                        <div>
+                      <div>
                           <div className="flex items-center justify-between mb-1 gap-2">
-                            <InlineEditableText
-                              path={`skills[${index}].name`}
-                              value={skill.name}
+                          <InlineEditableText
+                            path={`skills[${index}].name`}
+                            value={skill.name}
                               className="text-[12.5px] font-medium text-gray-900 flex-1"
                               as="span"
                             />
@@ -289,23 +289,23 @@ export const PremiumProTemplate = ({
                                 value={skill.rating || ""}
                                 placeholder="1-10"
                                 className="text-[11px] text-gray-500 w-12 text-right border border-dashed border-gray-300 rounded px-1"
-                                as="span"
-                              />
+                            as="span"
+                          />
                               <span className="text-[11px] text-gray-400">/10</span>
                             </div>
-                          </div>
-                          {skillLevel !== null && (
-                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full rounded-full transition-all"
-                                style={{
-                                  width: `${skillLevel * 10}%`,
-                                  backgroundColor: accent,
-                                }}
-                              />
-                            </div>
-                          )}
                         </div>
+                          {skillLevel !== null && (
+                          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all"
+                              style={{
+                                  width: `${skillLevel * 10}%`,
+                                backgroundColor: accent,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                       );
                     }}
                   />
@@ -326,29 +326,29 @@ export const PremiumProTemplate = ({
                       const skillLevel = parseRating(skill.rating);
                       
                       return (
-                        <div key={skill.id}>
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-[12.5px] font-medium text-gray-900">
-                              {skill.name}
-                            </span>
+                      <div key={skill.id}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-[12.5px] font-medium text-gray-900">
+                            {skill.name}
+                          </span>
                             {skill.rating && skill.rating.trim() && (
-                              <span className="text-[11px] text-gray-500">
+                            <span className="text-[11px] text-gray-500">
                                 {skillLevel !== null ? `${skillLevel}/10` : skill.rating}
-                              </span>
-                            )}
-                          </div>
-                          {skillLevel !== null && (
-                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full rounded-full transition-all"
-                                style={{
-                                  width: `${skillLevel * 10}%`,
-                                  backgroundColor: accent,
-                                }}
-                              />
-                            </div>
+                            </span>
                           )}
                         </div>
+                          {skillLevel !== null && (
+                          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all"
+                              style={{
+                                  width: `${skillLevel * 10}%`,
+                                backgroundColor: accent,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                       );
                     })}
                   </div>

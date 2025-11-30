@@ -871,20 +871,20 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                       ))}
                       
                       <div onClick={(e) => e.stopPropagation()}>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             addBulletPoint(exp.id, e);
                           }}
-                          className="h-8 px-2 text-xs font-medium text-primary hover:bg-primary/10"
-                        >
-                          <Plus className="mr-1.5 h-3 w-3" />
-                          Add Achievement
-                        </Button>
+                        className="h-8 px-2 text-xs font-medium text-primary hover:bg-primary/10"
+                      >
+                        <Plus className="mr-1.5 h-3 w-3" />
+                        Add Achievement
+                      </Button>
                       </div>
                     </div>
                     
@@ -1145,9 +1145,9 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                               {skill.name}
                             </span>
                             <div className="flex items-center gap-1">
-                              <Input
+                            <Input
                                 type="text"
-                                value={skill.rating || ""}
+                              value={skill.rating || ""}
                                 onChange={(e) => {
                                   // Allow numbers, decimals, and "/10" format
                                   const value = e.target.value;
@@ -1159,7 +1159,7 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                                 placeholder="1-10"
                                 className="h-7 text-xs w-20 border-gray-300 text-center"
                                 title="Enter a number from 1-10 (e.g., 9 or 9/10)"
-                              />
+                            />
                               <span className="text-xs text-muted-foreground">/10</span>
                             </div>
                           </div>
@@ -1180,24 +1180,24 @@ export const ResumeForm = ({ resumeData, setResumeData }: ResumeFormProps) => {
                   ) : (
                     <>
                       {/* Horizontal layout without ratings */}
-                      <div className="flex flex-wrap gap-2">
-                        {resumeData.skills.map((skill, index) => (
-                          <div
-                            key={skill.id}
-                            className="group inline-flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200"
+                    <div className="flex flex-wrap gap-2">
+                      {resumeData.skills.map((skill, index) => (
+                        <div
+                          key={skill.id}
+                          className="group inline-flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200"
+                        >
+                          <span className="truncate max-w-[120px]">{skill.name}</span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeSkill(index)}
+                            className="h-4 w-4 p-0 hover:bg-blue-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                           >
-                            <span className="truncate max-w-[120px]">{skill.name}</span>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeSkill(index)}
-                              className="h-4 w-4 p-0 hover:bg-blue-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
                       <p className="text-xs text-muted-foreground mt-2 px-1">
                         💡 Tip: Click "Show Ratings" above to add skill levels (1-10) with progress bars
                       </p>

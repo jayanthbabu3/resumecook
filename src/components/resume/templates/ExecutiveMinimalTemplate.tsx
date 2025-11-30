@@ -204,20 +204,20 @@ export const ExecutiveMinimalTemplate = ({
               addButtonLabel="Add Experience"
               renderItem={(exp, index) => (
                 <div key={exp.id} className="mb-8 max-w-4xl mx-auto group">
-                  <div className="flex justify-between items-baseline mb-3 border-b border-gray-200 pb-2">
-                    <div className="flex-1">
-                      <InlineEditableText
-                        path={`experience[${index}].position`}
-                        value={exp.position}
+              <div className="flex justify-between items-baseline mb-3 border-b border-gray-200 pb-2">
+                <div className="flex-1">
+                    <InlineEditableText
+                      path={`experience[${index}].position`}
+                      value={exp.position}
                         className="text-xs font-semibold"
-                        as="h3"
-                      />
-                      <InlineEditableText
-                        path={`experience[${index}].company`}
-                        value={exp.company}
+                      as="h3"
+                    />
+                    <InlineEditableText
+                      path={`experience[${index}].company`}
+                      value={exp.company}
                         className="text-xs text-gray-600 font-light"
-                        as="p"
-                      />
+                      as="p"
+                    />
                     </div>
                     <div className="text-xs text-gray-500 ml-4 flex items-center gap-1">
                       <InlineEditableDate
@@ -236,54 +236,54 @@ export const ExecutiveMinimalTemplate = ({
                           formatDisplay={formatDate}
                           className="inline-block"
                         />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Bullet Points */}
-                  {exp.bulletPoints && exp.bulletPoints.length > 0 && (
-                    <ul className="space-y-2">
-                      {exp.bulletPoints.map((bullet, bulletIndex) => (
-                        <li key={bulletIndex} className="flex gap-3">
-                          <span className="text-gray-400 mt-1">—</span>
-                          <InlineEditableText
-                            path={`experience[${index}].bulletPoints[${bulletIndex}]`}
-                            value={bullet || ""}
-                            placeholder="Click to add achievement..."
-                            className="text-xs text-gray-700 leading-relaxed flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
-                            multiline
-                            as="span"
-                          />
-                          {onRemoveBulletPoint && (
-                            <button
-                              onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}
-                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 rounded ml-2"
-                            >
-                              <X className="h-3 w-3 text-red-500" />
-                            </button>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {/* Add bullet point button */}
-                  {onAddBulletPoint && exp.id && (
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (onAddBulletPoint && exp.id) {
-                          onAddBulletPoint(exp.id);
-                        }
-                      }}
-                      className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <Plus className="h-3 w-3" />
-                      Add Achievement
-                    </button>
                   )}
                 </div>
+              </div>
+
+              {/* Bullet Points */}
+              {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                <ul className="space-y-2">
+                  {exp.bulletPoints.map((bullet, bulletIndex) => (
+                    <li key={bulletIndex} className="flex gap-3">
+                      <span className="text-gray-400 mt-1">—</span>
+                        <InlineEditableText
+                          path={`experience[${index}].bulletPoints[${bulletIndex}]`}
+                          value={bullet || ""}
+                          placeholder="Click to add achievement..."
+                            className="text-xs text-gray-700 leading-relaxed flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
+                          multiline
+                          as="span"
+                        />
+                          {onRemoveBulletPoint && (
+                        <button
+                          onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 rounded ml-2"
+                        >
+                          <X className="h-3 w-3 text-red-500" />
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Add bullet point button */}
+                  {onAddBulletPoint && exp.id && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (onAddBulletPoint && exp.id) {
+                      onAddBulletPoint(exp.id);
+                    }
+                  }}
+                  className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <Plus className="h-3 w-3" />
+                  Add Achievement
+                </button>
+              )}
+            </div>
               )}
             />
           ) : (
@@ -339,16 +339,16 @@ export const ExecutiveMinimalTemplate = ({
               addButtonLabel="Add Education"
               renderItem={(edu, index) => (
                 <div key={edu.id} className="mb-6 max-w-4xl mx-auto">
-                  <div className="flex justify-between items-baseline border-b border-gray-200 pb-2">
+              <div className="flex justify-between items-baseline border-b border-gray-200 pb-2">
                     <div className="flex-1">
-                      {editable ? (
-                        <InlineEditableText
-                          path={`education[${index}].degree`}
-                          value={edu.degree}
+                  {editable ? (
+                    <InlineEditableText
+                      path={`education[${index}].degree`}
+                      value={edu.degree}
                           className="text-xs font-semibold"
-                          as="h3"
-                        />
-                      ) : (
+                      as="h3"
+                    />
+                  ) : (
                         <h3 className="text-xs font-semibold">{edu.degree}</h3>
                       )}
                       {edu.field && (
@@ -362,11 +362,11 @@ export const ExecutiveMinimalTemplate = ({
                         ) : (
                           <p className="text-xs text-gray-600 font-light">{edu.field}</p>
                         )
-                      )}
-                      {editable ? (
-                        <InlineEditableText
-                          path={`education[${index}].school`}
-                          value={edu.school}
+                  )}
+                  {editable ? (
+                    <InlineEditableText
+                      path={`education[${index}].school`}
+                      value={edu.school}
                           className="text-xs text-gray-600 font-light"
                           as="p"
                         />
@@ -379,9 +379,9 @@ export const ExecutiveMinimalTemplate = ({
                             path={`education[${index}].gpa`}
                             value={`GPA: ${edu.gpa}`}
                             className="text-xs text-gray-500 font-light mt-0.5"
-                            as="p"
-                          />
-                        ) : (
+                      as="p"
+                    />
+                  ) : (
                           <p className="text-xs text-gray-500 font-light mt-0.5">GPA: {edu.gpa}</p>
                         )
                       )}
@@ -421,9 +421,9 @@ export const ExecutiveMinimalTemplate = ({
                     <div className="text-xs text-gray-500 ml-4">
                       {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                     </div>
-                  </div>
-                </div>
-              ))}
+              </div>
+            </div>
+          ))}
             </div>
           )}
         </div>
@@ -436,20 +436,20 @@ export const ExecutiveMinimalTemplate = ({
             Skills
           </h2>
           <div className="max-w-4xl mx-auto">
-            {editable ? (
+          {editable ? (
               <div className="flex flex-wrap justify-center [&>div>div]:!gap-0">
                 <InlineEditableSkills
                   path="skills"
                   skills={resumeData.skills}
                   renderSkill={(skill, index) => (
                     <span className="text-xs text-gray-500 font-light">
-                      {skill.name}
-                      {index < resumeData.skills.length - 1 && <span className="ml-4 text-gray-300">|</span>}
-                    </span>
+                    {skill.name}
+                    {index < resumeData.skills.length - 1 && <span className="ml-4 text-gray-300">|</span>}
+                  </span>
                   )}
                 />
-              </div>
-            ) : (
+            </div>
+          ) : (
               <div className="flex flex-wrap justify-center gap-2">
                 {resumeData.skills.map((skill, index) => (
                   <span
@@ -462,7 +462,7 @@ export const ExecutiveMinimalTemplate = ({
                 ))}
               </div>
             )}
-          </div>
+            </div>
         </div>
       )}
 

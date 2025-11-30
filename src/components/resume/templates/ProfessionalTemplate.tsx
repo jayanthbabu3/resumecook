@@ -300,14 +300,14 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                           <li key={bulletIndex} className="text-sm text-gray-700 leading-relaxed flex items-start group">
                             <span className="mr-2 mt-1">•</span>
                             <div className="flex-1 flex items-center gap-2">
-                              <InlineEditableText
-                                path={`experience[${index}].bulletPoints[${bulletIndex}]`}
+                            <InlineEditableText
+                              path={`experience[${index}].bulletPoints[${bulletIndex}]`}
                                 value={bullet || ""}
                                 placeholder="Click to add achievement..."
                                 className="text-sm text-gray-700 leading-relaxed flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
-                                multiline
-                                as="span"
-                              />
+                              multiline
+                              as="span"
+                            />
                               {editable && onRemoveBulletPoint && (
                                 <button
                                   onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}

@@ -10,7 +10,7 @@ import {
   Circle,
 } from "@react-pdf/renderer";
 import type { ResumeData } from "@/types/resume";
-import { PDF_PAGE_MARGINS } from "@/lib/pdfConfig";
+import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 interface SidebarAccentPDFProps {
   resumeData: ResumeData;
