@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet, Svg, Path, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Svg, Path, Image, Rect, Circle } from '@react-pdf/renderer';
 import type { ResumeData } from "@/pages/Editor";
 import type { ResumeSection } from "@/types/resume";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 20,
-    borderBottom: 2,
+    borderBottom: 1.5,
     borderBottomColor: '#000',
     paddingBottom: 15,
   },
@@ -70,13 +70,19 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     marginBottom: 8,
     textTransform: 'uppercase',
-    borderBottom: 1,
-    borderBottomColor: '#ccc',
+    borderBottom: 0.5,
+    borderBottomColor: '#e5e7eb',
     paddingBottom: 5,
     letterSpacing: 0.5,
   },
+  experienceHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 5,
+  },
   experienceItem: {
-    marginBottom: 15,
+    marginBottom: 18,
   },
   jobTitle: {
     fontSize: 11,
@@ -94,15 +100,32 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 9,
     color: '#666',
-    marginBottom: 5,
   },
   description: {
     fontSize: 9,
-    lineHeight: 1.4,
+    fontFamily: 'Inter',
     color: '#333',
+    lineHeight: 1.4,
+    marginTop: 4,
+  },
+  bulletPoints: {
+    marginTop: 4,
+  },
+  bulletPoint: {
+    fontSize: 9,
+    fontFamily: 'Inter',
+    color: '#333',
+    lineHeight: 1.4,
+    marginBottom: 2,
+  },
+  educationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 5,
   },
   educationItem: {
-    marginBottom: 10,
+    marginBottom: 12,
   },
   degree: {
     fontSize: 11,
@@ -116,14 +139,33 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     color: '#333',
   },
+  gpa: {
+    fontSize: 9,
+    fontFamily: 'Inter',
+    color: '#666',
+    marginTop: 2,
+  },
   skillsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 5,
+    gap: 6,
+    marginTop: 5,
+  },
+  skillBadge: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 4,
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 8,
+    paddingRight: 8,
   },
   skill: {
     fontSize: 9,
     color: '#333',
+  },
+  linkText: {
+    fontSize: 9,
+    color: '#0066cc',
   },
 });
 
@@ -367,22 +409,72 @@ export const ProfessionalPDF = ({ resumeData, themeColor }: Props) => {
       {/* Summary */}
       {hasContent(resumeData.personalInfo.summary) && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Professional Summary</Text>
+          <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
           <Text style={styles.description}>{resumeData.personalInfo.summary}</Text>
+        </View>
+      )}
+
+      {/* Social Links */}
+      {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>SOCIAL LINKS</Text>
+          <View style={styles.contactRow}>
+            {resumeData.personalInfo.linkedin && (
+              <View style={styles.contactItem}>
+                <Svg width="10" height="10" viewBox="0 0 24 24">
+                  <Path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" fill="none" stroke="#666" strokeWidth="2" />
+                  <Rect x="2" y="9" width="4" height="12" fill="none" stroke="#666" strokeWidth="2" />
+                  <Circle cx="4" cy="4" r="2" fill="none" stroke="#666" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.linkText}>{resumeData.personalInfo.linkedin}</Text>
+              </View>
+            )}
+            {resumeData.personalInfo.portfolio && (
+              <View style={styles.contactItem}>
+                <Svg width="10" height="10" viewBox="0 0 24 24">
+                  <Circle cx="12" cy="12" r="10" fill="none" stroke="#666" strokeWidth="2" />
+                  <Path d="M2 12h20" fill="none" stroke="#666" strokeWidth="2" />
+                  <Path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" fill="none" stroke="#666" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.linkText}>{resumeData.personalInfo.portfolio}</Text>
+              </View>
+            )}
+            {resumeData.personalInfo.github && (
+              <View style={styles.contactItem}>
+                <Svg width="10" height="10" viewBox="0 0 24 24">
+                  <Path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" fill="none" stroke="#666" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.linkText}>{resumeData.personalInfo.github}</Text>
+              </View>
+            )}
+          </View>
         </View>
       )}
 
       {/* Experience */}
       {resumeData.experience.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Professional Experience</Text>
+          <Text style={styles.sectionTitle}>PROFESSIONAL EXPERIENCE</Text>
           {resumeData.experience.map((exp) => (
             <View key={exp.id} style={styles.experienceItem}>
-              <Text style={styles.jobTitle}>{exp.position || "Position Title"}</Text>
+              <View style={styles.experienceHeader}>
+                <Text style={styles.jobTitle}>{exp.position || "Position Title"}</Text>
+                <Text style={styles.date}>
+                  {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
+                </Text>
+              </View>
               <Text style={styles.company}>{exp.company || "Company Name"}</Text>
-              <Text style={styles.date}>
-                {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-              </Text>
+              {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                <View style={styles.bulletPoints}>
+                  {exp.bulletPoints.map((bullet, index) => (
+                    hasContent(bullet) && (
+                      <Text key={index} style={styles.bulletPoint}>
+                        • {bullet}
+                      </Text>
+                    )
+                  ))}
+                </View>
+              )}
               {hasContent(exp.description) && <Text style={styles.description}>{exp.description}</Text>}
             </View>
           ))}
@@ -392,16 +484,19 @@ export const ProfessionalPDF = ({ resumeData, themeColor }: Props) => {
       {/* Education */}
       {resumeData.education.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Education</Text>
+          <Text style={styles.sectionTitle}>EDUCATION</Text>
           {resumeData.education.map((edu) => (
             <View key={edu.id} style={styles.educationItem}>
-              <Text style={styles.degree}>
-                {edu.degree || "Degree"} {edu.field && `in ${edu.field}`}
-              </Text>
+              <View style={styles.educationHeader}>
+                <Text style={styles.degree}>
+                  {edu.degree || "Degree"} {edu.field && `in ${edu.field}`}
+                </Text>
+                <Text style={styles.date}>
+                  {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                </Text>
+              </View>
               <Text style={styles.school}>{edu.school || "School Name"}</Text>
-              <Text style={styles.date}>
-                {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-              </Text>
+              {edu.gpa && <Text style={styles.gpa}>{edu.gpa}</Text>}
             </View>
           ))}
         </View>
@@ -410,13 +505,15 @@ export const ProfessionalPDF = ({ resumeData, themeColor }: Props) => {
       {/* Skills */}
       {resumeData.skills.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Skills</Text>
+          <Text style={styles.sectionTitle}>SKILLS</Text>
           <View style={styles.skillsContainer}>
             {resumeData.skills.map((skill, index) => (
               hasContent(skill.name) && (
-                <Text key={skill.id} style={styles.skill}>
-                  {skill.name}{index < resumeData.skills.length - 1 ? " •" : ""}
-                </Text>
+                <View key={skill.id} style={styles.skillBadge}>
+                  <Text style={styles.skill}>
+                    {skill.name}
+                  </Text>
+                </View>
               )
             ))}
           </View>

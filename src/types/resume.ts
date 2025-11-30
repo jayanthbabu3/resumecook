@@ -12,7 +12,11 @@ export interface ResumeData {
     title: string;
     summary: string;
     photo?: string;
+    linkedin?: string;
+    portfolio?: string;
+    github?: string;
   };
+  includeSocialLinks?: boolean;
   experience: ExperienceItem[];
   education: EducationItem[];
   skills: SkillItem[];
@@ -28,6 +32,7 @@ export interface ExperienceItem {
   startDate: string;
   endDate: string;
   description: string;
+  bulletPoints?: string[];
   current: boolean;
 }
 

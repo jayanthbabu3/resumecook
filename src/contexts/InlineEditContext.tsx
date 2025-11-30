@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState } from "react";
-import type { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 
 interface InlineEditContextType {
   resumeData: ResumeData;
   updateField: (path: string, value: any) => void;
   addArrayItem: (path: string, defaultItem: any) => void;
   removeArrayItem: (path: string, index: number) => void;
+  addBulletPoint: (expId: string) => void;
+  removeBulletPoint: (expId: string, bulletIndex: number) => void;
   isEditing: boolean;
   setIsEditing: (editing: boolean) => void;
 }
@@ -112,6 +114,33 @@ export const InlineEditProvider = ({
     }
   };
 
+  const addBulletPoint = (expId: string) => {
+    const newData = JSON.parse(JSON.stringify(resumeData));
+    const expIndex = newData.experience.findIndex((exp: any) => exp.id === expId);
+    
+    if (expIndex !== -1) {
+      const exp = newData.experience[expIndex];
+      if (!exp.bulletPoints) {
+        exp.bulletPoints = [];
+      }
+      exp.bulletPoints.push("");
+      setResumeData(newData);
+    }
+  };
+
+  const removeBulletPoint = (expId: string, bulletIndex: number) => {
+    const newData = JSON.parse(JSON.stringify(resumeData));
+    const expIndex = newData.experience.findIndex((exp: any) => exp.id === expId);
+    
+    if (expIndex !== -1) {
+      const exp = newData.experience[expIndex];
+      if (exp.bulletPoints && Array.isArray(exp.bulletPoints)) {
+        exp.bulletPoints.splice(bulletIndex, 1);
+        setResumeData(newData);
+      }
+    }
+  };
+
   return (
     <InlineEditContext.Provider
       value={{
@@ -119,6 +148,8 @@ export const InlineEditProvider = ({
         updateField,
         addArrayItem,
         removeArrayItem,
+        addBulletPoint,
+        removeBulletPoint,
         isEditing,
         setIsEditing,
       }}

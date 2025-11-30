@@ -1,5 +1,5 @@
-import { Document, Page, Text, View, StyleSheet, Svg, Path, Image } from '@react-pdf/renderer';
-import type { ResumeData } from "@/pages/Editor";
+import { Document, Page, View, Text, StyleSheet, Image, Svg, Path, Rect, Circle } from "@react-pdf/renderer";
+import type { ResumeData } from "@/types/resume";
 import { PDF_PAGE_MARGINS, hasContent } from "@/lib/pdfConfig";
 
 const styles = StyleSheet.create({
@@ -103,6 +103,19 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
     color: '#333',
   },
+  bulletPoints: {
+    marginTop: 8,
+  },
+  bulletPoint: {
+    fontSize: 9,
+    lineHeight: 1.4,
+    color: '#333',
+    marginBottom: 4,
+  },
+  linkText: {
+    fontSize: 9,
+    color: '#0066cc',
+  },
   educationItem: {
     marginBottom: 12,
   },
@@ -116,15 +129,31 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#666',
   },
+  gpa: {
+    fontSize: 9,
+    color: '#999',
+    marginTop: 2,
+  },
   skillsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 15,
+    gap: 8,
     justifyContent: 'flex-start',
+    marginTop: 5,
+    marginBottom: 5,
   },
   skill: {
     fontSize: 9,
     color: '#333',
+    backgroundColor: '#f9fafb',
+    borderColor: '#e5e7eb',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: 8,
+    paddingRight: 8,
+    lineHeight: 1.2,
   },
 });
 
@@ -192,9 +221,46 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
         <Text style={styles.summary}>{resumeData.personalInfo.summary}</Text>
       )}
 
+      {/* Social Links */}
+      {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Social Links</Text>
+          <View style={styles.contactRow}>
+            {resumeData.personalInfo.linkedin && (
+              <View style={styles.contactItem}>
+                <Svg width="9" height="9" viewBox="0 0 24 24">
+                  <Path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" fill="none" stroke="#666" strokeWidth="2" />
+                  <Rect x="2" y="9" width="4" height="12" fill="none" stroke="#666" strokeWidth="2" />
+                  <Circle cx="4" cy="4" r="2" fill="none" stroke="#666" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.linkText}>{resumeData.personalInfo.linkedin}</Text>
+              </View>
+            )}
+            {resumeData.personalInfo.portfolio && (
+              <View style={styles.contactItem}>
+                <Svg width="9" height="9" viewBox="0 0 24 24">
+                  <Circle cx="12" cy="12" r="10" fill="none" stroke="#666" strokeWidth="2" />
+                  <Path d="M2 12h20" fill="none" stroke="#666" strokeWidth="2" />
+                  <Path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" fill="none" stroke="#666" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.linkText}>{resumeData.personalInfo.portfolio}</Text>
+              </View>
+            )}
+            {resumeData.personalInfo.github && (
+              <View style={styles.contactItem}>
+                <Svg width="9" height="9" viewBox="0 0 24 24">
+                  <Path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" fill="none" stroke="#666" strokeWidth="2" />
+                </Svg>
+                <Text style={styles.linkText}>{resumeData.personalInfo.github}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      )}
+
       {/* Experience */}
       {resumeData.experience.length > 0 && (
-        <View style={styles.section}>
+        <View style={styles.section} break={resumeData.experience.length > 3}>
           <Text style={styles.sectionTitle}>Experience</Text>
           {resumeData.experience.map((exp, index) => (
             <View
@@ -203,6 +269,7 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
                 styles.experienceItem,
                 index === resumeData.experience.length - 1 && { borderBottom: 0 }
               ]}
+              break
             >
               <View style={styles.experienceHeader}>
                 <View>
@@ -214,6 +281,17 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
                 </Text>
               </View>
               {hasContent(exp.description) && <Text style={styles.description}>{exp.description}</Text>}
+              {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                <View style={styles.bulletPoints}>
+                  {exp.bulletPoints.map((bullet, idx) => (
+                    hasContent(bullet) && (
+                      <Text key={idx} style={styles.bulletPoint}>
+                        • {bullet}
+                      </Text>
+                    )
+                  ))}
+                </View>
+              )}
             </View>
           ))}
         </View>
@@ -221,16 +299,17 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
 
       {/* Education */}
       {resumeData.education.length > 0 && (
-        <View style={styles.section}>
+        <View style={styles.section} break={resumeData.education.length > 2}>
           <Text style={styles.sectionTitle}>Education</Text>
           {resumeData.education.map((edu) => (
-            <View key={edu.id} style={styles.educationItem}>
+            <View key={edu.id} style={styles.educationItem} break>
               <View style={styles.experienceHeader}>
                 <View>
                   <Text style={styles.degree}>
                     {edu.degree || "Degree"}{hasContent(edu.field) && `, ${edu.field}`}
                   </Text>
                   <Text style={styles.school}>{edu.school || "School Name"}</Text>
+                  {hasContent(edu.gpa) && <Text style={styles.gpa}>Grade: {edu.gpa}</Text>}
                 </View>
                 <Text style={styles.date}>
                   {formatDate(edu.startDate)} — {formatDate(edu.endDate)}
@@ -243,7 +322,7 @@ export const MinimalPDF = ({ resumeData, themeColor }: Props) => {
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
-        <View style={styles.section}>
+        <View style={styles.section} break={resumeData.skills.length > 8}>
           <Text style={styles.sectionTitle}>Skills</Text>
           <View style={styles.skillsContainer}>
             {resumeData.skills.map((skill) => (

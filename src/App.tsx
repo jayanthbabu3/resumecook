@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FirebaseAuthProvider } from "@/hooks/useFirebaseAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MigrationHandler } from "@/components/MigrationHandler";
+import { ResumeDataProvider } from "@/contexts/ResumeDataContext";
 import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
 import ProfessionTemplates from "./pages/ProfessionTemplates";
@@ -31,8 +32,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <FirebaseAuthProvider>
-          <Routes>
-            <Route path="/" element={<Hero />} />
+          <ResumeDataProvider>
+            <Routes>
+              <Route path="/" element={<Hero />} />
             <Route path="/ats-guidelines" element={<ATSGuidelines />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
@@ -100,6 +102,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </ResumeDataProvider>
         </FirebaseAuthProvider>
       </BrowserRouter>
     </TooltipProvider>

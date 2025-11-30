@@ -1,5 +1,5 @@
-import type { ResumeData } from "@/pages/Editor";
-import { Mail, Phone, MapPin } from "lucide-react";
+import type { ResumeData } from "@/types/resume";
+import { Mail, Phone, MapPin, Linkedin, Globe, Github, Plus, X } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
@@ -10,9 +10,11 @@ interface TemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
+  onAddBulletPoint?: (expId: string) => void;
+  onRemoveBulletPoint?: (expId: string, bulletIndex: number) => void;
 }
 
-export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: TemplateProps) => {
+export const MinimalTemplate = ({ resumeData, themeColor, editable = false, onAddBulletPoint, onRemoveBulletPoint }: TemplateProps) => {
   const formatDate = (date: string) => {
     if (!date) return "";
     const [year, month] = date.split("-");
@@ -105,6 +107,50 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
         </div>
       )}
 
+      {/* Social Links */}
+      {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
+        <div className="mb-8 max-w-4xl mx-auto" style={{ pageBreakInside: 'avoid' }}>
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-600">
+            {resumeData.personalInfo.linkedin && (
+              <span className="flex items-center gap-1.5">
+                <Linkedin className="h-3.5 w-3.5" />
+                {editable ? (
+                  <InlineEditableText path="personalInfo.linkedin" value={resumeData.personalInfo.linkedin} className="inline-block" />
+                ) : (
+                  <a href={resumeData.personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    LinkedIn
+                  </a>
+                )}
+              </span>
+            )}
+            {resumeData.personalInfo.portfolio && (
+              <span className="flex items-center gap-1.5">
+                <Globe className="h-3.5 w-3.5" />
+                {editable ? (
+                  <InlineEditableText path="personalInfo.portfolio" value={resumeData.personalInfo.portfolio} className="inline-block" />
+                ) : (
+                  <a href={resumeData.personalInfo.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    Portfolio
+                  </a>
+                )}
+              </span>
+            )}
+            {resumeData.personalInfo.github && (
+              <span className="flex items-center gap-1.5">
+                <Github className="h-3.5 w-3.5" />
+                {editable ? (
+                  <InlineEditableText path="personalInfo.github" value={resumeData.personalInfo.github} className="inline-block" />
+                ) : (
+                  <a href={resumeData.personalInfo.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    GitHub
+                  </a>
+                )}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Experience */}
       {resumeData.experience.length > 0 && (
         <div className="mb-8">
@@ -123,6 +169,7 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
                   startDate: "2023-01",
                   endDate: "2024-01",
                   description: "Job description",
+                  bulletPoints: ["Achievement 1", "Achievement 2"],
                   current: false,
                 }}
                 addButtonLabel="Add Experience"
@@ -167,10 +214,78 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
                       <InlineEditableText
                         path={`experience[${index}].description`}
                         value={exp.description}
-                        className="text-sm text-gray-700 leading-relaxed font-light whitespace-pre-line block"
+                        className="text-sm text-gray-700 leading-relaxed font-light whitespace-pre-line block mb-3"
                         multiline
                         as="p"
                       />
+                    )}
+                    {(!exp.bulletPoints || exp.bulletPoints.length === 0) && editable && onAddBulletPoint && exp.id && (
+                      <div className="mt-3">
+                        <button
+                          onClick={(e) => {
+                            console.log("🟡 Button clicked! exp:", { id: exp.id, company: exp.company, position: exp.position });
+                            console.log("🟡 onAddBulletPoint function:", onAddBulletPoint);
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (onAddBulletPoint && exp.id) {
+                              console.log("🟡 Calling onAddBulletPoint with id:", exp.id);
+                              onAddBulletPoint(exp.id);
+                            } else {
+                              console.error("🟡 onAddBulletPoint or exp.id is missing!", { onAddBulletPoint: !!onAddBulletPoint, expId: exp.id });
+                            }
+                          }}
+                          className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-light"
+                        >
+                          <Plus className="h-3 w-3" />
+                          Add Achievement
+                        </button>
+                      </div>
+                    )}
+                    {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                      <div className="mt-3">
+                        <ul className="space-y-1">
+                          {exp.bulletPoints.map((bullet, bulletIndex) => (
+                            <li key={bulletIndex} className="text-sm text-gray-700 leading-relaxed font-light flex items-start group">
+                              <span className="mr-2 mt-1">•</span>
+                              <div className="flex-1 flex items-center gap-2">
+                                <InlineEditableText
+                                  path={`experience[${index}].bulletPoints[${bulletIndex}]`}
+                                  value={bullet || ""}
+                                  placeholder="Click to add achievement..."
+                                  className="text-sm text-gray-700 leading-relaxed font-light flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
+                                  multiline
+                                  as="span"
+                                />
+                                {editable && onRemoveBulletPoint && (
+                                  <button
+                                    onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}
+                                    className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 rounded"
+                                  >
+                                    <X className="h-3 w-3 text-red-500" />
+                                  </button>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                        {editable && onAddBulletPoint && exp.id && (
+                          <button
+                            onClick={(e) => {
+                              console.log("🟡 Button clicked (when bulletPoints exist)! exp:", { id: exp.id, company: exp.company, position: exp.position, bulletPoints: exp.bulletPoints });
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (onAddBulletPoint && exp.id) {
+                                console.log("🟡 Calling onAddBulletPoint with id:", exp.id);
+                                onAddBulletPoint(exp.id);
+                              }
+                            }}
+                            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-light"
+                          >
+                            <Plus className="h-3 w-3" />
+                            Add Achievement
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}
@@ -192,9 +307,23 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
                     </div>
                   </div>
                   {exp.description && (
-                    <p className="text-sm text-gray-700 leading-relaxed font-light whitespace-pre-line">
+                    <p className="text-sm text-gray-700 leading-relaxed font-light whitespace-pre-line mb-3">
                       {exp.description}
                     </p>
+                  )}
+                  {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                    <div className="mt-3">
+                      <ul className="space-y-1">
+                        {exp.bulletPoints.map((bullet, bulletIndex) => (
+                          bullet && (
+                            <li key={bulletIndex} className="text-sm text-gray-700 leading-relaxed font-light flex">
+                              <span className="mr-2">•</span>
+                              <span>{bullet}</span>
+                            </li>
+                          )
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </div>
               ))
@@ -221,6 +350,7 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
                   school: "School Name",
                   startDate: "2023-01",
                   endDate: "2024-01",
+                  gpa: "",
                 }}
                 addButtonLabel="Add Education"
                 renderItem={(edu, index) => (
@@ -238,6 +368,14 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
                         className="text-sm text-gray-600 font-light block"
                         as="p"
                       />
+                      {edu.gpa && (
+                        <InlineEditableText
+                          path={`education[${index}].gpa`}
+                          value={edu.gpa}
+                          className="text-xs text-gray-500 font-light block"
+                          as="p"
+                        />
+                      )}
                     </div>
                     <div className="text-xs text-gray-500 font-light whitespace-nowrap flex items-center gap-1">
                       <InlineEditableDate
@@ -268,6 +406,11 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
                       <p className="text-sm text-gray-600 font-light">
                         {edu.school || "School Name"}
                       </p>
+                      {edu.gpa && (
+                        <p className="text-xs text-gray-500 font-light">
+                          Grade: {edu.gpa}
+                        </p>
+                      )}
                     </div>
                     <div className="text-xs text-gray-500 font-light whitespace-nowrap">
                       {formatDate(edu.startDate)} — {formatDate(edu.endDate)}
@@ -283,22 +426,33 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false }: Te
       {/* Skills */}
       {resumeData.skills.length > 0 && (
         <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-          <h2 className="text-xs font-semibold text-gray-900 mb-4 uppercase tracking-widest text-center" style={{ pageBreakAfter: 'avoid' }}>
+          <h2 className="text-xs font-semibold text-gray-900 mb-5 uppercase tracking-widest text-center" style={{ pageBreakAfter: 'avoid' }}>
             Skills
           </h2>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700 font-light max-w-4xl mx-auto">
+          <div className="flex flex-wrap gap-x-3 gap-y-2 max-w-4xl mx-auto">
             {editable ? (
               <InlineEditableSkills
                 path="skills"
                 skills={resumeData.skills}
                 renderSkill={(skill, index) =>
                   skill.name && (
-                    <span>{skill.name}</span>
+                    <span className="px-3 py-1.5 text-xs text-gray-700 bg-gray-50 border border-gray-200 rounded-full font-light tracking-wide">
+                      {skill.name}
+                    </span>
                   )
                 }
               />
             ) : (
-              resumeData.skills.map((skill) => skill.name && <span key={skill.id}>{skill.name}</span>)
+              resumeData.skills.map((skill) => 
+                skill.name && (
+                  <span
+                    key={skill.id}
+                    className="px-3 py-1.5 text-xs text-gray-700 bg-gray-50 border border-gray-200 rounded-full font-light tracking-wide"
+                  >
+                    {skill.name}
+                  </span>
+                )
+              )
             )}
           </div>
         </div>

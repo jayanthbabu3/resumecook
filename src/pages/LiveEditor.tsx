@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save } from "lucide-react";
+import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save, Plus } from "lucide-react";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { resumeService } from "@/lib/firestore/resumeService";
 import { FavoriteButton } from "@/components/FavoriteButton";
-import type { ResumeData as NewResumeData } from "@/types/resume";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -107,6 +106,7 @@ import { BusinessElitePDF } from "@/components/resume/pdf/BusinessElitePDF";
 import { CorporateCleanPDF } from "@/components/resume/pdf/CorporateCleanPDF";
 import { ProfessionalClassicPDF } from "@/components/resume/pdf/ProfessionalClassicPDF";
 import { ModernBusinessPDF } from "@/components/resume/pdf/ModernBusinessPDF";
+import { PDFMonochromeElegantUniversalTemplate } from "@/components/resume/pdf/PDFMonochromeElegantUniversalTemplate";
 // New Professional PDF Templates (22 new imports)
 import { AlgoEngineerPDF } from "@/components/resume/pdf/AlgoEngineerPDF";
 import { ArtisticBoldPDF } from "@/components/resume/pdf/ArtisticBoldPDF";
@@ -450,7 +450,8 @@ import { SupplyChainManagerPDF } from "@/components/resume/pdf/SupplyChainManage
 import { LogisticsCoordinatorPDF } from "@/components/resume/pdf/LogisticsCoordinatorPDF";
 import { ProcurementSpecialistPDF } from "@/components/resume/pdf/ProcurementSpecialistPDF";
 import { registerPDFFonts } from "@/lib/pdfFonts";
-import { getTemplateDefaults, type ResumeData } from "@/pages/Editor";
+import { getTemplateDefaults, type ResumeData, sanitizeResumeData } from "@/lib/resumeUtils";
+import { useResumeData } from "@/contexts/ResumeDataContext";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
 import { ATSScoreButton } from "@/components/ATSScoreButton";
 import type { AtsReport } from "@/lib/atsAnalyzer";
@@ -1503,6 +1504,7 @@ const pdfTemplates: Record<string, any> = {
   "corporate-clean": CorporateCleanPDF,
   "professional-classic": ProfessionalClassicPDF,
   "modern-business": ModernBusinessPDF,
+  "monochrome-elegant-universal": PDFMonochromeElegantUniversalTemplate,
   // New Professional Templates (22 new registrations)
   "algo-engineer": AlgoEngineerPDF,
   "artistic-bold": ArtisticBoldPDF,
@@ -2827,45 +2829,23 @@ const LiveEditor = () => {
   const [searchParams] = useSearchParams();
   const resumeId = searchParams.get("resumeId");
   const { user } = useFirebaseAuth();
-  const [resumeData, setResumeData] = useState<ResumeData>(() =>
-    getTemplateDefaults(templateId || "professional")
-  );
+  const { resumeData, setResumeData, themeColor, setThemeColor, setTemplateId } = useResumeData();
 
   // Determine back navigation path based on whether we're in a nested route
   const backPath = professionId ? `/dashboard/${professionId}` : "/dashboard";
-  const [themeColor, setThemeColor] = useState("#7c3aed");
+
+  useEffect(() => {
+    if (templateId) {
+      setTemplateId(templateId);
+    }
+  }, [templateId, setTemplateId]);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [editorMode, setEditorMode] = useState<"live" | "form">("live");
   const [isSaving, setIsSaving] = useState(false);
   const [currentResumeId, setCurrentResumeId] = useState<string | null>(resumeId);
 
-  useEffect(() => {
-    setResumeData(getTemplateDefaults(templateId || "professional"));
-  }, [templateId]);
 
   // Load resume from Firestore if resumeId exists
-  useEffect(() => {
-    const loadResumeFromFirestore = async () => {
-      if (!resumeId || !user) return;
-
-      try {
-        const resume = await resumeService.getResume(resumeId);
-        if (resume && resume.data) {
-          // The new service returns data in the same format as Editor's ResumeData
-          setResumeData(resume.data as ResumeData);
-          // Also update theme color if it exists
-          if (resume.themeColor) {
-            setThemeColor(resume.themeColor);
-          }
-        }
-      } catch (error) {
-        console.error("Error loading resume from Firestore:", error);
-        toast.error("Failed to load resume");
-      }
-    };
-
-    loadResumeFromFirestore();
-  }, [resumeId, user]);
 
   const handleSave = useCallback(async () => {
     if (!user) {
@@ -2873,7 +2853,8 @@ const LiveEditor = () => {
       return;
     }
 
-    if (!templateId) {
+
+  if (!templateId) {
       toast.error("Template ID is missing");
       return;
     }
@@ -2881,7 +2862,7 @@ const LiveEditor = () => {
     setIsSaving(true);
     try {
       // Convert Editor resume data to new service format (same structure!)
-      const resumeDataToSave: NewResumeData = {
+      const resumeDataToSave: ResumeData = {
         personalInfo: resumeData.personalInfo,
         experience: resumeData.experience,
         education: resumeData.education,
@@ -2965,6 +2946,106 @@ const LiveEditor = () => {
   const handleSwitchToFormEditor = () => {
     navigate(professionId ? `/dashboard/${professionId}/editor/${templateId}` : `/editor/${templateId}`);
   };
+
+  const handleAddCustomSection = () => {
+    const newSection = {
+      id: Date.now().toString(),
+      title: "Custom Section",
+      content: "Add your content here"
+    };
+    
+    setResumeData({
+      ...resumeData,
+      sections: [...(resumeData.sections || []), newSection]
+    });
+    
+    toast.success("Custom section added");
+  };
+
+  const addBulletPoint = useCallback((expId: string) => {
+    console.log("🔵 addBulletPoint called with expId:", expId);
+    console.log("🔵 Current resumeData.experience:", resumeData.experience.map(e => ({ 
+      id: e.id, 
+      company: e.company, 
+      position: e.position,
+      bulletPoints: e.bulletPoints 
+    })));
+
+    if (!expId) {
+      console.error("❌ addBulletPoint: expId is missing");
+      toast.error("Unable to add bullet point: experience item ID is missing");
+      return;
+    }
+
+    setResumeData((currentData) => {
+      console.log("🟢 setResumeData updater called");
+      console.log("🟢 Current data in updater:", {
+        experienceCount: currentData.experience.length,
+        experience: currentData.experience.map(e => ({ 
+          id: e.id, 
+          company: e.company, 
+          position: e.position,
+          bulletPoints: e.bulletPoints 
+        }))
+      });
+
+      const experienceItem = currentData.experience.find(exp => exp.id === expId);
+      console.log("🟢 Looking for expId:", expId);
+      console.log("🟢 Found experience item:", experienceItem);
+      
+      if (!experienceItem) {
+        console.error("❌ addBulletPoint: Experience item not found with id:", expId);
+        console.log("❌ Available experience items:", currentData.experience.map(e => ({ id: e.id, company: e.company, position: e.position })));
+        toast.error("Unable to add bullet point: experience item not found");
+        return currentData; // Return unchanged data if item not found
+      }
+
+      const currentBulletPoints = experienceItem.bulletPoints || [];
+      console.log("🟢 Current bulletPoints:", currentBulletPoints);
+      
+      const updatedExperience = currentData.experience.map((exp) => {
+        if (exp.id === expId) {
+          const newBulletPoints = [...currentBulletPoints, ""];
+          console.log("🟢 Updating experience item. New bulletPoints:", newBulletPoints);
+          return { ...exp, bulletPoints: newBulletPoints };
+        }
+        return exp;
+      });
+
+      const updatedData = {
+        ...currentData,
+        experience: updatedExperience,
+      };
+      
+      console.log("🟢 Returning updated data:", {
+        experienceCount: updatedData.experience.length,
+        updatedItem: updatedData.experience.find(e => e.id === expId)
+      });
+
+      return updatedData;
+    });
+    
+    console.log("🔵 setResumeData called, waiting for state update...");
+    toast.success("Bullet point added");
+  }, [resumeData, setResumeData]);
+
+  const removeBulletPoint = useCallback((expId: string, bulletIndex: number) => {
+    setResumeData((currentData) => {
+      const updatedExperience = currentData.experience.map((exp) =>
+        exp.id === expId 
+          ? { 
+              ...exp, 
+              bulletPoints: exp.bulletPoints?.filter((_, i) => i !== bulletIndex) || []
+            }
+          : exp
+      );
+      return {
+        ...currentData,
+        experience: updatedExperience,
+      };
+    });
+    toast.success("Bullet point removed");
+  }, [setResumeData]);
 
   return (
     <div className="flex h-screen flex-col bg-gradient-to-br from-background via-muted/5 to-background">
@@ -3144,7 +3225,13 @@ const LiveEditor = () => {
               if (supportsInlineEdit) {
                 return (
                   <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
-                    <TemplateComponent resumeData={resumeData} themeColor={themeColor} editable={true} />
+                    <TemplateComponent 
+                      resumeData={resumeData} 
+                      themeColor={themeColor} 
+                      editable={true} 
+                      onAddBulletPoint={addBulletPoint}
+                      onRemoveBulletPoint={removeBulletPoint}
+                    />
                   </InlineEditProvider>
                 );
               }
@@ -3161,6 +3248,12 @@ const LiveEditor = () => {
                 </div>
               );
             })()}
+            <div className="p-8 border-t border-gray-100 flex justify-center print:hidden">
+              <Button onClick={handleAddCustomSection} variant="ghost" className="gap-2 text-muted-foreground hover:text-primary">
+                <Plus className="h-4 w-4" />
+                Add Custom Section
+              </Button>
+            </div>
           </div>
         </div>
       </div>
