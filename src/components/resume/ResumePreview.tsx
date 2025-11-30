@@ -255,11 +255,7 @@ import { CompactProfessionalTemplate } from "./templates/CompactProfessionalTemp
 // New Universal Profile Templates
 import { SwissStyleUniversalTemplate } from "./templates/SwissStyleUniversalTemplate";
 import { ExecutiveLetterheadUniversalTemplate } from "./templates/ExecutiveLetterheadUniversalTemplate";
-import { DiagonalAccentUniversalTemplate } from "./templates/DiagonalAccentUniversalTemplate";
 import { BorderFrameUniversalTemplate } from "./templates/BorderFrameUniversalTemplate";
-import { TimelineVerticalUniversalTemplate } from "./templates/TimelineVerticalUniversalTemplate";
-import { BadgeStyleUniversalTemplate } from "./templates/BadgeStyleUniversalTemplate";
-import { MonochromeElegantUniversalTemplate } from "./templates/MonochromeElegantUniversalTemplate";
 // Second Batch Universal Profile Templates
 import { GradientHeaderUniversalTemplate } from "./templates/GradientHeaderUniversalTemplate";
 import { SplitPaneUniversalTemplate } from "./templates/SplitPaneUniversalTemplate";
@@ -300,7 +296,6 @@ import { RetroProfessionalUniversalTemplate } from "./templates/RetroProfessiona
 import { NewspaperStyleUniversalTemplate } from "./templates/NewspaperStyleUniversalTemplate";
 import { TriangularElementsUniversalTemplate } from "./templates/TriangularElementsUniversalTemplate";
 import { ParallaxStyleUniversalTemplate } from "./templates/ParallaxStyleUniversalTemplate";
-import { VerticalTimelineUniversalTemplate } from "./templates/VerticalTimelineUniversalTemplate";
 import { InfinityLoopUniversalTemplate } from "./templates/InfinityLoopUniversalTemplate";
 // 2025 New Profession-Specific Templates - Healthcare
 import { MedicalCertificationTemplate } from "./templates/MedicalCertificationTemplate";
@@ -717,11 +712,7 @@ export const ResumePreview = ({
     // New Universal Profile Templates
     "swiss-style-universal": SwissStyleUniversalTemplate,
     "executive-letterhead-universal": ExecutiveLetterheadUniversalTemplate,
-    "diagonal-accent-universal": DiagonalAccentUniversalTemplate,
     "border-frame-universal": BorderFrameUniversalTemplate,
-    "timeline-vertical-universal": TimelineVerticalUniversalTemplate,
-    "badge-style-universal": BadgeStyleUniversalTemplate,
-    "monochrome-elegant-universal": MonochromeElegantUniversalTemplate,
     // Second Batch Universal Profile Templates
     "gradient-header-universal": GradientHeaderUniversalTemplate,
     "split-pane-universal": SplitPaneUniversalTemplate,
@@ -762,7 +753,6 @@ export const ResumePreview = ({
     "newspaper-style-universal": NewspaperStyleUniversalTemplate,
     "triangular-elements-universal": TriangularElementsUniversalTemplate,
     "parallax-style-universal": ParallaxStyleUniversalTemplate,
-    "vertical-timeline-universal": VerticalTimelineUniversalTemplate,
     "infinity-loop-universal": InfinityLoopUniversalTemplate,
     // 2025 New Profession-Specific Templates
     "medical-certification": MedicalCertificationTemplate,

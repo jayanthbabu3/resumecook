@@ -158,11 +158,8 @@ import { TwoToneClassicTemplate } from "./resume/templates/TwoToneClassicTemplat
 // 2025 Universal Profile Templates
 import { SwissStyleUniversalTemplate } from "./resume/templates/SwissStyleUniversalTemplate";
 import { ExecutiveLetterheadUniversalTemplate } from "./resume/templates/ExecutiveLetterheadUniversalTemplate";
-import { DiagonalAccentUniversalTemplate } from "./resume/templates/DiagonalAccentUniversalTemplate";
 import { BorderFrameUniversalTemplate } from "./resume/templates/BorderFrameUniversalTemplate";
-import { TimelineVerticalUniversalTemplate } from "./resume/templates/TimelineVerticalUniversalTemplate";
-import { BadgeStyleUniversalTemplate } from "./resume/templates/BadgeStyleUniversalTemplate";
-import { MonochromeElegantUniversalTemplate } from "./resume/templates/MonochromeElegantUniversalTemplate";
+
 import { GradientHeaderUniversalTemplate } from "./resume/templates/GradientHeaderUniversalTemplate";
 import { SplitPaneUniversalTemplate } from "./resume/templates/SplitPaneUniversalTemplate";
 import { IconBarUniversalTemplate } from "./resume/templates/IconBarUniversalTemplate";
@@ -201,7 +198,6 @@ import { RetroProfessionalUniversalTemplate } from "./resume/templates/RetroProf
 import { NewspaperStyleUniversalTemplate } from "./resume/templates/NewspaperStyleUniversalTemplate";
 import { TriangularElementsUniversalTemplate } from "./resume/templates/TriangularElementsUniversalTemplate";
 import { ParallaxStyleUniversalTemplate } from "./resume/templates/ParallaxStyleUniversalTemplate";
-import { VerticalTimelineUniversalTemplate } from "./resume/templates/VerticalTimelineUniversalTemplate";
 import { InfinityLoopUniversalTemplate } from "./resume/templates/InfinityLoopUniversalTemplate";
 // 2025 Universal Professional Templates - Batch 5
 import { ExecutiveCornerAccentTemplate } from "./resume/templates/ExecutiveCornerAccentTemplate";
@@ -1974,11 +1970,7 @@ const templates = {
   // 2025 Universal Profile Templates
   "swiss-style-universal": SwissStyleUniversalTemplate,
   "executive-letterhead-universal": ExecutiveLetterheadUniversalTemplate,
-  "diagonal-accent-universal": DiagonalAccentUniversalTemplate,
   "border-frame-universal": BorderFrameUniversalTemplate,
-  "timeline-vertical-universal": TimelineVerticalUniversalTemplate,
-  "badge-style-universal": BadgeStyleUniversalTemplate,
-  "monochrome-elegant-universal": MonochromeElegantUniversalTemplate,
   "gradient-header-universal": GradientHeaderUniversalTemplate,
   "split-pane-universal": SplitPaneUniversalTemplate,
   "icon-bar-universal": IconBarUniversalTemplate,
@@ -2017,7 +2009,6 @@ const templates = {
   "newspaper-style-universal": NewspaperStyleUniversalTemplate,
   "triangular-elements-universal": TriangularElementsUniversalTemplate,
   "parallax-style-universal": ParallaxStyleUniversalTemplate,
-  "vertical-timeline-universal": VerticalTimelineUniversalTemplate,
   "infinity-loop-universal": InfinityLoopUniversalTemplate,
   // 2025 Universal Professional Templates - Batch 5
   "executive-corner-accent": ExecutiveCornerAccentTemplate,

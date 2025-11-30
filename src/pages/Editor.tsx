@@ -903,7 +903,6 @@ import { PDFAuditorTemplate } from "@/components/resume/pdf/PDFAuditorTemplate";
 import { PDFAzureDevOpsProTemplate } from "@/components/resume/pdf/PDFAzureDevOpsProTemplate";
 import { PDFAzureDevOpsSpecialistTemplate } from "@/components/resume/pdf/PDFAzureDevOpsSpecialistTemplate";
 import { PDFBackendTemplate } from "@/components/resume/pdf/PDFBackendTemplate";
-import { PDFBadgeStyleUniversalTemplate } from "@/components/resume/pdf/PDFBadgeStyleUniversalTemplate";
 import { PDFBlockchainDevTemplate } from "@/components/resume/pdf/PDFBlockchainDevTemplate";
 import { PDFBlueprintDesignTemplate } from "@/components/resume/pdf/PDFBlueprintDesignTemplate";
 import { PDFBoldHeadlineTemplate } from "@/components/resume/pdf/PDFBoldHeadlineTemplate";
@@ -962,7 +961,6 @@ import { PDFDevOpsEngineerTemplate } from "@/components/resume/pdf/PDFDevOpsEngi
 import { PDFDevOpsProTemplate } from "@/components/resume/pdf/PDFDevOpsProTemplate";
 import { PDFDevSecOpsEngineerTemplate } from "@/components/resume/pdf/PDFDevSecOpsEngineerTemplate";
 import { PDFDeviantArtCreatorTemplate } from "@/components/resume/pdf/PDFDeviantArtCreatorTemplate";
-import { PDFDiagonalAccentUniversalTemplate } from "@/components/resume/pdf/PDFDiagonalAccentUniversalTemplate";
 import { PDFDiamondAccentUniversalTemplate } from "@/components/resume/pdf/PDFDiamondAccentUniversalTemplate";
 import { PDFDigitalCanvasTemplate } from "@/components/resume/pdf/PDFDigitalCanvasTemplate";
 import { PDFDigitalMarketerTemplate } from "@/components/resume/pdf/PDFDigitalMarketerTemplate";
@@ -1164,7 +1162,6 @@ import { PDFTerraformDevOpsTemplate } from "@/components/resume/pdf/PDFTerraform
 import { PDFThinBorderUniversalTemplate } from "@/components/resume/pdf/PDFThinBorderUniversalTemplate";
 import { PDFThreeDModelingArtistTemplate } from "@/components/resume/pdf/PDFThreeDModelingArtistTemplate";
 import { PDFTikTokCreatorTemplate } from "@/components/resume/pdf/PDFTikTokCreatorTemplate";
-import { PDFTimelineVerticalUniversalTemplate } from "@/components/resume/pdf/PDFTimelineVerticalUniversalTemplate";
 import { PDFTopBarUniversalTemplate } from "@/components/resume/pdf/PDFTopBarUniversalTemplate";
 import { PDFTriangularElementsUniversalTemplate } from "@/components/resume/pdf/PDFTriangularElementsUniversalTemplate";
 import { PDFTwoToneSplitUniversalTemplate } from "@/components/resume/pdf/PDFTwoToneSplitUniversalTemplate";
@@ -1173,7 +1170,6 @@ import { PDFTypewriterStyleTemplate } from "@/components/resume/pdf/PDFTypewrite
 import { PDFUIUXDesignerProTemplate } from "@/components/resume/pdf/PDFUIUXDesignerProTemplate";
 import { PDFUrbanDesignerTemplate } from "@/components/resume/pdf/PDFUrbanDesignerTemplate";
 import { PDFVPExecutiveTemplate } from "@/components/resume/pdf/PDFVPExecutiveTemplate";
-import { PDFVerticalTimelineUniversalTemplate } from "@/components/resume/pdf/PDFVerticalTimelineUniversalTemplate";
 import { PDFVideoEditorCreativeTemplate } from "@/components/resume/pdf/PDFVideoEditorCreativeTemplate";
 import { PDFVintagePosterTemplate } from "@/components/resume/pdf/PDFVintagePosterTemplate";
 import { PDFVisualStorytellerTemplate } from "@/components/resume/pdf/PDFVisualStorytellerTemplate";
@@ -1447,7 +1443,6 @@ const Editor = () => {
         // Universal Professional PDF Templates
         "swiss-style-universal": PDFSwissStyleUniversalTemplate,
         "executive-letterhead-universal": PDFExecutiveLetterheadUniversalTemplate,
-        "diagonal-accent-universal": PDFDiagonalAccentUniversalTemplate,
         "border-frame-universal": PDFBorderFrameUniversalTemplate,
         "code-craftsman": CodeCraftsmanPDF,
         "tech-pioneer": TechPioneerPDF,

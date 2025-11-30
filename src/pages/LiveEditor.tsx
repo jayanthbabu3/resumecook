@@ -105,7 +105,6 @@ import { BusinessElitePDF } from "@/components/resume/pdf/BusinessElitePDF";
 import { CorporateCleanPDF } from "@/components/resume/pdf/CorporateCleanPDF";
 import { ProfessionalClassicPDF } from "@/components/resume/pdf/ProfessionalClassicPDF";
 import { ModernBusinessPDF } from "@/components/resume/pdf/ModernBusinessPDF";
-import { PDFMonochromeElegantUniversalTemplate } from "@/components/resume/pdf/PDFMonochromeElegantUniversalTemplate";
 // New Professional PDF Templates (22 new imports)
 import { AlgoEngineerPDF } from "@/components/resume/pdf/AlgoEngineerPDF";
 import { ArtisticBoldPDF } from "@/components/resume/pdf/ArtisticBoldPDF";
@@ -130,7 +129,6 @@ import { TwoToneClassicPDF } from "@/components/resume/pdf/TwoToneClassicPDF";
 // Universal Professional PDF Templates
 import { PDFSwissStyleUniversalTemplate } from "@/components/resume/pdf/PDFSwissStyleUniversalTemplate";
 import { PDFExecutiveLetterheadUniversalTemplate } from "@/components/resume/pdf/PDFExecutiveLetterheadUniversalTemplate";
-import { PDFDiagonalAccentUniversalTemplate } from "@/components/resume/pdf/PDFDiagonalAccentUniversalTemplate";
 import { PDFBorderFrameUniversalTemplate } from "@/components/resume/pdf/PDFBorderFrameUniversalTemplate";
 // 2025 New Templates (100 PDF imports)
 import { StrategicLeadershipPDF } from "@/components/resume/pdf/StrategicLeadershipPDF";
@@ -959,7 +957,6 @@ import { AuditExpertTemplate } from "@/components/resume/templates/AuditExpertTe
 import { AuroraMinimalTemplate } from "@/components/resume/templates/AuroraMinimalTemplate";
 import { AwwwardsDesignerTemplate } from "@/components/resume/templates/AwwwardsDesignerTemplate";
 import { AzureDevOpsSpecialistTemplate } from "@/components/resume/templates/AzureDevOpsSpecialistTemplate";
-import { BadgeStyleUniversalTemplate } from "@/components/resume/templates/BadgeStyleUniversalTemplate";
 import { BehancePortfolioTemplate } from "@/components/resume/templates/BehancePortfolioTemplate";
 import { BitbucketDeveloperTemplate } from "@/components/resume/templates/BitbucketDeveloperTemplate";
 import { BlockchainDevTemplate } from "@/components/resume/templates/BlockchainDevTemplate";
@@ -1061,7 +1058,6 @@ import { DevOpsAutomationTemplate } from "@/components/resume/templates/DevOpsAu
 import { DevPrimeTemplate } from "@/components/resume/templates/DevPrimeTemplate";
 import { DeviantartArtistTemplate } from "@/components/resume/templates/DeviantartArtistTemplate";
 import { DevtoContributorTemplate } from "@/components/resume/templates/DevtoContributorTemplate";
-import { DiagonalAccentUniversalTemplate } from "@/components/resume/templates/DiagonalAccentUniversalTemplate";
 import { DiamondAccentUniversalTemplate } from "@/components/resume/templates/DiamondAccentUniversalTemplate";
 import { DigitalArtistPortfolioTemplate } from "@/components/resume/templates/DigitalArtistPortfolioTemplate";
 import { DigitalCanvasTemplate } from "@/components/resume/templates/DigitalCanvasTemplate";
@@ -1216,7 +1212,6 @@ import { ModernPlainProTemplate } from "@/components/resume/templates/ModernPlai
 import { ModernProfessionalBoxTemplate } from "@/components/resume/templates/ModernProfessionalBoxTemplate";
 import { ModernSimpleProTemplate } from "@/components/resume/templates/ModernSimpleProTemplate";
 import { MomentumFresherTemplate } from "@/components/resume/templates/MomentumFresherTemplate";
-import { MonochromeElegantUniversalTemplate } from "@/components/resume/templates/MonochromeElegantUniversalTemplate";
 import { MonospaceTechTemplate } from "@/components/resume/templates/MonospaceTechTemplate";
 import { MotionDesignerPortfolioTemplate } from "@/components/resume/templates/MotionDesignerPortfolioTemplate";
 import { MotionGraphicsArtistTemplate } from "@/components/resume/templates/MotionGraphicsArtistTemplate";
@@ -1353,7 +1348,6 @@ import { TerminalConsoleTemplate } from "@/components/resume/templates/TerminalC
 import { ThinBorderUniversalTemplate } from "@/components/resume/templates/ThinBorderUniversalTemplate";
 import { ThreeDModelingArtistTemplate } from "@/components/resume/templates/ThreeDModelingArtistTemplate";
 import { TiktokContentCreatorTemplate } from "@/components/resume/templates/TiktokContentCreatorTemplate";
-import { TimelineVerticalUniversalTemplate } from "@/components/resume/templates/TimelineVerticalUniversalTemplate";
 import { TitanCorporateTemplate } from "@/components/resume/templates/TitanCorporateTemplate";
 import { TopBarUniversalTemplate } from "@/components/resume/templates/TopBarUniversalTemplate";
 import { TriangularElementsUniversalTemplate } from "@/components/resume/templates/TriangularElementsUniversalTemplate";
@@ -1372,7 +1366,6 @@ import { VPExecutiveTemplate } from "@/components/resume/templates/VPExecutiveTe
 import { VelocityExecutiveTemplate } from "@/components/resume/templates/VelocityExecutiveTemplate";
 import { VentureFresherTemplate } from "@/components/resume/templates/VentureFresherTemplate";
 import { VertexProfessionalTemplate } from "@/components/resume/templates/VertexProfessionalTemplate";
-import { VerticalTimelineUniversalTemplate } from "@/components/resume/templates/VerticalTimelineUniversalTemplate";
 import { VibrantDesignerTemplate } from "@/components/resume/templates/VibrantDesignerTemplate";
 import { VideoEditorCreativeTemplate } from "@/components/resume/templates/VideoEditorCreativeTemplate";
 import { VintagePosterTemplate } from "@/components/resume/templates/VintagePosterTemplate";
@@ -1497,7 +1490,6 @@ const pdfTemplates: Record<string, any> = {
   "corporate-clean": CorporateCleanPDF,
   "professional-classic": ProfessionalClassicPDF,
   "modern-business": ModernBusinessPDF,
-  "monochrome-elegant-universal": PDFMonochromeElegantUniversalTemplate,
   // New Professional Templates (22 new registrations)
   "algo-engineer": AlgoEngineerPDF,
   "artistic-bold": ArtisticBoldPDF,
@@ -1522,7 +1514,6 @@ const pdfTemplates: Record<string, any> = {
   // Universal Professional PDF Templates
   "swiss-style-universal": PDFSwissStyleUniversalTemplate,
   "executive-letterhead-universal": PDFExecutiveLetterheadUniversalTemplate,
-  "diagonal-accent-universal": PDFDiagonalAccentUniversalTemplate,
   "border-frame-universal": PDFBorderFrameUniversalTemplate,
   // 2025 New Templates (100 PDF map entries)
   "strategic-leadership": StrategicLeadershipPDF,
@@ -2339,7 +2330,6 @@ const displayTemplates: Record<string, any> = {
   "awwwards-designer": AwwwardsDesignerTemplate,
   "azure-dev-ops-pro": AzureDevOpsProTemplate,
   "azure-dev-ops-specialist": AzureDevOpsSpecialistTemplate,
-  "badge-style-universal": BadgeStyleUniversalTemplate,
   "behance-portfolio": BehancePortfolioTemplate,
   "bitbucket-developer": BitbucketDeveloperTemplate,
   "blockchain-dev": BlockchainDevTemplate,
@@ -2445,7 +2435,6 @@ const displayTemplates: Record<string, any> = {
   "deviant-art-creator": DeviantArtCreatorTemplate,
   "deviantart-artist": DeviantartArtistTemplate,
   "devto-contributor": DevtoContributorTemplate,
-  "diagonal-accent-universal": DiagonalAccentUniversalTemplate,
   "diamond-accent-universal": DiamondAccentUniversalTemplate,
   "digital-artist-portfolio": DigitalArtistPortfolioTemplate,
   "digital-canvas": DigitalCanvasTemplate,
@@ -2614,7 +2603,6 @@ const displayTemplates: Record<string, any> = {
   "modern-simple-pro": ModernSimpleProTemplate,
   "momentum-fresher": MomentumFresherTemplate,
   "mongo-db-specialist": MongoDBSpecialistTemplate,
-  "monochrome-elegant-universal": MonochromeElegantUniversalTemplate,
   "monospace-tech": MonospaceTechTemplate,
   "motion-designer-portfolio": MotionDesignerPortfolioTemplate,
   "motion-graphics-artist": MotionGraphicsArtistTemplate,
@@ -2763,7 +2751,6 @@ const displayTemplates: Record<string, any> = {
   "three-d-modeling-artist": ThreeDModelingArtistTemplate,
   "tik-tok-creator": TikTokCreatorTemplate,
   "tiktok-content-creator": TiktokContentCreatorTemplate,
-  "timeline-vertical-universal": TimelineVerticalUniversalTemplate,
   "titan-corporate": TitanCorporateTemplate,
   "top-bar-universal": TopBarUniversalTemplate,
   "triangular-elements-universal": TriangularElementsUniversalTemplate,
@@ -2783,7 +2770,6 @@ const displayTemplates: Record<string, any> = {
   "velocity-executive": VelocityExecutiveTemplate,
   "venture-fresher": VentureFresherTemplate,
   "vertex-professional": VertexProfessionalTemplate,
-  "vertical-timeline-universal": VerticalTimelineUniversalTemplate,
   "vibrant-designer": VibrantDesignerTemplate,
   "video-editor-creative": VideoEditorCreativeTemplate,
   "vintage-poster": VintagePosterTemplate,

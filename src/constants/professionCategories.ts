@@ -309,7 +309,6 @@ export const professionCategories: ProfessionCategory[] = [
       "border-frame-universal",
       "timeline-vertical-universal",
       "badge-style-universal",
-      "monochrome-elegant-universal",
       // 2025 Second Batch Universal Profile Templates
       "gradient-header-universal",
       "split-pane-universal",
@@ -1055,11 +1054,7 @@ export const professionCategories: ProfessionCategory[] = [
       // 2025 New Universal Profile Templates
       "swiss-style-universal",
       "executive-letterhead-universal",
-      "diagonal-accent-universal",
       "border-frame-universal",
-      "timeline-vertical-universal",
-      "badge-style-universal",
-      "monochrome-elegant-universal",
       // 2025 Second Batch Universal Profile Templates
       "gradient-header-universal",
     ],

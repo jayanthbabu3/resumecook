@@ -1280,24 +1280,6 @@ export const templateMetaMap: Record<string, TemplateMeta> = {
     category: "Universal Professional",
     categorySlug: "universal-professional",
   },
-  "": {
-    name: "Underline Accent",
-    description: "Subtle underline accents emphasizing important sections.",
-    category: "Universal Professional",
-    categorySlug: "universal-professional",
-  },
-  "": {
-    name: "Circle Icon",
-    description: "Circular icons and elements adding visual rhythm to content.",
-    category: "Universal Professional",
-    categorySlug: "universal-professional",
-  },
-  "monochrome-elegant-universal": {
-    name: "Monochrome Elegant",
-    description: "Monochromatic color scheme with elegant typography.",
-    category: "Universal Professional",
-    categorySlug: "universal-professional",
-  },
   // 2025 Universal Profile Templates - Batch 2
   "gradient-header-universal": {
     name: "Gradient Header",
