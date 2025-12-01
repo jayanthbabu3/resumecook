@@ -28,9 +28,7 @@ import type { ResumeSection, SectionType, ResumeData } from '@/types/resume';
 import { toast } from 'sonner';
 import { HELPER_SECTIONS, SECTION_DEFAULT_TITLES } from '@/constants/helperSections';
 import { getMockSectionData, getBlankResumeData } from '@/constants/mockSectionData';
-import { pdf } from '@react-pdf/renderer';
-import { ScratchBuilderPDF } from '@/components/resume/pdf/ScratchBuilderPDF';
-import { registerPDFFonts } from '@/lib/pdfFonts';
+import { generatePDFFromPreview } from '@/lib/pdfGenerator';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { ScratchBuilderSection } from '@/components/resume/ScratchBuilderSection';
@@ -398,24 +396,8 @@ export default function ScratchBuilder() {
   const handleExportPDF = async () => {
     setIsExporting(true);
     try {
-      await registerPDFFonts();
-
-      const dataToExport: ResumeData = {
-        ...resumeData,
-        dynamicSections: sections,
-      };
-
-      const blob = await pdf(
-        <ScratchBuilderPDF resumeData={dataToExport} themeColor={themeColor} />
-      ).toBlob();
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'resume.pdf';
-      link.click();
-      URL.revokeObjectURL(url);
-
+      const filename = `${resumeData.personalInfo.fullName?.replace(/\s+/g, '_') || 'resume'}_Resume.pdf`;
+      await generatePDFFromPreview('scratch-builder-preview', filename);
       toast.success('PDF exported successfully!');
     } catch (error) {
       console.error('Failed to export PDF:', error);
@@ -539,7 +521,7 @@ export default function ScratchBuilder() {
             <div className="grid lg:grid-cols-[1fr_380px] gap-8">
               {/* Resume Canvas */}
               <DropZone>
-                <div className="mx-auto w-full max-w-[210mm] min-h-[297mm] rounded-lg bg-white shadow-2xl p-12">
+                <div id="scratch-builder-preview" className="mx-auto w-full max-w-[210mm] min-h-[297mm] rounded-lg bg-white shadow-2xl p-12">
                   {/* Personal Info - Always visible */}
                   <div
                     className="space-y-2 mb-8 pb-6 border-b-2"

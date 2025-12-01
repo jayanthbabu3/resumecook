@@ -86,6 +86,37 @@ function captureResumeHTML(element: HTMLElement): string {
  * This method includes the actual stylesheet for better compatibility
  */
 function captureResumeHTMLWithStyles(element: HTMLElement): string {
+  // Clone the element to avoid modifying the original
+  const clone = element.cloneNode(true) as HTMLElement;
+  
+  // Remove any transform styles that might scale the element
+  const removeTransforms = (el: HTMLElement) => {
+    // Remove transform from inline styles
+    if (el.style.transform) {
+      el.style.transform = 'none';
+    }
+    // Also check for transform in the style attribute
+    const styleAttr = el.getAttribute('style');
+    if (styleAttr && styleAttr.includes('transform')) {
+      el.setAttribute('style', styleAttr.replace(/transform:[^;]+;?/gi, ''));
+    }
+    // Process children
+    Array.from(el.children).forEach(child => {
+      if (child instanceof HTMLElement) {
+        removeTransforms(child);
+      }
+    });
+  };
+  
+  removeTransforms(clone);
+  
+  // Ensure the root element has proper A4 sizing
+  clone.style.width = '210mm';
+  clone.style.minHeight = '297mm';
+  clone.style.transform = 'none';
+  clone.style.margin = '0';
+  clone.style.padding = clone.style.padding || '0';
+  
   // Get all stylesheets
   const styleSheets = Array.from(document.styleSheets);
   let cssText = '';
@@ -123,10 +154,14 @@ function captureResumeHTMLWithStyles(element: HTMLElement): string {
             size: A4;
             margin: 0;
           }
+          /* Remove any transforms that might affect the PDF */
+          [style*="transform"] {
+            transform: none !important;
+          }
         </style>
       </head>
       <body>
-        ${element.outerHTML}
+        ${clone.outerHTML}
       </body>
     </html>
   `;
@@ -150,17 +185,9 @@ export async function generatePDFFromPreview(
     throw new Error(`Preview element with ID "${previewElementId}" not found`);
   }
   
-  // Find the actual resume content (the A4-sized div with max-w-[210mm])
-  // This is the actual resume template content, not the wrapper
-  let resumeContent = previewElement.querySelector('.max-w-\\[210mm\\]') as HTMLElement
-    || previewElement.querySelector('[class*="max-w"]') as HTMLElement
-    || previewElement.querySelector('.bg-white') as HTMLElement
-    || previewElement.firstElementChild as HTMLElement;
-  
-  // If we still don't have a good element, use the preview element itself
-  if (!resumeContent || resumeContent === previewElement) {
-    resumeContent = previewElement;
-  }
+  // Use the element directly - it should contain the resume template
+  // The captureResumeHTMLWithStyles function will handle transforms and sizing
+  const resumeContent = previewElement;
   
   // Capture HTML with styles
   const html = captureResumeHTMLWithStyles(resumeContent);

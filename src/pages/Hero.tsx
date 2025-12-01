@@ -8,20 +8,14 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TemplatePreview } from "@/components/TemplatePreview";
-import { pdf } from "@react-pdf/renderer";
-import { ModernPDF } from "@/components/resume/pdf/ModernPDF";
-import { ModernTemplate } from "@/components/resume/templates/ModernTemplate";
-import { ExecutivePDF } from "@/components/resume/pdf/ExecutivePDF";
 import { ExecutiveTemplate } from "@/components/resume/templates/ExecutiveTemplate";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
-import { registerPDFFonts } from "@/lib/pdfFonts";
+import { generatePDFFromPreview } from "@/lib/pdfGenerator";
 import { cn } from "@/lib/utils";
 import { useAppStats } from "@/hooks/useAppStats";
 import { formatCount, incrementDownloadsCount } from "@/lib/firestore/statsService";
 import type { ResumeData } from "@/types/resume";
 
-// Register fonts for PDF generation
-registerPDFFonts();
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -1404,24 +1398,8 @@ const Hero = () => {
                             <Button
                               onClick={async () => {
                                 try {
-                                  // Generate PDF using the Executive template
-                                  const blob = await pdf(
-                                    <ExecutivePDF resumeData={liveResumeData} themeColor="#3b82f6" />
-                                  ).toBlob();
-
-                                  // Create download link
-                                  const url = URL.createObjectURL(blob);
-                                  const link = document.createElement("a");
-                                  link.href = url;
-                                  link.download = `${liveResumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
-                                  document.body.appendChild(link);
-                                  link.click();
-                                  document.body.removeChild(link);
-
-                                  // Cleanup
-                                  URL.revokeObjectURL(url);
-
-                                  // Track download in Firestore
+                                  const filename = `${liveResumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                                  await generatePDFFromPreview("hero-live-preview", filename);
                                   await incrementDownloadsCount();
                                 } catch (error) {
                                   console.error("Download error:", error);
@@ -1446,7 +1424,7 @@ const Hero = () => {
                               }}
                               key={JSON.stringify(liveResumeData)}
                             >
-                              <div ref={previewContentRef} className="w-[816px]">
+                              <div id="hero-live-preview" ref={previewContentRef} className="w-[816px]">
                                 <ExecutiveTemplate
                                   resumeData={liveResumeData}
                                   themeColor="#3b82f6"
@@ -1538,21 +1516,8 @@ const Hero = () => {
                       <Button
                         onClick={async () => {
                           try {
-                            const blob = await pdf(
-                              <ExecutivePDF resumeData={liveResumeData} themeColor="#059669" />
-                            ).toBlob();
-
-                            const url = URL.createObjectURL(blob);
-                            const link = document.createElement("a");
-                            link.href = url;
-                            link.download = `${liveResumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-
-                            URL.revokeObjectURL(url);
-
-                            // Track download in Firestore
+                            const filename = `${liveResumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                            await generatePDFFromPreview("hero-live-editor-preview", filename);
                             await incrementDownloadsCount();
                           } catch (error) {
                             console.error("Download error:", error);
@@ -1588,7 +1553,7 @@ const Hero = () => {
                             }}
                             key={JSON.stringify(liveResumeData)}
                           >
-                            <div ref={livePreviewContentRef} className="w-[816px]">
+                            <div id="hero-live-editor-preview" ref={livePreviewContentRef} className="w-[816px]">
                               <InlineEditProvider resumeData={liveResumeData} setResumeData={setLiveResumeData}>
                                 <ExecutiveTemplate
                                   resumeData={liveResumeData}
