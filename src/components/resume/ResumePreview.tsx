@@ -902,7 +902,7 @@ export const ResumePreview = ({
 
   return (
     <div
-      className="flex h-full w-full items-start justify-center overflow-auto bg-gray-100 p-3 sm:p-4"
+      className="flex h-full w-full items-start justify-center overflow-auto bg-gray-100"
       id="resume-preview"
     >
       <div 

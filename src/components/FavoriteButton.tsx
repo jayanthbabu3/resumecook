@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heart, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFavoriteTemplates } from '@/hooks/useFavoriteTemplates';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { Button } from '@/components/ui/button';
+import { AuthModal } from '@/components/AuthModal';
 
 interface FavoriteButtonProps {
   templateId: string;
@@ -16,6 +18,7 @@ interface FavoriteButtonProps {
 /**
  * Reusable favorite button component
  * Can be displayed as icon-only or full button with label
+ * Shows auth modal if user is not logged in
  */
 export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   templateId,
@@ -25,7 +28,9 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   showLabel = false,
   onClick,
 }) => {
+  const { user } = useFirebaseAuth();
   const { isFavorited, toggleFavorite, toggling } = useFavoriteTemplates();
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const favorited = isFavorited(templateId);
   const isToggling = toggling[templateId];
 
@@ -37,6 +42,17 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       onClick(e);
     }
 
+    // Show auth modal if user is not logged in
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    await toggleFavorite(templateId);
+  };
+
+  // Handle successful auth - automatically add to favorites
+  const handleAuthSuccess = async () => {
     await toggleFavorite(templateId);
   };
 
@@ -50,7 +66,13 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   // Icon-only variant (for cards, overlays)
   if (variant === 'icon') {
     return (
-      <button
+      <>
+        <AuthModal 
+          open={showAuthModal} 
+          onOpenChange={setShowAuthModal} 
+          onSuccess={handleAuthSuccess}
+        />
+        <button
         onClick={handleClick}
         disabled={isToggling}
         className={cn(
@@ -84,12 +106,19 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
           />
         )}
       </button>
+      </>
     );
   }
 
   // Button variant (for toolbars, navigation)
   return (
-    <Button
+    <>
+      <AuthModal 
+        open={showAuthModal} 
+        onOpenChange={setShowAuthModal} 
+        onSuccess={handleAuthSuccess}
+      />
+      <Button
       onClick={handleClick}
       disabled={isToggling}
       variant={favorited ? 'default' : 'outline'}
@@ -119,5 +148,6 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
         </span>
       )}
     </Button>
+    </>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save, Plus } from "lucide-react";
+import { Download, Loader2, ArrowLeft, Edit3, FileEdit, Save, Plus, Settings2, Eye } from "lucide-react";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { resumeService } from "@/lib/firestore/resumeService";
 import { FavoriteButton } from "@/components/FavoriteButton";
@@ -10,9 +10,13 @@ import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { generatePDFFromPreview } from "@/lib/pdfGenerator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { getTemplateDefaults, type ResumeData, sanitizeResumeData } from "@/lib/resumeUtils";
 import { useResumeData } from "@/contexts/ResumeDataContext";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
+import { StyleOptionsProvider } from "@/contexts/StyleOptionsContext";
+import { StyleOptionsPanel } from "@/components/StyleOptionsPanel";
+import { StyleOptionsWrapper } from "@/components/resume/StyleOptionsWrapper";
 import { ATSScoreButton } from "@/components/ATSScoreButton";
 import type { AtsReport } from "@/lib/atsAnalyzer";
 import { ProfessionalTemplate } from "@/components/resume/templates/ProfessionalTemplate";
@@ -2209,6 +2213,7 @@ const LiveEditor = () => {
                   variant="button"
                   size="sm"
                 />
+                {/* ATS Score Button - Hidden for now
                 <ATSScoreButton
                   resumeData={resumeData}
                   templateId={templateId}
@@ -2216,6 +2221,7 @@ const LiveEditor = () => {
                   variant="outline"
                   size="sm"
                 />
+                */}
                 <Button
                   onClick={handleDownloadPDF}
                   disabled={isGeneratingPDF}
@@ -2294,6 +2300,7 @@ const LiveEditor = () => {
                 showLabel
               />
 
+              {/* ATS Score Button - Hidden for now
               <ATSScoreButton
                 resumeData={resumeData}
                 templateId={templateId}
@@ -2301,6 +2308,7 @@ const LiveEditor = () => {
                 variant="outline"
                 size="sm"
               />
+              */}
 
               <Button
                 onClick={handleDownloadPDF}
@@ -2325,58 +2333,115 @@ const LiveEditor = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto md:p-8">
-        <div className="mx-auto flex justify-center">
+      <StyleOptionsProvider>
+        <div 
+          className="flex-1 overflow-auto"
+          style={{
+            background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)',
+          }}
+        >
+          {/* Subtle dot pattern overlay */}
           <div 
-            id="resume-preview" 
-            className="bg-white shadow-none md:shadow-2xl rounded-none md:rounded-lg overflow-hidden"
-            style={{ 
-              width: '210mm', 
-              minHeight: '297mm',
-              maxWidth: '100%',
+            className="min-h-full py-6 md:py-10 px-4"
+            style={{
+              backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 1px, transparent 0)',
+              backgroundSize: '24px 24px',
             }}
           >
-            {(() => {
-              const currentTemplateId = templateId || "professional";
-              const TemplateComponent = displayTemplates[currentTemplateId];
-              const supportsInlineEdit = inlineEditableTemplates.includes(currentTemplateId);
-
-              if (!TemplateComponent) {
-                return <ProfessionalTemplate resumeData={resumeData} themeColor={themeColor} />;
-              }
-
-              // Wrap with InlineEditProvider only for templates that support it
-              if (supportsInlineEdit) {
-                return (
-                  <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
-                    <TemplateComponent 
-                      resumeData={resumeData} 
-                      themeColor={themeColor} 
-                      editable={true} 
-                      onAddBulletPoint={addBulletPoint}
-                      onRemoveBulletPoint={removeBulletPoint}
-                      onAddSectionItem={addSectionItem}
-                      onRemoveSectionItem={removeSectionItem}
-                    />
-                  </InlineEditProvider>
-                );
-              }
-
-              // For templates without inline editing, show message
-              return (
-                <div className="p-4 md:p-8">
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 md:p-4 mb-4">
-                    <p className="text-xs md:text-sm text-yellow-800">
-                      Direct inline editing is not yet available for this template. Use the Form Editor tab to edit this template, or try the Modern or Senior templates which support inline editing.
-                    </p>
+            <div className="mx-auto flex flex-col gap-5 justify-center items-center max-w-[900px]">
+              {/* Live Preview Header */}
+              <div 
+                className="w-full flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur-md rounded-2xl border border-white/50 shadow-lg shadow-gray-200/50" 
+                style={{ maxWidth: '210mm' }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-1.5 bg-gradient-to-b from-blue-500 via-blue-600 to-indigo-600 rounded-full shadow-sm" />
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 bg-blue-50 rounded-lg">
+                      <Eye className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <span className="font-semibold text-gray-800 tracking-tight">Live Preview</span>
                   </div>
-                  <TemplateComponent resumeData={resumeData} themeColor={themeColor} />
                 </div>
-              );
-            })()}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-9 w-9 p-0 hover:bg-gray-100 rounded-xl transition-all hover:shadow-sm border border-transparent hover:border-gray-200"
+                    >
+                      <Settings2 className="h-4 w-4 text-gray-500" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" className="w-80 p-0 shadow-xl border-gray-200">
+                    <StyleOptionsPanel inPopover={true} />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Resume Preview Container */}
+              <div className="relative">
+                {/* Decorative elements */}
+                <div className="absolute -top-3 -left-3 w-6 h-6 border-l-2 border-t-2 border-blue-300/50 rounded-tl-lg" />
+                <div className="absolute -top-3 -right-3 w-6 h-6 border-r-2 border-t-2 border-blue-300/50 rounded-tr-lg" />
+                <div className="absolute -bottom-3 -left-3 w-6 h-6 border-l-2 border-b-2 border-blue-300/50 rounded-bl-lg" />
+                <div className="absolute -bottom-3 -right-3 w-6 h-6 border-r-2 border-b-2 border-blue-300/50 rounded-br-lg" />
+                
+                <StyleOptionsWrapper>
+                  <div 
+                    id="resume-preview" 
+                    className="bg-white shadow-2xl shadow-gray-300/50 rounded-xl overflow-hidden flex-shrink-0 ring-1 ring-gray-200/50"
+                    style={{ 
+                      width: '210mm', 
+                      minHeight: '297mm',
+                      maxWidth: '100%',
+                    }}
+                  >
+                {(() => {
+                  const currentTemplateId = templateId || "professional";
+                  const TemplateComponent = displayTemplates[currentTemplateId];
+                  const supportsInlineEdit = inlineEditableTemplates.includes(currentTemplateId);
+
+                  if (!TemplateComponent) {
+                    return <ProfessionalTemplate resumeData={resumeData} themeColor={themeColor} />;
+                  }
+
+                  // Wrap with InlineEditProvider only for templates that support it
+                  if (supportsInlineEdit) {
+                    return (
+                      <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
+                        <TemplateComponent 
+                          resumeData={resumeData} 
+                          themeColor={themeColor} 
+                          editable={true} 
+                          onAddBulletPoint={addBulletPoint}
+                          onRemoveBulletPoint={removeBulletPoint}
+                          onAddSectionItem={addSectionItem}
+                          onRemoveSectionItem={removeSectionItem}
+                        />
+                      </InlineEditProvider>
+                    );
+                  }
+
+                  // For templates without inline editing, show message
+                  return (
+                    <div className="p-4 md:p-8">
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 md:p-4 mb-4">
+                        <p className="text-xs md:text-sm text-yellow-800">
+                          Direct inline editing is not yet available for this template. Use the Form Editor tab to edit this template, or try the Modern or Senior templates which support inline editing.
+                        </p>
+                      </div>
+                      <TemplateComponent resumeData={resumeData} themeColor={themeColor} />
+                    </div>
+                  );
+                })()}
+                  </div>
+                </StyleOptionsWrapper>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </StyleOptionsProvider>
     </div>
   );
 };

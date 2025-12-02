@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Gauge, Loader2, RotateCcw, ArrowLeft, Edit3, FileEdit, Save } from "lucide-react";
+import { Download, Gauge, Loader2, RotateCcw, ArrowLeft, Edit3, FileEdit, Save, Settings2 } from "lucide-react";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { resumeService } from "@/lib/firestore/resumeService";
 import { FavoriteButton } from "@/components/FavoriteButton";
@@ -10,6 +10,10 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResumeForm } from "@/components/resume/ResumeForm";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
+import { StyleOptionsProvider } from "@/contexts/StyleOptionsContext";
+import { StyleOptionsPanel } from "@/components/StyleOptionsPanel";
+import { StyleOptionsWrapper } from "@/components/resume/StyleOptionsWrapper";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useResumeData } from "@/contexts/ResumeDataContext";
 import { sanitizeResumeData, getTemplateDefaults } from "@/lib/resumeUtils";
 import { toast } from "sonner";
@@ -358,6 +362,7 @@ const Editor = () => {
                   variant="button"
                   size="sm"
                 />
+                {/* ATS Score Button - Hidden for now
                 <ATSScoreButton
                   resumeData={resumeData}
                   templateId={templateId}
@@ -365,6 +370,7 @@ const Editor = () => {
                   variant="outline"
                   size="sm"
                 />
+                */}
                 <Button
                   onClick={handleDownload}
                   disabled={isDownloading}
@@ -443,6 +449,7 @@ const Editor = () => {
                 showLabel
               />
 
+              {/* ATS Score Button - Hidden for now
               <ATSScoreButton
                 resumeData={resumeData}
                 templateId={templateId}
@@ -450,6 +457,7 @@ const Editor = () => {
                 variant="outline"
                 size="sm"
               />
+              */}
 
               <Button
                 onClick={handleDownload}
@@ -651,20 +659,75 @@ const Editor = () => {
 
           {/* Preview Section */}
           <div className="lg:sticky lg:top-32 max-h-[calc(100vh-8rem)] overflow-y-auto">
-            <div className="space-y-4 rounded-2xl border border-border/50 bg-background px-4 py-5 shadow-sm sm:px-6 sm:py-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold">Live Preview</h2>
+            <StyleOptionsProvider>
+              <div 
+                className="rounded-2xl p-4 sm:p-6"
+                style={{
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)',
+                }}
+              >
+                {/* Dot pattern overlay */}
+                <div 
+                  className="space-y-4"
+                  style={{
+                    backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 0.5px, transparent 0)',
+                    backgroundSize: '20px 20px',
+                  }}
+                >
+                  {/* Live Preview Header */}
+                  <div className="flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur-md rounded-2xl border border-white/50 shadow-lg shadow-gray-200/50">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-1.5 bg-gradient-to-b from-blue-500 via-blue-600 to-indigo-600 rounded-full shadow-sm" />
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 bg-blue-50 rounded-lg">
+                          <Settings2 className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <span className="font-semibold text-gray-800 tracking-tight">Live Preview</span>
+                      </div>
+                    </div>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-9 w-9 p-0 hover:bg-gray-100 rounded-xl transition-all hover:shadow-sm border border-transparent hover:border-gray-200"
+                        >
+                          <Settings2 className="h-4 w-4 text-gray-500" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent align="end" className="w-80 p-0 shadow-xl border-gray-200">
+                        <StyleOptionsPanel inPopover={true} />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  {/* Resume Preview Container */}
+                  <div className="relative">
+                    {/* Decorative corner elements */}
+                    <div className="absolute -top-2 -left-2 w-5 h-5 border-l-2 border-t-2 border-blue-300/50 rounded-tl-lg" />
+                    <div className="absolute -top-2 -right-2 w-5 h-5 border-r-2 border-t-2 border-blue-300/50 rounded-tr-lg" />
+                    <div className="absolute -bottom-2 -left-2 w-5 h-5 border-l-2 border-b-2 border-blue-300/50 rounded-bl-lg" />
+                    <div className="absolute -bottom-2 -right-2 w-5 h-5 border-r-2 border-b-2 border-blue-300/50 rounded-br-lg" />
+                    
+                    <StyleOptionsWrapper>
+                      <div 
+                        id="resume-preview" 
+                        className="bg-white shadow-2xl shadow-gray-300/50 rounded-xl overflow-hidden ring-1 ring-gray-200/50" 
+                        style={{ width: '210mm', minHeight: '297mm', maxWidth: '100%' }}
+                      >
+                        <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
+                          <ResumePreview
+                            resumeData={resumeData}
+                            templateId={templateId || "professional"}
+                            themeColor={themeColor}
+                          />
+                        </InlineEditProvider>
+                      </div>
+                    </StyleOptionsWrapper>
+                  </div>
+                </div>
               </div>
-              <div id="resume-preview" className="border-2 border-border rounded-xl overflow-hidden shadow-premium bg-white" style={{ width: '210mm', minHeight: '297mm', maxWidth: '100%' }}>
-                <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>
-                  <ResumePreview
-                    resumeData={resumeData}
-                    templateId={templateId || "professional"}
-                    themeColor={themeColor}
-                  />
-                </InlineEditProvider>
-              </div>
-            </div>
+            </StyleOptionsProvider>
           </div>
         </div>
       </div>

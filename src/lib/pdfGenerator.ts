@@ -158,6 +158,23 @@ function captureResumeHTMLWithStyles(
   
   removeEditingElements(clone);
   
+  // Remove empty list items (bullet points with no content)
+  const removeEmptyListItems = (el: HTMLElement) => {
+    const listItems = el.querySelectorAll('ul li');
+    listItems.forEach(li => {
+      // Get text content, excluding placeholder text
+      const textContent = li.textContent?.trim() || '';
+      const hasPlaceholder = textContent.includes('Click to add') || textContent.includes('placeholder');
+      
+      // Check if the li only contains empty spans/divs or placeholder text
+      if (!textContent || hasPlaceholder || textContent.length < 3) {
+        li.remove();
+      }
+    });
+  };
+  
+  removeEmptyListItems(clone);
+  
   // Remove any transform styles that might scale the element
   const removeTransforms = (el: HTMLElement) => {
     // Remove transform from inline styles
@@ -179,12 +196,23 @@ function captureResumeHTMLWithStyles(
   
   removeTransforms(clone);
   
-  // Ensure the root element has proper A4 sizing
+  // Ensure the root element has proper A4 sizing and remove decorative styles
+  // Note: We preserve the template's own padding (e.g., 40px 48px) since we're now
+  // capturing the template content directly, not the wrapper
   clone.style.width = '210mm';
   clone.style.minHeight = '297mm';
   clone.style.transform = 'none';
   clone.style.margin = '0';
-  clone.style.padding = clone.style.padding || '0';
+  clone.style.boxShadow = 'none';
+  clone.style.borderRadius = '0';
+  clone.style.border = 'none';
+  clone.style.overflow = 'visible';
+  clone.style.backgroundColor = 'white';
+  
+  // Remove shadow, rounded corner, and overflow classes
+  clone.classList.remove('shadow-2xl', 'shadow-xl', 'shadow-lg', 'shadow-md', 'shadow-sm', 'shadow', 'shadow-none');
+  clone.classList.remove('rounded-lg', 'rounded-md', 'rounded-sm', 'rounded', 'rounded-xl', 'rounded-2xl', 'rounded-none');
+  clone.classList.remove('overflow-hidden', 'overflow-auto', 'overflow-scroll');
   
   // Get all stylesheets from the page
   const styleSheets = Array.from(document.styleSheets);
@@ -231,7 +259,25 @@ function captureResumeHTMLWithStyles(
             width: ${config.layout.pageWidth};
             min-height: ${config.layout.pageHeight};
             font-family: ${config.fonts.primary};
+            margin: 0;
+            padding: 0;
           }
+          
+          /* Remove decorative styles from root element */
+          body > div:first-child,
+          body > div {
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            border-radius: 0 !important;
+            border: none !important;
+            margin: 0 !important;
+            outline: none !important;
+            background-color: white !important;
+            overflow: visible !important;
+            width: 210mm !important;
+            min-height: 297mm !important;
+          }
+          
           @page {
             size: A4;
             margin: 0;
@@ -274,26 +320,28 @@ function captureResumeHTMLWithStyles(
           
           /* Ensure bullet point list items are visible */
           ul li,
-          ul li span,
-          ul li div {
-            display: list-item !important;
+          ul li span {
             visibility: visible !important;
           }
           
           ul li div {
-            display: block !important;
+            display: flex !important;
           }
           
-          /* Ensure list bullets are visible */
+          /* Let templates control their own bullet styles */
           ul {
-            list-style-type: disc !important;
             list-style-position: outside !important;
             padding-left: 20px !important;
           }
           
           ul li {
             display: list-item !important;
-            list-style-type: disc !important;
+          }
+          
+          /* Hide empty bullet points (those with only whitespace or placeholder text) */
+          ul li:has(span:empty),
+          ul li:has(div:empty) {
+            display: none !important;
           }
           
           /* Hide any remaining add/delete buttons */
@@ -361,9 +409,12 @@ export async function generatePDFFromPreview(
   // Determine the config to use
   const config = options.config || PDF_STYLES.getDefault(options.layoutType);
   
-  // Use the element directly - it should contain the resume template
-  // The captureResumeHTMLWithStyles function will handle transforms and sizing
-  const resumeContent = previewElement;
+  // Get the first child element (the actual template content) to avoid capturing
+  // the outer wrapper div with shadow/rounded corners
+  // The structure is: #resume-preview > template-wrapper > template-content
+  // We want to capture the template content directly
+  const templateContent = previewElement.firstElementChild as HTMLElement;
+  const resumeContent = templateContent || previewElement;
   
   // Capture HTML with styles using the config
   const html = captureResumeHTMLWithStyles(resumeContent, config, options.themeColor);
@@ -376,6 +427,11 @@ export async function generatePDFFromPreview(
     },
     body: JSON.stringify({ html, filename }),
   });
+  
+  // Check if function exists (404 means netlify dev is not running)
+  if (response.status === 404) {
+    throw new Error('PDF generation service not available. Please run "netlify dev" instead of "npm run dev" to enable PDF downloads.');
+  }
   
   // Parse JSON response
   const result = await response.json();
@@ -416,6 +472,11 @@ export async function generatePDFFromHTML(
     },
     body: JSON.stringify({ html, filename }),
   });
+  
+  // Check if function exists (404 means netlify dev is not running)
+  if (response.status === 404) {
+    throw new Error('PDF generation service not available. Please run "netlify dev" instead of "npm run dev" to enable PDF downloads.');
+  }
   
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: 'Unknown error' }));

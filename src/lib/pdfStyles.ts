@@ -178,7 +178,7 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
     weight: 600,
     lineHeight: 1.3,
     letterSpacing: '0.01em',
-    color: '#1a1a1a',
+    color: '#191d24',
     borderWidth: '0.75px',
     borderColor: 'currentColor', // Uses theme color
     spacing: {
@@ -193,7 +193,7 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
     size: '15px',            // ~11pt
     weight: 600,
     lineHeight: 1.4,
-    color: '#1a1a1a',
+    color: '#191d24',
   },
   
   itemSubtitle: {
@@ -217,7 +217,7 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
     size: '13px',            // ~10pt - Optimal for body text
     weight: 400,
     lineHeight: 1.6,         // Good readability
-    color: '#4a4a4a',
+    color: '#191d24',        // rgb(25, 29, 36) - Darker for better readability
   },
   
   skills: {
@@ -226,7 +226,7 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
       size: '13px',
       weight: 500,
       lineHeight: 1.4,
-      color: '#1a1a1a',
+      color: '#191d24',
     },
     tag: {
       family: 'inherit',
@@ -250,8 +250,8 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
   colors: {
     primary: '#10b981',      // Emerald green (from screenshot)
     text: {
-      primary: '#1a1a1a',
-      secondary: '#6b7280',
+      primary: '#191d24',    // rgb(25, 29, 36) - Darker for better readability
+      secondary: '#1f2937',  // Darker secondary for better readability
       light: '#ffffff',
     },
     background: {
@@ -297,7 +297,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
       weight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.02em',
-      color: '#1a1a1a',
+      color: '#191d24',
     },
     title: {
       family: 'inherit',
@@ -311,7 +311,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
       size: '12px',
       weight: 400,
       lineHeight: 1.5,
-      color: '#6b7280',
+      color: '#1f2937',  // Darker for better readability
     },
     spacing: {
       padding: '24px',
@@ -326,7 +326,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
     weight: 600,
     lineHeight: 1.3,
     letterSpacing: '0.02em',
-    color: '#1a1a1a',
+    color: '#191d24',
     borderWidth: '0.75px',
     borderColor: 'currentColor',
     spacing: {
@@ -341,7 +341,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
     size: '14px',
     weight: 600,
     lineHeight: 1.4,
-    color: '#1a1a1a',
+    color: '#191d24',
   },
   
   itemSubtitle: {
@@ -357,7 +357,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
     size: '11px',
     weight: 400,
     lineHeight: 1.4,
-    color: '#6b7280',
+    color: '#1f2937',  // Darker for better readability
   },
   
   itemDescription: {
@@ -365,7 +365,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
     size: '12px',
     weight: 400,
     lineHeight: 1.55,
-    color: '#4a4a4a',
+    color: '#191d24',
   },
   
   skills: {
@@ -374,14 +374,14 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
       size: '12px',
       weight: 500,
       lineHeight: 1.4,
-      color: '#1a1a1a',
+      color: '#191d24',
     },
     tag: {
       family: 'inherit',
       size: '11px',
       weight: 500,
       lineHeight: 1.4,
-      color: '#4a4a4a',
+      color: '#191d24',
       background: '#f3f4f6',
       borderRadius: '4px',
       padding: '4px 10px',
@@ -398,8 +398,8 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
   colors: {
     primary: '#3b82f6',      // Blue
     text: {
-      primary: '#1a1a1a',
-      secondary: '#6b7280',
+      primary: '#191d24',
+      secondary: '#1f2937',  // Darker secondary
       light: '#ffffff',
     },
     background: {

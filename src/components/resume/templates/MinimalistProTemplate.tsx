@@ -6,6 +6,7 @@ import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { InlineEditableSectionItems } from "@/components/resume/InlineEditableSectionItems";
 import { useInlineEdit } from "@/contexts/InlineEditContext";
+import { useStyleOptionsWithDefaults } from "@/contexts/StyleOptionsContext";
 import { Plus, X, Linkedin, Globe, Github, Mail, Phone, MapPin } from "lucide-react";
 import { SINGLE_COLUMN_CONFIG } from "@/lib/pdfStyles";
 
@@ -21,6 +22,9 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
   const styles = SINGLE_COLUMN_CONFIG;
   const accent = themeColor || styles.colors.primary;
   const accentLight = `${accent}20`;
+  
+  // Get style options from context
+  const { styleOptions, formatHeader, getBulletChar, getDividerStyle } = useStyleOptionsWithDefaults();
 
   const headingStyle = {
     fontSize: styles.sectionHeading.size,
@@ -222,7 +226,7 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       </div>
 
       {/* Summary */}
-      {resumeData.personalInfo.summary && (
+      {resumeData.personalInfo.summary && styleOptions.showSummary && (
         <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }}>
           <div className="h-px w-full mb-6" style={{ backgroundColor: accentLight }}></div>
           {editable ? (
@@ -243,7 +247,7 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       {/* Social Links */}
       {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
         <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }}>
-          <h2 style={headingStyle}>Social Links</h2>
+          <h2 style={{ ...headingStyle, ...getDividerStyle(), paddingBottom: '8px' }}>{formatHeader("Social Links")}</h2>
           <div className="flex flex-wrap gap-4" style={contactValueStyle}>
             {resumeData.personalInfo.linkedin && (
               <div className="flex items-center gap-2">
@@ -257,12 +261,12 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
                   />
                 ) : (
                   <a
-                    href={resumeData.personalInfo.linkedin}
+                    href={resumeData.personalInfo.linkedin.startsWith('http') ? resumeData.personalInfo.linkedin : `https://${resumeData.personalInfo.linkedin}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: accent }}
                   >
-                    LinkedIn
+                    {resumeData.personalInfo.linkedin}
                   </a>
                 )}
               </div>
@@ -279,12 +283,12 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
                   />
                 ) : (
                   <a
-                    href={resumeData.personalInfo.portfolio}
+                    href={resumeData.personalInfo.portfolio.startsWith('http') ? resumeData.personalInfo.portfolio : `https://${resumeData.personalInfo.portfolio}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: accent }}
                   >
-                    Portfolio
+                    {resumeData.personalInfo.portfolio}
                   </a>
                 )}
               </div>
@@ -301,12 +305,12 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
                   />
                 ) : (
                   <a
-                    href={resumeData.personalInfo.github}
+                    href={resumeData.personalInfo.github.startsWith('http') ? resumeData.personalInfo.github : `https://${resumeData.personalInfo.github}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: accent }}
                   >
-                    GitHub
+                    {resumeData.personalInfo.github}
                   </a>
                 )}
               </div>
@@ -316,9 +320,9 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       )}
 
       {/* Experience */}
-      {resumeData.experience.length > 0 && (
+      {resumeData.experience.length > 0 && styleOptions.showExperience && (
         <div style={{ marginBottom: styles.spacing.sectionGap }}>
-          <h2 style={headingStyle}>Experience</h2>
+          <h2 style={{ ...headingStyle, ...getDividerStyle(), paddingBottom: '8px' }}>{formatHeader("Experience")}</h2>
           {editable ? (
             <InlineEditableList
               path="experience"
@@ -493,9 +497,9 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       )}
 
       {/* Skills */}
-      {resumeData.skills.length > 0 && (
+      {resumeData.skills.length > 0 && styleOptions.showSkills && (
         <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }}>
-          <h2 style={headingStyle}>Skills</h2>
+          <h2 style={{ ...headingStyle, ...getDividerStyle(), paddingBottom: '8px' }}>{formatHeader("Skills")}</h2>
           {editable ? (
             <InlineEditableSkills
               path="skills"
@@ -524,9 +528,9 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       )}
 
       {/* Education */}
-      {resumeData.education.length > 0 && (
+      {resumeData.education.length > 0 && styleOptions.showEducation && (
         <div style={{ marginBottom: styles.spacing.sectionGap }}>
-          <h2 style={headingStyle}>Education</h2>
+          <h2 style={{ ...headingStyle, ...getDividerStyle(), paddingBottom: '8px' }}>{formatHeader("Education")}</h2>
           {editable ? (
             <InlineEditableList
               path="education"
@@ -618,14 +622,16 @@ export const MinimalistProTemplate = ({ resumeData, themeColor = "#475569", edit
       )}
 
       {/* Custom Sections */}
-      <CustomSectionsRenderer 
-        sections={resumeData.sections} 
-        editable={editable} 
-        headingStyle={headingStyle}
-        descriptionStyle={descriptionStyle}
-        accentColor={accent}
-        sectionGap={styles.spacing.sectionGap}
-      />
+      {styleOptions.showSections && (
+        <CustomSectionsRenderer 
+          sections={resumeData.sections} 
+          editable={editable} 
+          headingStyle={{ ...headingStyle, ...getDividerStyle(), paddingBottom: '8px' }}
+          descriptionStyle={descriptionStyle}
+          accentColor={accent}
+          sectionGap={styles.spacing.sectionGap}
+        />
+      )}
     </div>
   );
 };
@@ -651,6 +657,7 @@ const CustomSectionsRenderer = ({
   const inlineEditContext = useInlineEdit();
   const addArrayItem = inlineEditContext?.addArrayItem;
   const removeArrayItem = inlineEditContext?.removeArrayItem;
+  const { formatHeader } = useStyleOptionsWithDefaults();
 
   const handleAddSection = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -684,7 +691,7 @@ const CustomSectionsRenderer = ({
                   placeholder="Section Title"
                   className="inline-block"
                 />
-              ) : section.title}
+              ) : formatHeader(section.title)}
             </h2>
             {editable && (
               <button

@@ -182,7 +182,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
       {/* Professional Summary */}
       {resumeData.personalInfo.summary && (
-        <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }}>
+        <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }} data-section="summary">
           <h2 className="uppercase tracking-wide" style={{ 
             fontSize: styles.sectionHeading.size,
             fontWeight: styles.sectionHeading.weight,
@@ -236,8 +236,8 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                     className="inline-block"
                   />
                 ) : (
-                  <a href={resumeData.personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    LinkedIn
+                  <a href={resumeData.personalInfo.linkedin.startsWith('http') ? resumeData.personalInfo.linkedin : `https://${resumeData.personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    {resumeData.personalInfo.linkedin}
                   </a>
                 )}
               </div>
@@ -252,8 +252,8 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                     className="inline-block"
                   />
                 ) : (
-                  <a href={resumeData.personalInfo.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    Portfolio
+                  <a href={resumeData.personalInfo.portfolio.startsWith('http') ? resumeData.personalInfo.portfolio : `https://${resumeData.personalInfo.portfolio}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    {resumeData.personalInfo.portfolio}
                   </a>
                 )}
               </div>
@@ -268,8 +268,8 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                     className="inline-block"
                   />
                 ) : (
-                  <a href={resumeData.personalInfo.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    GitHub
+                  <a href={resumeData.personalInfo.github.startsWith('http') ? resumeData.personalInfo.github : `https://${resumeData.personalInfo.github}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    {resumeData.personalInfo.github}
                   </a>
                 )}
               </div>
@@ -280,7 +280,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
       {/* Experience */}
       {resumeData.experience.length > 0 && (
-        <div style={{ marginBottom: styles.spacing.sectionGap }}>
+        <div style={{ marginBottom: styles.spacing.sectionGap }} data-section="experience">
           <h2 className="uppercase tracking-wide" style={{ 
             fontSize: styles.sectionHeading.size,
             fontWeight: styles.sectionHeading.weight,
@@ -507,7 +507,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
       {/* Education */}
       {resumeData.education.length > 0 && (
-        <div style={{ marginBottom: styles.spacing.sectionGap }}>
+        <div style={{ marginBottom: styles.spacing.sectionGap }} data-section="education">
           <h2 className="uppercase tracking-wide" style={{ 
             fontSize: styles.sectionHeading.size,
             fontWeight: styles.sectionHeading.weight,
@@ -619,7 +619,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
-        <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }}>
+        <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }} data-section="skills">
           <h2 className="uppercase tracking-wide" style={{ 
             fontSize: styles.sectionHeading.size,
             fontWeight: styles.sectionHeading.weight,
@@ -668,11 +668,13 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
       )}
 
       {/* Custom Sections */}
-      <ProfessionalCustomSections 
-        sections={resumeData.sections}
-        editable={editable}
-        themeColor={themeColor}
-      />
+      <div data-section="custom">
+        <ProfessionalCustomSections 
+          sections={resumeData.sections}
+          editable={editable}
+          themeColor={themeColor}
+        />
+      </div>
 
       {/* Dynamic Sections (New Feature) */}
       {resumeData.dynamicSections && Array.isArray(resumeData.dynamicSections) && resumeData.dynamicSections.length > 0 && (
