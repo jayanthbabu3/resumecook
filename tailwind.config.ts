@@ -113,6 +113,22 @@ export default {
             transform: "scale(1)",
           },
         },
+        float: {
+          "0%, 100%": {
+            transform: "translateY(0px)",
+          },
+          "50%": {
+            transform: "translateY(-20px)",
+          },
+        },
+        shimmer: {
+          "0%": {
+            transform: "translateX(-100%)",
+          },
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -120,6 +136,8 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-up": "slide-up 0.5s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
+        float: "float 6s ease-in-out infinite",
+        shimmer: "shimmer 3s ease-in-out infinite",
       },
     },
   },

@@ -1,0 +1,345 @@
+import React from "react";
+import type { ResumeData } from "@/pages/Editor";
+import { InlineEditableText } from "../InlineEditableText";
+import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+
+interface ColumnDivideTemplateProps {
+  resumeData: ResumeData;
+  themeColor?: string;
+  editable?: boolean;
+}
+
+export const ColumnDivideTemplate = ({
+  resumeData,
+  themeColor = "#0891b2",
+  editable = false,
+}: ColumnDivideTemplateProps) => {
+  const sectionsWithIndex =
+    (resumeData.sections || []).map((section, index) => ({
+      section,
+      originalIndex: index,
+    })) || [];
+  const leftSections = sectionsWithIndex.filter(
+    ({ originalIndex }) => originalIndex % 2 === 0,
+  );
+  const rightSections = sectionsWithIndex.filter(
+    ({ originalIndex }) => originalIndex % 2 === 1,
+  );
+
+  const renderSectionBlock = ({
+    section,
+    originalIndex,
+  }: {
+    section: { title: string; content: string; id?: string };
+    originalIndex: number;
+  }) => (
+    <div key={section.id || originalIndex} className="mb-8">
+      {editable ? (
+        <InlineEditableText
+          path={`sections[${originalIndex}].title`}
+          value={section.title}
+          className="text-2xl font-bold mb-4 pb-2 border-b block"
+          style={{ color: themeColor, borderColor: themeColor }}
+          as="h2"
+        />
+      ) : (
+        <h2
+          className="text-2xl font-bold mb-4 pb-2 border-b"
+          style={{ color: themeColor, borderColor: themeColor }}
+        >
+          {section.title}
+        </h2>
+      )}
+      {editable ? (
+        <InlineEditableText
+          path={`sections[${originalIndex}].content`}
+          value={section.content}
+          className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
+          multiline
+          as="div"
+        />
+      ) : (
+        <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+          {section.content}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="w-full h-full bg-white text-gray-900 p-12">
+      {/* Header */}
+      <div className="text-center mb-10 pb-8 border-b" style={{ borderColor: themeColor }}>
+        {editable ? (
+          <InlineEditableText
+            path="personalInfo.fullName"
+            value={resumeData.personalInfo.fullName}
+            className="text-5xl font-bold mb-3"
+            as="h1"
+          />
+        ) : (
+          <h1 className="text-5xl font-bold mb-3">
+            {resumeData.personalInfo.fullName}
+          </h1>
+        )}
+
+        {resumeData.personalInfo.title && (
+          <div className="mb-4">
+            {editable ? (
+              <InlineEditableText
+                path="personalInfo.title"
+                value={resumeData.personalInfo.title}
+                className="text-xl"
+                as="p"
+                style={{ color: themeColor }}
+              />
+            ) : (
+              <p className="text-xl" style={{ color: themeColor }}>
+                {resumeData.personalInfo.title}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Contact Info */}
+        <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+          {resumeData.personalInfo.email && (
+            <div>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.email"
+                  value={resumeData.personalInfo.email}
+                  className=""
+                  as="span"
+                />
+              ) : (
+                <span>{resumeData.personalInfo.email}</span>
+              )}
+            </div>
+          )}
+          {resumeData.personalInfo.phone && (
+            <div>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.phone"
+                  value={resumeData.personalInfo.phone}
+                  className=""
+                  as="span"
+                />
+              ) : (
+                <span>{resumeData.personalInfo.phone}</span>
+              )}
+            </div>
+          )}
+          {resumeData.personalInfo.location && (
+            <div>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.location"
+                  value={resumeData.personalInfo.location}
+                  className=""
+                  as="span"
+                />
+              ) : (
+                <span>{resumeData.personalInfo.location}</span>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Summary - Full Width */}
+      {resumeData.personalInfo.summary && (
+        <div className="mb-10">
+          {editable ? (
+            <InlineEditableText
+              path="personalInfo.summary"
+              value={resumeData.personalInfo.summary}
+              className="text-gray-700 leading-relaxed text-center"
+              as="p"
+            />
+          ) : (
+            <p className="text-gray-700 leading-relaxed text-center">{resumeData.personalInfo.summary}</p>
+          )}
+        </div>
+      )}
+
+      {/* Two Column Layout with Vertical Divider */}
+      <div className="flex gap-8">
+        {/* Left Column - 50% */}
+        <div className="w-1/2">
+          {/* Experience */}
+          {resumeData.experience && resumeData.experience.length > 0 && (
+            <div className="mb-10">
+              <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
+                Experience
+              </h2>
+              <div className="space-y-6">
+                {resumeData.experience.map((exp, index) => (
+                  <div key={index}>
+                    <div className="mb-2">
+                      {editable ? (
+                        <InlineEditableText
+                          path={`experience[${index}].position`}
+                          value={exp.position}
+                          className="text-lg font-bold text-gray-900"
+                          as="h3"
+                        />
+                      ) : (
+                        <h3 className="text-lg font-bold text-gray-900">{exp.position}</h3>
+                      )}
+                      {editable ? (
+                        <InlineEditableText
+                          path={`experience[${index}].company`}
+                          value={exp.company}
+                          className="font-medium"
+                          as="p"
+                          style={{ color: themeColor }}
+                        />
+                      ) : (
+                        <p className="font-medium" style={{ color: themeColor }}>
+                          {exp.company}
+                        </p>
+                      )}
+                      <p className="text-sm text-gray-500">
+                        {exp.startDate} - {exp.endDate || "Present"}
+                      </p>
+                    </div>
+
+                    {exp.description && (
+                      <div className="text-sm text-gray-700">
+                        {editable ? (
+                          <InlineEditableText
+                            path={`experience[${index}].description`}
+                            value={exp.description}
+                            className="whitespace-pre-line"
+                            multiline
+                            as="div"
+                          />
+                        ) : (
+                          <ul className="list-disc list-inside space-y-1">
+                            {exp.description.split("\n").map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Custom Sections (Left) */}
+          {leftSections.map(renderSectionBlock)}
+        </div>
+
+        {/* Vertical Divider */}
+        <div className="w-0.5" style={{ backgroundColor: themeColor }} />
+
+        {/* Right Column - 50% */}
+        <div className="w-1/2">
+          {/* Skills */}
+          {resumeData.skills && resumeData.skills.length > 0 && (
+            <div className="mb-10">
+              <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
+                Skills
+              </h2>
+              {editable ? (
+                <InlineEditableSkills path="skills" skills={resumeData.skills} />
+              ) : (
+                <div className="space-y-2">
+                  {resumeData.skills.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 border-l text-sm font-medium"
+                      style={{ borderColor: themeColor }}
+                    >
+                      {skill.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Education */}
+          {resumeData.education && resumeData.education.length > 0 && (
+            <div className="mb-10">
+              <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
+                Education
+              </h2>
+              <div className="space-y-4">
+                {resumeData.education.map((edu, index) => (
+                  <div key={index}>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`education[${index}].degree`}
+                        value={edu.degree}
+                        className="text-lg font-bold text-gray-900"
+                        as="h3"
+                      />
+                    ) : (
+                      <h3 className="text-lg font-bold text-gray-900">{edu.degree}</h3>
+                    )}
+                    {editable ? (
+                      <InlineEditableText
+                        path={`education[${index}].school`}
+                        value={edu.school}
+                        className="text-gray-700"
+                        as="p"
+                      />
+                    ) : (
+                      <p className="text-gray-700">{edu.school}</p>
+                    )}
+                    {editable ? (
+                      <InlineEditableText
+                        path={`education[${index}].field`}
+                        value={edu.field}
+                        className="text-sm text-gray-600 block"
+                        as="p"
+                      />
+                    ) : (
+                      edu.field && <p className="text-sm text-gray-600">{edu.field}</p>
+                    )}
+                    <div className="text-sm text-gray-500 flex flex-wrap gap-2">
+                      {editable ? (
+                        <>
+                          <InlineEditableText
+                            path={`education[${index}].startDate`}
+                            value={edu.startDate}
+                            className="block"
+                            as="span"
+                          />
+                          <span>-</span>
+                          <InlineEditableText
+                            path={`education[${index}].endDate`}
+                            value={edu.endDate}
+                            className="block"
+                            as="span"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <span>{edu.startDate}</span>
+                          <span>-</span>
+                          <span>{edu.endDate || edu.graduationDate}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Custom Sections (Right) */}
+          {rightSections.map(renderSectionBlock)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ColumnDivideTemplate;

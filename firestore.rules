@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // User documents
+    match /users/{userId} {
+      // Users can read and write their own profile
+      allow read, write: if isOwner(userId);
+
+      // Resumes subcollection - user's private resumes
+      match /resumes/{resumeId} {
+        // Users can read/write their own resumes
+        allow read, write: if isOwner(userId);
+
+        // Allow public read if resume is marked public
+        allow read: if resource.data.isPublic == true;
+      }
+    }
+
+    // Public resumes collection - shared resumes and templates
+    match /publicResumes/{resumeId} {
+      // Anyone can read public resumes
+      allow read: if true;
+
+      // Only the author can write/update
+      allow create, update: if isAuthenticated() && request.resource.data.authorId == request.auth.uid;
+
+      // Only the author can delete
+      allow delete: if isAuthenticated() && resource.data.authorId == request.auth.uid;
+
+      // Increment views counter (special case)
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views'])
+                    && request.resource.data.views == resource.data.views + 1;
+    }
+
+    // Resume version history
+    match /resumeVersions/{resumeId}/versions/{versionId} {
+      // Only the resume owner can read/write versions
+      // We can't directly check ownership here, so we rely on server-side code
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    // Default deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

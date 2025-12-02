@@ -1,0 +1,24 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+  functions = "netlify/functions"
+
+[dev]
+  command = "npm run dev -- --port 3000"
+  autoLaunch = false
+  framework = "#custom"
+  targetPort = 3000
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@sparticuz/chromium"]
+
+[functions."generate-pdf"]
+  external_node_modules = ["@sparticuz/chromium"]
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type"
+    Access-Control-Allow-Methods = "POST, OPTIONS"

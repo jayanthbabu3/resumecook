@@ -5,6 +5,7 @@ interface ProfilePhotoProps {
   className?: string;
   sizeClass?: string;
   borderClass?: string;
+  style?: React.CSSProperties;
 }
 
 export const ProfilePhoto = ({
@@ -12,6 +13,7 @@ export const ProfilePhoto = ({
   className,
   sizeClass = "h-24 w-24",
   borderClass = "border-4 border-white",
+  style,
 }: ProfilePhotoProps) => {
   if (!src) return null;
 
@@ -23,6 +25,7 @@ export const ProfilePhoto = ({
         borderClass,
         className,
       )}
+      style={style}
     >
       <img src={src} alt="Profile" className="h-full w-full object-cover" />
     </div>

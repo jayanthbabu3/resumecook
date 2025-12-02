@@ -1,79 +1,113 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 interface ProfileData {
-  full_name: string;
+  fullName: string;
   email: string;
   phone: string;
   location: string;
-  linkedin_url: string;
-  github_url: string;
-  portfolio_url: string;
-  professional_title: string;
+  linkedinUrl: string;
+  githubUrl: string;
+  portfolioUrl: string;
+  professionalTitle: string;
   bio: string;
+  profilePhoto: string;
 }
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, userProfile, updateUserProfile } = useFirebaseAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
-    full_name: '',
+    fullName: '',
     email: '',
     phone: '',
     location: '',
-    linkedin_url: '',
-    github_url: '',
-    portfolio_url: '',
-    professional_title: '',
+    linkedinUrl: '',
+    githubUrl: '',
+    portfolioUrl: '',
+    professionalTitle: '',
     bio: '',
+    profilePhoto: '',
   });
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user) return;
+    const loadProfileData = async () => {
+      if (!user) {
+        navigate('/auth');
+        return;
+      }
 
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-
-        if (data) {
+        // First, try to get data from userProfile (already loaded in auth context)
+        if (userProfile) {
           setProfileData({
-            full_name: data.full_name || '',
-            email: data.email || '',
-            phone: data.phone || '',
-            location: data.location || '',
-            linkedin_url: data.linkedin_url || '',
-            github_url: data.github_url || '',
-            portfolio_url: data.portfolio_url || '',
-            professional_title: data.professional_title || '',
-            bio: data.bio || '',
+            fullName: userProfile.fullName || '',
+            email: userProfile.email || user.email || '',
+            phone: userProfile.phone || '',
+            location: userProfile.location || '',
+            linkedinUrl: userProfile.linkedinUrl || '',
+            githubUrl: userProfile.githubUrl || '',
+            portfolioUrl: userProfile.portfolioUrl || '',
+            professionalTitle: userProfile.professionalTitle || '',
+            bio: userProfile.bio || '',
+            profilePhoto: userProfile.profilePhoto || user.photoURL || '',
           });
+        } else {
+          // Fallback: load directly from Firestore
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            setProfileData({
+              fullName: data.fullName || '',
+              email: data.email || user.email || '',
+              phone: data.phone || '',
+              location: data.location || '',
+              linkedinUrl: data.linkedinUrl || '',
+              githubUrl: data.githubUrl || '',
+              portfolioUrl: data.portfolioUrl || '',
+              professionalTitle: data.professionalTitle || '',
+              bio: data.bio || '',
+              profilePhoto: data.profilePhoto || user.photoURL || '',
+            });
+          } else {
+            // Initialize with user data from Firebase Auth
+            setProfileData({
+              fullName: user.displayName || '',
+              email: user.email || '',
+              phone: '',
+              location: '',
+              linkedinUrl: '',
+              githubUrl: '',
+              portfolioUrl: '',
+              professionalTitle: '',
+              bio: '',
+              profilePhoto: user.photoURL || '',
+            });
+          }
         }
-      } catch (error: any) {
-        toast.error(error.message || 'Failed to load profile');
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        toast.error('Failed to load profile data');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProfile();
-  }, [user]);
+    loadProfileData();
+  }, [user, userProfile, navigate]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,25 +115,23 @@ const Profile = () => {
 
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          full_name: profileData.full_name,
-          phone: profileData.phone,
-          location: profileData.location,
-          linkedin_url: profileData.linkedin_url,
-          github_url: profileData.github_url,
-          portfolio_url: profileData.portfolio_url,
-          professional_title: profileData.professional_title,
-          bio: profileData.bio,
-        })
-        .eq('id', user.id);
-
-      if (error) throw error;
-
-      toast.success('Profile updated successfully!');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update profile');
+      // Update profile in Firestore using the updateUserProfile function
+      await updateUserProfile({
+        fullName: profileData.fullName,
+        phone: profileData.phone,
+        location: profileData.location,
+        linkedinUrl: profileData.linkedinUrl,
+        githubUrl: profileData.githubUrl,
+        portfolioUrl: profileData.portfolioUrl,
+        professionalTitle: profileData.professionalTitle,
+        bio: profileData.bio,
+        profilePhoto: profileData.profilePhoto,
+      });
+      
+      toast.success('Profile updated successfully');
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      toast.error('Failed to save profile');
     } finally {
       setSaving(false);
     }
@@ -109,12 +141,20 @@ const Profile = () => {
     setProfileData(prev => ({ ...prev, [field]: value }));
   };
 
+  const getUserInitials = (name: string) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
         <Header />
         <div className="flex items-center justify-center min-h-[calc(100vh-73px)]">
-          <div className="text-center">Loading profile...</div>
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-muted-foreground">Loading profile...</p>
+          </div>
         </div>
       </div>
     );
@@ -133,13 +173,37 @@ const Profile = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSave} className="space-y-6">
+              {/* Profile Photo Section */}
+              <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
+                <Avatar className="h-16 w-16">
+                  <AvatarImage src={profileData.profilePhoto} alt={profileData.fullName} />
+                  <AvatarFallback className="text-lg">
+                    {getUserInitials(profileData.fullName)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <Label htmlFor="profilePhoto" className="text-sm font-medium">Profile Photo URL</Label>
+                  <Input
+                    id="profilePhoto"
+                    type="url"
+                    value={profileData.profilePhoto}
+                    onChange={(e) => handleChange('profilePhoto', e.target.value)}
+                    placeholder="https://example.com/photo.jpg"
+                    className="mt-1"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Enter a direct link to an image (https://...)
+                  </p>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="full_name">Full Name *</Label>
+                  <Label htmlFor="fullName">Full Name *</Label>
                   <Input
-                    id="full_name"
-                    value={profileData.full_name}
-                    onChange={(e) => handleChange('full_name', e.target.value)}
+                    id="fullName"
+                    value={profileData.fullName}
+                    onChange={(e) => handleChange('fullName', e.target.value)}
                     required
                   />
                 </div>
@@ -176,44 +240,44 @@ const Profile = () => {
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="professional_title">Professional Title</Label>
+                  <Label htmlFor="professionalTitle">Professional Title</Label>
                   <Input
-                    id="professional_title"
-                    value={profileData.professional_title}
-                    onChange={(e) => handleChange('professional_title', e.target.value)}
+                    id="professionalTitle"
+                    value={profileData.professionalTitle}
+                    onChange={(e) => handleChange('professionalTitle', e.target.value)}
                     placeholder="Software Engineer"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="linkedin_url">LinkedIn URL</Label>
+                  <Label htmlFor="linkedinUrl">LinkedIn URL</Label>
                   <Input
-                    id="linkedin_url"
+                    id="linkedinUrl"
                     type="url"
-                    value={profileData.linkedin_url}
-                    onChange={(e) => handleChange('linkedin_url', e.target.value)}
+                    value={profileData.linkedinUrl}
+                    onChange={(e) => handleChange('linkedinUrl', e.target.value)}
                     placeholder="https://linkedin.com/in/username"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="github_url">GitHub URL</Label>
+                  <Label htmlFor="githubUrl">GitHub URL</Label>
                   <Input
-                    id="github_url"
+                    id="githubUrl"
                     type="url"
-                    value={profileData.github_url}
-                    onChange={(e) => handleChange('github_url', e.target.value)}
+                    value={profileData.githubUrl}
+                    onChange={(e) => handleChange('githubUrl', e.target.value)}
                     placeholder="https://github.com/username"
                   />
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="portfolio_url">Portfolio URL</Label>
+                  <Label htmlFor="portfolioUrl">Portfolio URL</Label>
                   <Input
-                    id="portfolio_url"
+                    id="portfolioUrl"
                     type="url"
-                    value={profileData.portfolio_url}
-                    onChange={(e) => handleChange('portfolio_url', e.target.value)}
+                    value={profileData.portfolioUrl}
+                    onChange={(e) => handleChange('portfolioUrl', e.target.value)}
                     placeholder="https://yourportfolio.com"
                   />
                 </div>

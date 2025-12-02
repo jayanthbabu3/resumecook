@@ -3,14 +3,14 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mail, CheckCircle2, ArrowRight } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { Header } from '@/components/Header';
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
   const email = searchParams.get('email');
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useFirebaseAuth();
 
   useEffect(() => {
     // If user is already verified and logged in, redirect to profile completion
