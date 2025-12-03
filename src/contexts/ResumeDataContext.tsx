@@ -21,7 +21,7 @@ interface ResumeDataProviderProps {
 export const ResumeDataProvider: React.FC<ResumeDataProviderProps> = ({
   children,
   initialTemplateId = 'professional',
-  initialThemeColor = '#7c3aed'
+  initialThemeColor = '#2563eb'
 }) => {
   const [resumeData, setResumeDataState] = useState<ResumeData>(() => 
     getTemplateDefaults(initialTemplateId)

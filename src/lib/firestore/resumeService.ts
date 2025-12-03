@@ -114,7 +114,7 @@ class ResumeService {
     const resume: Omit<Resume, 'id'> = {
       userId: user.uid,
       templateId,
-      themeColor: options?.themeColor || '#7c3aed',
+      themeColor: options?.themeColor || '#2563eb',
       title: options?.title || `Resume - ${new Date().toLocaleDateString()}`,
       isPrimary: options?.isPrimary || false,
       isPublic: false,

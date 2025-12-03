@@ -2418,7 +2418,7 @@ const templates = {
 
 export const TemplatePreview = memo<TemplatePreviewProps>(({
   templateId,
-  themeColor = "#7c3aed",
+  themeColor = "#2563eb",
   sampleData,
   className = "",
 }) => {

@@ -131,7 +131,7 @@ export function ScratchBuilderSection({
   onDelete,
   onUpdateSection,
   dragHandleProps,
-  themeColor = '#7c3aed',
+  themeColor = '#2563eb',
 }: ScratchBuilderSectionProps) {
   const basePath = `dynamicSections[${sectionIndex}]`;
 

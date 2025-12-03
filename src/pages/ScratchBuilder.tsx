@@ -120,7 +120,7 @@ function SortableSection({ section, sectionIndex, onDelete, onUpdateSection }: S
         onDelete={onDelete}
         onUpdateSection={onUpdateSection}
         dragHandleProps={{ ...attributes, ...listeners }}
-        themeColor="#7c3aed"
+        themeColor="#2563eb"
       />
     </div>
   );
@@ -161,7 +161,7 @@ export default function ScratchBuilder() {
     })
   );
 
-  const themeColor = '#7c3aed';
+  const themeColor = '#2563eb';
 
   // Sync sections with resumeData.dynamicSections
   useEffect(() => {

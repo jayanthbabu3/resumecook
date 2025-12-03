@@ -248,7 +248,7 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
   },
   
   colors: {
-    primary: '#10b981',      // Emerald green (from screenshot)
+    primary: '#2563eb',      // Application blue color
     text: {
       primary: '#191d24',    // rgb(25, 29, 36) - Darker for better readability
       secondary: '#1f2937',  // Darker secondary for better readability
@@ -257,7 +257,7 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
     background: {
       primary: '#ffffff',
       secondary: '#f9fafb',
-      accent: '#10b981',
+      accent: '#2563eb',     // Application blue color
     },
     border: '#e5e7eb',
   },
@@ -396,7 +396,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
   },
   
   colors: {
-    primary: '#3b82f6',      // Blue
+    primary: '#2563eb',      // Application blue color
     text: {
       primary: '#191d24',
       secondary: '#1f2937',  // Darker secondary
@@ -405,7 +405,7 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
     background: {
       primary: '#ffffff',
       secondary: '#f8fafc',
-      accent: '#3b82f6',
+      accent: '#2563eb',     // Application blue color
     },
     border: '#e5e7eb',
   },

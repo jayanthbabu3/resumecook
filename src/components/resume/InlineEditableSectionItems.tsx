@@ -83,7 +83,16 @@ export const InlineEditableSectionItems: React.FC<InlineEditableSectionItemsProp
       <div style={containerStyle} className={className}>
         {effectiveItems.map((item, index) => (
           item && (
-            <div key={index} style={{ marginBottom: "8px", ...itemStyle }}>
+            <div 
+              key={index} 
+              style={{ 
+                marginBottom: "6px", 
+                fontSize: "13px",
+                color: "#374151",
+                lineHeight: "1.6",
+                ...itemStyle 
+              }}
+            >
               {showBullets && <span style={{ marginRight: "8px" }}>•</span>}
               {item}
             </div>

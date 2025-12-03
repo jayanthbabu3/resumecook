@@ -157,7 +157,7 @@ export const EditableResumePreview = ({
   resumeData,
   setResumeData,
   templateId,
-  themeColor = "#7c3aed",
+  themeColor = "#2563eb",
 }: EditableResumePreviewProps) => {
   const [editingField, setEditingField] = useState<string | null>(null);
 

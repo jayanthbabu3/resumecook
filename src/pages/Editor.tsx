@@ -33,6 +33,17 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ATSScoreButton } from "@/components/ATSScoreButton";
 
+export interface EditorProps {
+  initialData?: ResumeData;
+  initialTemplateId?: string;
+  initialThemeColor?: string;
+  onDataChange?: (data: ResumeData) => void;
+  onTemplateChange?: (templateId: string) => void;
+  onThemeColorChange?: (color: string) => void;
+  resumeId?: string;
+  isNew?: boolean;
+}
+
 const gradeMap: Record<AtsReport["grade"], { label: string; tone: string }> = {
   excellent: { label: "ATS ready", tone: "text-emerald-600" },
   strong: { label: "Strong match", tone: "text-blue-600" },
@@ -49,13 +60,33 @@ const formatTemplateName = (id?: string) => {
     .join(" ");
 };
 
-const Editor = () => {
-  const { templateId, professionId } = useParams<{ templateId: string; professionId?: string }>();
+const Editor = (props: EditorProps = {}) => {
+  const { templateId: routeTemplateId, professionId } = useParams<{ templateId: string; professionId?: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const resumeId = searchParams.get("resumeId");
+  const routeResumeId = searchParams.get("resumeId");
   const { user } = useFirebaseAuth();
-  const { resumeData, setResumeData, themeColor, setThemeColor, setTemplateId } = useResumeData();
+  const { resumeData: contextResumeData, setResumeData: setContextResumeData, themeColor: contextThemeColor, setThemeColor: setContextThemeColor, setTemplateId } = useResumeData();
+
+  // Use props if provided, otherwise fall back to context/route values
+  const templateId = props.initialTemplateId || routeTemplateId;
+  const resumeId = props.resumeId || routeResumeId;
+  const resumeData = props.initialData || contextResumeData;
+  const themeColor = props.initialThemeColor || contextThemeColor;
+  
+  const setResumeData = (data: ResumeData) => {
+    if (props.onDataChange) {
+      props.onDataChange(data);
+    }
+    setContextResumeData(data);
+  };
+  
+  const setThemeColor = (color: string) => {
+    if (props.onThemeColorChange) {
+      props.onThemeColorChange(color);
+    }
+    setContextThemeColor(color);
+  };
 
   // Update template ID in context when route changes
   useEffect(() => {

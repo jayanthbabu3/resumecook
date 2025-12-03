@@ -112,15 +112,15 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false, onAd
       {/* Social Links */}
       {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
         <div className="mb-8 max-w-4xl mx-auto" style={{ pageBreakInside: 'avoid' }}>
-          <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-600">
+          <div className="flex flex-wrap justify-center gap-6 text-xs text-gray-600">
             {resumeData.personalInfo.linkedin && (
               <span className="flex items-center gap-1.5">
                 <Linkedin className="h-3.5 w-3.5" />
                 {editable ? (
                   <InlineEditableText path="personalInfo.linkedin" value={resumeData.personalInfo.linkedin} className="inline-block" />
                 ) : (
-                  <a href={resumeData.personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    LinkedIn
+                  <a href={resumeData.personalInfo.linkedin.startsWith('http') ? resumeData.personalInfo.linkedin : `https://${resumeData.personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    {resumeData.personalInfo.linkedin}
                   </a>
                 )}
               </span>
@@ -131,8 +131,8 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false, onAd
                 {editable ? (
                   <InlineEditableText path="personalInfo.portfolio" value={resumeData.personalInfo.portfolio} className="inline-block" />
                 ) : (
-                  <a href={resumeData.personalInfo.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    Portfolio
+                  <a href={resumeData.personalInfo.portfolio.startsWith('http') ? resumeData.personalInfo.portfolio : `https://${resumeData.personalInfo.portfolio}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    {resumeData.personalInfo.portfolio}
                   </a>
                 )}
               </span>
@@ -143,8 +143,8 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false, onAd
                 {editable ? (
                   <InlineEditableText path="personalInfo.github" value={resumeData.personalInfo.github} className="inline-block" />
                 ) : (
-                  <a href={resumeData.personalInfo.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    GitHub
+                  <a href={resumeData.personalInfo.github.startsWith('http') ? resumeData.personalInfo.github : `https://${resumeData.personalInfo.github}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    {resumeData.personalInfo.github}
                   </a>
                 )}
               </span>
@@ -398,10 +398,10 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false, onAd
                 )}
               />
             ) : (
-              resumeData.education.map((edu) => (
-                <div key={edu.id} style={{ pageBreakInside: 'avoid' }}>
+              resumeData.education.map((edu, index) => (
+                <div key={edu.id} className={index < resumeData.education.length - 1 ? "pb-4 border-b border-gray-100" : ""} style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-start gap-4">
-                    <div className="flex-1">
+                    <div className="flex-1 space-y-0.5">
                       <h3 className="text-base font-semibold text-gray-900">
                         {edu.degree || "Degree"} {edu.field && `, ${edu.field}`}
                       </h3>
@@ -409,7 +409,7 @@ export const MinimalTemplate = ({ resumeData, themeColor, editable = false, onAd
                         {edu.school || "School Name"}
                       </p>
                       {edu.gpa && (
-                        <p className="text-xs text-gray-500 font-light">
+                        <p className="text-xs text-gray-500 font-light mt-1">
                           Grade: {edu.gpa}
                         </p>
                       )}
@@ -533,7 +533,7 @@ const MinimalCustomSections = ({
             items={section.items || []}
             content={section.content || ""}
             editable={editable}
-            itemStyle={{ fontSize: '14px', color: '#374151', lineHeight: '1.625', fontWeight: '300' }}
+            itemStyle={{ fontSize: '14px', color: '#374151', lineHeight: '1.6', fontWeight: '300' }}
             containerStyle={{ maxWidth: '56rem', margin: '0 auto' }}
             addButtonLabel="Add Item"
             placeholder="Click to add item..."

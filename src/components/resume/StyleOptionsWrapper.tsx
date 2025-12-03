@@ -4,14 +4,22 @@ import { useStyleOptions, defaultStyleOptions } from '@/contexts/StyleOptionsCon
 interface StyleOptionsWrapperProps {
   children: React.ReactNode;
   className?: string;
+  showPageBreaks?: boolean;
 }
+
+// A4 page height in pixels (at 96 DPI: 297mm = 1122.52px, but we use 1123px for clean math)
+const A4_PAGE_HEIGHT_PX = 1123;
 
 /**
  * A wrapper component that applies style options (from StyleOptionsContext) 
  * to all child templates via CSS. This provides a generic solution that works
  * for ALL resume templates without modifying each one individually.
  */
-export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({ children, className }) => {
+export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({ 
+  children, 
+  className,
+  showPageBreaks = true 
+}) => {
   const styleContext = useStyleOptions();
   const styleOptions = styleContext?.styleOptions || defaultStyleOptions;
 
@@ -87,10 +95,40 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({ childr
     `;
   }, [styleOptions]);
 
+  // Page break indicators - show dotted lines where PDF will cut to next page
+  const pageBreakIndicators = useMemo(() => {
+    if (!showPageBreaks) return null;
+    
+    // Generate multiple page break lines (up to 3 pages)
+    const indicators = [];
+    for (let i = 1; i <= 3; i++) {
+      indicators.push(
+        <div
+          key={`page-break-${i}`}
+          className="page-break-indicator absolute left-0 right-0 pointer-events-none z-10"
+          style={{
+            top: `${A4_PAGE_HEIGHT_PX * i}px`,
+            height: '0',
+            borderTop: '2px dashed #94a3b8',
+          }}
+        >
+          <div 
+            className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-slate-100 text-slate-500 text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap"
+            style={{ fontSize: '10px' }}
+          >
+            Page {i} ends here
+          </div>
+        </div>
+      );
+    }
+    return indicators;
+  }, [showPageBreaks]);
+
   return (
-    <div className={`style-options-wrapper ${className || ''}`}>
+    <div className={`style-options-wrapper relative ${className || ''}`}>
       <style>{dynamicCSS}</style>
       {children}
+      {pageBreakIndicators}
     </div>
   );
 };

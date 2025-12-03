@@ -3,8 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useResume } from '@/hooks/useResume';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { AutoSaveIndicatorCompact } from '@/components/AutoSaveIndicator';
-import { getTemplateDefaults, type ResumeData } from './Editor';
-import Editor from './Editor';
+import { getTemplateDefaults } from '@/lib/resumeUtils';
+import type { ResumeData } from '@/types/resume';
+import Editor, { type EditorProps } from './Editor';
 import { Loader2 } from 'lucide-react';
 import { resumeService } from '@/lib/firestore/resumeService';
 import { toast } from 'sonner';
@@ -40,7 +41,7 @@ export default function EditorContainer() {
   const [currentTemplateId, setCurrentTemplateId] = useState(
     isNewResume ? templateId : ''
   );
-  const [themeColor, setThemeColor] = useState('#7c3aed');
+  const [themeColor, setThemeColor] = useState('#2563eb');
   const [hasCreatedResume, setHasCreatedResume] = useState(false);
 
   // Sync resume from Firestore to local state

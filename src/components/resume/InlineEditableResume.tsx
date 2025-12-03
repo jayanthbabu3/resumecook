@@ -1,4 +1,4 @@
-import type { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
 import { InlineEditableText } from "./InlineEditableText";
 import { InlineEditableList } from "./InlineEditableList";
@@ -14,7 +14,7 @@ export const InlineEditableResume = ({
   resumeData,
   setResumeData,
   templateId,
-  themeColor = "#7c3aed",
+  themeColor = "#2563eb",
 }: InlineEditableResumeProps) => {
   return (
     <InlineEditProvider resumeData={resumeData} setResumeData={setResumeData}>

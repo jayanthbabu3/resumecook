@@ -453,7 +453,7 @@ interface ResumePreviewProps {
 export const ResumePreview = ({
   resumeData,
   templateId,
-  themeColor = "#7c3aed",
+  themeColor = "#2563eb",
 }: ResumePreviewProps) => {
   const templates = {
     professional: ProfessionalTemplate,

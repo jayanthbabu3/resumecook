@@ -80,7 +80,7 @@ export async function migrateLocalStorageToFirestore(): Promise<void> {
           resume.data,
           {
             title,
-            themeColor: resume.themeColor || '#7c3aed',
+            themeColor: resume.themeColor || '#2563eb',
           }
         );
 

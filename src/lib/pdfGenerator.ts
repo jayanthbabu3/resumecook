@@ -271,6 +271,7 @@ function captureResumeHTMLWithStyles(
             border-radius: 0 !important;
             border: none !important;
             margin: 0 !important;
+            padding-top: 0 !important;
             outline: none !important;
             background-color: white !important;
             overflow: visible !important;
@@ -281,6 +282,27 @@ function captureResumeHTMLWithStyles(
           @page {
             size: A4;
             margin: 0;
+          }
+          
+          /* Ensure content flows naturally across pages without extra padding */
+          @page :first {
+            margin-top: 0;
+          }
+          
+          @page :left, @page :right {
+            margin-top: 0;
+          }
+          
+          /* Remove any margin/padding that might cause second page offset */
+          .style-options-wrapper,
+          [class*="style-options"] {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          
+          /* Page break indicator should not appear in PDF */
+          .page-break-indicator {
+            display: none !important;
           }
           
           /* Remove any transforms that might affect the PDF */
@@ -364,6 +386,34 @@ function captureResumeHTMLWithStyles(
             height: 16px !important;
             flex-shrink: 0 !important;
             stroke-width: 2 !important;
+          }
+          
+          /* Remove ALL shadows from PDF */
+          *, *::before, *::after {
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            -moz-box-shadow: none !important;
+          }
+          
+          /* Fix second page top padding - ensure content flows naturally */
+          @page {
+            size: A4;
+            margin: 0;
+          }
+          
+          /* Ensure no extra padding on page breaks */
+          .page-break, [style*="page-break"] {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+          }
+          
+          /* Remove any wrapper shadows or decorative elements */
+          .style-options-wrapper,
+          [class*="shadow"],
+          [class*="ring"] {
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            ring: none !important;
           }
         </style>
       </head>
