@@ -223,7 +223,7 @@ export const GradientHeaderUniversalTemplate = ({
 
         <div className="grid grid-cols-2 gap-10 mb-8">
           {resumeData.education && resumeData.education.length > 0 && (
-            <div>
+            <div data-section="education" style={{ lineHeight: 1.8 }}>
               <h2 className="text-xs font-semibold mb-5 uppercase tracking-widest" style={{ color: accent }}>Education</h2>
               {editable ? (
                 <InlineEditableList

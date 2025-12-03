@@ -1,13 +1,17 @@
-import { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { InlineEditableSectionItems } from "@/components/resume/InlineEditableSectionItems";
+import { Plus, X } from "lucide-react";
 
 interface BorderFrameUniversalTemplateProps {
   resumeData: ResumeData;
   themeColor?: string;
   editable?: boolean;
+  onAddBulletPoint?: (expId: string) => void;
+  onRemoveBulletPoint?: (expId: string, bulletIndex: number) => void;
 }
 
 const normalizeHex = (color?: string) => {
@@ -19,10 +23,21 @@ const normalizeHex = (color?: string) => {
   return color.slice(0, 7);
 };
 
+const formatDate = (date: string) => {
+  if (!date) return "";
+  const [year, month] = date.split("-");
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthIndex = parseInt(month, 10) - 1;
+  if (Number.isNaN(monthIndex) || monthIndex < 0 || monthIndex > 11) return date;
+  return `${monthNames[monthIndex]} ${year}`;
+};
+
 export const BorderFrameUniversalTemplate = ({
   resumeData,
   themeColor = "#059669",
   editable = false,
+  onAddBulletPoint,
+  onRemoveBulletPoint,
 }: BorderFrameUniversalTemplateProps) => {
   const accent = normalizeHex(themeColor) ?? "#059669";
 
@@ -133,6 +148,7 @@ export const BorderFrameUniversalTemplate = ({
                   startDate: "2023-01",
                   endDate: "2024-01",
                   description: "Job description here",
+                bulletPoints: ["Achievement or responsibility"],
                   current: false,
                 }}
                 addButtonLabel="Add Experience"
@@ -178,15 +194,79 @@ export const BorderFrameUniversalTemplate = ({
                         as="div"
                       />
                     )}
+                    {exp.bulletPoints && exp.bulletPoints.length > 0 && (
+                      <div className="mt-3 text-left">
+                        <ul className="space-y-1">
+                          {exp.bulletPoints.map((bullet, bulletIndex) => (
+                            <li key={bulletIndex} className="text-[12.5px] text-gray-700 leading-[1.7] flex items-start gap-2">
+                              <span className="mt-1 text-gray-500">•</span>
+                              <div className="flex-1 flex items-center gap-2">
+                                <InlineEditableText
+                                  path={`experience[${index}].bulletPoints[${bulletIndex}]`}
+                                  value={bullet || ""}
+                                  placeholder="Click to add achievement..."
+                                  className="flex-1 border border-dashed border-gray-300 rounded px-1 text-[12.5px]"
+                                  multiline
+                                  as="span"
+                                />
+                                {editable && onRemoveBulletPoint && exp.id && (
+                                  <button
+                                    onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}
+                                    className="p-1 hover:bg-red-50 rounded text-red-500 transition"
+                                    type="button"
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                        {editable && onAddBulletPoint && exp.id && (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              onAddBulletPoint?.(exp.id);
+                            }}
+                            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
+                            type="button"
+                          >
+                            <Plus className="h-3 w-3" />
+                            Add Achievement
+                          </button>
+                        )}
+                      </div>
+                    )}
+                    {(!exp.bulletPoints || exp.bulletPoints.length === 0) &&
+                      editable &&
+                      onAddBulletPoint &&
+                      exp.id && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onAddBulletPoint?.(exp.id);
+                          }}
+                          className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
+                          type="button"
+                        >
+                          <Plus className="h-3 w-3" />
+                          Add Achievement
+                        </button>
+                      )}
                   </div>
                 )}
               />
             ) : (
-              resumeData.experience.map((exp, index) => {
-                const bulletPoints = (exp.description || "")
-                  .split("\n")
-                  .map((line) => line.trim())
-                  .filter(Boolean);
+            resumeData.experience.map((exp, index) => {
+              const bulletPoints =
+                exp.bulletPoints && exp.bulletPoints.length > 0
+                  ? exp.bulletPoints
+                  : (exp.description || "")
+                      .split("\n")
+                      .map((line) => line.trim())
+                      .filter(Boolean);
 
                 return (
                   <div key={index} className="mb-6 last:mb-0">
@@ -197,8 +277,8 @@ export const BorderFrameUniversalTemplate = ({
                       <p className="text-[13px] text-gray-700 font-medium">
                         {exp.company}
                       </p>
-                      <p className="text-[11px] text-gray-600">
-                        {exp.startDate} - {exp.current ? "Present" : exp.endDate}
+                    <p className="text-[11px] text-gray-600">
+                      {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                       </p>
                     </div>
                     {bulletPoints.length > 0 && (
@@ -219,7 +299,7 @@ export const BorderFrameUniversalTemplate = ({
         <div className="grid grid-cols-2 gap-10">
           {/* Education */}
           {resumeData.education && resumeData.education.length > 0 && (
-            <div>
+            <div data-section="education" style={{ lineHeight: 1.8 }}>
               <h2 className="text-[15px] font-bold mb-4 text-center" style={{ color: accent }}>
                 EDUCATION
               </h2>
@@ -237,7 +317,7 @@ export const BorderFrameUniversalTemplate = ({
                   }}
                   addButtonLabel="Add Education"
                   renderItem={(edu, index) => (
-                    <div className="mb-4 last:mb-0 text-[12px] text-center">
+                  <div className="mb-4 last:mb-0 text-[12px] text-center">
                       <InlineEditableText
                         path={`education[${index}].degree`}
                         value={`${edu.degree}${edu.field ? ` in ${edu.field}` : ""}`}
@@ -250,9 +330,21 @@ export const BorderFrameUniversalTemplate = ({
                         className="text-gray-700 block mb-1"
                         as="p"
                       />
-                      <p className="text-gray-600 text-[11px]">
-                        {edu.startDate} - {edu.endDate}
-                      </p>
+                      <div className="text-gray-600 text-[11px] flex items-center justify-center gap-1">
+                        <InlineEditableDate
+                          path={`education[${index}].startDate`}
+                          value={edu.startDate}
+                          formatDisplay={formatDate}
+                          className="inline-block"
+                        />
+                        <span>-</span>
+                        <InlineEditableDate
+                          path={`education[${index}].endDate`}
+                          value={edu.endDate}
+                          formatDisplay={formatDate}
+                          className="inline-block"
+                        />
+                      </div>
                     </div>
                   )}
                 />
@@ -264,7 +356,7 @@ export const BorderFrameUniversalTemplate = ({
                     </h3>
                     <p className="text-gray-700 mb-1">{edu.school}</p>
                     <p className="text-gray-600 text-[11px]">
-                      {edu.startDate} - {edu.endDate}
+                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                     </p>
                   </div>
                 ))
@@ -310,7 +402,8 @@ export const BorderFrameUniversalTemplate = ({
               defaultItem={{
                 id: Date.now().toString(),
                 title: "New Section",
-                content: "Section content here",
+                content: "",
+                items: ["New item"],
               }}
               addButtonLabel="Add Section"
               renderItem={(section, sectionIndex) => (
@@ -322,12 +415,17 @@ export const BorderFrameUniversalTemplate = ({
                     style={{ color: accent }}
                     as="h2"
                   />
-                  <InlineEditableText
-                    path={`sections[${sectionIndex}].content`}
-                    value={section.content}
-                    className="text-[13px] text-gray-700 leading-[1.7] block"
-                    multiline
-                    as="div"
+                  <InlineEditableSectionItems
+                    sectionIndex={sectionIndex}
+                    items={section.items || []}
+                    content={section.content || ""}
+                    editable={true}
+                    itemStyle={{ fontSize: '13px', color: '#374151', lineHeight: '1.7' }}
+                    containerStyle={{ marginTop: '12px' }}
+                    addButtonLabel="Add Item"
+                    placeholder="Click to add item..."
+                    accentColor={accent}
+                    showBullets={true}
                   />
                 </div>
               )}
@@ -338,13 +436,15 @@ export const BorderFrameUniversalTemplate = ({
                 <h2 className="text-[15px] font-bold mb-4 text-center" style={{ color: accent }}>
                   {section.title}
                 </h2>
-                <div className="text-[13px] text-gray-700 leading-[1.7]">
-                  {section.content.split("\n").map((line, i) => (
-                    <p key={i} className="mb-1">
-                      {line}
-                    </p>
-                  ))}
-                </div>
+                <InlineEditableSectionItems
+                  sectionIndex={sectionIndex}
+                  items={section.items || []}
+                  content={section.content || ""}
+                  editable={false}
+                  itemStyle={{ fontSize: '13px', color: '#374151', lineHeight: '1.7' }}
+                  containerStyle={{ marginTop: '12px' }}
+                  showBullets={true}
+                />
               </div>
             ))
           )

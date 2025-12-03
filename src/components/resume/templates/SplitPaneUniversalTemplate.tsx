@@ -48,7 +48,7 @@ export const SplitPaneUniversalTemplate = ({
         )}
 
         {resumeData.education && resumeData.education.length > 0 && (
-          <div>
+          <div data-section="education" style={{ lineHeight: 1.8 }}>
             <h2 className="text-[15px] font-bold mb-4" style={{ color: accent }}>Education</h2>
             {resumeData.education.map((edu, idx) => (
               <div key={idx} className="mb-4 last:mb-0 text-[12px]">

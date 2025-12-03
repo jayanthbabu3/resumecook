@@ -196,23 +196,14 @@ function captureResumeHTMLWithStyles(
   
   removeTransforms(clone);
   
-  // Ensure the root element has proper A4 sizing and remove decorative styles
-  // Note: We preserve the template's own padding (e.g., 40px 48px) since we're now
-  // capturing the template content directly, not the wrapper
-  clone.style.width = '210mm';
-  clone.style.minHeight = '297mm';
+  // Ensure the root element respects A4 dimensions while keeping template styling
+  if (!clone.style.width) {
+    clone.style.width = '210mm';
+  }
+  if (!clone.style.minHeight) {
+    clone.style.minHeight = '297mm';
+  }
   clone.style.transform = 'none';
-  clone.style.margin = '0';
-  clone.style.boxShadow = 'none';
-  clone.style.borderRadius = '0';
-  clone.style.border = 'none';
-  clone.style.overflow = 'visible';
-  clone.style.backgroundColor = 'white';
-  
-  // Remove shadow, rounded corner, and overflow classes
-  clone.classList.remove('shadow-2xl', 'shadow-xl', 'shadow-lg', 'shadow-md', 'shadow-sm', 'shadow', 'shadow-none');
-  clone.classList.remove('rounded-lg', 'rounded-md', 'rounded-sm', 'rounded', 'rounded-xl', 'rounded-2xl', 'rounded-none');
-  clone.classList.remove('overflow-hidden', 'overflow-auto', 'overflow-scroll');
   
   // Get all stylesheets from the page
   const styleSheets = Array.from(document.styleSheets);
@@ -263,22 +254,6 @@ function captureResumeHTMLWithStyles(
             padding: 0;
           }
           
-          /* Remove decorative styles from root element */
-          body > div:first-child,
-          body > div {
-            box-shadow: none !important;
-            -webkit-box-shadow: none !important;
-            border-radius: 0 !important;
-            border: none !important;
-            margin: 0 !important;
-            padding-top: 0 !important;
-            outline: none !important;
-            background-color: white !important;
-            overflow: visible !important;
-            width: 210mm !important;
-            min-height: 297mm !important;
-          }
-          
           @page {
             size: A4;
             margin: 0;
@@ -291,13 +266,6 @@ function captureResumeHTMLWithStyles(
           
           @page :left, @page :right {
             margin-top: 0;
-          }
-          
-          /* Remove any margin/padding that might cause second page offset */
-          .style-options-wrapper,
-          [class*="style-options"] {
-            margin: 0 !important;
-            padding: 0 !important;
           }
           
           /* Page break indicator should not appear in PDF */
@@ -388,13 +356,6 @@ function captureResumeHTMLWithStyles(
             stroke-width: 2 !important;
           }
           
-          /* Remove ALL shadows from PDF */
-          *, *::before, *::after {
-            box-shadow: none !important;
-            -webkit-box-shadow: none !important;
-            -moz-box-shadow: none !important;
-          }
-          
           /* Fix second page top padding - ensure content flows naturally */
           @page {
             size: A4;
@@ -407,14 +368,7 @@ function captureResumeHTMLWithStyles(
             padding-top: 0 !important;
           }
           
-          /* Remove any wrapper shadows or decorative elements */
-          .style-options-wrapper,
-          [class*="shadow"],
-          [class*="ring"] {
-            box-shadow: none !important;
-            -webkit-box-shadow: none !important;
-            ring: none !important;
-          }
+          
         </style>
       </head>
       <body>

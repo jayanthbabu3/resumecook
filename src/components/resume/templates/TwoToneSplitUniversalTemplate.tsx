@@ -73,7 +73,7 @@ export const TwoToneSplitUniversalTemplate = ({
       )}
 
       {resumeData.education && resumeData.education.length > 0 && (
-        <div className="mb-10">
+        <div data-section="education" className="mb-10" style={{ lineHeight: 1.8 }}>
           <h2 className="text-[16px] font-bold mb-4" style={{ color: accent }}>Education</h2>
           {resumeData.education.map((edu, idx) => (
             <div key={idx} className="mb-4 last:mb-0">

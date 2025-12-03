@@ -24,7 +24,7 @@ export interface StyleOptions {
 export const defaultStyleOptions: StyleOptions = {
   headerCase: 'uppercase',
   bulletStyle: '•',
-  dividerStyle: 'line',
+  dividerStyle: 'none',
   fontSizeScale: 'normal',
   dateFormat: 'short',
   showPhoto: true,
@@ -93,9 +93,8 @@ export const StyleOptionsProvider: React.FC<{ children: ReactNode }> = ({ childr
       case 'double':
         return { borderBottom: '3px double currentColor' };
       case 'none':
-        return { borderBottom: 'none' };
       default:
-        return { borderBottom: '1px solid currentColor' };
+        return { borderBottom: 'none' };
     }
   }, [styleOptions.dividerStyle]);
 
@@ -183,7 +182,7 @@ export const useStyleOptionsWithDefaults = (): StyleOptionsContextType => {
     resetStyleOptions: () => {},
     formatHeader: (text: string) => text.toUpperCase(),
     getBulletChar: () => '•',
-    getDividerStyle: () => ({ borderBottom: '1px solid currentColor' }),
+    getDividerStyle: () => ({ borderBottom: 'none' }),
     getFontScale: () => ({ name: 32, title: 16, section: 16, body: 13, small: 12 }),
     formatDate: (dateString: string) => dateString,
   };

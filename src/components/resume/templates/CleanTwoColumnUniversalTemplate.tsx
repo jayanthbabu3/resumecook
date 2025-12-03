@@ -67,7 +67,7 @@ export const CleanTwoColumnUniversalTemplate = ({
         </div>
       )}
       {resumeData.education && resumeData.education.length > 0 && (
-        <div className="mb-8">
+        <div data-section="education" className="mb-8" style={{ lineHeight: 1.8 }}>
           <h2 className="text-[16px] font-bold mb-4 uppercase tracking-wider" style={{ color: accent }}>Education</h2>
           {resumeData.education.map((edu, index) => (
             <div key={edu.id} className="mb-5 last:mb-0">

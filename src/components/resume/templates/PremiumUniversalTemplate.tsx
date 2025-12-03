@@ -389,7 +389,7 @@ export const PremiumUniversalTemplate = ({
 
       {/* Education */}
       {resumeData.education && resumeData.education.length > 0 && (
-        <div style={{ marginBottom: styles.spacing.sectionGap }}>
+        <div data-section="education" style={{ lineHeight: 1.8, marginBottom: styles.spacing.sectionGap }}>
           <h2 className="uppercase tracking-wide" style={{ 
             fontSize: styles.sectionHeading.size,
             fontWeight: styles.sectionHeading.weight,
