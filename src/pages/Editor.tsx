@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Gauge, Loader2, RotateCcw, ArrowLeft, Edit3, FileEdit, Save, Settings2 } from "lucide-react";
+import { Download, Gauge, Loader2, RotateCcw, ArrowLeft, Edit3, FileEdit, Save, Settings2, Sparkles } from "lucide-react";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { resumeService } from "@/lib/firestore/resumeService";
 import { FavoriteButton } from "@/components/FavoriteButton";
@@ -32,6 +32,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ATSScoreButton } from "@/components/ATSScoreButton";
+import { AIResumeDialog } from "@/components/AIResumeDialog";
 
 export interface EditorProps {
   initialData?: ResumeData;
@@ -65,7 +66,7 @@ const Editor = (props: EditorProps = {}) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const routeResumeId = searchParams.get("resumeId");
-  const { user } = useFirebaseAuth();
+  const { user, userProfile } = useFirebaseAuth();
   const { resumeData: contextResumeData, setResumeData: setContextResumeData, themeColor: contextThemeColor, setThemeColor: setContextThemeColor, setTemplateId } = useResumeData();
 
   // Use props if provided, otherwise fall back to context/route values
@@ -102,6 +103,7 @@ const Editor = (props: EditorProps = {}) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [currentResumeId, setCurrentResumeId] = useState<string | null>(resumeId);
+  const [aiDialogOpen, setAiDialogOpen] = useState(false);
 
   // Load resume from Firestore if resumeId exists
   useEffect(() => {
@@ -222,6 +224,13 @@ const Editor = (props: EditorProps = {}) => {
     setResetDialogOpen(false);
     
     // Scroll to top of form
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleAIResumeGenerated = (generatedData: ResumeData) => {
+    setResumeData(generatedData);
+    toast.success("AI-generated resume applied successfully!");
+    // Scroll to top to see the changes
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -357,14 +366,25 @@ const Editor = (props: EditorProps = {}) => {
           <div className="flex flex-col gap-3 md:hidden">
             <Breadcrumbs items={editorBreadcrumbItems} />
             <div className="flex items-center justify-between gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate(professionId ? `/dashboard/${professionId}/live-editor/${templateId}` : `/live-editor/${templateId}`)}
-              >
-                <Edit3 className="h-4 w-4 mr-2" />
-                Live
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate(professionId ? `/dashboard/${professionId}/live-editor/${templateId}` : `/live-editor/${templateId}`)}
+                >
+                  <Edit3 className="h-4 w-4 mr-2" />
+                  Live
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setAiDialogOpen(true)}
+                  className="gap-2 bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-300 hover:from-purple-500/20 hover:to-blue-500/20"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  AI
+                </Button>
+              </div>
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-muted/30 border">
                   <label htmlFor="themeColor" className="text-xs font-medium">
@@ -440,6 +460,16 @@ const Editor = (props: EditorProps = {}) => {
 
             {/* Right Section - Controls */}
             <div className="flex items-center justify-end gap-2">
+              <Button
+                onClick={() => setAiDialogOpen(true)}
+                size="sm"
+                variant="outline"
+                className="gap-2 bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-300 hover:from-purple-500/20 hover:to-blue-500/20"
+              >
+                <Sparkles className="h-4 w-4" />
+                Fill with AI
+              </Button>
+
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/30 border">
                 <label htmlFor="themeColor" className="text-sm font-medium whitespace-nowrap">
                   Theme:
@@ -762,6 +792,26 @@ const Editor = (props: EditorProps = {}) => {
           </div>
         </div>
       </div>
+
+      {/* AI Resume Generation Dialog */}
+      <AIResumeDialog
+        open={aiDialogOpen}
+        onOpenChange={setAiDialogOpen}
+        onResumeGenerated={handleAIResumeGenerated}
+        userProfile={userProfile || (user ? {
+          fullName: user.displayName || "",
+          email: user.email || "",
+          phone: "",
+          location: "",
+          linkedinUrl: "",
+          githubUrl: "",
+          portfolioUrl: "",
+          professionalTitle: "",
+          bio: "",
+        } : null)}
+        profession={categoryLabel}
+        templateId={templateId}
+      />
     </div>
   );
 };
