@@ -44,9 +44,13 @@ export const InlineEditableSectionItems: React.FC<InlineEditableSectionItemsProp
   const updateField = inlineEditContext?.updateField;
 
   // Parse content into items if items array is empty but content exists
+  // Also handle case where items might be objects instead of strings
   const effectiveItems = React.useMemo(() => {
     if (items && items.length > 0) {
-      return items;
+      // Ensure all items are strings
+      return items.map(item => 
+        typeof item === 'string' ? item : (item as any)?.text || String(item || '')
+      );
     }
     if (content && content.trim()) {
       // Split content by newlines to create items
@@ -88,7 +92,7 @@ export const InlineEditableSectionItems: React.FC<InlineEditableSectionItemsProp
               style={{ 
                 marginBottom: "6px", 
                 fontSize: "13px",
-                color: "#374151",
+                color: "#1a1a1a",
                 lineHeight: "1.6",
                 ...itemStyle 
               }}

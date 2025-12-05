@@ -383,7 +383,8 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
         {
           id: Date.now().toString(),
           title: "New Section",
-          content: ""
+          content: "",
+          items: [""] // Start with one empty item
         }
       ]
     });
@@ -402,6 +403,73 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
     setResumeData({
       ...resumeData,
       sections: resumeData.sections.filter(section => section.id !== id)
+    });
+  };
+
+  // Custom section item management (bullet points)
+  const addCustomSectionItem = (sectionId: string) => {
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.map(section => {
+        if (section.id !== sectionId) return section;
+        
+        // Get current items - migrate from content if needed
+        const currentItems = section.items && section.items.length > 0
+          ? section.items
+          : section.content
+            ? section.content.split('\n').filter(line => line.trim())
+            : [];
+        
+        return {
+          ...section,
+          items: [...currentItems, ""],
+          content: "" // Clear content since we're now using items
+        };
+      })
+    });
+  };
+
+  const updateCustomSectionItem = (sectionId: string, itemIndex: number, value: string) => {
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.map(section => {
+        if (section.id !== sectionId) return section;
+        
+        // Get current items - migrate from content if needed
+        const currentItems = section.items && section.items.length > 0
+          ? section.items
+          : section.content
+            ? section.content.split('\n').filter(line => line.trim())
+            : [""];
+        
+        return {
+          ...section,
+          items: currentItems.map((item, idx) => idx === itemIndex ? value : item),
+          content: "" // Clear content since we're now using items
+        };
+      })
+    });
+  };
+
+  const removeCustomSectionItem = (sectionId: string, itemIndex: number) => {
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.map(section => {
+        if (section.id !== sectionId) return section;
+        
+        // Get current items - migrate from content if needed
+        const currentItems = section.items && section.items.length > 0
+          ? section.items
+          : section.content
+            ? section.content.split('\n').filter(line => line.trim())
+            : [""];
+        
+        return {
+          ...section,
+          items: currentItems.filter((_, idx) => idx !== itemIndex),
+          content: "" // Clear content since we're now using items
+        };
+      })
     });
   };
 
@@ -1334,13 +1402,55 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Content</Label>
-                    <Textarea
-                      value={section.content}
-                      onChange={(e) => updateCustomSection(section.id, "content", e.target.value)}
-                      placeholder="Describe the details for this section..."
-                      rows={4}
-                    />
+                    <div className="flex items-center justify-between">
+                      <Label>Items</Label>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="xs"
+                        className="h-6 gap-1 text-xs text-primary hover:text-primary"
+                        onClick={() => addCustomSectionItem(section.id)}
+                      >
+                        <Plus className="h-3 w-3" />
+                        Add Item
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      {/* Use items if available, otherwise parse content by newlines for backward compatibility */}
+                      {(section.items && section.items.length > 0 
+                        ? section.items 
+                        : section.content 
+                          ? section.content.split('\n').filter(line => line.trim()) 
+                          : [""]
+                      ).map((item, itemIndex) => (
+                        <div key={itemIndex} className="flex items-start gap-2">
+                          <span className="mt-2.5 text-muted-foreground">•</span>
+                          <Input
+                            value={item}
+                            onChange={(e) => updateCustomSectionItem(section.id, itemIndex, e.target.value)}
+                            placeholder="Enter item..."
+                            className="flex-1"
+                          />
+                          {/* Show delete button if there's more than 1 item */}
+                          {((section.items && section.items.length > 0 
+                            ? section.items 
+                            : section.content 
+                              ? section.content.split('\n').filter(line => line.trim()) 
+                              : [""]
+                          ).length > 1) && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-9 w-9 p-0 text-muted-foreground hover:text-destructive"
+                              onClick={() => removeCustomSectionItem(section.id, itemIndex)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}

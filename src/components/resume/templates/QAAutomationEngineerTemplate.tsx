@@ -3,8 +3,10 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "../InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
-import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
+import { ExperienceSection, CustomSectionsWrapper } from "@/components/resume/shared";
+import { InlineEducationSection } from "@/components/resume/sections/InlineEducationSection";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -258,13 +260,15 @@ export const QAAutomationEngineerTemplate = ({ resumeData, themeColor = "#00A95C
                       </div>
                       <div className="text-[12.5px] text-gray-700 leading-[1.8] whitespace-pre-wrap border-l-2 pl-4"
                         style={{ borderColor: accentBorder }}>
-                        <InlineEditableText
-                          path={`experience[${index}].description`}
-                          value={exp.description}
-                          placeholder="• Describe your achievements and responsibilities"
-                          multiline
-                          as="div"
-                        />
+                        <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={accent}
+                      bulletStyle={{ fontSize: '13px', color: '#4b5563', lineHeight: '1.7' }}
+                    />
                       </div>
                     </div>
                   )}
@@ -385,6 +389,27 @@ export const QAAutomationEngineerTemplate = ({ resumeData, themeColor = "#00A95C
         )}
 
         {/* Custom Sections */}
+        <CustomSectionsWrapper
+          sections={resumeData.sections || []}
+          editable={editable}
+          accentColor={accent}
+          titleStyle={{ 
+            fontSize: '13px', 
+            fontWeight: 600, 
+            color: accent,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            paddingBottom: '8px',
+            marginBottom: '12px',
+            borderBottom: `1px solid ${accent}`
+          }}
+          itemStyle={{ 
+            fontSize: '12.5px', 
+            color: '#374151', 
+            lineHeight: '1.7' 
+          }}
+          sectionStyle={{ marginBottom: '28px' }}
+        />
         {editable ? (
           <InlineEditableList
             

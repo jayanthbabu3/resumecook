@@ -1,0 +1,5420 @@
+[
+  {
+    "filename": "AIEngineerTemplate.tsx",
+    "componentName": "AIEngineerTemplate",
+    "id": "ai-engineer",
+    "importPath": "./resume/templates/AIEngineerTemplate"
+  },
+  {
+    "filename": "APIDocTemplate.tsx",
+    "componentName": "APIDocTemplate",
+    "id": "api-doc",
+    "importPath": "./resume/templates/APIDocTemplate"
+  },
+  {
+    "filename": "AWSCloudEngineerTemplate.tsx",
+    "componentName": "AWSCloudEngineerTemplate",
+    "id": "aws-cloud-engineer",
+    "importPath": "./resume/templates/AWSCloudEngineerTemplate"
+  },
+  {
+    "filename": "AWSSolutionsArchitectTemplate.tsx",
+    "componentName": "AWSSolutionsArchitectTemplate",
+    "id": "aws-solutions-architect",
+    "importPath": "./resume/templates/AWSSolutionsArchitectTemplate"
+  },
+  {
+    "filename": "AbstractVersionDesignerTemplate.tsx",
+    "componentName": "AbstractVersionDesignerTemplate",
+    "id": "abstract-version-designer",
+    "importPath": "./resume/templates/AbstractVersionDesignerTemplate"
+  },
+  {
+    "filename": "AcademicAchieverTemplate.tsx",
+    "componentName": "AcademicAchieverTemplate",
+    "id": "academic-achiever",
+    "importPath": "./resume/templates/AcademicAchieverTemplate"
+  },
+  {
+    "filename": "AcademicAdvisorTemplate.tsx",
+    "componentName": "AcademicAdvisorTemplate",
+    "id": "academic-advisor",
+    "importPath": "./resume/templates/AcademicAdvisorTemplate"
+  },
+  {
+    "filename": "AcademicEducatorTemplate.tsx",
+    "componentName": "AcademicEducatorTemplate",
+    "id": "academic-educator",
+    "importPath": "./resume/templates/AcademicEducatorTemplate"
+  },
+  {
+    "filename": "AccessibilityDesignerTemplate.tsx",
+    "componentName": "AccessibilityDesignerTemplate",
+    "id": "accessibility-designer",
+    "importPath": "./resume/templates/AccessibilityDesignerTemplate"
+  },
+  {
+    "filename": "AccessibilityUxTemplate.tsx",
+    "componentName": "AccessibilityUxTemplate",
+    "id": "accessibility-ux",
+    "importPath": "./resume/templates/AccessibilityUxTemplate"
+  },
+  {
+    "filename": "AccountManagerEnterpriseTemplate.tsx",
+    "componentName": "AccountManagerEnterpriseTemplate",
+    "id": "account-manager-enterprise",
+    "importPath": "./resume/templates/AccountManagerEnterpriseTemplate"
+  },
+  {
+    "filename": "AccountingExecutiveTemplate.tsx",
+    "componentName": "AccountingExecutiveTemplate",
+    "id": "accounting-executive",
+    "importPath": "./resume/templates/AccountingExecutiveTemplate"
+  },
+  {
+    "filename": "AccountingProTemplate.tsx",
+    "componentName": "AccountingProTemplate",
+    "id": "accounting-pro",
+    "importPath": "./resume/templates/AccountingProTemplate"
+  },
+  {
+    "filename": "AchieverFresherTemplate.tsx",
+    "componentName": "AchieverFresherTemplate",
+    "id": "achiever-fresher",
+    "importPath": "./resume/templates/AchieverFresherTemplate"
+  },
+  {
+    "filename": "AdobePortfolioDesignerTemplate.tsx",
+    "componentName": "AdobePortfolioDesignerTemplate",
+    "id": "adobe-portfolio-designer",
+    "importPath": "./resume/templates/AdobePortfolioDesignerTemplate"
+  },
+  {
+    "filename": "AdobeXDDesignerTemplate.tsx",
+    "componentName": "AdobeXDDesignerTemplate",
+    "id": "adobexd-designer",
+    "importPath": "./resume/templates/AdobeXDDesignerTemplate"
+  },
+  {
+    "filename": "AerospaceEngineerTemplate.tsx",
+    "componentName": "AerospaceEngineerTemplate",
+    "id": "aerospace-engineer",
+    "importPath": "./resume/templates/AerospaceEngineerTemplate"
+  },
+  {
+    "filename": "AestheticCreativeTemplate.tsx",
+    "componentName": "AestheticCreativeTemplate",
+    "id": "aesthetic-creative",
+    "importPath": "./resume/templates/AestheticCreativeTemplate"
+  },
+  {
+    "filename": "AffiliateMarketingManagerTemplate.tsx",
+    "componentName": "AffiliateMarketingManagerTemplate",
+    "id": "affiliate-marketing-manager",
+    "importPath": "./resume/templates/AffiliateMarketingManagerTemplate"
+  },
+  {
+    "filename": "AgileProjectLeadTemplate.tsx",
+    "componentName": "AgileProjectLeadTemplate",
+    "id": "agile-project-lead",
+    "importPath": "./resume/templates/AgileProjectLeadTemplate"
+  },
+  {
+    "filename": "AgileScrumTemplate.tsx",
+    "componentName": "AgileScrumTemplate",
+    "id": "agile-scrum",
+    "importPath": "./resume/templates/AgileScrumTemplate"
+  },
+  {
+    "filename": "AgileflowDeveloperTemplate.tsx",
+    "componentName": "AgileflowDeveloperTemplate",
+    "id": "agileflow-developer",
+    "importPath": "./resume/templates/AgileflowDeveloperTemplate"
+  },
+  {
+    "filename": "AlgoEngineerTemplate.tsx",
+    "componentName": "AlgoEngineerTemplate",
+    "id": "algo-engineer",
+    "importPath": "./resume/templates/AlgoEngineerTemplate"
+  },
+  {
+    "filename": "AmberExecutiveTemplate.tsx",
+    "componentName": "AmberExecutiveTemplate",
+    "id": "amber-executive",
+    "importPath": "./resume/templates/AmberExecutiveTemplate"
+  },
+  {
+    "filename": "AnalystTemplate.tsx",
+    "componentName": "AnalystTemplate",
+    "id": "analyst",
+    "importPath": "./resume/templates/AnalystTemplate"
+  },
+  {
+    "filename": "AngularModernUniversalTemplate.tsx",
+    "componentName": "AngularModernUniversalTemplate",
+    "id": "angular-modern-universal",
+    "importPath": "./resume/templates/AngularModernUniversalTemplate"
+  },
+  {
+    "filename": "AngularSpecialistTemplate.tsx",
+    "componentName": "AngularSpecialistTemplate",
+    "id": "angular-specialist",
+    "importPath": "./resume/templates/AngularSpecialistTemplate"
+  },
+  {
+    "filename": "AnimationArtistTemplate.tsx",
+    "componentName": "AnimationArtistTemplate",
+    "id": "animation-artist",
+    "importPath": "./resume/templates/AnimationArtistTemplate"
+  },
+  {
+    "filename": "AnsibleAutomationTemplate.tsx",
+    "componentName": "AnsibleAutomationTemplate",
+    "id": "ansible-automation",
+    "importPath": "./resume/templates/AnsibleAutomationTemplate"
+  },
+  {
+    "filename": "ApigatewayArchitectTemplate.tsx",
+    "componentName": "ApigatewayArchitectTemplate",
+    "id": "apigateway-architect",
+    "importPath": "./resume/templates/ApigatewayArchitectTemplate"
+  },
+  {
+    "filename": "ArchitectRegisteredTemplate.tsx",
+    "componentName": "ArchitectRegisteredTemplate",
+    "id": "architect-registered",
+    "importPath": "./resume/templates/ArchitectRegisteredTemplate"
+  },
+  {
+    "filename": "ArtDirectorModernTemplate.tsx",
+    "componentName": "ArtDirectorModernTemplate",
+    "id": "art-director-modern",
+    "importPath": "./resume/templates/ArtDirectorModernTemplate"
+  },
+  {
+    "filename": "ArtDirectorProTemplate.tsx",
+    "componentName": "ArtDirectorProTemplate",
+    "id": "art-director-pro",
+    "importPath": "./resume/templates/ArtDirectorProTemplate"
+  },
+  {
+    "filename": "ArtStationArtistTemplate.tsx",
+    "componentName": "ArtStationArtistTemplate",
+    "id": "art-station-artist",
+    "importPath": "./resume/templates/ArtStationArtistTemplate"
+  },
+  {
+    "filename": "ArtisanDesignerTemplate.tsx",
+    "componentName": "ArtisanDesignerTemplate",
+    "id": "artisan-designer",
+    "importPath": "./resume/templates/ArtisanDesignerTemplate"
+  },
+  {
+    "filename": "ArtisticBoldTemplate.tsx",
+    "componentName": "ArtisticBoldTemplate",
+    "id": "artistic-bold",
+    "importPath": "./resume/templates/ArtisticBoldTemplate"
+  },
+  {
+    "filename": "ArtisticGridTemplate.tsx",
+    "componentName": "ArtisticGridTemplate",
+    "id": "artistic-grid",
+    "importPath": "./resume/templates/ArtisticGridTemplate"
+  },
+  {
+    "filename": "ArtisticHorizonTemplate.tsx",
+    "componentName": "ArtisticHorizonTemplate",
+    "id": "artistic-horizon",
+    "importPath": "./resume/templates/ArtisticHorizonTemplate"
+  },
+  {
+    "filename": "ArtisticMomentumTemplate.tsx",
+    "componentName": "ArtisticMomentumTemplate",
+    "id": "artistic-momentum",
+    "importPath": "./resume/templates/ArtisticMomentumTemplate"
+  },
+  {
+    "filename": "ArtisticVisionTemplate.tsx",
+    "componentName": "ArtisticVisionTemplate",
+    "id": "artistic-vision",
+    "importPath": "./resume/templates/ArtisticVisionTemplate"
+  },
+  {
+    "filename": "ArtstationProTemplate.tsx",
+    "componentName": "ArtstationProTemplate",
+    "id": "artstation-pro",
+    "importPath": "./resume/templates/ArtstationProTemplate"
+  },
+  {
+    "filename": "AscendGraduateTemplate.tsx",
+    "componentName": "AscendGraduateTemplate",
+    "id": "ascend-graduate",
+    "importPath": "./resume/templates/AscendGraduateTemplate"
+  },
+  {
+    "filename": "AspireGraduateTemplate.tsx",
+    "componentName": "AspireGraduateTemplate",
+    "id": "aspire-graduate",
+    "importPath": "./resume/templates/AspireGraduateTemplate"
+  },
+  {
+    "filename": "AsymmetricCreativeTemplate.tsx",
+    "componentName": "AsymmetricCreativeTemplate",
+    "id": "asymmetric-creative",
+    "importPath": "./resume/templates/AsymmetricCreativeTemplate"
+  },
+  {
+    "filename": "AsymmetricLayoutUniversalTemplate.tsx",
+    "componentName": "AsymmetricLayoutUniversalTemplate",
+    "id": "asymmetric-layout-universal",
+    "importPath": "./resume/templates/AsymmetricLayoutUniversalTemplate"
+  },
+  {
+    "filename": "AtlasExecutiveTemplate.tsx",
+    "componentName": "AtlasExecutiveTemplate",
+    "id": "atlas-executive",
+    "importPath": "./resume/templates/AtlasExecutiveTemplate"
+  },
+  {
+    "filename": "AttorneyProfessionalTemplate.tsx",
+    "componentName": "AttorneyProfessionalTemplate",
+    "id": "attorney-professional",
+    "importPath": "./resume/templates/AttorneyProfessionalTemplate"
+  },
+  {
+    "filename": "AuditExpertTemplate.tsx",
+    "componentName": "AuditExpertTemplate",
+    "id": "audit-expert",
+    "importPath": "./resume/templates/AuditExpertTemplate"
+  },
+  {
+    "filename": "AuditorTemplate.tsx",
+    "componentName": "AuditorTemplate",
+    "id": "auditor",
+    "importPath": "./resume/templates/AuditorTemplate"
+  },
+  {
+    "filename": "AuroraMinimalTemplate.tsx",
+    "componentName": "AuroraMinimalTemplate",
+    "id": "aurora-minimal",
+    "importPath": "./resume/templates/AuroraMinimalTemplate"
+  },
+  {
+    "filename": "AutomationEngineerTemplate.tsx",
+    "componentName": "AutomationEngineerTemplate",
+    "id": "automation-engineer",
+    "importPath": "./resume/templates/AutomationEngineerTemplate"
+  },
+  {
+    "filename": "AwwwardsDesignerTemplate.tsx",
+    "componentName": "AwwwardsDesignerTemplate",
+    "id": "awwwards-designer",
+    "importPath": "./resume/templates/AwwwardsDesignerTemplate"
+  },
+  {
+    "filename": "AzureDevOpsProTemplate.tsx",
+    "componentName": "AzureDevOpsProTemplate",
+    "id": "azuredevops-pro",
+    "importPath": "./resume/templates/AzureDevOpsProTemplate"
+  },
+  {
+    "filename": "AzureDevOpsSpecialistTemplate.tsx",
+    "componentName": "AzureDevOpsSpecialistTemplate",
+    "id": "azuredevops-specialist",
+    "importPath": "./resume/templates/AzureDevOpsSpecialistTemplate"
+  },
+  {
+    "filename": "AzureProfessionalTemplate.tsx",
+    "componentName": "AzureProfessionalTemplate",
+    "id": "azure-professional",
+    "importPath": "./resume/templates/AzureProfessionalTemplate"
+  },
+  {
+    "filename": "BackendAPISpecialistTemplate.tsx",
+    "componentName": "BackendAPISpecialistTemplate",
+    "id": "backendapi-specialist",
+    "importPath": "./resume/templates/BackendAPISpecialistTemplate"
+  },
+  {
+    "filename": "BackendTemplate.tsx",
+    "componentName": "BackendTemplate",
+    "id": "backend",
+    "importPath": "./resume/templates/BackendTemplate"
+  },
+  {
+    "filename": "BehanceDesignerTemplate.tsx",
+    "componentName": "BehanceDesignerTemplate",
+    "id": "behance-designer",
+    "importPath": "./resume/templates/BehanceDesignerTemplate"
+  },
+  {
+    "filename": "BehancePortfolioTemplate.tsx",
+    "componentName": "BehancePortfolioTemplate",
+    "id": "behance-portfolio",
+    "importPath": "./resume/templates/BehancePortfolioTemplate"
+  },
+  {
+    "filename": "BiomedicalEngineerTemplate.tsx",
+    "componentName": "BiomedicalEngineerTemplate",
+    "id": "biomedical-engineer",
+    "importPath": "./resume/templates/BiomedicalEngineerTemplate"
+  },
+  {
+    "filename": "BitbucketDeveloperTemplate.tsx",
+    "componentName": "BitbucketDeveloperTemplate",
+    "id": "bitbucket-developer",
+    "importPath": "./resume/templates/BitbucketDeveloperTemplate"
+  },
+  {
+    "filename": "BlockchainDevTemplate.tsx",
+    "componentName": "BlockchainDevTemplate",
+    "id": "blockchain-dev",
+    "importPath": "./resume/templates/BlockchainDevTemplate"
+  },
+  {
+    "filename": "BlockchainEngineerTemplate.tsx",
+    "componentName": "BlockchainEngineerTemplate",
+    "id": "blockchain-engineer",
+    "importPath": "./resume/templates/BlockchainEngineerTemplate"
+  },
+  {
+    "filename": "BlueprintDesignTemplate.tsx",
+    "componentName": "BlueprintDesignTemplate",
+    "id": "blueprint-design",
+    "importPath": "./resume/templates/BlueprintDesignTemplate"
+  },
+  {
+    "filename": "BoardroomReadyTemplate.tsx",
+    "componentName": "BoardroomReadyTemplate",
+    "id": "boardroom-ready",
+    "importPath": "./resume/templates/BoardroomReadyTemplate"
+  },
+  {
+    "filename": "BoldHeadlineTemplate.tsx",
+    "componentName": "BoldHeadlineTemplate",
+    "id": "bold-headline",
+    "importPath": "./resume/templates/BoldHeadlineTemplate"
+  },
+  {
+    "filename": "BoldSectionHeadersUniversalTemplate.tsx",
+    "componentName": "BoldSectionHeadersUniversalTemplate",
+    "id": "bold-section-headers-universal",
+    "importPath": "./resume/templates/BoldSectionHeadersUniversalTemplate"
+  },
+  {
+    "filename": "BoldTypographyTemplate.tsx",
+    "componentName": "BoldTypographyTemplate",
+    "id": "bold-typography",
+    "importPath": "./resume/templates/BoldTypographyTemplate"
+  },
+  {
+    "filename": "BoldTypographyUniversalTemplate.tsx",
+    "componentName": "BoldTypographyUniversalTemplate",
+    "id": "bold-typography-universal",
+    "importPath": "./resume/templates/BoldTypographyUniversalTemplate"
+  },
+  {
+    "filename": "BootcampPortfolioTemplate.tsx",
+    "componentName": "BootcampPortfolioTemplate",
+    "id": "bootcamp-portfolio",
+    "importPath": "./resume/templates/BootcampPortfolioTemplate"
+  },
+  {
+    "filename": "BootcampSuccessStoryTemplate.tsx",
+    "componentName": "BootcampSuccessStoryTemplate",
+    "id": "bootcamp-success-story",
+    "importPath": "./resume/templates/BootcampSuccessStoryTemplate"
+  },
+  {
+    "filename": "BorderFrameUniversalTemplate.tsx",
+    "componentName": "BorderFrameUniversalTemplate",
+    "id": "border-frame-universal",
+    "importPath": "./resume/templates/BorderFrameUniversalTemplate"
+  },
+  {
+    "filename": "BorderedEleganceTemplate.tsx",
+    "componentName": "BorderedEleganceTemplate",
+    "id": "bordered-elegance",
+    "importPath": "./resume/templates/BorderedEleganceTemplate"
+  },
+  {
+    "filename": "BrandDesignerTemplateTemplate.tsx",
+    "componentName": "BrandDesignerTemplateTemplate",
+    "id": "brand-designer-template",
+    "importPath": "./resume/templates/BrandDesignerTemplateTemplate"
+  },
+  {
+    "filename": "BrandIdentityTemplate.tsx",
+    "componentName": "BrandIdentityTemplate",
+    "id": "brand-identity",
+    "importPath": "./resume/templates/BrandIdentityTemplate"
+  },
+  {
+    "filename": "BrandManagerStrategicTemplate.tsx",
+    "componentName": "BrandManagerStrategicTemplate",
+    "id": "brand-manager-strategic",
+    "importPath": "./resume/templates/BrandManagerStrategicTemplate"
+  },
+  {
+    "filename": "BrandManagerTemplate.tsx",
+    "componentName": "BrandManagerTemplate",
+    "id": "brand-manager",
+    "importPath": "./resume/templates/BrandManagerTemplate"
+  },
+  {
+    "filename": "BrandStrategistTemplate.tsx",
+    "componentName": "BrandStrategistTemplate",
+    "id": "brand-strategist",
+    "importPath": "./resume/templates/BrandStrategistTemplate"
+  },
+  {
+    "filename": "BrandedProfessionalTemplate.tsx",
+    "componentName": "BrandedProfessionalTemplate",
+    "id": "branded-professional",
+    "importPath": "./resume/templates/BrandedProfessionalTemplate"
+  },
+  {
+    "filename": "BrightGraduateTemplate.tsx",
+    "componentName": "BrightGraduateTemplate",
+    "id": "bright-graduate",
+    "importPath": "./resume/templates/BrightGraduateTemplate"
+  },
+  {
+    "filename": "BronzeCorporateTemplate.tsx",
+    "componentName": "BronzeCorporateTemplate",
+    "id": "bronze-corporate",
+    "importPath": "./resume/templates/BronzeCorporateTemplate"
+  },
+  {
+    "filename": "BudgetAnalystTemplate.tsx",
+    "componentName": "BudgetAnalystTemplate",
+    "id": "budget-analyst",
+    "importPath": "./resume/templates/BudgetAnalystTemplate"
+  },
+  {
+    "filename": "BurgundyExecutiveTemplate.tsx",
+    "componentName": "BurgundyExecutiveTemplate",
+    "id": "burgundy-executive",
+    "importPath": "./resume/templates/BurgundyExecutiveTemplate"
+  },
+  {
+    "filename": "BusinessCleanLayoutTemplate.tsx",
+    "componentName": "BusinessCleanLayoutTemplate",
+    "id": "business-clean-layout",
+    "importPath": "./resume/templates/BusinessCleanLayoutTemplate"
+  },
+  {
+    "filename": "BusinessClearTemplateTemplate.tsx",
+    "componentName": "BusinessClearTemplateTemplate",
+    "id": "business-clear-template",
+    "importPath": "./resume/templates/BusinessClearTemplateTemplate"
+  },
+  {
+    "filename": "BusinessDevelopmentManagerTemplate.tsx",
+    "componentName": "BusinessDevelopmentManagerTemplate",
+    "id": "business-development-manager",
+    "importPath": "./resume/templates/BusinessDevelopmentManagerTemplate"
+  },
+  {
+    "filename": "BusinessEliteTemplate.tsx",
+    "componentName": "BusinessEliteTemplate",
+    "id": "business-elite",
+    "importPath": "./resume/templates/BusinessEliteTemplate"
+  },
+  {
+    "filename": "BusinessGraduateTemplate.tsx",
+    "componentName": "BusinessGraduateTemplate",
+    "id": "business-graduate",
+    "importPath": "./resume/templates/BusinessGraduateTemplate"
+  },
+  {
+    "filename": "BusinessModernGridTemplate.tsx",
+    "componentName": "BusinessModernGridTemplate",
+    "id": "business-modern-grid",
+    "importPath": "./resume/templates/BusinessModernGridTemplate"
+  },
+  {
+    "filename": "BusinessModernTemplate.tsx",
+    "componentName": "BusinessModernTemplate",
+    "id": "business-modern",
+    "importPath": "./resume/templates/BusinessModernTemplate"
+  },
+  {
+    "filename": "BusinessSidebarProTemplate.tsx",
+    "componentName": "BusinessSidebarProTemplate",
+    "id": "business-sidebar-pro",
+    "importPath": "./resume/templates/BusinessSidebarProTemplate"
+  },
+  {
+    "filename": "BusinessSimpleModernTemplate.tsx",
+    "componentName": "BusinessSimpleModernTemplate",
+    "id": "business-simple-modern",
+    "importPath": "./resume/templates/BusinessSimpleModernTemplate"
+  },
+  {
+    "filename": "BytecodeSpecialistTemplate.tsx",
+    "componentName": "BytecodeSpecialistTemplate",
+    "id": "bytecode-specialist",
+    "importPath": "./resume/templates/BytecodeSpecialistTemplate"
+  },
+  {
+    "filename": "CEOProfileTemplate.tsx",
+    "componentName": "CEOProfileTemplate",
+    "id": "ceo-profile",
+    "importPath": "./resume/templates/CEOProfileTemplate"
+  },
+  {
+    "filename": "CICDPipelineEngineerTemplate.tsx",
+    "componentName": "CICDPipelineEngineerTemplate",
+    "id": "cicd-pipeline-engineer",
+    "importPath": "./resume/templates/CICDPipelineEngineerTemplate"
+  },
+  {
+    "filename": "CPAProfessionalTemplate.tsx",
+    "componentName": "CPAProfessionalTemplate",
+    "id": "cpa-professional",
+    "importPath": "./resume/templates/CPAProfessionalTemplate"
+  },
+  {
+    "filename": "CSuiteModernTemplate.tsx",
+    "componentName": "CSuiteModernTemplate",
+    "id": "c-suite-modern",
+    "importPath": "./resume/templates/CSuiteModernTemplate"
+  },
+  {
+    "filename": "CampusInfluencerTemplate.tsx",
+    "componentName": "CampusInfluencerTemplate",
+    "id": "campus-influencer",
+    "importPath": "./resume/templates/CampusInfluencerTemplate"
+  },
+  {
+    "filename": "CampusLeaderTemplate.tsx",
+    "componentName": "CampusLeaderTemplate",
+    "id": "campus-leader",
+    "importPath": "./resume/templates/CampusLeaderTemplate"
+  },
+  {
+    "filename": "CanvasArtistTemplate.tsx",
+    "componentName": "CanvasArtistTemplate",
+    "id": "canvas-artist",
+    "importPath": "./resume/templates/CanvasArtistTemplate"
+  },
+  {
+    "filename": "CapstoneShowcaseTemplate.tsx",
+    "componentName": "CapstoneShowcaseTemplate",
+    "id": "capstone-showcase",
+    "importPath": "./resume/templates/CapstoneShowcaseTemplate"
+  },
+  {
+    "filename": "CarbonmadeDesignerTemplate.tsx",
+    "componentName": "CarbonmadeDesignerTemplate",
+    "id": "carbonmade-designer",
+    "importPath": "./resume/templates/CarbonmadeDesignerTemplate"
+  },
+  {
+    "filename": "CasestudyDesignerTemplate.tsx",
+    "componentName": "CasestudyDesignerTemplate",
+    "id": "casestudy-designer",
+    "importPath": "./resume/templates/CasestudyDesignerTemplate"
+  },
+  {
+    "filename": "CatalystFresherTemplate.tsx",
+    "componentName": "CatalystFresherTemplate",
+    "id": "catalyst-fresher",
+    "importPath": "./resume/templates/CatalystFresherTemplate"
+  },
+  {
+    "filename": "CertifiedPublicAccountantTemplate.tsx",
+    "componentName": "CertifiedPublicAccountantTemplate",
+    "id": "certified-public-accountant",
+    "importPath": "./resume/templates/CertifiedPublicAccountantTemplate"
+  },
+  {
+    "filename": "CharcoalProfessionalTemplate.tsx",
+    "componentName": "CharcoalProfessionalTemplate",
+    "id": "charcoal-professional",
+    "importPath": "./resume/templates/CharcoalProfessionalTemplate"
+  },
+  {
+    "filename": "ChemicalEngineerProTemplate.tsx",
+    "componentName": "ChemicalEngineerProTemplate",
+    "id": "chemical-engineer-pro",
+    "importPath": "./resume/templates/ChemicalEngineerProTemplate"
+  },
+  {
+    "filename": "ChevronAccentUniversalTemplate.tsx",
+    "componentName": "ChevronAccentUniversalTemplate",
+    "id": "chevron-accent-universal",
+    "importPath": "./resume/templates/ChevronAccentUniversalTemplate"
+  },
+  {
+    "filename": "ChromaticCreativeTemplate.tsx",
+    "componentName": "ChromaticCreativeTemplate",
+    "id": "chromatic-creative",
+    "importPath": "./resume/templates/ChromaticCreativeTemplate"
+  },
+  {
+    "filename": "CircularElementsUniversalTemplate.tsx",
+    "componentName": "CircularElementsUniversalTemplate",
+    "id": "circular-elements-universal",
+    "importPath": "./resume/templates/CircularElementsUniversalTemplate"
+  },
+  {
+    "filename": "CivilEngineerPETemplate.tsx",
+    "componentName": "CivilEngineerPETemplate",
+    "id": "civil-engineerpe",
+    "importPath": "./resume/templates/CivilEngineerPETemplate"
+  },
+  {
+    "filename": "ClassicSerifUniversalTemplate.tsx",
+    "componentName": "ClassicSerifUniversalTemplate",
+    "id": "classic-serif-universal",
+    "importPath": "./resume/templates/ClassicSerifUniversalTemplate"
+  },
+  {
+    "filename": "CleanBasicExecutiveTemplate.tsx",
+    "componentName": "CleanBasicExecutiveTemplate",
+    "id": "clean-basic-executive",
+    "importPath": "./resume/templates/CleanBasicExecutiveTemplate"
+  },
+  {
+    "filename": "CleanCorporateSimpleTemplate.tsx",
+    "componentName": "CleanCorporateSimpleTemplate",
+    "id": "clean-corporate-simple",
+    "importPath": "./resume/templates/CleanCorporateSimpleTemplate"
+  },
+  {
+    "filename": "CleanCorporateTemplate.tsx",
+    "componentName": "CleanCorporateTemplate",
+    "id": "clean-corporate",
+    "importPath": "./resume/templates/CleanCorporateTemplate"
+  },
+  {
+    "filename": "CleanModernUniversalTemplate.tsx",
+    "componentName": "CleanModernUniversalTemplate",
+    "id": "clean-modern-universal",
+    "importPath": "./resume/templates/CleanModernUniversalTemplate"
+  },
+  {
+    "filename": "CleanProfessionalSimpleTemplate.tsx",
+    "componentName": "CleanProfessionalSimpleTemplate",
+    "id": "clean-professional-simple",
+    "importPath": "./resume/templates/CleanProfessionalSimpleTemplate"
+  },
+  {
+    "filename": "CleanReadableProTemplate.tsx",
+    "componentName": "CleanReadableProTemplate",
+    "id": "clean-readable-pro",
+    "importPath": "./resume/templates/CleanReadableProTemplate"
+  },
+  {
+    "filename": "CleanTwoColumnUniversalTemplate.tsx",
+    "componentName": "CleanTwoColumnUniversalTemplate",
+    "id": "clean-two-column-universal",
+    "importPath": "./resume/templates/CleanTwoColumnUniversalTemplate"
+  },
+  {
+    "filename": "ClinicalExcellenceTemplate.tsx",
+    "componentName": "ClinicalExcellenceTemplate",
+    "id": "clinical-excellence",
+    "importPath": "./resume/templates/ClinicalExcellenceTemplate"
+  },
+  {
+    "filename": "ClinicalMinimalTemplate.tsx",
+    "componentName": "ClinicalMinimalTemplate",
+    "id": "clinical-minimal",
+    "importPath": "./resume/templates/ClinicalMinimalTemplate"
+  },
+  {
+    "filename": "CloudArchitectTemplate.tsx",
+    "componentName": "CloudArchitectTemplate",
+    "id": "cloud-architect",
+    "importPath": "./resume/templates/CloudArchitectTemplate"
+  },
+  {
+    "filename": "CloudNativeTemplate.tsx",
+    "componentName": "CloudNativeTemplate",
+    "id": "cloud-native",
+    "importPath": "./resume/templates/CloudNativeTemplate"
+  },
+  {
+    "filename": "CloudSolutionsArchitectTemplate.tsx",
+    "componentName": "CloudSolutionsArchitectTemplate",
+    "id": "cloud-solutions-architect",
+    "importPath": "./resume/templates/CloudSolutionsArchitectTemplate"
+  },
+  {
+    "filename": "CloudnativeArchitectTemplate.tsx",
+    "componentName": "CloudnativeArchitectTemplate",
+    "id": "cloudnative-architect",
+    "importPath": "./resume/templates/CloudnativeArchitectTemplate"
+  },
+  {
+    "filename": "ClubhouseModeratorTemplate.tsx",
+    "componentName": "ClubhouseModeratorTemplate",
+    "id": "clubhouse-moderator",
+    "importPath": "./resume/templates/ClubhouseModeratorTemplate"
+  },
+  {
+    "filename": "CobaltProfessionalTemplate.tsx",
+    "componentName": "CobaltProfessionalTemplate",
+    "id": "cobalt-professional",
+    "importPath": "./resume/templates/CobaltProfessionalTemplate"
+  },
+  {
+    "filename": "CodeCraftsmanTemplate.tsx",
+    "componentName": "CodeCraftsmanTemplate",
+    "id": "code-craftsman",
+    "importPath": "./resume/templates/CodeCraftsmanTemplate"
+  },
+  {
+    "filename": "CodeMinimalTemplate.tsx",
+    "componentName": "CodeMinimalTemplate",
+    "id": "code-minimal",
+    "importPath": "./resume/templates/CodeMinimalTemplate"
+  },
+  {
+    "filename": "CodePinnacleTemplate.tsx",
+    "componentName": "CodePinnacleTemplate",
+    "id": "code-pinnacle",
+    "importPath": "./resume/templates/CodePinnacleTemplate"
+  },
+  {
+    "filename": "CodeSnippetTemplate.tsx",
+    "componentName": "CodeSnippetTemplate",
+    "id": "code-snippet",
+    "importPath": "./resume/templates/CodeSnippetTemplate"
+  },
+  {
+    "filename": "CodeSphereTemplate.tsx",
+    "componentName": "CodeSphereTemplate",
+    "id": "code-sphere",
+    "importPath": "./resume/templates/CodeSphereTemplate"
+  },
+  {
+    "filename": "CodeVisionTemplate.tsx",
+    "componentName": "CodeVisionTemplate",
+    "id": "code-vision",
+    "importPath": "./resume/templates/CodeVisionTemplate"
+  },
+  {
+    "filename": "CodeforgeDeveloperTemplate.tsx",
+    "componentName": "CodeforgeDeveloperTemplate",
+    "id": "codeforge-developer",
+    "importPath": "./resume/templates/CodeforgeDeveloperTemplate"
+  },
+  {
+    "filename": "CodepenDeveloperTemplate.tsx",
+    "componentName": "CodepenDeveloperTemplate",
+    "id": "codepen-developer",
+    "importPath": "./resume/templates/CodepenDeveloperTemplate"
+  },
+  {
+    "filename": "CodingBootcampGradTemplate.tsx",
+    "componentName": "CodingBootcampGradTemplate",
+    "id": "coding-bootcamp-grad",
+    "importPath": "./resume/templates/CodingBootcampGradTemplate"
+  },
+  {
+    "filename": "CodingChallengeChampionTemplate.tsx",
+    "componentName": "CodingChallengeChampionTemplate",
+    "id": "coding-challenge-champion",
+    "importPath": "./resume/templates/CodingChallengeChampionTemplate"
+  },
+  {
+    "filename": "CollageArtTemplate.tsx",
+    "componentName": "CollageArtTemplate",
+    "id": "collage-art",
+    "importPath": "./resume/templates/CollageArtTemplate"
+  },
+  {
+    "filename": "ColorBlockUniversalTemplate.tsx",
+    "componentName": "ColorBlockUniversalTemplate",
+    "id": "color-block-universal",
+    "importPath": "./resume/templates/ColorBlockUniversalTemplate"
+  },
+  {
+    "filename": "ColorSplashTemplate.tsx",
+    "componentName": "ColorSplashTemplate",
+    "id": "color-splash",
+    "importPath": "./resume/templates/ColorSplashTemplate"
+  },
+  {
+    "filename": "ColorfulModernTemplate.tsx",
+    "componentName": "ColorfulModernTemplate",
+    "id": "colorful-modern",
+    "importPath": "./resume/templates/ColorfulModernTemplate"
+  },
+  {
+    "filename": "ColumnDivideTemplate.tsx",
+    "componentName": "ColumnDivideTemplate",
+    "id": "column-divide",
+    "importPath": "./resume/templates/ColumnDivideTemplate"
+  },
+  {
+    "filename": "CommunityBuilderTemplate.tsx",
+    "componentName": "CommunityBuilderTemplate",
+    "id": "community-builder",
+    "importPath": "./resume/templates/CommunityBuilderTemplate"
+  },
+  {
+    "filename": "CompactEliteUniversalTemplate.tsx",
+    "componentName": "CompactEliteUniversalTemplate",
+    "id": "compact-elite-universal",
+    "importPath": "./resume/templates/CompactEliteUniversalTemplate"
+  },
+  {
+    "filename": "CompactProfessionalTemplate.tsx",
+    "componentName": "CompactProfessionalTemplate",
+    "id": "compact-professional",
+    "importPath": "./resume/templates/CompactProfessionalTemplate"
+  },
+  {
+    "filename": "CompensationBenefitsManagerTemplate.tsx",
+    "componentName": "CompensationBenefitsManagerTemplate",
+    "id": "compensation-benefits-manager",
+    "importPath": "./resume/templates/CompensationBenefitsManagerTemplate"
+  },
+  {
+    "filename": "CompileTimeDevTemplate.tsx",
+    "componentName": "CompileTimeDevTemplate",
+    "id": "compile-time-dev",
+    "importPath": "./resume/templates/CompileTimeDevTemplate"
+  },
+  {
+    "filename": "ComplianceOfficerLegalTemplate.tsx",
+    "componentName": "ComplianceOfficerLegalTemplate",
+    "id": "compliance-officer-legal",
+    "importPath": "./resume/templates/ComplianceOfficerLegalTemplate"
+  },
+  {
+    "filename": "ComplianceOfficerTemplate.tsx",
+    "componentName": "ComplianceOfficerTemplate",
+    "id": "compliance-officer",
+    "importPath": "./resume/templates/ComplianceOfficerTemplate"
+  },
+  {
+    "filename": "ComponentuiDesignerTemplate.tsx",
+    "componentName": "ComponentuiDesignerTemplate",
+    "id": "componentui-designer",
+    "importPath": "./resume/templates/ComponentuiDesignerTemplate"
+  },
+  {
+    "filename": "CompositionArtistTemplate.tsx",
+    "componentName": "CompositionArtistTemplate",
+    "id": "composition-artist",
+    "importPath": "./resume/templates/CompositionArtistTemplate"
+  },
+  {
+    "filename": "ConceptCreativeTemplate.tsx",
+    "componentName": "ConceptCreativeTemplate",
+    "id": "concept-creative",
+    "importPath": "./resume/templates/ConceptCreativeTemplate"
+  },
+  {
+    "filename": "ConferencePresenterTemplate.tsx",
+    "componentName": "ConferencePresenterTemplate",
+    "id": "conference-presenter",
+    "importPath": "./resume/templates/ConferencePresenterTemplate"
+  },
+  {
+    "filename": "ConnectedGraduateTemplate.tsx",
+    "componentName": "ConnectedGraduateTemplate",
+    "id": "connected-graduate",
+    "importPath": "./resume/templates/ConnectedGraduateTemplate"
+  },
+  {
+    "filename": "ConnectedLeaderTemplate.tsx",
+    "componentName": "ConnectedLeaderTemplate",
+    "id": "connected-leader",
+    "importPath": "./resume/templates/ConnectedLeaderTemplate"
+  },
+  {
+    "filename": "ConnectedProfessionalTemplate.tsx",
+    "componentName": "ConnectedProfessionalTemplate",
+    "id": "connected-professional",
+    "importPath": "./resume/templates/ConnectedProfessionalTemplate"
+  },
+  {
+    "filename": "ConstructionProjectManagerTemplate.tsx",
+    "componentName": "ConstructionProjectManagerTemplate",
+    "id": "construction-project-manager",
+    "importPath": "./resume/templates/ConstructionProjectManagerTemplate"
+  },
+  {
+    "filename": "ConsultantTemplate.tsx",
+    "componentName": "ConsultantTemplate",
+    "id": "consultant",
+    "importPath": "./resume/templates/ConsultantTemplate"
+  },
+  {
+    "filename": "ContaineropsEngineerTemplate.tsx",
+    "componentName": "ContaineropsEngineerTemplate",
+    "id": "containerops-engineer",
+    "importPath": "./resume/templates/ContaineropsEngineerTemplate"
+  },
+  {
+    "filename": "ContemporarySplitTemplate.tsx",
+    "componentName": "ContemporarySplitTemplate",
+    "id": "contemporary-split",
+    "importPath": "./resume/templates/ContemporarySplitTemplate"
+  },
+  {
+    "filename": "ContentCreatorTemplate.tsx",
+    "componentName": "ContentCreatorTemplate",
+    "id": "content-creator",
+    "importPath": "./resume/templates/ContentCreatorTemplate"
+  },
+  {
+    "filename": "ContractSpecialistTemplate.tsx",
+    "componentName": "ContractSpecialistTemplate",
+    "id": "contract-specialist",
+    "importPath": "./resume/templates/ContractSpecialistTemplate"
+  },
+  {
+    "filename": "ConversationalUxTemplate.tsx",
+    "componentName": "ConversationalUxTemplate",
+    "id": "conversational-ux",
+    "importPath": "./resume/templates/ConversationalUxTemplate"
+  },
+  {
+    "filename": "CopywriterCreativeTemplate.tsx",
+    "componentName": "CopywriterCreativeTemplate",
+    "id": "copywriter-creative",
+    "importPath": "./resume/templates/CopywriterCreativeTemplate"
+  },
+  {
+    "filename": "CoralExecutiveTemplate.tsx",
+    "componentName": "CoralExecutiveTemplate",
+    "id": "coral-executive",
+    "importPath": "./resume/templates/CoralExecutiveTemplate"
+  },
+  {
+    "filename": "CornerAccentUniversalTemplate.tsx",
+    "componentName": "CornerAccentUniversalTemplate",
+    "id": "corner-accent-universal",
+    "importPath": "./resume/templates/CornerAccentUniversalTemplate"
+  },
+  {
+    "filename": "CoroflotPortfolioTemplate.tsx",
+    "componentName": "CoroflotPortfolioTemplate",
+    "id": "coroflot-portfolio",
+    "importPath": "./resume/templates/CoroflotPortfolioTemplate"
+  },
+  {
+    "filename": "CorporateApexTemplate.tsx",
+    "componentName": "CorporateApexTemplate",
+    "id": "corporate-apex",
+    "importPath": "./resume/templates/CorporateApexTemplate"
+  },
+  {
+    "filename": "CorporateAttorneyTemplate.tsx",
+    "componentName": "CorporateAttorneyTemplate",
+    "id": "corporate-attorney",
+    "importPath": "./resume/templates/CorporateAttorneyTemplate"
+  },
+  {
+    "filename": "CorporateBlueTemplate.tsx",
+    "componentName": "CorporateBlueTemplate",
+    "id": "corporate-blue",
+    "importPath": "./resume/templates/CorporateBlueTemplate"
+  },
+  {
+    "filename": "CorporateBorderFrameTemplate.tsx",
+    "componentName": "CorporateBorderFrameTemplate",
+    "id": "corporate-border-frame",
+    "importPath": "./resume/templates/CorporateBorderFrameTemplate"
+  },
+  {
+    "filename": "CorporateCleanTemplate.tsx",
+    "componentName": "CorporateCleanTemplate",
+    "id": "corporate-clean",
+    "importPath": "./resume/templates/CorporateCleanTemplate"
+  },
+  {
+    "filename": "CorporateDistinctionTemplate.tsx",
+    "componentName": "CorporateDistinctionTemplate",
+    "id": "corporate-distinction",
+    "importPath": "./resume/templates/CorporateDistinctionTemplate"
+  },
+  {
+    "filename": "CorporateEasyLayoutTemplate.tsx",
+    "componentName": "CorporateEasyLayoutTemplate",
+    "id": "corporate-easy-layout",
+    "importPath": "./resume/templates/CorporateEasyLayoutTemplate"
+  },
+  {
+    "filename": "CorporateElitePlusTemplate.tsx",
+    "componentName": "CorporateElitePlusTemplate",
+    "id": "corporate-elite-plus",
+    "importPath": "./resume/templates/CorporateElitePlusTemplate"
+  },
+  {
+    "filename": "CorporateEliteTemplate.tsx",
+    "componentName": "CorporateEliteTemplate",
+    "id": "corporate-elite",
+    "importPath": "./resume/templates/CorporateEliteTemplate"
+  },
+  {
+    "filename": "CorporateExcellenceTemplate.tsx",
+    "componentName": "CorporateExcellenceTemplate",
+    "id": "corporate-excellence",
+    "importPath": "./resume/templates/CorporateExcellenceTemplate"
+  },
+  {
+    "filename": "CorporateExecutiveTemplate.tsx",
+    "componentName": "CorporateExecutiveTemplate",
+    "id": "corporate-executive",
+    "importPath": "./resume/templates/CorporateExecutiveTemplate"
+  },
+  {
+    "filename": "CorporateLawTemplate.tsx",
+    "componentName": "CorporateLawTemplate",
+    "id": "corporate-law",
+    "importPath": "./resume/templates/CorporateLawTemplate"
+  },
+  {
+    "filename": "CorporateLegalCounselTemplate.tsx",
+    "componentName": "CorporateLegalCounselTemplate",
+    "id": "corporate-legal-counsel",
+    "importPath": "./resume/templates/CorporateLegalCounselTemplate"
+  },
+  {
+    "filename": "CorporateMinimalistProTemplate.tsx",
+    "componentName": "CorporateMinimalistProTemplate",
+    "id": "corporate-minimalist-pro",
+    "importPath": "./resume/templates/CorporateMinimalistProTemplate"
+  },
+  {
+    "filename": "CorporateParadigmTemplate.tsx",
+    "componentName": "CorporateParadigmTemplate",
+    "id": "corporate-paradigm",
+    "importPath": "./resume/templates/CorporateParadigmTemplate"
+  },
+  {
+    "filename": "CorporatePremierTemplate.tsx",
+    "componentName": "CorporatePremierTemplate",
+    "id": "corporate-premier",
+    "importPath": "./resume/templates/CorporatePremierTemplate"
+  },
+  {
+    "filename": "CorporateSimpleTemplateTemplate.tsx",
+    "componentName": "CorporateSimpleTemplateTemplate",
+    "id": "corporate-simple-template",
+    "importPath": "./resume/templates/CorporateSimpleTemplateTemplate"
+  },
+  {
+    "filename": "CorporateSovereignTemplate.tsx",
+    "componentName": "CorporateSovereignTemplate",
+    "id": "corporate-sovereign",
+    "importPath": "./resume/templates/CorporateSovereignTemplate"
+  },
+  {
+    "filename": "CorporateVanguardTemplate.tsx",
+    "componentName": "CorporateVanguardTemplate",
+    "id": "corporate-vanguard",
+    "importPath": "./resume/templates/CorporateVanguardTemplate"
+  },
+  {
+    "filename": "CorporateVisionTemplate.tsx",
+    "componentName": "CorporateVisionTemplate",
+    "id": "corporate-vision",
+    "importPath": "./resume/templates/CorporateVisionTemplate"
+  },
+  {
+    "filename": "CorporateVisionaryTemplate.tsx",
+    "componentName": "CorporateVisionaryTemplate",
+    "id": "corporate-visionary",
+    "importPath": "./resume/templates/CorporateVisionaryTemplate"
+  },
+  {
+    "filename": "CosmosProfessionalTemplate.tsx",
+    "componentName": "CosmosProfessionalTemplate",
+    "id": "cosmos-professional",
+    "importPath": "./resume/templates/CosmosProfessionalTemplate"
+  },
+  {
+    "filename": "CraftArtistTemplate.tsx",
+    "componentName": "CraftArtistTemplate",
+    "id": "craft-artist",
+    "importPath": "./resume/templates/CraftArtistTemplate"
+  },
+  {
+    "filename": "CreativeAccentTemplate.tsx",
+    "componentName": "CreativeAccentTemplate",
+    "id": "creative-accent",
+    "importPath": "./resume/templates/CreativeAccentTemplate"
+  },
+  {
+    "filename": "CreativeCanvasTemplate.tsx",
+    "componentName": "CreativeCanvasTemplate",
+    "id": "creative-canvas",
+    "importPath": "./resume/templates/CreativeCanvasTemplate"
+  },
+  {
+    "filename": "CreativeCraftedTemplate.tsx",
+    "componentName": "CreativeCraftedTemplate",
+    "id": "creative-crafted",
+    "importPath": "./resume/templates/CreativeCraftedTemplate"
+  },
+  {
+    "filename": "CreativeDirectorEliteTemplate.tsx",
+    "componentName": "CreativeDirectorEliteTemplate",
+    "id": "creative-director-elite",
+    "importPath": "./resume/templates/CreativeDirectorEliteTemplate"
+  },
+  {
+    "filename": "CreativeHorizonTemplate.tsx",
+    "componentName": "CreativeHorizonTemplate",
+    "id": "creative-horizon",
+    "importPath": "./resume/templates/CreativeHorizonTemplate"
+  },
+  {
+    "filename": "CreativePulseTemplate.tsx",
+    "componentName": "CreativePulseTemplate",
+    "id": "creative-pulse",
+    "importPath": "./resume/templates/CreativePulseTemplate"
+  },
+  {
+    "filename": "CreativeShowcaseGridTemplate.tsx",
+    "componentName": "CreativeShowcaseGridTemplate",
+    "id": "creative-showcase-grid",
+    "importPath": "./resume/templates/CreativeShowcaseGridTemplate"
+  },
+  {
+    "filename": "CreativeTimelineTemplate.tsx",
+    "componentName": "CreativeTimelineTemplate",
+    "id": "creative-timeline",
+    "importPath": "./resume/templates/CreativeTimelineTemplate"
+  },
+  {
+    "filename": "CrimsonLeadershipTemplate.tsx",
+    "componentName": "CrimsonLeadershipTemplate",
+    "id": "crimson-leadership",
+    "importPath": "./resume/templates/CrimsonLeadershipTemplate"
+  },
+  {
+    "filename": "CrystalExecutiveTemplate.tsx",
+    "componentName": "CrystalExecutiveTemplate",
+    "id": "crystal-executive",
+    "importPath": "./resume/templates/CrystalExecutiveTemplate"
+  },
+  {
+    "filename": "CuratorCreativeTemplate.tsx",
+    "componentName": "CuratorCreativeTemplate",
+    "id": "curator-creative",
+    "importPath": "./resume/templates/CuratorCreativeTemplate"
+  },
+  {
+    "filename": "CurriculumDeveloperTemplate.tsx",
+    "componentName": "CurriculumDeveloperTemplate",
+    "id": "curriculum-developer",
+    "importPath": "./resume/templates/CurriculumDeveloperTemplate"
+  },
+  {
+    "filename": "CustomerSuccessManagerTemplate.tsx",
+    "componentName": "CustomerSuccessManagerTemplate",
+    "id": "customer-success-manager",
+    "importPath": "./resume/templates/CustomerSuccessManagerTemplate"
+  },
+  {
+    "filename": "CyberSecurityTemplate.tsx",
+    "componentName": "CyberSecurityTemplate",
+    "id": "cyber-security",
+    "importPath": "./resume/templates/CyberSecurityTemplate"
+  },
+  {
+    "filename": "CybersecurityAnalystTemplate.tsx",
+    "componentName": "CybersecurityAnalystTemplate",
+    "id": "cybersecurity-analyst",
+    "importPath": "./resume/templates/CybersecurityAnalystTemplate"
+  },
+  {
+    "filename": "DarkModeDevTemplate.tsx",
+    "componentName": "DarkModeDevTemplate",
+    "id": "dark-mode-dev",
+    "importPath": "./resume/templates/DarkModeDevTemplate"
+  },
+  {
+    "filename": "DataEngineerTemplate.tsx",
+    "componentName": "DataEngineerTemplate",
+    "id": "data-engineer",
+    "importPath": "./resume/templates/DataEngineerTemplate"
+  },
+  {
+    "filename": "DataScienceTemplate.tsx",
+    "componentName": "DataScienceTemplate",
+    "id": "data-science",
+    "importPath": "./resume/templates/DataScienceTemplate"
+  },
+  {
+    "filename": "DataScientistProTemplate.tsx",
+    "componentName": "DataScientistProTemplate",
+    "id": "data-scientist-pro",
+    "importPath": "./resume/templates/DataScientistProTemplate"
+  },
+  {
+    "filename": "DentalProfessionalTemplate.tsx",
+    "componentName": "DentalProfessionalTemplate",
+    "id": "dental-professional",
+    "importPath": "./resume/templates/DentalProfessionalTemplate"
+  },
+  {
+    "filename": "DesignLeadTemplate.tsx",
+    "componentName": "DesignLeadTemplate",
+    "id": "design-lead",
+    "importPath": "./resume/templates/DesignLeadTemplate"
+  },
+  {
+    "filename": "DesignLeaderPortfolioTemplate.tsx",
+    "componentName": "DesignLeaderPortfolioTemplate",
+    "id": "design-leader-portfolio",
+    "importPath": "./resume/templates/DesignLeaderPortfolioTemplate"
+  },
+  {
+    "filename": "DesignMaestroTemplate.tsx",
+    "componentName": "DesignMaestroTemplate",
+    "id": "design-maestro",
+    "importPath": "./resume/templates/DesignMaestroTemplate"
+  },
+  {
+    "filename": "DesignPinnacleTemplate.tsx",
+    "componentName": "DesignPinnacleTemplate",
+    "id": "design-pinnacle",
+    "importPath": "./resume/templates/DesignPinnacleTemplate"
+  },
+  {
+    "filename": "DesignSchoolGradTemplate.tsx",
+    "componentName": "DesignSchoolGradTemplate",
+    "id": "design-school-grad",
+    "importPath": "./resume/templates/DesignSchoolGradTemplate"
+  },
+  {
+    "filename": "DesignSphereTemplate.tsx",
+    "componentName": "DesignSphereTemplate",
+    "id": "design-sphere",
+    "importPath": "./resume/templates/DesignSphereTemplate"
+  },
+  {
+    "filename": "DesignStrategistTemplate.tsx",
+    "componentName": "DesignStrategistTemplate",
+    "id": "design-strategist",
+    "importPath": "./resume/templates/DesignStrategistTemplate"
+  },
+  {
+    "filename": "DesignSystemsArchitectTemplate.tsx",
+    "componentName": "DesignSystemsArchitectTemplate",
+    "id": "design-systems-architect",
+    "importPath": "./resume/templates/DesignSystemsArchitectTemplate"
+  },
+  {
+    "filename": "DesignSystemsPortfolioTemplate.tsx",
+    "componentName": "DesignSystemsPortfolioTemplate",
+    "id": "design-systems-portfolio",
+    "importPath": "./resume/templates/DesignSystemsPortfolioTemplate"
+  },
+  {
+    "filename": "DesignerShowcaseTemplate.tsx",
+    "componentName": "DesignerShowcaseTemplate",
+    "id": "designer-showcase",
+    "importPath": "./resume/templates/DesignerShowcaseTemplate"
+  },
+  {
+    "filename": "DesignleadershipDirectorTemplate.tsx",
+    "componentName": "DesignleadershipDirectorTemplate",
+    "id": "designleadership-director",
+    "importPath": "./resume/templates/DesignleadershipDirectorTemplate"
+  },
+  {
+    "filename": "DesignopsSpecialistTemplate.tsx",
+    "componentName": "DesignopsSpecialistTemplate",
+    "id": "designops-specialist",
+    "importPath": "./resume/templates/DesignopsSpecialistTemplate"
+  },
+  {
+    "filename": "DesignportfolioSpecialistTemplate.tsx",
+    "componentName": "DesignportfolioSpecialistTemplate",
+    "id": "designportfolio-specialist",
+    "importPath": "./resume/templates/DesignportfolioSpecialistTemplate"
+  },
+  {
+    "filename": "DesignstrategyLeadTemplate.tsx",
+    "componentName": "DesignstrategyLeadTemplate",
+    "id": "designstrategy-lead",
+    "importPath": "./resume/templates/DesignstrategyLeadTemplate"
+  },
+  {
+    "filename": "DesignsystemArchitectTemplate.tsx",
+    "componentName": "DesignsystemArchitectTemplate",
+    "id": "designsystem-architect",
+    "importPath": "./resume/templates/DesignsystemArchitectTemplate"
+  },
+  {
+    "filename": "DesignthinkingSpecialistTemplate.tsx",
+    "componentName": "DesignthinkingSpecialistTemplate",
+    "id": "designthinking-specialist",
+    "importPath": "./resume/templates/DesignthinkingSpecialistTemplate"
+  },
+  {
+    "filename": "DevArchitectureTemplate.tsx",
+    "componentName": "DevArchitectureTemplate",
+    "id": "dev-architecture",
+    "importPath": "./resume/templates/DevArchitectureTemplate"
+  },
+  {
+    "filename": "DevEliteTemplate.tsx",
+    "componentName": "DevEliteTemplate",
+    "id": "dev-elite",
+    "importPath": "./resume/templates/DevEliteTemplate"
+  },
+  {
+    "filename": "DevMomentumTemplate.tsx",
+    "componentName": "DevMomentumTemplate",
+    "id": "dev-momentum",
+    "importPath": "./resume/templates/DevMomentumTemplate"
+  },
+  {
+    "filename": "DevOpsAutomationTemplate.tsx",
+    "componentName": "DevOpsAutomationTemplate",
+    "id": "devops-automation",
+    "importPath": "./resume/templates/DevOpsAutomationTemplate"
+  },
+  {
+    "filename": "DevOpsEngineerTemplate.tsx",
+    "componentName": "DevOpsEngineerTemplate",
+    "id": "devops-engineer",
+    "importPath": "./resume/templates/DevOpsEngineerTemplate"
+  },
+  {
+    "filename": "DevOpsProTemplate.tsx",
+    "componentName": "DevOpsProTemplate",
+    "id": "devops-pro",
+    "importPath": "./resume/templates/DevOpsProTemplate"
+  },
+  {
+    "filename": "DevPrimeTemplate.tsx",
+    "componentName": "DevPrimeTemplate",
+    "id": "dev-prime",
+    "importPath": "./resume/templates/DevPrimeTemplate"
+  },
+  {
+    "filename": "DevSecOpsEngineerTemplate.tsx",
+    "componentName": "DevSecOpsEngineerTemplate",
+    "id": "devsecops-engineer",
+    "importPath": "./resume/templates/DevSecOpsEngineerTemplate"
+  },
+  {
+    "filename": "DeveloperGridTemplate.tsx",
+    "componentName": "DeveloperGridTemplate",
+    "id": "developer-grid",
+    "importPath": "./resume/templates/DeveloperGridTemplate"
+  },
+  {
+    "filename": "DeviantArtCreatorTemplate.tsx",
+    "componentName": "DeviantArtCreatorTemplate",
+    "id": "deviant-art-creator",
+    "importPath": "./resume/templates/DeviantArtCreatorTemplate"
+  },
+  {
+    "filename": "DeviantartArtistTemplate.tsx",
+    "componentName": "DeviantartArtistTemplate",
+    "id": "deviantart-artist",
+    "importPath": "./resume/templates/DeviantartArtistTemplate"
+  },
+  {
+    "filename": "DevtoContributorTemplate.tsx",
+    "componentName": "DevtoContributorTemplate",
+    "id": "devto-contributor",
+    "importPath": "./resume/templates/DevtoContributorTemplate"
+  },
+  {
+    "filename": "DiamondAccentUniversalTemplate.tsx",
+    "componentName": "DiamondAccentUniversalTemplate",
+    "id": "diamond-accent-universal",
+    "importPath": "./resume/templates/DiamondAccentUniversalTemplate"
+  },
+  {
+    "filename": "DigitalArtistPortfolioTemplate.tsx",
+    "componentName": "DigitalArtistPortfolioTemplate",
+    "id": "digital-artist-portfolio",
+    "importPath": "./resume/templates/DigitalArtistPortfolioTemplate"
+  },
+  {
+    "filename": "DigitalArtistTemplate.tsx",
+    "componentName": "DigitalArtistTemplate",
+    "id": "digital-artist",
+    "importPath": "./resume/templates/DigitalArtistTemplate"
+  },
+  {
+    "filename": "DigitalCanvasTemplate.tsx",
+    "componentName": "DigitalCanvasTemplate",
+    "id": "digital-canvas",
+    "importPath": "./resume/templates/DigitalCanvasTemplate"
+  },
+  {
+    "filename": "DigitalExecutiveTemplate.tsx",
+    "componentName": "DigitalExecutiveTemplate",
+    "id": "digital-executive",
+    "importPath": "./resume/templates/DigitalExecutiveTemplate"
+  },
+  {
+    "filename": "DigitalGraduateTemplate.tsx",
+    "componentName": "DigitalGraduateTemplate",
+    "id": "digital-graduate",
+    "importPath": "./resume/templates/DigitalGraduateTemplate"
+  },
+  {
+    "filename": "DigitalIdentityTemplate.tsx",
+    "componentName": "DigitalIdentityTemplate",
+    "id": "digital-identity",
+    "importPath": "./resume/templates/DigitalIdentityTemplate"
+  },
+  {
+    "filename": "DigitalMarketerTemplate.tsx",
+    "componentName": "DigitalMarketerTemplate",
+    "id": "digital-marketer",
+    "importPath": "./resume/templates/DigitalMarketerTemplate"
+  },
+  {
+    "filename": "DigitalMarketingProTemplate.tsx",
+    "componentName": "DigitalMarketingProTemplate",
+    "id": "digital-marketing-pro",
+    "importPath": "./resume/templates/DigitalMarketingProTemplate"
+  },
+  {
+    "filename": "DigitalMarketingSpecialistTemplate.tsx",
+    "componentName": "DigitalMarketingSpecialistTemplate",
+    "id": "digital-marketing-specialist",
+    "importPath": "./resume/templates/DigitalMarketingSpecialistTemplate"
+  },
+  {
+    "filename": "DigitalNativeGradTemplate.tsx",
+    "componentName": "DigitalNativeGradTemplate",
+    "id": "digital-native-grad",
+    "importPath": "./resume/templates/DigitalNativeGradTemplate"
+  },
+  {
+    "filename": "DigitalNativeGraduateTemplate.tsx",
+    "componentName": "DigitalNativeGraduateTemplate",
+    "id": "digital-native-graduate",
+    "importPath": "./resume/templates/DigitalNativeGraduateTemplate"
+  },
+  {
+    "filename": "DigitalPortfolioGradTemplate.tsx",
+    "componentName": "DigitalPortfolioGradTemplate",
+    "id": "digital-portfolio-grad",
+    "importPath": "./resume/templates/DigitalPortfolioGradTemplate"
+  },
+  {
+    "filename": "DigitalProfessionalTemplate.tsx",
+    "componentName": "DigitalProfessionalTemplate",
+    "id": "digital-professional",
+    "importPath": "./resume/templates/DigitalProfessionalTemplate"
+  },
+  {
+    "filename": "DirectorLevelTemplate.tsx",
+    "componentName": "DirectorLevelTemplate",
+    "id": "director-level",
+    "importPath": "./resume/templates/DirectorLevelTemplate"
+  },
+  {
+    "filename": "DiversityInclusionManagerTemplate.tsx",
+    "componentName": "DiversityInclusionManagerTemplate",
+    "id": "diversity-inclusion-manager",
+    "importPath": "./resume/templates/DiversityInclusionManagerTemplate"
+  },
+  {
+    "filename": "DjangoFrameworkProTemplate.tsx",
+    "componentName": "DjangoFrameworkProTemplate",
+    "id": "django-framework-pro",
+    "importPath": "./resume/templates/DjangoFrameworkProTemplate"
+  },
+  {
+    "filename": "DjangoFullstackTemplate.tsx",
+    "componentName": "DjangoFullstackTemplate",
+    "id": "django-fullstack",
+    "importPath": "./resume/templates/DjangoFullstackTemplate"
+  },
+  {
+    "filename": "DockerContainerProTemplate.tsx",
+    "componentName": "DockerContainerProTemplate",
+    "id": "docker-container-pro",
+    "importPath": "./resume/templates/DockerContainerProTemplate"
+  },
+  {
+    "filename": "DockerSpecialistTemplate.tsx",
+    "componentName": "DockerSpecialistTemplate",
+    "id": "docker-specialist",
+    "importPath": "./resume/templates/DockerSpecialistTemplate"
+  },
+  {
+    "filename": "DockerhubPublisherTemplate.tsx",
+    "componentName": "DockerhubPublisherTemplate",
+    "id": "dockerhub-publisher",
+    "importPath": "./resume/templates/DockerhubPublisherTemplate"
+  },
+  {
+    "filename": "DotNetCoreDeveloperTemplate.tsx",
+    "componentName": "DotNetCoreDeveloperTemplate",
+    "id": "dotnet-core-developer",
+    "importPath": "./resume/templates/DotNetCoreDeveloperTemplate"
+  },
+  {
+    "filename": "DotNetDeveloperTemplate.tsx",
+    "componentName": "DotNetDeveloperTemplate",
+    "id": "dotnet-developer",
+    "importPath": "./resume/templates/DotNetDeveloperTemplate"
+  },
+  {
+    "filename": "DottedGridUniversalTemplate.tsx",
+    "componentName": "DottedGridUniversalTemplate",
+    "id": "dotted-grid-universal",
+    "importPath": "./resume/templates/DottedGridUniversalTemplate"
+  },
+  {
+    "filename": "DribbbleCreativeTemplate.tsx",
+    "componentName": "DribbbleCreativeTemplate",
+    "id": "dribbble-creative",
+    "importPath": "./resume/templates/DribbbleCreativeTemplate"
+  },
+  {
+    "filename": "DribbbleShowcaseTemplate.tsx",
+    "componentName": "DribbbleShowcaseTemplate",
+    "id": "dribbble-showcase",
+    "importPath": "./resume/templates/DribbbleShowcaseTemplate"
+  },
+  {
+    "filename": "DualDegreeGraduateTemplate.tsx",
+    "componentName": "DualDegreeGraduateTemplate",
+    "id": "dual-degree-graduate",
+    "importPath": "./resume/templates/DualDegreeGraduateTemplate"
+  },
+  {
+    "filename": "ESLTeacherCertifiedTemplate.tsx",
+    "componentName": "ESLTeacherCertifiedTemplate",
+    "id": "esl-teacher-certified",
+    "importPath": "./resume/templates/ESLTeacherCertifiedTemplate"
+  },
+  {
+    "filename": "EclipseProfessionalTemplate.tsx",
+    "componentName": "EclipseProfessionalTemplate",
+    "id": "eclipse-professional",
+    "importPath": "./resume/templates/EclipseProfessionalTemplate"
+  },
+  {
+    "filename": "EcommerceManagerTemplate.tsx",
+    "componentName": "EcommerceManagerTemplate",
+    "id": "ecommerce-manager",
+    "importPath": "./resume/templates/EcommerceManagerTemplate"
+  },
+  {
+    "filename": "EdgecomputeDeveloperTemplate.tsx",
+    "componentName": "EdgecomputeDeveloperTemplate",
+    "id": "edgecompute-developer",
+    "importPath": "./resume/templates/EdgecomputeDeveloperTemplate"
+  },
+  {
+    "filename": "EditorialArtistTemplate.tsx",
+    "componentName": "EditorialArtistTemplate",
+    "id": "editorial-artist",
+    "importPath": "./resume/templates/EditorialArtistTemplate"
+  },
+  {
+    "filename": "EditorialStyleTemplate.tsx",
+    "componentName": "EditorialStyleTemplate",
+    "id": "editorial-style",
+    "importPath": "./resume/templates/EditorialStyleTemplate"
+  },
+  {
+    "filename": "EducatorModernTemplate.tsx",
+    "componentName": "EducatorModernTemplate",
+    "id": "educator-modern",
+    "importPath": "./resume/templates/EducatorModernTemplate"
+  },
+  {
+    "filename": "ElasticsearchDevTemplate.tsx",
+    "componentName": "ElasticsearchDevTemplate",
+    "id": "elasticsearch-dev",
+    "importPath": "./resume/templates/ElasticsearchDevTemplate"
+  },
+  {
+    "filename": "ElasticsearchExpertTemplate.tsx",
+    "componentName": "ElasticsearchExpertTemplate",
+    "id": "elasticsearch-expert",
+    "importPath": "./resume/templates/ElasticsearchExpertTemplate"
+  },
+  {
+    "filename": "ElectricalEngineerTemplate.tsx",
+    "componentName": "ElectricalEngineerTemplate",
+    "id": "electrical-engineer",
+    "importPath": "./resume/templates/ElectricalEngineerTemplate"
+  },
+  {
+    "filename": "ElegantProfessionalTemplate.tsx",
+    "componentName": "ElegantProfessionalTemplate",
+    "id": "elegant-professional",
+    "importPath": "./resume/templates/ElegantProfessionalTemplate"
+  },
+  {
+    "filename": "ElegantSerifTemplate.tsx",
+    "componentName": "ElegantSerifTemplate",
+    "id": "elegant-serif",
+    "importPath": "./resume/templates/ElegantSerifTemplate"
+  },
+  {
+    "filename": "ElementaryTeacherTemplate.tsx",
+    "componentName": "ElementaryTeacherTemplate",
+    "id": "elementary-teacher",
+    "importPath": "./resume/templates/ElementaryTeacherTemplate"
+  },
+  {
+    "filename": "ElevateFresherTemplate.tsx",
+    "componentName": "ElevateFresherTemplate",
+    "id": "elevate-fresher",
+    "importPath": "./resume/templates/ElevateFresherTemplate"
+  },
+  {
+    "filename": "ElixirDeveloperTemplate.tsx",
+    "componentName": "ElixirDeveloperTemplate",
+    "id": "elixir-developer",
+    "importPath": "./resume/templates/ElixirDeveloperTemplate"
+  },
+  {
+    "filename": "EmailMarketingSpecialistTemplate.tsx",
+    "componentName": "EmailMarketingSpecialistTemplate",
+    "id": "email-marketing-specialist",
+    "importPath": "./resume/templates/EmailMarketingSpecialistTemplate"
+  },
+  {
+    "filename": "EmeraldExecutiveTemplate.tsx",
+    "componentName": "EmeraldExecutiveTemplate",
+    "id": "emerald-executive",
+    "importPath": "./resume/templates/EmeraldExecutiveTemplate"
+  },
+  {
+    "filename": "EmergeFresherTemplate.tsx",
+    "componentName": "EmergeFresherTemplate",
+    "id": "emerge-fresher",
+    "importPath": "./resume/templates/EmergeFresherTemplate"
+  },
+  {
+    "filename": "EmployeeRelationsSpecialistTemplate.tsx",
+    "componentName": "EmployeeRelationsSpecialistTemplate",
+    "id": "employee-relations-specialist",
+    "importPath": "./resume/templates/EmployeeRelationsSpecialistTemplate"
+  },
+  {
+    "filename": "EngineeringFresherTemplate.tsx",
+    "componentName": "EngineeringFresherTemplate",
+    "id": "engineering-fresher",
+    "importPath": "./resume/templates/EngineeringFresherTemplate"
+  },
+  {
+    "filename": "EngineeringManagerTemplate.tsx",
+    "componentName": "EngineeringManagerTemplate",
+    "id": "engineering-manager",
+    "importPath": "./resume/templates/EngineeringManagerTemplate"
+  },
+  {
+    "filename": "EnterpriseLeaderTemplate.tsx",
+    "componentName": "EnterpriseLeaderTemplate",
+    "id": "enterprise-leader",
+    "importPath": "./resume/templates/EnterpriseLeaderTemplate"
+  },
+  {
+    "filename": "EntrepreneurialGraduateTemplate.tsx",
+    "componentName": "EntrepreneurialGraduateTemplate",
+    "id": "entrepreneurial-graduate",
+    "importPath": "./resume/templates/EntrepreneurialGraduateTemplate"
+  },
+  {
+    "filename": "EntryEliteTemplate.tsx",
+    "componentName": "EntryEliteTemplate",
+    "id": "entry-elite",
+    "importPath": "./resume/templates/EntryEliteTemplate"
+  },
+  {
+    "filename": "EntryHorizonTemplate.tsx",
+    "componentName": "EntryHorizonTemplate",
+    "id": "entry-horizon",
+    "importPath": "./resume/templates/EntryHorizonTemplate"
+  },
+  {
+    "filename": "EntrySphereTemplate.tsx",
+    "componentName": "EntrySphereTemplate",
+    "id": "entry-sphere",
+    "importPath": "./resume/templates/EntrySphereTemplate"
+  },
+  {
+    "filename": "EnvironmentalEngineerTemplate.tsx",
+    "componentName": "EnvironmentalEngineerTemplate",
+    "id": "environmental-engineer",
+    "importPath": "./resume/templates/EnvironmentalEngineerTemplate"
+  },
+  {
+    "filename": "EquityResearchAnalystTemplate.tsx",
+    "componentName": "EquityResearchAnalystTemplate",
+    "id": "equity-research-analyst",
+    "importPath": "./resume/templates/EquityResearchAnalystTemplate"
+  },
+  {
+    "filename": "EstimatorCostAnalystTemplate.tsx",
+    "componentName": "EstimatorCostAnalystTemplate",
+    "id": "estimator-cost-analyst",
+    "importPath": "./resume/templates/EstimatorCostAnalystTemplate"
+  },
+  {
+    "filename": "EventPlannerCoordinatorTemplate.tsx",
+    "componentName": "EventPlannerCoordinatorTemplate",
+    "id": "event-planner-coordinator",
+    "importPath": "./resume/templates/EventPlannerCoordinatorTemplate"
+  },
+  {
+    "filename": "EventdrivenArchitectTemplate.tsx",
+    "componentName": "EventdrivenArchitectTemplate",
+    "id": "eventdriven-architect",
+    "importPath": "./resume/templates/EventdrivenArchitectTemplate"
+  },
+  {
+    "filename": "ExecutiveAscendancyTemplate.tsx",
+    "componentName": "ExecutiveAscendancyTemplate",
+    "id": "executive-ascendancy",
+    "importPath": "./resume/templates/ExecutiveAscendancyTemplate"
+  },
+  {
+    "filename": "ExecutiveAuthorityTemplate.tsx",
+    "componentName": "ExecutiveAuthorityTemplate",
+    "id": "executive-authority",
+    "importPath": "./resume/templates/ExecutiveAuthorityTemplate"
+  },
+  {
+    "filename": "ExecutiveChefTemplate.tsx",
+    "componentName": "ExecutiveChefTemplate",
+    "id": "executive-chef",
+    "importPath": "./resume/templates/ExecutiveChefTemplate"
+  },
+  {
+    "filename": "ExecutiveCleanSplitTemplate.tsx",
+    "componentName": "ExecutiveCleanSplitTemplate",
+    "id": "executive-clean-split",
+    "importPath": "./resume/templates/ExecutiveCleanSplitTemplate"
+  },
+  {
+    "filename": "ExecutiveCornerAccentTemplate.tsx",
+    "componentName": "ExecutiveCornerAccentTemplate",
+    "id": "executive-corner-accent",
+    "importPath": "./resume/templates/ExecutiveCornerAccentTemplate"
+  },
+  {
+    "filename": "ExecutiveDirectLayoutTemplate.tsx",
+    "componentName": "ExecutiveDirectLayoutTemplate",
+    "id": "executive-direct-layout",
+    "importPath": "./resume/templates/ExecutiveDirectLayoutTemplate"
+  },
+  {
+    "filename": "ExecutiveEasyTemplateTemplate.tsx",
+    "componentName": "ExecutiveEasyTemplateTemplate",
+    "id": "executive-easy-template",
+    "importPath": "./resume/templates/ExecutiveEasyTemplateTemplate"
+  },
+  {
+    "filename": "ExecutiveImpactTemplate.tsx",
+    "componentName": "ExecutiveImpactTemplate",
+    "id": "executive-impact",
+    "importPath": "./resume/templates/ExecutiveImpactTemplate"
+  },
+  {
+    "filename": "ExecutiveLeadershipTemplate.tsx",
+    "componentName": "ExecutiveLeadershipTemplate",
+    "id": "executive-leadership",
+    "importPath": "./resume/templates/ExecutiveLeadershipTemplate"
+  },
+  {
+    "filename": "ExecutiveLetterheadUniversalTemplate.tsx",
+    "componentName": "ExecutiveLetterheadUniversalTemplate",
+    "id": "executive-letterhead-universal",
+    "importPath": "./resume/templates/ExecutiveLetterheadUniversalTemplate"
+  },
+  {
+    "filename": "ExecutiveMagnitudeTemplate.tsx",
+    "componentName": "ExecutiveMagnitudeTemplate",
+    "id": "executive-magnitude",
+    "importPath": "./resume/templates/ExecutiveMagnitudeTemplate"
+  },
+  {
+    "filename": "ExecutiveMinimalTemplate.tsx",
+    "componentName": "ExecutiveMinimalTemplate",
+    "id": "executive-minimal",
+    "importPath": "./resume/templates/ExecutiveMinimalTemplate"
+  },
+  {
+    "filename": "ExecutiveNexusTemplate.tsx",
+    "componentName": "ExecutiveNexusTemplate",
+    "id": "executive-nexus",
+    "importPath": "./resume/templates/ExecutiveNexusTemplate"
+  },
+  {
+    "filename": "ExecutivePinnacleTemplate.tsx",
+    "componentName": "ExecutivePinnacleTemplate",
+    "id": "executive-pinnacle",
+    "importPath": "./resume/templates/ExecutivePinnacleTemplate"
+  },
+  {
+    "filename": "ExecutivePlainLayoutTemplate.tsx",
+    "componentName": "ExecutivePlainLayoutTemplate",
+    "id": "executive-plain-layout",
+    "importPath": "./resume/templates/ExecutivePlainLayoutTemplate"
+  },
+  {
+    "filename": "ExecutivePrestigeTemplate.tsx",
+    "componentName": "ExecutivePrestigeTemplate",
+    "id": "executive-prestige",
+    "importPath": "./resume/templates/ExecutivePrestigeTemplate"
+  },
+  {
+    "filename": "ExecutiveSalesLeaderTemplate.tsx",
+    "componentName": "ExecutiveSalesLeaderTemplate",
+    "id": "executive-sales-leader",
+    "importPath": "./resume/templates/ExecutiveSalesLeaderTemplate"
+  },
+  {
+    "filename": "ExecutiveSignatureTemplate.tsx",
+    "componentName": "ExecutiveSignatureTemplate",
+    "id": "executive-signature",
+    "importPath": "./resume/templates/ExecutiveSignatureTemplate"
+  },
+  {
+    "filename": "ExecutiveSimpleCleanTemplate.tsx",
+    "componentName": "ExecutiveSimpleCleanTemplate",
+    "id": "executive-simple-clean",
+    "importPath": "./resume/templates/ExecutiveSimpleCleanTemplate"
+  },
+  {
+    "filename": "ExecutiveSplitDesignTemplate.tsx",
+    "componentName": "ExecutiveSplitDesignTemplate",
+    "id": "executive-split-design",
+    "importPath": "./resume/templates/ExecutiveSplitDesignTemplate"
+  },
+  {
+    "filename": "ExecutiveTemplate.tsx",
+    "componentName": "ExecutiveTemplate",
+    "id": "executive",
+    "importPath": "./resume/templates/ExecutiveTemplate"
+  },
+  {
+    "filename": "ExecutiveTimelineModernTemplate.tsx",
+    "componentName": "ExecutiveTimelineModernTemplate",
+    "id": "executive-timeline-modern",
+    "importPath": "./resume/templates/ExecutiveTimelineModernTemplate"
+  },
+  {
+    "filename": "ExpressionArtistTemplate.tsx",
+    "componentName": "ExpressionArtistTemplate",
+    "id": "expression-artist",
+    "importPath": "./resume/templates/ExpressionArtistTemplate"
+  },
+  {
+    "filename": "FAANGAspirantTemplate.tsx",
+    "componentName": "FAANGAspirantTemplate",
+    "id": "faang-aspirant",
+    "importPath": "./resume/templates/FAANGAspirantTemplate"
+  },
+  {
+    "filename": "FieldSalesSpecialistTemplate.tsx",
+    "componentName": "FieldSalesSpecialistTemplate",
+    "id": "field-sales-specialist",
+    "importPath": "./resume/templates/FieldSalesSpecialistTemplate"
+  },
+  {
+    "filename": "FigmaDesignerPortfolioTemplate.tsx",
+    "componentName": "FigmaDesignerPortfolioTemplate",
+    "id": "figma-designer-portfolio",
+    "importPath": "./resume/templates/FigmaDesignerPortfolioTemplate"
+  },
+  {
+    "filename": "FigmaExpertTemplate.tsx",
+    "componentName": "FigmaExpertTemplate",
+    "id": "figma-expert",
+    "importPath": "./resume/templates/FigmaExpertTemplate"
+  },
+  {
+    "filename": "FinanceAnalystTemplate.tsx",
+    "componentName": "FinanceAnalystTemplate",
+    "id": "finance-analyst",
+    "importPath": "./resume/templates/FinanceAnalystTemplate"
+  },
+  {
+    "filename": "FinanceTwoColumnTemplate.tsx",
+    "componentName": "FinanceTwoColumnTemplate",
+    "id": "finance-two-column",
+    "importPath": "./resume/templates/FinanceTwoColumnTemplate"
+  },
+  {
+    "filename": "FinancialAnalystCFATemplate.tsx",
+    "componentName": "FinancialAnalystCFATemplate",
+    "id": "financial-analystcfa",
+    "importPath": "./resume/templates/FinancialAnalystCFATemplate"
+  },
+  {
+    "filename": "FinancialAnalystTemplate.tsx",
+    "componentName": "FinancialAnalystTemplate",
+    "id": "financial-analyst",
+    "importPath": "./resume/templates/FinancialAnalystTemplate"
+  },
+  {
+    "filename": "FinancialControllerTemplate.tsx",
+    "componentName": "FinancialControllerTemplate",
+    "id": "financial-controller",
+    "importPath": "./resume/templates/FinancialControllerTemplate"
+  },
+  {
+    "filename": "FlutterEngineerTemplate.tsx",
+    "componentName": "FlutterEngineerTemplate",
+    "id": "flutter-engineer",
+    "importPath": "./resume/templates/FlutterEngineerTemplate"
+  },
+  {
+    "filename": "FlutterMobileDevTemplate.tsx",
+    "componentName": "FlutterMobileDevTemplate",
+    "id": "flutter-mobile-dev",
+    "importPath": "./resume/templates/FlutterMobileDevTemplate"
+  },
+  {
+    "filename": "FlutterUISpecialistTemplate.tsx",
+    "componentName": "FlutterUISpecialistTemplate",
+    "id": "flutterui-specialist",
+    "importPath": "./resume/templates/FlutterUISpecialistTemplate"
+  },
+  {
+    "filename": "FluxExecutiveTemplate.tsx",
+    "componentName": "FluxExecutiveTemplate",
+    "id": "flux-executive",
+    "importPath": "./resume/templates/FluxExecutiveTemplate"
+  },
+  {
+    "filename": "ForensicAccountantTemplate.tsx",
+    "componentName": "ForensicAccountantTemplate",
+    "id": "forensic-accountant",
+    "importPath": "./resume/templates/ForensicAccountantTemplate"
+  },
+  {
+    "filename": "ForestProfessionalTemplate.tsx",
+    "componentName": "ForestProfessionalTemplate",
+    "id": "forest-professional",
+    "importPath": "./resume/templates/ForestProfessionalTemplate"
+  },
+  {
+    "filename": "FoundationGraduateTemplate.tsx",
+    "componentName": "FoundationGraduateTemplate",
+    "id": "foundation-graduate",
+    "importPath": "./resume/templates/FoundationGraduateTemplate"
+  },
+  {
+    "filename": "FramerDesignerPortfolioTemplate.tsx",
+    "componentName": "FramerDesignerPortfolioTemplate",
+    "id": "framer-designer-portfolio",
+    "importPath": "./resume/templates/FramerDesignerPortfolioTemplate"
+  },
+  {
+    "filename": "FramerDesignerTemplate.tsx",
+    "componentName": "FramerDesignerTemplate",
+    "id": "framer-designer",
+    "importPath": "./resume/templates/FramerDesignerTemplate"
+  },
+  {
+    "filename": "FresherAcademicStyleTemplate.tsx",
+    "componentName": "FresherAcademicStyleTemplate",
+    "id": "fresher-academic-style",
+    "importPath": "./resume/templates/FresherAcademicStyleTemplate"
+  },
+  {
+    "filename": "FresherAchievementTemplate.tsx",
+    "componentName": "FresherAchievementTemplate",
+    "id": "fresher-achievement",
+    "importPath": "./resume/templates/FresherAchievementTemplate"
+  },
+  {
+    "filename": "FresherBoldHeaderTemplate.tsx",
+    "componentName": "FresherBoldHeaderTemplate",
+    "id": "fresher-bold-header",
+    "importPath": "./resume/templates/FresherBoldHeaderTemplate"
+  },
+  {
+    "filename": "FresherBoxShadowTemplate.tsx",
+    "componentName": "FresherBoxShadowTemplate",
+    "id": "fresher-box-shadow",
+    "importPath": "./resume/templates/FresherBoxShadowTemplate"
+  },
+  {
+    "filename": "FresherCardBasedTemplate.tsx",
+    "componentName": "FresherCardBasedTemplate",
+    "id": "fresher-card-based",
+    "importPath": "./resume/templates/FresherCardBasedTemplate"
+  },
+  {
+    "filename": "FresherCenteredElegantTemplate.tsx",
+    "componentName": "FresherCenteredElegantTemplate",
+    "id": "fresher-centered-elegant",
+    "importPath": "./resume/templates/FresherCenteredElegantTemplate"
+  },
+  {
+    "filename": "FresherCircularProgressTemplate.tsx",
+    "componentName": "FresherCircularProgressTemplate",
+    "id": "fresher-circular-progress",
+    "importPath": "./resume/templates/FresherCircularProgressTemplate"
+  },
+  {
+    "filename": "FresherCleanModernTemplate.tsx",
+    "componentName": "FresherCleanModernTemplate",
+    "id": "fresher-clean-modern",
+    "importPath": "./resume/templates/FresherCleanModernTemplate"
+  },
+  {
+    "filename": "FresherColorAccentTemplate.tsx",
+    "componentName": "FresherColorAccentTemplate",
+    "id": "fresher-color-accent",
+    "importPath": "./resume/templates/FresherColorAccentTemplate"
+  },
+  {
+    "filename": "FresherCompactProTemplate.tsx",
+    "componentName": "FresherCompactProTemplate",
+    "id": "fresher-compact-pro",
+    "importPath": "./resume/templates/FresherCompactProTemplate"
+  },
+  {
+    "filename": "FresherCreativeEdgeTemplate.tsx",
+    "componentName": "FresherCreativeEdgeTemplate",
+    "id": "fresher-creative-edge",
+    "importPath": "./resume/templates/FresherCreativeEdgeTemplate"
+  },
+  {
+    "filename": "FresherDarkProfessionalTemplate.tsx",
+    "componentName": "FresherDarkProfessionalTemplate",
+    "id": "fresher-dark-professional",
+    "importPath": "./resume/templates/FresherDarkProfessionalTemplate"
+  },
+  {
+    "filename": "FresherDashBorderTemplate.tsx",
+    "componentName": "FresherDashBorderTemplate",
+    "id": "fresher-dash-border",
+    "importPath": "./resume/templates/FresherDashBorderTemplate"
+  },
+  {
+    "filename": "FresherDoubleColumnTemplate.tsx",
+    "componentName": "FresherDoubleColumnTemplate",
+    "id": "fresher-double-column",
+    "importPath": "./resume/templates/FresherDoubleColumnTemplate"
+  },
+  {
+    "filename": "FresherElegantSidebarTemplate.tsx",
+    "componentName": "FresherElegantSidebarTemplate",
+    "id": "fresher-elegant-sidebar",
+    "importPath": "./resume/templates/FresherElegantSidebarTemplate"
+  },
+  {
+    "filename": "FresherEliteTemplate.tsx",
+    "componentName": "FresherEliteTemplate",
+    "id": "fresher-elite",
+    "importPath": "./resume/templates/FresherEliteTemplate"
+  },
+  {
+    "filename": "FresherExecutiveStyleTemplate.tsx",
+    "componentName": "FresherExecutiveStyleTemplate",
+    "id": "fresher-executive-style",
+    "importPath": "./resume/templates/FresherExecutiveStyleTemplate"
+  },
+  {
+    "filename": "FresherGeometricTemplate.tsx",
+    "componentName": "FresherGeometricTemplate",
+    "id": "fresher-geometric",
+    "importPath": "./resume/templates/FresherGeometricTemplate"
+  },
+  {
+    "filename": "FresherGlassmorphismTemplate.tsx",
+    "componentName": "FresherGlassmorphismTemplate",
+    "id": "fresher-glassmorphism",
+    "importPath": "./resume/templates/FresherGlassmorphismTemplate"
+  },
+  {
+    "filename": "FresherGradientBorderTemplate.tsx",
+    "componentName": "FresherGradientBorderTemplate",
+    "id": "fresher-gradient-border",
+    "importPath": "./resume/templates/FresherGradientBorderTemplate"
+  },
+  {
+    "filename": "FresherIconographyTemplate.tsx",
+    "componentName": "FresherIconographyTemplate",
+    "id": "fresher-iconography",
+    "importPath": "./resume/templates/FresherIconographyTemplate"
+  },
+  {
+    "filename": "FresherLeftStripeTemplate.tsx",
+    "componentName": "FresherLeftStripeTemplate",
+    "id": "fresher-left-stripe",
+    "importPath": "./resume/templates/FresherLeftStripeTemplate"
+  },
+  {
+    "filename": "FresherLightweightTemplate.tsx",
+    "componentName": "FresherLightweightTemplate",
+    "id": "fresher-lightweight",
+    "importPath": "./resume/templates/FresherLightweightTemplate"
+  },
+  {
+    "filename": "FresherMinimalGridTemplate.tsx",
+    "componentName": "FresherMinimalGridTemplate",
+    "id": "fresher-minimal-grid",
+    "importPath": "./resume/templates/FresherMinimalGridTemplate"
+  },
+  {
+    "filename": "FresherMinimalistTwoColumnTemplate.tsx",
+    "componentName": "FresherMinimalistTwoColumnTemplate",
+    "id": "fresher-minimalist-two-column",
+    "importPath": "./resume/templates/FresherMinimalistTwoColumnTemplate"
+  },
+  {
+    "filename": "FresherModernClassicTemplate.tsx",
+    "componentName": "FresherModernClassicTemplate",
+    "id": "fresher-modern-classic",
+    "importPath": "./resume/templates/FresherModernClassicTemplate"
+  },
+  {
+    "filename": "FresherModernSplitTemplate.tsx",
+    "componentName": "FresherModernSplitTemplate",
+    "id": "fresher-modern-split",
+    "importPath": "./resume/templates/FresherModernSplitTemplate"
+  },
+  {
+    "filename": "FresherModernTabsTemplate.tsx",
+    "componentName": "FresherModernTabsTemplate",
+    "id": "fresher-modern-tabs",
+    "importPath": "./resume/templates/FresherModernTabsTemplate"
+  },
+  {
+    "filename": "FresherModernTwoColumnTemplate.tsx",
+    "componentName": "FresherModernTwoColumnTemplate",
+    "id": "fresher-modern-two-column",
+    "importPath": "./resume/templates/FresherModernTwoColumnTemplate"
+  },
+  {
+    "filename": "FresherNeonAccentTemplate.tsx",
+    "componentName": "FresherNeonAccentTemplate",
+    "id": "fresher-neon-accent",
+    "importPath": "./resume/templates/FresherNeonAccentTemplate"
+  },
+  {
+    "filename": "FresherPolaroidStyleTemplate.tsx",
+    "componentName": "FresherPolaroidStyleTemplate",
+    "id": "fresher-polaroid-style",
+    "importPath": "./resume/templates/FresherPolaroidStyleTemplate"
+  },
+  {
+    "filename": "FresherProfessionalGridTemplate.tsx",
+    "componentName": "FresherProfessionalGridTemplate",
+    "id": "fresher-professional-grid",
+    "importPath": "./resume/templates/FresherProfessionalGridTemplate"
+  },
+  {
+    "filename": "FresherProfessionalMinimalTemplate.tsx",
+    "componentName": "FresherProfessionalMinimalTemplate",
+    "id": "fresher-professional-minimal",
+    "importPath": "./resume/templates/FresherProfessionalMinimalTemplate"
+  },
+  {
+    "filename": "FresherProfessionalSidebarTemplate.tsx",
+    "componentName": "FresherProfessionalSidebarTemplate",
+    "id": "fresher-professional-sidebar",
+    "importPath": "./resume/templates/FresherProfessionalSidebarTemplate"
+  },
+  {
+    "filename": "FresherProgressiveTemplate.tsx",
+    "componentName": "FresherProgressiveTemplate",
+    "id": "fresher-progressive",
+    "importPath": "./resume/templates/FresherProgressiveTemplate"
+  },
+  {
+    "filename": "FresherRibbonStyleTemplate.tsx",
+    "componentName": "FresherRibbonStyleTemplate",
+    "id": "fresher-ribbon-style",
+    "importPath": "./resume/templates/FresherRibbonStyleTemplate"
+  },
+  {
+    "filename": "FresherSkillsFirstTemplate.tsx",
+    "componentName": "FresherSkillsFirstTemplate",
+    "id": "fresher-skills-first",
+    "importPath": "./resume/templates/FresherSkillsFirstTemplate"
+  },
+  {
+    "filename": "FresherSplitLayoutTemplate.tsx",
+    "componentName": "FresherSplitLayoutTemplate",
+    "id": "fresher-split-layout",
+    "importPath": "./resume/templates/FresherSplitLayoutTemplate"
+  },
+  {
+    "filename": "FresherStepByStepTemplate.tsx",
+    "componentName": "FresherStepByStepTemplate",
+    "id": "fresher-step-by-step",
+    "importPath": "./resume/templates/FresherStepByStepTemplate"
+  },
+  {
+    "filename": "FresherTechModernTemplate.tsx",
+    "componentName": "FresherTechModernTemplate",
+    "id": "fresher-tech-modern",
+    "importPath": "./resume/templates/FresherTechModernTemplate"
+  },
+  {
+    "filename": "FresherTechSplitTemplate.tsx",
+    "componentName": "FresherTechSplitTemplate",
+    "id": "fresher-tech-split",
+    "importPath": "./resume/templates/FresherTechSplitTemplate"
+  },
+  {
+    "filename": "FresherTemplate.tsx",
+    "componentName": "FresherTemplate",
+    "id": "fresher",
+    "importPath": "./resume/templates/FresherTemplate"
+  },
+  {
+    "filename": "FresherTimelineDotsTemplate.tsx",
+    "componentName": "FresherTimelineDotsTemplate",
+    "id": "fresher-timeline-dots",
+    "importPath": "./resume/templates/FresherTimelineDotsTemplate"
+  },
+  {
+    "filename": "FresherTimelineTemplate.tsx",
+    "componentName": "FresherTimelineTemplate",
+    "id": "fresher-timeline",
+    "importPath": "./resume/templates/FresherTimelineTemplate"
+  },
+  {
+    "filename": "FresherTopBottomTemplate.tsx",
+    "componentName": "FresherTopBottomTemplate",
+    "id": "fresher-top-bottom",
+    "importPath": "./resume/templates/FresherTopBottomTemplate"
+  },
+  {
+    "filename": "FresherTwoToneTemplate.tsx",
+    "componentName": "FresherTwoToneTemplate",
+    "id": "fresher-two-tone",
+    "importPath": "./resume/templates/FresherTwoToneTemplate"
+  },
+  {
+    "filename": "FresherWaveHeaderTemplate.tsx",
+    "componentName": "FresherWaveHeaderTemplate",
+    "id": "fresher-wave-header",
+    "importPath": "./resume/templates/FresherWaveHeaderTemplate"
+  },
+  {
+    "filename": "FreshersCraftedTemplate.tsx",
+    "componentName": "FreshersCraftedTemplate",
+    "id": "freshers-crafted",
+    "importPath": "./resume/templates/FreshersCraftedTemplate"
+  },
+  {
+    "filename": "FreshersVisionTemplate.tsx",
+    "componentName": "FreshersVisionTemplate",
+    "id": "freshers-vision",
+    "importPath": "./resume/templates/FreshersVisionTemplate"
+  },
+  {
+    "filename": "FrontendArchitectTemplate.tsx",
+    "componentName": "FrontendArchitectTemplate",
+    "id": "frontend-architect",
+    "importPath": "./resume/templates/FrontendArchitectTemplate"
+  },
+  {
+    "filename": "FrontendTemplate.tsx",
+    "componentName": "FrontendTemplate",
+    "id": "frontend",
+    "importPath": "./resume/templates/FrontendTemplate"
+  },
+  {
+    "filename": "FullStackEngineerTemplate.tsx",
+    "componentName": "FullStackEngineerTemplate",
+    "id": "full-stack-engineer",
+    "importPath": "./resume/templates/FullStackEngineerTemplate"
+  },
+  {
+    "filename": "FullStackModernTemplate.tsx",
+    "componentName": "FullStackModernTemplate",
+    "id": "full-stack-modern",
+    "importPath": "./resume/templates/FullStackModernTemplate"
+  },
+  {
+    "filename": "FullStackProTemplate.tsx",
+    "componentName": "FullStackProTemplate",
+    "id": "full-stack-pro",
+    "importPath": "./resume/templates/FullStackProTemplate"
+  },
+  {
+    "filename": "FullstackJavaScriptTemplate.tsx",
+    "componentName": "FullstackJavaScriptTemplate",
+    "id": "fullstack-java-script",
+    "importPath": "./resume/templates/FullstackJavaScriptTemplate"
+  },
+  {
+    "filename": "FullstackTemplate.tsx",
+    "componentName": "FullstackTemplate",
+    "id": "fullstack",
+    "importPath": "./resume/templates/FullstackTemplate"
+  },
+  {
+    "filename": "GCPArchitectTemplate.tsx",
+    "componentName": "GCPArchitectTemplate",
+    "id": "gcparchitect",
+    "importPath": "./resume/templates/GCPArchitectTemplate"
+  },
+  {
+    "filename": "GCPCloudEngineerTemplate.tsx",
+    "componentName": "GCPCloudEngineerTemplate",
+    "id": "gcp-cloud-engineer",
+    "importPath": "./resume/templates/GCPCloudEngineerTemplate"
+  },
+  {
+    "filename": "GRPCDeveloperTemplate.tsx",
+    "componentName": "GRPCDeveloperTemplate",
+    "id": "g-r-p-c-developer",
+    "importPath": "./resume/templates/GRPCDeveloperTemplate"
+  },
+  {
+    "filename": "GalleryLayoutTemplate.tsx",
+    "componentName": "GalleryLayoutTemplate",
+    "id": "gallery-layout",
+    "importPath": "./resume/templates/GalleryLayoutTemplate"
+  },
+  {
+    "filename": "GenZGraduateTemplate.tsx",
+    "componentName": "GenZGraduateTemplate",
+    "id": "gen-z-graduate",
+    "importPath": "./resume/templates/GenZGraduateTemplate"
+  },
+  {
+    "filename": "GeneralContractorTemplate.tsx",
+    "componentName": "GeneralContractorTemplate",
+    "id": "general-contractor",
+    "importPath": "./resume/templates/GeneralContractorTemplate"
+  },
+  {
+    "filename": "GenesisGraduateTemplate.tsx",
+    "componentName": "GenesisGraduateTemplate",
+    "id": "genesis-graduate",
+    "importPath": "./resume/templates/GenesisGraduateTemplate"
+  },
+  {
+    "filename": "GeometricCreativeTemplate.tsx",
+    "componentName": "GeometricCreativeTemplate",
+    "id": "geometric-creative",
+    "importPath": "./resume/templates/GeometricCreativeTemplate"
+  },
+  {
+    "filename": "GeometricShapesUniversalTemplate.tsx",
+    "componentName": "GeometricShapesUniversalTemplate",
+    "id": "geometric-shapes-universal",
+    "importPath": "./resume/templates/GeometricShapesUniversalTemplate"
+  },
+  {
+    "filename": "GitHubDeveloperTemplate.tsx",
+    "componentName": "GitHubDeveloperTemplate",
+    "id": "github-developer",
+    "importPath": "./resume/templates/GitHubDeveloperTemplate"
+  },
+  {
+    "filename": "GitHubProfileTemplate.tsx",
+    "componentName": "GitHubProfileTemplate",
+    "id": "github-profile",
+    "importPath": "./resume/templates/GitHubProfileTemplate"
+  },
+  {
+    "filename": "GitHubStudentDeveloperTemplate.tsx",
+    "componentName": "GitHubStudentDeveloperTemplate",
+    "id": "github-student-developer",
+    "importPath": "./resume/templates/GitHubStudentDeveloperTemplate"
+  },
+  {
+    "filename": "GitHubStyleTemplate.tsx",
+    "componentName": "GitHubStyleTemplate",
+    "id": "github-style",
+    "importPath": "./resume/templates/GitHubStyleTemplate"
+  },
+  {
+    "filename": "GitflowEngineerTemplate.tsx",
+    "componentName": "GitflowEngineerTemplate",
+    "id": "gitflow-engineer",
+    "importPath": "./resume/templates/GitflowEngineerTemplate"
+  },
+  {
+    "filename": "GithubPortfolioDevTemplate.tsx",
+    "componentName": "GithubPortfolioDevTemplate",
+    "id": "github-portfolio-dev",
+    "importPath": "./resume/templates/GithubPortfolioDevTemplate"
+  },
+  {
+    "filename": "GithubStudentTemplate.tsx",
+    "componentName": "GithubStudentTemplate",
+    "id": "github-student",
+    "importPath": "./resume/templates/GithubStudentTemplate"
+  },
+  {
+    "filename": "GitlabDeveloperTemplate.tsx",
+    "componentName": "GitlabDeveloperTemplate",
+    "id": "gitlab-developer",
+    "importPath": "./resume/templates/GitlabDeveloperTemplate"
+  },
+  {
+    "filename": "GlobalEnterpriseTemplate.tsx",
+    "componentName": "GlobalEnterpriseTemplate",
+    "id": "global-enterprise",
+    "importPath": "./resume/templates/GlobalEnterpriseTemplate"
+  },
+  {
+    "filename": "GlobalExecutiveProTemplate.tsx",
+    "componentName": "GlobalExecutiveProTemplate",
+    "id": "global-executive-pro",
+    "importPath": "./resume/templates/GlobalExecutiveProTemplate"
+  },
+  {
+    "filename": "GlobalLeadershipTemplate.tsx",
+    "componentName": "GlobalLeadershipTemplate",
+    "id": "global-leadership",
+    "importPath": "./resume/templates/GlobalLeadershipTemplate"
+  },
+  {
+    "filename": "GlobalNetworkerTemplate.tsx",
+    "componentName": "GlobalNetworkerTemplate",
+    "id": "global-networker",
+    "importPath": "./resume/templates/GlobalNetworkerTemplate"
+  },
+  {
+    "filename": "GoDeveloperTemplate.tsx",
+    "componentName": "GoDeveloperTemplate",
+    "id": "go-developer",
+    "importPath": "./resume/templates/GoDeveloperTemplate"
+  },
+  {
+    "filename": "GolangBackendEngineerTemplate.tsx",
+    "componentName": "GolangBackendEngineerTemplate",
+    "id": "golang-backend-engineer",
+    "importPath": "./resume/templates/GolangBackendEngineerTemplate"
+  },
+  {
+    "filename": "GoldPrestigeTemplate.tsx",
+    "componentName": "GoldPrestigeTemplate",
+    "id": "gold-prestige",
+    "importPath": "./resume/templates/GoldPrestigeTemplate"
+  },
+  {
+    "filename": "GradientHeaderUniversalTemplate.tsx",
+    "componentName": "GradientHeaderUniversalTemplate",
+    "id": "gradient-header-universal",
+    "importPath": "./resume/templates/GradientHeaderUniversalTemplate"
+  },
+  {
+    "filename": "GraduateInnovatorTemplate.tsx",
+    "componentName": "GraduateInnovatorTemplate",
+    "id": "graduate-innovator",
+    "importPath": "./resume/templates/GraduateInnovatorTemplate"
+  },
+  {
+    "filename": "GraduateMomentumTemplate.tsx",
+    "componentName": "GraduateMomentumTemplate",
+    "id": "graduate-momentum",
+    "importPath": "./resume/templates/GraduateMomentumTemplate"
+  },
+  {
+    "filename": "GraduatePrimeTemplate.tsx",
+    "componentName": "GraduatePrimeTemplate",
+    "id": "graduate-prime",
+    "importPath": "./resume/templates/GraduatePrimeTemplate"
+  },
+  {
+    "filename": "GraduateTemplate.tsx",
+    "componentName": "GraduateTemplate",
+    "id": "graduate",
+    "importPath": "./resume/templates/GraduateTemplate"
+  },
+  {
+    "filename": "GraduateZenithTemplate.tsx",
+    "componentName": "GraduateZenithTemplate",
+    "id": "graduate-zenith",
+    "importPath": "./resume/templates/GraduateZenithTemplate"
+  },
+  {
+    "filename": "GraphQLArchitectTemplate.tsx",
+    "componentName": "GraphQLArchitectTemplate",
+    "id": "graphql-architect",
+    "importPath": "./resume/templates/GraphQLArchitectTemplate"
+  },
+  {
+    "filename": "GraphQLDeveloperTemplate.tsx",
+    "componentName": "GraphQLDeveloperTemplate",
+    "id": "graphql-developer",
+    "importPath": "./resume/templates/GraphQLDeveloperTemplate"
+  },
+  {
+    "filename": "GraphdbSpecialistTemplate.tsx",
+    "componentName": "GraphdbSpecialistTemplate",
+    "id": "graphdb-specialist",
+    "importPath": "./resume/templates/GraphdbSpecialistTemplate"
+  },
+  {
+    "filename": "GraphicDesignProTemplate.tsx",
+    "componentName": "GraphicDesignProTemplate",
+    "id": "graphic-design-pro",
+    "importPath": "./resume/templates/GraphicDesignProTemplate"
+  },
+  {
+    "filename": "GrowthMarketingManagerTemplate.tsx",
+    "componentName": "GrowthMarketingManagerTemplate",
+    "id": "growth-marketing-manager",
+    "importPath": "./resume/templates/GrowthMarketingManagerTemplate"
+  },
+  {
+    "filename": "HRAnalyticsManagerTemplate.tsx",
+    "componentName": "HRAnalyticsManagerTemplate",
+    "id": "hr-analytics-manager",
+    "importPath": "./resume/templates/HRAnalyticsManagerTemplate"
+  },
+  {
+    "filename": "HRBusinessPartnerTemplate.tsx",
+    "componentName": "HRBusinessPartnerTemplate",
+    "id": "hr-business-partner",
+    "importPath": "./resume/templates/HRBusinessPartnerTemplate"
+  },
+  {
+    "filename": "HVACEngineerTemplate.tsx",
+    "componentName": "HVACEngineerTemplate",
+    "id": "h-v-a-c-engineer",
+    "importPath": "./resume/templates/HVACEngineerTemplate"
+  },
+  {
+    "filename": "HackathonGraduateTemplate.tsx",
+    "componentName": "HackathonGraduateTemplate",
+    "id": "hackathon-graduate",
+    "importPath": "./resume/templates/HackathonGraduateTemplate"
+  },
+  {
+    "filename": "HackathonWinnerTemplate.tsx",
+    "componentName": "HackathonWinnerTemplate",
+    "id": "hackathon-winner",
+    "importPath": "./resume/templates/HackathonWinnerTemplate"
+  },
+  {
+    "filename": "HackernewsDeveloperTemplate.tsx",
+    "componentName": "HackernewsDeveloperTemplate",
+    "id": "hackernews-developer",
+    "importPath": "./resume/templates/HackernewsDeveloperTemplate"
+  },
+  {
+    "filename": "HackerrankExpertTemplate.tsx",
+    "componentName": "HackerrankExpertTemplate",
+    "id": "hackerrank-expert",
+    "importPath": "./resume/templates/HackerrankExpertTemplate"
+  },
+  {
+    "filename": "HarmonyExecutiveTemplate.tsx",
+    "componentName": "HarmonyExecutiveTemplate",
+    "id": "harmony-executive",
+    "importPath": "./resume/templates/HarmonyExecutiveTemplate"
+  },
+  {
+    "filename": "HeadlessCMSDeveloperTemplate.tsx",
+    "componentName": "HeadlessCMSDeveloperTemplate",
+    "id": "headless-c-m-s-developer",
+    "importPath": "./resume/templates/HeadlessCMSDeveloperTemplate"
+  },
+  {
+    "filename": "HealthcareAdministratorTemplate.tsx",
+    "componentName": "HealthcareAdministratorTemplate",
+    "id": "healthcare-administrator",
+    "importPath": "./resume/templates/HealthcareAdministratorTemplate"
+  },
+  {
+    "filename": "HealthcareProfessionalTemplate.tsx",
+    "componentName": "HealthcareProfessionalTemplate",
+    "id": "healthcare-professional",
+    "importPath": "./resume/templates/HealthcareProfessionalTemplate"
+  },
+  {
+    "filename": "HealthcareTwoColumnTemplate.tsx",
+    "componentName": "HealthcareTwoColumnTemplate",
+    "id": "healthcare-two-column",
+    "importPath": "./resume/templates/HealthcareTwoColumnTemplate"
+  },
+  {
+    "filename": "HexagonalPatternUniversalTemplate.tsx",
+    "componentName": "HexagonalPatternUniversalTemplate",
+    "id": "hexagonal-pattern-universal",
+    "importPath": "./resume/templates/HexagonalPatternUniversalTemplate"
+  },
+  {
+    "filename": "HighSchoolTeacherTemplate.tsx",
+    "componentName": "HighSchoolTeacherTemplate",
+    "id": "high-school-teacher",
+    "importPath": "./resume/templates/HighSchoolTeacherTemplate"
+  },
+  {
+    "filename": "HonorsStudentTemplate.tsx",
+    "componentName": "HonorsStudentTemplate",
+    "id": "honors-student",
+    "importPath": "./resume/templates/HonorsStudentTemplate"
+  },
+  {
+    "filename": "HorizonGraduateTemplate.tsx",
+    "componentName": "HorizonGraduateTemplate",
+    "id": "horizon-graduate",
+    "importPath": "./resume/templates/HorizonGraduateTemplate"
+  },
+  {
+    "filename": "HospitalityDirectorTemplate.tsx",
+    "componentName": "HospitalityDirectorTemplate",
+    "id": "hospitality-director",
+    "importPath": "./resume/templates/HospitalityDirectorTemplate"
+  },
+  {
+    "filename": "HotelManagerOperationsTemplate.tsx",
+    "componentName": "HotelManagerOperationsTemplate",
+    "id": "hotel-manager-operations",
+    "importPath": "./resume/templates/HotelManagerOperationsTemplate"
+  },
+  {
+    "filename": "IconBarUniversalTemplate.tsx",
+    "componentName": "IconBarUniversalTemplate",
+    "id": "icon-bar-universal",
+    "importPath": "./resume/templates/IconBarUniversalTemplate"
+  },
+  {
+    "filename": "IllustrationPortfolioTemplate.tsx",
+    "componentName": "IllustrationPortfolioTemplate",
+    "id": "illustration-portfolio",
+    "importPath": "./resume/templates/IllustrationPortfolioTemplate"
+  },
+  {
+    "filename": "IllustratorArtistTemplate.tsx",
+    "componentName": "IllustratorArtistTemplate",
+    "id": "illustrator-artist",
+    "importPath": "./resume/templates/IllustratorArtistTemplate"
+  },
+  {
+    "filename": "ImaginativeDesignerTemplate.tsx",
+    "componentName": "ImaginativeDesignerTemplate",
+    "id": "imaginative-designer",
+    "importPath": "./resume/templates/ImaginativeDesignerTemplate"
+  },
+  {
+    "filename": "ImpressionDesignerTemplate.tsx",
+    "componentName": "ImpressionDesignerTemplate",
+    "id": "impression-designer",
+    "importPath": "./resume/templates/ImpressionDesignerTemplate"
+  },
+  {
+    "filename": "InVisionPrototyperTemplate.tsx",
+    "componentName": "InVisionPrototyperTemplate",
+    "id": "in-vision-prototyper",
+    "importPath": "./resume/templates/InVisionPrototyperTemplate"
+  },
+  {
+    "filename": "IndigoExecutiveTemplate.tsx",
+    "componentName": "IndigoExecutiveTemplate",
+    "id": "indigo-executive",
+    "importPath": "./resume/templates/IndigoExecutiveTemplate"
+  },
+  {
+    "filename": "IndustrialEngineerTemplate.tsx",
+    "componentName": "IndustrialEngineerTemplate",
+    "id": "industrial-engineer",
+    "importPath": "./resume/templates/IndustrialEngineerTemplate"
+  },
+  {
+    "filename": "InfinityLoopUniversalTemplate.tsx",
+    "componentName": "InfinityLoopUniversalTemplate",
+    "id": "infinity-loop-universal",
+    "importPath": "./resume/templates/InfinityLoopUniversalTemplate"
+  },
+  {
+    "filename": "InfluencerProfessionalTemplate.tsx",
+    "componentName": "InfluencerProfessionalTemplate",
+    "id": "influencer-professional",
+    "importPath": "./resume/templates/InfluencerProfessionalTemplate"
+  },
+  {
+    "filename": "InformationArchitectTemplate.tsx",
+    "componentName": "InformationArchitectTemplate",
+    "id": "information-architect",
+    "importPath": "./resume/templates/InformationArchitectTemplate"
+  },
+  {
+    "filename": "InkBrushTemplate.tsx",
+    "componentName": "InkBrushTemplate",
+    "id": "ink-brush",
+    "importPath": "./resume/templates/InkBrushTemplate"
+  },
+  {
+    "filename": "InsideSalesRepresentativeTemplate.tsx",
+    "componentName": "InsideSalesRepresentativeTemplate",
+    "id": "inside-sales-representative",
+    "importPath": "./resume/templates/InsideSalesRepresentativeTemplate"
+  },
+  {
+    "filename": "InstagramCreativeTemplate.tsx",
+    "componentName": "InstagramCreativeTemplate",
+    "id": "instagram-creative",
+    "importPath": "./resume/templates/InstagramCreativeTemplate"
+  },
+  {
+    "filename": "InstagramInfluencerTemplate.tsx",
+    "componentName": "InstagramInfluencerTemplate",
+    "id": "instagram-influencer",
+    "importPath": "./resume/templates/InstagramInfluencerTemplate"
+  },
+  {
+    "filename": "InstructionalDesignerTemplate.tsx",
+    "componentName": "InstructionalDesignerTemplate",
+    "id": "instructional-designer",
+    "importPath": "./resume/templates/InstructionalDesignerTemplate"
+  },
+  {
+    "filename": "IntellectualPropertyAttorneyTemplate.tsx",
+    "componentName": "IntellectualPropertyAttorneyTemplate",
+    "id": "intellectual-property-attorney",
+    "importPath": "./resume/templates/IntellectualPropertyAttorneyTemplate"
+  },
+  {
+    "filename": "InteractionDesignerTemplate.tsx",
+    "componentName": "InteractionDesignerTemplate",
+    "id": "interaction-designer",
+    "importPath": "./resume/templates/InteractionDesignerTemplate"
+  },
+  {
+    "filename": "InteractivePortfolioDesignerTemplate.tsx",
+    "componentName": "InteractivePortfolioDesignerTemplate",
+    "id": "interactive-portfolio-designer",
+    "importPath": "./resume/templates/InteractivePortfolioDesignerTemplate"
+  },
+  {
+    "filename": "InterfaceMasterTemplate.tsx",
+    "componentName": "InterfaceMasterTemplate",
+    "id": "interface-master",
+    "importPath": "./resume/templates/InterfaceMasterTemplate"
+  },
+  {
+    "filename": "InternalAuditorTemplate.tsx",
+    "componentName": "InternalAuditorTemplate",
+    "id": "internal-auditor",
+    "importPath": "./resume/templates/InternalAuditorTemplate"
+  },
+  {
+    "filename": "InternshipReadyTemplate.tsx",
+    "componentName": "InternshipReadyTemplate",
+    "id": "internship-ready",
+    "importPath": "./resume/templates/InternshipReadyTemplate"
+  },
+  {
+    "filename": "InternshipShowcaseTemplate.tsx",
+    "componentName": "InternshipShowcaseTemplate",
+    "id": "internship-showcase",
+    "importPath": "./resume/templates/InternshipShowcaseTemplate"
+  },
+  {
+    "filename": "InvestmentBankerTemplate.tsx",
+    "componentName": "InvestmentBankerTemplate",
+    "id": "investment-banker",
+    "importPath": "./resume/templates/InvestmentBankerTemplate"
+  },
+  {
+    "filename": "JAMStackDeveloperTemplate.tsx",
+    "componentName": "JAMStackDeveloperTemplate",
+    "id": "jamstack-developer",
+    "importPath": "./resume/templates/JAMStackDeveloperTemplate"
+  },
+  {
+    "filename": "JadeProfessionalTemplate.tsx",
+    "componentName": "JadeProfessionalTemplate",
+    "id": "jade-professional",
+    "importPath": "./resume/templates/JadeProfessionalTemplate"
+  },
+  {
+    "filename": "JavaDeveloperTemplate.tsx",
+    "componentName": "JavaDeveloperTemplate",
+    "id": "java-developer",
+    "importPath": "./resume/templates/JavaDeveloperTemplate"
+  },
+  {
+    "filename": "JavaEnterpriseTemplateTemplate.tsx",
+    "componentName": "JavaEnterpriseTemplateTemplate",
+    "id": "java-enterprise-template",
+    "importPath": "./resume/templates/JavaEnterpriseTemplateTemplate"
+  },
+  {
+    "filename": "JenkinsCICDTemplate.tsx",
+    "componentName": "JenkinsCICDTemplate",
+    "id": "jenkinscicd",
+    "importPath": "./resume/templates/JenkinsCICDTemplate"
+  },
+  {
+    "filename": "JsonResumeTemplate.tsx",
+    "componentName": "JsonResumeTemplate",
+    "id": "json-resume",
+    "importPath": "./resume/templates/JsonResumeTemplate"
+  },
+  {
+    "filename": "KafkaStreamingExpertTemplate.tsx",
+    "componentName": "KafkaStreamingExpertTemplate",
+    "id": "kafka-streaming-expert",
+    "importPath": "./resume/templates/KafkaStreamingExpertTemplate"
+  },
+  {
+    "filename": "KafkaStreamingTemplate.tsx",
+    "componentName": "KafkaStreamingTemplate",
+    "id": "kafka-streaming",
+    "importPath": "./resume/templates/KafkaStreamingTemplate"
+  },
+  {
+    "filename": "KaggleDataScientistTemplate.tsx",
+    "componentName": "KaggleDataScientistTemplate",
+    "id": "kaggle-data-scientist",
+    "importPath": "./resume/templates/KaggleDataScientistTemplate"
+  },
+  {
+    "filename": "KeystoneGraduateTemplate.tsx",
+    "componentName": "KeystoneGraduateTemplate",
+    "id": "keystone-graduate",
+    "importPath": "./resume/templates/KeystoneGraduateTemplate"
+  },
+  {
+    "filename": "KotlinAndroidDevTemplate.tsx",
+    "componentName": "KotlinAndroidDevTemplate",
+    "id": "kotlin-android-dev",
+    "importPath": "./resume/templates/KotlinAndroidDevTemplate"
+  },
+  {
+    "filename": "KuberneteEngineerTemplate.tsx",
+    "componentName": "KuberneteEngineerTemplate",
+    "id": "kubernete-engineer",
+    "importPath": "./resume/templates/KuberneteEngineerTemplate"
+  },
+  {
+    "filename": "KubernetesSpecialistTemplate.tsx",
+    "componentName": "KubernetesSpecialistTemplate",
+    "id": "kubernetes-specialist",
+    "importPath": "./resume/templates/KubernetesSpecialistTemplate"
+  },
+  {
+    "filename": "LaravelArtisanTemplate.tsx",
+    "componentName": "LaravelArtisanTemplate",
+    "id": "laravel-artisan",
+    "importPath": "./resume/templates/LaravelArtisanTemplate"
+  },
+  {
+    "filename": "LaunchpadGraduateTemplate.tsx",
+    "componentName": "LaunchpadGraduateTemplate",
+    "id": "launchpad-graduate",
+    "importPath": "./resume/templates/LaunchpadGraduateTemplate"
+  },
+  {
+    "filename": "LavenderExecutiveTemplate.tsx",
+    "componentName": "LavenderExecutiveTemplate",
+    "id": "lavender-executive",
+    "importPath": "./resume/templates/LavenderExecutiveTemplate"
+  },
+  {
+    "filename": "LayeredCardsUniversalTemplate.tsx",
+    "componentName": "LayeredCardsUniversalTemplate",
+    "id": "layered-cards-universal",
+    "importPath": "./resume/templates/LayeredCardsUniversalTemplate"
+  },
+  {
+    "filename": "LeadBackendEngineerTemplate.tsx",
+    "componentName": "LeadBackendEngineerTemplate",
+    "id": "lead-backend-engineer",
+    "importPath": "./resume/templates/LeadBackendEngineerTemplate"
+  },
+  {
+    "filename": "LeadFrontendEngineerTemplate.tsx",
+    "componentName": "LeadFrontendEngineerTemplate",
+    "id": "lead-frontend-engineer",
+    "importPath": "./resume/templates/LeadFrontendEngineerTemplate"
+  },
+  {
+    "filename": "LeadershipSummitTemplate.tsx",
+    "componentName": "LeadershipSummitTemplate",
+    "id": "leadership-summit",
+    "importPath": "./resume/templates/LeadershipSummitTemplate"
+  },
+  {
+    "filename": "LeadershipZenithTemplate.tsx",
+    "componentName": "LeadershipZenithTemplate",
+    "id": "leadership-zenith",
+    "importPath": "./resume/templates/LeadershipZenithTemplate"
+  },
+  {
+    "filename": "LearningDevelopmentManagerTemplate.tsx",
+    "componentName": "LearningDevelopmentManagerTemplate",
+    "id": "learning-development-manager",
+    "importPath": "./resume/templates/LearningDevelopmentManagerTemplate"
+  },
+  {
+    "filename": "LeetcodeChampionTemplate.tsx",
+    "componentName": "LeetcodeChampionTemplate",
+    "id": "leetcode-champion",
+    "importPath": "./resume/templates/LeetcodeChampionTemplate"
+  },
+  {
+    "filename": "LegalAdvisorTemplate.tsx",
+    "componentName": "LegalAdvisorTemplate",
+    "id": "legal-advisor",
+    "importPath": "./resume/templates/LegalAdvisorTemplate"
+  },
+  {
+    "filename": "LegalConsultantTemplate.tsx",
+    "componentName": "LegalConsultantTemplate",
+    "id": "legal-consultant",
+    "importPath": "./resume/templates/LegalConsultantTemplate"
+  },
+  {
+    "filename": "LegalCounselTemplate.tsx",
+    "componentName": "LegalCounselTemplate",
+    "id": "legal-counsel",
+    "importPath": "./resume/templates/LegalCounselTemplate"
+  },
+  {
+    "filename": "LegalExecutiveTemplate.tsx",
+    "componentName": "LegalExecutiveTemplate",
+    "id": "legal-executive",
+    "importPath": "./resume/templates/LegalExecutiveTemplate"
+  },
+  {
+    "filename": "LegalOperationsManagerTemplate.tsx",
+    "componentName": "LegalOperationsManagerTemplate",
+    "id": "legal-operations-manager",
+    "importPath": "./resume/templates/LegalOperationsManagerTemplate"
+  },
+  {
+    "filename": "LiberalArtsGraduateTemplate.tsx",
+    "componentName": "LiberalArtsGraduateTemplate",
+    "id": "liberal-arts-graduate",
+    "importPath": "./resume/templates/LiberalArtsGraduateTemplate"
+  },
+  {
+    "filename": "LinkedInReadyGraduateTemplate.tsx",
+    "componentName": "LinkedInReadyGraduateTemplate",
+    "id": "linkedin-ready-graduate",
+    "importPath": "./resume/templates/LinkedInReadyGraduateTemplate"
+  },
+  {
+    "filename": "LinkedInTechProTemplate.tsx",
+    "componentName": "LinkedInTechProTemplate",
+    "id": "linkedin-tech-pro",
+    "importPath": "./resume/templates/LinkedInTechProTemplate"
+  },
+  {
+    "filename": "LinkedinGraduateTemplate.tsx",
+    "componentName": "LinkedinGraduateTemplate",
+    "id": "linkedin-graduate",
+    "importPath": "./resume/templates/LinkedinGraduateTemplate"
+  },
+  {
+    "filename": "LinkedinOptimizedTemplate.tsx",
+    "componentName": "LinkedinOptimizedTemplate",
+    "id": "linkedin-optimized",
+    "importPath": "./resume/templates/LinkedinOptimizedTemplate"
+  },
+  {
+    "filename": "LinkedinTechExpertTemplate.tsx",
+    "componentName": "LinkedinTechExpertTemplate",
+    "id": "linkedin-tech-expert",
+    "importPath": "./resume/templates/LinkedinTechExpertTemplate"
+  },
+  {
+    "filename": "LitigationAttorneyTemplate.tsx",
+    "componentName": "LitigationAttorneyTemplate",
+    "id": "litigation-attorney",
+    "importPath": "./resume/templates/LitigationAttorneyTemplate"
+  },
+  {
+    "filename": "LogisticsCoordinatorTemplate.tsx",
+    "componentName": "LogisticsCoordinatorTemplate",
+    "id": "logistics-coordinator",
+    "importPath": "./resume/templates/LogisticsCoordinatorTemplate"
+  },
+  {
+    "filename": "LuxuryTimelineTemplate.tsx",
+    "componentName": "LuxuryTimelineTemplate",
+    "id": "luxury-timeline",
+    "importPath": "./resume/templates/LuxuryTimelineTemplate"
+  },
+  {
+    "filename": "MLEngineerTemplate.tsx",
+    "componentName": "MLEngineerTemplate",
+    "id": "ml-engineer",
+    "importPath": "./resume/templates/MLEngineerTemplate"
+  },
+  {
+    "filename": "MachineLearningEngineerTemplate.tsx",
+    "componentName": "MachineLearningEngineerTemplate",
+    "id": "machine-learning-engineer",
+    "importPath": "./resume/templates/MachineLearningEngineerTemplate"
+  },
+  {
+    "filename": "MagazineCreativeTemplate.tsx",
+    "componentName": "MagazineCreativeTemplate",
+    "id": "magazine-creative",
+    "importPath": "./resume/templates/MagazineCreativeTemplate"
+  },
+  {
+    "filename": "MagazineLayoutUniversalTemplate.tsx",
+    "componentName": "MagazineLayoutUniversalTemplate",
+    "id": "magazine-layout-universal",
+    "importPath": "./resume/templates/MagazineLayoutUniversalTemplate"
+  },
+  {
+    "filename": "ManufacturingEngineerTemplate.tsx",
+    "componentName": "ManufacturingEngineerTemplate",
+    "id": "manufacturing-engineer",
+    "importPath": "./resume/templates/ManufacturingEngineerTemplate"
+  },
+  {
+    "filename": "MarketingAnalyticsManagerTemplate.tsx",
+    "componentName": "MarketingAnalyticsManagerTemplate",
+    "id": "marketing-analytics-manager",
+    "importPath": "./resume/templates/MarketingAnalyticsManagerTemplate"
+  },
+  {
+    "filename": "MarketingProfessionalTemplate.tsx",
+    "componentName": "MarketingProfessionalTemplate",
+    "id": "marketing-professional",
+    "importPath": "./resume/templates/MarketingProfessionalTemplate"
+  },
+  {
+    "filename": "MarketingStrategistTemplate.tsx",
+    "componentName": "MarketingStrategistTemplate",
+    "id": "marketing-strategist",
+    "importPath": "./resume/templates/MarketingStrategistTemplate"
+  },
+  {
+    "filename": "MarvelAppDesignerTemplate.tsx",
+    "componentName": "MarvelAppDesignerTemplate",
+    "id": "marvel-app-designer",
+    "importPath": "./resume/templates/MarvelAppDesignerTemplate"
+  },
+  {
+    "filename": "MastersGraduateTemplate.tsx",
+    "componentName": "MastersGraduateTemplate",
+    "id": "masters-graduate",
+    "importPath": "./resume/templates/MastersGraduateTemplate"
+  },
+  {
+    "filename": "MechanicalEngineerProTemplate.tsx",
+    "componentName": "MechanicalEngineerProTemplate",
+    "id": "mechanical-engineer-pro",
+    "importPath": "./resume/templates/MechanicalEngineerProTemplate"
+  },
+  {
+    "filename": "MedicalAssistantTemplate.tsx",
+    "componentName": "MedicalAssistantTemplate",
+    "id": "medical-assistant",
+    "importPath": "./resume/templates/MedicalAssistantTemplate"
+  },
+  {
+    "filename": "MedicalCertificationTemplate.tsx",
+    "componentName": "MedicalCertificationTemplate",
+    "id": "medical-certification",
+    "importPath": "./resume/templates/MedicalCertificationTemplate"
+  },
+  {
+    "filename": "MedicalExecutiveTemplate.tsx",
+    "componentName": "MedicalExecutiveTemplate",
+    "id": "medical-executive",
+    "importPath": "./resume/templates/MedicalExecutiveTemplate"
+  },
+  {
+    "filename": "MedicalProfessionalTemplate.tsx",
+    "componentName": "MedicalProfessionalTemplate",
+    "id": "medical-professional",
+    "importPath": "./resume/templates/MedicalProfessionalTemplate"
+  },
+  {
+    "filename": "MedicalResearchTemplate.tsx",
+    "componentName": "MedicalResearchTemplate",
+    "id": "medical-research",
+    "importPath": "./resume/templates/MedicalResearchTemplate"
+  },
+  {
+    "filename": "MedicalTechnologistTemplate.tsx",
+    "componentName": "MedicalTechnologistTemplate",
+    "id": "medical-technologist",
+    "importPath": "./resume/templates/MedicalTechnologistTemplate"
+  },
+  {
+    "filename": "MediumTechWriterTemplate.tsx",
+    "componentName": "MediumTechWriterTemplate",
+    "id": "medium-tech-writer",
+    "importPath": "./resume/templates/MediumTechWriterTemplate"
+  },
+  {
+    "filename": "MediumWriterCreativeTemplate.tsx",
+    "componentName": "MediumWriterCreativeTemplate",
+    "id": "medium-writer-creative",
+    "importPath": "./resume/templates/MediumWriterCreativeTemplate"
+  },
+  {
+    "filename": "MediumWriterTemplate.tsx",
+    "componentName": "MediumWriterTemplate",
+    "id": "medium-writer",
+    "importPath": "./resume/templates/MediumWriterTemplate"
+  },
+  {
+    "filename": "MentalHealthCounselorTemplate.tsx",
+    "componentName": "MentalHealthCounselorTemplate",
+    "id": "mental-health-counselor",
+    "importPath": "./resume/templates/MentalHealthCounselorTemplate"
+  },
+  {
+    "filename": "MeridianCorporateTemplate.tsx",
+    "componentName": "MeridianCorporateTemplate",
+    "id": "meridian-corporate",
+    "importPath": "./resume/templates/MeridianCorporateTemplate"
+  },
+  {
+    "filename": "MicroarchEngineerTemplate.tsx",
+    "componentName": "MicroarchEngineerTemplate",
+    "id": "microarch-engineer",
+    "importPath": "./resume/templates/MicroarchEngineerTemplate"
+  },
+  {
+    "filename": "MicrointeractionDesignerTemplate.tsx",
+    "componentName": "MicrointeractionDesignerTemplate",
+    "id": "microinteraction-designer",
+    "importPath": "./resume/templates/MicrointeractionDesignerTemplate"
+  },
+  {
+    "filename": "MicroservicesDevTemplate.tsx",
+    "componentName": "MicroservicesDevTemplate",
+    "id": "microservices-dev",
+    "importPath": "./resume/templates/MicroservicesDevTemplate"
+  },
+  {
+    "filename": "MicroservicesExpertTemplate.tsx",
+    "componentName": "MicroservicesExpertTemplate",
+    "id": "microservices-expert",
+    "importPath": "./resume/templates/MicroservicesExpertTemplate"
+  },
+  {
+    "filename": "MilestoneGraduateTemplate.tsx",
+    "componentName": "MilestoneGraduateTemplate",
+    "id": "milestone-graduate",
+    "importPath": "./resume/templates/MilestoneGraduateTemplate"
+  },
+  {
+    "filename": "MinimalChicTemplate.tsx",
+    "componentName": "MinimalChicTemplate",
+    "id": "minimal-chic",
+    "importPath": "./resume/templates/MinimalChicTemplate"
+  },
+  {
+    "filename": "MinimalCorporateProTemplate.tsx",
+    "componentName": "MinimalCorporateProTemplate",
+    "id": "minimal-corporate-pro",
+    "importPath": "./resume/templates/MinimalCorporateProTemplate"
+  },
+  {
+    "filename": "MinimalDirectTemplateTemplate.tsx",
+    "componentName": "MinimalDirectTemplateTemplate",
+    "id": "minimal-direct-template",
+    "importPath": "./resume/templates/MinimalDirectTemplateTemplate"
+  },
+  {
+    "filename": "MinimalEleganceUniversalTemplate.tsx",
+    "componentName": "MinimalEleganceUniversalTemplate",
+    "id": "minimal-elegance-universal",
+    "importPath": "./resume/templates/MinimalEleganceUniversalTemplate"
+  },
+  {
+    "filename": "MinimalLinesUniversalTemplate.tsx",
+    "componentName": "MinimalLinesUniversalTemplate",
+    "id": "minimal-lines-universal",
+    "importPath": "./resume/templates/MinimalLinesUniversalTemplate"
+  },
+  {
+    "filename": "MinimalProLayoutTemplate.tsx",
+    "componentName": "MinimalProLayoutTemplate",
+    "id": "minimal-pro-layout",
+    "importPath": "./resume/templates/MinimalProLayoutTemplate"
+  },
+  {
+    "filename": "MinimalTemplate.tsx",
+    "componentName": "MinimalTemplate",
+    "id": "minimal",
+    "importPath": "./resume/templates/MinimalTemplate"
+  },
+  {
+    "filename": "MinimalistModernProTemplate.tsx",
+    "componentName": "MinimalistModernProTemplate",
+    "id": "minimalist-modern-pro",
+    "importPath": "./resume/templates/MinimalistModernProTemplate"
+  },
+  {
+    "filename": "MinimalistProSimpleTemplate.tsx",
+    "componentName": "MinimalistProSimpleTemplate",
+    "id": "minimalist-pro-simple",
+    "importPath": "./resume/templates/MinimalistProSimpleTemplate"
+  },
+  {
+    "filename": "MinimalistProTemplate.tsx",
+    "componentName": "MinimalistProTemplate",
+    "id": "minimalist-pro",
+    "importPath": "./resume/templates/MinimalistProTemplate"
+  },
+  {
+    "filename": "MintProfessionalTemplate.tsx",
+    "componentName": "MintProfessionalTemplate",
+    "id": "mint-professional",
+    "importPath": "./resume/templates/MintProfessionalTemplate"
+  },
+  {
+    "filename": "MlopsEngineerTemplate.tsx",
+    "componentName": "MlopsEngineerTemplate",
+    "id": "mlops-engineer",
+    "importPath": "./resume/templates/MlopsEngineerTemplate"
+  },
+  {
+    "filename": "MobileDevTemplate.tsx",
+    "componentName": "MobileDevTemplate",
+    "id": "mobile-dev",
+    "importPath": "./resume/templates/MobileDevTemplate"
+  },
+  {
+    "filename": "MobileDeveloperTemplate.tsx",
+    "componentName": "MobileDeveloperTemplate",
+    "id": "mobile-developer",
+    "importPath": "./resume/templates/MobileDeveloperTemplate"
+  },
+  {
+    "filename": "MobileFirstDesignerTemplate.tsx",
+    "componentName": "MobileFirstDesignerTemplate",
+    "id": "mobile-first-designer",
+    "importPath": "./resume/templates/MobileFirstDesignerTemplate"
+  },
+  {
+    "filename": "ModernArtistTemplate.tsx",
+    "componentName": "ModernArtistTemplate",
+    "id": "modern-artist",
+    "importPath": "./resume/templates/ModernArtistTemplate"
+  },
+  {
+    "filename": "ModernBusinessTemplate.tsx",
+    "componentName": "ModernBusinessTemplate",
+    "id": "modern-business",
+    "importPath": "./resume/templates/ModernBusinessTemplate"
+  },
+  {
+    "filename": "ModernClearProTemplate.tsx",
+    "componentName": "ModernClearProTemplate",
+    "id": "modern-clear-pro",
+    "importPath": "./resume/templates/ModernClearProTemplate"
+  },
+  {
+    "filename": "ModernCorporateGridTemplate.tsx",
+    "componentName": "ModernCorporateGridTemplate",
+    "id": "modern-corporate-grid",
+    "importPath": "./resume/templates/ModernCorporateGridTemplate"
+  },
+  {
+    "filename": "ModernDigitalTemplate.tsx",
+    "componentName": "ModernDigitalTemplate",
+    "id": "modern-digital",
+    "importPath": "./resume/templates/ModernDigitalTemplate"
+  },
+  {
+    "filename": "ModernEducatorProfessionTemplate.tsx",
+    "componentName": "ModernEducatorProfessionTemplate",
+    "id": "modern-educator-profession",
+    "importPath": "./resume/templates/ModernEducatorProfessionTemplate"
+  },
+  {
+    "filename": "ModernMinimalistUniversalTemplate.tsx",
+    "componentName": "ModernMinimalistUniversalTemplate",
+    "id": "modern-minimalist-universal",
+    "importPath": "./resume/templates/ModernMinimalistUniversalTemplate"
+  },
+  {
+    "filename": "ModernPlainProTemplate.tsx",
+    "componentName": "ModernPlainProTemplate",
+    "id": "modern-plain-pro",
+    "importPath": "./resume/templates/ModernPlainProTemplate"
+  },
+  {
+    "filename": "ModernProfessionalBoxTemplate.tsx",
+    "componentName": "ModernProfessionalBoxTemplate",
+    "id": "modern-professional-box",
+    "importPath": "./resume/templates/ModernProfessionalBoxTemplate"
+  },
+  {
+    "filename": "ModernProfessionalTemplate.tsx",
+    "componentName": "ModernProfessionalTemplate",
+    "id": "modern-professional",
+    "importPath": "./resume/templates/ModernProfessionalTemplate"
+  },
+  {
+    "filename": "ModernSimpleProTemplate.tsx",
+    "componentName": "ModernSimpleProTemplate",
+    "id": "modern-simple-pro",
+    "importPath": "./resume/templates/ModernSimpleProTemplate"
+  },
+  {
+    "filename": "ModernTemplate.tsx",
+    "componentName": "ModernTemplate",
+    "id": "modern",
+    "importPath": "./resume/templates/ModernTemplate"
+  },
+  {
+    "filename": "MomentumFresherTemplate.tsx",
+    "componentName": "MomentumFresherTemplate",
+    "id": "momentum-fresher",
+    "importPath": "./resume/templates/MomentumFresherTemplate"
+  },
+  {
+    "filename": "MongoDBSpecialistTemplate.tsx",
+    "componentName": "MongoDBSpecialistTemplate",
+    "id": "mongodb-specialist",
+    "importPath": "./resume/templates/MongoDBSpecialistTemplate"
+  },
+  {
+    "filename": "MonospaceTechTemplate.tsx",
+    "componentName": "MonospaceTechTemplate",
+    "id": "monospace-tech",
+    "importPath": "./resume/templates/MonospaceTechTemplate"
+  },
+  {
+    "filename": "MotionDesignerPortfolioTemplate.tsx",
+    "componentName": "MotionDesignerPortfolioTemplate",
+    "id": "motion-designer-portfolio",
+    "importPath": "./resume/templates/MotionDesignerPortfolioTemplate"
+  },
+  {
+    "filename": "MotionDesignerTemplate.tsx",
+    "componentName": "MotionDesignerTemplate",
+    "id": "motion-designer",
+    "importPath": "./resume/templates/MotionDesignerTemplate"
+  },
+  {
+    "filename": "MotionGraphicsArtistTemplate.tsx",
+    "componentName": "MotionGraphicsArtistTemplate",
+    "id": "motion-graphics-artist",
+    "importPath": "./resume/templates/MotionGraphicsArtistTemplate"
+  },
+  {
+    "filename": "MotionUiDesignerTemplate.tsx",
+    "componentName": "MotionUiDesignerTemplate",
+    "id": "motion-ui-designer",
+    "importPath": "./resume/templates/MotionUiDesignerTemplate"
+  },
+  {
+    "filename": "MultiPlatformArtistTemplate.tsx",
+    "componentName": "MultiPlatformArtistTemplate",
+    "id": "multi-platform-artist",
+    "importPath": "./resume/templates/MultiPlatformArtistTemplate"
+  },
+  {
+    "filename": "MultimediaDesignerTemplate.tsx",
+    "componentName": "MultimediaDesignerTemplate",
+    "id": "multimedia-designer",
+    "importPath": "./resume/templates/MultimediaDesignerTemplate"
+  },
+  {
+    "filename": "MuseCreativeTemplate.tsx",
+    "componentName": "MuseCreativeTemplate",
+    "id": "muse-creative",
+    "importPath": "./resume/templates/MuseCreativeTemplate"
+  },
+  {
+    "filename": "NarrativeCreativeTemplate.tsx",
+    "componentName": "NarrativeCreativeTemplate",
+    "id": "narrative-creative",
+    "importPath": "./resume/templates/NarrativeCreativeTemplate"
+  },
+  {
+    "filename": "NavyCorporateTemplate.tsx",
+    "componentName": "NavyCorporateTemplate",
+    "id": "navy-corporate",
+    "importPath": "./resume/templates/NavyCorporateTemplate"
+  },
+  {
+    "filename": "NeonArtistTemplate.tsx",
+    "componentName": "NeonArtistTemplate",
+    "id": "neon-artist",
+    "importPath": "./resume/templates/NeonArtistTemplate"
+  },
+  {
+    "filename": "NestJSBackendTemplate.tsx",
+    "componentName": "NestJSBackendTemplate",
+    "id": "nestjs-backend",
+    "importPath": "./resume/templates/NestJSBackendTemplate"
+  },
+  {
+    "filename": "NetworkedExecutiveTemplate.tsx",
+    "componentName": "NetworkedExecutiveTemplate",
+    "id": "networked-executive",
+    "importPath": "./resume/templates/NetworkedExecutiveTemplate"
+  },
+  {
+    "filename": "NetworkedGraduateTemplate.tsx",
+    "componentName": "NetworkedGraduateTemplate",
+    "id": "networked-graduate",
+    "importPath": "./resume/templates/NetworkedGraduateTemplate"
+  },
+  {
+    "filename": "NeuralEngineerTemplate.tsx",
+    "componentName": "NeuralEngineerTemplate",
+    "id": "neural-engineer",
+    "importPath": "./resume/templates/NeuralEngineerTemplate"
+  },
+  {
+    "filename": "NewspaperStyleUniversalTemplate.tsx",
+    "componentName": "NewspaperStyleUniversalTemplate",
+    "id": "newspaper-style-universal",
+    "importPath": "./resume/templates/NewspaperStyleUniversalTemplate"
+  },
+  {
+    "filename": "NextJSFullstackTemplate.tsx",
+    "componentName": "NextJSFullstackTemplate",
+    "id": "nextjs-fullstack",
+    "importPath": "./resume/templates/NextJSFullstackTemplate"
+  },
+  {
+    "filename": "NextstepFresherTemplate.tsx",
+    "componentName": "NextstepFresherTemplate",
+    "id": "nextstep-fresher",
+    "importPath": "./resume/templates/NextstepFresherTemplate"
+  },
+  {
+    "filename": "NexusEliteTemplate.tsx",
+    "componentName": "NexusEliteTemplate",
+    "id": "nexus-elite",
+    "importPath": "./resume/templates/NexusEliteTemplate"
+  },
+  {
+    "filename": "NodeBackendSpecialistTemplate.tsx",
+    "componentName": "NodeBackendSpecialistTemplate",
+    "id": "node-backend-specialist",
+    "importPath": "./resume/templates/NodeBackendSpecialistTemplate"
+  },
+  {
+    "filename": "NodeJSDeveloperTemplate.tsx",
+    "componentName": "NodeJSDeveloperTemplate",
+    "id": "nodejs-developer",
+    "importPath": "./resume/templates/NodeJSDeveloperTemplate"
+  },
+  {
+    "filename": "NpmPackageAuthorTemplate.tsx",
+    "componentName": "NpmPackageAuthorTemplate",
+    "id": "npm-package-author",
+    "importPath": "./resume/templates/NpmPackageAuthorTemplate"
+  },
+  {
+    "filename": "NurseSpecialistTemplate.tsx",
+    "componentName": "NurseSpecialistTemplate",
+    "id": "nurse-specialist",
+    "importPath": "./resume/templates/NurseSpecialistTemplate"
+  },
+  {
+    "filename": "NursingSpecialistTemplate.tsx",
+    "componentName": "NursingSpecialistTemplate",
+    "id": "nursing-specialist",
+    "importPath": "./resume/templates/NursingSpecialistTemplate"
+  },
+  {
+    "filename": "NutritionistDietitianTemplate.tsx",
+    "componentName": "NutritionistDietitianTemplate",
+    "id": "nutritionist-dietitian",
+    "importPath": "./resume/templates/NutritionistDietitianTemplate"
+  },
+  {
+    "filename": "ObservabilityEngineerTemplate.tsx",
+    "componentName": "ObservabilityEngineerTemplate",
+    "id": "observability-engineer",
+    "importPath": "./resume/templates/ObservabilityEngineerTemplate"
+  },
+  {
+    "filename": "ObsidianExecutiveTemplate.tsx",
+    "componentName": "ObsidianExecutiveTemplate",
+    "id": "obsidian-executive",
+    "importPath": "./resume/templates/ObsidianExecutiveTemplate"
+  },
+  {
+    "filename": "OccupationalTherapistTemplate.tsx",
+    "componentName": "OccupationalTherapistTemplate",
+    "id": "occupational-therapist",
+    "importPath": "./resume/templates/OccupationalTherapistTemplate"
+  },
+  {
+    "filename": "OnlineCourseInstructorTemplate.tsx",
+    "componentName": "OnlineCourseInstructorTemplate",
+    "id": "online-course-instructor",
+    "importPath": "./resume/templates/OnlineCourseInstructorTemplate"
+  },
+  {
+    "filename": "OnlineGalleryArtistTemplate.tsx",
+    "componentName": "OnlineGalleryArtistTemplate",
+    "id": "online-gallery-artist",
+    "importPath": "./resume/templates/OnlineGalleryArtistTemplate"
+  },
+  {
+    "filename": "OnlineIdentityTemplate.tsx",
+    "componentName": "OnlineIdentityTemplate",
+    "id": "online-identity",
+    "importPath": "./resume/templates/OnlineIdentityTemplate"
+  },
+  {
+    "filename": "OnlinePortfolioFresherTemplate.tsx",
+    "componentName": "OnlinePortfolioFresherTemplate",
+    "id": "online-portfolio-fresher",
+    "importPath": "./resume/templates/OnlinePortfolioFresherTemplate"
+  },
+  {
+    "filename": "OnlinePresenceFresherTemplate.tsx",
+    "componentName": "OnlinePresenceFresherTemplate",
+    "id": "online-presence-fresher",
+    "importPath": "./resume/templates/OnlinePresenceFresherTemplate"
+  },
+  {
+    "filename": "OnlineProfessionalTemplate.tsx",
+    "componentName": "OnlineProfessionalTemplate",
+    "id": "online-professional",
+    "importPath": "./resume/templates/OnlineProfessionalTemplate"
+  },
+  {
+    "filename": "OnyxLeadershipTemplate.tsx",
+    "componentName": "OnyxLeadershipTemplate",
+    "id": "onyx-leadership",
+    "importPath": "./resume/templates/OnyxLeadershipTemplate"
+  },
+  {
+    "filename": "OpenSourceContributorTemplate.tsx",
+    "componentName": "OpenSourceContributorTemplate",
+    "id": "open-source-contributor",
+    "importPath": "./resume/templates/OpenSourceContributorTemplate"
+  },
+  {
+    "filename": "OpenSourceTemplate.tsx",
+    "componentName": "OpenSourceTemplate",
+    "id": "open-source",
+    "importPath": "./resume/templates/OpenSourceTemplate"
+  },
+  {
+    "filename": "OpensourceDeveloperTemplate.tsx",
+    "componentName": "OpensourceDeveloperTemplate",
+    "id": "opensource-developer",
+    "importPath": "./resume/templates/OpensourceDeveloperTemplate"
+  },
+  {
+    "filename": "OperationsExcellenceTemplate.tsx",
+    "componentName": "OperationsExcellenceTemplate",
+    "id": "operations-excellence",
+    "importPath": "./resume/templates/OperationsExcellenceTemplate"
+  },
+  {
+    "filename": "OperationsManagerTemplate.tsx",
+    "componentName": "OperationsManagerTemplate",
+    "id": "operations-manager",
+    "importPath": "./resume/templates/OperationsManagerTemplate"
+  },
+  {
+    "filename": "OperationsTwoColumnTemplate.tsx",
+    "componentName": "OperationsTwoColumnTemplate",
+    "id": "operations-two-column",
+    "importPath": "./resume/templates/OperationsTwoColumnTemplate"
+  },
+  {
+    "filename": "OrganizationalDevelopmentTemplate.tsx",
+    "componentName": "OrganizationalDevelopmentTemplate",
+    "id": "organizational-development",
+    "importPath": "./resume/templates/OrganizationalDevelopmentTemplate"
+  },
+  {
+    "filename": "PMExecutiveTemplate.tsx",
+    "componentName": "PMExecutiveTemplate",
+    "id": "p-m-executive",
+    "importPath": "./resume/templates/PMExecutiveTemplate"
+  },
+  {
+    "filename": "PaletteDesignerTemplate.tsx",
+    "componentName": "PaletteDesignerTemplate",
+    "id": "palette-designer",
+    "importPath": "./resume/templates/PaletteDesignerTemplate"
+  },
+  {
+    "filename": "ParalegalCertifiedTemplate.tsx",
+    "componentName": "ParalegalCertifiedTemplate",
+    "id": "paralegal-certified",
+    "importPath": "./resume/templates/ParalegalCertifiedTemplate"
+  },
+  {
+    "filename": "ParalegalTemplate.tsx",
+    "componentName": "ParalegalTemplate",
+    "id": "paralegal",
+    "importPath": "./resume/templates/ParalegalTemplate"
+  },
+  {
+    "filename": "ParallaxStyleUniversalTemplate.tsx",
+    "componentName": "ParallaxStyleUniversalTemplate",
+    "id": "parallax-style-universal",
+    "importPath": "./resume/templates/ParallaxStyleUniversalTemplate"
+  },
+  {
+    "filename": "ParamedicEMTTemplate.tsx",
+    "componentName": "ParamedicEMTTemplate",
+    "id": "paramedic-e-m-t",
+    "importPath": "./resume/templates/ParamedicEMTTemplate"
+  },
+  {
+    "filename": "PastelCreativeTemplate.tsx",
+    "componentName": "PastelCreativeTemplate",
+    "id": "pastel-creative",
+    "importPath": "./resume/templates/PastelCreativeTemplate"
+  },
+  {
+    "filename": "PastryChefTemplate.tsx",
+    "componentName": "PastryChefTemplate",
+    "id": "pastry-chef",
+    "importPath": "./resume/templates/PastryChefTemplate"
+  },
+  {
+    "filename": "PathwayGraduateTemplate.tsx",
+    "componentName": "PathwayGraduateTemplate",
+    "id": "pathway-graduate",
+    "importPath": "./resume/templates/PathwayGraduateTemplate"
+  },
+  {
+    "filename": "PatreonCreativeTemplate.tsx",
+    "componentName": "PatreonCreativeTemplate",
+    "id": "patreon-creative",
+    "importPath": "./resume/templates/PatreonCreativeTemplate"
+  },
+  {
+    "filename": "PatreonCreatorTemplate.tsx",
+    "componentName": "PatreonCreatorTemplate",
+    "id": "patreon-creator",
+    "importPath": "./resume/templates/PatreonCreatorTemplate"
+  },
+  {
+    "filename": "PetroleumEngineerTemplate.tsx",
+    "componentName": "PetroleumEngineerTemplate",
+    "id": "petroleum-engineer",
+    "importPath": "./resume/templates/PetroleumEngineerTemplate"
+  },
+  {
+    "filename": "PewterMinimalistTemplate.tsx",
+    "componentName": "PewterMinimalistTemplate",
+    "id": "pewter-minimalist",
+    "importPath": "./resume/templates/PewterMinimalistTemplate"
+  },
+  {
+    "filename": "PhDCandidateTemplate.tsx",
+    "componentName": "PhDCandidateTemplate",
+    "id": "phd-candidate",
+    "importPath": "./resume/templates/PhDCandidateTemplate"
+  },
+  {
+    "filename": "PharmacistClinicalTemplate.tsx",
+    "componentName": "PharmacistClinicalTemplate",
+    "id": "pharmacist-clinical",
+    "importPath": "./resume/templates/PharmacistClinicalTemplate"
+  },
+  {
+    "filename": "PhotographerProTemplate.tsx",
+    "componentName": "PhotographerProTemplate",
+    "id": "photographer-pro",
+    "importPath": "./resume/templates/PhotographerProTemplate"
+  },
+  {
+    "filename": "PhotographyLayoutTemplate.tsx",
+    "componentName": "PhotographyLayoutTemplate",
+    "id": "photography-layout",
+    "importPath": "./resume/templates/PhotographyLayoutTemplate"
+  },
+  {
+    "filename": "PhotographyProTemplateTemplate.tsx",
+    "componentName": "PhotographyProTemplateTemplate",
+    "id": "photography-pro-template",
+    "importPath": "./resume/templates/PhotographyProTemplateTemplate"
+  },
+  {
+    "filename": "PhysicalTherapistTemplate.tsx",
+    "componentName": "PhysicalTherapistTemplate",
+    "id": "physical-therapist",
+    "importPath": "./resume/templates/PhysicalTherapistTemplate"
+  },
+  {
+    "filename": "PhysicianSpecialistTemplate.tsx",
+    "componentName": "PhysicianSpecialistTemplate",
+    "id": "physician-specialist",
+    "importPath": "./resume/templates/PhysicianSpecialistTemplate"
+  },
+  {
+    "filename": "PinnacleEliteTemplate.tsx",
+    "componentName": "PinnacleEliteTemplate",
+    "id": "pinnacle-elite",
+    "importPath": "./resume/templates/PinnacleEliteTemplate"
+  },
+  {
+    "filename": "PinterestCuratorTemplate.tsx",
+    "componentName": "PinterestCuratorTemplate",
+    "id": "pinterest-curator",
+    "importPath": "./resume/templates/PinterestCuratorTemplate"
+  },
+  {
+    "filename": "PinterestDesignerTemplate.tsx",
+    "componentName": "PinterestDesignerTemplate",
+    "id": "pinterest-designer",
+    "importPath": "./resume/templates/PinterestDesignerTemplate"
+  },
+  {
+    "filename": "PioneerFresherTemplate.tsx",
+    "componentName": "PioneerFresherTemplate",
+    "id": "pioneer-fresher",
+    "importPath": "./resume/templates/PioneerFresherTemplate"
+  },
+  {
+    "filename": "PixelcraftDeveloperTemplate.tsx",
+    "componentName": "PixelcraftDeveloperTemplate",
+    "id": "pixelcraft-developer",
+    "importPath": "./resume/templates/PixelcraftDeveloperTemplate"
+  },
+  {
+    "filename": "PixelperfectDesignerTemplate.tsx",
+    "componentName": "PixelperfectDesignerTemplate",
+    "id": "pixelperfect-designer",
+    "importPath": "./resume/templates/PixelperfectDesignerTemplate"
+  },
+  {
+    "filename": "PlatformEngineerTemplate.tsx",
+    "componentName": "PlatformEngineerTemplate",
+    "id": "platform-engineer",
+    "importPath": "./resume/templates/PlatformEngineerTemplate"
+  },
+  {
+    "filename": "PlatformProfessionalTemplate.tsx",
+    "componentName": "PlatformProfessionalTemplate",
+    "id": "platform-professional",
+    "importPath": "./resume/templates/PlatformProfessionalTemplate"
+  },
+  {
+    "filename": "PlatinumExecutiveTemplate.tsx",
+    "componentName": "PlatinumExecutiveTemplate",
+    "id": "platinum-executive",
+    "importPath": "./resume/templates/PlatinumExecutiveTemplate"
+  },
+  {
+    "filename": "PlatinumPrestigeTemplate.tsx",
+    "componentName": "PlatinumPrestigeTemplate",
+    "id": "platinum-prestige",
+    "importPath": "./resume/templates/PlatinumPrestigeTemplate"
+  },
+  {
+    "filename": "PlumProfessionalTemplate.tsx",
+    "componentName": "PlumProfessionalTemplate",
+    "id": "plum-professional",
+    "importPath": "./resume/templates/PlumProfessionalTemplate"
+  },
+  {
+    "filename": "PortfolioArtistTemplate.tsx",
+    "componentName": "PortfolioArtistTemplate",
+    "id": "portfolio-artist",
+    "importPath": "./resume/templates/PortfolioArtistTemplate"
+  },
+  {
+    "filename": "PortfolioCoderTemplate.tsx",
+    "componentName": "PortfolioCoderTemplate",
+    "id": "portfolio-coder",
+    "importPath": "./resume/templates/PortfolioCoderTemplate"
+  },
+  {
+    "filename": "PortfolioFirstGraduateTemplate.tsx",
+    "componentName": "PortfolioFirstGraduateTemplate",
+    "id": "portfolio-first-graduate",
+    "importPath": "./resume/templates/PortfolioFirstGraduateTemplate"
+  },
+  {
+    "filename": "PortfolioGraduateTemplate.tsx",
+    "componentName": "PortfolioGraduateTemplate",
+    "id": "portfolio-graduate",
+    "importPath": "./resume/templates/PortfolioGraduateTemplate"
+  },
+  {
+    "filename": "PortfolioManagerTemplate.tsx",
+    "componentName": "PortfolioManagerTemplate",
+    "id": "portfolio-manager",
+    "importPath": "./resume/templates/PortfolioManagerTemplate"
+  },
+  {
+    "filename": "PortfolioMinimalistTemplate.tsx",
+    "componentName": "PortfolioMinimalistTemplate",
+    "id": "portfolio-minimalist",
+    "importPath": "./resume/templates/PortfolioMinimalistTemplate"
+  },
+  {
+    "filename": "PortfolioProfessionalTemplate.tsx",
+    "componentName": "PortfolioProfessionalTemplate",
+    "id": "portfolio-professional",
+    "importPath": "./resume/templates/PortfolioProfessionalTemplate"
+  },
+  {
+    "filename": "PortfolioShowcaseTemplate.tsx",
+    "componentName": "PortfolioShowcaseTemplate",
+    "id": "portfolio-showcase",
+    "importPath": "./resume/templates/PortfolioShowcaseTemplate"
+  },
+  {
+    "filename": "PortfolioWebsiteCreativeTemplate.tsx",
+    "componentName": "PortfolioWebsiteCreativeTemplate",
+    "id": "portfolio-website-creative",
+    "importPath": "./resume/templates/PortfolioWebsiteCreativeTemplate"
+  },
+  {
+    "filename": "PostgreSQLDBATemplate.tsx",
+    "componentName": "PostgreSQLDBATemplate",
+    "id": "postgresqldba",
+    "importPath": "./resume/templates/PostgreSQLDBATemplate"
+  },
+  {
+    "filename": "PostgreSQLExpertTemplate.tsx",
+    "componentName": "PostgreSQLExpertTemplate",
+    "id": "postgresql-expert",
+    "importPath": "./resume/templates/PostgreSQLExpertTemplate"
+  },
+  {
+    "filename": "PotentialFresherTemplate.tsx",
+    "componentName": "PotentialFresherTemplate",
+    "id": "potential-fresher",
+    "importPath": "./resume/templates/PotentialFresherTemplate"
+  },
+  {
+    "filename": "PremiumCorporateEdgeTemplate.tsx",
+    "componentName": "PremiumCorporateEdgeTemplate",
+    "id": "premium-corporate-edge",
+    "importPath": "./resume/templates/PremiumCorporateEdgeTemplate"
+  },
+  {
+    "filename": "PremiumEliteTemplate.tsx",
+    "componentName": "PremiumEliteTemplate",
+    "id": "premium-elite",
+    "importPath": "./resume/templates/PremiumEliteTemplate"
+  },
+  {
+    "filename": "PremiumFresherTemplate.tsx",
+    "componentName": "PremiumFresherTemplate",
+    "id": "premium-fresher",
+    "importPath": "./resume/templates/PremiumFresherTemplate"
+  },
+  {
+    "filename": "PremiumProTemplate.tsx",
+    "componentName": "PremiumProTemplate",
+    "id": "premium-pro",
+    "importPath": "./resume/templates/PremiumProTemplate"
+  },
+  {
+    "filename": "PremiumUniversalTemplate.tsx",
+    "componentName": "PremiumUniversalTemplate",
+    "id": "premium-universal",
+    "importPath": "./resume/templates/PremiumUniversalTemplate"
+  },
+  {
+    "filename": "PrincipalSoftwareEngineerTemplate.tsx",
+    "componentName": "PrincipalSoftwareEngineerTemplate",
+    "id": "principal-software-engineer",
+    "importPath": "./resume/templates/PrincipalSoftwareEngineerTemplate"
+  },
+  {
+    "filename": "PrincipleAnimatorTemplate.tsx",
+    "componentName": "PrincipleAnimatorTemplate",
+    "id": "principle-animator",
+    "importPath": "./resume/templates/PrincipleAnimatorTemplate"
+  },
+  {
+    "filename": "PrismProfessionalTemplate.tsx",
+    "componentName": "PrismProfessionalTemplate",
+    "id": "prism-professional",
+    "importPath": "./resume/templates/PrismProfessionalTemplate"
+  },
+  {
+    "filename": "PrivateTutorSpecialistTemplate.tsx",
+    "componentName": "PrivateTutorSpecialistTemplate",
+    "id": "private-tutor-specialist",
+    "importPath": "./resume/templates/PrivateTutorSpecialistTemplate"
+  },
+  {
+    "filename": "ProcessImprovementTemplate.tsx",
+    "componentName": "ProcessImprovementTemplate",
+    "id": "process-improvement",
+    "importPath": "./resume/templates/ProcessImprovementTemplate"
+  },
+  {
+    "filename": "ProcurementSpecialistTemplate.tsx",
+    "componentName": "ProcurementSpecialistTemplate",
+    "id": "procurement-specialist",
+    "importPath": "./resume/templates/ProcurementSpecialistTemplate"
+  },
+  {
+    "filename": "ProductDesignerProTemplate.tsx",
+    "componentName": "ProductDesignerProTemplate",
+    "id": "product-designer-pro",
+    "importPath": "./resume/templates/ProductDesignerProTemplate"
+  },
+  {
+    "filename": "ProductDesignerShowcaseTemplate.tsx",
+    "componentName": "ProductDesignerShowcaseTemplate",
+    "id": "product-designer-showcase",
+    "importPath": "./resume/templates/ProductDesignerShowcaseTemplate"
+  },
+  {
+    "filename": "ProductDesignerUXTemplate.tsx",
+    "componentName": "ProductDesignerUXTemplate",
+    "id": "product-designerux",
+    "importPath": "./resume/templates/ProductDesignerUXTemplate"
+  },
+  {
+    "filename": "ProductMarketingManagerTemplate.tsx",
+    "componentName": "ProductMarketingManagerTemplate",
+    "id": "product-marketing-manager",
+    "importPath": "./resume/templates/ProductMarketingManagerTemplate"
+  },
+  {
+    "filename": "ProfessionalAccentBarTemplate.tsx",
+    "componentName": "ProfessionalAccentBarTemplate",
+    "id": "professional-accent-bar",
+    "importPath": "./resume/templates/ProfessionalAccentBarTemplate"
+  },
+  {
+    "filename": "ProfessionalBasicModernTemplate.tsx",
+    "componentName": "ProfessionalBasicModernTemplate",
+    "id": "professional-basic-modern",
+    "importPath": "./resume/templates/ProfessionalBasicModernTemplate"
+  },
+  {
+    "filename": "ProfessionalClassicTemplate.tsx",
+    "componentName": "ProfessionalClassicTemplate",
+    "id": "professional-classic",
+    "importPath": "./resume/templates/ProfessionalClassicTemplate"
+  },
+  {
+    "filename": "ProfessionalCleanSimpleTemplate.tsx",
+    "componentName": "ProfessionalCleanSimpleTemplate",
+    "id": "professional-clean-simple",
+    "importPath": "./resume/templates/ProfessionalCleanSimpleTemplate"
+  },
+  {
+    "filename": "ProfessionalCompactUniversalTemplate.tsx",
+    "componentName": "ProfessionalCompactUniversalTemplate",
+    "id": "professional-compact-universal",
+    "importPath": "./resume/templates/ProfessionalCompactUniversalTemplate"
+  },
+  {
+    "filename": "ProfessionalDividerTemplate.tsx",
+    "componentName": "ProfessionalDividerTemplate",
+    "id": "professional-divider",
+    "importPath": "./resume/templates/ProfessionalDividerTemplate"
+  },
+  {
+    "filename": "ProfessionalEasyReadTemplate.tsx",
+    "componentName": "ProfessionalEasyReadTemplate",
+    "id": "professional-easy-read",
+    "importPath": "./resume/templates/ProfessionalEasyReadTemplate"
+  },
+  {
+    "filename": "ProfessionalGridTemplate.tsx",
+    "componentName": "ProfessionalGridTemplate",
+    "id": "professional-grid",
+    "importPath": "./resume/templates/ProfessionalGridTemplate"
+  },
+  {
+    "filename": "ProfessionalHeaderBannerTemplate.tsx",
+    "componentName": "ProfessionalHeaderBannerTemplate",
+    "id": "professional-header-banner",
+    "importPath": "./resume/templates/ProfessionalHeaderBannerTemplate"
+  },
+  {
+    "filename": "ProfessionalModernEdgeTemplate.tsx",
+    "componentName": "ProfessionalModernEdgeTemplate",
+    "id": "professional-modern-edge",
+    "importPath": "./resume/templates/ProfessionalModernEdgeTemplate"
+  },
+  {
+    "filename": "ProfessionalPlainSimpleTemplate.tsx",
+    "componentName": "ProfessionalPlainSimpleTemplate",
+    "id": "professional-plain-simple",
+    "importPath": "./resume/templates/ProfessionalPlainSimpleTemplate"
+  },
+  {
+    "filename": "ProfessionalReadableLayoutTemplate.tsx",
+    "componentName": "ProfessionalReadableLayoutTemplate",
+    "id": "professional-readable-layout",
+    "importPath": "./resume/templates/ProfessionalReadableLayoutTemplate"
+  },
+  {
+    "filename": "ProfessionalStraightforwardTemplate.tsx",
+    "componentName": "ProfessionalStraightforwardTemplate",
+    "id": "professional-straightforward",
+    "importPath": "./resume/templates/ProfessionalStraightforwardTemplate"
+  },
+  {
+    "filename": "ProfessionalTemplate.tsx",
+    "componentName": "ProfessionalTemplate",
+    "id": "professional",
+    "importPath": "./resume/templates/ProfessionalTemplate"
+  },
+  {
+    "filename": "ProfessionalTimelineTemplate.tsx",
+    "componentName": "ProfessionalTimelineTemplate",
+    "id": "professional-timeline",
+    "importPath": "./resume/templates/ProfessionalTimelineTemplate"
+  },
+  {
+    "filename": "ProfessionalVerticalLineTemplate.tsx",
+    "componentName": "ProfessionalVerticalLineTemplate",
+    "id": "professional-vertical-line",
+    "importPath": "./resume/templates/ProfessionalVerticalLineTemplate"
+  },
+  {
+    "filename": "ProfileCentricTemplate.tsx",
+    "componentName": "ProfileCentricTemplate",
+    "id": "profile-centric",
+    "importPath": "./resume/templates/ProfileCentricTemplate"
+  },
+  {
+    "filename": "ProfileDrivenGradTemplate.tsx",
+    "componentName": "ProfileDrivenGradTemplate",
+    "id": "profile-driven-grad",
+    "importPath": "./resume/templates/ProfileDrivenGradTemplate"
+  },
+  {
+    "filename": "ProjectManagerPMPTemplate.tsx",
+    "componentName": "ProjectManagerPMPTemplate",
+    "id": "project-managerpmp",
+    "importPath": "./resume/templates/ProjectManagerPMPTemplate"
+  },
+  {
+    "filename": "ProjectManagerProTemplate.tsx",
+    "componentName": "ProjectManagerProTemplate",
+    "id": "project-manager-pro",
+    "importPath": "./resume/templates/ProjectManagerProTemplate"
+  },
+  {
+    "filename": "ProjectShowcaseGradTemplate.tsx",
+    "componentName": "ProjectShowcaseGradTemplate",
+    "id": "project-showcase-grad",
+    "importPath": "./resume/templates/ProjectShowcaseGradTemplate"
+  },
+  {
+    "filename": "PropertyManagerCommercialTemplate.tsx",
+    "componentName": "PropertyManagerCommercialTemplate",
+    "id": "property-manager-commercial",
+    "importPath": "./resume/templates/PropertyManagerCommercialTemplate"
+  },
+  {
+    "filename": "ProtfolioShowcaseUxTemplate.tsx",
+    "componentName": "ProtfolioShowcaseUxTemplate",
+    "id": "protfolio-showcase-ux",
+    "importPath": "./resume/templates/ProtfolioShowcaseUxTemplate"
+  },
+  {
+    "filename": "PrototypeSpecialistTemplate.tsx",
+    "componentName": "PrototypeSpecialistTemplate",
+    "id": "prototype-specialist",
+    "importPath": "./resume/templates/PrototypeSpecialistTemplate"
+  },
+  {
+    "filename": "PyTorchDeveloperTemplate.tsx",
+    "componentName": "PyTorchDeveloperTemplate",
+    "id": "py-torch-developer",
+    "importPath": "./resume/templates/PyTorchDeveloperTemplate"
+  },
+  {
+    "filename": "PypiContributorTemplate.tsx",
+    "componentName": "PypiContributorTemplate",
+    "id": "pypi-contributor",
+    "importPath": "./resume/templates/PypiContributorTemplate"
+  },
+  {
+    "filename": "PythonDeveloperProTemplate.tsx",
+    "componentName": "PythonDeveloperProTemplate",
+    "id": "python-developer-pro",
+    "importPath": "./resume/templates/PythonDeveloperProTemplate"
+  },
+  {
+    "filename": "PythonDeveloperTemplate.tsx",
+    "componentName": "PythonDeveloperTemplate",
+    "id": "python-developer",
+    "importPath": "./resume/templates/PythonDeveloperTemplate"
+  },
+  {
+    "filename": "PythonMLEngineerTemplate.tsx",
+    "componentName": "PythonMLEngineerTemplate",
+    "id": "pythonml-engineer",
+    "importPath": "./resume/templates/PythonMLEngineerTemplate"
+  },
+  {
+    "filename": "QAAutomationEngineerTemplate.tsx",
+    "componentName": "QAAutomationEngineerTemplate",
+    "id": "qa-automation-engineer",
+    "importPath": "./resume/templates/QAAutomationEngineerTemplate"
+  },
+  {
+    "filename": "QualityAssuranceEngineerTemplate.tsx",
+    "componentName": "QualityAssuranceEngineerTemplate",
+    "id": "quality-assurance-engineer",
+    "importPath": "./resume/templates/QualityAssuranceEngineerTemplate"
+  },
+  {
+    "filename": "QuantumCoderTemplate.tsx",
+    "componentName": "QuantumCoderTemplate",
+    "id": "quantum-coder",
+    "importPath": "./resume/templates/QuantumCoderTemplate"
+  },
+  {
+    "filename": "QuantumProfessionalTemplate.tsx",
+    "componentName": "QuantumProfessionalTemplate",
+    "id": "quantum-professional",
+    "importPath": "./resume/templates/QuantumProfessionalTemplate"
+  },
+  {
+    "filename": "RabbitMQSpecialistTemplate.tsx",
+    "componentName": "RabbitMQSpecialistTemplate",
+    "id": "rabbit-m-q-specialist",
+    "importPath": "./resume/templates/RabbitMQSpecialistTemplate"
+  },
+  {
+    "filename": "RadianceCorporateTemplate.tsx",
+    "componentName": "RadianceCorporateTemplate",
+    "id": "radiance-corporate",
+    "importPath": "./resume/templates/RadianceCorporateTemplate"
+  },
+  {
+    "filename": "RadiologyTechnicianTemplate.tsx",
+    "componentName": "RadiologyTechnicianTemplate",
+    "id": "radiology-technician",
+    "importPath": "./resume/templates/RadiologyTechnicianTemplate"
+  },
+  {
+    "filename": "RailsDeveloperTemplate.tsx",
+    "componentName": "RailsDeveloperTemplate",
+    "id": "rails-developer",
+    "importPath": "./resume/templates/RailsDeveloperTemplate"
+  },
+  {
+    "filename": "ReactDeveloperTemplate.tsx",
+    "componentName": "ReactDeveloperTemplate",
+    "id": "react-developer",
+    "importPath": "./resume/templates/ReactDeveloperTemplate"
+  },
+  {
+    "filename": "ReactFrontendProTemplate.tsx",
+    "componentName": "ReactFrontendProTemplate",
+    "id": "react-frontend-pro",
+    "importPath": "./resume/templates/ReactFrontendProTemplate"
+  },
+  {
+    "filename": "ReactNativeDevTemplate.tsx",
+    "componentName": "ReactNativeDevTemplate",
+    "id": "react-native-dev",
+    "importPath": "./resume/templates/ReactNativeDevTemplate"
+  },
+  {
+    "filename": "ReactNativeDeveloperTemplate.tsx",
+    "componentName": "ReactNativeDeveloperTemplate",
+    "id": "react-native-developer",
+    "importPath": "./resume/templates/ReactNativeDeveloperTemplate"
+  },
+  {
+    "filename": "ReactNativeExpertTemplate.tsx",
+    "componentName": "ReactNativeExpertTemplate",
+    "id": "react-native-expert",
+    "importPath": "./resume/templates/ReactNativeExpertTemplate"
+  },
+  {
+    "filename": "RealEstateAppraiserTemplate.tsx",
+    "componentName": "RealEstateAppraiserTemplate",
+    "id": "real-estate-appraiser",
+    "importPath": "./resume/templates/RealEstateAppraiserTemplate"
+  },
+  {
+    "filename": "RealEstateBrokerTemplate.tsx",
+    "componentName": "RealEstateBrokerTemplate",
+    "id": "real-estate-broker",
+    "importPath": "./resume/templates/RealEstateBrokerTemplate"
+  },
+  {
+    "filename": "RedisCacheSpecialistTemplate.tsx",
+    "componentName": "RedisCacheSpecialistTemplate",
+    "id": "redis-cache-specialist",
+    "importPath": "./resume/templates/RedisCacheSpecialistTemplate"
+  },
+  {
+    "filename": "RedisEngineerTemplate.tsx",
+    "componentName": "RedisEngineerTemplate",
+    "id": "redis-engineer",
+    "importPath": "./resume/templates/RedisEngineerTemplate"
+  },
+  {
+    "filename": "RefinedTemplate.tsx",
+    "componentName": "RefinedTemplate",
+    "id": "refined",
+    "importPath": "./resume/templates/RefinedTemplate"
+  },
+  {
+    "filename": "RegisteredNurseProTemplate.tsx",
+    "componentName": "RegisteredNurseProTemplate",
+    "id": "registered-nurse-pro",
+    "importPath": "./resume/templates/RegisteredNurseProTemplate"
+  },
+  {
+    "filename": "RemoteWorkReadyTemplate.tsx",
+    "componentName": "RemoteWorkReadyTemplate",
+    "id": "remote-work-ready",
+    "importPath": "./resume/templates/RemoteWorkReadyTemplate"
+  },
+  {
+    "filename": "ResearchGraduateTemplate.tsx",
+    "componentName": "ResearchGraduateTemplate",
+    "id": "research-graduate",
+    "importPath": "./resume/templates/ResearchGraduateTemplate"
+  },
+  {
+    "filename": "ResearchPublicationGradTemplate.tsx",
+    "componentName": "ResearchPublicationGradTemplate",
+    "id": "research-publication-grad",
+    "importPath": "./resume/templates/ResearchPublicationGradTemplate"
+  },
+  {
+    "filename": "ResponsiveUxTemplate.tsx",
+    "componentName": "ResponsiveUxTemplate",
+    "id": "responsive-ux",
+    "importPath": "./resume/templates/ResponsiveUxTemplate"
+  },
+  {
+    "filename": "RestaurantManagerTemplate.tsx",
+    "componentName": "RestaurantManagerTemplate",
+    "id": "restaurant-manager",
+    "importPath": "./resume/templates/RestaurantManagerTemplate"
+  },
+  {
+    "filename": "RetroProfessionalUniversalTemplate.tsx",
+    "componentName": "RetroProfessionalUniversalTemplate",
+    "id": "retro-professional-universal",
+    "importPath": "./resume/templates/RetroProfessionalUniversalTemplate"
+  },
+  {
+    "filename": "RiskManagementAnalystTemplate.tsx",
+    "componentName": "RiskManagementAnalystTemplate",
+    "id": "risk-management-analyst",
+    "importPath": "./resume/templates/RiskManagementAnalystTemplate"
+  },
+  {
+    "filename": "RoboticsEngineerTemplate.tsx",
+    "componentName": "RoboticsEngineerTemplate",
+    "id": "robotics-engineer",
+    "importPath": "./resume/templates/RoboticsEngineerTemplate"
+  },
+  {
+    "filename": "RoseProfessionalTemplate.tsx",
+    "componentName": "RoseProfessionalTemplate",
+    "id": "rose-professional",
+    "importPath": "./resume/templates/RoseProfessionalTemplate"
+  },
+  {
+    "filename": "RoundedCornersUniversalTemplate.tsx",
+    "componentName": "RoundedCornersUniversalTemplate",
+    "id": "rounded-corners-universal",
+    "importPath": "./resume/templates/RoundedCornersUniversalTemplate"
+  },
+  {
+    "filename": "RubyCorporateTemplate.tsx",
+    "componentName": "RubyCorporateTemplate",
+    "id": "ruby-corporate",
+    "importPath": "./resume/templates/RubyCorporateTemplate"
+  },
+  {
+    "filename": "RustDeveloperProTemplate.tsx",
+    "componentName": "RustDeveloperProTemplate",
+    "id": "rust-developer-pro",
+    "importPath": "./resume/templates/RustDeveloperProTemplate"
+  },
+  {
+    "filename": "RustSystemsEngineerTemplate.tsx",
+    "componentName": "RustSystemsEngineerTemplate",
+    "id": "rust-systems-engineer",
+    "importPath": "./resume/templates/RustSystemsEngineerTemplate"
+  },
+  {
+    "filename": "SEOSpecialistProTemplate.tsx",
+    "componentName": "SEOSpecialistProTemplate",
+    "id": "s-e-o-specialist-pro",
+    "importPath": "./resume/templates/SEOSpecialistProTemplate"
+  },
+  {
+    "filename": "STEMGraduateTemplate.tsx",
+    "componentName": "STEMGraduateTemplate",
+    "id": "stem-graduate",
+    "importPath": "./resume/templates/STEMGraduateTemplate"
+  },
+  {
+    "filename": "SalesAchievementTemplate.tsx",
+    "componentName": "SalesAchievementTemplate",
+    "id": "sales-achievement",
+    "importPath": "./resume/templates/SalesAchievementTemplate"
+  },
+  {
+    "filename": "SalesExecutiveProTemplate.tsx",
+    "componentName": "SalesExecutiveProTemplate",
+    "id": "sales-executive-pro",
+    "importPath": "./resume/templates/SalesExecutiveProTemplate"
+  },
+  {
+    "filename": "SalesExecutiveTemplate.tsx",
+    "componentName": "SalesExecutiveTemplate",
+    "id": "sales-executive",
+    "importPath": "./resume/templates/SalesExecutiveTemplate"
+  },
+  {
+    "filename": "SalesManagerTemplate.tsx",
+    "componentName": "SalesManagerTemplate",
+    "id": "sales-manager",
+    "importPath": "./resume/templates/SalesManagerTemplate"
+  },
+  {
+    "filename": "SalesMarketingHybridTemplate.tsx",
+    "componentName": "SalesMarketingHybridTemplate",
+    "id": "sales-marketing-hybrid",
+    "importPath": "./resume/templates/SalesMarketingHybridTemplate"
+  },
+  {
+    "filename": "SapphireExecutiveTemplate.tsx",
+    "componentName": "SapphireExecutiveTemplate",
+    "id": "sapphire-executive",
+    "importPath": "./resume/templates/SapphireExecutiveTemplate"
+  },
+  {
+    "filename": "SapphireProfessionalTemplate.tsx",
+    "componentName": "SapphireProfessionalTemplate",
+    "id": "sapphire-professional",
+    "importPath": "./resume/templates/SapphireProfessionalTemplate"
+  },
+  {
+    "filename": "ScalaBackendEngineerTemplate.tsx",
+    "componentName": "ScalaBackendEngineerTemplate",
+    "id": "scala-backend-engineer",
+    "importPath": "./resume/templates/ScalaBackendEngineerTemplate"
+  },
+  {
+    "filename": "ScalaEngineerTemplate.tsx",
+    "componentName": "ScalaEngineerTemplate",
+    "id": "scala-engineer",
+    "importPath": "./resume/templates/ScalaEngineerTemplate"
+  },
+  {
+    "filename": "ScholarshipGraduateTemplate.tsx",
+    "componentName": "ScholarshipGraduateTemplate",
+    "id": "scholarship-graduate",
+    "importPath": "./resume/templates/ScholarshipGraduateTemplate"
+  },
+  {
+    "filename": "SecurityEngineerTemplate.tsx",
+    "componentName": "SecurityEngineerTemplate",
+    "id": "security-engineer",
+    "importPath": "./resume/templates/SecurityEngineerTemplate"
+  },
+  {
+    "filename": "SeniorBackendTemplate.tsx",
+    "componentName": "SeniorBackendTemplate",
+    "id": "senior-backend",
+    "importPath": "./resume/templates/SeniorBackendTemplate"
+  },
+  {
+    "filename": "SeniorDevOpsEngineerTemplate.tsx",
+    "componentName": "SeniorDevOpsEngineerTemplate",
+    "id": "seniordevops-engineer",
+    "importPath": "./resume/templates/SeniorDevOpsEngineerTemplate"
+  },
+  {
+    "filename": "SeniorDotNetDeveloperTemplate.tsx",
+    "componentName": "SeniorDotNetDeveloperTemplate",
+    "id": "seniordotnet-developer",
+    "importPath": "./resume/templates/SeniorDotNetDeveloperTemplate"
+  },
+  {
+    "filename": "SeniorExecutiveProTemplate.tsx",
+    "componentName": "SeniorExecutiveProTemplate",
+    "id": "senior-executive-pro",
+    "importPath": "./resume/templates/SeniorExecutiveProTemplate"
+  },
+  {
+    "filename": "SeniorFrontendTemplate.tsx",
+    "componentName": "SeniorFrontendTemplate",
+    "id": "senior-frontend",
+    "importPath": "./resume/templates/SeniorFrontendTemplate"
+  },
+  {
+    "filename": "SeniorFullStackDeveloperTemplate.tsx",
+    "componentName": "SeniorFullStackDeveloperTemplate",
+    "id": "senior-full-stack-developer",
+    "importPath": "./resume/templates/SeniorFullStackDeveloperTemplate"
+  },
+  {
+    "filename": "SeniorJavaDeveloperTemplate.tsx",
+    "componentName": "SeniorJavaDeveloperTemplate",
+    "id": "senior-java-developer",
+    "importPath": "./resume/templates/SeniorJavaDeveloperTemplate"
+  },
+  {
+    "filename": "SeniorMobileEngineerTemplate.tsx",
+    "componentName": "SeniorMobileEngineerTemplate",
+    "id": "senior-mobile-engineer",
+    "importPath": "./resume/templates/SeniorMobileEngineerTemplate"
+  },
+  {
+    "filename": "SeniorTemplate.tsx",
+    "componentName": "SeniorTemplate",
+    "id": "senior",
+    "importPath": "./resume/templates/SeniorTemplate"
+  },
+  {
+    "filename": "SerenityMinimalTemplate.tsx",
+    "componentName": "SerenityMinimalTemplate",
+    "id": "serenity-minimal",
+    "importPath": "./resume/templates/SerenityMinimalTemplate"
+  },
+  {
+    "filename": "ServerlessDeveloperTemplate.tsx",
+    "componentName": "ServerlessDeveloperTemplate",
+    "id": "serverless-developer",
+    "importPath": "./resume/templates/ServerlessDeveloperTemplate"
+  },
+  {
+    "filename": "ServerlessSpecialistTemplate.tsx",
+    "componentName": "ServerlessSpecialistTemplate",
+    "id": "serverless-specialist",
+    "importPath": "./resume/templates/ServerlessSpecialistTemplate"
+  },
+  {
+    "filename": "ServiceDesignerTemplate.tsx",
+    "componentName": "ServiceDesignerTemplate",
+    "id": "service-designer",
+    "importPath": "./resume/templates/ServiceDesignerTemplate"
+  },
+  {
+    "filename": "ServicedesignSpecialistTemplate.tsx",
+    "componentName": "ServicedesignSpecialistTemplate",
+    "id": "servicedesign-specialist",
+    "importPath": "./resume/templates/ServicedesignSpecialistTemplate"
+  },
+  {
+    "filename": "SidebarAccentTemplate.tsx",
+    "componentName": "SidebarAccentTemplate",
+    "id": "sidebar-accent",
+    "importPath": "./resume/templates/SidebarAccentTemplate"
+  },
+  {
+    "filename": "SimpleBusinessCleanTemplate.tsx",
+    "componentName": "SimpleBusinessCleanTemplate",
+    "id": "simple-business-clean",
+    "importPath": "./resume/templates/SimpleBusinessCleanTemplate"
+  },
+  {
+    "filename": "SimpleClearBusinessTemplate.tsx",
+    "componentName": "SimpleClearBusinessTemplate",
+    "id": "simple-clear-business",
+    "importPath": "./resume/templates/SimpleClearBusinessTemplate"
+  },
+  {
+    "filename": "SimpleExecutiveLayoutTemplate.tsx",
+    "componentName": "SimpleExecutiveLayoutTemplate",
+    "id": "simple-executive-layout",
+    "importPath": "./resume/templates/SimpleExecutiveLayoutTemplate"
+  },
+  {
+    "filename": "SimpleModernExecutiveTemplate.tsx",
+    "componentName": "SimpleModernExecutiveTemplate",
+    "id": "simple-modern-executive",
+    "importPath": "./resume/templates/SimpleModernExecutiveTemplate"
+  },
+  {
+    "filename": "SimpleProfessionalCleanTemplate.tsx",
+    "componentName": "SimpleProfessionalCleanTemplate",
+    "id": "simple-professional-clean",
+    "importPath": "./resume/templates/SimpleProfessionalCleanTemplate"
+  },
+  {
+    "filename": "SimpleStructuredTemplateTemplate.tsx",
+    "componentName": "SimpleStructuredTemplateTemplate",
+    "id": "simple-structured-template",
+    "importPath": "./resume/templates/SimpleStructuredTemplateTemplate"
+  },
+  {
+    "filename": "SiteReliabilityEngineerTemplate.tsx",
+    "componentName": "SiteReliabilityEngineerTemplate",
+    "id": "site-reliability-engineer",
+    "importPath": "./resume/templates/SiteReliabilityEngineerTemplate"
+  },
+  {
+    "filename": "SketchExpertPortfolioTemplate.tsx",
+    "componentName": "SketchExpertPortfolioTemplate",
+    "id": "sketch-expert-portfolio",
+    "importPath": "./resume/templates/SketchExpertPortfolioTemplate"
+  },
+  {
+    "filename": "SketchSpecialistTemplate.tsx",
+    "componentName": "SketchSpecialistTemplate",
+    "id": "sketch-specialist",
+    "importPath": "./resume/templates/SketchSpecialistTemplate"
+  },
+  {
+    "filename": "SkyModernTemplate.tsx",
+    "componentName": "SkyModernTemplate",
+    "id": "sky-modern",
+    "importPath": "./resume/templates/SkyModernTemplate"
+  },
+  {
+    "filename": "SlateMinimalistTemplate.tsx",
+    "componentName": "SlateMinimalistTemplate",
+    "id": "slate-minimalist",
+    "importPath": "./resume/templates/SlateMinimalistTemplate"
+  },
+  {
+    "filename": "SocialCreativeInfluencerTemplate.tsx",
+    "componentName": "SocialCreativeInfluencerTemplate",
+    "id": "social-creative-influencer",
+    "importPath": "./resume/templates/SocialCreativeInfluencerTemplate"
+  },
+  {
+    "filename": "SocialExecutiveTemplate.tsx",
+    "componentName": "SocialExecutiveTemplate",
+    "id": "social-executive",
+    "importPath": "./resume/templates/SocialExecutiveTemplate"
+  },
+  {
+    "filename": "SocialFirstFresherTemplate.tsx",
+    "componentName": "SocialFirstFresherTemplate",
+    "id": "social-first-fresher",
+    "importPath": "./resume/templates/SocialFirstFresherTemplate"
+  },
+  {
+    "filename": "SocialGraduateTemplate.tsx",
+    "componentName": "SocialGraduateTemplate",
+    "id": "social-graduate",
+    "importPath": "./resume/templates/SocialGraduateTemplate"
+  },
+  {
+    "filename": "SocialMediaCreativeTemplate.tsx",
+    "componentName": "SocialMediaCreativeTemplate",
+    "id": "social-media-creative",
+    "importPath": "./resume/templates/SocialMediaCreativeTemplate"
+  },
+  {
+    "filename": "SocialMediaProTemplate.tsx",
+    "componentName": "SocialMediaProTemplate",
+    "id": "social-media-pro",
+    "importPath": "./resume/templates/SocialMediaProTemplate"
+  },
+  {
+    "filename": "SocialMediaSavvyGradTemplate.tsx",
+    "componentName": "SocialMediaSavvyGradTemplate",
+    "id": "social-media-savvy-grad",
+    "importPath": "./resume/templates/SocialMediaSavvyGradTemplate"
+  },
+  {
+    "filename": "SocialSavvyTemplate.tsx",
+    "componentName": "SocialSavvyTemplate",
+    "id": "social-savvy",
+    "importPath": "./resume/templates/SocialSavvyTemplate"
+  },
+  {
+    "filename": "SoftwareCraftsmanTemplate.tsx",
+    "componentName": "SoftwareCraftsmanTemplate",
+    "id": "software-craftsman",
+    "importPath": "./resume/templates/SoftwareCraftsmanTemplate"
+  },
+  {
+    "filename": "SoftwareMasterTemplate.tsx",
+    "componentName": "SoftwareMasterTemplate",
+    "id": "software-master",
+    "importPath": "./resume/templates/SoftwareMasterTemplate"
+  },
+  {
+    "filename": "SoftwareTemplate.tsx",
+    "componentName": "SoftwareTemplate",
+    "id": "software",
+    "importPath": "./resume/templates/SoftwareTemplate"
+  },
+  {
+    "filename": "SoftwareVisionTemplate.tsx",
+    "componentName": "SoftwareVisionTemplate",
+    "id": "software-vision",
+    "importPath": "./resume/templates/SoftwareVisionTemplate"
+  },
+  {
+    "filename": "SolidityDeveloperTemplate.tsx",
+    "componentName": "SolidityDeveloperTemplate",
+    "id": "solidity-developer",
+    "importPath": "./resume/templates/SolidityDeveloperTemplate"
+  },
+  {
+    "filename": "SolutionsArchitectTemplate.tsx",
+    "componentName": "SolutionsArchitectTemplate",
+    "id": "solutions-architect",
+    "importPath": "./resume/templates/SolutionsArchitectTemplate"
+  },
+  {
+    "filename": "SommelierWineSpecialistTemplate.tsx",
+    "componentName": "SommelierWineSpecialistTemplate",
+    "id": "sommelier-wine-specialist",
+    "importPath": "./resume/templates/SommelierWineSpecialistTemplate"
+  },
+  {
+    "filename": "SoundCloudProducerTemplate.tsx",
+    "componentName": "SoundCloudProducerTemplate",
+    "id": "sound-cloud-producer",
+    "importPath": "./resume/templates/SoundCloudProducerTemplate"
+  },
+  {
+    "filename": "SoundcloudArtistTemplate.tsx",
+    "componentName": "SoundcloudArtistTemplate",
+    "id": "soundcloud-artist",
+    "importPath": "./resume/templates/SoundcloudArtistTemplate"
+  },
+  {
+    "filename": "SparkFresherTemplate.tsx",
+    "componentName": "SparkFresherTemplate",
+    "id": "spark-fresher",
+    "importPath": "./resume/templates/SparkFresherTemplate"
+  },
+  {
+    "filename": "SpecialEducationTeacherTemplate.tsx",
+    "componentName": "SpecialEducationTeacherTemplate",
+    "id": "special-education-teacher",
+    "importPath": "./resume/templates/SpecialEducationTeacherTemplate"
+  },
+  {
+    "filename": "SpectrumProfessionalTemplate.tsx",
+    "componentName": "SpectrumProfessionalTemplate",
+    "id": "spectrum-professional",
+    "importPath": "./resume/templates/SpectrumProfessionalTemplate"
+  },
+  {
+    "filename": "SpeechPathologistTemplate.tsx",
+    "componentName": "SpeechPathologistTemplate",
+    "id": "speech-pathologist",
+    "importPath": "./resume/templates/SpeechPathologistTemplate"
+  },
+  {
+    "filename": "SplitPaneUniversalTemplate.tsx",
+    "componentName": "SplitPaneUniversalTemplate",
+    "id": "split-pane-universal",
+    "importPath": "./resume/templates/SplitPaneUniversalTemplate"
+  },
+  {
+    "filename": "SpotifyArtistTemplate.tsx",
+    "componentName": "SpotifyArtistTemplate",
+    "id": "spotify-artist",
+    "importPath": "./resume/templates/SpotifyArtistTemplate"
+  },
+  {
+    "filename": "SpotifyMusicianTemplate.tsx",
+    "componentName": "SpotifyMusicianTemplate",
+    "id": "spotify-musician",
+    "importPath": "./resume/templates/SpotifyMusicianTemplate"
+  },
+  {
+    "filename": "SpotlightHeaderUniversalTemplate.tsx",
+    "componentName": "SpotlightHeaderUniversalTemplate",
+    "id": "spotlight-header-universal",
+    "importPath": "./resume/templates/SpotlightHeaderUniversalTemplate"
+  },
+  {
+    "filename": "SpringBootDeveloperTemplate.tsx",
+    "componentName": "SpringBootDeveloperTemplate",
+    "id": "spring-boot-developer",
+    "importPath": "./resume/templates/SpringBootDeveloperTemplate"
+  },
+  {
+    "filename": "StackOverflowInspiredTemplate.tsx",
+    "componentName": "StackOverflowInspiredTemplate",
+    "id": "stack-overflow-inspired",
+    "importPath": "./resume/templates/StackOverflowInspiredTemplate"
+  },
+  {
+    "filename": "StackedSectionsUniversalTemplate.tsx",
+    "componentName": "StackedSectionsUniversalTemplate",
+    "id": "stacked-sections-universal",
+    "importPath": "./resume/templates/StackedSectionsUniversalTemplate"
+  },
+  {
+    "filename": "StackmasterFullstackTemplate.tsx",
+    "componentName": "StackmasterFullstackTemplate",
+    "id": "stackmaster-fullstack",
+    "importPath": "./resume/templates/StackmasterFullstackTemplate"
+  },
+  {
+    "filename": "StackoverflowDevTemplate.tsx",
+    "componentName": "StackoverflowDevTemplate",
+    "id": "stackoverflow-dev",
+    "importPath": "./resume/templates/StackoverflowDevTemplate"
+  },
+  {
+    "filename": "StaffEngineerTemplate.tsx",
+    "componentName": "StaffEngineerTemplate",
+    "id": "staff-engineer",
+    "importPath": "./resume/templates/StaffEngineerTemplate"
+  },
+  {
+    "filename": "StarterTemplate.tsx",
+    "componentName": "StarterTemplate",
+    "id": "starter",
+    "importPath": "./resume/templates/StarterTemplate"
+  },
+  {
+    "filename": "StartupInternTemplate.tsx",
+    "componentName": "StartupInternTemplate",
+    "id": "startup-intern",
+    "importPath": "./resume/templates/StartupInternTemplate"
+  },
+  {
+    "filename": "SteelProfessionalTemplate.tsx",
+    "componentName": "SteelProfessionalTemplate",
+    "id": "steel-professional",
+    "importPath": "./resume/templates/SteelProfessionalTemplate"
+  },
+  {
+    "filename": "SterlingExecutiveTemplate.tsx",
+    "componentName": "SterlingExecutiveTemplate",
+    "id": "sterling-executive",
+    "importPath": "./resume/templates/SterlingExecutiveTemplate"
+  },
+  {
+    "filename": "StrategicExecutivePlusTemplate.tsx",
+    "componentName": "StrategicExecutivePlusTemplate",
+    "id": "strategic-executive-plus",
+    "importPath": "./resume/templates/StrategicExecutivePlusTemplate"
+  },
+  {
+    "filename": "StrategicLeaderTemplate.tsx",
+    "componentName": "StrategicLeaderTemplate",
+    "id": "strategic-leader",
+    "importPath": "./resume/templates/StrategicLeaderTemplate"
+  },
+  {
+    "filename": "StrategicLeadershipTemplate.tsx",
+    "componentName": "StrategicLeadershipTemplate",
+    "id": "strategic-leadership",
+    "importPath": "./resume/templates/StrategicLeadershipTemplate"
+  },
+  {
+    "filename": "StripedBackgroundUniversalTemplate.tsx",
+    "componentName": "StripedBackgroundUniversalTemplate",
+    "id": "striped-background-universal",
+    "importPath": "./resume/templates/StripedBackgroundUniversalTemplate"
+  },
+  {
+    "filename": "StructuralEngineerTemplate.tsx",
+    "componentName": "StructuralEngineerTemplate",
+    "id": "structural-engineer",
+    "importPath": "./resume/templates/StructuralEngineerTemplate"
+  },
+  {
+    "filename": "StudentAthleteTemplate.tsx",
+    "componentName": "StudentAthleteTemplate",
+    "id": "student-athlete",
+    "importPath": "./resume/templates/StudentAthleteTemplate"
+  },
+  {
+    "filename": "StudentDeveloperPortfolioTemplate.tsx",
+    "componentName": "StudentDeveloperPortfolioTemplate",
+    "id": "student-developer-portfolio",
+    "importPath": "./resume/templates/StudentDeveloperPortfolioTemplate"
+  },
+  {
+    "filename": "StudentEducatorTemplate.tsx",
+    "componentName": "StudentEducatorTemplate",
+    "id": "student-educator",
+    "importPath": "./resume/templates/StudentEducatorTemplate"
+  },
+  {
+    "filename": "StudentEngagementTemplate.tsx",
+    "componentName": "StudentEngagementTemplate",
+    "id": "student-engagement",
+    "importPath": "./resume/templates/StudentEngagementTemplate"
+  },
+  {
+    "filename": "StudioArtistTemplate.tsx",
+    "componentName": "StudioArtistTemplate",
+    "id": "studio-artist",
+    "importPath": "./resume/templates/StudioArtistTemplate"
+  },
+  {
+    "filename": "StudyAbroadGraduateTemplate.tsx",
+    "componentName": "StudyAbroadGraduateTemplate",
+    "id": "study-abroad-graduate",
+    "importPath": "./resume/templates/StudyAbroadGraduateTemplate"
+  },
+  {
+    "filename": "SubstackAuthorTemplate.tsx",
+    "componentName": "SubstackAuthorTemplate",
+    "id": "substack-author",
+    "importPath": "./resume/templates/SubstackAuthorTemplate"
+  },
+  {
+    "filename": "SubstackWriterTemplate.tsx",
+    "componentName": "SubstackWriterTemplate",
+    "id": "substack-writer",
+    "importPath": "./resume/templates/SubstackWriterTemplate"
+  },
+  {
+    "filename": "SupplyChainManagerTemplate.tsx",
+    "componentName": "SupplyChainManagerTemplate",
+    "id": "supply-chain-manager",
+    "importPath": "./resume/templates/SupplyChainManagerTemplate"
+  },
+  {
+    "filename": "SvelteDeveloperTemplate.tsx",
+    "componentName": "SvelteDeveloperTemplate",
+    "id": "svelte-developer",
+    "importPath": "./resume/templates/SvelteDeveloperTemplate"
+  },
+  {
+    "filename": "SwiftIOSDeveloperTemplate.tsx",
+    "componentName": "SwiftIOSDeveloperTemplate",
+    "id": "swift-i-o-s-developer",
+    "importPath": "./resume/templates/SwiftIOSDeveloperTemplate"
+  },
+  {
+    "filename": "SwissStyleUniversalTemplate.tsx",
+    "componentName": "SwissStyleUniversalTemplate",
+    "id": "swiss-style-universal",
+    "importPath": "./resume/templates/SwissStyleUniversalTemplate"
+  },
+  {
+    "filename": "SystemArchitectTemplate.tsx",
+    "componentName": "SystemArchitectTemplate",
+    "id": "system-architect",
+    "importPath": "./resume/templates/SystemArchitectTemplate"
+  },
+  {
+    "filename": "TalentAcquisitionSpecialistTemplate.tsx",
+    "componentName": "TalentAcquisitionSpecialistTemplate",
+    "id": "talent-acquisition-specialist",
+    "importPath": "./resume/templates/TalentAcquisitionSpecialistTemplate"
+  },
+  {
+    "filename": "TangerineModernTemplate.tsx",
+    "componentName": "TangerineModernTemplate",
+    "id": "tangerine-modern",
+    "importPath": "./resume/templates/TangerineModernTemplate"
+  },
+  {
+    "filename": "TaxSpecialistProTemplate.tsx",
+    "componentName": "TaxSpecialistProTemplate",
+    "id": "tax-specialist-pro",
+    "importPath": "./resume/templates/TaxSpecialistProTemplate"
+  },
+  {
+    "filename": "TaxSpecialistTemplate.tsx",
+    "componentName": "TaxSpecialistTemplate",
+    "id": "tax-specialist",
+    "importPath": "./resume/templates/TaxSpecialistTemplate"
+  },
+  {
+    "filename": "TeacherProfessionalTemplate.tsx",
+    "componentName": "TeacherProfessionalTemplate",
+    "id": "teacher-professional",
+    "importPath": "./resume/templates/TeacherProfessionalTemplate"
+  },
+  {
+    "filename": "TeachingCertifiedTemplate.tsx",
+    "componentName": "TeachingCertifiedTemplate",
+    "id": "teaching-certified",
+    "importPath": "./resume/templates/TeachingCertifiedTemplate"
+  },
+  {
+    "filename": "TeachingExcellenceTemplate.tsx",
+    "componentName": "TeachingExcellenceTemplate",
+    "id": "teaching-excellence",
+    "importPath": "./resume/templates/TeachingExcellenceTemplate"
+  },
+  {
+    "filename": "TealModernTemplate.tsx",
+    "componentName": "TealModernTemplate",
+    "id": "teal-modern",
+    "importPath": "./resume/templates/TealModernTemplate"
+  },
+  {
+    "filename": "TechBloggerDevTemplate.tsx",
+    "componentName": "TechBloggerDevTemplate",
+    "id": "tech-blogger-dev",
+    "importPath": "./resume/templates/TechBloggerDevTemplate"
+  },
+  {
+    "filename": "TechBloggerGraduateTemplate.tsx",
+    "componentName": "TechBloggerGraduateTemplate",
+    "id": "tech-blogger-graduate",
+    "importPath": "./resume/templates/TechBloggerGraduateTemplate"
+  },
+  {
+    "filename": "TechCraftedTemplate.tsx",
+    "componentName": "TechCraftedTemplate",
+    "id": "tech-crafted",
+    "importPath": "./resume/templates/TechCraftedTemplate"
+  },
+  {
+    "filename": "TechGridTemplate.tsx",
+    "componentName": "TechGridTemplate",
+    "id": "tech-grid",
+    "importPath": "./resume/templates/TechGridTemplate"
+  },
+  {
+    "filename": "TechHorizonTemplate.tsx",
+    "componentName": "TechHorizonTemplate",
+    "id": "tech-horizon",
+    "importPath": "./resume/templates/TechHorizonTemplate"
+  },
+  {
+    "filename": "TechLeadTemplate.tsx",
+    "componentName": "TechLeadTemplate",
+    "id": "tech-lead",
+    "importPath": "./resume/templates/TechLeadTemplate"
+  },
+  {
+    "filename": "TechPioneerTemplate.tsx",
+    "componentName": "TechPioneerTemplate",
+    "id": "tech-pioneer",
+    "importPath": "./resume/templates/TechPioneerTemplate"
+  },
+  {
+    "filename": "TechSavvyFresherTemplate.tsx",
+    "componentName": "TechSavvyFresherTemplate",
+    "id": "tech-savvy-fresher",
+    "importPath": "./resume/templates/TechSavvyFresherTemplate"
+  },
+  {
+    "filename": "TechStackProTemplate.tsx",
+    "componentName": "TechStackProTemplate",
+    "id": "tech-stack-pro",
+    "importPath": "./resume/templates/TechStackProTemplate"
+  },
+  {
+    "filename": "TechVanguardTemplate.tsx",
+    "componentName": "TechVanguardTemplate",
+    "id": "tech-vanguard",
+    "importPath": "./resume/templates/TechVanguardTemplate"
+  },
+  {
+    "filename": "TensorFlowMLEngineerTemplate.tsx",
+    "componentName": "TensorFlowMLEngineerTemplate",
+    "id": "tensor-flowml-engineer",
+    "importPath": "./resume/templates/TensorFlowMLEngineerTemplate"
+  },
+  {
+    "filename": "TerminalConsoleTemplate.tsx",
+    "componentName": "TerminalConsoleTemplate",
+    "id": "terminal-console",
+    "importPath": "./resume/templates/TerminalConsoleTemplate"
+  },
+  {
+    "filename": "TerminalThemeTemplate.tsx",
+    "componentName": "TerminalThemeTemplate",
+    "id": "terminal-theme",
+    "importPath": "./resume/templates/TerminalThemeTemplate"
+  },
+  {
+    "filename": "TerraformDevOpsTemplate.tsx",
+    "componentName": "TerraformDevOpsTemplate",
+    "id": "terraformdevops",
+    "importPath": "./resume/templates/TerraformDevOpsTemplate"
+  },
+  {
+    "filename": "ThinBorderUniversalTemplate.tsx",
+    "componentName": "ThinBorderUniversalTemplate",
+    "id": "thin-border-universal",
+    "importPath": "./resume/templates/ThinBorderUniversalTemplate"
+  },
+  {
+    "filename": "ThreeDModelingArtistTemplate.tsx",
+    "componentName": "ThreeDModelingArtistTemplate",
+    "id": "three-d-modeling-artist",
+    "importPath": "./resume/templates/ThreeDModelingArtistTemplate"
+  },
+  {
+    "filename": "TikTokCreatorTemplate.tsx",
+    "componentName": "TikTokCreatorTemplate",
+    "id": "tiktok-creator",
+    "importPath": "./resume/templates/TikTokCreatorTemplate"
+  },
+  {
+    "filename": "TiktokContentCreatorTemplate.tsx",
+    "componentName": "TiktokContentCreatorTemplate",
+    "id": "tiktok-content-creator",
+    "importPath": "./resume/templates/TiktokContentCreatorTemplate"
+  },
+  {
+    "filename": "TitanCorporateTemplate.tsx",
+    "componentName": "TitanCorporateTemplate",
+    "id": "titan-corporate",
+    "importPath": "./resume/templates/TitanCorporateTemplate"
+  },
+  {
+    "filename": "TopBarUniversalTemplate.tsx",
+    "componentName": "TopBarUniversalTemplate",
+    "id": "top-bar-universal",
+    "importPath": "./resume/templates/TopBarUniversalTemplate"
+  },
+  {
+    "filename": "TreasuryAnalystTemplate.tsx",
+    "componentName": "TreasuryAnalystTemplate",
+    "id": "treasury-analyst",
+    "importPath": "./resume/templates/TreasuryAnalystTemplate"
+  },
+  {
+    "filename": "TriangularElementsUniversalTemplate.tsx",
+    "componentName": "TriangularElementsUniversalTemplate",
+    "id": "triangular-elements-universal",
+    "importPath": "./resume/templates/TriangularElementsUniversalTemplate"
+  },
+  {
+    "filename": "TwitchStreamerCreativeTemplate.tsx",
+    "componentName": "TwitchStreamerCreativeTemplate",
+    "id": "twitch-streamer-creative",
+    "importPath": "./resume/templates/TwitchStreamerCreativeTemplate"
+  },
+  {
+    "filename": "TwitchStreamerTemplate.tsx",
+    "componentName": "TwitchStreamerTemplate",
+    "id": "twitch-streamer",
+    "importPath": "./resume/templates/TwitchStreamerTemplate"
+  },
+  {
+    "filename": "TwitterDevTemplate.tsx",
+    "componentName": "TwitterDevTemplate",
+    "id": "twitter-dev",
+    "importPath": "./resume/templates/TwitterDevTemplate"
+  },
+  {
+    "filename": "TwoToneClassicTemplate.tsx",
+    "componentName": "TwoToneClassicTemplate",
+    "id": "two-tone-classic",
+    "importPath": "./resume/templates/TwoToneClassicTemplate"
+  },
+  {
+    "filename": "TwoToneSplitUniversalTemplate.tsx",
+    "componentName": "TwoToneSplitUniversalTemplate",
+    "id": "two-tone-split-universal",
+    "importPath": "./resume/templates/TwoToneSplitUniversalTemplate"
+  },
+  {
+    "filename": "TypeScriptExpertTemplate.tsx",
+    "componentName": "TypeScriptExpertTemplate",
+    "id": "type-script-expert",
+    "importPath": "./resume/templates/TypeScriptExpertTemplate"
+  },
+  {
+    "filename": "TypewriterStyleTemplate.tsx",
+    "componentName": "TypewriterStyleTemplate",
+    "id": "typewriter-style",
+    "importPath": "./resume/templates/TypewriterStyleTemplate"
+  },
+  {
+    "filename": "TypographerSpecialistTemplate.tsx",
+    "componentName": "TypographerSpecialistTemplate",
+    "id": "typographer-specialist",
+    "importPath": "./resume/templates/TypographerSpecialistTemplate"
+  },
+  {
+    "filename": "UISpecialistTemplate.tsx",
+    "componentName": "UISpecialistTemplate",
+    "id": "ui-specialist",
+    "importPath": "./resume/templates/UISpecialistTemplate"
+  },
+  {
+    "filename": "UIUXDesignerProTemplate.tsx",
+    "componentName": "UIUXDesignerProTemplate",
+    "id": "uiux-designer-pro",
+    "importPath": "./resume/templates/UIUXDesignerProTemplate"
+  },
+  {
+    "filename": "UXResearcherTemplate.tsx",
+    "componentName": "UXResearcherTemplate",
+    "id": "ux-researcher",
+    "importPath": "./resume/templates/UXResearcherTemplate"
+  },
+  {
+    "filename": "UiuxPortfolioProTemplate.tsx",
+    "componentName": "UiuxPortfolioProTemplate",
+    "id": "uiux-portfolio-pro",
+    "importPath": "./resume/templates/UiuxPortfolioProTemplate"
+  },
+  {
+    "filename": "UnityGameDeveloperTemplate.tsx",
+    "componentName": "UnityGameDeveloperTemplate",
+    "id": "unity-game-developer",
+    "importPath": "./resume/templates/UnityGameDeveloperTemplate"
+  },
+  {
+    "filename": "UniversityProfessorTemplate.tsx",
+    "componentName": "UniversityProfessorTemplate",
+    "id": "university-professor",
+    "importPath": "./resume/templates/UniversityProfessorTemplate"
+  },
+  {
+    "filename": "UrbanDesignerTemplate.tsx",
+    "componentName": "UrbanDesignerTemplate",
+    "id": "urban-designer",
+    "importPath": "./resume/templates/UrbanDesignerTemplate"
+  },
+  {
+    "filename": "UserflowDesignerTemplate.tsx",
+    "componentName": "UserflowDesignerTemplate",
+    "id": "userflow-designer",
+    "importPath": "./resume/templates/UserflowDesignerTemplate"
+  },
+  {
+    "filename": "UserresearchSpecialistTemplate.tsx",
+    "componentName": "UserresearchSpecialistTemplate",
+    "id": "userresearch-specialist",
+    "importPath": "./resume/templates/UserresearchSpecialistTemplate"
+  },
+  {
+    "filename": "UxResearcherPortfolioTemplate.tsx",
+    "componentName": "UxResearcherPortfolioTemplate",
+    "id": "ux-researcher-portfolio",
+    "importPath": "./resume/templates/UxResearcherPortfolioTemplate"
+  },
+  {
+    "filename": "UxfolioDesignerTemplate.tsx",
+    "componentName": "UxfolioDesignerTemplate",
+    "id": "uxfolio-designer",
+    "importPath": "./resume/templates/UxfolioDesignerTemplate"
+  },
+  {
+    "filename": "VPExecutiveTemplate.tsx",
+    "componentName": "VPExecutiveTemplate",
+    "id": "vp-executive",
+    "importPath": "./resume/templates/VPExecutiveTemplate"
+  },
+  {
+    "filename": "VelocityExecutiveTemplate.tsx",
+    "componentName": "VelocityExecutiveTemplate",
+    "id": "velocity-executive",
+    "importPath": "./resume/templates/VelocityExecutiveTemplate"
+  },
+  {
+    "filename": "VentureFresherTemplate.tsx",
+    "componentName": "VentureFresherTemplate",
+    "id": "venture-fresher",
+    "importPath": "./resume/templates/VentureFresherTemplate"
+  },
+  {
+    "filename": "VertexProfessionalTemplate.tsx",
+    "componentName": "VertexProfessionalTemplate",
+    "id": "vertex-professional",
+    "importPath": "./resume/templates/VertexProfessionalTemplate"
+  },
+  {
+    "filename": "VeterinaryDoctorTemplate.tsx",
+    "componentName": "VeterinaryDoctorTemplate",
+    "id": "veterinary-doctor",
+    "importPath": "./resume/templates/VeterinaryDoctorTemplate"
+  },
+  {
+    "filename": "VibrantDesignerTemplate.tsx",
+    "componentName": "VibrantDesignerTemplate",
+    "id": "vibrant-designer",
+    "importPath": "./resume/templates/VibrantDesignerTemplate"
+  },
+  {
+    "filename": "VideoEditorCreativeTemplate.tsx",
+    "componentName": "VideoEditorCreativeTemplate",
+    "id": "video-editor-creative",
+    "importPath": "./resume/templates/VideoEditorCreativeTemplate"
+  },
+  {
+    "filename": "VideoProducerTemplate.tsx",
+    "componentName": "VideoProducerTemplate",
+    "id": "video-producer",
+    "importPath": "./resume/templates/VideoProducerTemplate"
+  },
+  {
+    "filename": "VimeoVideographerTemplate.tsx",
+    "componentName": "VimeoVideographerTemplate",
+    "id": "vimeo-videographer",
+    "importPath": "./resume/templates/VimeoVideographerTemplate"
+  },
+  {
+    "filename": "VintagePosterTemplate.tsx",
+    "componentName": "VintagePosterTemplate",
+    "id": "vintage-poster",
+    "importPath": "./resume/templates/VintagePosterTemplate"
+  },
+  {
+    "filename": "VioletCorporateTemplate.tsx",
+    "componentName": "VioletCorporateTemplate",
+    "id": "violet-corporate",
+    "importPath": "./resume/templates/VioletCorporateTemplate"
+  },
+  {
+    "filename": "VisionDesignerTemplate.tsx",
+    "componentName": "VisionDesignerTemplate",
+    "id": "vision-designer",
+    "importPath": "./resume/templates/VisionDesignerTemplate"
+  },
+  {
+    "filename": "VisionaryCreativeTemplate.tsx",
+    "componentName": "VisionaryCreativeTemplate",
+    "id": "visionary-creative",
+    "importPath": "./resume/templates/VisionaryCreativeTemplate"
+  },
+  {
+    "filename": "VisualDesignerProTemplate.tsx",
+    "componentName": "VisualDesignerProTemplate",
+    "id": "visual-designer-pro",
+    "importPath": "./resume/templates/VisualDesignerProTemplate"
+  },
+  {
+    "filename": "VisualDesignerShowcaseTemplate.tsx",
+    "componentName": "VisualDesignerShowcaseTemplate",
+    "id": "visual-designer-showcase",
+    "importPath": "./resume/templates/VisualDesignerShowcaseTemplate"
+  },
+  {
+    "filename": "VisualStorytellerTemplateTemplate.tsx",
+    "componentName": "VisualStorytellerTemplateTemplate",
+    "id": "visual-storyteller-template",
+    "importPath": "./resume/templates/VisualStorytellerTemplateTemplate"
+  },
+  {
+    "filename": "VolunteerLeaderTemplate.tsx",
+    "componentName": "VolunteerLeaderTemplate",
+    "id": "volunteer-leader",
+    "importPath": "./resume/templates/VolunteerLeaderTemplate"
+  },
+  {
+    "filename": "VueJSDeveloperTemplate.tsx",
+    "componentName": "VueJSDeveloperTemplate",
+    "id": "vuejs-developer",
+    "importPath": "./resume/templates/VueJSDeveloperTemplate"
+  },
+  {
+    "filename": "VueMasterTemplate.tsx",
+    "componentName": "VueMasterTemplate",
+    "id": "vue-master",
+    "importPath": "./resume/templates/VueMasterTemplate"
+  },
+  {
+    "filename": "VueSpecialistTemplate.tsx",
+    "componentName": "VueSpecialistTemplate",
+    "id": "vue-specialist",
+    "importPath": "./resume/templates/VueSpecialistTemplate"
+  },
+  {
+    "filename": "WatermarkStyleUniversalTemplate.tsx",
+    "componentName": "WatermarkStyleUniversalTemplate",
+    "id": "watermark-style-universal",
+    "importPath": "./resume/templates/WatermarkStyleUniversalTemplate"
+  },
+  {
+    "filename": "WavePatternUniversalTemplate.tsx",
+    "componentName": "WavePatternUniversalTemplate",
+    "id": "wave-pattern-universal",
+    "importPath": "./resume/templates/WavePatternUniversalTemplate"
+  },
+  {
+    "filename": "WebAssemblyEngineerTemplate.tsx",
+    "componentName": "WebAssemblyEngineerTemplate",
+    "id": "web-assembly-engineer",
+    "importPath": "./resume/templates/WebAssemblyEngineerTemplate"
+  },
+  {
+    "filename": "WebDesignerModernTemplate.tsx",
+    "componentName": "WebDesignerModernTemplate",
+    "id": "web-designer-modern",
+    "importPath": "./resume/templates/WebDesignerModernTemplate"
+  },
+  {
+    "filename": "WebPortfolioGradTemplate.tsx",
+    "componentName": "WebPortfolioGradTemplate",
+    "id": "web-portfolio-grad",
+    "importPath": "./resume/templates/WebPortfolioGradTemplate"
+  },
+  {
+    "filename": "WebflowDesignerPortfolioTemplate.tsx",
+    "componentName": "WebflowDesignerPortfolioTemplate",
+    "id": "webflow-designer-portfolio",
+    "importPath": "./resume/templates/WebflowDesignerPortfolioTemplate"
+  },
+  {
+    "filename": "WebflowDeveloperTemplate.tsx",
+    "componentName": "WebflowDeveloperTemplate",
+    "id": "webflow-developer",
+    "importPath": "./resume/templates/WebflowDeveloperTemplate"
+  },
+  {
+    "filename": "WebpresenceExecutiveTemplate.tsx",
+    "componentName": "WebpresenceExecutiveTemplate",
+    "id": "webpresence-executive",
+    "importPath": "./resume/templates/WebpresenceExecutiveTemplate"
+  },
+  {
+    "filename": "WebrtcEngineerTemplate.tsx",
+    "componentName": "WebrtcEngineerTemplate",
+    "id": "webrtc-engineer",
+    "importPath": "./resume/templates/WebrtcEngineerTemplate"
+  },
+  {
+    "filename": "WideMarginUniversalTemplate.tsx",
+    "componentName": "WideMarginUniversalTemplate",
+    "id": "wide-margin-universal",
+    "importPath": "./resume/templates/WideMarginUniversalTemplate"
+  },
+  {
+    "filename": "WireframeSpecialistTemplate.tsx",
+    "componentName": "WireframeSpecialistTemplate",
+    "id": "wireframe-specialist",
+    "importPath": "./resume/templates/WireframeSpecialistTemplate"
+  },
+  {
+    "filename": "YouTubeEducatorTemplate.tsx",
+    "componentName": "YouTubeEducatorTemplate",
+    "id": "youtube-educator",
+    "importPath": "./resume/templates/YouTubeEducatorTemplate"
+  },
+  {
+    "filename": "YoutubeCreatorTemplate.tsx",
+    "componentName": "YoutubeCreatorTemplate",
+    "id": "youtube-creator",
+    "importPath": "./resume/templates/YoutubeCreatorTemplate"
+  },
+  {
+    "filename": "YoutubeDevEducatorTemplate.tsx",
+    "componentName": "YoutubeDevEducatorTemplate",
+    "id": "youtube-dev-educator",
+    "importPath": "./resume/templates/YoutubeDevEducatorTemplate"
+  },
+  {
+    "filename": "ZenithCorporateTemplate.tsx",
+    "componentName": "ZenithCorporateTemplate",
+    "id": "zenith-corporate",
+    "importPath": "./resume/templates/ZenithCorporateTemplate"
+  },
+  {
+    "filename": "ZeplinHandoffSpecialistTemplate.tsx",
+    "componentName": "ZeplinHandoffSpecialistTemplate",
+    "id": "zeplin-handoff-specialist",
+    "importPath": "./resume/templates/ZeplinHandoffSpecialistTemplate"
+  },
+  {
+    "filename": "ZigzagBorderUniversalTemplate.tsx",
+    "componentName": "ZigzagBorderUniversalTemplate",
+    "id": "zigzag-border-universal",
+    "importPath": "./resume/templates/ZigzagBorderUniversalTemplate"
+  },
+  {
+    "filename": "iOSSwiftEngineerTemplate.tsx",
+    "componentName": "iOSSwiftEngineerTemplate",
+    "id": "ios-swift-engineer",
+    "importPath": "./resume/templates/iOSSwiftEngineerTemplate"
+  }
+]

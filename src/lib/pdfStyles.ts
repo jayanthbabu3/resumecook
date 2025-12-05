@@ -250,8 +250,8 @@ export const SINGLE_COLUMN_CONFIG: PDFStyleConfig = {
   colors: {
     primary: '#2563eb',      // Application blue color
     text: {
-      primary: '#191d24',    // rgb(25, 29, 36) - Darker for better readability
-      secondary: '#1f2937',  // Darker secondary for better readability
+      primary: '#1a1a1a',    // Main content text
+      secondary: '#6b7280',  // Dates and secondary info
       light: '#ffffff',
     },
     background: {
@@ -398,8 +398,8 @@ export const TWO_COLUMN_CONFIG: PDFStyleConfig = {
   colors: {
     primary: '#2563eb',      // Application blue color
     text: {
-      primary: '#191d24',
-      secondary: '#1f2937',  // Darker secondary
+      primary: '#1a1a1a',    // Main content text
+      secondary: '#6b7280',  // Dates and secondary info
       light: '#ffffff',
     },
     background: {

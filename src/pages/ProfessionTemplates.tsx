@@ -10,8 +10,8 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { templateMetaMap } from "@/constants/templateMeta";
 import { getCategoryById } from "@/constants/professionCategories";
 
-// Template color palette
-const themeColors = ["#2563eb", "#7c3aed", "#059669", "#e11d48", "#ea580c", "#0d9488"];
+// Default application theme color (blue)
+const DEFAULT_THEME_COLOR = "#2563eb";
 
 interface TemplateGridProps {
   templates: Array<{
@@ -88,7 +88,7 @@ const TemplateGrid = ({ templates, categoryColor, professionId }: TemplateGridPr
             <div className="relative aspect-[8.5/11] bg-white overflow-hidden">
               <TemplatePreview
                 templateId={template.id}
-                themeColor={themeColors[index % themeColors.length]}
+                themeColor={DEFAULT_THEME_COLOR}
                 className="h-full"
               />
 

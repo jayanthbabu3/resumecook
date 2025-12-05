@@ -41,6 +41,7 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
       line: '1px solid #d1d5db',
       dotted: '2px dotted #d1d5db',
       double: '3px double #d1d5db',
+      thin: '0.5px solid currentColor',
     } as const;
     const divider = dividerStyles[styleOptions.dividerStyle as keyof typeof dividerStyles];
 
@@ -56,18 +57,26 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
       /* Section Header Case - ONLY h2 elements (section headings), NOT h1 (name) */
       /* For capitalize to work on already-uppercase text, normalize to lowercase first */
       ${styleOptions.headerCase === 'capitalize' 
-        ? `.style-options-wrapper h2 { text-transform: lowercase !important; }` 
+        ? `.style-options-wrapper h2:not([data-accent-color]) { text-transform: lowercase !important; font-weight: 600 !important;
+        margin-bottom: 12px !important; color: #111827 !important;}` 
         : ''}
-      .style-options-wrapper h2 {
+      .style-options-wrapper h2:not([data-accent-color]) {
         text-transform: ${headerTransform} !important;
+        font-weight: 600 !important;
+        margin-bottom: 12px !important;
+        color: #111827 !important;
       }
 
       ${
         divider
           ? `
       /* Section Dividers - only when style option is enabled */
-      .style-options-wrapper h2 {
+      /* Don't override templates with custom accent colors */
+      .style-options-wrapper h2:not([data-accent-color]) {
         border-bottom: ${divider} !important;
+        font-weight: 600 !important;
+        margin-bottom: 12px !important;
+        color: #111827 !important;
       }`
           : `
       /* No divider - respect template default styling */`
@@ -76,12 +85,16 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
       /* Font Size Scaling */
       .style-options-wrapper {
         font-size: calc(13px * ${scale}) !important;
+        color: #1a1a1a !important;
       }
       .style-options-wrapper h1 {
         font-size: calc(32px * ${scale}) !important;
       }
-      .style-options-wrapper h2 {
+      .style-options-wrapper h2:not([data-accent-color]) {
         font-size: calc(16px * ${scale}) !important;
+        font-weight: 600 !important;
+        margin-bottom: 12px !important;
+        color: #111827 !important;
       }
       .style-options-wrapper h3 {
         font-size: calc(15px * ${scale}) !important;
@@ -89,6 +102,7 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
       .style-options-wrapper p,
       .style-options-wrapper li {
         font-size: calc(13px * ${scale}) !important;
+        color: #1a1a1a !important;
       }
 
       /* Visibility Controls */

@@ -124,7 +124,7 @@ export const InlineEducationSection: React.FC<InlineEducationSectionProps> = ({
                   style={{ color: SINGLE_COLUMN_CONFIG.colors.text.secondary }}
                 >
                   {formatMonthYear(edu.startDate)} - {formatMonthYear(edu.endDate)}
-                  {edu.gpa && ` • GPA: ${edu.gpa}`}
+                  {edu.gpa && ` • ${edu.gpa}`}
                 </div>
               </div>
             );
@@ -153,6 +153,7 @@ export const InlineEducationSection: React.FC<InlineEducationSectionProps> = ({
           field: "Field of Study",
           startDate: "2019-09",
           endDate: "2023-05",
+          gpa: "",
         }}
         addButtonLabel="Add Education"
         renderItem={(edu, index) => {
@@ -200,16 +201,13 @@ export const InlineEducationSection: React.FC<InlineEducationSectionProps> = ({
                   value={edu.endDate}
                   className="inline-block"
                 />
-                {edu.gpa && (
-                  <>
-                    <span>•</span>
-                    <InlineEditableText
-                      path={`${path}[${index}].gpa`}
-                      value={`GPA: ${edu.gpa}`}
-                      className="inline-block"
-                    />
-                  </>
-                )}
+                <span>•</span>
+                <InlineEditableText
+                  path={`${path}[${index}].gpa`}
+                  value={edu.gpa ? `GPA: ${edu.gpa}` : ""}
+                  placeholder="GPA/Grade"
+                  className="inline-block"
+                />
               </div>
             </div>
           );

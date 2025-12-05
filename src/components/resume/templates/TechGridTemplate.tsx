@@ -4,6 +4,8 @@ import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
+import { CustomSectionsWrapper } from "@/components/resume/shared";
 
 interface TechGridTemplateProps {
   resumeData: ResumeData;
@@ -229,13 +231,15 @@ export const TechGridTemplate = ({
                       </div>
                     </div>
                     {exp.description && (
-                      <InlineEditableText
-                        path={`experience[${index}].description`}
-                        value={exp.description}
-                        className="text-[12px] text-gray-700 leading-[1.75]"
-                        as="div"
-                        multiline
-                      />
+                      <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={accent}
+                      bulletStyle={{ fontSize: '13px', color: '#4b5563', lineHeight: '1.7' }}
+                    />
                     )}
                   </div>
                 )}

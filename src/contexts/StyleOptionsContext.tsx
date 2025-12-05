@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useCallback, ReactNode } fr
 // Style options types
 export type HeaderCase = 'uppercase' | 'capitalize' | 'lowercase';
 export type BulletStyle = '•' | '◦' | '▪' | '–' | '▸' | 'none';
-export type DividerStyle = 'line' | 'dotted' | 'double' | 'none';
+export type DividerStyle = 'line' | 'dotted' | 'double' | 'thin' | 'none';
 export type FontSizeScale = 'compact' | 'normal' | 'large';
 export type DateFormat = 'short' | 'medium' | 'long'; // Jan 2024, January 2024, 01/2024
 
@@ -24,7 +24,7 @@ export interface StyleOptions {
 export const defaultStyleOptions: StyleOptions = {
   headerCase: 'uppercase',
   bulletStyle: '•',
-  dividerStyle: 'none',
+  dividerStyle: 'thin',
   fontSizeScale: 'normal',
   dateFormat: 'short',
   showPhoto: true,
@@ -92,6 +92,8 @@ export const StyleOptionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         return { borderBottom: '1px dotted currentColor' };
       case 'double':
         return { borderBottom: '3px double currentColor' };
+      case 'thin':
+        return { borderBottom: '0.5px solid currentColor' };
       case 'none':
       default:
         return { borderBottom: 'none' };
@@ -182,7 +184,7 @@ export const useStyleOptionsWithDefaults = (): StyleOptionsContextType => {
     resetStyleOptions: () => {},
     formatHeader: (text: string) => text.toUpperCase(),
     getBulletChar: () => '•',
-    getDividerStyle: () => ({ borderBottom: 'none' }),
+    getDividerStyle: () => ({ borderBottom: '0.5px solid currentColor' }),
     getFontScale: () => ({ name: 32, title: 16, section: 16, body: 13, small: 12 }),
     formatDate: (dateString: string) => dateString,
   };

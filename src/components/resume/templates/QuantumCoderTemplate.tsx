@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
@@ -181,12 +182,14 @@ export const QuantumCoderTemplate = ({
                     </div>
                   </div>
                   {exp.description && (
-                    <InlineEditableText
-                      path={`experience[${index}].description`}
-                      value={exp.description}
-                      className="text-[12.5px] text-gray-700 leading-[1.8] mt-2 block"
-                      multiline
-                      as="div"
+                    <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={accent || themeColor}
+                      bulletStyle={{ fontSize: '12.5px', color: '#4b5563', lineHeight: '1.7' }}
                     />
                   )}
                 </div>

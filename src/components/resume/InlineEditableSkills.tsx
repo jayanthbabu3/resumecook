@@ -13,6 +13,14 @@ interface Skill {
   category?: "core" | "toolbox";
 }
 
+export type SkillVariant = 
+  | 'badge'      // Default - pill badges with theme color
+  | 'pill'       // Rounded pills
+  | 'tag'        // Square/rounded tags with borders
+  | 'inline'     // Plain text with separators
+  | 'list'       // Bullet list (vertical)
+  | 'compact';   // Compact badges
+
 interface InlineEditableSkillsProps {
   path?: string;
   field?: string; // legacy prop name
@@ -21,6 +29,9 @@ interface InlineEditableSkillsProps {
   renderSkill?: (skill: Skill, index: number) => React.ReactNode;
   editable?: boolean;
   themeColor?: string;
+  variant?: SkillVariant; // Visualization style
+  separator?: 'bullet' | 'comma' | 'pipe'; // For 'inline' variant
+  fontSize?: string; // Override font size
 }
 
 export const InlineEditableSkills = ({
@@ -31,6 +42,9 @@ export const InlineEditableSkills = ({
   renderSkill,
   editable = true,
   themeColor,
+  variant = 'badge',
+  separator = 'bullet',
+  fontSize,
 }: InlineEditableSkillsProps) => {
   const resolvedPath = (path ?? field)?.replace(/^resumeData\./, "");
   const canMutate = editable && Boolean(resolvedPath);
@@ -73,6 +87,142 @@ export const InlineEditableSkills = ({
     if (!canMutate) return;
     addArrayItem(resolvedPath, { name: "New Skill", id: Date.now().toString() });
   };
+
+  // Render skill based on variant (returns just the skill element, no wrapper)
+  const renderSkillByVariant = (skill: Skill, index: number) => {
+    const skillFontSize = fontSize || '13px';
+    
+    switch (variant) {
+      case 'pill':
+        return (
+          <Badge
+            variant="secondary"
+            style={{
+              backgroundColor: themeColor ? `${themeColor}20` : undefined,
+              color: themeColor || undefined,
+              fontSize: skillFontSize,
+              padding: '6px 16px',
+              borderRadius: '9999px',
+            }}
+            className={cn(
+              "group/badge",
+              canMutate ? "cursor-pointer hover:bg-secondary/80 transition-colors" : ""
+            )}
+          >
+            {skill.name}
+          </Badge>
+        );
+
+      case 'tag':
+        const accentBorder = themeColor ? `${themeColor}33` : '#e5e7eb';
+        return (
+          <span
+            className="px-3 py-1 rounded-md font-medium"
+            style={{
+              fontSize: skillFontSize,
+              color: '#1a1a1a',
+              border: `1px solid ${accentBorder}`,
+              backgroundColor: themeColor ? `${themeColor}10` : '#f9fafb',
+            }}
+          >
+            {skill.name}
+          </span>
+        );
+
+      case 'compact':
+        return (
+          <Badge
+            variant="secondary"
+            style={{
+              backgroundColor: themeColor ? `${themeColor}20` : undefined,
+              color: themeColor || undefined,
+              fontSize: fontSize || '11px',
+              padding: '4px 12px',
+              borderRadius: '4px',
+            }}
+            className={cn(
+              "group/badge",
+              canMutate ? "cursor-pointer hover:bg-secondary/80 transition-colors" : ""
+            )}
+          >
+            {skill.name}
+          </Badge>
+        );
+
+      case 'badge':
+      default:
+        return (
+          <Badge
+            variant="secondary"
+            style={{
+              backgroundColor: themeColor ? `${themeColor}20` : undefined,
+              color: themeColor || undefined,
+              fontSize: skillFontSize,
+            }}
+            className={cn(
+              "group/badge",
+              canMutate ? "cursor-pointer hover:bg-secondary/80 transition-colors pr-1" : "pr-1"
+            )}
+          >
+            <span className="mr-1">{skill.name}</span>
+          </Badge>
+        );
+    }
+  };
+
+  // Handle inline variant differently (needs different container)
+  if (variant === 'inline') {
+    const separatorChar = separator === 'comma' ? ', ' : separator === 'pipe' ? ' | ' : ' • ';
+    const skillFontSize = fontSize || '13px';
+    
+    return (
+      <div className={cn("relative group", className)}>
+        <p style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
+          {normalizedSkills.map((skill, index) => (
+            <span key={skill.id || index}>
+              {skill.name}
+              {index < normalizedSkills.length - 1 && separatorChar}
+            </span>
+          ))}
+        </p>
+        {canMutate && (
+          <button
+            onClick={handleAdd}
+            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
+          >
+            <Plus className="h-3 w-3" />
+            Add Skill
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  // Handle list variant differently (needs ul container)
+  if (variant === 'list') {
+    const skillFontSize = fontSize || '13px';
+    
+    return (
+      <div className={cn("relative group", className)}>
+        <ul className="ml-5 list-disc space-y-1">
+          {normalizedSkills.map((skill, index) => (
+            <li key={skill.id || index} style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
+              {skill.name}
+            </li>
+          ))}
+        </ul>
+        {canMutate && (
+          <button
+            onClick={handleAdd}
+            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
+          >
+            <Plus className="h-3 w-3" />
+            Add Skill
+          </button>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={cn("relative group", className)}>
@@ -145,21 +295,14 @@ export const InlineEditableSkills = ({
                 )}
               </div>
             ) : (
-              <Badge
-                variant="secondary"
-                style={themeColor ? { backgroundColor: `${themeColor}20`, color: themeColor } : undefined}
-                className={cn(
-                  "group/badge",
-                  canMutate ? "cursor-pointer hover:bg-secondary/80 transition-colors pr-1" : "pr-1"
-                )}
-              >
-                <span className="mr-1">{skill.name}</span>
+              <div className="group/badge relative inline-flex items-center">
+                {renderSkillByVariant(skill, index)}
                 {canMutate && (
-                  <div className="inline-flex gap-0.5">
+                  <div className="absolute -right-1 -top-1 inline-flex gap-0.5 opacity-0 group-hover/badge:opacity-100 transition-opacity">
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="h-4 w-4 p-0 opacity-0 group-hover/badge:opacity-100 transition-opacity"
+                      className="h-5 w-5 p-0 bg-background rounded-full shadow-sm border"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleEdit(index, skill.name);
@@ -170,7 +313,7 @@ export const InlineEditableSkills = ({
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="h-4 w-4 p-0 opacity-0 group-hover/badge:opacity-100 transition-opacity text-destructive"
+                      className="h-5 w-5 p-0 bg-background rounded-full shadow-sm border text-destructive"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDelete(index);
@@ -180,7 +323,7 @@ export const InlineEditableSkills = ({
                     </Button>
                   </div>
                 )}
-              </Badge>
+              </div>
             )}
           </div>
         ))}
@@ -196,6 +339,137 @@ export const InlineEditableSkills = ({
           </Button>
         )}
       </div>
+    </div>
+  );
+};
+
+/**
+ * Helper component to render skills in non-editable mode with variant styling
+ * Use this in templates to ensure consistency between editable and non-editable modes
+ */
+export const SkillsDisplay = ({
+  skills,
+  variant = 'badge',
+  themeColor,
+  separator = 'bullet',
+  fontSize,
+  className,
+}: {
+  skills: Skill[];
+  variant?: SkillVariant;
+  themeColor?: string;
+  separator?: 'bullet' | 'comma' | 'pipe';
+  fontSize?: string;
+  className?: string;
+}) => {
+  const normalizedSkills: Skill[] = Array.isArray(skills)
+    ? skills.map((skill, idx) =>
+        typeof skill === "string"
+          ? { id: `skill-${idx}`, name: skill }
+          : { id: skill.id || `skill-${idx}`, name: skill.name }
+      )
+    : [];
+
+  const skillFontSize = fontSize || '13px';
+
+  if (variant === 'inline') {
+    const separatorChar = separator === 'comma' ? ', ' : separator === 'pipe' ? ' | ' : ' • ';
+    return (
+      <p className={className} style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
+        {normalizedSkills.map((skill, index) => (
+          <span key={skill.id || index}>
+            {skill.name}
+            {index < normalizedSkills.length - 1 && separatorChar}
+          </span>
+        ))}
+      </p>
+    );
+  }
+
+  if (variant === 'list') {
+    return (
+      <ul className={cn("ml-5 list-disc space-y-1", className)}>
+        {normalizedSkills.map((skill, index) => (
+          <li key={skill.id || index} style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
+            {skill.name}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <div className={cn("flex flex-wrap gap-2 items-center", className)}>
+      {normalizedSkills.map((skill, index) => {
+        switch (variant) {
+          case 'pill':
+            return (
+              <Badge
+                key={skill.id || index}
+                variant="secondary"
+                style={{
+                  backgroundColor: themeColor ? `${themeColor}20` : undefined,
+                  color: themeColor || undefined,
+                  fontSize: skillFontSize,
+                  padding: '6px 16px',
+                  borderRadius: '9999px',
+                }}
+              >
+                {skill.name}
+              </Badge>
+            );
+
+          case 'tag':
+            const accentBorder = themeColor ? `${themeColor}33` : '#e5e7eb';
+            return (
+              <span
+                key={skill.id || index}
+                className="px-3 py-1 rounded-md font-medium"
+                style={{
+                  fontSize: skillFontSize,
+                  color: '#1a1a1a',
+                  border: `1px solid ${accentBorder}`,
+                  backgroundColor: themeColor ? `${themeColor}10` : '#f9fafb',
+                }}
+              >
+                {skill.name}
+              </span>
+            );
+
+          case 'compact':
+            return (
+              <Badge
+                key={skill.id || index}
+                variant="secondary"
+                style={{
+                  backgroundColor: themeColor ? `${themeColor}20` : undefined,
+                  color: themeColor || undefined,
+                  fontSize: fontSize || '11px',
+                  padding: '4px 12px',
+                  borderRadius: '4px',
+                }}
+              >
+                {skill.name}
+              </Badge>
+            );
+
+          case 'badge':
+          default:
+            return (
+              <Badge
+                key={skill.id || index}
+                variant="secondary"
+                style={{
+                  backgroundColor: themeColor ? `${themeColor}20` : undefined,
+                  color: themeColor || undefined,
+                  fontSize: skillFontSize,
+                }}
+              >
+                {skill.name}
+              </Badge>
+            );
+        }
+      })}
     </div>
   );
 };

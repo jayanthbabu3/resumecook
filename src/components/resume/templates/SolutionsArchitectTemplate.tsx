@@ -2,6 +2,7 @@ import type { ResumeData } from "@/types/resume";
 import { Mail, Phone, MapPin, Github, Linkedin, Globe } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "../InlineEditableText";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
@@ -258,13 +259,15 @@ export const SolutionsArchitectTemplate = ({ resumeData, themeColor = "#f97316",
                       </div>
                     </div>
                     <div className="text-[13.5px] text-gray-700 leading-[1.85] whitespace-pre-wrap">
-                      <InlineEditableText
-                        path={`experience[${index}].description`}
-                        value={exp.description}
-                        placeholder="• Architecture solution with business impact\n• Client engagement achievement\n• Technical design with measurable results"
-                        multiline
-                        as="div"
-                      />
+                      <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={accent || themeColor}
+                      bulletStyle={{ fontSize: '12.5px', color: '#4b5563', lineHeight: '1.7' }}
+                    />
                     </div>
                   </div>
                 )}

@@ -4,6 +4,8 @@ import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
+import { CustomSectionsWrapper } from "@/components/resume/shared";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -216,12 +218,14 @@ export const SoftwareTemplate = ({ resumeData, themeColor: _themeColor = "#2563e
                       className="text-[12.5px] font-medium text-slate-700"
                       as="div"
                     />
-                    <InlineEditableText
-                      path={`experience[${index}].description`}
-                      value={exp.description}
-                      className="list-disc space-y-1 pl-5 text-[12.5px] text-slate-800 leading-[1.7]"
-                      as="div"
-                      multiline
+                    <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={themeColor}
+                      bulletStyle={{ fontSize: '12.5px', color: '#4b5563', lineHeight: '1.7' }}
                     />
                   </div>
                 );

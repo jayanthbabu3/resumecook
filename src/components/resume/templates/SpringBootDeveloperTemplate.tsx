@@ -7,6 +7,7 @@ import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableDynamicSection } from "@/components/resume/InlineEditableDynamicSection";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
 import { HelperSectionVariantRenderer } from "@/components/resume/HelperSectionVariantRenderer";
 
 interface TemplateProps {
@@ -213,12 +214,14 @@ export const SpringBootDeveloperTemplate = ({ resumeData, themeColor = "#6db33f"
                     </div>
                   </div>
                   {exp.description && (
-                    <InlineEditableText
-                      path={`experience[${index}].description`}
-                      value={exp.description}
-                      className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
-                      multiline
-                      as="p"
+                    <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={themeColor}
+                      bulletStyle={{ fontSize: '12.5px', color: '#4b5563', lineHeight: '1.7' }}
                     />
                   )}
                 </div>
@@ -226,7 +229,7 @@ export const SpringBootDeveloperTemplate = ({ resumeData, themeColor = "#6db33f"
             />
           ) : (
             <div className="space-y-5">
-              {resumeData.experience.map((exp) => (
+              {resumeData.experience.map((exp, index) => (
                 <div key={exp.id} style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-baseline mb-2">
                     <div>
@@ -321,7 +324,7 @@ export const SpringBootDeveloperTemplate = ({ resumeData, themeColor = "#6db33f"
             />
           ) : (
             <div className="space-y-4">
-              {resumeData.education.map((edu) => (
+              {resumeData.education.map((edu, index) => (
                 <div key={edu.id} style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-baseline mb-1">
                     <div>

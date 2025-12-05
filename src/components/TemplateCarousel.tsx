@@ -21,7 +21,7 @@ interface TemplateCarouselProps {
 
 export const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
   templates,
-  themeColors = ["#2563eb", "#059669", "#e11d48", "#7c3aed"],
+  themeColors = ["#2563eb"],
   onTemplateSelect,
   className = "",
 }) => {

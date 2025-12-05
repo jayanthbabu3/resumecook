@@ -3,6 +3,8 @@ import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
+import { CustomSectionsWrapper } from "@/components/resume/shared";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -259,13 +261,15 @@ export const SeniorBackendTemplate = ({
                             />
                           )}
                           {exp.description && (
-                            <InlineEditableText
-                              path={`experience[${index}].description`}
-                              value={exp.description}
-                              className="text-[12.5px] text-slate-800 leading-[1.7] block"
-                              multiline
-                              as="div"
-                            />
+                            <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={themeColor}
+                      bulletStyle={{ fontSize: '12.5px', color: '#4b5563', lineHeight: '1.7' }}
+                    />
                           )}
                         </div>
                       );
@@ -273,7 +277,7 @@ export const SeniorBackendTemplate = ({
                   />
                 ) : (
                   <div className="space-y-4">
-                    {resumeData.experience.map((exp) => {
+                    {resumeData.experience.map((exp, index) => {
                       const points = splitLines(exp.description);
                       return (
                         <div key={exp.id} className="space-y-2">
@@ -427,7 +431,7 @@ export const SeniorBackendTemplate = ({
                   />
                 ) : (
                   <div className="space-y-3">
-                    {resumeData.education.map((edu) => (
+                    {resumeData.education.map((edu, index) => (
                       <div key={edu.id} className="space-y-1">
                         <div className="text-[13px] font-semibold text-slate-900">
                           {edu.degree || "Degree"}

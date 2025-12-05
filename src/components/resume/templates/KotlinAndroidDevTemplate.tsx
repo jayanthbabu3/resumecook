@@ -3,6 +3,7 @@ import type { ResumeSection } from "@/types/resume";
 import { Mail, Phone, MapPin, Linkedin, Github, Globe, Twitter } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
+import { ExperienceBulletPoints } from "@/components/resume/ExperienceBulletPoints";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableDynamicSection } from "@/components/resume/InlineEditableDynamicSection";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
@@ -271,12 +272,14 @@ export const KotlinAndroidDevTemplate = ({ resumeData, themeColor = "#7f52ff", e
                     </div>
                   </div>
                   {exp.description && (
-                    <InlineEditableText
-                      path={`experience[${index}].description`}
-                      value={exp.description}
-                      className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
-                      multiline
-                      as="p"
+                    <ExperienceBulletPoints
+                      experienceId={exp.id}
+                      experienceIndex={index}
+                      bulletPoints={exp.bulletPoints}
+                      description={exp.description}
+                      editable={true}
+                      accentColor={themeColor}
+                      bulletStyle={{ fontSize: '12.5px', color: '#4b5563', lineHeight: '1.7' }}
                     />
                   )}
                 </div>
@@ -284,7 +287,7 @@ export const KotlinAndroidDevTemplate = ({ resumeData, themeColor = "#7f52ff", e
             />
           ) : (
             <div className="space-y-5">
-              {resumeData.experience.map((exp) => (
+              {resumeData.experience.map((exp, index) => (
                 <div key={exp.id} style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-baseline mb-2">
                     <div>
@@ -380,7 +383,7 @@ export const KotlinAndroidDevTemplate = ({ resumeData, themeColor = "#7f52ff", e
             />
           ) : (
             <div className="space-y-4">
-              {resumeData.education.map((edu) => (
+              {resumeData.education.map((edu, index) => (
                 <div key={edu.id} style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-baseline mb-1">
                     <div>
