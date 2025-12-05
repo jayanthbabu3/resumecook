@@ -164,51 +164,51 @@ export const SwissStyleUniversalTemplate = ({
                     return (
                       <div className="mb-8 last:mb-0 space-y-2">
                         <div className="grid grid-cols-3 gap-4">
-                          <div className="col-span-2">
-                            <InlineEditableText
-                              path={`experience[${index}].position`}
-                              value={exp.position}
-                              className="text-[14px] font-bold text-gray-900 block"
-                              as="h3"
+                        <div className="col-span-2">
+                          <InlineEditableText
+                            path={`experience[${index}].position`}
+                            value={exp.position}
+                            className="text-[14px] font-bold text-gray-900 block"
+                            as="h3"
+                          />
+                          <InlineEditableText
+                            path={`experience[${index}].company`}
+                            value={exp.company}
+                            className="text-[13px] text-gray-700 block"
+                            as="p"
+                          />
+                        </div>
+                        <div className="text-right text-[11px] text-gray-600">
+                          <div className="flex items-center justify-end gap-1">
+                            <InlineEditableDate
+                              path={`experience[${index}].startDate`}
+                              value={exp.startDate}
+                              className="inline-block"
                             />
-                            <InlineEditableText
-                              path={`experience[${index}].company`}
-                              value={exp.company}
-                              className="text-[13px] text-gray-700 block"
-                              as="p"
-                            />
-                          </div>
-                          <div className="text-right text-[11px] text-gray-600">
-                            <div className="flex items-center justify-end gap-1">
+                            <span>—</span>
+                            {exp.current ? (
+                              <span>Present</span>
+                            ) : (
                               <InlineEditableDate
-                                path={`experience[${index}].startDate`}
-                                value={exp.startDate}
+                                path={`experience[${index}].endDate`}
+                                value={exp.endDate}
                                 className="inline-block"
                               />
-                              <span>—</span>
-                              {exp.current ? (
-                                <span>Present</span>
-                              ) : (
-                                <InlineEditableDate
-                                  path={`experience[${index}].endDate`}
-                                  value={exp.endDate}
-                                  className="inline-block"
-                                />
-                              )}
-                            </div>
+                            )}
                           </div>
                         </div>
+                      </div>
                         <div className="space-y-1.5">
                           {hasBullets ? (
                             exp.bulletPoints!.map((bullet, bulletIndex) => (
                               <div key={bulletIndex} className="flex items-start gap-2 group">
                                 <span className="text-gray-400 mt-1">•</span>
-                                <InlineEditableText
+                        <InlineEditableText
                                   path={`experience[${index}].bulletPoints[${bulletIndex}]`}
                                   value={bullet || ""}
                                   placeholder="Click to add achievement..."
                                   className="text-[12.5px] text-gray-700 leading-[1.8] flex-1 border border-dashed border-gray-300 rounded px-1"
-                                  multiline
+                          multiline
                                   as="span"
                                 />
                                 <button
@@ -237,7 +237,7 @@ export const SwissStyleUniversalTemplate = ({
                             Add Achievement
                           </button>
                         </div>
-                      </div>
+                    </div>
                     );
                   }}
                 />
@@ -247,9 +247,9 @@ export const SwissStyleUniversalTemplate = ({
                     exp.bulletPoints && exp.bulletPoints.length > 0
                       ? exp.bulletPoints
                       : (exp.description || "")
-                          .split("\n")
-                          .map((line) => line.trim())
-                          .filter(Boolean);
+                    .split("\n")
+                    .map((line) => line.trim())
+                    .filter(Boolean);
 
                   return (
                     <div key={index} className="mb-8 last:mb-0">

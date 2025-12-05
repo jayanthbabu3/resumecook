@@ -162,20 +162,20 @@ export const BorderedEleganceTemplate = ({
                     return (
                       <div className="border-l pl-6 py-2 space-y-2" style={{ borderColor: themeColor }}>
                         <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <InlineEditableText
-                              path={`experience[${index}].position`}
-                              value={exp.position}
+                      <div className="flex-1">
+                          <InlineEditableText
+                            path={`experience[${index}].position`}
+                            value={exp.position}
                               className="text-xl font-bold text-gray-900 block"
-                              as="h3"
-                            />
-                            <InlineEditableText
-                              path={`experience[${index}].company`}
-                              value={exp.company}
-                              className="text-lg italic"
-                              as="p"
-                              style={{ color: themeColor }}
-                            />
+                            as="h3"
+                          />
+                          <InlineEditableText
+                            path={`experience[${index}].company`}
+                            value={exp.company}
+                            className="text-lg italic"
+                            as="p"
+                            style={{ color: themeColor }}
+                          />
                           </div>
                           <div className="text-sm text-gray-500 ml-4 whitespace-nowrap flex items-center gap-1">
                             <InlineEditableDate
@@ -192,8 +192,8 @@ export const BorderedEleganceTemplate = ({
                                 value={exp.endDate}
                                 className="inline-block"
                               />
-                            )}
-                          </div>
+                        )}
+                      </div>
                         </div>
                         <div className="space-y-2">
                           {hasBullets ? (
@@ -237,8 +237,8 @@ export const BorderedEleganceTemplate = ({
                       </div>
                     );
                   }}
-                />
-              ) : (
+                          />
+                        ) : (
                 <div className="space-y-6">
                   {resumeData.experience.map((exp) => {
                     const bullets =
@@ -271,8 +271,8 @@ export const BorderedEleganceTemplate = ({
                       </div>
                     );
                   })}
-                </div>
-              )}
+                      </div>
+                    )}
             </div>
           )}
 
@@ -282,7 +282,7 @@ export const BorderedEleganceTemplate = ({
               <h2 className="text-2xl font-serif font-bold text-center mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Education
               </h2>
-              {editable ? (
+                    {editable ? (
                 <InlineEditableList
                   path="education"
                   items={resumeData.education}
@@ -311,7 +311,7 @@ export const BorderedEleganceTemplate = ({
                           className="text-sm text-gray-600 italic block"
                           as="p"
                         />
-                      )}
+                    )}
                       <InlineEditableText
                         path={`education[${index}].school`}
                         value={edu.school}
@@ -341,8 +341,8 @@ export const BorderedEleganceTemplate = ({
                       )}
                     </div>
                   )}
-                />
-              ) : (
+                      />
+                    ) : (
                 <div className="space-y-4 text-center">
                   {resumeData.education.map((edu) => (
                     <div key={edu.id} className="space-y-1">
@@ -353,9 +353,9 @@ export const BorderedEleganceTemplate = ({
                         {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                       </p>
                       {edu.gpa && <p className="text-xs text-gray-500">GPA: {edu.gpa}</p>}
-                    </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
+              </div>
               )}
             </div>
           )}

@@ -1,10 +1,12 @@
-import type { ResumeData } from "@/pages/Editor";
-import { Mail, Phone, MapPin, Calendar, Award } from "lucide-react";
+import type { ResumeData } from "@/types/resume";
+import { Mail, Phone, MapPin, Award } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
-import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
-import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
+import { InlineEducationSection } from "@/components/resume/sections/InlineEducationSection";
+import { InlineExperienceSection } from "@/components/resume/sections/InlineExperienceSection";
+import { InlineCustomSections } from "@/components/resume/sections/InlineCustomSections";
+import { SINGLE_COLUMN_CONFIG } from "@/lib/pdfStyles";
 
 interface FresherMinimalGridTemplateProps {
   resumeData: ResumeData;
@@ -17,26 +19,7 @@ export const FresherMinimalGridTemplate = ({
   themeColor = "#10B981",
   editable = false,
 }: FresherMinimalGridTemplateProps) => {
-  const formatDate = (date: string) => {
-    if (!date) return "";
-    const [year, month] = date.split("-");
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    return `${monthNames[parseInt(month) - 1]} ${year}`;
-  };
-
+  const styles = SINGLE_COLUMN_CONFIG;
   const photo = resumeData.personalInfo.photo;
 
   return (
@@ -143,12 +126,24 @@ export const FresherMinimalGridTemplate = ({
               <InlineEditableText
                 path="personalInfo.summary"
                 value={resumeData.personalInfo.summary}
-                className="text-sm leading-relaxed text-gray-700 block"
+                className="text-[13px] text-gray-700 leading-relaxed block"
+                style={{
+                  fontSize: styles.itemDescription.size,
+                  lineHeight: styles.itemDescription.lineHeight,
+                  color: styles.itemDescription.color,
+                }}
                 multiline
                 as="p"
               />
             ) : (
-              <p className="text-sm leading-relaxed text-gray-700">
+              <p 
+                className="text-[13px] text-gray-700 leading-relaxed"
+                style={{
+                  fontSize: styles.itemDescription.size,
+                  lineHeight: styles.itemDescription.lineHeight,
+                  color: styles.itemDescription.color,
+                }}
+              >
                 {resumeData.personalInfo.summary}
               </p>
             )}
@@ -160,89 +155,22 @@ export const FresherMinimalGridTemplate = ({
           <div className="grid grid-cols-3 gap-6">
             {/* Column 1 - Education */}
             <div className="space-y-6">
-              {resumeData.education && resumeData.education.length > 0 && (
-                <section>
-                  <h2 className="text-sm font-bold uppercase tracking-wider mb-4 pb-2 border-b-2" style={{ color: themeColor, borderBottomColor: themeColor }}>
-                    Education
-                  </h2>
-                  {editable ? (
-                    <InlineEditableList
-                      path="education"
-                      items={resumeData.education}
-                      defaultItem={{
-                        id: Date.now().toString(),
-                        school: "School Name",
-                        degree: "Degree",
-                        field: "Field of Study",
-                        startDate: "2019-09",
-                        endDate: "2023-05",
-                      }}
-                      addButtonLabel="Add Education"
-                      renderItem={(edu, index) => (
-                        <div className="mb-4">
-                          <InlineEditableText
-                            path={`education[${index}].degree`}
-                            value={edu.degree}
-                            className="font-semibold text-sm text-gray-900 leading-tight block"
-                            as="h3"
-                          />
-                          {edu.field && (
-                            <InlineEditableText
-                              path={`education[${index}].field`}
-                              value={edu.field}
-                              className="text-xs text-gray-600 mt-1 block"
-                              as="p"
-                            />
-                          )}
-                          <InlineEditableText
-                            path={`education[${index}].school`}
-                            value={edu.school}
-                            className="text-xs font-medium mt-1 block"
-                            style={{ color: themeColor }}
-                            as="p"
-                          />
-                          <div className="flex items-center gap-1 text-xs text-gray-500 mt-2">
-                            <Calendar className="h-3 w-3" />
-                            <InlineEditableDate
-                              path={`education[${index}].startDate`}
-                              value={edu.startDate}
-                              formatDisplay={formatDate}
-                              className="inline-block"
-                            />
-                            <span> - </span>
-                            <InlineEditableDate
-                              path={`education[${index}].endDate`}
-                              value={edu.endDate}
-                              formatDisplay={formatDate}
-                              className="inline-block"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    />
-                  ) : (
-                    <div className="space-y-4">
-                      {resumeData.education.map((edu, index) => (
-                        <div key={index}>
-                          <h3 className="font-semibold text-sm text-gray-900 leading-tight">
-                            {edu.degree}
-                          </h3>
-                          {edu.field && (
-                            <p className="text-xs text-gray-600 mt-1">{edu.field}</p>
-                          )}
-                          <p className="text-xs font-medium mt-1" style={{ color: themeColor }}>
-                            {edu.school}
-                          </p>
-                          <div className="flex items-center gap-1 text-xs text-gray-500 mt-2">
-                            <Calendar className="h-3 w-3" />
-                            {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </section>
-              )}
+              <InlineEducationSection
+                items={resumeData.education}
+                editable={editable}
+                accentColor={themeColor}
+                title="Education"
+                titleStyle={{
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  marginBottom: "1rem",
+                  paddingBottom: "0.5rem",
+                  borderBottom: `2px solid ${themeColor}`,
+                  color: themeColor
+                }}
+              />
             </div>
 
             {/* Column 2 - Skills */}
@@ -256,7 +184,7 @@ export const FresherMinimalGridTemplate = ({
                     <InlineEditableSkills
                       path="skills"
                       skills={resumeData.skills}
-                      renderSkill={(skill, index) => (
+                      renderSkill={(skill) => (
                         <div className="mb-2">
                           <div className="px-3 py-1.5 bg-gray-50 rounded-md text-xs font-medium text-gray-800 border-l-3" style={{ borderLeftColor: themeColor }}>
                             {skill.name}
@@ -279,143 +207,36 @@ export const FresherMinimalGridTemplate = ({
 
             {/* Column 3 - Experience & Projects */}
             <div className="space-y-6">
-              {/* Custom Sections (Projects, etc.) - Most Important for Freshers */}
-              {resumeData.sections && resumeData.sections.length > 0 && (
-                editable ? (
-                  <InlineEditableList
-                    path="sections"
-                    items={resumeData.sections}
-                    defaultItem={{
-                      id: Date.now().toString(),
-                      title: "Projects",
-                      content: "Project details here...",
-                    }}
-                    addButtonLabel="Add Section"
-                    renderItem={(section, index) => (
-                      <section className="mb-6">
-                        <InlineEditableText
-                          path={`sections[${index}].title`}
-                          value={section.title}
-                          className="text-sm font-bold uppercase tracking-wider mb-4 pb-2 border-b-2 inline-block"
-                          style={{ color: themeColor, borderBottomColor: themeColor }}
-                          as="h2"
-                        />
-                        <InlineEditableText
-                          path={`sections[${index}].content`}
-                          value={section.content}
-                          className="text-sm leading-relaxed text-gray-700 whitespace-pre-line block"
-                          multiline
-                          as="div"
-                        />
-                      </section>
-                    )}
-                  />
-                ) : (
-                  <>
-                    {resumeData.sections.map((section, index) => (
-                      <section key={index} className="mb-6">
-                        <h2 className="text-sm font-bold uppercase tracking-wider mb-4 pb-2 border-b-2" style={{ color: themeColor, borderBottomColor: themeColor }}>
-                          {section.title}
-                        </h2>
-                        <div className="text-sm leading-relaxed text-gray-700 whitespace-pre-line">
-                          {section.content}
-                        </div>
-                      </section>
-                    ))}
-                  </>
-                )
-              )}
+              {/* Projects */}
+              <InlineCustomSections
+                sections={resumeData.sections}
+                editable={editable}
+                accentColor={themeColor}
+                containerClassName="space-y-6"
+                itemStyle={{
+                  fontSize: styles.itemDescription.size,
+                  lineHeight: styles.itemDescription.lineHeight,
+                  color: styles.itemDescription.color,
+                }}
+              />
 
-              {/* Internship Experience - Optional for Freshers */}
-              {resumeData.experience && resumeData.experience.length > 0 && (
-                <section>
-                  <h2 className="text-sm font-bold uppercase tracking-wider mb-4 pb-2 border-b-2" style={{ color: themeColor, borderBottomColor: themeColor }}>
-                    Internship Experience
-                  </h2>
-                  {editable ? (
-                    <InlineEditableList
-                      path="experience"
-                      items={resumeData.experience}
-                      defaultItem={{
-                        id: Date.now().toString(),
-                        company: "Company Name",
-                        position: "Position Title",
-                        startDate: "2023-01",
-                        endDate: "2024-01",
-                        description: "Job description here",
-                        current: false,
-                      }}
-                      addButtonLabel="Add Experience"
-                      renderItem={(exp, index) => (
-                        <div className="mb-4">
-                          <InlineEditableText
-                            path={`experience[${index}].position`}
-                            value={exp.position}
-                            className="font-semibold text-sm text-gray-900 block"
-                            as="h3"
-                          />
-                          <InlineEditableText
-                            path={`experience[${index}].company`}
-                            value={exp.company}
-                            className="text-xs font-medium mt-1 block"
-                            style={{ color: themeColor }}
-                            as="p"
-                          />
-                          <div className="text-xs text-gray-500 mt-1">
-                            <InlineEditableDate
-                              path={`experience[${index}].startDate`}
-                              value={exp.startDate}
-                              formatDisplay={formatDate}
-                              className="inline-block"
-                            />
-                            <span> - </span>
-                            {exp.current ? (
-                              <span>Present</span>
-                            ) : (
-                              <InlineEditableDate
-                                path={`experience[${index}].endDate`}
-                                value={exp.endDate}
-                                formatDisplay={formatDate}
-                                className="inline-block"
-                              />
-                            )}
-                          </div>
-                          {exp.description && (
-                            <InlineEditableText
-                              path={`experience[${index}].description`}
-                              value={exp.description}
-                              className="text-xs leading-relaxed text-gray-600 mt-2 whitespace-pre-line block"
-                              multiline
-                              as="div"
-                            />
-                          )}
-                        </div>
-                      )}
-                    />
-                  ) : (
-                    <div className="space-y-4">
-                      {resumeData.experience.map((exp, index) => (
-                        <div key={index}>
-                          <h3 className="font-semibold text-sm text-gray-900">
-                            {exp.position}
-                          </h3>
-                          <p className="text-xs font-medium mt-1" style={{ color: themeColor }}>
-                            {exp.company}
-                          </p>
-                          <div className="text-xs text-gray-500 mt-1">
-                            {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-                          </div>
-                          {exp.description && (
-                            <div className="text-xs leading-relaxed text-gray-600 mt-2 whitespace-pre-line">
-                              {exp.description}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </section>
-              )}
+              {/* Experience */}
+              <InlineExperienceSection
+                items={resumeData.experience}
+                editable={editable}
+                accentColor={themeColor}
+                title="Internship Experience"
+                titleStyle={{
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  marginBottom: "1rem",
+                  paddingBottom: "0.5rem",
+                  borderBottom: `2px solid ${themeColor}`,
+                  color: themeColor
+                }}
+              />
             </div>
           </div>
         </div>

@@ -198,10 +198,10 @@ function captureResumeHTMLWithStyles(
   
   // Ensure the root element respects A4 dimensions while keeping template styling
   if (!clone.style.width) {
-    clone.style.width = '210mm';
+  clone.style.width = '210mm';
   }
   if (!clone.style.minHeight) {
-    clone.style.minHeight = '297mm';
+  clone.style.minHeight = '297mm';
   }
   clone.style.transform = 'none';
   

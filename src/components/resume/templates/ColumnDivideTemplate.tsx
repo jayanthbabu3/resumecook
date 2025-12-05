@@ -51,13 +51,13 @@ export const ColumnDivideTemplate = ({
     <div key={section.id || originalIndex} className="mb-8">
       {editable ? (
         <>
-          <InlineEditableText
-            path={`sections[${originalIndex}].title`}
-            value={section.title}
-            className="text-2xl font-bold mb-4 pb-2 border-b block"
-            style={{ color: themeColor, borderColor: themeColor }}
-            as="h2"
-          />
+        <InlineEditableText
+          path={`sections[${originalIndex}].title`}
+          value={section.title}
+          className="text-2xl font-bold mb-4 pb-2 border-b block"
+          style={{ color: themeColor, borderColor: themeColor }}
+          as="h2"
+        />
           <InlineEditableSectionItems
             sectionIndex={originalIndex}
             items={section.items || []}
@@ -72,12 +72,12 @@ export const ColumnDivideTemplate = ({
         </>
       ) : (
         <>
-          <h2
-            className="text-2xl font-bold mb-4 pb-2 border-b"
-            style={{ color: themeColor, borderColor: themeColor }}
-          >
-            {section.title}
-          </h2>
+        <h2
+          className="text-2xl font-bold mb-4 pb-2 border-b"
+          style={{ color: themeColor, borderColor: themeColor }}
+        >
+          {section.title}
+        </h2>
           <InlineEditableSectionItems
             sectionIndex={originalIndex}
             items={section.items || []}
@@ -199,7 +199,7 @@ export const ColumnDivideTemplate = ({
               <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Experience
               </h2>
-              {editable ? (
+                      {editable ? (
                 <InlineEditableList
                   path="experience"
                   items={resumeData.experience}
@@ -219,18 +219,18 @@ export const ColumnDivideTemplate = ({
                     return (
                       <div className="space-y-2">
                         <div>
-                          <InlineEditableText
-                            path={`experience[${index}].position`}
-                            value={exp.position}
+                        <InlineEditableText
+                          path={`experience[${index}].position`}
+                          value={exp.position}
                             className="text-lg font-bold text-gray-900 block"
-                            as="h3"
-                          />
-                          <InlineEditableText
-                            path={`experience[${index}].company`}
-                            value={exp.company}
+                          as="h3"
+                        />
+                        <InlineEditableText
+                          path={`experience[${index}].company`}
+                          value={exp.company}
                             className="font-medium block"
-                            as="p"
-                            style={{ color: themeColor }}
+                          as="p"
+                          style={{ color: themeColor }}
                           />
                           <div className="text-sm text-gray-500 flex items-center gap-1">
                             <InlineEditableDate
@@ -292,8 +292,8 @@ export const ColumnDivideTemplate = ({
                       </div>
                     );
                   }}
-                />
-              ) : (
+                        />
+                      ) : (
                 <div className="space-y-6">
                   {resumeData.experience.map((exp) => {
                     const bullets =
@@ -307,13 +307,13 @@ export const ColumnDivideTemplate = ({
                       <div key={exp.id}>
                         <div className="mb-2">
                           <h3 className="text-lg font-bold text-gray-900">{exp.position}</h3>
-                          <p className="font-medium" style={{ color: themeColor }}>
-                            {exp.company}
-                          </p>
-                          <p className="text-sm text-gray-500">
+                        <p className="font-medium" style={{ color: themeColor }}>
+                          {exp.company}
+                        </p>
+                      <p className="text-sm text-gray-500">
                             {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-                          </p>
-                        </div>
+                      </p>
+                    </div>
                         {bullets.length > 0 && (
                           <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
                             {bullets.map((item, i) => (
@@ -324,8 +324,8 @@ export const ColumnDivideTemplate = ({
                       </div>
                     );
                   })}
-                </div>
-              )}
+                      </div>
+                    )}
             </div>
           )}
 
@@ -368,7 +368,7 @@ export const ColumnDivideTemplate = ({
               <h2 className="text-2xl font-bold mb-6 pb-2 border-b" style={{ color: themeColor, borderColor: themeColor }}>
                 Education
               </h2>
-              {editable ? (
+                    {editable ? (
                 <InlineEditableList
                   path="education"
                   items={resumeData.education}
@@ -404,16 +404,16 @@ export const ColumnDivideTemplate = ({
                       />
                       <div className="text-sm text-gray-500 flex items-center gap-1">
                         <InlineEditableDate
-                          path={`education[${index}].startDate`}
-                          value={edu.startDate}
+                            path={`education[${index}].startDate`}
+                            value={edu.startDate}
                           className="inline-block"
-                        />
-                        <span>-</span>
+                          />
+                          <span>-</span>
                         <InlineEditableDate
-                          path={`education[${index}].endDate`}
-                          value={edu.endDate}
+                            path={`education[${index}].endDate`}
+                            value={edu.endDate}
                           className="inline-block"
-                        />
+                          />
                       </div>
                       {edu.gpa && (
                         <InlineEditableText
@@ -437,9 +437,9 @@ export const ColumnDivideTemplate = ({
                         {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                       </p>
                       {edu.gpa && <p className="text-xs text-gray-500">GPA: {edu.gpa}</p>}
-                    </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
+              </div>
               )}
             </div>
           )}

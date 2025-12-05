@@ -734,6 +734,54 @@ export function generateBasePDFStyles(config: PDFStyleConfig): string {
 }
 
 // ============================================================================
+// SKILL BADGE STANDARDS
+// ============================================================================
+
+/**
+ * Standard skill badge/pill styles for consistent appearance across all templates.
+ * Use these values to ensure PDF and live preview match.
+ */
+export const SKILL_BADGE_STYLES = {
+  // Pill style (fully rounded) - most common
+  pill: {
+    fontSize: '12px',
+    fontWeight: 500,
+    padding: '6px 16px',
+    borderRadius: '9999px',
+    lineHeight: 1.4,
+  },
+  // Rounded rectangle style
+  rounded: {
+    fontSize: '12px',
+    fontWeight: 500,
+    padding: '6px 14px',
+    borderRadius: '6px',
+    lineHeight: 1.4,
+  },
+  // Compact style for dense layouts
+  compact: {
+    fontSize: '11px',
+    fontWeight: 500,
+    padding: '4px 12px',
+    borderRadius: '4px',
+    lineHeight: 1.3,
+  },
+} as const;
+
+/**
+ * Helper to generate skill badge className for Tailwind
+ * @param style - 'pill' | 'rounded' | 'compact'
+ */
+export const getSkillBadgeClasses = (style: keyof typeof SKILL_BADGE_STYLES = 'pill') => {
+  const styles = {
+    pill: 'px-4 py-1.5 text-xs font-medium rounded-full',
+    rounded: 'px-3.5 py-1.5 text-xs font-medium rounded-md',
+    compact: 'px-3 py-1 text-[11px] font-medium rounded',
+  };
+  return styles[style];
+};
+
+// ============================================================================
 // EXPORT DEFAULT
 // ============================================================================
 
@@ -745,6 +793,8 @@ export const PDF_STYLES = {
   merge: mergeConfig,
   generateCSSVariables,
   generateBasePDFStyles,
+  skillBadge: SKILL_BADGE_STYLES,
+  getSkillBadgeClasses,
 };
 
 export default PDF_STYLES;

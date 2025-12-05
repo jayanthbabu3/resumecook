@@ -344,7 +344,7 @@ export const ModernProfessionalTemplate = ({ resumeData, themeColor = "#0891b2",
               skills={resumeData.skills}
               renderSkill={(skill) => {
                 return skill.name ? (
-                  <span className="inline-block px-4 py-2 mr-2 mb-2 rounded-md text-[12.5px] font-medium text-white" style={{ backgroundColor: themeColor }}>
+                  <span className="inline-block px-4 py-1.5 mr-2 mb-2 rounded-md text-xs font-medium text-white" style={{ backgroundColor: themeColor }}>
                     {skill.name}
                   </span>
                 ) : null;
@@ -354,7 +354,7 @@ export const ModernProfessionalTemplate = ({ resumeData, themeColor = "#0891b2",
             <div className="flex flex-wrap">
               {resumeData.skills.map((skill) => (
                 skill.name ? (
-                  <span key={skill.id} className="px-4 py-2 mr-2 mb-2 rounded-md text-[12.5px] font-medium text-white" style={{ backgroundColor: themeColor }}>
+                  <span key={skill.id} className="px-4 py-1.5 mr-2 mb-2 rounded-md text-xs font-medium text-white" style={{ backgroundColor: themeColor }}>
                     {skill.name}
                   </span>
                 ) : null

@@ -138,7 +138,7 @@ export const CompactProfessionalTemplate = ({
           <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
             Experience
           </h2>
-          {editable ? (
+                    {editable ? (
             <InlineEditableList
               path="experience"
               items={resumeData.experience}
@@ -179,16 +179,16 @@ export const CompactProfessionalTemplate = ({
                             value={exp.endDate}
                             className="inline-block"
                           />
-                        )}
-                      </div>
-                    </div>
-                    <InlineEditableText
-                      path={`experience[${index}].company`}
-                      value={exp.company}
+                    )}
+                  </div>
+                </div>
+                  <InlineEditableText
+                    path={`experience[${index}].company`}
+                    value={exp.company}
                       className="text-xs font-medium mb-1"
-                      as="p"
-                      style={{ color: themeColor }}
-                    />
+                    as="p"
+                    style={{ color: themeColor }}
+                  />
                     <div className="space-y-1">
                       {hasBullets ? (
                         exp.bulletPoints!.map((bullet, bulletIndex) => (
@@ -231,8 +231,8 @@ export const CompactProfessionalTemplate = ({
                   </div>
                 );
               }}
-            />
-          ) : (
+                      />
+                    ) : (
             <div className="space-y-4">
               {resumeData.experience.map((exp) => {
                 const bullets =
@@ -263,8 +263,8 @@ export const CompactProfessionalTemplate = ({
                   </div>
                 );
               })}
-            </div>
-          )}
+                  </div>
+                )}
         </div>
       )}
 
@@ -297,7 +297,7 @@ export const CompactProfessionalTemplate = ({
           <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
             Education
           </h2>
-          {editable ? (
+                    {editable ? (
             <InlineEditableList
               path="education"
               items={resumeData.education}
@@ -313,19 +313,19 @@ export const CompactProfessionalTemplate = ({
               addButtonLabel="Add Education"
               renderItem={(edu, index) => (
                 <div className="space-y-1">
-                  <InlineEditableText
-                    path={`education[${index}].degree`}
-                    value={edu.degree}
+                      <InlineEditableText
+                        path={`education[${index}].degree`}
+                        value={edu.degree}
                     className="text-sm font-bold text-gray-900 block"
-                    as="h3"
-                  />
+                        as="h3"
+                      />
                   <InlineEditableText
                     path={`education[${index}].school`}
                     value={edu.school}
                     className="text-xs text-gray-700 block"
                     as="p"
                   />
-                  {edu.field && (
+                {edu.field && (
                     <InlineEditableText
                       path={`education[${index}].field`}
                       value={edu.field}
@@ -353,8 +353,8 @@ export const CompactProfessionalTemplate = ({
                       className="text-[11px] text-gray-500 block"
                       as="p"
                     />
-                  )}
-                </div>
+                )}
+              </div>
               )}
             />
           ) : (
@@ -371,8 +371,8 @@ export const CompactProfessionalTemplate = ({
                   {edu.field && <p className="text-xs text-gray-600">{edu.field}</p>}
                   {edu.gpa && <p className="text-[11px] text-gray-500">GPA: {edu.gpa}</p>}
                 </div>
-              ))}
-            </div>
+            ))}
+          </div>
           )}
         </div>
       )}
@@ -382,15 +382,15 @@ export const CompactProfessionalTemplate = ({
         <div className="space-y-6">
           {resumeData.sections.map((section, index) => (
             <div key={section.id || index} className="mb-4">
-              {editable ? (
+            {editable ? (
                 <>
-                  <InlineEditableText
-                    path={`sections[${index}].title`}
-                    value={section.title}
-                    className="text-sm font-bold uppercase tracking-wide mb-3 block"
-                    style={{ color: themeColor }}
-                    as="h2"
-                  />
+              <InlineEditableText
+                path={`sections[${index}].title`}
+                value={section.title}
+                className="text-sm font-bold uppercase tracking-wide mb-3 block"
+                style={{ color: themeColor }}
+                as="h2"
+              />
                   <InlineEditableSectionItems
                     sectionIndex={index}
                     items={section.items || []}
@@ -403,11 +403,11 @@ export const CompactProfessionalTemplate = ({
                     showBullets={true}
                   />
                 </>
-              ) : (
+            ) : (
                 <>
-                  <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
-                    {section.title}
-                  </h2>
+              <h2 className="text-sm font-bold uppercase tracking-wide mb-3" style={{ color: themeColor }}>
+                {section.title}
+              </h2>
                   <InlineEditableSectionItems
                     sectionIndex={index}
                     items={section.items || []}
@@ -417,9 +417,9 @@ export const CompactProfessionalTemplate = ({
                     showBullets={true}
                   />
                 </>
-              )}
-            </div>
-          ))}
+            )}
+          </div>
+        ))}
         </div>
       )}
     </div>

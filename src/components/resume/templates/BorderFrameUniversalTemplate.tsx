@@ -254,19 +254,19 @@ export const BorderFrameUniversalTemplate = ({
                           <Plus className="h-3 w-3" />
                           Add Achievement
                         </button>
-                      )}
+                    )}
                   </div>
                 )}
               />
             ) : (
-            resumeData.experience.map((exp, index) => {
+              resumeData.experience.map((exp, index) => {
               const bulletPoints =
                 exp.bulletPoints && exp.bulletPoints.length > 0
                   ? exp.bulletPoints
                   : (exp.description || "")
-                      .split("\n")
-                      .map((line) => line.trim())
-                      .filter(Boolean);
+                  .split("\n")
+                  .map((line) => line.trim())
+                  .filter(Boolean);
 
                 return (
                   <div key={index} className="mb-6 last:mb-0">
@@ -277,7 +277,7 @@ export const BorderFrameUniversalTemplate = ({
                       <p className="text-[13px] text-gray-700 font-medium">
                         {exp.company}
                       </p>
-                    <p className="text-[11px] text-gray-600">
+                      <p className="text-[11px] text-gray-600">
                       {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                       </p>
                     </div>
@@ -317,7 +317,7 @@ export const BorderFrameUniversalTemplate = ({
                   }}
                   addButtonLabel="Add Education"
                   renderItem={(edu, index) => (
-                  <div className="mb-4 last:mb-0 text-[12px] text-center">
+                    <div className="mb-4 last:mb-0 text-[12px] text-center">
                       <InlineEditableText
                         path={`education[${index}].degree`}
                         value={`${edu.degree}${edu.field ? ` in ${edu.field}` : ""}`}

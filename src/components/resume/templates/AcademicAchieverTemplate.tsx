@@ -1,13 +1,15 @@
-import type { ResumeData } from "@/pages/Editor";
+import type { ResumeData } from "@/types/resume";
 import type { ResumeSection } from "@/types/resume";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
-import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableDynamicSection } from "@/components/resume/InlineEditableDynamicSection";
-import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
 import { HelperSectionVariantRenderer } from "@/components/resume/HelperSectionVariantRenderer";
+import { InlineExperienceSection } from "@/components/resume/sections/InlineExperienceSection";
+import { InlineEducationSection } from "@/components/resume/sections/InlineEducationSection";
+import { InlineCustomSections } from "@/components/resume/sections/InlineCustomSections";
+import { SINGLE_COLUMN_CONFIG } from "@/lib/pdfStyles";
 
 interface TemplateProps {
   resumeData: ResumeData;
@@ -16,6 +18,7 @@ interface TemplateProps {
 }
 
 export const AcademicAchieverTemplate = ({ resumeData, themeColor = "#2563eb", editable = false }: TemplateProps) => {
+  const styles = SINGLE_COLUMN_CONFIG;
   const formatDate = (date: string) => {
     if (!date) return "";
     const [year, month] = date.split("-");
@@ -144,11 +147,23 @@ export const AcademicAchieverTemplate = ({ resumeData, themeColor = "#2563eb", e
               path="personalInfo.summary"
               value={resumeData.personalInfo.summary}
               className="text-sm text-gray-700 leading-relaxed block"
+              style={{
+                fontSize: styles.itemDescription.size,
+                lineHeight: styles.itemDescription.lineHeight,
+                color: styles.itemDescription.color,
+              }}
               multiline
               as="p"
             />
           ) : (
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p 
+              className="text-sm text-gray-700 leading-relaxed"
+              style={{
+                fontSize: styles.itemDescription.size,
+                lineHeight: styles.itemDescription.lineHeight,
+                color: styles.itemDescription.color,
+              }}
+            >
               {resumeData.personalInfo.summary}
             </p>
           )}
@@ -156,192 +171,46 @@ export const AcademicAchieverTemplate = ({ resumeData, themeColor = "#2563eb", e
       )}
 
       {/* Experience */}
-      {resumeData.experience.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-lg font-bold mb-4 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
-            Professional Experience
-          </h2>
-          {editable ? (
-            <InlineEditableList
-              path="experience"
-              items={resumeData.experience}
-              defaultItem={{
-                id: Date.now().toString(),
-                company: "Company Name",
-                position: "Position Title",
-                startDate: "2023-01",
-                endDate: "2024-01",
-                description: "Job description here",
-                current: false,
-              }}
-              addButtonLabel="Add Experience"
-              renderItem={(exp, index) => (
-                <div style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-2">
-                    <div>
-                      <InlineEditableText
-                        path={`experience[${index}].position`}
-                        value={exp.position || "Position Title"}
-                        className="text-base font-bold text-gray-900 block"
-                        as="h3"
-                      />
-                      <InlineEditableText
-                        path={`experience[${index}].company`}
-                        value={exp.company || "Company Name"}
-                        className="text-sm text-gray-700 font-semibold block"
-                        as="p"
-                      />
-                    </div>
-                    <div className="text-xs text-gray-600 text-right flex items-center gap-1">
-                      <InlineEditableDate
-                        path={`experience[${index}].startDate`}
-                        value={exp.startDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                      <span> - </span>
-                      {exp.current ? (
-                        <span>Present</span>
-                      ) : (
-                        <InlineEditableDate
-                          path={`experience[${index}].endDate`}
-                          value={exp.endDate}
-                          formatDisplay={formatDate}
-                          className="inline-block"
-                        />
-                      )}
-                    </div>
-                  </div>
-                  {exp.description && (
-                    <InlineEditableText
-                      path={`experience[${index}].description`}
-                      value={exp.description}
-                      className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
-                      multiline
-                      as="p"
-                    />
-                  )}
-                </div>
-              )}
-            />
-          ) : (
-            <div className="space-y-5">
-              {resumeData.experience.map((exp) => (
-                <div key={exp.id} style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-2">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">
-                        {exp.position || "Position Title"}
-                      </h3>
-                      <p className="text-sm text-gray-700 font-semibold">
-                        {exp.company || "Company Name"}
-                      </p>
-                    </div>
-                    <div className="text-xs text-gray-600 text-right">
-                      {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
-                    </div>
-                  </div>
-                  {exp.description && (
-                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-                      {exp.description}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+      <InlineExperienceSection
+        items={resumeData.experience}
+        editable={editable}
+        accentColor={themeColor}
+        title="Professional Experience"
+        className="mb-8"
+        titleStyle={{
+          fontSize: "1.125rem", // text-lg
+          fontWeight: 700,
+          marginBottom: "0.75rem", // mb-3
+          textTransform: "uppercase",
+          letterSpacing: "0.025em", // tracking-wide
+          borderBottomWidth: "1px",
+          borderBottomStyle: "solid",
+          borderColor: themeColor,
+          paddingBottom: "0.5rem", // pb-2
+          color: themeColor
+        }}
+      />
 
       {/* Education */}
-      {resumeData.education.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-lg font-bold mb-4 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
-            Education
-          </h2>
-          {editable ? (
-            <InlineEditableList
-              path="education"
-              items={resumeData.education}
-              defaultItem={{
-                id: Date.now().toString(),
-                school: "School Name",
-                degree: "Degree",
-                field: "Field of Study",
-                startDate: "2019-09",
-                endDate: "2023-05",
-              }}
-              addButtonLabel="Add Education"
-              renderItem={(edu, index) => (
-                <div style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">
-                        <InlineEditableText
-                          path={`education[${index}].degree`}
-                          value={edu.degree || "Degree"}
-                          className="inline-block"
-                        />
-                        {edu.field && (
-                          <>
-                            {" in "}
-                            <InlineEditableText
-                              path={`education[${index}].field`}
-                              value={edu.field}
-                              className="inline-block"
-                            />
-                          </>
-                        )}
-                      </h3>
-                      <InlineEditableText
-                        path={`education[${index}].school`}
-                        value={edu.school || "School Name"}
-                        className="text-sm text-gray-700 font-semibold block"
-                        as="p"
-                      />
-                    </div>
-                    <div className="text-xs text-gray-600 flex items-center gap-1">
-                      <InlineEditableDate
-                        path={`education[${index}].startDate`}
-                        value={edu.startDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                      <span> - </span>
-                      <InlineEditableDate
-                        path={`education[${index}].endDate`}
-                        value={edu.endDate}
-                        formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-            />
-          ) : (
-            <div className="space-y-4">
-              {resumeData.education.map((edu) => (
-                <div key={edu.id} style={{ pageBreakInside: 'avoid' }}>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">
-                        {edu.degree || "Degree"} {edu.field && `in ${edu.field}`}
-                      </h3>
-                      <p className="text-sm text-gray-700 font-semibold">
-                        {edu.school || "School Name"}
-                      </p>
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+      <InlineEducationSection
+        items={resumeData.education}
+        editable={editable}
+        accentColor={themeColor}
+        title="Education"
+        className="mb-8"
+        titleStyle={{
+          fontSize: "1.125rem", // text-lg
+          fontWeight: 700,
+          marginBottom: "0.75rem", // mb-3
+          textTransform: "uppercase",
+          letterSpacing: "0.025em", // tracking-wide
+          borderBottomWidth: "1px",
+          borderBottomStyle: "solid",
+          borderColor: themeColor,
+          paddingBottom: "0.5rem", // pb-2
+          color: themeColor
+        }}
+      />
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
@@ -379,51 +248,17 @@ export const AcademicAchieverTemplate = ({ resumeData, themeColor = "#2563eb", e
       )}
 
       {/* Custom Sections */}
-      {resumeData.sections.map((section, index) => (
-        <div key={section.id} className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-          <h2 className="text-lg font-bold mb-3 uppercase tracking-wide border-b pb-2" style={{ color: themeColor, borderColor: themeColor, pageBreakAfter: 'avoid' }}>
-            {editable ? (
-              <InlineEditableText
-                path={`sections[${index}].title`}
-                value={section.title}
-                className="inline-block"
-              />
-            ) : (
-              section.title
-            )}
-          </h2>
-          {editable ? (
-            <InlineEditableText
-              path={`sections[${index}].content`}
-              value={section.content}
-              className="text-sm text-gray-700 leading-relaxed whitespace-pre-line block"
-              multiline
-              as="p"
-            />
-          ) : (
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-              {section.content}
-            </p>
-          )}
-        </div>
-      ))}
-
-      {/* Dynamic Sections */}
-      {resumeData.dynamicSections && Array.isArray(resumeData.dynamicSections) && resumeData.dynamicSections.length > 0 && (
-        <>
-          {resumeData.dynamicSections
-            .filter(section => section.enabled)
-            .sort((a, b) => a.order - b.order)
-            .map((section, index) => {
-              const actualIndex = resumeData.dynamicSections!.findIndex(s => s.id === section.id);
-              return (
-                <div key={section.id}>
-                  {renderDynamicSection(section, actualIndex)}
-                </div>
-              );
-            })}
-        </>
-      )}
+      <InlineCustomSections
+        sections={resumeData.sections}
+        editable={editable}
+        accentColor={themeColor}
+        containerClassName="mb-8"
+        itemStyle={{
+          fontSize: styles.itemDescription.size,
+          lineHeight: styles.itemDescription.lineHeight,
+          color: styles.itemDescription.color,
+        }}
+      />
     </div>
   );
 };

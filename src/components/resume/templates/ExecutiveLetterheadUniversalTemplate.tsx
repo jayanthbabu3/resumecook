@@ -157,49 +157,49 @@ export const ExecutiveLetterheadUniversalTemplate = ({
                   return (
                     <div className="mb-6 last:mb-0 space-y-2">
                       <div className="flex justify-between items-baseline">
-                        <div>
-                          <InlineEditableText
-                            path={`experience[${index}].position`}
-                            value={exp.position}
-                            className="text-[14px] font-semibold text-gray-900 block"
-                            as="h3"
-                          />
-                          <InlineEditableText
-                            path={`experience[${index}].company`}
-                            value={exp.company}
-                            className="text-[13px] text-gray-700 italic block"
-                            as="p"
-                          />
-                        </div>
-                        <div className="text-[11px] text-gray-600 flex items-center gap-1">
+                      <div>
+                        <InlineEditableText
+                          path={`experience[${index}].position`}
+                          value={exp.position}
+                          className="text-[14px] font-semibold text-gray-900 block"
+                          as="h3"
+                        />
+                        <InlineEditableText
+                          path={`experience[${index}].company`}
+                          value={exp.company}
+                          className="text-[13px] text-gray-700 italic block"
+                          as="p"
+                        />
+                      </div>
+                      <div className="text-[11px] text-gray-600 flex items-center gap-1">
+                        <InlineEditableDate
+                          path={`experience[${index}].startDate`}
+                          value={exp.startDate}
+                          className="inline-block"
+                        />
+                          <span>-</span>
+                        {exp.current ? (
+                          <span>Present</span>
+                        ) : (
                           <InlineEditableDate
-                            path={`experience[${index}].startDate`}
-                            value={exp.startDate}
+                            path={`experience[${index}].endDate`}
+                            value={exp.endDate}
                             className="inline-block"
                           />
-                          <span>-</span>
-                          {exp.current ? (
-                            <span>Present</span>
-                          ) : (
-                            <InlineEditableDate
-                              path={`experience[${index}].endDate`}
-                              value={exp.endDate}
-                              className="inline-block"
-                            />
-                          )}
-                        </div>
+                        )}
                       </div>
+                    </div>
                       <div className="space-y-1.5">
                         {hasBullets ? (
                           exp.bulletPoints!.map((bullet, bulletIndex) => (
                             <div key={bulletIndex} className="flex items-start gap-2 group">
                               <span className="text-gray-400 mt-1">•</span>
-                              <InlineEditableText
+                      <InlineEditableText
                                 path={`experience[${index}].bulletPoints[${bulletIndex}]`}
                                 value={bullet || ""}
                                 placeholder="Click to add achievement..."
                                 className="text-[12.5px] text-gray-700 leading-[1.7] flex-1 border border-dashed border-gray-300 rounded px-1"
-                                multiline
+                        multiline
                                 as="span"
                               />
                               <button
@@ -228,7 +228,7 @@ export const ExecutiveLetterheadUniversalTemplate = ({
                           Add Achievement
                         </button>
                       </div>
-                    </div>
+                  </div>
                   );
                 }}
               />
@@ -238,9 +238,9 @@ export const ExecutiveLetterheadUniversalTemplate = ({
                   exp.bulletPoints && exp.bulletPoints.length > 0
                     ? exp.bulletPoints
                     : (exp.description || "")
-                        .split("\n")
-                        .map((line) => line.trim())
-                        .filter(Boolean);
+                  .split("\n")
+                  .map((line) => line.trim())
+                  .filter(Boolean);
 
                 return (
                   <div key={index} className="mb-6 last:mb-0">

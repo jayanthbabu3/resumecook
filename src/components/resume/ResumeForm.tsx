@@ -383,7 +383,8 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
         {
           id: Date.now().toString(),
           title: "New Section",
-          content: ""
+          content: "",
+          items: []
         }
       ]
     });
@@ -402,6 +403,48 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
     setResumeData({
       ...resumeData,
       sections: resumeData.sections.filter(section => section.id !== id)
+    });
+  };
+
+  const addCustomSectionItem = (sectionId: string) => {
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: [...(section.items || []), ""],
+            }
+          : section
+      ),
+    });
+  };
+
+  const updateCustomSectionItem = (sectionId: string, index: number, value: string) => {
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: (section.items || []).map((item, i) => (i === index ? value : item)),
+            }
+          : section
+      ),
+    });
+  };
+
+  const removeCustomSectionItem = (sectionId: string, index: number) => {
+    setResumeData({
+      ...resumeData,
+      sections: resumeData.sections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              items: (section.items || []).filter((_, i) => i !== index),
+            }
+          : section
+      ),
     });
   };
 
@@ -1334,13 +1377,39 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Content</Label>
-                    <Textarea
-                      value={section.content}
-                      onChange={(e) => updateCustomSection(section.id, "content", e.target.value)}
-                      placeholder="Describe the details for this section..."
-                      rows={4}
-                    />
+                    <Label>Bullet Items</Label>
+                    <div className="space-y-2">
+                      {(section.items || []).map((item, index) => (
+                        <div key={index} className="flex items-start gap-2">
+                          <span className="mt-2 text-xs text-muted-foreground">•</span>
+                          <Textarea
+                            className="flex-1"
+                            rows={2}
+                            value={item}
+                            onChange={(e) => updateCustomSectionItem(section.id, index, e.target.value)}
+                            placeholder="Add a bullet point for this section..."
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="mt-1"
+                            onClick={() => removeCustomSectionItem(section.id, index)}
+                            disabled={(section.items || []).length <= 1}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-dashed"
+                        onClick={() => addCustomSectionItem(section.id)}
+                      >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add Item
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
