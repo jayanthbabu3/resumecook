@@ -55,8 +55,23 @@ export const TemplateHeader: React.FC<TemplateHeaderProps> = ({
 }) => {
   const { fullName, email, phone, location, title, linkedin, github, portfolio } = personalInfo;
   
+  // Helper to check if a link value is meaningful (not empty, not placeholder)
+  const hasValidValue = (value: string | undefined | null): boolean => {
+    if (!value) return false;
+    const trimmed = value.trim();
+    if (!trimmed) return false;
+    // Filter out common placeholder texts
+    const placeholders = ['portfolio url', 'portfolio', 'url', 'website', 'www.example.com', 'example.com'];
+    const lowerTrimmed = trimmed.toLowerCase();
+    return !placeholders.some(placeholder => lowerTrimmed === placeholder || lowerTrimmed.includes(placeholder + ' url'));
+  };
+  
   const showSocials = config.showSocialLinks && includeSocialLinks;
-  const hasSocialLinks = linkedin || github || portfolio;
+  // In editable mode, check if any social link exists (even if empty, to show for editing)
+  // In non-editable mode, only check for valid values
+  const hasSocialLinks = editable 
+    ? (linkedin || github || portfolio) // Show section if any field exists (even empty) in edit mode
+    : (hasValidValue(linkedin) || hasValidValue(github) || hasValidValue(portfolio)); // Only show if valid values exist in view/PDF mode
 
   // Contact item renderer
   const renderContactItem = (
@@ -65,7 +80,9 @@ export const TemplateHeader: React.FC<TemplateHeaderProps> = ({
     path: string,
     key: string
   ) => {
-    if (!value) return null;
+    // In non-editable mode (PDF), only show if value is valid
+    if (!editable && !hasValidValue(value)) return null;
+    // In editable mode, always show (even if empty) so user can edit
     
     return (
       <div key={key} className="flex items-center gap-2">
@@ -73,7 +90,8 @@ export const TemplateHeader: React.FC<TemplateHeaderProps> = ({
         {editable ? (
           <InlineEditableText
             path={path}
-            value={value}
+            value={value || ''}
+            placeholder={key === 'email' ? 'email@example.com' : key === 'phone' ? '+1 (555) 000-0000' : 'Location'}
             className="inline-block"
             style={{ fontSize: styles.header.contact.size }}
           />
@@ -91,7 +109,9 @@ export const TemplateHeader: React.FC<TemplateHeaderProps> = ({
     path: string,
     key: string
   ) => {
-    if (!value) return null;
+    // In non-editable mode (PDF), only show if value is valid (not empty, not placeholder)
+    if (!editable && !hasValidValue(value)) return null;
+    // In editable mode, always show (even if empty) so user can edit - no need to check value
     
     return (
       <div key={key} className="flex items-center gap-2">
@@ -99,7 +119,8 @@ export const TemplateHeader: React.FC<TemplateHeaderProps> = ({
         {editable ? (
           <InlineEditableText
             path={path}
-            value={value}
+            value={value || ''}
+            placeholder={`${key === 'linkedin' ? 'LinkedIn' : key === 'github' ? 'GitHub' : 'Portfolio'} URL`}
             className="inline-block"
             style={{ fontSize: styles.header.contact.size }}
           />

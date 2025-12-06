@@ -40,7 +40,7 @@ export const SeniorFrontendTemplate = ({
 }: TemplateProps) => {
   const accent = themeColor;
   const styleOptions = useStyleOptionsWithDefaults();
-  const dividerStyle = styleOptions.getDividerStyle();
+  const sectionBorder = styleOptions.getSectionBorder(accent);
   const contactDetails = [
     resumeData.personalInfo.email,
     resumeData.personalInfo.phone,
@@ -58,7 +58,7 @@ export const SeniorFrontendTemplate = ({
   return (
     <div className="w-full min-h-[297mm] bg-white text-slate-900 font-sans" style={{ color: '#1a1a1a', fontSize: '13px', lineHeight: '1.6' }}>
       <div className="mx-auto flex max-w-4xl flex-col gap-6 px-8 py-10">
-        <header className="space-y-3 pb-5" style={{ borderBottom: `0.5px solid ${accent}` }}>
+        <header className="space-y-3 pb-5" style={{ ...sectionBorder }}>
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="space-y-1.5">
               {editable ? (
@@ -145,7 +145,7 @@ export const SeniorFrontendTemplate = ({
             <h2
               className="text-[13px] font-semibold uppercase tracking-wide"
               data-accent-color="true"
-              style={{ borderBottom: `0.5px solid ${accent}`, color: accent }}
+              style={{ color: accent, ...sectionBorder }}
             >
               {styleOptions.formatHeader(title)}
             </h2>
@@ -158,7 +158,7 @@ export const SeniorFrontendTemplate = ({
             <h2
               className="text-[13px] font-semibold uppercase tracking-wide"
               data-accent-color="true"
-              style={{ borderBottom: `0.5px solid ${accent}`, color: accent }}
+              style={{ color: accent, ...sectionBorder }}
             >
               {styleOptions.formatHeader('Connect With Me')}
             </h2>
@@ -176,7 +176,7 @@ export const SeniorFrontendTemplate = ({
             <h2
               className="text-[13px] font-semibold uppercase tracking-wide"
               data-accent-color="true"
-              style={{ borderBottom: `0.5px solid ${accent}`, color: accent }}
+              style={{ color: accent, ...sectionBorder }}
             >
               {styleOptions.formatHeader('Professional Experience')}
             </h2>
@@ -252,7 +252,7 @@ export const SeniorFrontendTemplate = ({
             <h2
               className="text-[13px] font-semibold uppercase tracking-wide"
               data-accent-color="true"
-              style={{ borderBottom: `0.5px solid ${accent}`, color: accent }}
+              style={{ color: accent, ...sectionBorder }}
             >
               {styleOptions.formatHeader('Skills')}
             </h2>
@@ -285,9 +285,9 @@ export const SeniorFrontendTemplate = ({
               className="text-[13px] font-semibold uppercase tracking-wide"
               data-accent-color="true"
               style={{ 
-                borderBottom: `0.5px solid ${accent}`,
                 color: accent,
-                marginBottom: '8px'
+                marginBottom: '8px',
+                ...sectionBorder
               }}
             >
               <EditableText 
@@ -315,7 +315,7 @@ export const SeniorFrontendTemplate = ({
                 <h2
                   className="text-[13px] font-semibold uppercase tracking-wide"
                   data-accent-color="true"
-                  style={{ borderBottom: `0.5px solid ${accent}`, color: accent }}
+                  style={{ color: accent, ...sectionBorder }}
                 >
                   {styleOptions.formatHeader(title)}
                 </h2>

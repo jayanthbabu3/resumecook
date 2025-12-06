@@ -463,3 +463,4 @@ if (templateName === 'all') {
   const result = verifyFresherTemplate(templateName);
   process.exit(result.issues.length > 0 ? 1 : 0);
 }
+

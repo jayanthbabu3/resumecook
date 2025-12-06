@@ -56,6 +56,7 @@ import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableSectionItems } from '@/components/resume/InlineEditableSectionItems';
 import { useTemplateEditor } from '@/hooks/useTemplateEditor';
 import { SINGLE_COLUMN_CONFIG, PDFStyleConfig } from '@/lib/pdfStyles';
+import { useStyleOptionsWithDefaults } from '@/contexts/StyleOptionsContext';
 import { Plus, X } from 'lucide-react';
 
 // ============================================================================
@@ -272,6 +273,7 @@ export const CustomSectionsWrapper: React.FC<CustomSectionsWrapperProps> = ({
         onRemove={(e) => handleRemoveSection(e, index)}
         renderSectionHeader={renderSectionHeader}
         createHeaderHelpers={createHeaderHelpers}
+        updateField={updateField}
       />
     ),
     remove: () => removeSection(index),
@@ -324,26 +326,29 @@ export const CustomSectionsWrapper: React.FC<CustomSectionsWrapperProps> = ({
 
   return (
     <div className={className} style={style}>
+      {/* Render all existing sections */}
       {sections && sections.map((section, index) => 
         renderSection 
           ? renderSection(section, index, createSectionHelpers(section, index))
           : defaultRenderSection(section, index)
       )}
 
-      {/* Add Section Button */}
+      {/* Add Section Button - Always at the bottom */}
       {isEditable && showAddSection && (
-        renderAddSectionButton ? (
-          renderAddSectionButton(handleAddSection)
-        ) : (
-          <button
-            onClick={handleAddSection}
-            className="mt-4 flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md border-2 border-dashed hover:bg-gray-50 transition-colors"
-            style={{ color: accentColor, borderColor: accentColor }}
-          >
-            <Plus className="h-4 w-4" />
-            Add Section
-          </button>
-        )
+        <div className="mt-4">
+          {renderAddSectionButton ? (
+            renderAddSectionButton(handleAddSection)
+          ) : (
+            <button
+              onClick={handleAddSection}
+              className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md border-2 border-dashed hover:bg-gray-50 transition-colors w-full justify-center"
+              style={{ color: accentColor, borderColor: accentColor }}
+            >
+              <Plus className="h-4 w-4" />
+              Add Section
+            </button>
+          )}
+        </div>
       )}
     </div>
   );
@@ -366,7 +371,7 @@ interface DefaultSectionHeaderProps {
   createHeaderHelpers: (section: CustomSection, index: number) => SectionHeaderHelpers;
 }
 
-const DefaultSectionHeader: React.FC<DefaultSectionHeaderProps> = ({
+const DefaultSectionHeader: React.FC<DefaultSectionHeaderProps & { updateField: (path: string, value: any) => void }> = ({
   section,
   index,
   isEditable,
@@ -377,8 +382,10 @@ const DefaultSectionHeader: React.FC<DefaultSectionHeaderProps> = ({
   onRemove,
   renderSectionHeader,
   createHeaderHelpers,
+  updateField,
 }) => {
   const helpers = createHeaderHelpers(section, index);
+  const styleOptions = useStyleOptionsWithDefaults();
 
   if (renderSectionHeader) {
     return <>{renderSectionHeader(section.title, index, helpers)}</>;
@@ -400,11 +407,16 @@ const DefaultSectionHeader: React.FC<DefaultSectionHeaderProps> = ({
         {isEditable ? (
           <InlineEditableText
             path={`sections[${index}].title`}
-            value={section.title}
+            value={styleOptions.formatHeader(section.title)}
             className="inline-block"
+            onCustomUpdate={(newValue) => {
+              // Format the value when saving to ensure consistency with style options
+              const formatted = styleOptions.formatHeader(newValue);
+              updateField(`sections[${index}].title`, formatted);
+            }}
           />
         ) : (
-          section.title
+          styleOptions.formatHeader(section.title)
         )}
       </h2>
       {isEditable && (
@@ -487,8 +499,8 @@ const CustomItemsRenderer: React.FC<CustomItemsRendererProps> = ({
         ) : (
           <button
             onClick={handleAddItem}
-            className="mt-2 flex items-center gap-1 text-xs font-medium"
-            style={{ color: accentColor }}
+            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+            style={{ color: accentColor, borderColor: accentColor }}
           >
             <Plus className="h-3 w-3" />
             Add Item

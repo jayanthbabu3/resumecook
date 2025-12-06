@@ -782,6 +782,292 @@ export const getSkillBadgeClasses = (style: keyof typeof SKILL_BADGE_STYLES = 'p
 };
 
 // ============================================================================
+// SOCIAL LINKS STYLES
+// ============================================================================
+
+/**
+ * Social links display variants for consistent appearance across all templates.
+ * Each variant defines layout, styling, and behavior options.
+ */
+export type SocialLinksVariant = 'horizontal' | 'vertical' | 'icons-only' | 'minimal' | 'badges' | 'underlined';
+
+export const SOCIAL_LINKS_STYLES = {
+  // Horizontal layout with icons and text (default)
+  horizontal: {
+    layout: 'horizontal' as const,
+    fontSize: '13px',
+    iconSize: 'w-4 h-4',
+    gap: '12px',
+    showIcons: true,
+    showLabels: false,
+    showUnderline: false,
+    containerClass: 'flex flex-wrap items-center gap-3',
+    itemClass: 'flex items-center gap-1.5',
+  },
+  // Vertical stacked layout
+  vertical: {
+    layout: 'vertical' as const,
+    fontSize: '13px',
+    iconSize: 'w-4 h-4',
+    gap: '8px',
+    showIcons: true,
+    showLabels: false,
+    showUnderline: false,
+    containerClass: 'flex flex-col gap-2',
+    itemClass: 'flex items-center gap-2',
+  },
+  // Icons only (no text)
+  'icons-only': {
+    layout: 'horizontal' as const,
+    fontSize: '13px',
+    iconSize: 'w-5 h-5',
+    gap: '12px',
+    showIcons: true,
+    showLabels: false,
+    showUnderline: false,
+    iconsOnly: true,
+    containerClass: 'flex items-center gap-3',
+    itemClass: 'flex items-center justify-center',
+  },
+  // Minimal text-only links
+  minimal: {
+    layout: 'horizontal' as const,
+    fontSize: '13px',
+    iconSize: 'w-3.5 h-3.5',
+    gap: '16px',
+    showIcons: false,
+    showLabels: true,
+    showUnderline: false,
+    containerClass: 'flex flex-wrap items-center gap-4',
+    itemClass: 'flex items-center',
+  },
+  // Badge style with background
+  badges: {
+    layout: 'horizontal' as const,
+    fontSize: '12px',
+    iconSize: 'w-3.5 h-3.5',
+    gap: '8px',
+    showIcons: true,
+    showLabels: true,
+    showUnderline: false,
+    hasBadgeStyle: true,
+    containerClass: 'flex flex-wrap items-center gap-2',
+    itemClass: 'flex items-center gap-1.5 px-3 py-1.5 rounded-full border',
+  },
+  // Underlined links
+  underlined: {
+    layout: 'horizontal' as const,
+    fontSize: '13px',
+    iconSize: 'w-4 h-4',
+    gap: '12px',
+    showIcons: true,
+    showLabels: false,
+    showUnderline: true,
+    containerClass: 'flex flex-wrap items-center gap-3',
+    itemClass: 'flex items-center gap-1.5',
+  },
+} as const;
+
+/**
+ * Helper to get social links style configuration
+ * @param variant - The variant name
+ */
+export const getSocialLinksStyle = (variant: SocialLinksVariant = 'horizontal') => {
+  return SOCIAL_LINKS_STYLES[variant] || SOCIAL_LINKS_STYLES.horizontal;
+};
+
+/**
+ * Helper to generate social links container className for Tailwind
+ * @param variant - The variant name
+ */
+export const getSocialLinksClasses = (variant: SocialLinksVariant = 'horizontal') => {
+  const style = getSocialLinksStyle(variant);
+  return {
+    container: style.containerClass,
+    item: style.itemClass,
+    iconSize: style.iconSize,
+  };
+};
+
+// ============================================================================
+// SECTION SPACING STANDARDS
+// ============================================================================
+
+/**
+ * Standard section spacing for consistent gaps across all templates.
+ * These values ensure visual consistency between sections.
+ */
+export const SECTION_SPACING = {
+  /** Gap between section heading and content */
+  headingToContent: '8px',
+  /** Gap between sections */
+  betweenSections: '16px',
+  /** Gap between items within a section */
+  betweenItems: '12px',
+  /** Tailwind classes for section heading margin */
+  headingMarginClass: 'mb-2',
+  /** Tailwind classes for section container margin */
+  sectionMarginClass: 'mb-4',
+} as const;
+
+// ============================================================================
+// EDUCATION DISPLAY VARIANTS
+// ============================================================================
+
+/**
+ * Education display variants for consistent appearance across all templates.
+ * Each variant provides a different visual representation of education entries.
+ */
+export type EducationVariant = 'standard' | 'compact' | 'detailed' | 'timeline' | 'card' | 'minimal';
+
+export const EDUCATION_STYLES = {
+  // Standard layout - degree, school, dates, field (most common)
+  standard: {
+    layout: 'standard' as const,
+    showDegree: true,
+    showSchool: true,
+    showField: true,
+    showDates: true,
+    showGPA: true,
+    showDescription: true,
+    degreeSize: '13px',
+    schoolSize: '13px',
+    fieldSize: '12px',
+    dateSize: '13px',
+    gpaSize: '12px',
+    containerClass: 'space-y-3',
+    itemClass: 'space-y-1',
+    degreeClass: 'font-semibold',
+    schoolClass: 'font-medium',
+    datePosition: 'inline', // 'inline' | 'below' | 'right'
+  },
+  // Compact layout - single line per entry
+  compact: {
+    layout: 'compact' as const,
+    showDegree: true,
+    showSchool: true,
+    showField: false,
+    showDates: true,
+    showGPA: false,
+    showDescription: false,
+    degreeSize: '13px',
+    schoolSize: '13px',
+    fieldSize: '12px',
+    dateSize: '12px',
+    gpaSize: '11px',
+    containerClass: 'space-y-2',
+    itemClass: 'flex flex-wrap items-baseline justify-between gap-2',
+    degreeClass: 'font-semibold',
+    schoolClass: 'font-medium',
+    datePosition: 'right',
+  },
+  // Detailed layout - includes description and achievements
+  detailed: {
+    layout: 'detailed' as const,
+    showDegree: true,
+    showSchool: true,
+    showField: true,
+    showDates: true,
+    showGPA: true,
+    showDescription: true,
+    degreeSize: '14px',
+    schoolSize: '13px',
+    fieldSize: '13px',
+    dateSize: '13px',
+    gpaSize: '12px',
+    containerClass: 'space-y-4',
+    itemClass: 'space-y-2',
+    degreeClass: 'font-bold',
+    schoolClass: 'font-semibold',
+    datePosition: 'below',
+  },
+  // Timeline layout - with visual timeline indicator
+  timeline: {
+    layout: 'timeline' as const,
+    showDegree: true,
+    showSchool: true,
+    showField: true,
+    showDates: true,
+    showGPA: true,
+    showDescription: true,
+    degreeSize: '13px',
+    schoolSize: '13px',
+    fieldSize: '12px',
+    dateSize: '13px',
+    gpaSize: '12px',
+    containerClass: 'space-y-4',
+    itemClass: 'relative pl-6 space-y-1',
+    degreeClass: 'font-semibold',
+    schoolClass: 'font-medium',
+    datePosition: 'right',
+    hasTimelineIndicator: true,
+  },
+  // Card layout - boxed entries with subtle background
+  card: {
+    layout: 'card' as const,
+    showDegree: true,
+    showSchool: true,
+    showField: true,
+    showDates: true,
+    showGPA: true,
+    showDescription: true,
+    degreeSize: '13px',
+    schoolSize: '13px',
+    fieldSize: '12px',
+    dateSize: '12px',
+    gpaSize: '12px',
+    containerClass: 'space-y-3',
+    itemClass: 'p-4 rounded-lg border space-y-2',
+    degreeClass: 'font-semibold',
+    schoolClass: 'font-medium',
+    datePosition: 'right',
+    hasCardStyle: true,
+  },
+  // Minimal layout - just degree and school
+  minimal: {
+    layout: 'minimal' as const,
+    showDegree: true,
+    showSchool: true,
+    showField: false,
+    showDates: false,
+    showGPA: false,
+    showDescription: false,
+    degreeSize: '13px',
+    schoolSize: '13px',
+    fieldSize: '12px',
+    dateSize: '12px',
+    gpaSize: '11px',
+    containerClass: 'space-y-2',
+    itemClass: 'space-y-0.5',
+    degreeClass: 'font-semibold',
+    schoolClass: 'font-medium',
+    datePosition: 'inline',
+  },
+} as const;
+
+/**
+ * Helper to get education style configuration
+ * @param variant - The variant name
+ */
+export const getEducationStyle = (variant: EducationVariant = 'standard') => {
+  return EDUCATION_STYLES[variant] || EDUCATION_STYLES.standard;
+};
+
+/**
+ * Helper to generate education container className for Tailwind
+ * @param variant - The variant name
+ */
+export const getEducationClasses = (variant: EducationVariant = 'standard') => {
+  const style = getEducationStyle(variant);
+  return {
+    container: style.containerClass,
+    item: style.itemClass,
+    degree: style.degreeClass,
+    school: style.schoolClass,
+  };
+};
+
+// ============================================================================
 // EXPORT DEFAULT
 // ============================================================================
 
@@ -795,6 +1081,13 @@ export const PDF_STYLES = {
   generateBasePDFStyles,
   skillBadge: SKILL_BADGE_STYLES,
   getSkillBadgeClasses,
+  socialLinks: SOCIAL_LINKS_STYLES,
+  getSocialLinksStyle,
+  getSocialLinksClasses,
+  education: EDUCATION_STYLES,
+  getEducationStyle,
+  getEducationClasses,
+  sectionSpacing: SECTION_SPACING,
 };
 
 export default PDF_STYLES;

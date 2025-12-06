@@ -109,6 +109,7 @@ export {
   TemplateContactInfo,
   TemplateSkillsSection,
   TemplateSummarySection,
+  SectionHeader,
   normalizeHex,
   withOpacity,
   formatDate,
@@ -120,4 +121,5 @@ export type {
   ContactInfoProps,
   TemplateSkillsSectionProps,
   TemplateSummarySectionProps,
+  SectionHeaderProps,
 } from './TemplateBase';

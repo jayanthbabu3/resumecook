@@ -136,11 +136,11 @@ export const InlineEditableSectionItems: React.FC<InlineEditableSectionItemsProp
         </div>
       )}
 
-      {/* Add Item Button */}
+      {/* Add Item Button - Always at the bottom */}
       <button
         onClick={handleAddItem}
-        className="mt-2 flex items-center gap-1 text-xs font-medium"
-        style={{ color: accentColor }}
+        className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+        style={{ color: accentColor, borderColor: accentColor }}
       >
         <Plus className="h-3 w-3" />
         {addButtonLabel}

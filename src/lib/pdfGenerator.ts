@@ -314,18 +314,21 @@ function captureResumeHTMLWithStyles(
             visibility: visible !important;
           }
           
-          ul li div {
-            display: flex !important;
-          }
-          
-          /* Let templates control their own bullet styles */
+          /* PDF-safe bullet point styling - use hanging indent instead of flexbox */
           ul {
-            list-style-position: outside !important;
-            padding-left: 20px !important;
+            list-style: none !important;
+            padding-left: 0 !important;
+            margin: 0 !important;
           }
           
           ul li {
-            display: list-item !important;
+            display: block !important;
+            padding-left: 1em !important;
+            text-indent: -1em !important;
+          }
+          
+          ul li span:first-child {
+            margin-right: 0.5em !important;
           }
           
           /* Hide empty bullet points (those with only whitespace or placeholder text) */

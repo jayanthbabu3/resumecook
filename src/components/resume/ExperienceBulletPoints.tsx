@@ -60,9 +60,26 @@ export const ExperienceBulletPoints: React.FC<ExperienceBulletPointsProps> = ({
   bulletStyle = {},
   className = '',
 }) => {
-  const { addBulletPoint, removeBulletPoint } = useInlineEdit();
+  const context = useInlineEdit();
+  const addBulletPoint = context?.addBulletPoint;
+  const removeBulletPoint = context?.removeBulletPoint;
 
-  const hasBullets = bulletPoints && bulletPoints.length > 0;
+  // Parse description into bullet points if bulletPoints array is empty
+  const effectiveBulletPoints = React.useMemo(() => {
+    if (bulletPoints && bulletPoints.length > 0) {
+      return bulletPoints;
+    }
+    // Parse description by newlines if no bullet points exist
+    if (description && description.trim()) {
+      return description
+        .split('\n')
+        .map(line => line.trim().replace(/^[•\-]\s*/, '')) // Remove bullet prefixes
+        .filter(line => line.length > 0);
+    }
+    return [];
+  }, [bulletPoints, description]);
+
+  const hasBullets = effectiveBulletPoints.length > 0;
 
   // Default bullet style
   const defaultBulletStyle: React.CSSProperties = {
@@ -72,20 +89,10 @@ export const ExperienceBulletPoints: React.FC<ExperienceBulletPointsProps> = ({
     ...bulletStyle,
   };
 
-  // If not editable and no bullets, show description
-  if (!editable && !hasBullets) {
-    if (!description) return null;
-    return (
-      <p className={className} style={defaultBulletStyle}>
-        {description}
-      </p>
-    );
-  }
-
-  return (
-    <div className={className}>
-      {/* Show "Add Achievement" button if no bullets exist */}
-      {!hasBullets && editable && (
+  // If no bullets and no description, return null
+  if (!hasBullets && !description) {
+    return editable && addBulletPoint ? (
+      <div className={className}>
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -98,24 +105,60 @@ export const ExperienceBulletPoints: React.FC<ExperienceBulletPointsProps> = ({
           <Plus className="h-3 w-3" />
           Add Achievement
         </button>
-      )}
+      </div>
+    ) : null;
+  }
 
+  // For non-editable mode with bullets, render them (PDF-safe hanging indent layout)
+  if (!editable && hasBullets) {
+    return (
+      <ul className={className} style={{ listStyle: 'none', paddingLeft: 0, margin: 0, marginTop: '0.25rem' }}>
+        {effectiveBulletPoints.map((bullet, bulletIndex) => {
+          const bulletText = typeof bullet === 'string' ? bullet : (bullet as any)?.text || '';
+          const isLast = bulletIndex === effectiveBulletPoints.length - 1;
+          return (
+            <li
+              key={bulletIndex}
+              style={{
+                ...defaultBulletStyle,
+                display: 'block',
+                paddingLeft: '1em',
+                textIndent: '-1em',
+                marginBottom: isLast ? 0 : '0.25rem',
+                position: 'relative',
+              }}
+            >
+              <span style={{ 
+                marginRight: '0.5rem', 
+                lineHeight: defaultBulletStyle.lineHeight,
+                display: 'inline'
+              }}>•</span>
+              <span style={{ display: 'inline' }}>{bulletText}</span>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  return (
+    <div className={className}>
       {/* Render bullet points */}
       {hasBullets && (
-        <ul className="space-y-1 mt-2">
-          {bulletPoints.map((bullet, bulletIndex) => {
+        <ul className="space-y-1 mt-2" style={{ listStyle: 'none', paddingLeft: 0 }}>
+          {effectiveBulletPoints.map((bullet, bulletIndex) => {
             // Handle case where bullet might be an object
             const bulletText = typeof bullet === 'string' ? bullet : (bullet as any)?.text || '';
             
             return (
               <li
                 key={bulletIndex}
-                className="flex items-start gap-2 group"
+                className="flex items-start group"
                 style={defaultBulletStyle}
               >
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0" />
+                <span className="mr-2 flex-shrink-0" style={{ lineHeight: defaultBulletStyle.lineHeight, marginTop: '0.125rem' }}>•</span>
                 {editable ? (
-                  <div className="flex-1 flex items-start gap-1">
+                  <div className="flex-1 flex items-start gap-2">
                     <InlineEditableText
                       path={`experience[${experienceIndex}].bulletPoints[${bulletIndex}]`}
                       value={bulletText}
@@ -127,31 +170,32 @@ export const ExperienceBulletPoints: React.FC<ExperienceBulletPointsProps> = ({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        removeBulletPoint(experienceId, bulletIndex);
+                        removeBulletPoint?.(experienceId, bulletIndex);
                       }}
                       className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
+                      style={{ marginTop: '0.125rem' }}
                       title="Remove"
                     >
                       <X className="h-3 w-3 text-red-500" />
                     </button>
                   </div>
                 ) : (
-                  <span>{bulletText}</span>
+                  <span style={{ flex: 1 }}>{bulletText}</span>
                 )}
               </li>
             );
           })}
           
           {/* Add more button */}
-          {editable && (
-            <li>
+          {editable && addBulletPoint && (
+            <li className="mt-2">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   addBulletPoint(experienceId);
                 }}
-                className="flex items-center gap-1 text-xs font-medium hover:underline ml-3.5"
+                className="flex items-center gap-1 text-xs font-medium hover:underline"
                 style={{ color: accentColor }}
               >
                 <Plus className="h-3 w-3" />
@@ -162,9 +206,20 @@ export const ExperienceBulletPoints: React.FC<ExperienceBulletPointsProps> = ({
         </ul>
       )}
 
-      {/* Show description as fallback if no bullets and not editable */}
-      {!hasBullets && !editable && description && (
-        <p style={defaultBulletStyle}>{description}</p>
+      {/* Show "Add Achievement" button if no bullets exist in edit mode */}
+      {!hasBullets && editable && addBulletPoint && (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            addBulletPoint(experienceId);
+          }}
+          className="flex items-center gap-1 text-xs font-medium hover:underline"
+          style={{ color: accentColor }}
+        >
+          <Plus className="h-3 w-3" />
+          Add Achievement
+        </button>
       )}
     </div>
   );

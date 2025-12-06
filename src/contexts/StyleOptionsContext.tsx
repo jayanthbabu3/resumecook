@@ -44,6 +44,8 @@ interface StyleOptionsContextType {
   formatHeader: (text: string) => string;
   getBulletChar: () => string;
   getDividerStyle: () => React.CSSProperties;
+  /** Get section header border style with accent color. Returns empty object if divider is 'none' */
+  getSectionBorder: (accentColor: string) => React.CSSProperties;
   getFontScale: () => { name: number; title: number; section: number; body: number; small: number };
   formatDate: (dateString: string) => string;
 }
@@ -97,6 +99,23 @@ export const StyleOptionsProvider: React.FC<{ children: ReactNode }> = ({ childr
       case 'none':
       default:
         return { borderBottom: 'none' };
+    }
+  }, [styleOptions.dividerStyle]);
+
+  // Helper: Get section header border with accent color
+  const getSectionBorder = useCallback((accentColor: string): React.CSSProperties => {
+    switch (styleOptions.dividerStyle) {
+      case 'line':
+        return { borderBottom: `1px solid ${accentColor}` };
+      case 'dotted':
+        return { borderBottom: `1px dotted ${accentColor}` };
+      case 'double':
+        return { borderBottom: `3px double ${accentColor}` };
+      case 'thin':
+        return { borderBottom: `0.5px solid ${accentColor}` };
+      case 'none':
+      default:
+        return {};
     }
   }, [styleOptions.dividerStyle]);
 
@@ -158,6 +177,7 @@ export const StyleOptionsProvider: React.FC<{ children: ReactNode }> = ({ childr
       formatHeader,
       getBulletChar,
       getDividerStyle,
+      getSectionBorder,
       getFontScale,
       formatDate,
     }}>
@@ -185,6 +205,7 @@ export const useStyleOptionsWithDefaults = (): StyleOptionsContextType => {
     formatHeader: (text: string) => text.toUpperCase(),
     getBulletChar: () => '•',
     getDividerStyle: () => ({ borderBottom: '0.5px solid currentColor' }),
+    getSectionBorder: (accentColor: string) => ({ borderBottom: `0.5px solid ${accentColor}` }),
     getFontScale: () => ({ name: 32, title: 16, section: 16, body: 13, small: 12 }),
     formatDate: (dateString: string) => dateString,
   };

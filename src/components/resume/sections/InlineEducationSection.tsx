@@ -3,7 +3,7 @@ import type { EducationItem } from "@/types/resume";
 import { InlineEditableText } from "@/components/resume/InlineEditableText";
 import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
-import { SINGLE_COLUMN_CONFIG } from "@/lib/pdfStyles";
+import { SINGLE_COLUMN_CONFIG, EducationVariant, getEducationStyle, EDUCATION_STYLES } from "@/lib/pdfStyles";
 
 export interface InlineEducationSectionProps {
   /**
@@ -42,6 +42,10 @@ export interface InlineEducationSectionProps {
    * Optional inline styles for the title
    */
   titleStyle?: React.CSSProperties;
+  /**
+   * Display variant for education section
+   */
+  variant?: EducationVariant;
 }
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -66,13 +70,18 @@ export const InlineEducationSection: React.FC<InlineEducationSectionProps> = ({
   renderItem,
   renderHeader,
   titleStyle,
+  variant = "standard",
 }) => {
+  const variantStyle = getEducationStyle(variant);
+  const hasTimelineIndicator = 'hasTimelineIndicator' in variantStyle && variantStyle.hasTimelineIndicator;
+  const hasCardStyle = 'hasCardStyle' in variantStyle && variantStyle.hasCardStyle;
+
   const renderTitle = () => {
     if (!title) return null;
-    if (renderHeader) return renderHeader(title);
+    if (renderHeader) return <div className="mb-2">{renderHeader(title)}</div>;
     return (
       <h2
-        className="text-[14px] font-semibold mb-3 uppercase tracking-wide"
+        className="text-[13px] font-semibold mb-2 uppercase tracking-wide"
         style={{
           color: accentColor ?? SINGLE_COLUMN_CONFIG.colors.primary,
           fontSize: SINGLE_COLUMN_CONFIG.sectionHeading.size,
@@ -85,50 +94,204 @@ export const InlineEducationSection: React.FC<InlineEducationSectionProps> = ({
     );
   };
 
+  // Render date based on variant's datePosition
+  const renderDates = (edu: EducationItem, index: number, isEditable: boolean) => {
+    if (!variantStyle.showDates) return null;
+    
+    const dateStyle = { 
+      fontSize: variantStyle.dateSize, 
+      color: '#6b7280' 
+    };
+
+    if (isEditable) {
+      return (
+        <div className="flex items-center gap-1" style={dateStyle}>
+          <InlineEditableDate
+            path={`${path}[${index}].startDate`}
+            value={edu.startDate}
+            className="inline-block"
+          />
+          <span>—</span>
+          <InlineEditableDate
+            path={`${path}[${index}].endDate`}
+            value={edu.endDate}
+            className="inline-block"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div style={dateStyle}>
+        {formatMonthYear(edu.startDate)} — {formatMonthYear(edu.endDate)}
+      </div>
+    );
+  };
+
+  // Render GPA if enabled
+  const renderGPA = (edu: EducationItem, index: number, isEditable: boolean) => {
+    if (!variantStyle.showGPA) return null;
+
+    const gpaStyle = { fontSize: variantStyle.gpaSize, color: '#6b7280' };
+
+    if (isEditable) {
+      return (
+        <InlineEditableText
+          path={`${path}[${index}].gpa`}
+          value={edu.gpa || ""}
+          placeholder="GPA/Grade"
+          className="inline-block"
+          style={gpaStyle}
+        />
+      );
+    }
+
+    return edu.gpa ? <span style={gpaStyle}>GPA: {edu.gpa}</span> : null;
+  };
+
+  // Render a single education item based on variant
+  const renderEducationItem = (edu: EducationItem, index: number, isEditable: boolean) => {
+    if (renderItem) {
+      return renderItem(edu, index, isEditable);
+    }
+
+    const degreeStyle = { fontSize: variantStyle.degreeSize, color: '#000000' };
+    const schoolStyle = { fontSize: variantStyle.schoolSize, color: '#1a1a1a' };
+    const fieldStyle = { fontSize: variantStyle.fieldSize, color: '#6b7280' };
+
+    // Timeline indicator
+    const timelineIndicator = hasTimelineIndicator ? (
+      <span
+        className="absolute left-0 top-1.5 block h-2.5 w-2.5 rounded-full"
+        style={{ backgroundColor: accentColor || '#2563eb' }}
+      />
+    ) : null;
+
+    // Card style wrapper
+    const cardStyles = hasCardStyle ? {
+      borderColor: `${accentColor}30` || '#e5e7eb',
+      backgroundColor: `${accentColor}05` || '#fafafa',
+    } : {};
+
+    // Compact variant - single line
+    if (variant === 'compact') {
+      return (
+        <div className={variantStyle.itemClass} style={cardStyles}>
+          <div className="flex items-baseline gap-2">
+            <span className={variantStyle.degreeClass} style={degreeStyle}>
+              {isEditable ? (
+                <InlineEditableText
+                  path={`${path}[${index}].degree`}
+                  value={edu.degree}
+                  as="span"
+                />
+              ) : edu.degree}
+            </span>
+            {variantStyle.showSchool && (
+              <>
+                <span style={{ color: '#9ca3af' }}>•</span>
+                <span className={variantStyle.schoolClass} style={schoolStyle}>
+                  {isEditable ? (
+                    <InlineEditableText
+                      path={`${path}[${index}].school`}
+                      value={edu.school}
+                      as="span"
+                    />
+                  ) : edu.school}
+                </span>
+              </>
+            )}
+          </div>
+          {renderDates(edu, index, isEditable)}
+        </div>
+      );
+    }
+
+    // Standard, detailed, timeline, card, minimal variants
+    return (
+      <div className={variantStyle.itemClass} style={cardStyles}>
+        {timelineIndicator}
+        
+        {/* Header row with degree and dates (for right-aligned dates) */}
+        {variantStyle.datePosition === 'right' ? (
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <span className={variantStyle.degreeClass} style={degreeStyle}>
+              {isEditable ? (
+                <InlineEditableText
+                  path={`${path}[${index}].degree`}
+                  value={edu.degree}
+                  as="span"
+                />
+              ) : edu.degree}
+            </span>
+            {renderDates(edu, index, isEditable)}
+          </div>
+        ) : (
+          <div className={variantStyle.degreeClass} style={degreeStyle}>
+            {isEditable ? (
+              <InlineEditableText
+                path={`${path}[${index}].degree`}
+                value={edu.degree}
+                as="span"
+              />
+            ) : edu.degree}
+          </div>
+        )}
+
+        {/* School */}
+        {variantStyle.showSchool && (
+          <div className={variantStyle.schoolClass} style={schoolStyle}>
+            {isEditable ? (
+              <InlineEditableText
+                path={`${path}[${index}].school`}
+                value={edu.school}
+                as="span"
+              />
+            ) : edu.school}
+          </div>
+        )}
+
+        {/* Field of study */}
+        {variantStyle.showField && edu.field && (
+          <div style={fieldStyle}>
+            {isEditable ? (
+              <InlineEditableText
+                path={`${path}[${index}].field`}
+                value={edu.field}
+                as="span"
+              />
+            ) : edu.field}
+          </div>
+        )}
+
+        {/* Dates (inline or below) */}
+        {variantStyle.datePosition !== 'right' && variantStyle.showDates && (
+          <div className="flex items-center gap-2">
+            {renderDates(edu, index, isEditable)}
+            {variantStyle.showGPA && renderGPA(edu, index, isEditable)}
+          </div>
+        )}
+
+        {/* GPA for right-aligned dates */}
+        {variantStyle.datePosition === 'right' && variantStyle.showGPA && (
+          <div>{renderGPA(edu, index, isEditable)}</div>
+        )}
+      </div>
+    );
+  };
+
   const renderReadOnly = () => {
     if (!items || items.length === 0) return null;
 
     return (
       <div className={className}>
         {renderTitle()}
-        <div className="space-y-4" data-section="education">
-          {items.map((edu, index) => {
-            if (renderItem) {
-              return <React.Fragment key={edu.id}>{renderItem(edu, index, false)}</React.Fragment>;
-            }
-
-            return (
-              <div key={edu.id} style={{ lineHeight: 1.8 }}>
-                <h3
-                  className="text-[13px] font-semibold"
-                  style={{ color: SINGLE_COLUMN_CONFIG.itemTitle.color }}
-                >
-                  {edu.degree}
-                </h3>
-                {edu.field && (
-                  <p
-                    className="text-[12px]"
-                    style={{ color: SINGLE_COLUMN_CONFIG.colors.text.secondary }}
-                  >
-                    {edu.field}
-                  </p>
-                )}
-                <p
-                  className="text-[12px] font-medium"
-                  style={{ color: accentColor ?? SINGLE_COLUMN_CONFIG.colors.primary }}
-                >
-                  {edu.school}
-                </p>
-                <div
-                  className="text-[11px]"
-                  style={{ color: SINGLE_COLUMN_CONFIG.colors.text.secondary }}
-                >
-                  {formatMonthYear(edu.startDate)} - {formatMonthYear(edu.endDate)}
-                  {edu.gpa && ` • ${edu.gpa}`}
-                </div>
-              </div>
-            );
-          })}
+        <div className={variantStyle.containerClass} data-section="education">
+          {items.map((edu, index) => (
+            <React.Fragment key={edu.id}>
+              {renderEducationItem(edu, index, false)}
+            </React.Fragment>
+          ))}
         </div>
       </div>
     );
@@ -156,62 +319,7 @@ export const InlineEducationSection: React.FC<InlineEducationSectionProps> = ({
           gpa: "",
         }}
         addButtonLabel="Add Education"
-        renderItem={(edu, index) => {
-          if (renderItem) {
-            return renderItem(edu, index, true);
-          }
-
-          return (
-            <div style={{ lineHeight: 1.8 }} data-section="education">
-              <InlineEditableText
-                path={`${path}[${index}].degree`}
-                value={edu.degree}
-                className="text-[13px] font-semibold block"
-                as="h3"
-                style={{ color: SINGLE_COLUMN_CONFIG.itemTitle.color }}
-              />
-              {edu.field && (
-                <InlineEditableText
-                  path={`${path}[${index}].field`}
-                  value={edu.field}
-                  className="text-[12px] block"
-                  as="p"
-                  style={{ color: SINGLE_COLUMN_CONFIG.colors.text.secondary }}
-                />
-              )}
-              <InlineEditableText
-                path={`${path}[${index}].school`}
-                value={edu.school}
-                className="text-[12px] font-medium block"
-                as="p"
-                style={{ color: accentColor ?? SINGLE_COLUMN_CONFIG.colors.primary }}
-              />
-              <div
-                className="text-[11px] flex items-center gap-1"
-                style={{ color: SINGLE_COLUMN_CONFIG.colors.text.secondary }}
-              >
-                <InlineEditableDate
-                  path={`${path}[${index}].startDate`}
-                  value={edu.startDate}
-                  className="inline-block"
-                />
-                <span>-</span>
-                <InlineEditableDate
-                  path={`${path}[${index}].endDate`}
-                  value={edu.endDate}
-                  className="inline-block"
-                />
-                <span>•</span>
-                <InlineEditableText
-                  path={`${path}[${index}].gpa`}
-                  value={edu.gpa ? `GPA: ${edu.gpa}` : ""}
-                  placeholder="GPA/Grade"
-                  className="inline-block"
-                />
-              </div>
-            </div>
-          );
-        }}
+        renderItem={(edu, index) => renderEducationItem(edu, index, true)}
       />
     </div>
   );
