@@ -34,6 +34,8 @@ export const InlineEditProvider = ({
   const [isEditing, setIsEditing] = useState(false);
 
   const updateField = (path: string, value: any) => {
+    console.log('[InlineEditContext] updateField called', { path, value, currentResumeData: JSON.parse(JSON.stringify(resumeData)) });
+    
     const pathParts = path.split(".");
     const newData = JSON.parse(JSON.stringify(resumeData));
     
@@ -44,14 +46,18 @@ export const InlineEditProvider = ({
       
       if (arrayMatch) {
         const [, arrayName, index] = arrayMatch;
+        console.log('[InlineEditContext] Navigating array:', { arrayName, index, currentValue: current[arrayName]?.[parseInt(index)] });
         current = current[arrayName][parseInt(index)];
       } else {
+        console.log('[InlineEditContext] Navigating property:', { part, currentValue: current[part] });
         current = current[part];
       }
     }
     
     const lastPart = pathParts[pathParts.length - 1];
     const arrayMatch = lastPart.match(/^(.+)\[(\d+)\]$/);
+    
+    console.log('[InlineEditContext] Setting value:', { lastPart, arrayMatch, currentValue: current[lastPart], newValue: value });
     
     if (arrayMatch) {
       const [, arrayName, index] = arrayMatch;
@@ -60,6 +66,7 @@ export const InlineEditProvider = ({
       current[lastPart] = value;
     }
     
+    console.log('[InlineEditContext] Final data:', JSON.parse(JSON.stringify(newData)));
     setResumeData(newData);
   };
 

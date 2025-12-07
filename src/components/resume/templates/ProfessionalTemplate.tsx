@@ -7,10 +7,13 @@ import { InlineEditableDate } from "@/components/resume/InlineEditableDate";
 import { InlineEditableDynamicSection } from "@/components/resume/InlineEditableDynamicSection";
 import { InlineEditableList } from "@/components/resume/InlineEditableList";
 import { InlineEditableSkills } from "@/components/resume/InlineEditableSkills";
-import { InlineEditableSectionItems } from "@/components/resume/InlineEditableSectionItems";
+import { TemplateContactInfo, TemplateSocialLinks, SectionHeader } from "@/components/resume/shared/TemplateBase";
+import { CustomSectionsWrapper } from "@/components/resume/shared/CustomSectionsWrapper";
+import { StyleOptionsWrapper } from "@/components/resume/StyleOptionsWrapper";
+import { useStyleOptionsWithDefaults } from "@/contexts/StyleOptionsContext";
 import { HelperSectionVariantRenderer } from "@/components/resume/HelperSectionVariantRenderer";
 import { useInlineEdit } from "@/contexts/InlineEditContext";
-import { SINGLE_COLUMN_CONFIG } from "@/lib/pdfStyles";
+import { SINGLE_COLUMN_CONFIG } from "@/lib/pdfstandards";
 
 // Use centralized PDF config for consistent styling
 const styles = SINGLE_COLUMN_CONFIG;
@@ -25,11 +28,12 @@ interface TemplateProps {
 }
 
 export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false, onAddBulletPoint, onRemoveBulletPoint, showSkillRatings = false }: TemplateProps) => {
-  const formatDate = (date: string) => {
-    if (!date) return "";
-    const [year, month] = date.split("-");
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    return `${monthNames[parseInt(month) - 1]} ${year}`;
+  const styleOptions = useStyleOptionsWithDefaults();
+  const accent = themeColor || "#1a1a1a";
+  
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "";
+    return styleOptions.formatDate(dateString);
   };
 
   const photo = resumeData.personalInfo.photo;
@@ -61,17 +65,18 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
   };
 
   return (
-    <div 
-      className="w-full h-full bg-white"
-      style={{ 
-        padding: '40px 48px',
-        fontSize: styles.itemDescription.size,
-        lineHeight: styles.itemDescription.lineHeight,
-        fontFamily: styles.fonts.primary,
-        color: styles.itemDescription.color,
-        pageBreakAfter: 'auto',
-      }}
-    >
+    <StyleOptionsWrapper>
+      <div 
+        className="w-full h-full bg-white"
+        style={{ 
+          padding: '40px 48px',
+          fontSize: '13px',
+          lineHeight: 1.5,
+          fontFamily: styles.fonts.primary,
+          color: '#1a1a1a',
+          pageBreakAfter: 'auto',
+        }}
+      >
       {/* Header */}
       <div style={{ 
         marginBottom: styles.spacing.sectionGap, 
@@ -89,42 +94,43 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                   value={resumeData.personalInfo.fullName || "Your Name"}
                   className="block mb-2 uppercase tracking-wide"
                   style={{
-                    fontSize: styles.header.name.size,
-                    fontWeight: styles.header.name.weight,
-                    lineHeight: styles.header.name.lineHeight,
-                    color: styles.itemDescription.color,
+                    fontSize: '27px',
+                    fontWeight: 700,
+                    lineHeight: 1.2,
+                    color: '#1a1a1a',
                   }}
                   as="h1"
                 />
-                {resumeData.personalInfo.title && (
+                {(editable || resumeData.personalInfo.title) && (
                   <InlineEditableText
                     path="personalInfo.title"
-                    value={resumeData.personalInfo.title}
+                    value={resumeData.personalInfo.title || ""}
                     className="block"
                     style={{
-                      fontSize: styles.header.title.size,
+                      fontSize: '16px',
                       fontWeight: 500,
-                      color: styles.colors.text.secondary,
+                      color: '#1a1a1a',
                     }}
                     as="p"
+                    placeholder="Professional Title"
                   />
                 )}
               </>
             ) : (
               <>
                 <h1 className="mb-2 uppercase tracking-wide" style={{
-                  fontSize: styles.header.name.size,
-                  fontWeight: styles.header.name.weight,
-                  lineHeight: styles.header.name.lineHeight,
-                  color: styles.itemDescription.color,
+                  fontSize: '27px',
+                  fontWeight: 700,
+                  lineHeight: 1.2,
+                  color: '#1a1a1a',
                 }}>
                   {resumeData.personalInfo.fullName || "Your Name"}
                 </h1>
                 {resumeData.personalInfo.title && (
                   <p style={{
-                    fontSize: styles.header.title.size,
+                    fontSize: '16px',
                     fontWeight: 500,
-                    color: styles.colors.text.secondary,
+                    color: '#1a1a1a',
                   }}>
                     {resumeData.personalInfo.title}
                   </p>
@@ -134,84 +140,45 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
           </div>
           <ProfilePhoto src={photo} borderClass="border-2 border-gray-200" />
         </div>
-        <div className="mt-4 flex flex-wrap gap-4" style={{ fontSize: styles.header.contact.size, color: styles.colors.text.secondary }}>
-          {resumeData.personalInfo.email && (
-            <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              {editable ? (
-                <InlineEditableText
-                  path="personalInfo.email"
-                  value={resumeData.personalInfo.email}
-                  className="inline-block"
-                />
-              ) : (
-                <span>{resumeData.personalInfo.email}</span>
-              )}
-            </div>
-          )}
-          {resumeData.personalInfo.phone && (
-            <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4" />
-              {editable ? (
-                <InlineEditableText
-                  path="personalInfo.phone"
-                  value={resumeData.personalInfo.phone}
-                  className="inline-block"
-                />
-              ) : (
-                <span>{resumeData.personalInfo.phone}</span>
-              )}
-            </div>
-          )}
-          {resumeData.personalInfo.location && (
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              {editable ? (
-                <InlineEditableText
-                  path="personalInfo.location"
-                  value={resumeData.personalInfo.location}
-                  className="inline-block"
-                />
-              ) : (
-                <span>{resumeData.personalInfo.location}</span>
-              )}
-            </div>
-          )}
+        <div className="mt-4" style={{ fontSize: '13px', color: '#1a1a1a' }}>
+          <TemplateContactInfo
+            resumeData={resumeData}
+            editable={editable}
+            themeColor={accent}
+            layout="horizontal"
+          />
         </div>
       </div>
 
       {/* Professional Summary */}
-      {resumeData.personalInfo.summary && (
-        <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }} data-section="summary">
-          <h2 className="uppercase tracking-wide" style={{ 
-            fontSize: styles.sectionHeading.size,
-            fontWeight: styles.sectionHeading.weight,
-            color: styles.itemDescription.color,
-            borderBottom: `1px solid ${styles.colors.border}`,
-            paddingBottom: '8px',
-            marginBottom: '12px',
-            pageBreakAfter: 'avoid',
-          }}>
-            PROFESSIONAL SUMMARY
-          </h2>
+      {(resumeData.personalInfo.summary || editable) && (
+        <div style={{ marginBottom: '28px', pageBreakInside: 'avoid' }} data-section="summary">
+          <SectionHeader 
+            title="Professional Summary" 
+            themeColor={accent}
+            className="mb-3"
+            paddingBottom="8px"
+            style={{ marginBottom: '12px' }}
+          />
           {editable ? (
             <InlineEditableText
               path="personalInfo.summary"
-              value={resumeData.personalInfo.summary}
+              value={resumeData.personalInfo.summary || ""}
               className="block"
               style={{
-                fontSize: styles.itemDescription.size,
-                color: styles.colors.text.secondary,
-                lineHeight: styles.itemDescription.lineHeight,
+                fontSize: '13px',
+                color: '#1a1a1a',
+                lineHeight: 1.5,
               }}
               multiline
               as="p"
+              placeholder="Professional summary..."
             />
           ) : (
             <p style={{
-              fontSize: styles.itemDescription.size,
-              color: styles.colors.text.secondary,
-              lineHeight: styles.itemDescription.lineHeight,
+              fontSize: '13px',
+              color: '#1a1a1a',
+              lineHeight: 1.5,
             }}>
               {resumeData.personalInfo.summary}
             </p>
@@ -220,78 +187,34 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
       )}
 
       {/* Social Links */}
-      {resumeData.includeSocialLinks && (resumeData.personalInfo.linkedin || resumeData.personalInfo.portfolio || resumeData.personalInfo.github) && (
-        <div className="mb-8" style={{ pageBreakInside: 'avoid' }}>
-          <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-200 pb-2" style={{ pageBreakAfter: 'avoid' }}>
-            SOCIAL LINKS
-          </h2>
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-            {resumeData.personalInfo.linkedin && (
-              <div className="flex items-center gap-2">
-                <Linkedin className="h-4 w-4" />
-                {editable ? (
-                  <InlineEditableText
-                    path="personalInfo.linkedin"
-                    value={resumeData.personalInfo.linkedin}
-                    className="inline-block"
-                  />
-                ) : (
-                  <a href={resumeData.personalInfo.linkedin.startsWith('http') ? resumeData.personalInfo.linkedin : `https://${resumeData.personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    {resumeData.personalInfo.linkedin}
-                  </a>
-                )}
-              </div>
-            )}
-            {resumeData.personalInfo.portfolio && (
-              <div className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                {editable ? (
-                  <InlineEditableText
-                    path="personalInfo.portfolio"
-                    value={resumeData.personalInfo.portfolio}
-                    className="inline-block"
-                  />
-                ) : (
-                  <a href={resumeData.personalInfo.portfolio.startsWith('http') ? resumeData.personalInfo.portfolio : `https://${resumeData.personalInfo.portfolio}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    {resumeData.personalInfo.portfolio}
-                  </a>
-                )}
-              </div>
-            )}
-            {resumeData.personalInfo.github && (
-              <div className="flex items-center gap-2">
-                <Github className="h-4 w-4" />
-                {editable ? (
-                  <InlineEditableText
-                    path="personalInfo.github"
-                    value={resumeData.personalInfo.github}
-                    className="inline-block"
-                  />
-                ) : (
-                  <a href={resumeData.personalInfo.github.startsWith('http') ? resumeData.personalInfo.github : `https://${resumeData.personalInfo.github}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    {resumeData.personalInfo.github}
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
+      {resumeData.includeSocialLinks && (
+        <div className="mb-8" data-section="social" style={{ pageBreakInside: 'avoid' }}>
+          <SectionHeader 
+            title="Connect With Me" 
+            themeColor={accent}
+            className="mb-3"
+            paddingBottom="8px"
+            style={{ marginBottom: '12px' }}
+          />
+          <TemplateSocialLinks
+            resumeData={resumeData}
+            editable={editable}
+            themeColor={accent}
+            variant="horizontal"
+          />
         </div>
       )}
 
       {/* Experience */}
       {resumeData.experience.length > 0 && (
-        <div style={{ marginBottom: styles.spacing.sectionGap }} data-section="experience">
-          <h2 className="uppercase tracking-wide" style={{ 
-            fontSize: styles.sectionHeading.size,
-            fontWeight: styles.sectionHeading.weight,
-            color: styles.itemDescription.color,
-            borderBottom: `1px solid ${styles.colors.border}`,
-            paddingBottom: '8px',
-            marginBottom: '16px',
-            pageBreakAfter: 'avoid',
-          }}>
-            PROFESSIONAL EXPERIENCE
-          </h2>
+        <div style={{ marginBottom: '28px' }} data-section="experience">
+          <SectionHeader 
+            title="Professional Experience" 
+            themeColor={accent}
+            className="mb-3"
+            paddingBottom="8px"
+            style={{ marginBottom: '12px' }}
+          />
           {editable ? (
             <InlineEditableList
               path="experience"
@@ -315,9 +238,9 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                         value={exp.position || "Position Title"}
                         className="block"
                         style={{
-                          fontSize: styles.itemTitle.size,
-                          fontWeight: styles.itemTitle.weight,
-                          color: styles.itemDescription.color,
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          color: '#1a1a1a',
                         }}
                         as="h3"
                       />
@@ -326,14 +249,14 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                         value={exp.company || "Company Name"}
                         className="block"
                         style={{
-                          fontSize: styles.itemSubtitle.size,
-                          fontWeight: styles.itemSubtitle.weight,
-                          color: styles.colors.text.secondary,
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          color: '#1a1a1a',
                         }}
                         as="p"
                       />
                     </div>
-                    <div className="text-right flex items-center gap-1" style={{ fontSize: styles.itemDate.size, color: styles.colors.text.secondary }}>
+                    <div className="text-right flex items-center gap-1" style={{ fontSize: '13px', color: '#525252' }}>
                       <InlineEditableDate
                         path={`experience[${index}].startDate`}
                         value={exp.startDate}
@@ -375,12 +298,14 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                       <ul>
                         {exp.bulletPoints.map((bullet, bulletIndex) => (
                           <li key={bulletIndex} className="flex items-start group" style={{
-                            fontSize: styles.itemDescription.size,
-                            color: styles.colors.text.secondary,
-                            lineHeight: styles.itemDescription.lineHeight,
-                            marginBottom: styles.spacing.bulletGap,
+                            fontSize: '13px',
+                            color: '#1a1a1a',
+                            lineHeight: 1.5,
+                            marginBottom: '6px',
                           }}>
-                            <span className="mr-2 mt-1">•</span>
+                            <span className="mr-2 mt-1" style={{ color: '#1a1a1a' }}>
+                              {styleOptions.getBulletChar()}
+                            </span>
                             <div className="flex-1 flex items-center gap-2">
                             <InlineEditableText
                               path={`experience[${index}].bulletPoints[${bulletIndex}]`}
@@ -388,9 +313,9 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                                 placeholder="Click to add achievement..."
                                 className="flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
                                 style={{
-                                  fontSize: styles.itemDescription.size,
-                                  color: styles.colors.text.secondary,
-                                  lineHeight: styles.itemDescription.lineHeight,
+                                  fontSize: '13px',
+                                  color: '#1a1a1a',
+                                  lineHeight: 1.5,
                                 }}
                               multiline
                               as="span"
@@ -431,9 +356,9 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                         value={exp.description}
                         className="whitespace-pre-line block"
                         style={{
-                          fontSize: styles.itemDescription.size,
-                          color: styles.colors.text.secondary,
-                          lineHeight: styles.itemDescription.lineHeight,
+                          fontSize: '13px',
+                          color: '#1a1a1a',
+                          lineHeight: 1.5,
                         }}
                         multiline
                         as="p"
@@ -450,21 +375,21 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                   <div className="flex justify-between items-baseline" style={{ marginBottom: '8px' }}>
                     <div>
                       <h3 style={{
-                        fontSize: styles.itemTitle.size,
-                        fontWeight: styles.itemTitle.weight,
-                        color: styles.itemDescription.color,
+                        fontSize: '15px',
+                        fontWeight: 600,
+                        color: '#1a1a1a',
                       }}>
                         {exp.position || "Position Title"}
                       </h3>
                       <p style={{
-                        fontSize: styles.itemSubtitle.size,
-                        fontWeight: styles.itemSubtitle.weight,
-                        color: styles.colors.text.secondary,
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        color: '#1a1a1a',
                       }}>
                         {exp.company || "Company Name"}
                       </p>
                     </div>
-                    <div className="text-right" style={{ fontSize: styles.itemDate.size, color: styles.colors.text.secondary }}>
+                    <div className="text-right" style={{ fontSize: '13px', color: '#525252' }}>
                       {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate)}
                     </div>
                   </div>
@@ -474,12 +399,14 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                         {exp.bulletPoints.map((bullet, index) => (
                           bullet && (
                             <li key={index} className="flex" style={{
-                              fontSize: styles.itemDescription.size,
-                              color: styles.colors.text.secondary,
-                              lineHeight: styles.itemDescription.lineHeight,
-                              marginBottom: styles.spacing.bulletGap,
+                              fontSize: '13px',
+                              color: '#1a1a1a',
+                              lineHeight: 1.5,
+                              marginBottom: '6px',
                             }}>
-                              <span className="mr-2">•</span>
+                              <span className="mr-2" style={{ color: '#1a1a1a' }}>
+                                {styleOptions.getBulletChar()}
+                              </span>
                               <span>{bullet}</span>
                             </li>
                           )
@@ -490,9 +417,9 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                   {exp.description && (
                     <div style={{ marginTop: '12px' }}>
                       <p className="whitespace-pre-line" style={{
-                        fontSize: styles.itemDescription.size,
-                        color: styles.colors.text.secondary,
-                        lineHeight: styles.itemDescription.lineHeight,
+                        fontSize: '13px',
+                        color: '#1a1a1a',
+                        lineHeight: 1.5,
                       }}>
                         {exp.description}
                       </p>
@@ -507,18 +434,14 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
       {/* Education */}
       {resumeData.education.length > 0 && (
-        <div style={{ marginBottom: styles.spacing.sectionGap }} data-section="education">
-          <h2 className="uppercase tracking-wide" style={{ 
-            fontSize: styles.sectionHeading.size,
-            fontWeight: styles.sectionHeading.weight,
-            color: styles.itemDescription.color,
-            borderBottom: `1px solid ${styles.colors.border}`,
-            paddingBottom: '8px',
-            marginBottom: '16px',
-            pageBreakAfter: 'avoid',
-          }}>
-            EDUCATION
-          </h2>
+        <div style={{ marginBottom: '28px' }} data-section="education">
+          <SectionHeader 
+            title="Education" 
+            themeColor={accent}
+            className="mb-3"
+            paddingBottom="8px"
+            style={{ marginBottom: '12px' }}
+          />
           {editable ? (
             <InlineEditableList
               path="education"
@@ -530,46 +453,64 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                 field: "Field of Study",
                 startDate: "2019-09",
                 endDate: "2023-05",
-                gpa: "3.5/4.0",
+                gpa: "",
               }}
               addButtonLabel="Add Education"
               renderItem={(edu, index) => (
                 <div style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-baseline mb-1">
                     <div>
-                      <h3 className="text-base font-bold text-gray-900">
+                      <InlineEditableText
+                        path={`education[${index}].degree`}
+                        value={edu.degree || "Degree"}
+                        className="block"
+                        style={{
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          color: '#1a1a1a',
+                        }}
+                        as="h3"
+                      />
+                      {(editable || edu.field) && (
                         <InlineEditableText
-                          path={`education[${index}].degree`}
-                          value={edu.degree || "Degree"}
-                          className="inline-block"
+                          path={`education[${index}].field`}
+                          value={edu.field || ""}
+                          className="mt-1 block"
+                          style={{
+                            fontSize: '13px',
+                            color: '#1a1a1a',
+                            lineHeight: 1.4,
+                          }}
+                          as="p"
+                          placeholder="Field of Study"
                         />
-                        {edu.field && (
-                          <>
-                            {" in "}
-                            <InlineEditableText
-                              path={`education[${index}].field`}
-                              value={edu.field}
-                              className="inline-block"
-                            />
-                          </>
-                        )}
-                      </h3>
+                      )}
                       <InlineEditableText
                         path={`education[${index}].school`}
                         value={edu.school || "School Name"}
-                        className="text-sm text-gray-700 font-semibold block"
+                        className="mt-1 block"
+                        style={{
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          color: '#1a1a1a',
+                        }}
                         as="p"
                       />
-                      {edu.gpa && (
-                        <InlineEditableText
-                          path={`education[${index}].gpa`}
-                          value={edu.gpa}
-                          className="text-xs text-gray-600 block"
-                          as="p"
-                        />
+                      {(editable || edu.gpa) && (
+                        <div className="mt-1" style={{ fontSize: '12px', color: '#525252', lineHeight: 1.4 }}>
+                          <span>GPA: </span>
+                          <InlineEditableText
+                            path={`education[${index}].gpa`}
+                            value={edu.gpa || ""}
+                            className="inline-block"
+                            placeholder="3.8/4.0"
+                            style={{ fontSize: '12px', color: '#525252', lineHeight: 1.4 }}
+                            as="span"
+                          />
+                        </div>
                       )}
                     </div>
-                    <div className="text-xs text-gray-600 flex items-center gap-1">
+                    <div className="flex items-center gap-1 ml-4" style={{ fontSize: '13px', color: '#525252' }}>
                       <InlineEditableDate
                         path={`education[${index}].startDate`}
                         value={edu.startDate}
@@ -594,19 +535,40 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                 <div key={edu.id} style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-baseline mb-1">
                     <div>
-                      <h3 className="text-base font-bold text-gray-900">
-                        {edu.degree || "Degree"} {edu.field && `in ${edu.field}`}
+                      <h3 style={{
+                        fontSize: '15px',
+                        fontWeight: 600,
+                        color: '#1a1a1a',
+                      }}>
+                        {edu.degree || "Degree"}
                       </h3>
-                      <p className="text-sm text-gray-700 font-semibold">
+                      {edu.field && (
+                        <p style={{
+                          fontSize: '13px',
+                          color: '#1a1a1a',
+                          lineHeight: 1.4,
+                        }}>
+                          {edu.field}
+                        </p>
+                      )}
+                      <p style={{
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        color: '#1a1a1a',
+                      }}>
                         {edu.school || "School Name"}
                       </p>
                       {edu.gpa && (
-                        <p className="text-xs text-gray-600">
-                          {edu.gpa}
+                        <p style={{
+                          fontSize: '12px',
+                          color: '#525252',
+                          lineHeight: 1.4,
+                        }}>
+                          GPA: {edu.gpa}
                         </p>
                       )}
                     </div>
-                    <div className="text-xs text-gray-600">
+                    <div className="ml-4" style={{ fontSize: '13px', color: '#525252' }}>
                       {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                     </div>
                   </div>
@@ -619,33 +581,29 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
       {/* Skills */}
       {resumeData.skills.length > 0 && (
-        <div style={{ marginBottom: styles.spacing.sectionGap, pageBreakInside: 'avoid' }} data-section="skills">
-          <h2 className="uppercase tracking-wide" style={{ 
-            fontSize: styles.sectionHeading.size,
-            fontWeight: styles.sectionHeading.weight,
-            color: styles.itemDescription.color,
-            borderBottom: `1px solid ${styles.colors.border}`,
-            paddingBottom: '8px',
-            marginBottom: '12px',
-            pageBreakAfter: 'avoid',
-          }}>
-            SKILLS
-          </h2>
+        <div style={{ marginBottom: '28px', pageBreakInside: 'avoid' }} data-section="skills">
+          <SectionHeader 
+            title="Skills" 
+            themeColor={accent}
+            className="mb-3"
+            paddingBottom="8px"
+            style={{ marginBottom: '12px' }}
+          />
           {editable ? (
-            <InlineEditableSkills
-              path="skills"
-              skills={resumeData.skills}
-              renderSkill={(skill, index) =>
-                skill.name && (
+            <div className="flex flex-wrap gap-2">
+              <InlineEditableSkills
+                path="skills"
+                skills={resumeData.skills}
+                renderSkill={(skill, index) => (
                   <span className="px-2 py-1 bg-gray-100 rounded font-medium" style={{
-                    fontSize: styles.skills.tag.size,
-                    color: styles.colors.text.secondary,
+                    fontSize: '13px',
+                    color: '#1a1a1a',
                   }}>
                     {skill.name}
                   </span>
-                )
-              }
-            />
+                )}
+              />
+            </div>
           ) : (
             <div className="flex flex-wrap gap-2">
               {resumeData.skills.map((skill, index) => (
@@ -654,8 +612,8 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                     key={skill.id}
                     className="px-2 py-1 bg-gray-100 rounded font-medium"
                     style={{
-                      fontSize: styles.skills.tag.size,
-                      color: styles.colors.text.secondary,
+                      fontSize: '13px',
+                      color: '#1a1a1a',
                     }}
                   >
                     {skill.name}
@@ -669,10 +627,73 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
       {/* Custom Sections */}
       <div data-section="custom">
-        <ProfessionalCustomSections 
-          sections={resumeData.sections}
+        <CustomSectionsWrapper
+          sections={resumeData.sections || []}
           editable={editable}
-          themeColor={themeColor}
+          accentColor={accent}
+          styles={SINGLE_COLUMN_CONFIG}
+          renderSectionHeader={(title, index, helpers) => (
+            <SectionHeader
+              title={title}
+              themeColor={accent}
+              className="mb-3"
+              paddingBottom="8px"
+              style={{ marginBottom: '12px' }}
+            />
+          )}
+          itemStyle={{ 
+            fontSize: '13px', 
+            color: '#1a1a1a', 
+            lineHeight: 1.5 
+          }}
+          sectionStyle={{ marginBottom: '28px' }}
+          showAddSection={true}
+          renderItem={(item, itemIndex, sectionIndex, helpers) => {
+            const itemValue = typeof item === 'string' ? item : (item as any)?.text || String(item || '');
+            const showBorder = editable;
+            return (
+              <div key={itemIndex} className="group flex items-start gap-2 mb-2">
+                {editable ? (
+                  <helpers.EditableText
+                    className={`flex-1 min-h-[1.2rem] ${showBorder ? 'border border-dashed border-gray-300 rounded px-1' : ''}`}
+                    style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.5 }}
+                    placeholder="Click to add item..."
+                  />
+                ) : (
+                  <span style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.5 }}>
+                    {itemValue}
+                  </span>
+                )}
+                {editable && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      helpers.remove();
+                    }}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-50"
+                    style={{ color: '#ef4444' }}
+                  >
+                    <span className="text-xs">×</span>
+                  </button>
+                )}
+              </div>
+            );
+          }}
+          renderAddItemButton={(onClick, sectionIndex) => (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClick();
+              }}
+              className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+              style={{ color: accent, borderColor: accent }}
+            >
+              <span>+</span>
+              Add Item
+            </button>
+          )}
         />
       </div>
 
@@ -693,97 +714,8 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
             })}
         </>
       )}
-    </div>
+      </div>
+    </StyleOptionsWrapper>
   );
 };
 
-// Separate component for Custom Sections to use hooks
-const ProfessionalCustomSections = ({ 
-  sections, 
-  editable, 
-  themeColor 
-}: { 
-  sections: ResumeData['sections']; 
-  editable: boolean; 
-  themeColor?: string;
-}) => {
-  const inlineEditContext = useInlineEdit();
-  const addArrayItem = inlineEditContext?.addArrayItem;
-  const removeArrayItem = inlineEditContext?.removeArrayItem;
-
-  const handleAddSection = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!addArrayItem) return;
-    addArrayItem('sections', {
-      id: Date.now().toString(),
-      title: 'New Section',
-      content: '',
-      items: ['Sample item 1', 'Sample item 2'],
-    });
-  };
-
-  const handleRemoveSection = (e: React.MouseEvent, index: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!removeArrayItem) return;
-    removeArrayItem('sections', index);
-  };
-
-  const accent = themeColor || "#2563eb";
-
-  return (
-    <>
-      {sections.map((section, index) => (
-        <div key={section.id} className="mb-8 group/section" style={{ pageBreakInside: 'avoid' }}>
-          <div className="flex items-center gap-2">
-            <h2 className="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wide border-b border-gray-200 pb-2 flex-1" style={{ pageBreakAfter: 'avoid' }}>
-              {editable ? (
-                <InlineEditableText
-                  path={`sections[${index}].title`}
-                  value={section.title}
-                  className="inline-block"
-                />
-              ) : section.title}
-            </h2>
-            {editable && (
-              <button
-                onClick={(e) => handleRemoveSection(e, index)}
-                className="opacity-0 group-hover/section:opacity-100 transition-opacity p-1 rounded hover:bg-red-50"
-                style={{ color: '#ef4444' }}
-                title="Remove Section"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-          
-          {/* Use InlineEditableSectionItems for dynamic content */}
-          <InlineEditableSectionItems
-            sectionIndex={index}
-            items={section.items || []}
-            content={section.content || ""}
-            editable={editable}
-            itemStyle={{ fontSize: '13px', color: '#374151', lineHeight: '1.6' }}
-            addButtonLabel="Add Item"
-            placeholder="Click to add item..."
-            accentColor={accent}
-            showBullets={false}
-          />
-        </div>
-      ))}
-
-      {/* Add Section Button */}
-      {editable && (
-        <button
-          onClick={handleAddSection}
-          className="mt-4 flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md border-2 border-dashed hover:bg-gray-50 transition-colors"
-          style={{ color: accent, borderColor: accent }}
-        >
-          <Plus className="h-4 w-4" />
-          Add Section
-        </button>
-      )}
-    </>
-  );
-};

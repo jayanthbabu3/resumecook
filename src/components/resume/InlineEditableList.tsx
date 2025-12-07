@@ -88,7 +88,14 @@ export const InlineEditableList = (props: InlineEditableListProps) => {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => addArrayItem(path, defaultItem)}
+            onClick={() => {
+              // Ensure education items always have GPA field
+              let itemToAdd = defaultItem;
+              if (path === "education" && defaultItem && !defaultItem.gpa) {
+                itemToAdd = { ...defaultItem, gpa: "" };
+              }
+              addArrayItem(path, itemToAdd);
+            }}
             className="w-full border-dashed"
           >
             <Plus className="mr-2 h-4 w-4" />

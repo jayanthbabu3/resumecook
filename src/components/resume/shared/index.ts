@@ -85,6 +85,9 @@ export type {
   BulletPointHelpers 
 } from './ExperienceSection';
 
+export { ExperienceVariantRenderer } from './ExperienceVariantRenderer';
+export type { ExperienceVariant } from './ExperienceVariantRenderer';
+
 export { SkillsSection } from './SkillsSection';
 export type { 
   SkillsSectionProps, 

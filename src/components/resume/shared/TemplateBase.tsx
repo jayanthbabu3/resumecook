@@ -63,6 +63,8 @@ export interface SocialLinksProps {
   variant?: SocialLinksVariant;
   /** Override show underline setting */
   showUnderline?: boolean;
+  /** Override text color (defaults to #1a1a1a) */
+  textColor?: string;
 }
 
 // ============================================================================
@@ -106,9 +108,10 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   
   return (
     <h2
-      className={`text-[13px] font-semibold mb-2 ${className}`}
+      className={`text-[15px] font-semibold mb-2 ${className}`}
       data-accent-color="true"
       style={{
+        fontSize: '15px',
         color: accent,
         paddingBottom,
         ...sectionBorder,
@@ -158,6 +161,7 @@ export const TemplateSocialLinks: React.FC<SocialLinksProps> = ({
   showLabels,
   variant = 'horizontal',
   showUnderline,
+  textColor: textColorProp,
 }) => {
   const { linkedin, github, portfolio } = resumeData.personalInfo;
   const includeSocialLinks = resumeData.includeSocialLinks;
@@ -171,6 +175,7 @@ export const TemplateSocialLinks: React.FC<SocialLinksProps> = ({
   
   // Get variant style configuration
   const variantStyle = getSocialLinksStyle(variant);
+  const textColor = textColorProp || '#1a1a1a';
   
   // Allow prop overrides
   const resolvedIconSize = iconSize || variantStyle.iconSize;
@@ -227,7 +232,7 @@ export const TemplateSocialLinks: React.FC<SocialLinksProps> = ({
             className={`${variantStyle.itemClass} ${isIconsOnly ? 'relative' : ''}`}
             style={{ 
               fontSize: variantStyle.fontSize,
-              color: '#1a1a1a',
+              color: textColor,
               ...(hasBadgeStyle ? { borderColor: accent, backgroundColor: `${accent}10` } : {})
             }}
           >
@@ -270,7 +275,7 @@ export const TemplateSocialLinks: React.FC<SocialLinksProps> = ({
           className={`${variantStyle.itemClass} group`}
           style={{ 
             fontSize: variantStyle.fontSize,
-            color: '#1a1a1a',
+            color: textColor,
             ...(hasBadgeStyle ? { borderColor: accent, backgroundColor: `${accent}10` } : {})
           }}
         >
@@ -298,7 +303,7 @@ export const TemplateSocialLinks: React.FC<SocialLinksProps> = ({
             className={`${variantStyle.itemClass} group`}
             style={{ 
               fontSize: variantStyle.fontSize,
-              color: '#1a1a1a',
+              color: textColor,
               ...(hasBadgeStyle ? { borderColor: accent, backgroundColor: `${accent}10` } : {})
             }}
             data-no-pdf="true"
@@ -376,6 +381,7 @@ export interface ContactInfoProps {
   className?: string;
   iconSize?: string;
   layout?: 'horizontal' | 'vertical';
+  textColor?: string;
 }
 
 export const TemplateContactInfo: React.FC<ContactInfoProps> = ({
@@ -385,6 +391,7 @@ export const TemplateContactInfo: React.FC<ContactInfoProps> = ({
   className = '',
   iconSize = 'w-3.5 h-3.5',
   layout = 'horizontal',
+  textColor = '#1a1a1a',
 }) => {
   const { email, phone, location } = resumeData.personalInfo;
   const accent = normalizeHex(themeColor) ?? '#2563eb';
@@ -394,7 +401,7 @@ export const TemplateContactInfo: React.FC<ContactInfoProps> = ({
     : 'flex flex-col gap-2';
   
   return (
-    <div className={`${containerClass} text-[13px] ${className}`} style={{ color: '#1a1a1a' }}>
+    <div className={`${containerClass} text-[13px] ${className}`} style={{ color: textColor }}>
       {(email || editable) && (
         <div className="flex items-center gap-1.5">
           <Mail className={iconSize} style={{ color: accent }} />

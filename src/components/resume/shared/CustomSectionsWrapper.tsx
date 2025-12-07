@@ -55,6 +55,7 @@ import { CustomSection } from '@/types/resume';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableSectionItems } from '@/components/resume/InlineEditableSectionItems';
 import { useTemplateEditor } from '@/hooks/useTemplateEditor';
+import { useInlineEdit } from '@/contexts/InlineEditContext';
 import { SINGLE_COLUMN_CONFIG, PDFStyleConfig } from '@/lib/pdfStyles';
 import { useStyleOptionsWithDefaults } from '@/contexts/StyleOptionsContext';
 import { Plus, X } from 'lucide-react';
@@ -181,7 +182,7 @@ export const CustomSectionsWrapper: React.FC<CustomSectionsWrapperProps> = ({
   titleStyle,
   itemStyle,
 }) => {
-  const { isEditable, addSection, removeSection, updateField } = useTemplateEditor({ editable });
+  const { isEditable, addSection, removeSection, updateField, context } = useTemplateEditor({ editable });
 
   const handleAddSection = (e?: React.MouseEvent) => {
     e?.preventDefault();
@@ -316,6 +317,7 @@ export const CustomSectionsWrapper: React.FC<CustomSectionsWrapperProps> = ({
             renderAddItemButton={renderAddItemButton}
             createItemHelpers={createItemHelpers}
             updateField={updateField}
+            context={context}
           />
         ) : (
           <helpers.DefaultContent />
@@ -445,6 +447,7 @@ interface CustomItemsRendererProps {
   renderAddItemButton?: CustomSectionsWrapperProps['renderAddItemButton'];
   createItemHelpers: (item: string, itemIndex: number, sectionIndex: number) => ItemHelpers;
   updateField: (path: string, value: any) => void;
+  context?: ReturnType<typeof useInlineEdit>;
 }
 
 const CustomItemsRenderer: React.FC<CustomItemsRendererProps> = ({
@@ -459,11 +462,13 @@ const CustomItemsRenderer: React.FC<CustomItemsRendererProps> = ({
   renderAddItemButton,
   createItemHelpers,
   updateField,
+  context,
 }) => {
   // Parse items from content if needed
   const effectiveItems = React.useMemo(() => {
     if (section.items && section.items.length > 0) {
-      return section.items;
+      // Ensure all items are strings
+      return section.items.map(item => typeof item === 'string' ? item : String(item || ''));
     }
     if (section.content && section.content.trim()) {
       return section.content.split('\n').filter(line => line.trim());
@@ -472,10 +477,58 @@ const CustomItemsRenderer: React.FC<CustomItemsRendererProps> = ({
   }, [section.items, section.content]);
 
   const handleAddItem = () => {
-    if (!isEditable) return;
-    const newItems = [...effectiveItems, ''];
-    updateField(`sections[${sectionIndex}].items`, newItems);
-    updateField(`sections[${sectionIndex}].content`, '');
+    if (!isEditable || !context) return;
+    
+    console.log('[CustomItemsRenderer] handleAddItem called', {
+      sectionIndex,
+      section: JSON.parse(JSON.stringify(section)),
+      effectiveItems: JSON.parse(JSON.stringify(effectiveItems)),
+    });
+    
+    // Get the latest resumeData from context to avoid stale state issues
+    const latestResumeData = context.resumeData;
+    const latestSection = latestResumeData?.sections?.[sectionIndex] || section;
+    
+    // Always get current items from the latest section data
+    // Ensure we preserve all existing items as strings
+    const currentItems = latestSection.items && Array.isArray(latestSection.items) && latestSection.items.length > 0
+      ? latestSection.items.map((item: any) => typeof item === 'string' ? item : String(item || ''))
+      : (latestSection.content && latestSection.content.trim()
+          ? latestSection.content.split('\n').filter((line: string) => line.trim())
+          : []);
+    
+    console.log('[CustomItemsRenderer] currentItems computed from latest data:', currentItems);
+    
+    // Add new empty item
+    const newItems = [...currentItems, ''];
+    
+    console.log('[CustomItemsRenderer] newItems to set:', newItems);
+    
+    // CRITICAL FIX: Update both items and content in a single updateField call
+    // by creating a new section object with both fields updated
+    // We'll update items first, then immediately update content in the same data structure
+    const newData = JSON.parse(JSON.stringify(latestResumeData));
+    const targetSection = newData.sections[sectionIndex];
+    
+    if (targetSection) {
+      // Set the new items array
+      targetSection.items = newItems;
+      
+      // Clear content only if we had content and no items before
+      const shouldClearContent = latestSection.content && (!latestSection.items || latestSection.items.length === 0);
+      if (shouldClearContent) {
+        targetSection.content = '';
+        console.log('[CustomItemsRenderer] Will clear content in same update');
+      }
+      
+      // Update the entire section at once to avoid race conditions
+      // This ensures both items and content are updated atomically
+      console.log('[CustomItemsRenderer] Updating entire section atomically');
+      updateField(`sections[${sectionIndex}]`, targetSection);
+    } else {
+      // Fallback: just update items
+      updateField(`sections[${sectionIndex}].items`, newItems);
+    }
   };
 
   if (effectiveItems.length === 0 && !isEditable) return null;

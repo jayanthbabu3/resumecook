@@ -325,10 +325,38 @@ function captureResumeHTMLWithStyles(
             display: block !important;
             padding-left: 1em !important;
             text-indent: -1em !important;
+            line-height: inherit !important;
           }
           
-          ul li span:first-child {
+          /* Ensure bullet symbol and text stay on same line */
+          ul li > span:first-child,
+          ul li > span:first-of-type {
+            display: inline !important;
             margin-right: 0.5em !important;
+            white-space: nowrap !important;
+          }
+          
+          /* Ensure text content after bullet is inline */
+          ul li > span:not(:first-child),
+          ul li > span:not(:first-of-type),
+          ul li > div > span {
+            display: inline !important;
+          }
+          
+          /* Fix for nested div structures (like TwoToneClassic) */
+          ul li > div {
+            display: inline !important;
+          }
+          
+          ul li > div.flex-1,
+          ul li > div[class*="flex-1"] {
+            display: inline !important;
+          }
+          
+          /* Ensure all spans inside li are inline to prevent wrapping */
+          ul li span {
+            display: inline !important;
+            white-space: normal !important;
           }
           
           /* Hide empty bullet points (those with only whitespace or placeholder text) */
