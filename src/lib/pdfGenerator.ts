@@ -174,7 +174,84 @@ function captureResumeHTMLWithStyles(
   };
   
   removeEmptyListItems(clone);
+
+  // Remove empty contact fields (social links, etc.) from PDF
+  const removeEmptyContactFields = (el: HTMLElement) => {
+    // Find all contact items (divs with icons and text)
+    const contactContainers = Array.from(el.querySelectorAll('div.flex.items-center'));
+    contactContainers.forEach(container => {
+      const icon = container.querySelector('svg');
+      if (!icon) return; // Skip if no icon (not a contact field)
+      
+      // Get all text elements (could be span or a)
+      const textElements = container.querySelectorAll('span, a');
+      let hasValidContent = false;
+      
+      textElements.forEach(textElement => {
+        const textContent = textElement?.textContent?.trim() || '';
+        const isLink = textElement?.tagName === 'A';
+        
+        // Skip placeholder text
+        if (textContent === 'Click to edit' || !textContent || textContent.length < 2) {
+          return;
+        }
+        
+        // For links, check if href is valid
+        if (isLink) {
+          const href = (textElement as HTMLAnchorElement).href || '';
+          // Valid URL must contain a dot (domain) and not be just "https://" or "http://"
+          const isValidUrl = href && 
+                            href !== 'https://' && 
+                            href !== 'http://' && 
+                            href !== 'https://undefined' &&
+                            href !== 'http://undefined' &&
+                            (href.includes('.') || href.length > 10);
+          if (isValidUrl) {
+            hasValidContent = true;
+          }
+        } else {
+          // For non-link contact fields, any non-empty text is valid
+          hasValidContent = true;
+        }
+      });
+      
+      // Remove container if no valid content found
+      if (!hasValidContent) {
+        container.remove();
+      }
+    });
+    
+    // Also remove any standalone "Click to edit" text elements
+    const allTextElements = Array.from(el.querySelectorAll('span, a, div, p'));
+    allTextElements.forEach(element => {
+      const text = element.textContent?.trim();
+      // Check if element contains only "Click to edit" and is not an input/textarea
+      if (text === 'Click to edit' && 
+          element.tagName !== 'INPUT' && 
+          element.tagName !== 'TEXTAREA' &&
+          !element.closest('input') &&
+          !element.closest('textarea')) {
+        // Check if it's part of a contact field (has icon nearby)
+        const parent = element.parentElement;
+        const hasIcon = parent?.querySelector('svg') || element.querySelector('svg');
+        if (hasIcon) {
+          // Remove the parent container if it's a contact field
+          const container = element.closest('div.flex.items-center');
+          if (container) {
+            container.remove();
+          } else {
+            element.remove();
+          }
+        } else {
+          // For non-contact fields, just remove the element
+          element.remove();
+        }
+      }
+    });
+  };
   
+  removeEmptyContactFields(clone);
+
   // Remove any transform styles that might scale the element
   const removeTransforms = (el: HTMLElement) => {
     // Remove transform from inline styles
@@ -198,12 +275,37 @@ function captureResumeHTMLWithStyles(
   
   // Ensure the root element respects A4 dimensions while keeping template styling
   if (!clone.style.width) {
-  clone.style.width = '210mm';
+    clone.style.width = '210mm';
   }
-  if (!clone.style.minHeight) {
-  clone.style.minHeight = '297mm';
-  }
+  // Don't set minHeight as it causes blank first page - let content flow naturally
   clone.style.transform = 'none';
+  
+  // For V2, ensure the container doesn't have overflow-hidden that cuts off content
+  if (clone.classList.contains('resume-v2')) {
+    // Remove overflow-hidden that might be cutting off content
+    clone.style.overflow = 'visible';
+    clone.style.overflowX = 'visible';
+    clone.style.overflowY = 'visible';
+    
+    // Remove any min-height or max-height that might limit content
+    clone.style.minHeight = 'auto';
+    clone.style.maxHeight = 'none';
+    
+    // Ensure width is set properly for PDF
+    if (!clone.style.width || clone.style.width === '100%') {
+      clone.style.width = '210mm';
+    }
+    clone.style.maxWidth = '210mm';
+    
+    // Fix two-column flex containers to prevent overflow
+    const flexContainers = clone.querySelectorAll('[style*="display: flex"][style*="flex-direction: row"]');
+    flexContainers.forEach((container: Element) => {
+      const htmlEl = container as HTMLElement;
+      htmlEl.style.width = '100%';
+      htmlEl.style.maxWidth = '100%';
+      htmlEl.style.boxSizing = 'border-box';
+    });
+  }
   
   // Get all stylesheets from the page
   const styleSheets = Array.from(document.styleSheets);
@@ -379,6 +481,20 @@ function captureResumeHTMLWithStyles(
             color: inherit !important;
           }
           
+          /* Hide empty contact fields in PDF */
+          a[href^="https://"]:empty,
+          a[href^="http://"]:empty,
+          div:has(> svg):empty,
+          /* Hide contact items with empty or placeholder text */
+          div:has(> svg) + span:empty,
+          div:has(> svg) + span:has-text("Click to edit"),
+          /* Hide social links that are empty or invalid */
+          a[href*="linkedin"]:not([href*="linkedin.com"]):not([href*="linkedin.com/"]),
+          a[href*="github"]:not([href*="github.com"]):not([href*="github.com/"]),
+          a[href*="portfolio"]:not([href*="http"]),
+          /* More specific: hide if the text content is empty or just whitespace */
+          div.flex.items-center:has(> svg):has(+ span:empty),
+          div.flex.items-center:has(> svg):has(+ span:is(:empty, :has-text("Click to edit"))),
           /* Contact icons specific styling */
           svg[class*="lucide"] {
             width: 16px !important;
@@ -399,6 +515,39 @@ function captureResumeHTMLWithStyles(
             padding-top: 0 !important;
           }
           
+          /* V2 specific fixes - ensure content is visible and flows across pages */
+          .resume-v2 {
+            width: 210mm !important;
+            max-width: 210mm !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+            overflow-x: visible !important;
+            overflow-y: visible !important;
+            min-height: auto !important;
+          }
+          
+          /* Fix V2 two-column layout - ensure it doesn't overflow */
+          .resume-v2 > div[style*="display: flex"][style*="flex-direction: row"] {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+          }
+          
+          /* Ensure V2 columns don't overflow */
+          .resume-v2 > div > div[style*="width"] {
+            box-sizing: border-box !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            overflow: visible !important;
+            max-width: 100% !important;
+          }
+          
+          /* Prevent blank first page - ensure content starts at top */
+          .resume-v2 > *:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+          }
           
         </style>
       </head>
@@ -424,6 +573,288 @@ export interface PDFGenerationOptions {
 }
 
 /**
+ * V2-specific PDF generation function that handles two-column layouts properly
+ */
+function captureV2ResumeHTMLWithStyles(
+  element: HTMLElement,
+  config: PDFStyleConfig = SINGLE_COLUMN_CONFIG,
+  themeColor?: string
+): string {
+  // Clone the element to avoid modifying the original
+  const clone = element.cloneNode(true) as HTMLElement;
+  
+  // Remove editing UI elements
+  const removeEditingElements = (el: HTMLElement) => {
+    const selectorsToRemove = [
+      'button.border-dashed',
+      'button[class*="border-dashed"]',
+      'button[class*="destructive"]',
+      '[class*="group-hover:opacity"]',
+      '[data-no-pdf]',
+      '[data-pdf-hide]',
+      '.no-print',
+      '[class*="no-print"]',
+    ];
+    
+    selectorsToRemove.forEach(selector => {
+      try {
+        const elements = el.querySelectorAll(selector);
+        elements.forEach(elem => elem.remove());
+      } catch (e) {
+        // Ignore invalid selectors
+      }
+    });
+    
+    const allButtons = el.querySelectorAll('button');
+    allButtons.forEach(button => {
+      const text = button.textContent?.toLowerCase() || '';
+      const classList = button.className || '';
+      if (text.includes('add ') || classList.includes('border-dashed')) {
+        button.remove();
+      }
+      if (button.classList.contains('h-6') && button.classList.contains('w-6')) {
+        button.remove();
+      }
+    });
+  };
+  
+  removeEditingElements(clone);
+  
+  // Remove empty list items
+  const removeEmptyListItems = (el: HTMLElement) => {
+    const listItems = el.querySelectorAll('ul li');
+    listItems.forEach(li => {
+      const textContent = li.textContent?.trim() || '';
+      const hasPlaceholder = textContent.includes('Click to add') || textContent.includes('placeholder');
+      if (!textContent || hasPlaceholder || textContent.length < 3) {
+        li.remove();
+      }
+    });
+  };
+  
+  removeEmptyListItems(clone);
+  
+  // Remove transforms
+  const removeTransforms = (el: HTMLElement) => {
+    if (el.style.transform) {
+      el.style.transform = 'none';
+    }
+    const styleAttr = el.getAttribute('style');
+    if (styleAttr && styleAttr.includes('transform')) {
+      el.setAttribute('style', styleAttr.replace(/transform:[^;]+;?/gi, ''));
+    }
+    Array.from(el.children).forEach(child => {
+      if (child instanceof HTMLElement) {
+        removeTransforms(child);
+      }
+    });
+  };
+  
+  removeTransforms(clone);
+  
+  // V2-specific fixes for two-column layout
+  if (clone.classList.contains('resume-v2')) {
+    clone.style.width = '210mm';
+    clone.style.maxWidth = '210mm';
+    clone.style.boxSizing = 'border-box';
+    clone.style.overflow = 'visible';
+    clone.style.minHeight = 'auto';
+    
+    // Fix two-column flex containers - use fixed pixel widths for PDF
+    const flexContainers = clone.querySelectorAll('[style*="display: flex"][style*="flex-direction: row"]');
+    flexContainers.forEach((container: Element) => {
+      const htmlEl = container as HTMLElement;
+      htmlEl.style.width = '100%';
+      htmlEl.style.maxWidth = '100%';
+      htmlEl.style.boxSizing = 'border-box';
+      htmlEl.style.overflow = 'visible';
+      
+      // Fix column widths - convert percentages to fixed pixels for PDF
+      const columns = htmlEl.children;
+      if (columns.length === 2) {
+        // Calculate A4 width minus padding (210mm = 794px at 96dpi)
+        const containerWidth = 794;
+        const paddingLeft = parseInt(htmlEl.style.paddingLeft || '0') || 28;
+        const paddingRight = parseInt(htmlEl.style.paddingRight || '0') || 28;
+        const gap = 24; // 3% of 794px ≈ 24px
+        const availableWidth = containerWidth - paddingLeft - paddingRight - gap;
+        
+        // Left column (60% of available) = main content
+        const leftCol = columns[0] as HTMLElement;
+        const leftWidth = Math.floor(availableWidth * 0.60);
+        leftCol.style.width = `${leftWidth}px`;
+        leftCol.style.maxWidth = `${leftWidth}px`;
+        leftCol.style.minWidth = `${leftWidth}px`;
+        leftCol.style.flexShrink = '0';
+        leftCol.style.flexGrow = '0';
+        leftCol.style.boxSizing = 'border-box';
+        leftCol.style.overflow = 'hidden';
+        leftCol.style.overflowWrap = 'break-word';
+        leftCol.style.wordWrap = 'break-word';
+        
+        // Right column (35% of available) = sidebar
+        const rightCol = columns[1] as HTMLElement;
+        const rightWidth = Math.floor(availableWidth * 0.35);
+        rightCol.style.width = `${rightWidth}px`;
+        rightCol.style.maxWidth = `${rightWidth}px`;
+        rightCol.style.minWidth = `${rightWidth}px`;
+        rightCol.style.flexShrink = '0';
+        rightCol.style.flexGrow = '0';
+        rightCol.style.boxSizing = 'border-box';
+        rightCol.style.overflow = 'hidden';
+        rightCol.style.overflowWrap = 'break-word';
+        rightCol.style.wordWrap = 'break-word';
+        
+        // Set gap
+        htmlEl.style.gap = `${gap}px`;
+      }
+    });
+  }
+  
+  // Get all stylesheets
+  const styleSheets = Array.from(document.styleSheets);
+  let cssText = '';
+  
+  styleSheets.forEach(sheet => {
+    try {
+      const rules = Array.from(sheet.cssRules || []);
+      rules.forEach(rule => {
+        cssText += rule.cssText + '\n';
+      });
+    } catch (e) {
+      // Skip cross-origin stylesheets
+    }
+  });
+  
+  // Generate PDF-specific CSS
+  const pdfCSSVariables = PDF_STYLES.generateCSSVariables(config, themeColor);
+  const pdfBaseStyles = PDF_STYLES.generateBasePDFStyles(config);
+  
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+          /* PDF Style Configuration Variables */
+          ${pdfCSSVariables}
+          
+          /* PDF Base Styles */
+          ${pdfBaseStyles}
+          
+          /* Page Styles from Application */
+          ${cssText}
+          
+          /* PDF-Specific Overrides */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            box-sizing: border-box;
+          }
+          html, body {
+            width: ${config.layout.pageWidth};
+            min-height: ${config.layout.pageHeight};
+            font-family: ${config.fonts.primary};
+            margin: 0;
+            padding: 0;
+          }
+          
+          @page {
+            size: A4;
+            margin: 0;
+          }
+          
+          /* V2 Two-Column Layout Fixes */
+          .resume-v2 {
+            width: 210mm !important;
+            max-width: 210mm !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+            min-height: auto !important;
+          }
+          
+          /* Fix two-column flex container */
+          .resume-v2 > div[style*="display: flex"][style*="flex-direction: row"] {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+          }
+          
+          /* Ensure columns are properly constrained */
+          .resume-v2 > div > div[style*="width"] {
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            word-break: break-word !important;
+          }
+          
+          /* Prevent content from overflowing columns */
+          .resume-v2 > div > div > * {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+          }
+          
+          /* Hide editing UI */
+          button.border-dashed,
+          button[class*="border-dashed"],
+          button[class*="destructive"],
+          [class*="group-hover:opacity"],
+          [data-no-pdf],
+          [data-pdf-hide],
+          .no-print {
+            display: none !important;
+          }
+          
+          /* Hide dotted borders */
+          .border-dashed,
+          [class*="border-dashed"],
+          .border-dotted {
+            border: none !important;
+          }
+          
+          /* Bullet points - preserve list-style-type from component */
+          /* Don't override list-style - let component's inline styles work */
+          ul {
+            margin: 0 !important;
+            /* Preserve padding-left from component inline styles */
+          }
+          
+          /* Ensure list items display properly with bullets */
+          ul li {
+            display: list-item !important;
+            list-style-position: outside !important;
+            /* Preserve component's list-style-type (disc, circle, square) */
+            margin-bottom: 0.25em !important;
+          }
+          
+          /* For V2 experience bullets specifically, ensure proper spacing */
+          .resume-v2 ul {
+            /* Don't override - component sets padding-left: 20px inline */
+          }
+          
+          .resume-v2 ul li {
+            display: list-item !important;
+            list-style-position: outside !important;
+            /* Component sets list-style-type inline, preserve it */
+          }
+        </style>
+      </head>
+      <body>
+        ${clone.outerHTML}
+      </body>
+    </html>
+  `;
+  
+  return html;
+}
+
+/**
  * Generate PDF using Netlify Function
  * 
  * @param previewElementId - ID of the resume preview element in DOM
@@ -444,15 +875,40 @@ export async function generatePDFFromPreview(
   // Determine the config to use
   const config = options.config || PDF_STYLES.getDefault(options.layoutType);
   
-  // Get the first child element (the actual template content) to avoid capturing
-  // the outer wrapper div with shadow/rounded corners
-  // The structure is: #resume-preview > template-wrapper > template-content
-  // We want to capture the template content directly
-  const templateContent = previewElement.firstElementChild as HTMLElement;
-  const resumeContent = templateContent || previewElement;
+  // Get the actual template content to avoid capturing wrapper divs
+  // V1 structure: #resume-preview > StyleOptionsWrapper > TemplateComponent
+  // V2 structure: StyleOptionsWrapper > #resume-preview-v2 > InlineEditProvider > ResumeRenderer (div.resume-v2)
+  // For V2, we need to find the .resume-v2 element inside which contains the actual content
+  let resumeContent: HTMLElement = previewElement;
+  let isV2 = false;
   
-  // Capture HTML with styles using the config
-  const html = captureResumeHTMLWithStyles(resumeContent, config, options.themeColor);
+  // Check if this is V2 by looking for .resume-v2 class inside
+  const v2Content = previewElement.querySelector('.resume-v2') as HTMLElement;
+  
+  if (v2Content) {
+    // For V2, use the .resume-v2 element which is the actual ResumeRenderer content
+    // This is inside InlineEditProvider, which is inside #resume-preview-v2
+    resumeContent = v2Content;
+    isV2 = true;
+  } else {
+    // V1: Get the first child element (the actual template content)
+    const firstChild = previewElement.firstElementChild as HTMLElement;
+    if (firstChild) {
+      // If StyleOptionsWrapper, get its first child (the actual template/resume content)
+      const templateContent = firstChild.firstElementChild as HTMLElement;
+      if (templateContent) {
+        resumeContent = templateContent;
+      } else {
+        // Fallback to first child if no nested content
+        resumeContent = firstChild;
+      }
+    }
+  }
+  
+  // Use V2-specific function for V2, regular function for V1
+  const html = isV2 
+    ? captureV2ResumeHTMLWithStyles(resumeContent, config, options.themeColor)
+    : captureResumeHTMLWithStyles(resumeContent, config, options.themeColor);
   
   // Send to Netlify function
   const response = await fetch('/.netlify/functions/generate-pdf', {

@@ -54,6 +54,16 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
     const hideSections = !styleOptions.showSections ? '[data-section="custom"] { display: none !important; }' : '';
 
     return `
+      /* Preserve banner header typography */
+      .style-options-wrapper [data-header="banner"] p,
+      .style-options-wrapper [data-header="banner"] li,
+      .style-options-wrapper [data-header="banner"] h1,
+      .style-options-wrapper [data-header="banner"] h2,
+      .style-options-wrapper [data-header="banner"] h3 {
+        font-size: inherit !important;
+        color: inherit !important;
+      }
+
       /* Section Header Case - ONLY h2 elements (section headings), NOT h1 (name) */
       /* For capitalize to work on already-uppercase text, normalize to lowercase first */
       ${styleOptions.headerCase === 'capitalize' 
@@ -87,7 +97,8 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
         font-size: calc(13px * ${scale}) !important;
         color: #1a1a1a !important;
       }
-      .style-options-wrapper h1 {
+      /* Do not override banner header name/title */
+      .style-options-wrapper h1:not([data-header="banner"]) {
         font-size: calc(32px * ${scale}) !important;
       }
       .style-options-wrapper h2:not([data-accent-color]) {

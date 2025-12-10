@@ -46,7 +46,7 @@ export const InlineEditableSkills = ({
   separator = 'bullet',
   fontSize,
 }: InlineEditableSkillsProps) => {
-  const resolvedPath = (path ?? field)?.replace(/^resumeData\./, "");
+  const resolvedPath = (path ?? field)?.replace(/^resumeData\./, "") || "skills";
   const canMutate = editable && Boolean(resolvedPath);
   const { updateField, addArrayItem, removeArrayItem } = useInlineEdit();
   const [isEditing, setIsEditing] = useState(false);
@@ -188,7 +188,8 @@ export const InlineEditableSkills = ({
         {canMutate && (
           <button
             onClick={handleAdd}
-            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
+            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+            style={{ color: themeColor || '#2563eb', borderColor: themeColor || '#2563eb' }}
           >
             <Plus className="h-3 w-3" />
             Add Skill
@@ -214,7 +215,8 @@ export const InlineEditableSkills = ({
         {canMutate && (
           <button
             onClick={handleAdd}
-            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
+            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+            style={{ color: themeColor || '#2563eb', borderColor: themeColor || '#2563eb' }}
           >
             <Plus className="h-3 w-3" />
             Add Skill
@@ -328,15 +330,14 @@ export const InlineEditableSkills = ({
           </div>
         ))}
         {canMutate && (
-          <Button
-            size="sm"
-            variant="outline"
-            className="h-7 px-2 border-dashed"
+          <button
             onClick={handleAdd}
+            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+            style={{ color: themeColor || '#2563eb', borderColor: themeColor || '#2563eb' }}
           >
-            <Plus className="h-3 w-3 mr-1" />
+            <Plus className="h-3 w-3" />
             Add Skill
-          </Button>
+          </button>
         )}
       </div>
     </div>

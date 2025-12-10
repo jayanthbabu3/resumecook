@@ -527,7 +527,7 @@ const CustomItemsRenderer: React.FC<CustomItemsRendererProps> = ({
       updateField(`sections[${sectionIndex}]`, targetSection);
     } else {
       // Fallback: just update items
-      updateField(`sections[${sectionIndex}].items`, newItems);
+    updateField(`sections[${sectionIndex}].items`, newItems);
     }
   };
 

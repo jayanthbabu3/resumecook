@@ -46,37 +46,86 @@ export const InlineEditableSectionItems: React.FC<InlineEditableSectionItemsProp
   // Parse content into items if items array is empty but content exists
   // Also handle case where items might be objects instead of strings
   const effectiveItems = React.useMemo(() => {
+    console.log('[InlineEditableSectionItems] Computing effectiveItems', {
+      sectionIndex,
+      itemsLength: items?.length,
+      items,
+      content,
+      contentLength: content?.length
+    });
+    
     if (items && items.length > 0) {
       // Ensure all items are strings
-      return items.map(item => 
+      const result = items.map(item => 
         typeof item === 'string' ? item : (item as any)?.text || String(item || '')
       );
+      console.log('[InlineEditableSectionItems] Using items array', { resultLength: result.length, result });
+      return result;
     }
     if (content && content.trim()) {
       // Split content by newlines to create items
-      return content.split('\n').filter(line => line.trim());
+      const result = content.split('\n').filter(line => line.trim());
+      console.log('[InlineEditableSectionItems] Using content (split by newlines)', { resultLength: result.length, result });
+      return result;
     }
+    console.log('[InlineEditableSectionItems] No items or content, returning empty array');
     return [];
-  }, [items, content]);
+  }, [items, content, sectionIndex]);
 
   const handleAddItem = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!updateField) return;
+    
+    console.log('[InlineEditableSectionItems] handleAddItem called', {
+      sectionIndex,
+      effectiveItems,
+      updateFieldAvailable: !!updateField,
+      inlineEditContext: inlineEditContext ? 'available' : 'null/undefined'
+    });
+    
+    if (!updateField) {
+      console.error('[InlineEditableSectionItems] updateField not available - make sure InlineEditProvider is wrapping this component');
+      console.error('[InlineEditableSectionItems] inlineEditContext:', inlineEditContext);
+      return;
+    }
     
     const newItems = [...effectiveItems, ""];
-    updateField(`sections[${sectionIndex}].items`, newItems);
-    // Clear content when switching to items mode
-    updateField(`sections[${sectionIndex}].content`, "");
+    // Use dot notation for path: sections.0.items
+    const itemsPath = `sections.${sectionIndex}.items`;
+    const contentPath = `sections.${sectionIndex}.content`;
+    
+    console.log('[InlineEditableSectionItems] Calling updateField for items', {
+      itemsPath,
+      newItems,
+      newItemsLength: newItems.length
+    });
+    
+    try {
+      // Update items first
+      updateField(itemsPath, newItems);
+      console.log('[InlineEditableSectionItems] Items updated successfully');
+      
+      // Clear content when switching to items mode
+      // The functional update pattern ensures this uses the latest state
+      updateField(contentPath, "");
+      console.log('[InlineEditableSectionItems] Content cleared');
+    } catch (error) {
+      console.error('[InlineEditableSectionItems] Error in updateField:', error);
+    }
   };
 
   const handleRemoveItem = (e: React.MouseEvent, itemIndex: number) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!updateField) return;
+    if (!updateField) {
+      console.warn('[InlineEditableSectionItems] updateField not available - make sure InlineEditProvider is wrapping this component');
+      return;
+    }
     
     const newItems = effectiveItems.filter((_, idx) => idx !== itemIndex);
-    updateField(`sections[${sectionIndex}].items`, newItems);
+    // Use dot notation for path: sections.0.items
+    const path = `sections.${sectionIndex}.items`;
+    updateField(path, newItems);
   };
 
   // For non-editable mode, just render the items
@@ -116,7 +165,7 @@ export const InlineEditableSectionItems: React.FC<InlineEditableSectionItemsProp
             <div key={itemIndex} className="group flex items-start gap-2">
               {showBullets && <span style={{ marginRight: "4px", marginTop: "2px" }}>•</span>}
               <InlineEditableText
-                path={`sections[${sectionIndex}].items[${itemIndex}]`}
+                path={`sections.${sectionIndex}.items.${itemIndex}`}
                 value={item || ""}
                 placeholder={placeholder}
                 className="flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"

@@ -55,16 +55,16 @@ export const PremiumUniversalTemplate = ({
   
   return (
     <StyleOptionsWrapper>
-      <div 
-        className="w-full h-full bg-white text-gray-900 leading-relaxed"
-        style={{ 
-          padding: '40px 48px',
+    <div 
+      className="w-full h-full bg-white text-gray-900 leading-relaxed"
+      style={{ 
+        padding: '40px 48px',
           fontSize: '13px',
           lineHeight: 1.5,
-          fontFamily: styles.fonts.primary,
+        fontFamily: styles.fonts.primary,
           color: '#1a1a1a',
-        }}
-      >
+      }}
+    >
       {/* Header */}
       <div style={{ 
         marginBottom: styles.spacing.sectionGap, 
@@ -73,19 +73,19 @@ export const PremiumUniversalTemplate = ({
       }}>
         {editable ? (
           <>
-            <InlineEditableText
-              path="personalInfo.fullName"
-              value={resumeData.personalInfo.fullName}
-              className="block mb-2"
-              style={{ 
+          <InlineEditableText
+            path="personalInfo.fullName"
+            value={resumeData.personalInfo.fullName}
+            className="block mb-2"
+            style={{ 
                 fontSize: '27px',
                 fontWeight: 700,
                 lineHeight: 1.2,
                 letterSpacing: '-0.01em',
-                color: accent,
-              }}
-              as="h1"
-            />
+              color: accent,
+            }}
+            as="h1"
+          />
             {(editable || resumeData.personalInfo.title) && (
               <InlineEditableText
                 path="personalInfo.title"
@@ -103,15 +103,15 @@ export const PremiumUniversalTemplate = ({
           </>
         ) : (
           <>
-            <h1 className="mb-2" style={{ 
+          <h1 className="mb-2" style={{ 
               fontSize: '27px',
               fontWeight: 700,
               lineHeight: 1.2,
               letterSpacing: '-0.01em',
-              color: accent,
-            }}>
-              {resumeData.personalInfo.fullName}
-            </h1>
+            color: accent,
+          }}>
+            {resumeData.personalInfo.fullName}
+          </h1>
             {resumeData.personalInfo.title && (
               <p className="mb-4" style={{
                 fontSize: '16px',
@@ -120,9 +120,9 @@ export const PremiumUniversalTemplate = ({
               }}>
                 {resumeData.personalInfo.title}
               </p>
-            )}
+              )}
           </>
-        )}
+          )}
         <div className="mt-4" style={{ fontSize: '13px', color: '#1a1a1a' }}>
           <TemplateContactInfo
             resumeData={resumeData}
@@ -240,23 +240,23 @@ export const PremiumUniversalTemplate = ({
                       />
                     </div>
                     <div className="text-right flex items-center gap-1" style={{ fontSize: '13px', color: '#525252' }}>
-                      <InlineEditableDate
-                        path={`experience[${index}].startDate`}
-                        value={exp.startDate}
+                          <InlineEditableDate
+                            path={`experience[${index}].startDate`}
+                            value={exp.startDate}
                         formatDisplay={formatDate}
-                        className="inline-block"
-                      />
-                      <span> - </span>
-                      {exp.current ? (
-                        <span>Present</span>
-                      ) : (
-                        <InlineEditableDate
-                          path={`experience[${index}].endDate`}
-                          value={exp.endDate}
+                            className="inline-block"
+                          />
+                          <span> - </span>
+                          {exp.current ? (
+                            <span>Present</span>
+                          ) : (
+                            <InlineEditableDate
+                              path={`experience[${index}].endDate`}
+                              value={exp.endDate}
                           formatDisplay={formatDate}
-                          className="inline-block"
-                        />
-                      )}
+                              className="inline-block"
+                            />
+                          )}
                     </div>
                   </div>
                   {exp.description && (
@@ -404,21 +404,21 @@ export const PremiumUniversalTemplate = ({
             style={{ marginBottom: '12px' }}
           />
           <div className="space-y-3">
-            {editable ? (
-              <InlineEditableList
-                path="education"
-                items={resumeData.education}
-                defaultItem={{
-                  id: Date.now().toString(),
-                  school: "School Name",
-                  degree: "Degree",
-                  field: "Field of Study",
-                  startDate: "2019-09",
-                  endDate: "2023-05",
+          {editable ? (
+            <InlineEditableList
+              path="education"
+              items={resumeData.education}
+              defaultItem={{
+                id: Date.now().toString(),
+                school: "School Name",
+                degree: "Degree",
+                field: "Field of Study",
+                startDate: "2019-09",
+                endDate: "2023-05",
                   gpa: "",
-                }}
-                addButtonLabel="Add Education"
-                renderItem={(edu, index) => (
+              }}
+              addButtonLabel="Add Education"
+              renderItem={(edu, index) => (
                   <div 
                     className="p-4 rounded"
                     style={{ 
@@ -427,32 +427,32 @@ export const PremiumUniversalTemplate = ({
                       marginBottom: '12px'
                     }}
                   >
-                    <div className="flex justify-between items-start">
+                  <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <InlineEditableText
-                          path={`education[${index}].degree`}
+                      <InlineEditableText
+                        path={`education[${index}].degree`}
                           value={edu.degree || "Degree"}
-                          className="block"
-                          style={{
+                        className="block"
+                        style={{
                             fontSize: '15px',
                             fontWeight: 600,
                             color: '#1a1a1a',
-                          }}
-                          as="h3"
-                        />
+                        }}
+                        as="h3"
+                      />
                         {(editable || edu.field) && (
-                          <InlineEditableText
+                      <InlineEditableText
                             path={`education[${index}].field`}
                             value={edu.field || ""}
                             className="mt-1 block"
-                            style={{
+                        style={{
                               fontSize: '13px',
                               color: '#1a1a1a',
                               lineHeight: 1.4,
-                            }}
-                            as="p"
+                        }}
+                        as="p"
                             placeholder="Field of Study"
-                          />
+                      />
                         )}
                         <InlineEditableText
                           path={`education[${index}].school`}
@@ -477,8 +477,8 @@ export const PremiumUniversalTemplate = ({
                               as="span"
                             />
                           </div>
-                        )}
-                      </div>
+                      )}
+                    </div>
                       <div className="flex items-center gap-1 ml-4" style={{ fontSize: '13px', color: '#525252', fontWeight: 500 }}>
                         <InlineEditableDate
                           path={`education[${index}].startDate`}
@@ -493,13 +493,13 @@ export const PremiumUniversalTemplate = ({
                           formatDisplay={formatDate}
                           className="inline-block"
                         />
-                      </div>
                     </div>
                   </div>
-                )}
-              />
-            ) : (
-              resumeData.education.map((edu, index) => (
+                </div>
+              )}
+            />
+          ) : (
+            resumeData.education.map((edu, index) => (
                 <div 
                   key={edu.id}
                   className="p-4 rounded"
@@ -509,15 +509,15 @@ export const PremiumUniversalTemplate = ({
                     marginBottom: '12px'
                   }}
                 >
-                  <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h3 style={{
+                    <h3 style={{
                         fontSize: '15px',
                         fontWeight: 600,
                         color: '#1a1a1a',
-                      }}>
+                    }}>
                         {edu.degree}
-                      </h3>
+                    </h3>
                       {edu.field && (
                         <p style={{
                           fontSize: '13px',
@@ -532,9 +532,9 @@ export const PremiumUniversalTemplate = ({
                         fontWeight: 500,
                         color: accent,
                       }}>
-                        {edu.school}
-                      </p>
-                      {edu.gpa && (
+                      {edu.school}
+                    </p>
+                    {edu.gpa && (
                         <p style={{
                           fontSize: '12px',
                           color: '#525252',
@@ -542,16 +542,16 @@ export const PremiumUniversalTemplate = ({
                           marginTop: '8px',
                         }}>
                           <span className="font-medium">GPA: {edu.gpa}</span>
-                        </p>
-                      )}
-                    </div>
+                      </p>
+                    )}
+                  </div>
                     <div className="ml-4" style={{ fontSize: '13px', color: '#525252', fontWeight: 500 }}>
                       {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                    </div>
                   </div>
                 </div>
-              ))
-            )}
+              </div>
+            ))
+          )}
           </div>
         </div>
       )}
@@ -567,7 +567,7 @@ export const PremiumUniversalTemplate = ({
             style={{ marginBottom: '12px' }}
           />
           <ul className="space-y-2" style={{ listStyle: 'none', paddingLeft: 0 }}>
-            {editable ? (
+          {editable ? (
               <>
                 {resumeData.skills.map((skill, index) => (
                   <li 
@@ -579,7 +579,7 @@ export const PremiumUniversalTemplate = ({
                       lineHeight: 1.5,
                     }}
                   >
-                    <span 
+                <span
                       style={{ 
                         color: accent,
                         marginRight: '4px',
@@ -628,8 +628,8 @@ export const PremiumUniversalTemplate = ({
                     lineHeight: 1.5,
                   }}
                 >
-                  <span 
-                    style={{ 
+                  <span
+                    style={{
                       color: accent,
                       marginRight: '4px',
                       fontSize: '10px'
@@ -640,7 +640,7 @@ export const PremiumUniversalTemplate = ({
                   <span>{skill.name}</span>
                 </li>
               ))
-            )}
+          )}
           </ul>
         </div>
       )}
@@ -649,7 +649,7 @@ export const PremiumUniversalTemplate = ({
       <div data-section="custom">
         <CustomSectionsWrapper
           sections={resumeData.sections || []}
-          editable={editable}
+        editable={editable}
           accentColor={accent}
           styles={SINGLE_COLUMN_CONFIG}
           renderSectionHeader={(title, index, helpers) => (
@@ -671,33 +671,33 @@ export const PremiumUniversalTemplate = ({
           renderItem={(item, itemIndex, sectionIndex, helpers) => {
             const itemValue = typeof item === 'string' ? item : (item as any)?.text || String(item || '');
             const showBorder = editable;
-            return (
+  return (
               <div key={itemIndex} className="group flex items-start gap-2 mb-2">
-                {editable ? (
+              {editable ? (
                   <helpers.EditableText
                     className={`flex-1 min-h-[1.2rem] ${showBorder ? 'border border-dashed border-gray-300 rounded px-1' : ''}`}
                     style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.5 }}
                     placeholder="Click to add item..."
-                  />
+                />
                 ) : (
                   <span style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.5 }}>
                     {itemValue}
                   </span>
                 )}
-                {editable && (
-                  <button
+            {editable && (
+              <button
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       helpers.remove();
                     }}
                     className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-50"
-                    style={{ color: '#ef4444' }}
-                  >
+                style={{ color: '#ef4444' }}
+              >
                     <span className="text-xs">×</span>
-                  </button>
-                )}
-              </div>
+              </button>
+            )}
+          </div>
             );
           }}
           renderAddItemButton={(onClick, sectionIndex) => (
@@ -714,8 +714,8 @@ export const PremiumUniversalTemplate = ({
               Add Item
             </button>
           )}
-        />
-      </div>
+          />
+        </div>
       </div>
     </StyleOptionsWrapper>
   );
@@ -726,7 +726,7 @@ const PremiumUniversalAddSkillButton = ({ accent }: { accent: string }) => {
   const { addArrayItem } = useInlineEdit();
   
   return (
-    <button
+        <button
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -735,11 +735,11 @@ const PremiumUniversalAddSkillButton = ({ accent }: { accent: string }) => {
         }
       }}
       className="flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors mt-2"
-      style={{ color: accent, borderColor: accent }}
-    >
+          style={{ color: accent, borderColor: accent }}
+        >
       <Plus className="h-3 w-3" />
       Add Skill
-    </button>
+        </button>
   );
 };
 

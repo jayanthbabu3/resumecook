@@ -284,3 +284,7 @@ import { InlineEditableSkills, SkillsDisplay } from "@/components/resume/InlineE
 3. Remove custom renderSkill functions where possible
 4. Document variant choices in template metadata
 
+
+
+
+

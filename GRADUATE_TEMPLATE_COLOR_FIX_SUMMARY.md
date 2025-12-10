@@ -90,3 +90,7 @@ All content text now uses inline styles instead of Tailwind classes to ensure ex
 - [ ] Custom sections use `#1a1a1a` color
 - [ ] No RGB color values in content text
 
+
+
+
+

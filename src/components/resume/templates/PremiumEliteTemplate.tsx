@@ -74,7 +74,7 @@ export const PremiumEliteTemplate = ({
               ) : (
                 resumeData.personalInfo.title && (
                   <div className="mb-4" style={{ fontSize: '16px', fontWeight: 500, color: 'white' }}>
-                    {resumeData.personalInfo.title}
+                  {resumeData.personalInfo.title}
                   </div>
                 )
               )
@@ -82,32 +82,32 @@ export const PremiumEliteTemplate = ({
             <div className="mt-4" style={{ fontSize: '13px', color: 'white' }}>
               {editable ? (
                 <div className="flex flex-wrap gap-x-6 gap-y-2">
-                  {resumeData.personalInfo.email && (
-                    <InlineEditableText
-                      path="personalInfo.email"
-                      value={resumeData.personalInfo.email}
+              {resumeData.personalInfo.email && (
+                  <InlineEditableText
+                    path="personalInfo.email"
+                    value={resumeData.personalInfo.email}
                       className="inline"
                       style={{ fontSize: '13px', color: 'white' }}
-                      as="span"
-                    />
-                  )}
-                  {resumeData.personalInfo.phone && (
-                    <InlineEditableText
-                      path="personalInfo.phone"
-                      value={resumeData.personalInfo.phone}
+                    as="span"
+                  />
+              )}
+              {resumeData.personalInfo.phone && (
+                  <InlineEditableText
+                    path="personalInfo.phone"
+                    value={resumeData.personalInfo.phone}
                       className="inline"
                       style={{ fontSize: '13px', color: 'white' }}
-                      as="span"
-                    />
-                  )}
-                  {resumeData.personalInfo.location && (
-                    <InlineEditableText
-                      path="personalInfo.location"
-                      value={resumeData.personalInfo.location}
+                    as="span"
+                  />
+              )}
+              {resumeData.personalInfo.location && (
+                  <InlineEditableText
+                    path="personalInfo.location"
+                    value={resumeData.personalInfo.location}
                       className="inline"
                       style={{ fontSize: '13px', color: 'white' }}
-                      as="span"
-                    />
+                    as="span"
+                  />
                   )}
                 </div>
               ) : (
@@ -156,7 +156,7 @@ export const PremiumEliteTemplate = ({
             ) : (
               resumeData.personalInfo.summary && (
                 <div className="leading-[1.75]" style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.75 }}>
-                  {resumeData.personalInfo.summary}
+                {resumeData.personalInfo.summary}
                 </div>
               )
             )}
@@ -315,18 +315,18 @@ export const PremiumEliteTemplate = ({
                 />
                 {editable ? (
                   <div className="flex flex-wrap gap-2">
-                    <InlineEditableSkills
-                      path="skills"
+                  <InlineEditableSkills
+                    path="skills"
                       skills={resumeData.skills || []}
-                      renderSkill={(skill, index) => (
-                        <span
+                    renderSkill={(skill, index) => (
+                      <span
                           className="font-medium px-3 py-1.5 rounded-lg"
-                          style={{
+                        style={{
                             fontSize: '13px',
-                            backgroundColor: accentLight,
-                            color: accent
-                          }}
-                        >
+                          backgroundColor: accentLight,
+                          color: accent
+                        }}
+                      >
                           <InlineEditableText
                             path={`skills[${index}].name`}
                             value={skill.name}
@@ -335,9 +335,9 @@ export const PremiumEliteTemplate = ({
                             as="span"
                             placeholder="New Skill"
                           />
-                        </span>
-                      )}
-                    />
+                      </span>
+                    )}
+                  />
                   </div>
                 ) : (
                   <div className="flex flex-wrap gap-2">
@@ -534,7 +534,7 @@ export const PremiumEliteTemplate = ({
             <div data-section="custom">
               <CustomSectionsWrapper
                 sections={resumeData.sections || []}
-                editable={editable}
+              editable={editable}
                 accentColor={accent}
                 styles={SINGLE_COLUMN_CONFIG}
                 renderSectionHeader={(title, index, helpers) => (
@@ -555,49 +555,49 @@ export const PremiumEliteTemplate = ({
                 showAddSection={true}
                 renderItem={(item, itemIndex, sectionIndex, helpers) => {
                   const itemValue = typeof item === 'string' ? item : (item as any)?.text || String(item || '');
-                  return (
+  return (
                     <div key={itemIndex} className="group flex items-start gap-2 mb-2">
-                      {editable ? (
+              {editable ? (
                         <helpers.EditableText
                           className="flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1"
                           style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.7 }}
                           placeholder="Click to add item..."
-                        />
+                />
                       ) : (
                         <span style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.7 }}>
                           {itemValue}
                         </span>
                       )}
-                      {editable && (
-                        <button
+            {editable && (
+              <button
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             helpers.remove();
                           }}
                           className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-50"
-                          style={{ color: '#ef4444' }}
-                        >
+                style={{ color: '#ef4444' }}
+              >
                           <X className="h-3 w-3" />
-                        </button>
-                      )}
-                    </div>
+              </button>
+            )}
+          </div>
                   );
                 }}
                 renderAddItemButton={(onClick, sectionIndex) => (
-                  <button
+        <button
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       onClick();
                     }}
                     className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
-                    style={{ color: accent, borderColor: accent }}
-                  >
+          style={{ color: accent, borderColor: accent }}
+        >
                     <Plus className="h-3 w-3" />
                     Add Item
-                  </button>
-                )}
+        </button>
+      )}
               />
             </div>
           </div>

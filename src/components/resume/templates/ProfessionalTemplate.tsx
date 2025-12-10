@@ -66,17 +66,17 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
 
   return (
     <StyleOptionsWrapper>
-      <div 
-        className="w-full h-full bg-white"
-        style={{ 
-          padding: '40px 48px',
+    <div 
+      className="w-full h-full bg-white"
+      style={{ 
+        padding: '40px 48px',
           fontSize: '13px',
           lineHeight: 1.5,
-          fontFamily: styles.fonts.primary,
+        fontFamily: styles.fonts.primary,
           color: '#1a1a1a',
-          pageBreakAfter: 'auto',
-        }}
-      >
+        pageBreakAfter: 'auto',
+      }}
+    >
       {/* Header */}
       <div style={{ 
         marginBottom: styles.spacing.sectionGap, 
@@ -146,7 +146,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
             editable={editable}
             themeColor={accent}
             layout="horizontal"
-          />
+                />
         </div>
       </div>
 
@@ -460,9 +460,9 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                 <div style={{ pageBreakInside: 'avoid' }}>
                   <div className="flex justify-between items-baseline mb-1">
                     <div>
-                      <InlineEditableText
-                        path={`education[${index}].degree`}
-                        value={edu.degree || "Degree"}
+                        <InlineEditableText
+                          path={`education[${index}].degree`}
+                          value={edu.degree || "Degree"}
                         className="block"
                         style={{
                           fontSize: '15px',
@@ -470,10 +470,10 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                           color: '#1a1a1a',
                         }}
                         as="h3"
-                      />
+                        />
                       {(editable || edu.field) && (
-                        <InlineEditableText
-                          path={`education[${index}].field`}
+                            <InlineEditableText
+                              path={`education[${index}].field`}
                           value={edu.field || ""}
                           className="mt-1 block"
                           style={{
@@ -484,7 +484,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                           as="p"
                           placeholder="Field of Study"
                         />
-                      )}
+                        )}
                       <InlineEditableText
                         path={`education[${index}].school`}
                         value={edu.school || "School Name"}
@@ -499,14 +499,14 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                       {(editable || edu.gpa) && (
                         <div className="mt-1" style={{ fontSize: '12px', color: '#525252', lineHeight: 1.4 }}>
                           <span>GPA: </span>
-                          <InlineEditableText
-                            path={`education[${index}].gpa`}
+                        <InlineEditableText
+                          path={`education[${index}].gpa`}
                             value={edu.gpa || ""}
                             className="inline-block"
                             placeholder="3.8/4.0"
                             style={{ fontSize: '12px', color: '#525252', lineHeight: 1.4 }}
                             as="span"
-                          />
+                        />
                         </div>
                       )}
                     </div>
@@ -591,9 +591,9 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
           />
           {editable ? (
             <div className="flex flex-wrap gap-2">
-              <InlineEditableSkills
-                path="skills"
-                skills={resumeData.skills}
+            <InlineEditableSkills
+              path="skills"
+              skills={resumeData.skills}
                 renderSkill={(skill, index) => (
                   <span className="px-2 py-1 bg-gray-100 rounded font-medium" style={{
                     fontSize: '13px',
@@ -602,7 +602,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
                     {skill.name}
                   </span>
                 )}
-              />
+            />
             </div>
           ) : (
             <div className="flex flex-wrap gap-2">
@@ -714,7 +714,7 @@ export const ProfessionalTemplate = ({ resumeData, themeColor, editable = false,
             })}
         </>
       )}
-      </div>
+    </div>
     </StyleOptionsWrapper>
   );
 };

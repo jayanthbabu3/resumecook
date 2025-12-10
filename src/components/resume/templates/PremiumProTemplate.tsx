@@ -100,9 +100,9 @@ export const PremiumProTemplate = ({
                 ) : (
                   resumeData.personalInfo.title && (
                     <p className="mb-3" style={{ fontSize: '16px', fontWeight: 500, color: '#1a1a1a' }}>
-                      {resumeData.personalInfo.title}
-                    </p>
-                  )
+                    {resumeData.personalInfo.title}
+                  </p>
+                )
                 )
               )}
               <div className="mt-4" style={{ fontSize: '13px', color: '#1a1a1a' }}>
@@ -146,8 +146,8 @@ export const PremiumProTemplate = ({
               ) : (
                 resumeData.personalInfo.summary && (
                   <p className="leading-[1.7]" style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: 1.7 }}>
-                    {resumeData.personalInfo.summary}
-                  </p>
+                  {resumeData.personalInfo.summary}
+                </p>
                 )
               )}
             </div>
@@ -207,16 +207,16 @@ export const PremiumProTemplate = ({
                           as="p"
                         />
                         <div className="mt-1 flex items-center gap-1" style={{ fontSize: '13px', color: '#525252' }}>
-                          <InlineEditableDate
-                            path={`education[${index}].startDate`}
-                            value={edu.startDate}
+                            <InlineEditableDate
+                              path={`education[${index}].startDate`}
+                              value={edu.startDate}
                             formatDisplay={formatDate}
-                            className="inline-block"
-                          />
-                          <span> - </span>
-                          <InlineEditableDate
-                            path={`education[${index}].endDate`}
-                            value={edu.endDate}
+                              className="inline-block"
+                            />
+                            <span> - </span>
+                            <InlineEditableDate
+                              path={`education[${index}].endDate`}
+                              value={edu.endDate}
                             formatDisplay={formatDate}
                             className="inline-block"
                           />
@@ -297,9 +297,9 @@ export const PremiumProTemplate = ({
                       return (
                         <div key={skill.id || index}>
                           <div className="flex items-center justify-between mb-1 gap-2">
-                            <InlineEditableText
-                              path={`skills[${index}].name`}
-                              value={skill.name}
+                          <InlineEditableText
+                            path={`skills[${index}].name`}
+                            value={skill.name}
                               className="font-medium flex-1"
                               style={{ fontSize: '13px', color: '#1a1a1a' }}
                               as="span"
@@ -311,23 +311,23 @@ export const PremiumProTemplate = ({
                                 placeholder="1-10"
                                 className="w-12 text-right border border-dashed border-gray-300 rounded px-1"
                                 style={{ fontSize: '11px', color: '#525252' }}
-                                as="span"
-                              />
+                            as="span"
+                          />
                               <span style={{ fontSize: '11px', color: '#9ca3af' }}>/10</span>
                             </div>
-                          </div>
-                          {skillLevel !== null && (
-                            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full rounded-full transition-all"
-                                style={{
-                                  width: `${skillLevel * 10}%`,
-                                  backgroundColor: accent,
-                                }}
-                              />
-                            </div>
-                          )}
                         </div>
+                          {skillLevel !== null && (
+                          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all"
+                              style={{
+                                  width: `${skillLevel * 10}%`,
+                                backgroundColor: accent,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                       );
                     })}
                     <PremiumProAddSkillButton accent={accent} />
@@ -400,8 +400,8 @@ export const PremiumProTemplate = ({
                   formatDate={formatDate}
                   onAddBulletPoint={onAddBulletPoint}
                   onRemoveBulletPoint={onRemoveBulletPoint}
-                />
-              </div>
+                            />
+                          </div>
             )}
 
             {/* Social Links */}
@@ -419,7 +419,7 @@ export const PremiumProTemplate = ({
                   editable={editable}
                   themeColor={accent}
                   variant="horizontal"
-                />
+                              />
               </div>
             )}
 
@@ -437,8 +437,8 @@ export const PremiumProTemplate = ({
                     className="mb-3"
                     paddingBottom="8px"
                     style={{ marginBottom: '12px' }}
-                  />
-                )}
+                                />
+                              )}
                 itemStyle={{ 
                   fontSize: '13px', 
                   color: '#1a1a1a', 
@@ -463,41 +463,41 @@ export const PremiumProTemplate = ({
                         </span>
                       )}
                       {editable && (
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
                             helpers.remove();
                           }}
                           className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-50"
                           style={{ color: '#ef4444' }}
-                        >
+                                      >
                           <span className="text-xs">×</span>
-                        </button>
-                      )}
-                    </div>
+                                      </button>
+                                    )}
+                                  </div>
                   );
                 }}
                 renderAddItemButton={(onClick, sectionIndex) => (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
                       onClick();
-                    }}
+                                }}
                     className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
                     style={{ color: accent, borderColor: accent }}
-                  >
+                              >
                     <span>+</span>
                     Add Item
-                  </button>
-                )}
+                              </button>
+                            )}
               />
-            </div>
+              </div>
           </div>
         </div>
       </div>
-      </div>
+    </div>
     </StyleOptionsWrapper>
   );
 };

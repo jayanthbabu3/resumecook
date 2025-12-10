@@ -514,7 +514,7 @@ export const ExecutiveLetterheadUniversalTemplate = ({
             )}
           />
         </div>
-      </div>
+        </div>
       </div>
     </StyleOptionsWrapper>
   );

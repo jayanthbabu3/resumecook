@@ -66,3 +66,7 @@ GraduateTemplate
 - **Working Template**: `MinimalTemplate.tsx`
 - **URL**: `https://resumecook.com/dashboard/fresh-graduates/editor/graduate`
 
+
+
+
+

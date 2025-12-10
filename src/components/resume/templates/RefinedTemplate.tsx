@@ -39,15 +39,15 @@ export const RefinedTemplate = ({
 
   return (
     <StyleOptionsWrapper>
-      <div
-        className="mx-auto bg-white min-h-full"
-        style={{
-          fontFamily: styles.fonts.primary,
+    <div
+      className="mx-auto bg-white min-h-full"
+      style={{
+        fontFamily: styles.fonts.primary,
           color: '#1a1a1a',
-          lineHeight: styles.itemDescription.lineHeight,
-          minHeight: '297mm', // A4 height
-        }}
-      >
+        lineHeight: styles.itemDescription.lineHeight,
+        minHeight: '297mm', // A4 height
+      }}
+    >
       <div className="grid grid-cols-[280px,1fr] h-full" style={{ minHeight: '297mm' }}>
         {/* Left Sidebar */}
         <div
@@ -128,17 +128,17 @@ export const RefinedTemplate = ({
               </h3>
               {editable ? (
                 <div className="space-y-2">
-                  <InlineEditableSkills
-                    path="skills"
+                <InlineEditableSkills
+                  path="skills"
                     skills={resumeData.skills || []}
-                    renderSkill={(skill, index) => (
-                      <div
-                        className="font-light"
-                        style={{
+                  renderSkill={(skill, index) => (
+                    <div
+                      className="font-light"
+                      style={{
                           fontSize: '13px',
                           color: '#1a1a1a',
-                        }}
-                      >
+                      }}
+                    >
                         <InlineEditableText
                           path={`skills[${index}].name`}
                           value={skill.name}
@@ -147,9 +147,9 @@ export const RefinedTemplate = ({
                           as="span"
                           placeholder="New Skill"
                         />
-                      </div>
-                    )}
-                  />
+                    </div>
+                  )}
+                />
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -340,30 +340,30 @@ export const RefinedTemplate = ({
             )}
             {(editable || resumeData.personalInfo.title) && (
               editable ? (
-                <InlineEditableText
-                  path="personalInfo.title"
+              <InlineEditableText
+                path="personalInfo.title"
                   value={resumeData.personalInfo.title || ""}
-                  className="mb-6 uppercase tracking-wider"
-                  as="h2"
-                  style={{
+                className="mb-6 uppercase tracking-wider"
+                as="h2"
+                style={{
                     fontSize: '16px',
-                    fontWeight: styles.header.title.weight,
+                  fontWeight: styles.header.title.weight,
                     color: '#1a1a1a',
-                  }}
+                }}
                   placeholder="Professional Title"
-                />
-              ) : (
+              />
+            ) : (
                 resumeData.personalInfo.title && (
-                  <h2
-                    className="mb-6 uppercase tracking-wider"
-                    style={{
+              <h2
+                className="mb-6 uppercase tracking-wider"
+                style={{
                       fontSize: '16px',
-                      fontWeight: styles.header.title.weight,
+                  fontWeight: styles.header.title.weight,
                       color: '#1a1a1a',
-                    }}
-                  >
-                    {resumeData.personalInfo.title}
-                  </h2>
+                }}
+              >
+                {resumeData.personalInfo.title}
+              </h2>
                 )
               )
             )}
@@ -385,14 +385,14 @@ export const RefinedTemplate = ({
               ) : (
                 resumeData.personalInfo.summary && (
                   <div
-                    className="font-light"
-                    style={{
+                  className="font-light"
+                  style={{
                       fontSize: '13px !important',
                       color: '#1a1a1a !important',
-                      lineHeight: styles.itemDescription.lineHeight,
-                    }}
-                  >
-                    {resumeData.personalInfo.summary}
+                    lineHeight: styles.itemDescription.lineHeight,
+                  }}
+                >
+                  {resumeData.personalInfo.summary}
                   </div>
                 )
               )
@@ -408,7 +408,7 @@ export const RefinedTemplate = ({
                 className="uppercase tracking-widest"
                 paddingBottom="8px"
                 style={{ marginBottom: '12px' }}
-              />
+                        />
               <ExperienceVariantRenderer
                 experience={resumeData.experience || []}
                 editable={editable}
@@ -425,7 +425,7 @@ export const RefinedTemplate = ({
           <div data-section="custom">
             <CustomSectionsWrapper
               sections={resumeData.sections || []}
-              editable={editable}
+            editable={editable}
               accentColor={accent}
               styles={SINGLE_COLUMN_CONFIG}
               renderSectionHeader={(title, index, helpers) => (
@@ -449,7 +449,7 @@ export const RefinedTemplate = ({
                 const itemValue = typeof item === 'string' ? item : (item as any)?.text || String(item || '');
                 return (
                   <div key={itemIndex} className="group flex items-start gap-2 mb-1.5">
-                    {editable ? (
+              {editable ? (
                       <helpers.EditableText
                         className="flex-1 min-h-[1.2rem] border border-dashed border-gray-300 rounded px-1 font-light pl-4 relative before:content-['•'] before:absolute before:left-0"
                         style={{ fontSize: '13px', color: '#1a1a1a', lineHeight: styles.itemDescription.lineHeight }}
@@ -460,36 +460,36 @@ export const RefinedTemplate = ({
                         {itemValue}
                       </span>
                     )}
-                    {editable && (
-                      <button
+            {editable && (
+              <button
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                           helpers.remove();
                         }}
                         className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-50"
-                        style={{ color: '#ef4444' }}
-                      >
+                style={{ color: '#ef4444' }}
+              >
                         <X className="h-3 w-3" />
-                      </button>
-                    )}
-                  </div>
+              </button>
+            )}
+          </div>
                 );
               }}
               renderAddItemButton={(onClick, sectionIndex) => (
-                <button
+        <button
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     onClick();
                   }}
                   className="mt-2 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
-                  style={{ color: accent, borderColor: accent }}
-                >
+          style={{ color: accent, borderColor: accent }}
+        >
                   <Plus className="h-3 w-3" />
                   Add Item
-                </button>
-              )}
+        </button>
+      )}
             />
           </div>
         </div>

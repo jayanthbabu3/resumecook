@@ -120,6 +120,11 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
     }
   }, [resumeData.skills.length]);
 
+  const blockedCustomTitles = new Set(['my life philosophy']);
+  const filteredCustomSections = (resumeData.sections || []).filter(
+    (section) => !blockedCustomTitles.has((section.title || '').toLowerCase())
+  );
+
   useEffect(() => {
     if (customContainerRef.current) {
       const lastCustomElement = customContainerRef.current.lastElementChild;
@@ -127,7 +132,7 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
         lastCustomElement.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
-  }, [resumeData.sections.length]);
+  }, [filteredCustomSections.length]);
 
   const addExperience = () => {
     setResumeData({
@@ -498,7 +503,7 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
     formatCountLabel(resumeData.skills.length, "skill", "skills", "Add skills")
   );
   const customSummary = toTitleCase(
-    formatCountLabel(resumeData.sections.length, "section", "sections", "No custom sections")
+    formatCountLabel(filteredCustomSections.length, "section", "sections", "No custom sections")
   );
 
   return (
@@ -1383,7 +1388,7 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
               </div>
             </CardHeader>
             <CardContent className="space-y-6" ref={customContainerRef}>
-              {resumeData.sections.map((section) => (
+              {filteredCustomSections.map((section) => (
                 <div key={section.id} className="space-y-4 p-4 border border-border rounded-lg relative">
                   <Button
                     variant="ghost"

@@ -104,6 +104,11 @@ export const InlineEditableText = ({
     return <input {...commonProps} type="text" />;
   }
 
+  // In non-editable mode, don't show placeholder text
+  if (!canEdit && !resolvedValue) {
+    return null;
+  }
+
   return (
     <Component
       onClick={handleClick}
@@ -119,7 +124,7 @@ export const InlineEditableText = ({
       style={style}
       title={canEdit ? "Click to edit" : undefined}
     >
-      {resolvedValue || placeholder}
+      {resolvedValue || (canEdit ? placeholder : '')}
     </Component>
   );
 };

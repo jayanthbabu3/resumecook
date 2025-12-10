@@ -47,15 +47,15 @@ export const ContemporarySplitTemplate = ({
 
   return (
     <StyleOptionsWrapper>
-      <div
-        className="w-full h-full bg-white flex"
-        style={{
-          fontFamily: styles.fonts.primary,
+    <div
+      className="w-full h-full bg-white flex"
+      style={{
+        fontFamily: styles.fonts.primary,
           color: '#1a1a1a',
-          lineHeight: styles.itemDescription.lineHeight,
+        lineHeight: styles.itemDescription.lineHeight,
           fontSize: '13px',
-        }}
-      >
+      }}
+    >
         {/* Left Side - Blue Background 50% */}
         <div className="w-[50%] text-white pt-10 pb-10 pl-10 pr-5" style={{ backgroundColor: accent }}>
         {/* Photo */}
@@ -116,15 +116,15 @@ export const ContemporarySplitTemplate = ({
             ) : (
               resumeData.personalInfo.title && (
                 <div
-                  className="uppercase tracking-wider mb-6"
-                  style={{
+                className="uppercase tracking-wider mb-6"
+                style={{
                     fontSize: '16px',
                     fontWeight: 600,
                     color: 'white',
                     letterSpacing: "0.08em",
-                  }}
-                >
-                  {resumeData.personalInfo.title}
+                }}
+              >
+                {resumeData.personalInfo.title}
                 </div>
               )
             )
@@ -150,14 +150,14 @@ export const ContemporarySplitTemplate = ({
               ) : (
                 resumeData.personalInfo.summary && (
                   <div
-                    className="font-light"
-                    style={{
+                  className="font-light"
+                  style={{
                       fontSize: '13px',
                       color: 'white',
-                      lineHeight: styles.itemDescription.lineHeight,
-                    }}
-                  >
-                    {resumeData.personalInfo.summary}
+                    lineHeight: styles.itemDescription.lineHeight,
+                  }}
+                >
+                  {resumeData.personalInfo.summary}
                   </div>
                 )
               )}
@@ -226,15 +226,15 @@ export const ContemporarySplitTemplate = ({
                       className="font-medium text-white/90"
                       style={{ fontSize: '13px' }}
                     >
-                      <InlineEditableText
-                        path={`skills[${index}].name`}
-                        value={skill.name}
+                    <InlineEditableText
+                      path={`skills[${index}].name`}
+                      value={skill.name}
                         className="text-white"
                         style={{ fontSize: '13px', color: 'white' }}
-                        as="span"
+                      as="span"
                         placeholder="New Skill"
-                      />
-                    </div>
+                    />
+                  </div>
                   )}
                 />
               </div>
@@ -245,8 +245,8 @@ export const ContemporarySplitTemplate = ({
                     key={skill.id}
                     className="font-medium text-white/90"
                     style={{ fontSize: '13px' }}
-                  >
-                    {skill.name}
+                    >
+                      {skill.name}
                   </div>
                 ))}
               </div>
@@ -577,25 +577,25 @@ export const ContemporarySplitTemplate = ({
                     {itemValue}
                   </span>
                 )}
-              </div>
-            );
+    </div>
+  );
           }}
           renderAddItemButton={(onClick, _sectionIndex) => (
             <button
               onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
                 onClick();
               }}
               className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
               style={{ color: accent, borderColor: accent }}
-            >
+              >
               <Plus className="h-3 w-3" />
               Add Item
-            </button>
-          )}
-        />
-      </div>
+              </button>
+            )}
+          />
+        </div>
     </div>
     </StyleOptionsWrapper>
   );

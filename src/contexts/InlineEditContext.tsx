@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
 import type { ResumeData } from "@/types/resume";
 
 interface InlineEditContextType {
@@ -33,42 +33,154 @@ export const InlineEditProvider = ({
 }: InlineEditProviderProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const updateField = (path: string, value: any) => {
-    console.log('[InlineEditContext] updateField called', { path, value, currentResumeData: JSON.parse(JSON.stringify(resumeData)) });
+  // Use functional update pattern to always work with latest state
+  const updateField = useCallback((path: string, value: any) => {
+    console.log('[InlineEditContext] updateField called', { path, value });
     
-    const pathParts = path.split(".");
-    const newData = JSON.parse(JSON.stringify(resumeData));
-    
-    let current = newData;
-    for (let i = 0; i < pathParts.length - 1; i++) {
-      const part = pathParts[i];
-      const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
+    // Use functional update to always work with the latest state
+    setResumeData((currentResumeData: ResumeData) => {
+      console.log('[InlineEditContext] Functional update - current resumeData', {
+        resumeDataKeys: Object.keys(currentResumeData),
+        sectionsLength: currentResumeData.sections?.length,
+        sections: currentResumeData.sections
+      });
       
-      if (arrayMatch) {
-        const [, arrayName, index] = arrayMatch;
-        console.log('[InlineEditContext] Navigating array:', { arrayName, index, currentValue: current[arrayName]?.[parseInt(index)] });
-        current = current[arrayName][parseInt(index)];
-      } else {
-        console.log('[InlineEditContext] Navigating property:', { part, currentValue: current[part] });
-        current = current[part];
+      const pathParts = path.split(".");
+      const newData = JSON.parse(JSON.stringify(currentResumeData));
+      
+      let current: any = newData;
+      console.log('[InlineEditContext] Starting navigation', { 
+        pathParts, 
+        pathPartsLength: pathParts.length,
+        currentType: typeof current, 
+        isArray: Array.isArray(current),
+        currentKeys: current && typeof current === 'object' ? Object.keys(current) : 'N/A'
+      });
+      
+      // Navigate to the parent of the target field
+      // For path "sections.0.items", we navigate to sections[0], then set .items
+      for (let i = 0; i < pathParts.length - 1; i++) {
+        const part = pathParts[i];
+        const index = parseInt(part);
+        const isNumeric = !isNaN(index) && part === String(index); // Check if part is purely numeric
+        
+        console.log('[InlineEditContext] Navigating part', { 
+          i, 
+          part, 
+          index, 
+          isNumeric,
+          currentType: typeof current, 
+          isArray: Array.isArray(current),
+          currentKeys: current && typeof current === 'object' && !Array.isArray(current) ? Object.keys(current) : 'N/A',
+          currentLength: Array.isArray(current) ? current.length : 'N/A'
+        });
+        
+        // If current is an array and part is numeric, access by index
+        if (Array.isArray(current) && isNumeric) {
+          console.log('[InlineEditContext] Accessing array by index', { index, arrayLength: current.length });
+          if (index >= 0 && index < current.length) {
+            current = current[index];
+          } else {
+            console.error('[InlineEditContext] Array index out of bounds', { index, arrayLength: current.length });
+            return currentResumeData; // Return unchanged data on error
+          }
+        }
+        // If current is an object, access by property name
+        else if (current && typeof current === 'object' && !Array.isArray(current)) {
+          if (part in current) {
+            console.log('[InlineEditContext] Accessing object property', { part, value: current[part], valueType: typeof current[part] });
+            current = current[part];
+          } else {
+            console.error('[InlineEditContext] Property not found in object', { 
+              part, 
+              availableKeys: Object.keys(current),
+              current
+            });
+            return currentResumeData; // Return unchanged data on error
+          }
+        }
+        else {
+          console.error('[InlineEditContext] Cannot navigate - invalid state', { 
+            part, 
+            currentType: typeof current, 
+            isArray: Array.isArray(current),
+            isNumeric
+          });
+          return currentResumeData; // Return unchanged data on error
+        }
       }
-    }
-    
-    const lastPart = pathParts[pathParts.length - 1];
-    const arrayMatch = lastPart.match(/^(.+)\[(\d+)\]$/);
-    
-    console.log('[InlineEditContext] Setting value:', { lastPart, arrayMatch, currentValue: current[lastPart], newValue: value });
-    
-    if (arrayMatch) {
-      const [, arrayName, index] = arrayMatch;
-      current[arrayName][parseInt(index)] = value;
-    } else {
-      current[lastPart] = value;
-    }
-    
-    console.log('[InlineEditContext] Final data:', JSON.parse(JSON.stringify(newData)));
-    setResumeData(newData);
-  };
+      
+      const lastPart = pathParts[pathParts.length - 1];
+      const lastPartIndex = parseInt(lastPart);
+      const isLastPartNumeric = !isNaN(lastPartIndex) && lastPart === String(lastPartIndex);
+      
+      console.log('[InlineEditContext] Setting value', { 
+        lastPart, 
+        lastPartIndex,
+        isLastPartNumeric,
+        currentType: typeof current, 
+        isArray: Array.isArray(current),
+        currentKeys: current && typeof current === 'object' && !Array.isArray(current) ? Object.keys(current) : 'N/A',
+        value,
+        valueType: typeof value
+      });
+      
+      // Set the value - handle both array indices and object properties
+      if (Array.isArray(current) && isLastPartNumeric) {
+        // Setting an array element by index
+        if (lastPartIndex >= 0 && lastPartIndex < current.length) {
+          current[lastPartIndex] = value;
+          console.log('[InlineEditContext] Array element set successfully', { 
+            index: lastPartIndex,
+            newValue: current[lastPartIndex],
+            arrayLength: current.length
+          });
+        } else {
+          console.error('[InlineEditContext] Array index out of bounds', { 
+            index: lastPartIndex,
+            arrayLength: current.length
+          });
+          return currentResumeData; // Return unchanged data on error
+        }
+      } else if (current && typeof current === 'object' && !Array.isArray(current)) {
+        // Setting an object property
+        current[lastPart] = value;
+        console.log('[InlineEditContext] Object property set successfully', { 
+          lastPart, 
+          newValue: current[lastPart],
+          newValueType: typeof current[lastPart],
+          updatedCurrent: current
+        });
+      } else {
+        console.error('[InlineEditContext] Cannot set value - invalid state', { 
+          lastPart, 
+          currentType: typeof current,
+          isArray: Array.isArray(current),
+          isLastPartNumeric,
+          current
+        });
+        return currentResumeData; // Return unchanged data on error
+      }
+      
+      const targetSectionIndex = pathParts[1] ? parseInt(pathParts[1]) : null;
+      console.log('[InlineEditContext] Returning updated data from functional update', { 
+        newDataSections: newData.sections?.length,
+        newDataSectionsItems: newData.sections?.map((s: any, i: number) => ({ 
+          index: i, 
+          id: s.id, 
+          title: s.title, 
+          itemsLength: s.items?.length,
+          items: s.items
+        })),
+        targetSectionIndex,
+        targetSectionItems: targetSectionIndex !== null ? newData.sections[targetSectionIndex]?.items : null,
+        targetSectionItemsLength: targetSectionIndex !== null ? newData.sections[targetSectionIndex]?.items?.length : null
+      });
+      
+      return newData;
+    });
+    console.log('[InlineEditContext] setResumeData functional update called - update complete');
+  }, [setResumeData]);
 
   const addArrayItem = (path: string, defaultItem: any) => {
     const newData = JSON.parse(JSON.stringify(resumeData));
@@ -76,13 +188,14 @@ export const InlineEditProvider = ({
 
     let current = newData;
     for (const part of pathParts) {
-      const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
-
-      if (arrayMatch) {
-        const [, arrayName, index] = arrayMatch;
-        current = current[arrayName][parseInt(index)];
-      } else {
+      const index = parseInt(part);
+      if (!isNaN(index) && Array.isArray(current)) {
+        current = current[index];
+      } else if (current && typeof current === 'object' && part in current) {
         current = current[part];
+      } else {
+        // Path doesn't exist, return early
+        return;
       }
     }
 
@@ -97,24 +210,25 @@ export const InlineEditProvider = ({
     }
   };
 
-  const removeArrayItem = (path: string, index: number) => {
+  const removeArrayItem = (path: string, itemIndex: number) => {
     const newData = JSON.parse(JSON.stringify(resumeData));
     const pathParts = path.split(".");
 
     let current = newData;
     for (const part of pathParts) {
-      const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
-
-      if (arrayMatch) {
-        const [, arrayName, arrayIndex] = arrayMatch;
-        current = current[arrayName][parseInt(arrayIndex)];
-      } else {
+      const index = parseInt(part);
+      if (!isNaN(index) && Array.isArray(current)) {
+        current = current[index];
+      } else if (current && typeof current === 'object' && part in current) {
         current = current[part];
+      } else {
+        // Path doesn't exist, return early
+        return;
       }
     }
 
     if (Array.isArray(current)) {
-      current.splice(index, 1);
+      current.splice(itemIndex, 1);
       setResumeData(newData);
     }
   };
@@ -146,19 +260,20 @@ export const InlineEditProvider = ({
     }
   };
 
+  // Memoize context value to ensure it updates when resumeData changes
+  const contextValue = useMemo(() => ({
+    resumeData,
+    updateField,
+    addArrayItem,
+    removeArrayItem,
+    addBulletPoint,
+    removeBulletPoint,
+    isEditing,
+    setIsEditing,
+  }), [resumeData, updateField, addArrayItem, removeArrayItem, addBulletPoint, removeBulletPoint, isEditing]);
+
   return (
-    <InlineEditContext.Provider
-      value={{
-        resumeData,
-        updateField,
-        addArrayItem,
-        removeArrayItem,
-        addBulletPoint,
-        removeBulletPoint,
-        isEditing,
-        setIsEditing,
-      }}
-    >
+    <InlineEditContext.Provider value={contextValue}>
       {children}
     </InlineEditContext.Provider>
   );

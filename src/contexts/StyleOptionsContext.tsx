@@ -157,9 +157,11 @@ export const StyleOptionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         case 'short':
           return `${shortMonths[month]} ${year}`;
         case 'medium':
-          return `${months[month]} ${year}`;
-        case 'long':
+          // Medium format: 01/2024 (month/year)
           return `${String(month + 1).padStart(2, '0')}/${year}`;
+        case 'long':
+          // Long format: January 2024 (full month name)
+          return `${months[month]} ${year}`;
         default:
           return `${shortMonths[month]} ${year}`;
       }

@@ -89,12 +89,12 @@ export const GradientHeaderUniversalTemplate = ({
               }
             `}</style>
             <div data-header-contact style={{ display: 'contents' }}>
-              <TemplateContactInfo
-                resumeData={resumeData}
-                editable={editable}
+          <TemplateContactInfo
+            resumeData={resumeData}
+            editable={editable}
                 themeColor="#ffffff"
-                layout="horizontal"
-              />
+            layout="horizontal"
+          />
             </div>
           </div>
         </div>
@@ -349,14 +349,14 @@ export const GradientHeaderUniversalTemplate = ({
                             {(editable || edu.gpa) && (
                               <div className="font-light mt-1" style={{ fontSize: '12px', color: '#525252', lineHeight: 1.4 }}>
                                 <span>GPA: </span>
-                                <InlineEditableText
-                                  path={`education[${index}].gpa`}
+                              <InlineEditableText
+                                path={`education[${index}].gpa`}
                                   value={edu.gpa || ""}
                                   className="inline-block"
                                   placeholder="3.8/4.0"
-                                  style={{ fontSize: '12px', color: '#525252', lineHeight: 1.4 }}
+                                style={{ fontSize: '12px', color: '#525252', lineHeight: 1.4 }}
                                   as="span"
-                                />
+                              />
                               </div>
                             )}
                           </div>

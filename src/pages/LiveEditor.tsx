@@ -184,7 +184,7 @@ const displayTemplates: Record<string, any> = {
   "premium-universal": PremiumUniversalTemplate,
   "premium-pro": PremiumProTemplate,
   "fresher-elite": FresherEliteTemplate,
-  refined: RefinedTemplate,
+    refined: RefinedTemplate,
   "premium-elite": PremiumEliteTemplate,
     "creative-accent": CreativeAccentTemplate,
   "bold-headline": BoldHeadlineTemplate,

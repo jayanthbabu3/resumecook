@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { FirebaseAuthProvider } from "@/hooks/useFirebaseAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MigrationHandler } from "@/components/MigrationHandler";
@@ -22,6 +22,9 @@ import ATSGuidelines from "./pages/ATSGuidelines";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
 import MyResumes from "./pages/MyResumes";
+
+// V2 Builder Pages
+import { DashboardV2, BuilderV2, ProfessionTemplatesV2 } from "./v2/pages";
 
 const queryClient = new QueryClient();
 
@@ -45,9 +48,16 @@ const App = () => (
             <Route path="/dashboard/:professionId" element={<ProfessionTemplates />} />
             <Route path="/dashboard/:professionId/editor/:templateId" element={<Editor />} />
             <Route path="/dashboard/:professionId/live-editor/:templateId" element={<LiveEditor />} />
+            <Route path="/dashboard/universal-professional/editor/minimal" element={<Navigate to="/v2/builder?template=minimal-v2" replace />} />
+            <Route path="/dashboard/universal-professional/editor/bold-headline" element={<Navigate to="/v2/builder?template=bold-headline-v2" replace />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-resumes" element={<MyResumes />} />
             <Route path="/builder/scratch" element={<ScratchBuilder />} />
+
+            {/* V2 Builder Routes - New config-driven resume builder */}
+            <Route path="/v2" element={<DashboardV2 />} />
+            <Route path="/v2/:professionId" element={<ProfessionTemplatesV2 />} />
+            <Route path="/v2/builder" element={<BuilderV2 />} />
 
             {/* Original protected routes (commented out for development):
             <Route
