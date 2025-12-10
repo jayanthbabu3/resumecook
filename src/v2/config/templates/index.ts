@@ -10,6 +10,7 @@ import { executiveSplitConfig } from './executive-split';
 import { minimalConfig } from './minimal';
 import { boldHeadlineConfig } from './bold-headline';
 import { dataProConfig } from './data-pro';
+import { accountantProConfig } from './accountant-pro';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -17,6 +18,7 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'minimal-v2': minimalConfig,
   'bold-headline-v2': boldHeadlineConfig,
   'data-pro-v2': dataProConfig,
+  'accountant-pro-v2': accountantProConfig,
 };
 
 // Get template by ID
@@ -35,4 +37,4 @@ export function getTemplatesByCategory(category: TemplateConfig['category']): Te
 }
 
 // Export individual templates
-export { executiveSplitConfig, minimalConfig, boldHeadlineConfig, dataProConfig };
+export { executiveSplitConfig, minimalConfig, boldHeadlineConfig, dataProConfig, accountantProConfig };
