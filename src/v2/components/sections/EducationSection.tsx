@@ -109,6 +109,116 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
       return <span style={dateStyle}>{dateText}</span>;
     };
 
+    // Two-column-dates variant (dates/location on left, content on right)
+    if (variant === 'two-column-dates') {
+      const leftColumnStyle: React.CSSProperties = {
+        width: '120px',
+        flexShrink: 0,
+        paddingRight: '16px',
+      };
+
+      return (
+        <div key={item.id} style={itemStyle}>
+          <div className="flex">
+            {/* Left column - dates and location */}
+            <div style={leftColumnStyle}>
+              <div style={dateStyle}>
+                {editable ? (
+                  <div className="flex items-center gap-1">
+                    <InlineEditableDate
+                      path={`education.${index}.startDate`}
+                      value={item.startDate}
+                      style={dateStyle}
+                      formatDisplay={formatDate}
+                    />
+                    <span>-</span>
+                    <InlineEditableDate
+                      path={`education.${index}.endDate`}
+                      value={item.endDate}
+                      style={dateStyle}
+                      formatDisplay={formatDate}
+                    />
+                  </div>
+                ) : (
+                  <div>{`${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}</div>
+                )}
+              </div>
+              {item.location && (
+                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`education.${index}.location`}
+                      value={item.location || 'Location'}
+                      style={{ ...typography.small, color: typography.dates.color }}
+                    />
+                  ) : (
+                    item.location
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Right column - education details */}
+            <div className="flex-1 border-l-2 pl-4" style={{ borderColor: colors.border }}>
+              {/* Degree */}
+              {editable ? (
+                <div className="flex items-baseline gap-1 flex-wrap">
+                  <InlineEditableText
+                    path={`education.${index}.degree`}
+                    value={item.degree || 'Degree'}
+                    as="h3"
+                    style={degreeStyle}
+                  />
+                  {education.showField && (
+                    <>
+                      <span style={degreeStyle}></span>
+                      <InlineEditableText
+                        path={`education.${index}.field`}
+                        value={item.field || 'Field of Study'}
+                        style={degreeStyle}
+                      />
+                    </>
+                  )}
+                </div>
+              ) : (
+                <h3 style={degreeStyle}>
+                  {item.degree}
+                  {education.showField && item.field && ` ${item.field}`}
+                </h3>
+              )}
+              
+              {/* School */}
+              {editable ? (
+                <InlineEditableText
+                  path={`education.${index}.school`}
+                  value={item.school}
+                  style={schoolStyle}
+                />
+              ) : (
+                <div style={schoolStyle}>{item.school}</div>
+              )}
+
+              {/* GPA */}
+              {education.showGPA && (editable || item.gpa) && (
+                <div style={{ ...fieldStyle, marginTop: '4px' }} className="flex items-center gap-1">
+                  <span>GPA:</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`education.${index}.gpa`}
+                      value={item.gpa || ''}
+                      style={fieldStyle}
+                    />
+                  ) : (
+                    <span>{item.gpa}</span>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     // Standard variant
     if (variant === 'standard' || variant === 'detailed') {
       return (

@@ -178,6 +178,7 @@ export interface SkillsConfig {
     padding: string;
     borderRadius: string;
     borderWidth?: string;
+    borderColor?: string;
     backgroundColor?: string;
     textColor?: string;
   };
@@ -232,7 +233,8 @@ export type ExperienceVariant =
   | 'compact'        // Condensed single-line header
   | 'timeline'       // Visual timeline on left
   | 'card'           // Card-style with border
-  | 'minimal';       // Just essentials
+  | 'minimal'        // Just essentials
+  | 'two-column-dates'; // Dates/location on left column, content on right
 
 export interface ExperienceConfig {
   /** Display variant */
@@ -240,7 +242,7 @@ export interface ExperienceConfig {
   /** Show company logo placeholder */
   showLogo?: boolean;
   /** Date position */
-  datePosition?: 'right' | 'below' | 'inline';
+  datePosition?: 'right' | 'below' | 'inline' | 'left';
   /** Show location */
   showLocation?: boolean;
   /** Bullet point style */
@@ -257,7 +259,8 @@ export type EducationVariant =
   | 'detailed'       // With description
   | 'timeline'       // Visual timeline
   | 'card'           // Card style
-  | 'minimal';       // Just degree and school
+  | 'minimal'        // Just degree and school
+  | 'two-column-dates'; // Dates/location on left column, content on right
 
 export interface EducationConfig {
   /** Display variant */
@@ -269,7 +272,7 @@ export interface EducationConfig {
   /** Show dates */
   showDates?: boolean;
   /** Date position */
-  datePosition?: 'right' | 'below' | 'inline';
+  datePosition?: 'right' | 'below' | 'inline' | 'left';
 }
 
 // ============================================================================
@@ -451,6 +454,7 @@ export const VARIANT_REGISTRY: VariantRegistry = {
     { id: 'timeline', name: 'Timeline', description: 'Visual timeline' },
     { id: 'card', name: 'Card', description: 'Card-style entries' },
     { id: 'minimal', name: 'Minimal', description: 'Essential info only' },
+    { id: 'two-column-dates', name: 'Two Column Dates', description: 'Dates on left, content on right' },
   ],
   education: [
     { id: 'standard', name: 'Standard', description: 'Full details' },
@@ -459,5 +463,6 @@ export const VARIANT_REGISTRY: VariantRegistry = {
     { id: 'timeline', name: 'Timeline', description: 'Visual timeline' },
     { id: 'card', name: 'Card', description: 'Card style' },
     { id: 'minimal', name: 'Minimal', description: 'Degree and school only' },
+    { id: 'two-column-dates', name: 'Two Column Dates', description: 'Dates on left, content on right' },
   ],
 };

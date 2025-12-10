@@ -203,6 +203,84 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
       );
     };
 
+    // Two-column-dates variant (dates/location on left, content on right)
+    if (variant === 'two-column-dates') {
+      const leftColumnStyle: React.CSSProperties = {
+        width: '120px',
+        flexShrink: 0,
+        paddingRight: '16px',
+      };
+
+      return (
+        <div key={item.id} style={itemStyle}>
+          <div className="flex">
+            {/* Left column - dates and location */}
+            <div style={leftColumnStyle}>
+              <div style={dateStyle}>
+                {editable ? (
+                  <div className="flex flex-col gap-0.5">
+                    <div className="flex items-center gap-1">
+                      <InlineEditableDate
+                        path={`experience.${index}.startDate`}
+                        value={item.startDate}
+                        style={dateStyle}
+                        formatDisplay={formatDate}
+                      />
+                      <span>-</span>
+                      {item.current ? (
+                        <span>Present</span>
+                      ) : (
+                        <InlineEditableDate
+                          path={`experience.${index}.endDate`}
+                          value={item.endDate}
+                          style={dateStyle}
+                          formatDisplay={formatDate}
+                        />
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div>{`${formatDate(item.startDate)} - ${item.current ? 'Present' : formatDate(item.endDate)}`}</div>
+                )}
+              </div>
+              {experience.showLocation && (
+                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
+                  San Francisco, CA
+                </div>
+              )}
+            </div>
+
+            {/* Right column - job details */}
+            <div className="flex-1 border-l-2 pl-4" style={{ borderColor: colors.border }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.position`}
+                  value={item.position}
+                  as="h3"
+                  style={titleStyle}
+                />
+              ) : (
+                <h3 style={titleStyle}>{item.position}</h3>
+              )}
+              
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.company`}
+                  value={item.company}
+                  style={subtitleStyle}
+                />
+              ) : (
+                <div style={subtitleStyle}>{item.company}</div>
+              )}
+
+              {/* Bullet points */}
+              {renderBullets()}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     // Standard variant
     if (variant === 'standard' || variant === 'minimal') {
       return (
