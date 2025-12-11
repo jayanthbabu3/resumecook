@@ -52,13 +52,11 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
     // Handle inline variant separately - just plain text with separator
     if (variant === 'inline') {
       const separator = skills.separator || ' | ';
-      const textColor = skills.badge?.textColor || typography.body.color;
-      const fontSize = skills.badge?.fontSize || typography.body.fontSize;
       
       return (
         <p style={{ 
-          fontSize, 
-          color: textColor, 
+          fontSize: typography.body.fontSize, 
+          color: typography.body.color, 
           lineHeight: typography.body.lineHeight,
           margin: 0,
         }}>
@@ -79,6 +77,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
         themeColor={accent}
         variant={editableVariant}
         path="skills"
+        fontSize={typography.body.fontSize}
       />
     );
   };
