@@ -14,6 +14,9 @@ import { seniorFrontendProTemplate } from './senior-frontend-pro';
 import { dataProTemplate } from './data-pro';
 import { boldHeadlineTemplate } from './bold-headline';
 import { accountantProTemplate } from './accountant-pro';
+import { centeredPhotoTemplate } from './centered-photo';
+import { creativeSplitTemplate } from './creative-split';
+import { classicMinimalTemplate } from './classic-minimal';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -26,6 +29,9 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'data-pro-v2': dataProTemplate,
   'bold-headline-v2': boldHeadlineTemplate,
   'accountant-pro-v2': accountantProTemplate,
+  'centered-photo-v2': centeredPhotoTemplate,
+  'creative-split-v2': creativeSplitTemplate,
+  'classic-minimal-v2': classicMinimalTemplate,
 };
 
 // ============================================================================
@@ -97,3 +103,6 @@ export { seniorFrontendProTemplate } from './senior-frontend-pro';
 export { dataProTemplate } from './data-pro';
 export { boldHeadlineTemplate } from './bold-headline';
 export { accountantProTemplate } from './accountant-pro';
+export { centeredPhotoTemplate } from './centered-photo';
+export { creativeSplitTemplate } from './creative-split';
+export { classicMinimalTemplate } from './classic-minimal';
