@@ -28,7 +28,7 @@ export const SwissStyleUniversalTemplate = ({
   editable = false,
 }: SwissStyleUniversalTemplateProps) => {
   const accent = normalizeHex(themeColor) ?? "#dc2626";
-  const { addBulletPoint, removeBulletPoint } = useInlineEdit();
+  const { addBulletPoint, removeBulletPoint } = useInlineEdit() || {};
 
   const formatDate = (date: string) => {
     if (!date) return "";

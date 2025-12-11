@@ -28,7 +28,7 @@ export const BorderedEleganceTemplate = ({
   themeColor = "#7c3aed",
   editable = false,
 }: BorderedEleganceTemplateProps) => {
-  const { addBulletPoint, removeBulletPoint } = useInlineEdit();
+  const { addBulletPoint, removeBulletPoint } = useInlineEdit() || {};
 
   return (
     <div className="w-full h-full bg-white text-gray-900 p-8">

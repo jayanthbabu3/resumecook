@@ -32,7 +32,7 @@ export const ExecutiveLetterheadUniversalTemplate = ({
   editable = false,
 }: ExecutiveLetterheadUniversalTemplateProps) => {
   const accent = normalizeHex(themeColor) ?? "#1e3a8a";
-  const { addBulletPoint, removeBulletPoint } = useInlineEdit();
+  const { addBulletPoint, removeBulletPoint } = useInlineEdit() || {};
   const styleOptions = useStyleOptionsWithDefaults();
 
   const formatDate = (dateString?: string) => {

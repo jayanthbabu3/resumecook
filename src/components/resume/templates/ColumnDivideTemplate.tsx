@@ -19,7 +19,7 @@ export const ColumnDivideTemplate = ({
   themeColor = "#0891b2",
   editable = false,
 }: ColumnDivideTemplateProps) => {
-  const { addBulletPoint, removeBulletPoint } = useInlineEdit();
+  const { addBulletPoint, removeBulletPoint } = useInlineEdit() || {};
 
   const formatDate = (date: string) => {
     if (!date) return "";
