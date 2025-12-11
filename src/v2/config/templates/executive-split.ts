@@ -189,9 +189,9 @@ export const executiveSplitConfig: TemplateConfig = createTemplateConfig({
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
     
     // Sidebar sections
-    { type: 'custom', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: true, order: 1, column: 'sidebar' },
+    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: true, order: 1, column: 'sidebar' },
     { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 2, column: 'sidebar' },
-    { type: 'custom', id: 'achievements', title: 'Achievements', defaultTitle: 'Achievements', enabled: true, order: 3, column: 'sidebar' },
+    { type: 'achievements', id: 'achievements', title: 'Achievements', defaultTitle: 'Achievements', enabled: true, order: 3, column: 'sidebar' },
     
     // Optional sections
     { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: false, order: 4, column: 'main' },
