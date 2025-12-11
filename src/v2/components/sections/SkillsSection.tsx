@@ -64,6 +64,52 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
         </p>
       );
     }
+
+    // Handle columns variant - bullet list in multiple columns
+    if (variant === 'columns') {
+      const columnCount = skills.columns || 2;
+      const itemsPerColumn = Math.ceil(items.length / columnCount);
+      const columns: SkillItem[][] = [];
+      
+      for (let i = 0; i < columnCount; i++) {
+        columns.push(items.slice(i * itemsPerColumn, (i + 1) * itemsPerColumn));
+      }
+
+      return (
+        <div 
+          style={{ 
+            display: 'grid',
+            gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
+            gap: spacing.skillGap,
+          }}
+        >
+          {columns.map((column, colIndex) => (
+            <ul 
+              key={colIndex}
+              style={{ 
+                margin: 0, 
+                paddingLeft: '18px',
+                listStyleType: 'disc',
+              }}
+            >
+              {column.map((skill, idx) => (
+                <li 
+                  key={skill.id || idx}
+                  style={{ 
+                    fontSize: typography.body.fontSize,
+                    color: typography.body.color,
+                    lineHeight: 1.6,
+                    marginBottom: '2px',
+                  }}
+                >
+                  {skill.name}
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      );
+    }
     
     // Map v2 variants to existing InlineEditableSkills variants
     const editableVariant = variant === 'pills' ? 'pill' : variant === 'tags' ? 'tag' : 'badge';

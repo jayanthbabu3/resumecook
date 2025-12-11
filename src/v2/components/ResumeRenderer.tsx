@@ -20,6 +20,7 @@ import {
   AchievementsSection,
   StrengthsSection,
   CustomSection,
+  LanguagesSection,
 } from './sections';
 import { Target, Award, Star, Zap, Trophy, CheckCircle2 } from 'lucide-react';
 
@@ -309,6 +310,20 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
           <StrengthsSection
             key={section.id}
             items={resumeData.strengths || []}
+            config={config}
+            editable={editable}
+            sectionTitle={title}
+          />
+        );
+
+      case 'languages':
+        // Get languages from dynamicSections or default
+        const languagesSection = resumeData.dynamicSections?.find(s => s.type === 'languages');
+        const languageItems = languagesSection?.data?.items || [];
+        return wrap('languages',
+          <LanguagesSection
+            key={section.id}
+            items={languageItems}
             config={config}
             editable={editable}
             sectionTitle={title}

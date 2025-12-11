@@ -247,6 +247,45 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     );
   };
 
+  // Generate initials from name
+  const getInitials = (name: string): string => {
+    if (!name) return 'AB';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
+  // Render initials box
+  const renderInitialsBox = () => {
+    const initials = getInitials(personalInfo.fullName || '');
+    return (
+      <div
+        style={{
+          width: '64px',
+          height: '64px',
+          border: '2px solid rgba(255, 255, 255, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <span
+          style={{
+            fontSize: '24px',
+            fontWeight: 600,
+            color: colors.text.light,
+            letterSpacing: '0.05em',
+          }}
+        >
+          {initials}
+        </span>
+      </div>
+    );
+  };
+
   // Render based on variant
   const renderVariant = () => {
     switch (variant) {
@@ -263,21 +302,35 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
         );
 
       case 'banner':
+        // Check if photo exists, otherwise show initials
+        const showInitials = !personalInfo.photo || !showPhoto;
         return (
           <div
             data-header="banner"
             style={{
-              backgroundColor: accent,
+              backgroundColor: header.backgroundColor || accent,
               padding: header.padding || '24px 32px',
               color: colors.text.light,
             }}
           >
-            <div className="flex items-start gap-4">
-              {renderPhoto()}
-              <div>
+            <div className="flex items-center gap-4">
+              {showInitials ? renderInitialsBox() : renderPhoto()}
+              <div className="flex-1">
                 {renderName()}
-                <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
-                <div style={{ marginTop: '12px' }}>{renderContact()}</div>
+                <div 
+                  className="flex flex-wrap items-center gap-x-4 gap-y-1"
+                  style={{ marginTop: '8px', fontSize: typography.contact.fontSize, color: '#d1d5db' }}
+                >
+                  {(editable || personalInfo.location) && (
+                    <span>{personalInfo.location}</span>
+                  )}
+                  {(editable || personalInfo.email) && (
+                    <span>{personalInfo.email}</span>
+                  )}
+                  {(editable || personalInfo.phone) && (
+                    <span>{personalInfo.phone}</span>
+                  )}
+                </div>
               </div>
             </div>
           </div>

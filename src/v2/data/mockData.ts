@@ -134,6 +134,24 @@ export const MOCK_RESUME_DATA: ResumeData = {
   ],
   // Custom sections - empty by default (user adds them)
   sections: [],
+  // Dynamic sections for languages and other built-in types
+  dynamicSections: [
+    {
+      id: 'languages',
+      type: 'languages',
+      order: 5,
+      enabled: true,
+      title: 'Languages',
+      data: {
+        type: 'languages',
+        items: [
+          { id: 'lang-1', language: 'Hindi', proficiency: 'Native' },
+          { id: 'lang-2', language: 'English', proficiency: 'Fluent' },
+          { id: 'lang-3', language: 'Bengali', proficiency: 'Intermediate' },
+        ],
+      },
+    },
+  ],
 };
 
 // Empty resume data for new resumes

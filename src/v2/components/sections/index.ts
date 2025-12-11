@@ -11,3 +11,4 @@ export { SkillsSection } from './SkillsSection';
 export { AchievementsSection } from './AchievementsSection';
 export { StrengthsSection } from './StrengthsSection';
 export { CustomSection } from './CustomSection';
+export { LanguagesSection } from './LanguagesSection';
