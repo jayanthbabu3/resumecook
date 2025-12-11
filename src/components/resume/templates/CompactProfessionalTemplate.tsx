@@ -19,7 +19,7 @@ export const CompactProfessionalTemplate = ({
   themeColor = "#059669",
   editable = false,
 }: CompactProfessionalTemplateProps) => {
-  const { addBulletPoint, removeBulletPoint } = useInlineEdit();
+  const { addBulletPoint, removeBulletPoint } = useInlineEdit() || {};
 
   const formatDate = (date: string) => {
     if (!date) return "";

@@ -62,7 +62,9 @@ export const ExperienceVariantRenderer: React.FC<ExperienceVariantRendererProps>
   style = {},
 }) => {
   const styleOptions = useStyleOptionsWithDefaults();
-  const { addBulletPoint, removeBulletPoint } = useInlineEdit();
+  const inlineEditContext = useInlineEdit();
+  const addBulletPoint = inlineEditContext?.addBulletPoint;
+  const removeBulletPoint = inlineEditContext?.removeBulletPoint;
   
   const defaultFormatDate = (dateString?: string) => {
     if (!dateString) return "";
