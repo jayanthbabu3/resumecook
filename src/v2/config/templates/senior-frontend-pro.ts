@@ -79,9 +79,9 @@ export const seniorFrontendProConfig: TemplateConfig = createTemplateConfig({
   spacing: {
     pagePadding: {
       top: '0px',
-      right: '0px',
+      right: '24px',
       bottom: '24px',
-      left: '0px',
+      left: '24px',
     },
     sectionGap: '16px',
     itemGap: '12px',

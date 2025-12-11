@@ -560,6 +560,7 @@ export const BuilderV2: React.FC = () => {
                     resumeData={resumeData} 
                     setResumeData={setResumeData}
                     templateId={templateId}
+                    enabledSections={enabledSections}
                   />
                 </div>
               )}

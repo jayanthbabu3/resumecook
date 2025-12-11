@@ -304,6 +304,10 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       case 'banner':
         // Check if photo exists, otherwise show initials
         const showInitials = !personalInfo.photo || !showPhoto;
+        const bannerContactStyle: React.CSSProperties = { 
+          fontSize: typography.contact.fontSize, 
+          color: '#d1d5db',
+        };
         return (
           <div
             data-header="banner"
@@ -319,16 +323,40 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                 {renderName()}
                 <div 
                   className="flex flex-wrap items-center gap-x-4 gap-y-1"
-                  style={{ marginTop: '8px', fontSize: typography.contact.fontSize, color: '#d1d5db' }}
+                  style={{ marginTop: '8px' }}
                 >
                   {(editable || personalInfo.location) && (
-                    <span>{personalInfo.location}</span>
+                    editable ? (
+                      <InlineEditableText
+                        path="personalInfo.location"
+                        value={personalInfo.location || 'Location'}
+                        style={bannerContactStyle}
+                      />
+                    ) : (
+                      <span style={bannerContactStyle}>{personalInfo.location}</span>
+                    )
                   )}
                   {(editable || personalInfo.email) && (
-                    <span>{personalInfo.email}</span>
+                    editable ? (
+                      <InlineEditableText
+                        path="personalInfo.email"
+                        value={personalInfo.email || 'email@example.com'}
+                        style={bannerContactStyle}
+                      />
+                    ) : (
+                      <span style={bannerContactStyle}>{personalInfo.email}</span>
+                    )
                   )}
                   {(editable || personalInfo.phone) && (
-                    <span>{personalInfo.phone}</span>
+                    editable ? (
+                      <InlineEditableText
+                        path="personalInfo.phone"
+                        value={personalInfo.phone || 'Phone'}
+                        style={bannerContactStyle}
+                      />
+                    ) : (
+                      <span style={bannerContactStyle}>{personalInfo.phone}</span>
+                    )
                   )}
                 </div>
               </div>

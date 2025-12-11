@@ -23,12 +23,37 @@ interface ResumeFormProps {
   resumeData: ResumeData;
   setResumeData: (data: ResumeData) => void;
   templateId?: string;
+  /** Enabled section IDs from template config - used to filter which sections to show */
+  enabledSections?: string[];
 }
 
 // Only premium-pro template supports skill ratings
 const TEMPLATES_WITH_SKILL_RATINGS = ['premium-pro'];
 
-export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeFormProps) => {
+// Map template section types to accordion section ids
+const SECTION_TYPE_MAP: Record<string, string> = {
+  experience: 'experience',
+  education: 'education',
+  skills: 'skills',
+  achievements: 'achievements',
+  strengths: 'strengths',
+  summary: 'personal', // Summary is part of personal info
+  header: 'personal', // Header includes personal info
+  custom: 'custom',
+};
+
+export const ResumeForm = ({ resumeData, setResumeData, templateId, enabledSections }: ResumeFormProps) => {
+  // Check if a section should be shown based on enabledSections
+  const isSectionEnabled = (sectionType: string): boolean => {
+    // If no enabledSections provided, show all sections
+    if (!enabledSections || enabledSections.length === 0) return true;
+    
+    // Always show personal info and social links (these are core)
+    if (sectionType === 'personal' || sectionType === 'social-links' || sectionType === 'photo') return true;
+    
+    // Check if the section type is in enabledSections
+    return enabledSections.includes(sectionType);
+  };
   const fileInputRef = useRef<HTMLInputElement>(null);
   const experienceContainerRef = useRef<HTMLDivElement>(null);
   const educationContainerRef = useRef<HTMLDivElement>(null);
@@ -868,6 +893,7 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
         </AccordionContent>
       </AccordionItem>
 
+      {isSectionEnabled('experience') && (
       <AccordionItem
         value="experience"
         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
@@ -1051,7 +1077,9 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
           </Card>
         </AccordionContent>
       </AccordionItem>
+      )}
 
+      {isSectionEnabled('education') && (
       <AccordionItem
         value="education"
         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
@@ -1165,7 +1193,9 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
           </Card>
         </AccordionContent>
       </AccordionItem>
+      )}
 
+      {isSectionEnabled('skills') && (
       <AccordionItem
         value="skills"
         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
@@ -1427,8 +1457,10 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
           </Card>
         </AccordionContent>
       </AccordionItem>
+      )}
 
       {/* Achievements Section */}
+      {isSectionEnabled('achievements') && (
       <AccordionItem
         value="achievements"
         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
@@ -1501,8 +1533,10 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
           </Card>
         </AccordionContent>
       </AccordionItem>
+      )}
 
       {/* Strengths Section */}
+      {isSectionEnabled('strengths') && (
       <AccordionItem
         value="strengths"
         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
@@ -1575,6 +1609,7 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
           </Card>
         </AccordionContent>
       </AccordionItem>
+      )}
 
       <AccordionItem
         value="custom"
