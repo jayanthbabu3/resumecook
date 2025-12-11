@@ -67,6 +67,12 @@ interface ResumeRendererProps {
   onAddCustomSectionItem?: (sectionIndex: number) => void;
   /** Callback for removing custom section items */
   onRemoveCustomSectionItem?: (sectionIndex: number, itemIndex: number) => void;
+  /** Callback for adding language */
+  onAddLanguage?: () => void;
+  /** Callback for removing language */
+  onRemoveLanguage?: (langId: string) => void;
+  /** Callback for updating language */
+  onUpdateLanguage?: (langId: string, field: string, value: string) => void;
   /** Additional className */
   className?: string;
 }
@@ -88,6 +94,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   onRemoveEducation,
   onAddCustomSectionItem,
   onRemoveCustomSectionItem,
+  onAddLanguage,
+  onRemoveLanguage,
+  onUpdateLanguage,
   className = '',
 }) => {
   // Get template configuration
@@ -317,9 +326,10 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'languages':
-        // Get languages from dynamicSections or default
-        const languagesSection = resumeData.dynamicSections?.find(s => s.type === 'languages');
-        const languageItems = languagesSection?.data?.items || [];
+        // Get languages - prefer direct languages array, fallback to dynamicSections
+        const languageItems = resumeData.languages || 
+          resumeData.dynamicSections?.find(s => s.type === 'languages')?.data?.items || 
+          [];
         return wrap('languages',
           <LanguagesSection
             key={section.id}
@@ -327,6 +337,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             config={config}
             editable={editable}
             sectionTitle={title}
+            onAddLanguage={onAddLanguage}
+            onRemoveLanguage={onRemoveLanguage}
+            onUpdateLanguage={onUpdateLanguage}
           />
         );
 

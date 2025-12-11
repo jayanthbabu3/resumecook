@@ -308,6 +308,10 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           fontSize: typography.contact.fontSize, 
           color: '#d1d5db',
         };
+        const bannerLinkStyle: React.CSSProperties = { 
+          fontSize: typography.contact.fontSize, 
+          color: '#93c5fd',
+        };
         return (
           <div
             data-header="banner"
@@ -359,6 +363,77 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                     )
                   )}
                 </div>
+                {/* Social Links for Banner */}
+                {includeSocialLinks && (
+                  <div 
+                    className="flex flex-wrap items-center gap-x-4 gap-y-1"
+                    style={{ marginTop: '6px' }}
+                  >
+                    {(editable || personalInfo.linkedin) && (
+                      <div className="flex items-center gap-1.5">
+                        <Linkedin style={{ width: '14px', height: '14px', color: '#93c5fd' }} />
+                        {editable ? (
+                          <InlineEditableText
+                            path="personalInfo.linkedin"
+                            value={personalInfo.linkedin || 'linkedin.com/in/username'}
+                            style={bannerLinkStyle}
+                          />
+                        ) : (
+                          <a 
+                            href={personalInfo.linkedin?.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={bannerLinkStyle}
+                          >
+                            {personalInfo.linkedin}
+                          </a>
+                        )}
+                      </div>
+                    )}
+                    {(editable || personalInfo.github) && (
+                      <div className="flex items-center gap-1.5">
+                        <Github style={{ width: '14px', height: '14px', color: '#93c5fd' }} />
+                        {editable ? (
+                          <InlineEditableText
+                            path="personalInfo.github"
+                            value={personalInfo.github || 'github.com/username'}
+                            style={bannerLinkStyle}
+                          />
+                        ) : (
+                          <a 
+                            href={personalInfo.github?.startsWith('http') ? personalInfo.github : `https://${personalInfo.github}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={bannerLinkStyle}
+                          >
+                            {personalInfo.github}
+                          </a>
+                        )}
+                      </div>
+                    )}
+                    {(editable || personalInfo.portfolio) && (
+                      <div className="flex items-center gap-1.5">
+                        <Globe style={{ width: '14px', height: '14px', color: '#93c5fd' }} />
+                        {editable ? (
+                          <InlineEditableText
+                            path="personalInfo.portfolio"
+                            value={personalInfo.portfolio || 'portfolio.com'}
+                            style={bannerLinkStyle}
+                          />
+                        ) : (
+                          <a 
+                            href={personalInfo.portfolio?.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={bannerLinkStyle}
+                          >
+                            {personalInfo.portfolio}
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

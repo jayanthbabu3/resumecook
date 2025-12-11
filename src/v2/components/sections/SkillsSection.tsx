@@ -49,65 +49,37 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
 
   // Render based on variant
   const renderSkills = () => {
-    // Handle inline variant separately - just plain text with separator
+    // Handle inline variant - use InlineEditableSkills with inline variant
     if (variant === 'inline') {
-      const separator = skills.separator || ' | ';
+      // Map separator string to valid type
+      const separatorType: 'bullet' | 'comma' | 'pipe' = 
+        skills.separator === ' | ' ? 'pipe' : 
+        skills.separator === ', ' ? 'comma' : 'bullet';
       
       return (
-        <p style={{ 
-          fontSize: typography.body.fontSize, 
-          color: typography.body.color, 
-          lineHeight: typography.body.lineHeight,
-          margin: 0,
-        }}>
-          {items.map(s => s.name).join(separator)}
-        </p>
+        <InlineEditableSkills
+          skills={items}
+          editable={editable}
+          themeColor={accent}
+          variant="inline"
+          path="skills"
+          fontSize={typography.body.fontSize}
+          separator={separatorType}
+        />
       );
     }
 
-    // Handle columns variant - bullet list in multiple columns
+    // Handle columns variant - use list variant
     if (variant === 'columns') {
-      const columnCount = skills.columns || 2;
-      const itemsPerColumn = Math.ceil(items.length / columnCount);
-      const columns: SkillItem[][] = [];
-      
-      for (let i = 0; i < columnCount; i++) {
-        columns.push(items.slice(i * itemsPerColumn, (i + 1) * itemsPerColumn));
-      }
-
       return (
-        <div 
-          style={{ 
-            display: 'grid',
-            gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
-            gap: spacing.skillGap,
-          }}
-        >
-          {columns.map((column, colIndex) => (
-            <ul 
-              key={colIndex}
-              style={{ 
-                margin: 0, 
-                paddingLeft: '18px',
-                listStyleType: 'disc',
-              }}
-            >
-              {column.map((skill, idx) => (
-                <li 
-                  key={skill.id || idx}
-                  style={{ 
-                    fontSize: typography.body.fontSize,
-                    color: typography.body.color,
-                    lineHeight: 1.6,
-                    marginBottom: '2px',
-                  }}
-                >
-                  {skill.name}
-                </li>
-              ))}
-            </ul>
-          ))}
-        </div>
+        <InlineEditableSkills
+          skills={items}
+          editable={editable}
+          themeColor={accent}
+          variant="list"
+          path="skills"
+          fontSize={typography.body.fontSize}
+        />
       );
     }
     

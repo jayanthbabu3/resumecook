@@ -196,7 +196,40 @@ export const BuilderV2: React.FC = () => {
     toast.success('Education removed');
   }, []);
 
-  // Add new custom section
+  // Add new language
+  const handleAddLanguage = useCallback(() => {
+    setResumeData(prev => ({
+      ...prev,
+      languages: [
+        ...(prev.languages || []),
+        {
+          id: Date.now().toString(),
+          language: 'New Language',
+          proficiency: 'Intermediate' as const,
+        },
+      ],
+    }));
+    toast.success('Language added');
+  }, []);
+
+  // Remove language
+  const handleRemoveLanguage = useCallback((langId: string) => {
+    setResumeData(prev => ({
+      ...prev,
+      languages: (prev.languages || []).filter(lang => lang.id !== langId),
+    }));
+    toast.success('Language removed');
+  }, []);
+
+  // Update language
+  const handleUpdateLanguage = useCallback((langId: string, field: string, value: string) => {
+    setResumeData(prev => ({
+      ...prev,
+      languages: (prev.languages || []).map(lang =>
+        lang.id === langId ? { ...lang, [field]: value } : lang
+      ),
+    }));
+  }, []);
   const handleAddCustomSection = useCallback(() => {
     const newId = `section-${Date.now()}`;
 
@@ -683,6 +716,9 @@ export const BuilderV2: React.FC = () => {
                               onRemoveEducation={handleRemoveEducation}
                               onAddCustomSectionItem={handleAddCustomSectionItem}
                               onRemoveCustomSectionItem={handleRemoveCustomSectionItem}
+                              onAddLanguage={handleAddLanguage}
+                              onRemoveLanguage={handleRemoveLanguage}
+                              onUpdateLanguage={handleUpdateLanguage}
                             />
                           </InlineEditProvider>
                         </div>

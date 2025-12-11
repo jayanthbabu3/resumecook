@@ -1611,6 +1611,123 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId, enabledSecti
       </AccordionItem>
       )}
 
+      {/* Languages Section */}
+      {isSectionEnabled('languages') && (
+      <AccordionItem
+        value="languages"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <Share2 className="h-4 w-4" />
+            </span>
+            Languages
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {toTitleCase(formatCountLabel((resumeData.languages || []).length, "language", "languages", "No languages"))}
+            </span>
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardDescription>Add languages you speak</CardDescription>
+                <Button 
+                  onClick={() => {
+                    setResumeData({
+                      ...resumeData,
+                      languages: [
+                        ...(resumeData.languages || []),
+                        {
+                          id: Date.now().toString(),
+                          language: '',
+                          proficiency: 'Intermediate' as const,
+                        },
+                      ],
+                    });
+                  }} 
+                  size="xs" 
+                  className="gap-1.5"
+                >
+                  <Plus className="h-3 w-3" />
+                  Add Language
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {(resumeData.languages || []).map((lang, index) => (
+                <div key={lang.id} className="space-y-3 p-3 border border-border rounded-md relative">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-semibold text-indigo-600 text-sm">Language #{index + 1}</h4>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setResumeData({
+                          ...resumeData,
+                          languages: (resumeData.languages || []).filter(l => l.id !== lang.id),
+                        });
+                      }}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-3 w-3 text-destructive" />
+                    </Button>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <Label className="text-xs">Language</Label>
+                      <Input
+                        value={lang.language}
+                        onChange={(e) => {
+                          setResumeData({
+                            ...resumeData,
+                            languages: (resumeData.languages || []).map(l =>
+                              l.id === lang.id ? { ...l, language: e.target.value } : l
+                            ),
+                          });
+                        }}
+                        placeholder="e.g., English, Spanish"
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs">Proficiency</Label>
+                      <select
+                        value={lang.proficiency}
+                        onChange={(e) => {
+                          setResumeData({
+                            ...resumeData,
+                            languages: (resumeData.languages || []).map(l =>
+                              l.id === lang.id ? { ...l, proficiency: e.target.value as any } : l
+                            ),
+                          });
+                        }}
+                        className="h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+                      >
+                        <option value="Native">Native</option>
+                        <option value="Fluent">Fluent</option>
+                        <option value="Professional">Professional</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Basic">Basic</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {(resumeData.languages || []).length === 0 && (
+                <p className="text-center text-muted-foreground py-6 text-sm">
+                  No languages added yet. Click "Add Language" to get started.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </AccordionContent>
+      </AccordionItem>
+      )}
+
       <AccordionItem
         value="custom"
         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"

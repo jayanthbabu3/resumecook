@@ -24,6 +24,7 @@ export interface ResumeData {
   // Built-in optional sections
   achievements?: AchievementItem[];
   strengths?: StrengthItem[];
+  languages?: LanguageItem[]; // Direct access to languages
   // New dynamic sections feature
   dynamicSections?: ResumeSection[]; // Optional for backward compatibility
 }

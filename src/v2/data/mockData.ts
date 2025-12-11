@@ -132,26 +132,14 @@ export const MOCK_RESUME_DATA: ResumeData = {
       description: 'Established strong relationships with top-tier technology and business outlets, increasing brand visibility by 50%.',
     },
   ],
+  // Languages - direct access for simpler handling
+  languages: [
+    { id: 'lang-1', language: 'Hindi', proficiency: 'Native' as const },
+    { id: 'lang-2', language: 'English', proficiency: 'Fluent' as const },
+    { id: 'lang-3', language: 'Bengali', proficiency: 'Intermediate' as const },
+  ],
   // Custom sections - empty by default (user adds them)
   sections: [],
-  // Dynamic sections for languages and other built-in types
-  dynamicSections: [
-    {
-      id: 'languages',
-      type: 'languages',
-      order: 5,
-      enabled: true,
-      title: 'Languages',
-      data: {
-        type: 'languages',
-        items: [
-          { id: 'lang-1', language: 'Hindi', proficiency: 'Native' },
-          { id: 'lang-2', language: 'English', proficiency: 'Fluent' },
-          { id: 'lang-3', language: 'Bengali', proficiency: 'Intermediate' },
-        ],
-      },
-    },
-  ],
 };
 
 // Empty resume data for new resumes
