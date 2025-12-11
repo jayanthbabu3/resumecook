@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload, X, Plus, Star, StarOff, Trash2, Briefcase, GraduationCap, Code, FileText, Sparkles, Camera, Search, Tag, Share2 } from "lucide-react";
+import { Upload, X, Plus, Star, StarOff, Trash2, Briefcase, GraduationCap, Code, FileText, Sparkles, Camera, Search, Tag, Share2, Trophy, Target } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { SkillRating } from "./SkillRating";
 import { cn } from "@/lib/utils";
+import type { AchievementItem, StrengthItem } from "@/types/resume";
 import {
   Accordion,
   AccordionItem,
@@ -380,6 +381,68 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
     });
   };
 
+  // Achievement management
+  const addAchievement = () => {
+    setResumeData({
+      ...resumeData,
+      achievements: [
+        ...(resumeData.achievements || []),
+        {
+          id: Date.now().toString(),
+          title: "",
+          description: ""
+        }
+      ]
+    });
+  };
+
+  const updateAchievement = (id: string, field: string, value: string) => {
+    setResumeData({
+      ...resumeData,
+      achievements: (resumeData.achievements || []).map(ach =>
+        ach.id === id ? { ...ach, [field]: value } : ach
+      )
+    });
+  };
+
+  const removeAchievement = (id: string) => {
+    setResumeData({
+      ...resumeData,
+      achievements: (resumeData.achievements || []).filter(ach => ach.id !== id)
+    });
+  };
+
+  // Strength management
+  const addStrength = () => {
+    setResumeData({
+      ...resumeData,
+      strengths: [
+        ...(resumeData.strengths || []),
+        {
+          id: Date.now().toString(),
+          title: "",
+          description: ""
+        }
+      ]
+    });
+  };
+
+  const updateStrength = (id: string, field: string, value: string) => {
+    setResumeData({
+      ...resumeData,
+      strengths: (resumeData.strengths || []).map(str =>
+        str.id === id ? { ...str, [field]: value } : str
+      )
+    });
+  };
+
+  const removeStrength = (id: string) => {
+    setResumeData({
+      ...resumeData,
+      strengths: (resumeData.strengths || []).filter(str => str.id !== id)
+    });
+  };
+
   const addCustomSection = () => {
     setResumeData({
       ...resumeData,
@@ -501,6 +564,12 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
   );
   const skillsSummary = toTitleCase(
     formatCountLabel(resumeData.skills.length, "skill", "skills", "Add skills")
+  );
+  const achievementsSummary = toTitleCase(
+    formatCountLabel((resumeData.achievements || []).length, "achievement", "achievements", "No achievements")
+  );
+  const strengthsSummary = toTitleCase(
+    formatCountLabel((resumeData.strengths || []).length, "strength", "strengths", "No strengths")
   );
   const customSummary = toTitleCase(
     formatCountLabel(filteredCustomSections.length, "section", "sections", "No custom sections")
@@ -1353,6 +1422,154 @@ export const ResumeForm = ({ resumeData, setResumeData, templateId }: ResumeForm
                     </ul>
                   </div>
                 </div>
+              )}
+            </CardContent>
+          </Card>
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* Achievements Section */}
+      <AccordionItem
+        value="achievements"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <Trophy className="h-4 w-4" />
+            </span>
+            Achievements
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {achievementsSummary}
+            </span>
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardDescription>Highlight your key accomplishments</CardDescription>
+                <Button onClick={addAchievement} size="xs" className="gap-1.5">
+                  <Plus className="h-3 w-3" />
+                  Add Achievement
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {(resumeData.achievements || []).map((ach, index) => (
+                <div key={ach.id} className="space-y-3 p-3 border border-border rounded-md relative">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-semibold text-amber-600 text-sm">Achievement #{index + 1}</h4>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeAchievement(ach.id)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-3 w-3 text-destructive" />
+                    </Button>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">Title</Label>
+                    <Input
+                      value={ach.title}
+                      onChange={(e) => updateAchievement(ach.id, "title", e.target.value)}
+                      placeholder="e.g., Client Retention Rate"
+                      className="h-9"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">Description</Label>
+                    <Textarea
+                      value={ach.description}
+                      onChange={(e) => updateAchievement(ach.id, "description", e.target.value)}
+                      placeholder="Describe the achievement and its impact..."
+                      className="resize-none"
+                      rows={2}
+                    />
+                  </div>
+                </div>
+              ))}
+              {(resumeData.achievements || []).length === 0 && (
+                <p className="text-center text-muted-foreground py-6 text-sm">
+                  No achievements added yet. Click "Add Achievement" to get started.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* Strengths Section */}
+      <AccordionItem
+        value="strengths"
+        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm transition-all data-[state=open]:border-primary/40 data-[state=open]:shadow-md"
+      >
+        <AccordionTrigger className="group flex w-full items-center gap-4 rounded-none px-4 py-4 text-left text-sm font-semibold tracking-tight transition-all hover:bg-muted/40 hover:no-underline data-[state=open]:bg-primary/5 data-[state=open]:text-primary sm:px-5">
+          <span className="flex items-center gap-3 text-foreground">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
+              <Target className="h-4 w-4" />
+            </span>
+            Strengths
+          </span>
+          <span className="ml-auto flex items-center">
+            <span className="hidden sm:inline-flex items-center rounded-full border border-border/40 bg-muted/15 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground capitalize leading-tight shadow-[0_1px_2px_rgba(15,23,42,0.06)] transition-all group-hover:translate-x-0.5 group-data-[state=open]:border-primary/50 group-data-[state=open]:text-primary/90 mr-2">
+              {strengthsSummary}
+            </span>
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="px-0 pb-6 pt-0">
+          <Card className="border-0 bg-transparent shadow-none">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardDescription>Showcase your core competencies</CardDescription>
+                <Button onClick={addStrength} size="xs" className="gap-1.5">
+                  <Plus className="h-3 w-3" />
+                  Add Strength
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {(resumeData.strengths || []).map((str, index) => (
+                <div key={str.id} className="space-y-3 p-3 border border-border rounded-md relative">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-semibold text-cyan-600 text-sm">Strength #{index + 1}</h4>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeStrength(str.id)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-3 w-3 text-destructive" />
+                    </Button>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">Title</Label>
+                    <Input
+                      value={str.title}
+                      onChange={(e) => updateStrength(str.id, "title", e.target.value)}
+                      placeholder="e.g., Strategic Planning"
+                      className="h-9"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">Description</Label>
+                    <Textarea
+                      value={str.description}
+                      onChange={(e) => updateStrength(str.id, "description", e.target.value)}
+                      placeholder="Describe how you apply this strength..."
+                      className="resize-none"
+                      rows={2}
+                    />
+                  </div>
+                </div>
+              ))}
+              {(resumeData.strengths || []).length === 0 && (
+                <p className="text-center text-muted-foreground py-6 text-sm">
+                  No strengths added yet. Click "Add Strength" to get started.
+                </p>
               )}
             </CardContent>
           </Card>
