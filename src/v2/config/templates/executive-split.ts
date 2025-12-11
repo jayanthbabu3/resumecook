@@ -178,6 +178,18 @@ export const executiveSplitConfig: TemplateConfig = createTemplateConfig({
     datePosition: 'inline',
   },
   
+  // Strengths - cards with icons
+  strengths: {
+    variant: 'cards',
+    showIcons: true,
+  },
+  
+  // Achievements - bullets with trophy icons  
+  achievements: {
+    variant: 'bullets',
+    showIndicators: true,
+  },
+  
   // Section order and placement
   sections: [
     // Header always first

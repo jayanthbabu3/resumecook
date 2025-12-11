@@ -279,6 +279,46 @@ export interface EducationConfig {
 }
 
 // ============================================================================
+// STRENGTHS DISPLAY CONFIGURATION
+// ============================================================================
+
+export type StrengthsVariant = 
+  | 'cards'          // Cards with icon and description
+  | 'list'           // Simple bulleted list
+  | 'pills'          // Pill badges (title only)
+  | 'grid'           // 2-column grid cards
+  | 'minimal'        // Clean inline text
+  | 'accent-border'; // Left accent border cards
+
+export interface StrengthsConfig {
+  /** Display variant */
+  variant: StrengthsVariant;
+  /** Show icons */
+  showIcons?: boolean;
+  /** Number of columns for grid layout */
+  columns?: number;
+}
+
+// ============================================================================
+// ACHIEVEMENTS DISPLAY CONFIGURATION  
+// ============================================================================
+
+export type AchievementsVariant =
+  | 'list'           // Title - description format
+  | 'bullets'        // Bulleted list
+  | 'cards'          // Card style with background
+  | 'numbered'       // Numbered list
+  | 'timeline'       // Timeline style
+  | 'minimal';       // Clean minimal text
+
+export interface AchievementsConfig {
+  /** Display variant */
+  variant: AchievementsVariant;
+  /** Show icons/numbers */
+  showIndicators?: boolean;
+}
+
+// ============================================================================
 // SECTION CONFIGURATION
 // ============================================================================
 
@@ -351,6 +391,8 @@ export interface TemplateConfig {
   skills: SkillsConfig;
   experience: ExperienceConfig;
   education: EducationConfig;
+  strengths?: StrengthsConfig;
+  achievements?: AchievementsConfig;
   
   // Section order and visibility
   sections: SectionConfig[];

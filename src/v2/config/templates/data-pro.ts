@@ -164,6 +164,18 @@ export const dataProConfig: TemplateConfig = createTemplateConfig({
     datePosition: 'left',
   },
 
+  // Strengths - accent border for professional look
+  strengths: {
+    variant: 'accent-border',
+    showIcons: true,
+  },
+  
+  // Achievements - timeline style for data-focused design
+  achievements: {
+    variant: 'timeline',
+    showIndicators: true,
+  },
+
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
     { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
@@ -171,7 +183,7 @@ export const dataProConfig: TemplateConfig = createTemplateConfig({
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
     { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 4, column: 'main' },
     { type: 'achievements', id: 'achievements', title: 'Key Achievements', defaultTitle: 'Key Achievements', enabled: true, order: 5, column: 'main' },
-    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: false, order: 6, column: 'main' },
+    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: true, order: 6, column: 'main' },
     { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 7, column: 'main' },
   ],
 

@@ -161,6 +161,19 @@ export const boldHeadlineConfig: TemplateConfig = createTemplateConfig({
     datePosition: 'inline',
   },
 
+  // Strengths - grid layout for bold design
+  strengths: {
+    variant: 'grid',
+    showIcons: true,
+    columns: 2,
+  },
+  
+  // Achievements - numbered list for impact
+  achievements: {
+    variant: 'numbered',
+    showIndicators: true,
+  },
+
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
     { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
@@ -168,7 +181,7 @@ export const boldHeadlineConfig: TemplateConfig = createTemplateConfig({
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
     { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 4, column: 'main' },
     { type: 'achievements', id: 'achievements', title: 'Achievements', defaultTitle: 'Achievements', enabled: true, order: 5, column: 'main' },
-    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: false, order: 6, column: 'main' },
+    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: true, order: 6, column: 'main' },
     { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 7, column: 'main' },
   ],
 

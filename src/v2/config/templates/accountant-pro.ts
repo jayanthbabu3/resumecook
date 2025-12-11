@@ -165,6 +165,18 @@ export const accountantProConfig: TemplateConfig = createTemplateConfig({
     datePosition: 'right',
   },
 
+  // Strengths - pills for clean professional look
+  strengths: {
+    variant: 'pills',
+    showIcons: false,
+  },
+  
+  // Achievements - cards with award icons
+  achievements: {
+    variant: 'cards',
+    showIndicators: true,
+  },
+
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
     { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
@@ -172,7 +184,7 @@ export const accountantProConfig: TemplateConfig = createTemplateConfig({
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
     { type: 'achievements', id: 'achievements', title: 'Achievements', defaultTitle: 'Achievements', enabled: true, order: 4, column: 'main' },
     { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 5, column: 'main' },
-    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: false, order: 6, column: 'main' },
+    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: true, order: 6, column: 'main' },
   ],
 
   fontFamily: {
