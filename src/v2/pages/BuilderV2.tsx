@@ -306,6 +306,43 @@ export const BuilderV2: React.FC = () => {
     }
   };
 
+  // Get all sections for reorder dialog (config sections + dynamic sections from resumeData)
+  const getAllSectionsForReorder = useCallback(() => {
+    const configSections = [...config.sections];
+    const configIds = new Set(configSections.map(s => s.id));
+    const configTitles = new Set(configSections.map(s => (s.title || s.id).toLowerCase()));
+    
+    // Add dynamic sections from resumeData that aren't in config
+    const dynamicSections: typeof configSections = [];
+    (resumeData.sections || []).forEach((s, idx) => {
+      const titleLower = (s.title || s.id || '').toLowerCase();
+      if (configIds.has(s.id)) return;
+      if (configTitles.has(titleLower)) return;
+      
+      // Infer column based on title
+      const inferredColumn: 'main' | 'sidebar' =
+        (titleLower.includes('strength') || titleLower.includes('achievement'))
+          ? 'sidebar'
+          : 'main';
+      
+      // Get order from overrides or append after existing
+      const existingOrder = sectionOverrides[s.id]?.order;
+      const maxOrder = Math.max(...configSections.map(cs => cs.order ?? 0), 0);
+      
+      dynamicSections.push({
+        type: 'custom',
+        id: s.id,
+        title: s.title || s.id,
+        defaultTitle: s.title || s.id,
+        enabled: enabledSections.includes(s.id),
+        order: existingOrder ?? maxOrder + idx + 1,
+        column: sectionOverrides[s.id]?.column || inferredColumn,
+      });
+    });
+    
+    return [...configSections, ...dynamicSections];
+  }, [config.sections, resumeData.sections, sectionOverrides, enabledSections]);
+
   // Section management panel
   const renderSectionManager = () => (
     <div className="space-y-3">
@@ -684,7 +721,7 @@ export const BuilderV2: React.FC = () => {
       <SectionReorderDialog
         open={showReorder}
         onOpenChange={setShowReorder}
-        sections={config.sections}
+        sections={getAllSectionsForReorder()}
         onApply={handleApplyReorder}
       />
     </div>

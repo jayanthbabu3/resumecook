@@ -34,6 +34,7 @@ import {
   Lightbulb,
   LayoutGrid,
   AlignLeft,
+  Target,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -292,6 +293,7 @@ export const StyleOptionsPanelV2: React.FC<StyleOptionsPanelV2Props> = ({
                   { key: 'showExperience', label: 'Experience', icon: Briefcase },
                   { key: 'showEducation', label: 'Education', icon: GraduationCap },
                   { key: 'showSkills', label: 'Skills', icon: Lightbulb },
+                  { key: 'showStrengths', label: 'Strengths', icon: Target },
                   { key: 'showSections', label: 'Custom Sections', icon: LayoutGrid },
                 ].map((item) => {
                   const Icon = item.icon;

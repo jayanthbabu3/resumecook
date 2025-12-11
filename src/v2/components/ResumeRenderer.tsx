@@ -10,6 +10,7 @@ import React from 'react';
 import type { TemplateConfig, SectionConfig } from '../types';
 import type { ResumeData } from '@/types/resume';
 import { useTemplateConfig } from '../hooks/useTemplateConfig';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import {
   HeaderSection,
   SummarySection,
@@ -18,7 +19,17 @@ import {
   SkillsSection,
   CustomSection,
 } from './sections';
-import { Target } from 'lucide-react';
+import { Target, Award, Star, Zap, Trophy, CheckCircle2 } from 'lucide-react';
+
+// Icon mapping for different section types
+const SECTION_ICONS: Record<string, React.ReactNode> = {
+  strengths: <Target className="w-4 h-4" />,
+  achievements: <Trophy className="w-4 h-4" />,
+  awards: <Award className="w-4 h-4" />,
+  highlights: <Star className="w-4 h-4" />,
+  competencies: <Zap className="w-4 h-4" />,
+  qualifications: <CheckCircle2 className="w-4 h-4" />,
+};
 
 interface ResumeRendererProps {
   /** Resume data to render */
@@ -85,6 +96,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
   const { layout, spacing, colors, fontFamily } = config;
 
+  // Get style options for section visibility
+  const styleOptionsContext = useStyleOptions();
+
   // Get section title with custom label support
   const getSectionTitle = (section: SectionConfig): string => {
     if (sectionLabels && sectionLabels[section.id]) {
@@ -93,8 +107,26 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     return section.title;
   };
 
-  // Check if section is enabled
+  // Check if section is enabled (considers both enabledSections and styleOptions)
   const isSectionEnabled = (sectionId: string): boolean => {
+    // Check styleOptions visibility toggles first
+    if (styleOptionsContext?.styleOptions) {
+      const { showStrengths, showSections } = styleOptionsContext.styleOptions;
+      
+      // Check if this is a strengths section
+      if (sectionId === 'strengths' || sectionId.toLowerCase().includes('strength')) {
+        if (!showStrengths) return false;
+      }
+      
+      // Check if this is a custom section (not a built-in type)
+      const section = config.sections.find(s => s.id === sectionId);
+      const isBuiltInType = section?.type && ['header', 'summary', 'experience', 'education', 'skills'].includes(section.type);
+      if (!isBuiltInType && sectionId !== 'strengths' && !sectionId.toLowerCase().includes('strength')) {
+        // This is a custom section, check showSections
+        if (!showSections) return false;
+      }
+    }
+    
     // If enabledSections is provided and has items, use it
     if (enabledSections && enabledSections.length > 0) {
       return enabledSections.includes(sectionId);
@@ -283,6 +315,24 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         // For regular list sections (like Achievements), use InlineEditableSectionItems which handles it via context
         const useCallbacks = isCardStyle && editable;
         
+        // Get dynamic icon based on section id/title
+        const getSectionIcon = () => {
+          const sectionIdLower = section.id.toLowerCase();
+          const titleLower = section.title.toLowerCase();
+          
+          // Check for exact matches first
+          if (SECTION_ICONS[sectionIdLower]) return SECTION_ICONS[sectionIdLower];
+          
+          // Check for partial matches in title
+          for (const [key, icon] of Object.entries(SECTION_ICONS)) {
+            if (titleLower.includes(key) || sectionIdLower.includes(key)) {
+              return icon;
+            }
+          }
+          
+          return undefined;
+        };
+        
         return wrap('custom',
           <CustomSection
             key={section.id}
@@ -291,7 +341,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             config={config}
             editable={editable}
             showAsCards={isCardStyle}
-            icon={isCardStyle ? <Target className="w-4 h-4" /> : undefined}
+            icon={isCardStyle ? getSectionIcon() : undefined}
             onAddItem={useCallbacks && onAddCustomSectionItem ? () => onAddCustomSectionItem(actualSectionIndex) : undefined}
             onRemoveItem={useCallbacks && onRemoveCustomSectionItem ? (itemIndex: number) => onRemoveCustomSectionItem(actualSectionIndex, itemIndex) : undefined}
           />
