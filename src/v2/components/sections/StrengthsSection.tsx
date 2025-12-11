@@ -162,7 +162,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
               padding: '6px 12px',
               backgroundColor: colors.background.accent || '#f3f4f6',
               borderRadius: '9999px',
-              fontSize: typography.small.fontSize,
+              fontSize: typography.body.fontSize,
               fontWeight: 500,
               color: colors.primary,
             }}
@@ -202,7 +202,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
               alignItems: 'center',
               gap: '6px',
               fontWeight: 600,
-              fontSize: typography.small.fontSize,
+              fontSize: typography.body.fontSize,
               color: typography.itemTitle.color,
               marginBottom: '2px',
             }}>
@@ -214,8 +214,8 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
               )}
             </div>
             <div style={{
-              fontSize: typography.small.fontSize,
-              lineHeight: 1.4,
+              fontSize: typography.body.fontSize,
+              lineHeight: typography.body.lineHeight,
               color: typography.body.color,
             }}>
               {editable ? (
