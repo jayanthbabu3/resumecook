@@ -207,8 +207,68 @@ export const InlineEditableSkills = ({
       <div className={cn("relative group", className)}>
         <ul className="ml-5 list-disc space-y-1">
           {normalizedSkills.map((skill, index) => (
-            <li key={skill.id || index} style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
-              {skill.name}
+            <li 
+              key={skill.id || index} 
+              className="group/item relative"
+              style={{ fontSize: skillFontSize, color: '#1a1a1a' }}
+            >
+              {canMutate && isEditing && editingIndex === index ? (
+                <div className="flex items-center gap-1 -ml-5">
+                  <Input
+                    value={editValue}
+                    onChange={(e) => setEditValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSave(index);
+                      if (e.key === "Escape") {
+                        setEditingIndex(null);
+                        setIsEditing(false);
+                      }
+                    }}
+                    className="h-7 w-48 text-xs"
+                    autoFocus
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 w-7 p-0"
+                    onClick={() => handleSave(index)}
+                  >
+                    <Check className="h-3 w-3" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 w-7 p-0"
+                    onClick={() => {
+                      setEditingIndex(null);
+                      setIsEditing(false);
+                    }}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <span 
+                    className={canMutate ? "cursor-pointer hover:text-gray-600" : ""}
+                    onClick={() => canMutate && handleEdit(index, skill.name)}
+                  >
+                    {skill.name}
+                  </span>
+                  {canMutate && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(index);
+                      }}
+                      className="ml-2 opacity-0 group-hover/item:opacity-100 transition-opacity text-red-500 hover:text-red-700"
+                      title="Remove skill"
+                    >
+                      <X className="h-3 w-3 inline" />
+                    </button>
+                  )}
+                </>
+              )}
             </li>
           ))}
         </ul>

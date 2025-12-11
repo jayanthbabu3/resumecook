@@ -4,12 +4,21 @@
  * Displays language proficiency with inline editing support
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { TemplateConfig } from '../../types';
 import type { LanguageItem } from '@/types/resume';
 import { SectionHeading } from './SectionHeading';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, ChevronDown } from 'lucide-react';
+
+// Proficiency options for dropdown
+const PROFICIENCY_OPTIONS = [
+  { value: 'Native', label: 'Native', code: 'Native speaker' },
+  { value: 'Fluent', label: 'Fluent', code: 'C2' },
+  { value: 'Professional', label: 'Professional', code: 'C1' },
+  { value: 'Intermediate', label: 'Intermediate', code: 'B2' },
+  { value: 'Basic', label: 'Basic', code: 'A2' },
+];
 
 interface LanguagesSectionProps {
   items: LanguageItem[];
@@ -74,6 +83,60 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
   const nativeLanguage = items.find(l => l.proficiency === 'Native');
   const otherLanguages = items.filter(l => l.proficiency !== 'Native');
 
+  // Inline proficiency selector component
+  const ProficiencySelector: React.FC<{ 
+    langId: string; 
+    currentValue: string;
+    index: number;
+  }> = ({ langId, currentValue, index }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    
+    return (
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-1 px-2 py-0.5 rounded hover:bg-gray-100 transition-colors"
+          style={{ fontWeight: 500, color: accent }}
+        >
+          {getProficiencyCode(currentValue)}
+          <ChevronDown className="w-3 h-3" />
+        </button>
+        
+        {isOpen && (
+          <>
+            {/* Backdrop to close dropdown */}
+            <div 
+              className="fixed inset-0 z-10" 
+              onClick={() => setIsOpen(false)}
+            />
+            {/* Dropdown menu */}
+            <div 
+              className="absolute right-0 top-full mt-1 z-20 bg-white border rounded-md shadow-lg py-1 min-w-[140px]"
+              style={{ borderColor: colors.border }}
+            >
+              {PROFICIENCY_OPTIONS.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => {
+                    onUpdateLanguage?.(langId, 'proficiency', option.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full text-left px-3 py-1.5 text-sm hover:bg-gray-100 transition-colors ${
+                    currentValue === option.value ? 'bg-gray-50 font-medium' : ''
+                  }`}
+                  style={{ color: currentValue === option.value ? accent : typography.body.color }}
+                >
+                  <span className="font-medium">{option.code}</span>
+                  <span className="text-gray-500 ml-2">({option.label})</span>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
+
   const renderLanguageItem = (lang: LanguageItem, index: number) => {
     const isNative = lang.proficiency === 'Native';
     
@@ -98,9 +161,17 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
           ) : (
             <span>{lang.language}:</span>
           )}
-          <span style={{ fontWeight: 500, color: accent }}>
-            {getProficiencyCode(lang.proficiency)}
-          </span>
+          {editable && onUpdateLanguage ? (
+            <ProficiencySelector 
+              langId={lang.id} 
+              currentValue={lang.proficiency} 
+              index={index}
+            />
+          ) : (
+            <span style={{ fontWeight: 500, color: accent }}>
+              {getProficiencyCode(lang.proficiency)}
+            </span>
+          )}
         </div>
         
         {/* Progress bar */}
@@ -156,30 +227,39 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
         {/* Native language displayed differently */}
         {nativeLanguage && (
           <div style={{ marginBottom: '12px' }} className="group relative">
-            <span style={{ 
-              fontWeight: 600, 
-              fontSize: typography.body.fontSize,
-              color: typography.body.color,
-            }}>
-              {editable ? (
-                <InlineEditableText
-                  path={`languages.0.language`}
-                  value={nativeLanguage.language}
-                  style={{ fontWeight: 600, fontSize: typography.body.fontSize, color: typography.body.color }}
-                  onCustomUpdate={(value) => onUpdateLanguage?.(nativeLanguage.id, 'language', value)}
+            <div className="flex items-center gap-2">
+              <span style={{ 
+                fontWeight: 600, 
+                fontSize: typography.body.fontSize,
+                color: typography.body.color,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path={`languages.0.language`}
+                    value={nativeLanguage.language}
+                    style={{ fontWeight: 600, fontSize: typography.body.fontSize, color: typography.body.color }}
+                    onCustomUpdate={(value) => onUpdateLanguage?.(nativeLanguage.id, 'language', value)}
+                  />
+                ) : (
+                  nativeLanguage.language
+                )}
+                :
+              </span>
+              {editable && onUpdateLanguage ? (
+                <ProficiencySelector 
+                  langId={nativeLanguage.id} 
+                  currentValue={nativeLanguage.proficiency} 
+                  index={0}
                 />
               ) : (
-                nativeLanguage.language
+                <span style={{ 
+                  fontSize: typography.body.fontSize,
+                  color: typography.body.color,
+                }}>
+                  {getProficiencyLabel(nativeLanguage.proficiency)}
+                </span>
               )}
-              :
-            </span>
-            <span style={{ 
-              fontSize: typography.body.fontSize,
-              color: typography.body.color,
-              marginLeft: '4px',
-            }}>
-              {getProficiencyLabel(nativeLanguage.proficiency)}
-            </span>
+            </div>
             
             {/* Remove button for native */}
             {editable && onRemoveLanguage && (

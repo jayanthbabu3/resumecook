@@ -12,3 +12,9 @@ export { AchievementsSection } from './AchievementsSection';
 export { StrengthsSection } from './StrengthsSection';
 export { CustomSection } from './CustomSection';
 export { LanguagesSection } from './LanguagesSection';
+
+// V2 Variant-aware section renderer
+export { SectionRenderer } from './SectionRenderer';
+
+// Variant renderers
+export * from './variants';

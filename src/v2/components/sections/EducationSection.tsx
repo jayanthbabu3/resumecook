@@ -271,10 +271,18 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
                   </>
                 )}
                 
-                {item.location && (
+                {(editable || item.location) && (
                   <>
                     <span style={{ color: colors.text.muted }}>•</span>
-                    <span style={dateStyle}>{item.location}</span>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`education.${index}.location`}
+                        value={item.location || 'Location'}
+                        style={dateStyle}
+                      />
+                    ) : (
+                      <span style={dateStyle}>{item.location}</span>
+                    )}
                   </>
                 )}
               </div>

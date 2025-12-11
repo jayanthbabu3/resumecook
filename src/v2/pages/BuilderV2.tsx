@@ -45,6 +45,9 @@ import { useTemplateConfig } from '../hooks/useTemplateConfig';
 import { MOCK_RESUME_DATA } from '../data/mockData';
 import type { ResumeData } from '@/types/resume';
 
+// V2 Dynamic Form (config-driven)
+import { DynamicForm, ElegantForm } from '../components/form';
+
 export const BuilderV2: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -61,6 +64,8 @@ export const BuilderV2: React.FC = () => {
   const [editorMode, setEditorMode] = useState<'live' | 'form'>('live');
   const [sectionOverrides, setSectionOverrides] = useState<Record<string, any>>({});
   const [showReorder, setShowReorder] = useState(false);
+  // Toggle between old form and new dynamic form (for testing)
+  const [useNewForm, setUseNewForm] = useState(true);
   
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -583,18 +588,43 @@ export const BuilderV2: React.FC = () => {
               {editorMode === 'form' && (
                 <div className="max-h-[calc(100vh-12rem)] overflow-y-auto space-y-4 rounded-2xl border border-border/50 bg-background px-4 py-5 shadow-sm sm:px-6 sm:py-6">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <FileEdit className="w-5 h-5 text-cyan-600" />
-                      <h2 className="text-lg font-bold">Form Editor</h2>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <FileEdit className="w-5 h-5 text-cyan-600" />
+                        <h2 className="text-lg font-bold">Form Editor</h2>
+                      </div>
+                      {/* Toggle for new form (dev only) */}
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">
+                          {useNewForm ? 'V2 Form' : 'Legacy Form'}
+                        </span>
+                        <Switch
+                          checked={useNewForm}
+                          onCheckedChange={setUseNewForm}
+                          className="data-[state=checked]:bg-cyan-600"
+                        />
+                      </div>
                     </div>
                     <p className="text-xs text-muted-foreground">Changes sync with preview in real-time</p>
                   </div>
-                  <ResumeForm 
-                    resumeData={resumeData} 
-                    setResumeData={setResumeData}
-                    templateId={templateId}
-                    enabledSections={enabledSections}
-                  />
+                  
+                  {useNewForm ? (
+                    <ElegantForm
+                      resumeData={resumeData}
+                      onResumeDataChange={setResumeData}
+                      enabledSections={config.sections}
+                      sectionTitles={sectionLabels}
+                      templateConfig={config}
+                      accentColor={themeColor}
+                    />
+                  ) : (
+                    <ResumeForm 
+                      resumeData={resumeData} 
+                      setResumeData={setResumeData}
+                      templateId={templateId}
+                      enabledSections={enabledSections}
+                    />
+                  )}
                 </div>
               )}
 
