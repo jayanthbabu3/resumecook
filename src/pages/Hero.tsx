@@ -899,8 +899,8 @@ const Hero = () => {
               </p>
             </div>
 
-            {/* Template Grid - 3x3 Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {/* Template Grid - 4 Columns Layout */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-10">
               {[
                 {
                   id: "professional",
@@ -949,34 +949,39 @@ const Hero = () => {
                   name: "Backend Developer",
                   description: "Clean technical design for backend specialists",
                   color: "#ec4899"
-                },
-                {
-                  id: "fullstack",
-                  name: "Full Stack Engineer",
-                  description: "Comprehensive layout for full-stack developers",
-                  color: "#f59e0b"
                 }
               ].map((template) => (
                 <div
                   key={template.id}
-                  className="group relative bg-white rounded-xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
+                  className="group relative bg-white rounded-lg border border-gray-200/80 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
                   onClick={() => navigate(`/dashboard/all/editor/${template.id}`)}
                 >
                   {/* Template Preview */}
-                  <div className="relative h-72 bg-gray-50 overflow-hidden">
+                  <div className="relative aspect-[8.5/11] bg-gray-50 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <TemplatePreview
-                      templateId={template.id}
-                      themeColor={template.color}
-                      className="border-0"
-                    />
+                    <div className="absolute inset-0 overflow-hidden">
+                      <div 
+                        className="origin-top-left"
+                        style={{
+                          transform: 'scale(0.27)',
+                          width: '370.4%',
+                          minHeight: '370.4%'
+                        }}
+                      >
+                        <TemplatePreview
+                          templateId={template.id}
+                          themeColor={template.color}
+                          className="border-0 w-full h-full"
+                        />
+                      </div>
+                    </div>
                     
                     {/* Overlay on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center gap-2 p-4 md:p-6">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center gap-1.5 p-3 z-10">
                       <Button
                         size="sm"
                         variant="secondary"
-                        className="shadow-lg text-xs md:text-sm"
+                        className="shadow-lg text-xs h-7 px-3"
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate(`/dashboard/all/editor/${template.id}`);
@@ -986,7 +991,7 @@ const Hero = () => {
                       </Button>
                       <Button
                         size="sm"
-                        className="shadow-lg text-xs md:text-sm"
+                        className="shadow-lg text-xs h-7 px-3"
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate(`/dashboard/all/live-editor/${template.id}`);
@@ -998,24 +1003,24 @@ const Hero = () => {
                   </div>
 
                   {/* Template Info */}
-                  <div className="p-5 space-y-2 bg-white">
+                  <div className="p-3 md:p-4 space-y-1.5 bg-white">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-base font-bold text-gray-900 group-hover:text-primary transition-colors">
+                      <h3 className="text-sm md:text-base font-bold text-gray-900 group-hover:text-primary transition-colors line-clamp-1">
                         {template.name}
                       </h3>
                       <div 
-                        className="w-4 h-4 rounded-full border-2 border-gray-200 group-hover:scale-110 transition-transform"
+                        className="w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-gray-200 group-hover:scale-110 transition-transform flex-shrink-0 ml-2"
                         style={{ backgroundColor: template.color }}
                       ></div>
                     </div>
-                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
+                    <p className="text-xs md:text-sm text-gray-600 leading-relaxed line-clamp-2">
                       {template.description}
                     </p>
                     
                     {/* View Details Link */}
-                    <div className="flex items-center text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pt-1">
+                    <div className="flex items-center text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pt-0.5">
                       <span>View Details</span>
-                      <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      <ChevronRight className="w-3 h-3 md:w-4 md:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </div>
@@ -1092,62 +1097,62 @@ const Hero = () => {
                   <div className="flex flex-col md:flex-row gap-6 md:gap-0 h-auto">
                     {/* Left Side - Form Editor */}
                     <div className="w-full md:w-1/2 bg-gradient-to-br from-slate-50 to-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
-                      <div className="p-2 md:p-4 space-y-2 md:space-y-4">
+                      <div className="p-4 md:p-6 space-y-5 md:space-y-6 font-sans">
                         {/* Personal Information */}
-                        <div className="space-y-1 md:space-y-2">
-                          <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
-                            <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full"></div>
-                            <h3 className="text-[10px] md:text-sm font-bold text-gray-800 capitalize tracking-wider">Personal Information</h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2.5 mb-3">
+                            <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
+                            <h3 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">Personal Information</h3>
                           </div>
-                          <div className="space-y-1.5 md:space-y-2">
-                            <div className="grid grid-cols-2 gap-1.5 md:gap-2">
-                              <div>
-                                <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Full Name</label>
+                          <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Full Name</label>
                                 <Input
                                   value={liveResumeData.personalInfo.fullName}
                                   onChange={(e) => setLiveResumeData(prev => ({
                                     ...prev,
                                     personalInfo: { ...prev.personalInfo, fullName: e.target.value }
                                   }))}
-                                  className="h-6 md:h-7 text-[10px] md:text-sm"
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
                                   placeholder="Enter your full name"
                                 />
                               </div>
-                              <div>
-                                <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Location</label>
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Location</label>
                                 <Input
                                   value={liveResumeData.personalInfo.location}
                                   onChange={(e) => setLiveResumeData(prev => ({
                                     ...prev,
                                     personalInfo: { ...prev.personalInfo, location: e.target.value }
                                   }))}
-                                  className="h-6 md:h-7 text-[10px] md:text-sm"
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
                                   placeholder="Enter your location"
                                 />
                               </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-1.5 md:gap-2">
-                              <div>
-                                <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Email Address</label>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Email Address</label>
                                 <Input
                                   value={liveResumeData.personalInfo.email}
                                   onChange={(e) => setLiveResumeData(prev => ({
                                     ...prev,
                                     personalInfo: { ...prev.personalInfo, email: e.target.value }
                                   }))}
-                                  className="h-6 md:h-7 text-[10px] md:text-sm"
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
                                   placeholder="Enter your email"
                                 />
                               </div>
-                              <div>
-                                <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Phone Number</label>
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Phone Number</label>
                                 <Input
                                   value={liveResumeData.personalInfo.phone}
                                   onChange={(e) => setLiveResumeData(prev => ({
                                     ...prev,
                                     personalInfo: { ...prev.personalInfo, phone: e.target.value }
                                   }))}
-                                  className="h-6 md:h-7 text-[10px] md:text-sm"
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
                                   placeholder="Enter your phone number"
                                 />
                               </div>
@@ -1156,201 +1161,197 @@ const Hero = () => {
                         </div>
 
                         {/* Professional Summary */}
-                        <div className="space-y-1 md:space-y-2 hidden md:block">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                            <h3 className="text-sm font-bold text-gray-800 capitalize tracking-wider">Professional Summary</h3>
+                        <div className="space-y-3 hidden md:block">
+                          <div className="flex items-center gap-2.5 mb-3">
+                            <div className="w-2.5 h-2.5 bg-purple-500 rounded-full"></div>
+                            <h3 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">Professional Summary</h3>
                           </div>
-                          <div>
+                          <div className="space-y-1.5">
                             <Textarea
                               value={liveResumeData.personalInfo.summary}
                               onChange={(e) => setLiveResumeData(prev => ({
                                 ...prev,
                                 personalInfo: { ...prev.personalInfo, summary: e.target.value }
                               }))}
-                              className="h-16 text-sm resize-none"
+                              className="min-h-[100px] text-sm md:text-base font-normal leading-relaxed resize-none"
                               placeholder="Write a brief summary of your professional experience..."
                             />
                           </div>
                         </div>
 
                         {/* Work Experience */}
-                        <div className="space-y-2 md:space-y-3">
-                          <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
-                            <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-500 rounded-full"></div>
-                            <h3 className="text-[10px] md:text-sm font-bold text-gray-800 capitalize tracking-wider">Work Experience</h3>
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-2.5 mb-3">
+                            <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full"></div>
+                            <h3 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">Work Experience</h3>
                           </div>
 
                           {/* Experience 1 */}
-                          <div className="p-2 md:p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
-                            <div className="space-y-1.5 md:space-y-2">
-                              <div className="grid grid-cols-2 gap-1.5 md:gap-2">
-                                <div>
-                                  <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Job Title</label>
-                                  <Input
-                                    value={liveResumeData.experience[0]?.position || ""}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 0 ? { ...exp, position: e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-6 md:h-7 text-[10px] md:text-sm"
-                                    placeholder="Enter job title"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Company</label>
-                                  <Input
-                                    value={liveResumeData.experience[0]?.company || ""}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 0 ? { ...exp, company: e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-6 md:h-7 text-[10px] md:text-sm"
-                                    placeholder="Enter company name"
-                                  />
-                                </div>
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">Start Date</label>
-                                  <Input
-                                    type="month"
-                                    value={toMonthInputValue(liveResumeData.experience[0]?.startDate || "")}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 0 ? { ...exp, startDate: e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-7 text-sm"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">End Date</label>
-                                  <Input
-                                    type="month"
-                                    value={toMonthInputValue(liveResumeData.experience[0]?.endDate || "")}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 0 ? { ...exp, endDate: e.target.value, current: !e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-7 text-sm"
-                                    placeholder="Present"
-                                  />
-                                </div>
-                              </div>
-                              <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
-                                <Textarea
-                                  value={liveResumeData.experience[0]?.description || ""}
+                          <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Job Title</label>
+                                <Input
+                                  value={liveResumeData.experience[0]?.position || ""}
                                   onChange={(e) => setLiveResumeData(prev => ({
                                     ...prev,
                                     experience: prev.experience.map((exp, idx) =>
-                                      idx === 0 ? { ...exp, description: e.target.value } : exp
+                                      idx === 0 ? { ...exp, position: e.target.value } : exp
                                     )
                                   }))}
-                                  className="h-12 text-sm resize-none"
-                                  placeholder="Describe your role and achievements..."
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                  placeholder="Enter job title"
                                 />
                               </div>
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Company</label>
+                                <Input
+                                  value={liveResumeData.experience[0]?.company || ""}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 0 ? { ...exp, company: e.target.value } : exp
+                                    )
+                                  }))}
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                  placeholder="Enter company name"
+                                />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Start Date</label>
+                                <Input
+                                  type="month"
+                                  value={toMonthInputValue(liveResumeData.experience[0]?.startDate || "")}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 0 ? { ...exp, startDate: e.target.value } : exp
+                                    )
+                                  }))}
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">End Date</label>
+                                <Input
+                                  type="month"
+                                  value={toMonthInputValue(liveResumeData.experience[0]?.endDate || "")}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 0 ? { ...exp, endDate: e.target.value, current: !e.target.value } : exp
+                                    )
+                                  }))}
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                  placeholder="Present"
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-1.5">
+                              <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Description</label>
+                              <Textarea
+                                value={liveResumeData.experience[0]?.description || ""}
+                                onChange={(e) => setLiveResumeData(prev => ({
+                                  ...prev,
+                                  experience: prev.experience.map((exp, idx) =>
+                                    idx === 0 ? { ...exp, description: e.target.value } : exp
+                                  )
+                                }))}
+                                className="min-h-[90px] text-sm md:text-base font-normal leading-relaxed resize-none"
+                                placeholder="Describe your role and achievements..."
+                              />
                             </div>
                           </div>
 
                           {/* Experience 2 */}
-                          <div className="p-2 md:p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
-                            <div className="space-y-1.5 md:space-y-2">
-                              <div className="grid grid-cols-2 gap-1.5 md:gap-2">
-                                <div>
-                                  <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Job Title</label>
-                                  <Input
-                                    value={liveResumeData.experience[1]?.position || ""}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 1 ? { ...exp, position: e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-6 md:h-7 text-[10px] md:text-sm"
-                                    placeholder="Enter job title"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="block text-[9px] md:text-xs font-medium text-gray-600 mb-0.5 md:mb-1">Company</label>
-                                  <Input
-                                    value={liveResumeData.experience[1]?.company || ""}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 1 ? { ...exp, company: e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-6 md:h-7 text-[10px] md:text-sm"
-                                    placeholder="Enter company name"
-                                  />
-                                </div>
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">Start Date</label>
-                                  <Input
-                                    type="month"
-                                    value={toMonthInputValue(liveResumeData.experience[1]?.startDate || "")}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 1 ? { ...exp, startDate: e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-7 text-sm"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-600 mb-1">End Date</label>
-                                  <Input
-                                    type="month"
-                                    value={toMonthInputValue(liveResumeData.experience[1]?.endDate || "")}
-                                    onChange={(e) => setLiveResumeData(prev => ({
-                                      ...prev,
-                                      experience: prev.experience.map((exp, idx) =>
-                                        idx === 1 ? { ...exp, endDate: e.target.value, current: !e.target.value } : exp
-                                      )
-                                    }))}
-                                    className="h-7 text-sm"
-                                    placeholder="Present"
-                                  />
-                                </div>
-                              </div>
-                              <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
-                                <Textarea
-                                  value={liveResumeData.experience[1]?.description || ""}
+                          <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Job Title</label>
+                                <Input
+                                  value={liveResumeData.experience[1]?.position || ""}
                                   onChange={(e) => setLiveResumeData(prev => ({
                                     ...prev,
                                     experience: prev.experience.map((exp, idx) =>
-                                      idx === 1 ? { ...exp, description: e.target.value } : exp
+                                      idx === 1 ? { ...exp, position: e.target.value } : exp
                                     )
                                   }))}
-                                  className="h-12 text-sm resize-none"
-                                  placeholder="Describe your role and achievements..."
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                  placeholder="Enter job title"
                                 />
                               </div>
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Company</label>
+                                <Input
+                                  value={liveResumeData.experience[1]?.company || ""}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 1 ? { ...exp, company: e.target.value } : exp
+                                    )
+                                  }))}
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                  placeholder="Enter company name"
+                                />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Start Date</label>
+                                <Input
+                                  type="month"
+                                  value={toMonthInputValue(liveResumeData.experience[1]?.startDate || "")}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 1 ? { ...exp, startDate: e.target.value } : exp
+                                    )
+                                  }))}
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">End Date</label>
+                                <Input
+                                  type="month"
+                                  value={toMonthInputValue(liveResumeData.experience[1]?.endDate || "")}
+                                  onChange={(e) => setLiveResumeData(prev => ({
+                                    ...prev,
+                                    experience: prev.experience.map((exp, idx) =>
+                                      idx === 1 ? { ...exp, endDate: e.target.value, current: !e.target.value } : exp
+                                    )
+                                  }))}
+                                  className="h-9 md:h-10 text-sm md:text-base font-normal"
+                                  placeholder="Present"
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-1.5">
+                              <label className="block text-xs md:text-sm font-semibold text-gray-700 tracking-wide">Description</label>
+                              <Textarea
+                                value={liveResumeData.experience[1]?.description || ""}
+                                onChange={(e) => setLiveResumeData(prev => ({
+                                  ...prev,
+                                  experience: prev.experience.map((exp, idx) =>
+                                    idx === 1 ? { ...exp, description: e.target.value } : exp
+                                  )
+                                }))}
+                                className="min-h-[90px] text-sm md:text-base font-normal leading-relaxed resize-none"
+                                placeholder="Describe your role and achievements..."
+                              />
                             </div>
                           </div>
                         </div>
 
                         {/* Skills */}
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <h3 className="text-sm font-bold text-gray-800 capitalize tracking-wider">Skills</h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2.5 mb-3">
+                            <div className="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
+                            <h3 className="text-base md:text-lg font-semibold text-gray-900 tracking-tight">Skills</h3>
                           </div>
-                          <div className="space-y-2">
+                          <div className="space-y-1.5">
                             <div className="relative">
                               <Input
                                 value={liveResumeData.skills.map(s => s.name).join(', ')}
@@ -1368,7 +1369,7 @@ const Hero = () => {
                                     }))
                                   }));
                                 }}
-                                className="h-7 text-sm pr-8"
+                                className="h-9 md:h-10 text-sm md:text-base font-normal pr-8"
                                 placeholder="Type skills separated by commas"
                                 onKeyDown={(e) => {
                                   if (e.key === 'Enter') {
@@ -1376,8 +1377,8 @@ const Hero = () => {
                                   }
                                 }}
                               />
-                              <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                                <span className="text-xs text-gray-400">↵</span>
+                              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                <span className="text-sm text-gray-400">↵</span>
                               </div>
                             </div>
                           </div>

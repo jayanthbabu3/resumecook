@@ -128,18 +128,29 @@ export const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
                        {/* Template Preview */}
                        <div className="relative">
                   <div
-                    className="overflow-hidden rounded-lg bg-white shadow-lg group-hover:shadow-2xl transition-shadow duration-300 border border-gray-200"
+                    className="overflow-hidden rounded-lg bg-white shadow-lg group-hover:shadow-2xl transition-shadow duration-300 border border-gray-200 relative"
                     style={{
                       aspectRatio: '1 / 1.414', // Standard A4 aspect ratio for proper resume display
                       width: '100%',
                       minHeight: itemsPerView === 1 ? '280px' : '350px'
                     }}
                   >
-                    <TemplatePreview
-                      templateId={template.id}
-                      themeColor={themeColors[index % themeColors.length]}
-                      className="h-full"
-                    />
+                    <div className="absolute inset-0 overflow-hidden">
+                      <div 
+                        className="origin-top-left"
+                        style={{
+                          transform: 'scale(0.35)',
+                          width: '285.7%',
+                          minHeight: '285.7%'
+                        }}
+                      >
+                        <TemplatePreview
+                          templateId={template.id}
+                          themeColor={themeColors[index % themeColors.length]}
+                          className="w-full h-full"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   {/* Favorite Button - Top Right */}

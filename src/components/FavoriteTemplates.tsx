@@ -106,11 +106,22 @@ export const FavoriteTemplates: React.FC = () => {
 
               {/* Template Preview */}
               <div className="relative aspect-[8.5/11] bg-white overflow-hidden">
-                <TemplatePreview
-                  templateId={template.id}
-                  themeColor={DEFAULT_THEME_COLOR}
-                  className="h-full"
-                />
+                <div className="absolute inset-0 overflow-hidden">
+                  <div 
+                    className="origin-top-left"
+                    style={{
+                      transform: 'scale(0.35)',
+                      width: '285.7%',
+                      minHeight: '285.7%'
+                    }}
+                  >
+                    <TemplatePreview
+                      templateId={template.id}
+                      themeColor={DEFAULT_THEME_COLOR}
+                      className="w-full h-full"
+                    />
+                  </div>
+                </div>
 
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center gap-1.5 p-2 md:p-3">
