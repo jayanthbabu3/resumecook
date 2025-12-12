@@ -17,6 +17,7 @@ import { accountantProTemplate } from './accountant-pro';
 import { centeredPhotoTemplate } from './centered-photo';
 import { creativeSplitTemplate } from './creative-split';
 import { classicMinimalTemplate } from './classic-minimal';
+import { professionalStandardTemplate } from './professional-standard';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -32,6 +33,7 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'centered-photo-v2': centeredPhotoTemplate,
   'creative-split-v2': creativeSplitTemplate,
   'classic-minimal-v2': classicMinimalTemplate,
+  'professional-standard-v2': professionalStandardTemplate,
 };
 
 // ============================================================================
@@ -106,3 +108,4 @@ export { accountantProTemplate } from './accountant-pro';
 export { centeredPhotoTemplate } from './centered-photo';
 export { creativeSplitTemplate } from './creative-split';
 export { classicMinimalTemplate } from './classic-minimal';
+export { professionalStandardTemplate } from './professional-standard';
