@@ -113,6 +113,25 @@ All colors MUST be HSL.
   }
 }
 
+/* Resume V2 - Force font inheritance on all resume content */
+.resume-v2,
+.resume-v2 * {
+  font-family: inherit !important;
+}
+
+.resume-v2 h1,
+.resume-v2 h2,
+.resume-v2 h3,
+.resume-v2 h4,
+.resume-v2 h5,
+.resume-v2 h6,
+.resume-v2 p,
+.resume-v2 span,
+.resume-v2 li,
+.resume-v2 div {
+  font-family: inherit !important;
+}
+
 /* Custom animations */
 @keyframes spin-slow {
   from {

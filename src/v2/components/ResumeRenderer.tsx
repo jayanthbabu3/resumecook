@@ -394,6 +394,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     boxSizing: 'border-box',
   };
 
+  // Force font inheritance on all content
+  const fontInheritClass = 'resume-font-inherit';
+
   // Page padding
   const contentStyle: React.CSSProperties = {
     padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`,
