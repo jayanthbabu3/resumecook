@@ -92,26 +92,26 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
       /* No divider - respect template default styling */`
       }
 
-      /* Font Size Scaling */
-      .style-options-wrapper {
+      /* Font Size Scaling - ONLY for V1 templates (not .resume-v2) */
+      .style-options-wrapper:not(:has(.resume-v2)) {
         font-size: calc(13px * ${scale}) !important;
         color: #1a1a1a !important;
       }
       /* Do not override banner header name/title */
-      .style-options-wrapper h1:not([data-header="banner"]) {
+      .style-options-wrapper:not(:has(.resume-v2)) h1:not([data-header="banner"]) {
         font-size: calc(32px * ${scale}) !important;
       }
-      .style-options-wrapper h2:not([data-accent-color]) {
+      .style-options-wrapper:not(:has(.resume-v2)) h2:not([data-accent-color]) {
         font-size: calc(16px * ${scale}) !important;
         font-weight: 600 !important;
         margin-bottom: 12px !important;
         color: #111827 !important;
       }
-      .style-options-wrapper h3 {
+      .style-options-wrapper:not(:has(.resume-v2)) h3 {
         font-size: calc(15px * ${scale}) !important;
       }
-      .style-options-wrapper p,
-      .style-options-wrapper li {
+      .style-options-wrapper:not(:has(.resume-v2)) p,
+      .style-options-wrapper:not(:has(.resume-v2)) li {
         font-size: calc(13px * ${scale}) !important;
         color: #1a1a1a !important;
       }
