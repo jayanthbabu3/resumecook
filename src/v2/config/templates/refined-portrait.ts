@@ -138,13 +138,13 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
   },
 
   skills: {
-    variant: 'grouped',
+    variant: 'columns',
     columns: 2,
     badge: {
       fontSize: '12px',
-      padding: '2px 8px',
+      padding: '4px 10px',
       borderRadius: '10px',
-      borderWidth: '0px',
+      borderWidth: '1px',
       backgroundColor: 'transparent',
       textColor: '#374151',
     },
@@ -169,14 +169,20 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
     variant: 'standard',
   },
 
+  achievements: {
+    variant: 'bullets',
+    showIndicators: true,
+  },
+
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
     { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
     { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
-    { type: 'custom', id: 'skills-highlights', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 4, column: 'main' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 5, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Open Source Work', defaultTitle: 'Projects', enabled: true, order: 6, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 4, column: 'main' },
+    { type: 'achievements', id: 'achievements', title: 'Achievements', defaultTitle: 'Achievements', enabled: true, order: 5, column: 'main' },
+    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 6, column: 'main' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 7, column: 'main' },
   ],
 
   fontFamily: {
