@@ -19,6 +19,7 @@ import { professionalBlueConfig } from './professional-blue';
 import { elegantAtsConfig } from './elegant-ats';
 import { refinedPortraitConfig } from './refined-portrait';
 import { analystClarityConfig } from './analyst-clarity';
+import { obstacleSolverConfig } from './obstacle-solver';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -35,6 +36,7 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'elegant-ats-v2': elegantAtsConfig,
   'refined-portrait-v2': refinedPortraitConfig,
   'analyst-clarity-v2': analystClarityConfig,
+  'obstacle-solver-v2': obstacleSolverConfig,
 };
 
 // Get template by ID
@@ -67,4 +69,5 @@ export {
   elegantAtsConfig,
   refinedPortraitConfig,
   analystClarityConfig,
+  obstacleSolverConfig,
 };

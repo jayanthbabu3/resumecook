@@ -15,6 +15,7 @@ import type { TemplateConfig, SkillsVariant, SkillItem } from '../../types';
 import { SectionHeading } from './SectionHeading';
 import { InlineEditableSkills } from '@/components/resume/InlineEditableSkills';
 import { SkillsColumns } from './variants/skills/variants/SkillsColumns';
+import { SkillsVariantRenderer } from './variants/skills/SkillsVariantRenderer';
 
 interface SkillsSectionProps {
   items: SkillItem[];
@@ -52,6 +53,18 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
 
   // Render based on variant
   const renderSkills = () => {
+    if (variant === 'category-lines') {
+      return (
+        <SkillsVariantRenderer
+          variant={variant as SkillsVariant}
+          items={items}
+          config={config}
+          accentColor={accent}
+          editable={editable}
+        />
+      );
+    }
+
     // Handle inline variant - use InlineEditableSkills with inline variant
     if (variant === 'inline') {
       // Map separator string to valid type

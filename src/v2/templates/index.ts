@@ -21,6 +21,7 @@ import { professionalBlueTemplate } from './professional-blue';
 import { elegantAtsTemplate } from './elegant-ats';
 import { refinedPortraitTemplate } from './refined-portrait';
 import { analystClarityTemplate } from './analyst-clarity';
+import { obstacleSolverTemplate } from './obstacle-solver';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -40,6 +41,7 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'elegant-ats-v2': elegantAtsTemplate,
   'refined-portrait-v2': refinedPortraitTemplate,
   'analyst-clarity-v2': analystClarityTemplate,
+  'obstacle-solver-v2': obstacleSolverTemplate,
 };
 
 // ============================================================================
@@ -118,3 +120,4 @@ export { professionalBlueTemplate } from './professional-blue';
 export { elegantAtsTemplate } from './elegant-ats';
 export { refinedPortraitTemplate } from './refined-portrait';
 export { analystClarityTemplate } from './analyst-clarity';
+export { obstacleSolverTemplate } from './obstacle-solver';

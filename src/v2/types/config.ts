@@ -164,7 +164,8 @@ export type SkillsVariant =
   | 'bars'           // Progress bars
   | 'dots'           // Dot rating system
   | 'columns'        // Multi-column list
-  | 'inline';        // Inline text with separator
+  | 'inline'         // Inline text with separator
+  | 'category-lines'; // Grouped headings with inline lists
 
 export interface SkillsConfig {
   /** Display variant */

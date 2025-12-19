@@ -15,6 +15,7 @@ import {
   SkillsModern,
   SkillsCompact,
   SkillsColumns,
+  SkillsCategoryLines,
 } from './variants';
 
 // Re-export types for external use
@@ -65,7 +66,26 @@ export const SkillsVariantRenderer: React.FC<SkillsVariantRendererProps> = ({
     
     case 'columns':
       return <SkillsColumns {...props} columns={2} />;
-    
+
+    case 'category-lines':
+      {
+        const sepValue = props.config.skills.separator;
+        const separator: 'bullet' | 'comma' | 'pipe' =
+          sepValue === ', '
+            ? 'comma'
+            : sepValue === ' | '
+              ? 'pipe'
+              : 'bullet';
+
+        return (
+          <SkillsCategoryLines
+            {...props}
+            columns={props.config.skills.columns || 1}
+            separator={separator}
+          />
+        );
+      }
+
     case 'modern':
     case 'detailed':
       return <SkillsModern {...props} />;

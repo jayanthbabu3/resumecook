@@ -34,4 +34,5 @@ export type SkillsVariant =
   | 'compact'       // Compact single line
   | 'detailed'      // With proficiency levels
   | 'radar'         // Radar/spider chart style
-  | 'modern';       // Modern cards with icons
+  | 'modern'        // Modern cards with icons
+  | 'category-lines'; // Grouped headings with inline lists
