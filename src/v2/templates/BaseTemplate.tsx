@@ -118,6 +118,8 @@ interface SectionRendererProps {
   onRemoveExperience?: (expId: string) => void;
   onAddEducation?: () => void;
   onRemoveEducation?: (eduId: string) => void;
+  onAddProject?: () => void;
+  onRemoveProject?: (projectId: string) => void;
   onAddLanguage?: () => void;
   onRemoveLanguage?: (langId: string) => void;
   onUpdateLanguage?: (langId: string, field: string, value: string) => void;
@@ -133,6 +135,8 @@ export const TemplateSectionRenderer: React.FC<SectionRendererProps> = ({
   onRemoveExperience,
   onAddEducation,
   onRemoveEducation,
+  onAddProject,
+  onRemoveProject,
   onAddLanguage,
   onRemoveLanguage,
   onUpdateLanguage,
@@ -266,6 +270,8 @@ export const TemplateSectionRenderer: React.FC<SectionRendererProps> = ({
           config={config}
           editable={editable}
           sectionTitle={title}
+          onAddItem={onAddProject}
+          onRemoveItem={onRemoveProject}
         />
       );
 

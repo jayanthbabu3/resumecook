@@ -73,7 +73,7 @@ export const ExperienceBulletPoints: React.FC<ExperienceBulletPointsProps> = ({
     if (description && description.trim()) {
       return description
         .split('\n')
-        .map(line => line.trim().replace(/^[•\-]\s*/, '')) // Remove bullet prefixes
+        .map(line => line.trim().replace(/^[-•]\s*/, '')) // Remove bullet prefixes
         .filter(line => line.length > 0);
     }
     return [];

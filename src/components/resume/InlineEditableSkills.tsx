@@ -113,7 +113,7 @@ export const InlineEditableSkills = ({
           </Badge>
         );
 
-      case 'tag':
+      case 'tag': {
         const accentBorder = themeColor ? `${themeColor}33` : '#e5e7eb';
         return (
           <span
@@ -128,6 +128,7 @@ export const InlineEditableSkills = ({
             {skill.name}
           </span>
         );
+      }
 
       case 'compact':
         return (
@@ -536,7 +537,7 @@ export const SkillsDisplay = ({
               </Badge>
             );
 
-          case 'tag':
+          case 'tag': {
             const accentBorder = themeColor ? `${themeColor}33` : '#e5e7eb';
             return (
               <span
@@ -552,6 +553,7 @@ export const SkillsDisplay = ({
                 {skill.name}
               </span>
             );
+          }
 
           case 'compact':
             return (

@@ -5,7 +5,7 @@ import { StyleOptionsProvider } from "@/contexts/StyleOptionsContext";
 import { StyleOptionsWrapper } from "@/components/resume/StyleOptionsWrapper";
 import { ResumeRenderer } from "./ResumeRenderer";
 import { MOCK_RESUME_DATA } from '../data/mockData';
-import type { TemplateConfig } from '../types';
+import { getTemplate } from '../templates';
 
 interface TemplatePreviewV2Props {
   templateId: string;
@@ -20,7 +20,8 @@ export const TemplatePreviewV2 = memo<TemplatePreviewV2Props>(({
   sampleData,
   className = "",
 }) => {
-  const resumeData = sampleData || MOCK_RESUME_DATA;
+  const template = getTemplate(templateId);
+  const resumeData = sampleData || template?.mockData || MOCK_RESUME_DATA;
   const [previewData] = useState(resumeData);
 
   return (

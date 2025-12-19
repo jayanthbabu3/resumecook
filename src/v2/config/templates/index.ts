@@ -16,6 +16,9 @@ import { centeredPhotoConfig } from './centered-photo';
 import { creativeSplitConfig } from './creative-split';
 import { classicMinimalConfig } from './classic-minimal';
 import { professionalBlueConfig } from './professional-blue';
+import { elegantAtsConfig } from './elegant-ats';
+import { refinedPortraitConfig } from './refined-portrait';
+import { analystClarityConfig } from './analyst-clarity';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -29,6 +32,9 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'creative-split-v2': creativeSplitConfig,
   'classic-minimal-v2': classicMinimalConfig,
   'professional-blue-v2': professionalBlueConfig,
+  'elegant-ats-v2': elegantAtsConfig,
+  'refined-portrait-v2': refinedPortraitConfig,
+  'analyst-clarity-v2': analystClarityConfig,
 };
 
 // Get template by ID
@@ -47,4 +53,18 @@ export function getTemplatesByCategory(category: TemplateConfig['category']): Te
 }
 
 // Export individual templates
-export { executiveSplitConfig, minimalConfig, boldHeadlineConfig, dataProConfig, accountantProConfig, seniorFrontendProConfig, centeredPhotoConfig, creativeSplitConfig, classicMinimalConfig, professionalBlueConfig };
+export {
+  executiveSplitConfig,
+  minimalConfig,
+  boldHeadlineConfig,
+  dataProConfig,
+  accountantProConfig,
+  seniorFrontendProConfig,
+  centeredPhotoConfig,
+  creativeSplitConfig,
+  classicMinimalConfig,
+  professionalBlueConfig,
+  elegantAtsConfig,
+  refinedPortraitConfig,
+  analystClarityConfig,
+};

@@ -45,6 +45,7 @@ import { ResumeRenderer } from '../components/ResumeRenderer';
 import { useTemplateConfig } from '../hooks/useTemplateConfig';
 import { MOCK_RESUME_DATA } from '../data/mockData';
 import type { V2ResumeData } from '../types';
+import { getTemplate } from '../templates';
 
 // V2 Dynamic Form (config-driven)
 import { DynamicForm, ElegantForm } from '../components/form';
@@ -53,9 +54,15 @@ export const BuilderV2: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const templateId = searchParams.get('template') || 'executive-split-v2';
-  
+  const templateDefinition = getTemplate(templateId);
+
+  const initialResumeData = React.useMemo(
+    () => templateDefinition?.mockData || MOCK_RESUME_DATA,
+    [templateDefinition?.mockData],
+  );
+
   // State
-  const [resumeData, setResumeData] = useState<V2ResumeData>(MOCK_RESUME_DATA);
+  const [resumeData, setResumeData] = useState<V2ResumeData>(initialResumeData);
   const [themeColor, setThemeColor] = useState('#0891b2');
   const [isDownloading, setIsDownloading] = useState(false);
   const [sectionLabels, setSectionLabels] = useState<Record<string, string>>({});
@@ -101,6 +108,11 @@ export const BuilderV2: React.FC = () => {
       setEnabledSections(configEnabledSections);
     }
   }, [config.id]);
+
+  // Swap in template-specific mock data when changing templates
+  React.useEffect(() => {
+    setResumeData(templateDefinition?.mockData || MOCK_RESUME_DATA);
+  }, [templateDefinition]);
 
   // Handle resume data updates from inline editing
   const handleResumeUpdate = useCallback((updater: V2ResumeData | ((prev: V2ResumeData) => V2ResumeData)) => {
@@ -291,7 +303,19 @@ export const BuilderV2: React.FC = () => {
   const handleAddProject = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
-      projects: [...(prev.projects || []), { id: Date.now().toString(), name: 'New Project', description: 'Project description', technologies: [] }],
+      projects: [
+        ...(prev.projects || []),
+        {
+          id: Date.now().toString(),
+          name: 'New Project',
+          role: 'Owner',
+          description: 'Project description',
+          technologies: ['Tech'],
+          highlights: ['Describe an accomplishment or outcome'],
+          url: '',
+          githubUrl: '',
+        },
+      ],
     }));
   }, []);
 
