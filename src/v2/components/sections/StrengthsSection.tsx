@@ -268,6 +268,100 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
     </div>
   );
 
+  // Variant: Lined accent grid cards
+  const renderAccentGridVariant = () => {
+    const columns = config.strengths?.columns || 2;
+
+    return (
+      <div style={{ marginTop: spacing.headingToContent }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${columns}, 1fr)`,
+            gap: '12px',
+          }}
+        >
+          {(items || []).map((item, index) => (
+            <div
+              key={item.id}
+              style={{
+                position: 'relative',
+                padding: '12px 12px 10px 12px',
+                backgroundColor: colors.background.section,
+                border: `1px solid ${colors.border}`,
+                borderRadius: '8px',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.02)',
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '3px',
+                  backgroundColor: colors.primary,
+                  borderTopLeftRadius: '8px',
+                  borderTopRightRadius: '8px',
+                }}
+              />
+
+              {editable && onRemoveItem && (
+                <div style={{ position: 'absolute', top: '6px', right: '6px' }}>
+                  {renderDeleteButton(item.id)}
+                </div>
+              )}
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontWeight: 700,
+                  fontSize: typography.itemTitle.fontSize,
+                  color: typography.itemTitle.color,
+                  marginBottom: '6px',
+                  paddingRight: editable ? '18px' : undefined,
+                }}
+              >
+                {showIcons && <CheckCircle2 style={{ width: '14px', height: '14px', color: colors.primary }} />}
+                {editable ? (
+                  <InlineEditableText
+                    value={item.title}
+                    path={`strengths.${index}.title`}
+                    placeholder="Strength"
+                  />
+                ) : (
+                  item.title
+                )}
+              </div>
+
+              <div
+                style={{
+                  fontSize: typography.body.fontSize,
+                  lineHeight: typography.body.lineHeight,
+                  color: typography.body.color,
+                }}
+              >
+                {editable ? (
+                  <InlineEditableText
+                    value={item.description}
+                    path={`strengths.${index}.description`}
+                    placeholder="Description"
+                    multiline
+                  />
+                ) : (
+                  item.description
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        {renderAddButton()}
+      </div>
+    );
+  };
+
   // Variant: Clean minimal text
   const renderMinimalVariant = () => (
     <div style={{ marginTop: spacing.headingToContent }}>
@@ -346,6 +440,8 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
         return renderPillsVariant();
       case 'grid':
         return renderGridVariant();
+      case 'accent-grid':
+        return renderAccentGridVariant();
       case 'minimal':
         return renderMinimalVariant();
       case 'accent-border':

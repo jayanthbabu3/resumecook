@@ -249,7 +249,8 @@ export type ExperienceVariant =
   | 'timeline'
   | 'card'
   | 'minimal'
-  | 'two-column-dates';
+  | 'two-column-dates'
+  | 'accent-card';
 
 export interface ExperienceConfig {
   variant: ExperienceVariant;
@@ -316,7 +317,8 @@ export type StrengthsVariant =
   | 'pills'
   | 'grid'
   | 'minimal'
-  | 'accent-border';
+  | 'accent-border'
+  | 'accent-grid';
 
 export interface StrengthsConfig {
   variant: StrengthsVariant;

@@ -148,7 +148,7 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
   },
 
   experience: {
-    variant: 'standard',
+    variant: 'accent-card',
     datePosition: 'right',
     showLocation: true,
     bulletStyle: '•',
@@ -165,8 +165,9 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
   },
 
   strengths: {
-    variant: 'list',
+    variant: 'accent-grid',
     showIcons: false,
+    columns: 2,
   },
 
   sections: [
