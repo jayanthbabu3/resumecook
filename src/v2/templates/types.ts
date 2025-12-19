@@ -31,6 +31,8 @@ export interface TemplateComponentProps {
   onRemoveExperience?: (expId: string) => void;
   onAddEducation?: () => void;
   onRemoveEducation?: (eduId: string) => void;
+  onAddProject?: () => void;
+  onRemoveProject?: (projectId: string) => void;
   onAddLanguage?: () => void;
   onRemoveLanguage?: (langId: string) => void;
   onUpdateLanguage?: (langId: string, field: string, value: string) => void;

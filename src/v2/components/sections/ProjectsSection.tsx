@@ -11,6 +11,7 @@ import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import { Plus, X, ExternalLink, Github } from 'lucide-react';
 import { useStyleOptions } from '@/contexts/StyleOptionsContext';
+import { useInlineEdit } from '@/contexts/InlineEditContext';
 
 interface ProjectItem {
   id: string;
@@ -46,6 +47,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 }) => {
   const { typography, spacing, colors } = config;
   const accent = colors.primary;
+  const inlineEdit = useInlineEdit();
 
   const styleContext = useStyleOptions();
   const formatDate = styleContext?.formatDate || ((date: string) => {
@@ -97,12 +99,24 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     marginBottom: '4px',
   };
 
-  const renderItem = (item: ProjectItem, index: number) => (
-    <div
-      key={item.id}
-      className="group relative"
-      style={{ marginBottom: index < items.length - 1 ? spacing.itemGap : 0 }}
-    >
+  const renderItem = (item: ProjectItem, index: number) => {
+    const technologies = item.technologies ?? item.techStack ?? [];
+    const techPath = item.technologies ? 'technologies' : item.techStack ? 'techStack' : 'technologies';
+
+    const handleAddTechnology = () => {
+      inlineEdit?.addArrayItem?.(`projects.${index}.${techPath}`, 'New Technology');
+    };
+
+    const handleRemoveTechnology = (techIndex: number) => {
+      inlineEdit?.removeArrayItem?.(`projects.${index}.${techPath}`, techIndex);
+    };
+
+    return (
+      <div
+        key={item.id}
+        className="group relative"
+        style={{ marginBottom: index < items.length - 1 ? spacing.itemGap : 0 }}
+      >
       {/* Header */}
       <div className="flex justify-between items-start gap-4">
         <div className="flex-1">
@@ -200,11 +214,44 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
       </div>
 
       {/* Technologies */}
-      {(item.technologies?.length > 0 || item.techStack?.length > 0) && (
-        <div style={{ marginTop: '8px' }}>
-          {(item.technologies || item.techStack || []).map((tech, techIndex) => (
-            <span key={techIndex} style={tagStyle}>{tech}</span>
+      {(technologies.length > 0 || (editable && inlineEdit)) && (
+        <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+          {technologies.map((tech, techIndex) => (
+            <span key={techIndex} style={{ ...tagStyle, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`projects.${index}.${techPath}.${techIndex}`}
+                  value={tech}
+                  style={{ fontSize: '11px', fontWeight: 500, color: accent }}
+                  placeholder="Technology"
+                />
+              ) : (
+                tech
+              )}
+
+              {editable && inlineEdit?.removeArrayItem && (
+                <button
+                  type="button"
+                  onClick={() => handleRemoveTechnology(techIndex)}
+                  className="text-[10px] text-slate-500 hover:text-slate-800"
+                  aria-label="Remove technology"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </span>
           ))}
+
+          {editable && inlineEdit?.addArrayItem && (
+            <button
+              type="button"
+              onClick={handleAddTechnology}
+              className="px-2 py-1 text-[11px] font-medium border border-dashed rounded"
+              style={{ color: accent, borderColor: accent }}
+            >
+              + Add Technology
+            </button>
+          )}
         </div>
       )}
 
@@ -238,7 +285,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         </button>
       )}
     </div>
-  );
+    );
+  };
 
   return (
     <section style={{ marginBottom: spacing.sectionGap }}>
