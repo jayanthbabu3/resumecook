@@ -65,38 +65,6 @@ const Hero = () => {
   const previewContainerRef = useRef<HTMLDivElement | null>(null);
   const previewContentRef = useRef<HTMLDivElement | null>(null);
 
-  // State for Live Editor demo
-  const [liveEditorData, setLiveEditorData] = useState({
-    fullName: "Michael Chen",
-    title: "Chief Technology Officer",
-    email: "michael.chen@email.com",
-    phone: "+1 (555) 987-6543",
-    location: "Seattle, WA",
-    summary: "Visionary technology executive with 15+ years of experience leading engineering teams and driving digital transformation. Proven track record of scaling organizations, implementing innovative solutions, and delivering exceptional business outcomes.",
-    experiences: [
-      {
-        position: "Chief Technology Officer",
-        company: "TechVision Inc.",
-        startDate: "2020-01",
-        endDate: "",
-        description: "• Spearheaded digital transformation initiatives, increasing operational efficiency by 45%\n• Led a team of 120+ engineers across multiple product lines\n• Architected cloud migration strategy saving $2M annually"
-      },
-      {
-        position: "VP of Engineering",
-        company: "Innovation Labs",
-        startDate: "2016-03",
-        endDate: "2019-12",
-        description: "• Built and scaled engineering organization from 20 to 85 team members\n• Launched 3 successful products generating $50M in annual revenue\n• Implemented agile methodologies improving delivery speed by 60%"
-      }
-    ],
-    skills: ["Strategic Planning", "Cloud Architecture", "Team Leadership", "Digital Transformation", "Product Strategy"]
-  });
-
-  const [livePreviewScale, setLivePreviewScale] = useState(0.6);
-  const [livePreviewHeight, setLivePreviewHeight] = useState(1120);
-  const livePreviewContainerRef = useRef<HTMLDivElement | null>(null);
-  const livePreviewContentRef = useRef<HTMLDivElement | null>(null);
-
   // Template config for form editor demo
   const demoTemplateId = "professional-blue-v2";
   const demoTemplateConfig = getTemplateConfig(demoTemplateId);
@@ -163,8 +131,14 @@ const Hero = () => {
     ]
   }));
 
-  // State for Live Editor in ResumeData format (for InlineEditProvider) - keep for live editor section
-  const [liveResumeData, setLiveResumeData] = useState<ResumeData>(() => ({
+  // Template config for live editor demo
+  const liveEditorTemplateId = "professional-blue-v2";
+  const liveEditorTemplateConfig = getTemplateConfig(liveEditorTemplateId);
+  const liveEditorThemeColor = liveEditorTemplateConfig?.colors?.primary || "#059669";
+
+  // State for Live Editor in V2ResumeData format
+  const [liveEditorData, setLiveEditorData] = useState<V2ResumeData>(() => ({
+    version: '2.0',
     personalInfo: {
       fullName: "Michael Chen",
       email: "michael.chen@email.com",
@@ -181,7 +155,12 @@ const Hero = () => {
         startDate: "2020-01",
         endDate: "",
         current: true,
-        description: "• Spearheaded digital transformation initiatives, increasing operational efficiency by 45%\n• Led a team of 120+ engineers across multiple product lines\n• Architected cloud migration strategy saving $2M annually"
+        description: "",
+        bulletPoints: [
+          "Spearheaded digital transformation initiatives, increasing operational efficiency by 45%",
+          "Led a team of 120+ engineers across multiple product lines",
+          "Architected cloud migration strategy saving $2M annually"
+        ]
       },
       {
         id: "exp-1",
@@ -190,10 +169,25 @@ const Hero = () => {
         startDate: "2016-03",
         endDate: "2019-12",
         current: false,
-        description: "• Built and scaled engineering organization from 20 to 85 team members\n• Launched 3 successful products generating $50M in annual revenue\n• Implemented agile methodologies improving delivery speed by 60%"
+        description: "",
+        bulletPoints: [
+          "Built and scaled engineering organization from 20 to 85 team members",
+          "Launched 3 successful products generating $50M in annual revenue",
+          "Implemented agile methodologies improving delivery speed by 60%"
+        ]
       }
     ],
-    education: [],
+    education: [
+      {
+        id: "edu-0",
+        school: "Stanford University",
+        degree: "Master of Science",
+        field: "Computer Science",
+        location: "Stanford, CA",
+        startDate: "2010-09",
+        endDate: "2012-06"
+      }
+    ],
     skills: [
       { id: "skill-0", name: "Strategic Planning", level: 10, category: "core" },
       { id: "skill-1", name: "Cloud Architecture", level: 9, category: "core" },
@@ -201,8 +195,90 @@ const Hero = () => {
       { id: "skill-3", name: "Digital Transformation", level: 7, category: "core" },
       { id: "skill-4", name: "Product Strategy", level: 7, category: "core" }
     ],
-    sections: []
+    languages: [
+      { id: "lang-0", language: "English", proficiency: "Native" },
+      { id: "lang-1", language: "Spanish", proficiency: "Professional" },
+      { id: "lang-2", language: "Mandarin", proficiency: "Intermediate" }
+    ],
+    interests: [
+      { id: "interest-0", name: "Technology Innovation" },
+      { id: "interest-1", name: "Leadership Development" },
+      { id: "interest-2", name: "Open Source Contributions" },
+      { id: "interest-3", name: "Mountain Biking" }
+    ]
   }));
+
+  // Handlers for inline editing - matching builder functionality
+  const handleAddBulletPoint = useCallback((expId: string) => {
+    setLiveEditorData(prev => ({
+      ...prev,
+      experience: prev.experience.map(exp =>
+        exp.id === expId ? { ...exp, bulletPoints: [...(exp.bulletPoints || []), ''] } : exp
+      )
+    }));
+  }, []);
+
+  const handleRemoveBulletPoint = useCallback((expId: string, bulletIndex: number) => {
+    setLiveEditorData(prev => ({
+      ...prev,
+      experience: prev.experience.map(exp =>
+        exp.id === expId
+          ? { ...exp, bulletPoints: exp.bulletPoints.filter((_, i) => i !== bulletIndex) }
+          : exp
+      )
+    }));
+  }, []);
+
+  const handleAddExperience = useCallback(() => {
+    setLiveEditorData(prev => ({
+      ...prev,
+      experience: [
+        ...prev.experience,
+        {
+          id: `exp-${Date.now()}`,
+          position: 'New Position',
+          company: 'Company Name',
+          startDate: '',
+          endDate: '',
+          current: false,
+          description: '',
+          bulletPoints: []
+        }
+      ]
+    }));
+  }, []);
+
+  const handleRemoveExperience = useCallback((expId: string) => {
+    setLiveEditorData(prev => ({
+      ...prev,
+      experience: prev.experience.filter(exp => exp.id !== expId)
+    }));
+  }, []);
+
+  const handleAddEducation = useCallback(() => {
+    setLiveEditorData(prev => ({
+      ...prev,
+      education: [
+        ...prev.education,
+        {
+          id: `edu-${Date.now()}`,
+          school: 'School Name',
+          degree: 'Degree',
+          field: 'Field of Study',
+          location: '',
+          startDate: '',
+          endDate: ''
+        }
+      ]
+    }));
+  }, []);
+
+  const handleRemoveEducation = useCallback((eduId: string) => {
+    setLiveEditorData(prev => ({
+      ...prev,
+      education: prev.education.filter(edu => edu.id !== eduId)
+    }));
+  }, []);
 
   const buttonBaseClass = "h-11 px-6 text-sm md:text-base font-semibold transition-all duration-300";
   const primaryButtonClass = cn(
@@ -289,76 +365,6 @@ const Hero = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Live Editor Preview Scaling
-  useEffect(() => {
-    const baseWidth = 816;
-    const minScale = 0.45;
-    const maxScale = 1;
-
-    const applyScale = (availableWidth: number) => {
-      if (!availableWidth || Number.isNaN(availableWidth)) {
-        return;
-      }
-      const width = Math.max(availableWidth, 280);
-      const computedScale = Math.min(width / baseWidth, maxScale);
-      setLivePreviewScale(Math.max(minScale, Number(computedScale.toFixed(3))));
-    };
-
-    if (typeof ResizeObserver !== "undefined") {
-      const element = livePreviewContainerRef.current;
-      if (!element) {
-        return;
-      }
-
-      const observer = new ResizeObserver((entries) => {
-        const width = entries[0]?.contentRect?.width;
-        if (width) {
-          const styles = window.getComputedStyle(element);
-          const horizontalPadding =
-            parseFloat(styles.paddingLeft || "0") +
-            parseFloat(styles.paddingRight || "0");
-          applyScale(width - horizontalPadding);
-        }
-      });
-
-      observer.observe(element);
-      const styles = window.getComputedStyle(element);
-      const horizontalPadding =
-        parseFloat(styles.paddingLeft || "0") +
-        parseFloat(styles.paddingRight || "0");
-      applyScale(element.getBoundingClientRect().width - horizontalPadding);
-
-      return () => observer.disconnect();
-    }
-
-    const handleResize = () => applyScale(window.innerWidth - 32);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (typeof ResizeObserver === "undefined") {
-      return;
-    }
-
-    const element = livePreviewContentRef.current;
-    if (!element) {
-      return;
-    }
-
-    const observer = new ResizeObserver((entries) => {
-      const height = entries[0]?.contentRect?.height;
-      if (height) {
-        setLivePreviewHeight(height);
-      }
-    });
-
-    observer.observe(element);
-    setLivePreviewHeight(element.getBoundingClientRect().height);
-
-    return () => observer.disconnect();
-  }, []);
 
   const toMonthInputValue = useCallback((dateInput: string) => {
     if (!dateInput) {
@@ -435,36 +441,6 @@ const Hero = () => {
     };
   };
 
-  // Convert live editor data to ResumeData format
-  const convertLiveEditorToResumeData = () => {
-    return {
-      personalInfo: {
-        fullName: liveEditorData.fullName,
-        email: liveEditorData.email,
-        phone: liveEditorData.phone,
-        location: liveEditorData.location,
-        title: liveEditorData.title,
-        summary: liveEditorData.summary
-      },
-      experience: liveEditorData.experiences.map((exp, index) => ({
-        id: `exp-${index}`,
-        company: exp.company,
-        position: exp.position,
-        startDate: exp.startDate,
-        endDate: exp.endDate || "",
-        current: !exp.endDate,
-        description: exp.description
-      })),
-      education: [],
-      skills: liveEditorData.skills.map((skill, index) => ({
-        id: `skill-${index}`,
-        name: skill,
-        level: Math.max(7, 10 - index),
-        category: (index < 6 ? "core" : "toolbox") as "core" | "toolbox"
-      })),
-      sections: []
-    };
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -1327,7 +1303,7 @@ const Hero = () => {
                       <Button
                         onClick={async () => {
                           try {
-                            const filename = `${liveResumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                            const filename = `${liveEditorData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
                             await generatePDFFromPreview("hero-live-editor-preview", filename);
                             await incrementDownloadsCount();
                           } catch (error) {
@@ -1336,48 +1312,58 @@ const Hero = () => {
                         }}
                         className={cn(buttonBaseClass, "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl h-9 px-3")}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
+                        <Download className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
 
-                  {/* Resume with Inline Editing */}
-                  <div className="bg-gradient-to-br from-slate-50 to-emerald-50/20 p-4 md:p-8">
-                    <div
-                      ref={livePreviewContainerRef}
-                      className="bg-white border-2 border-emerald-200/60 rounded-lg shadow-xl mx-auto"
-                      style={{ maxWidth: "850px" }}
+                  {/* Resume with Inline Editing - A4 Dimensions like Builder */}
+                  <div className="p-2 sm:p-4 md:p-6">
+                    <div 
+                      className="relative w-full overflow-x-auto"
+                      style={{
+                        background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)',
+                        padding: '1rem',
+                        borderRadius: '0.75rem',
+                      }}
                     >
-                      <div
-                        className="relative overflow-hidden"
+                      {/* Dot pattern overlay */}
+                      <div 
+                        className="space-y-2 sm:space-y-4 flex flex-col items-center"
                         style={{
-                          height: `${Math.max(livePreviewHeight * livePreviewScale, 500)}px`,
+                          backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 0.5px, transparent 0)',
+                          backgroundSize: '20px 20px',
                         }}
                       >
-                        <div className="absolute inset-x-0 top-0 flex justify-center">
-                          <div
-                            style={{
-                              transform: `scale(${livePreviewScale})`,
-                              transformOrigin: "top center",
+                        {/* Resume Preview - A4 Size with Inline Editing */}
+                        <div className="relative w-full max-w-[210mm]">
+                          <div 
+                            id="hero-live-editor-preview" 
+                            className="bg-white shadow-2xl shadow-gray-300/50 rounded-xl overflow-hidden ring-1 ring-gray-200/50 mx-auto"
+                            style={{ 
+                              width: '210mm', 
+                              minHeight: '297mm',
+                              minWidth: '210mm',
                             }}
-                            key={JSON.stringify(liveResumeData)}
                           >
-                            <div id="hero-live-editor-preview" ref={livePreviewContentRef} className="w-[816px]">
-                              <StyleOptionsProvider>
-                                <StyleOptionsWrapper>
-                                  <InlineEditProvider resumeData={liveResumeData} setResumeData={setLiveResumeData}>
-                                    <ResumeRenderer
-                                      resumeData={convertV1ToV2(liveResumeData)}
-                                      templateId="professional-blue-v2"
-                                      themeColor="#059669"
-                                      editable={true}
-                                    />
-                                  </InlineEditProvider>
-                                </StyleOptionsWrapper>
-                              </StyleOptionsProvider>
-                            </div>
+                            <StyleOptionsProvider>
+                              <StyleOptionsWrapper>
+                                <InlineEditProvider resumeData={liveEditorData as any} setResumeData={setLiveEditorData as any}>
+                                  <ResumeRenderer
+                                    resumeData={liveEditorData}
+                                    templateId={liveEditorTemplateId}
+                                    themeColor={liveEditorThemeColor}
+                                    editable={true}
+                                    onAddBulletPoint={handleAddBulletPoint}
+                                    onRemoveBulletPoint={handleRemoveBulletPoint}
+                                    onAddExperience={handleAddExperience}
+                                    onRemoveExperience={handleRemoveExperience}
+                                    onAddEducation={handleAddEducation}
+                                    onRemoveEducation={handleRemoveEducation}
+                                  />
+                                </InlineEditProvider>
+                              </StyleOptionsWrapper>
+                            </StyleOptionsProvider>
                           </div>
                         </div>
                       </div>
