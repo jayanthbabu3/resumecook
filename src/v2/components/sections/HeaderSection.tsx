@@ -33,6 +33,9 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   const { typography, colors, header, spacing } = config;
   const variant = variantOverride || header.variant;
   const accent = colors.primary;
+  const bannerTextColor = header.textColor || colors.text.light;
+  const bannerMetaTextColor = typography.contact.color || '#d1d5db';
+  const bannerLinkColor = colors.secondary || colors.primary;
   const styleOptions = useStyleOptions();
   const showPhoto = styleOptions?.styleOptions?.showPhoto ?? true;
 
@@ -111,7 +114,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       lineHeight: typography.name.lineHeight,
       letterSpacing: typography.name.letterSpacing,
       textTransform: typography.name.textTransform,
-      color: variant === 'banner' ? colors.text.light : typography.name.color,
+      color: variant === 'banner' ? bannerTextColor : typography.name.color,
       margin: 0,
     };
 
@@ -137,7 +140,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       fontSize: typography.title.fontSize,
       fontWeight: typography.title.fontWeight,
       lineHeight: typography.title.lineHeight,
-      color: variant === 'banner' ? colors.text.light : accent,
+      color: variant === 'banner' ? bannerTextColor : accent,
       margin: 0,
     };
 
@@ -304,13 +307,13 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       case 'banner':
         // Check if photo exists, otherwise show initials
         const showInitials = !personalInfo.photo || !showPhoto;
-        const bannerContactStyle: React.CSSProperties = { 
-          fontSize: typography.contact.fontSize, 
-          color: '#d1d5db',
+        const bannerContactStyle: React.CSSProperties = {
+          fontSize: typography.contact.fontSize,
+          color: bannerMetaTextColor,
         };
-        const bannerLinkStyle: React.CSSProperties = { 
-          fontSize: typography.contact.fontSize, 
-          color: '#93c5fd',
+        const bannerLinkStyle: React.CSSProperties = {
+          fontSize: typography.contact.fontSize,
+          color: bannerLinkColor,
         };
         return (
           <div
@@ -318,7 +321,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
             style={{
               backgroundColor: header.backgroundColor || accent,
               padding: header.padding || '24px 32px',
-              color: colors.text.light,
+              color: bannerTextColor,
             }}
           >
             <div className="flex items-center gap-4">
@@ -371,7 +374,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                   >
                     {(editable || personalInfo.linkedin) && (
                       <div className="flex items-center gap-1.5">
-                        <Linkedin style={{ width: '14px', height: '14px', color: '#93c5fd' }} />
+                        <Linkedin style={{ width: '14px', height: '14px', color: bannerLinkColor }} />
                         {editable ? (
                           <InlineEditableText
                             path="personalInfo.linkedin"
@@ -392,7 +395,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                     )}
                     {(editable || personalInfo.github) && (
                       <div className="flex items-center gap-1.5">
-                        <Github style={{ width: '14px', height: '14px', color: '#93c5fd' }} />
+                        <Github style={{ width: '14px', height: '14px', color: bannerLinkColor }} />
                         {editable ? (
                           <InlineEditableText
                             path="personalInfo.github"
@@ -413,7 +416,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                     )}
                     {(editable || personalInfo.portfolio) && (
                       <div className="flex items-center gap-1.5">
-                        <Globe style={{ width: '14px', height: '14px', color: '#93c5fd' }} />
+                        <Globe style={{ width: '14px', height: '14px', color: bannerLinkColor }} />
                         {editable ? (
                           <InlineEditableText
                             path="personalInfo.portfolio"

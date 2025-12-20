@@ -138,7 +138,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   const containerStyle = getContainerStyle();
 
   // Get the transformed title
-  const displayTitle = getTransformedTitle(title);
+  const preserveCase = title.includes('<') && title.includes('>');
+  const displayTitle = preserveCase ? title : getTransformedTitle(title);
 
   // Render editable or static heading
   // Use data-accent-color to prevent StyleOptionsWrapper from adding extra borders

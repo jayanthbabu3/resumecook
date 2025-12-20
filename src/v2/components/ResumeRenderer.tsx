@@ -663,8 +663,19 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   const sidebarWidth = layout.sidebarWidth || '40%';
   const mainWidth = layout.mainWidth || '60%';
 
+  // Apply page padding consistently (matches single-column behavior)
+  const headerWrapperPadding: React.CSSProperties = {
+    padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 0 ${spacing.pagePadding.left}`,
+  };
+
+  const twoColumnContentPadding: React.CSSProperties = {
+    padding:
+      isBannerHeader
+        ? `${spacing.pagePadding.top} ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`
+        : `0 ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`,
+  };
+
   // Use percentages for better PDF compatibility - allows content to flow across pages
-  // Fixed pixels cause overflow issues in PDF generation
   const mainColumnStyle: React.CSSProperties = {
     width: mainWidth,
     minWidth: '0',
@@ -673,40 +684,46 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     boxSizing: 'border-box',
     overflowWrap: 'break-word',
     wordWrap: 'break-word',
-    padding: '20px 28px 24px 16px', // top right bottom left
+    padding: 0,
   };
 
   const sidebarColumnStyle: React.CSSProperties = {
     width: sidebarWidth,
     minWidth: '0',
-    backgroundColor: layout.sidebarBackground || colors.background.page,
+    backgroundColor: layout.sidebarBackground || colors.background.sidebar || colors.background.page,
     flexShrink: 0,
     flexGrow: 0,
     boxSizing: 'border-box',
     overflowWrap: 'break-word',
     wordWrap: 'break-word',
-    padding: '20px 16px 24px 28px', // top right bottom LEFT (28px left padding)
+    padding: layout.sidebarPadding || 0,
   };
 
   return (
     <div className={`resume-v2 ${className}`} style={containerStyle}>
       {/* Header - Full width */}
       {isSectionEnabled('header') && (
-        <HeaderSection
-          resumeData={resumeData}
-          config={config}
-          editable={editable}
-        />
+        <>
+          {isBannerHeader ? (
+            <HeaderSection resumeData={resumeData} config={config} editable={editable} />
+          ) : (
+            <div style={headerWrapperPadding}>
+              <HeaderSection resumeData={resumeData} config={config} editable={editable} />
+            </div>
+          )}
+        </>
       )}
 
       {/* Two-column content - Use display:flex with percentage widths for PDF compatibility */}
       <div
         style={{
+          ...twoColumnContentPadding,
           display: 'flex',
           flexDirection: 'row',
           width: '100%',
           maxWidth: '100%',
           boxSizing: 'border-box',
+          gap: layout.columnGap || '24px',
         }}
       >
         {/* Left column - Sidebar for two-column-left, Main for two-column-right */}

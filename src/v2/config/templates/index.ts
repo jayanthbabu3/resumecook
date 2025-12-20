@@ -20,6 +20,7 @@ import { elegantAtsConfig } from './elegant-ats';
 import { refinedPortraitConfig } from './refined-portrait';
 import { analystClarityConfig } from './analyst-clarity';
 import { obstacleSolverConfig } from './obstacle-solver';
+import { terminalThemeConfig } from './terminal-theme';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -37,6 +38,7 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'refined-portrait-v2': refinedPortraitConfig,
   'analyst-clarity-v2': analystClarityConfig,
   'obstacle-solver-v2': obstacleSolverConfig,
+  'terminal-theme-v2': terminalThemeConfig,
 };
 
 // Get template by ID
@@ -70,4 +72,5 @@ export {
   refinedPortraitConfig,
   analystClarityConfig,
   obstacleSolverConfig,
+  terminalThemeConfig,
 };
