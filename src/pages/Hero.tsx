@@ -7,9 +7,12 @@ import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, Users, TrendingUp, S
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { TemplatePreview } from "@/components/TemplatePreview";
+import { TemplatePreviewV2 } from "@/v2/components/TemplatePreviewV2";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
-import { ProfessionalTemplate } from "@/components/resume/templates/ProfessionalTemplate";
+import { StyleOptionsProvider } from "@/contexts/StyleOptionsContext";
+import { StyleOptionsWrapper } from "@/components/resume/StyleOptionsWrapper";
+import { ResumeRenderer } from "@/v2/components/ResumeRenderer";
+import { convertV1ToV2 } from "@/v2/utils/dataConverter";
 import { generatePDFFromPreview } from "@/lib/pdfGenerator";
 import { cn } from "@/lib/utils";
 import { useAppStats } from "@/hooks/useAppStats";
@@ -417,14 +420,14 @@ const Hero = () => {
 
               {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 pt-2 items-center sm:items-center lg:items-start justify-center lg:justify-start">
-                <Button className={cn(primaryButtonClass, "group")} onClick={() => navigate("/dashboard")}>
+                <Button className={cn(primaryButtonClass, "group")} onClick={() => navigate("/v2")}>
                     <span>Start Building Free</span>
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button
                   variant="outline"
                   className={neutralButtonClass}
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => navigate("/v2")}
                 >
                   View Templates
                 </Button>
@@ -903,50 +906,50 @@ const Hero = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-10">
               {[
                 {
-                  id: "professional",
-                  name: "Professional",
-                  description: "Traditional single-column layout optimized for corporate roles",
+                  id: "professional-blue-v2",
+                  name: "Professional Blue",
+                  description: "Clean professional design with blue accent and centered headers",
                   color: "#2563eb"
                 },
                 {
-                  id: "modern",
-                  name: "Modern",
+                  id: "creative-split-v2",
+                  name: "Creative Split",
                   description: "Contemporary two-column design for creative teams",
                   color: "#7c3aed"
                 },
                 {
-                  id: "software",
-                  name: "Software Engineer",
+                  id: "data-pro-v2",
+                  name: "Data Pro",
                   description: "Bold layout with impact metrics and achievements",
                   color: "#059669"
                 },
                 {
-                  id: "fresher",
-                  name: "Fresher Premium",
+                  id: "elegant-ats-v2",
+                  name: "Elegant ATS",
                   description: "ATS-optimized template for fresh graduates",
                   color: "#e11d48"
                 },
                 {
-                  id: "executive",
-                  name: "Executive",
+                  id: "executive-split-v2",
+                  name: "Executive Split",
                   description: "Bold leadership-focused layout for senior roles",
                   color: "#ea580c"
                 },
                 {
-                  id: "minimal",
+                  id: "minimal-v2",
                   name: "Minimal",
                   description: "Sophisticated whitespace-focused design",
                   color: "#0d9488"
                 },
                 {
-                  id: "frontend",
-                  name: "Frontend Developer",
+                  id: "senior-frontend-pro-v2",
+                  name: "Senior Frontend Pro",
                   description: "Tech-focused design with skills grid layout",
                   color: "#8b5cf6"
                 },
                 {
-                  id: "backend",
-                  name: "Backend Developer",
+                  id: "analyst-clarity-v2",
+                  name: "Analyst Clarity",
                   description: "Clean technical design for backend specialists",
                   color: "#ec4899"
                 }
@@ -954,7 +957,7 @@ const Hero = () => {
                 <div
                   key={template.id}
                   className="group relative bg-white rounded-lg border border-gray-200/80 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
-                  onClick={() => navigate(`/dashboard/all/editor/${template.id}`)}
+                  onClick={() => navigate(`/v2/builder?template=${template.id}`)}
                 >
                   {/* Template Preview */}
                   <div className="relative aspect-[8.5/11] bg-gray-50 overflow-hidden">
@@ -968,7 +971,7 @@ const Hero = () => {
                           minHeight: '370.4%'
                         }}
                       >
-                        <TemplatePreview
+                        <TemplatePreviewV2
                           templateId={template.id}
                           themeColor={template.color}
                           className="border-0 w-full h-full"
@@ -984,20 +987,10 @@ const Hero = () => {
                         className="shadow-lg text-xs h-7 px-3"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/dashboard/all/editor/${template.id}`);
+                          navigate(`/v2/builder?template=${template.id}`);
                         }}
                       >
-                        Form Editor
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="shadow-lg text-xs h-7 px-3"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/dashboard/all/live-editor/${template.id}`);
-                        }}
-                      >
-                        Live Editor
+                        Use Template
                       </Button>
                     </div>
                   </div>
@@ -1031,7 +1024,7 @@ const Hero = () => {
             <div className="text-center">
               <Button 
                 className={cn(primaryButtonClass, "group")} 
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/v2")}
               >
                 <span>View All Templates</span>
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -1426,10 +1419,18 @@ const Hero = () => {
                               key={JSON.stringify(liveResumeData)}
                             >
                               <div id="hero-live-preview" ref={previewContentRef} className="w-[816px]">
-                                <ProfessionalTemplate
-                                  resumeData={liveResumeData}
-                                  themeColor="#3b82f6"
-                                />
+                                <StyleOptionsProvider>
+                                  <StyleOptionsWrapper>
+                                    <InlineEditProvider resumeData={liveResumeData as any} setResumeData={() => {}}>
+                                      <ResumeRenderer
+                                        resumeData={convertV1ToV2(liveResumeData)}
+                                        templateId="professional-blue-v2"
+                                        themeColor="#3b82f6"
+                                        editable={false}
+                                      />
+                                    </InlineEditProvider>
+                                  </StyleOptionsWrapper>
+                                </StyleOptionsProvider>
                               </div>
                             </div>
                           </div>
@@ -1444,8 +1445,8 @@ const Hero = () => {
             {/* Call to Action */}
             <div className="text-center mt-12">
               <div className="inline-flex flex-col sm:flex-row gap-3">
-                <Button className={primaryButtonClass} onClick={() => navigate("/dashboard")}>Start Creating Your Resume</Button>
-                <Button variant="outline" className={outlinePrimaryButtonClass} onClick={() => navigate("/dashboard")}>
+                <Button className={primaryButtonClass} onClick={() => navigate("/v2")}>Start Creating Your Resume</Button>
+                <Button variant="outline" className={outlinePrimaryButtonClass} onClick={() => navigate("/v2")}>
                   Explore All Templates
                 </Button>
               </div>
@@ -1555,13 +1556,18 @@ const Hero = () => {
                             key={JSON.stringify(liveResumeData)}
                           >
                             <div id="hero-live-editor-preview" ref={livePreviewContentRef} className="w-[816px]">
-                              <InlineEditProvider resumeData={liveResumeData} setResumeData={setLiveResumeData}>
-                                <ProfessionalTemplate
-                                  resumeData={liveResumeData}
-                                  themeColor="#059669"
-                                  editable={true}
-                                />
-                              </InlineEditProvider>
+                              <StyleOptionsProvider>
+                                <StyleOptionsWrapper>
+                                  <InlineEditProvider resumeData={liveResumeData} setResumeData={setLiveResumeData}>
+                                    <ResumeRenderer
+                                      resumeData={convertV1ToV2(liveResumeData)}
+                                      templateId="professional-blue-v2"
+                                      themeColor="#059669"
+                                      editable={true}
+                                    />
+                                  </InlineEditProvider>
+                                </StyleOptionsWrapper>
+                              </StyleOptionsProvider>
                             </div>
                           </div>
                         </div>
@@ -1610,7 +1616,7 @@ const Hero = () => {
               <div className="inline-flex flex-col sm:flex-row gap-3">
                 <Button
                   className={cn(buttonBaseClass, "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl group")}
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => navigate("/v2")}
                 >
                   <span>Try Live Editor Now</span>
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -1618,7 +1624,7 @@ const Hero = () => {
                 <Button
                   variant="outline"
                   className={cn(buttonBaseClass, "border border-emerald-600 text-emerald-600 hover:bg-emerald-50")}
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => navigate("/v2")}
                 >
                   View All Templates
                 </Button>
@@ -1727,14 +1733,14 @@ const Hero = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-              <Button className={cn(primaryButtonClass, "group")} onClick={() => navigate("/dashboard")}>
+              <Button className={cn(primaryButtonClass, "group")} onClick={() => navigate("/v2")}>
                 <span>Get Started Now</span>
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
                 variant="outline"
                 className={neutralButtonClass}
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/v2")}
               >
                 View Examples
               </Button>
