@@ -63,28 +63,47 @@ export function useScratchResume() {
       const existingSection = sections.find(s => s.type === type);
       if (existingSection) {
         // Update existing section instead of adding new one
+        const targetColumn = column || existingSection.column || 'main';
         setSections(prev => prev.map(s => 
           s.id === existingSection.id 
-            ? { ...s, variantId, column: column || s.column, order: type === 'header' ? 0 : s.order }
+            ? { ...s, variantId, column: targetColumn, order: type === 'header' ? 0 : s.order }
             : s
         ));
         return existingSection.id;
       }
     }
 
-    // Header should always be order 0, other sections follow
+    // Determine target column
+    const targetColumn = column || (selectedLayout?.mainSections.includes(type) 
+      ? 'main' 
+      : selectedLayout?.sidebarSections.includes(type)
+      ? 'sidebar'
+      : 'main'); // Default to main if not specified
+
+    // Calculate order based on existing sections in the target column
+    // Header should always be order 0
     const isHeader = type === 'header';
+    let newOrder: number;
+    
+    if (isHeader) {
+      newOrder = 0;
+    } else {
+      // Find the highest order in the target column
+      const columnSections = sections.filter(s => s.column === targetColumn && s.type !== 'header');
+      const maxOrder = columnSections.length > 0 
+        ? Math.max(...columnSections.map(s => s.order))
+        : -1;
+      // Place after the last section in that column
+      newOrder = maxOrder + 1;
+    }
+
     const newSection: ScratchSection = {
       id: isHeader ? 'header' : `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       type,
       variantId,
       enabled: true,
-      column: column || (selectedLayout?.mainSections.includes(type) 
-        ? 'main' 
-        : selectedLayout?.sidebarSections.includes(type)
-        ? 'sidebar'
-        : 'main'), // Default to main if not specified
-      order: isHeader ? 0 : sections.length,
+      column: targetColumn,
+      order: newOrder,
     };
 
     setSections(prev => [...prev, newSection]);
@@ -95,8 +114,26 @@ export function useScratchResume() {
   const removeSection = useCallback((sectionId: string) => {
     setSections(prev => {
       const filtered = prev.filter(s => s.id !== sectionId);
-      // Reorder remaining sections
-      return filtered.map((s, index) => ({ ...s, order: index }));
+      
+      // Separate header from other sections
+      const headerSection = filtered.find(s => s.type === 'header');
+      const otherSections = filtered.filter(s => s.type !== 'header');
+      
+      // Group by column and reorder within each column
+      const mainSections = otherSections
+        .filter(s => s.column === 'main')
+        .sort((a, b) => a.order - b.order)
+        .map((s, index) => ({ ...s, order: index + 1 }));
+      
+      const sidebarSections = otherSections
+        .filter(s => s.column === 'sidebar')
+        .sort((a, b) => a.order - b.order)
+        .map((s, index) => ({ ...s, order: index + 1 }));
+      
+      // Combine: header (order 0) + main + sidebar
+      return headerSection 
+        ? [headerSection, ...mainSections, ...sidebarSections]
+        : [...mainSections, ...sidebarSections];
     });
   }, []);
 

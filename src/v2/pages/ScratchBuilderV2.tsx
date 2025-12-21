@@ -19,9 +19,14 @@ import type { V2SectionType } from '../types/resumeData';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
 import type { SectionVariant } from '@/constants/sectionVariants';
 import { applyVariantDataToResume } from '../utils/variantDataApplier';
+import { resumeService } from '@/lib/firestore/resumeService';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { convertV2ToV1 } from '../utils/dataConverter';
+import { generateScratchConfig } from '../utils/scratchConfigGenerator';
 
 const ScratchBuilderV2: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useFirebaseAuth();
   const {
     resumeData,
     setResumeData,
@@ -72,13 +77,54 @@ const ScratchBuilderV2: React.FC = () => {
 
   // Handle save
   const handleSave = async () => {
+    if (!user) {
+      toast.error('Please sign in to save your resume');
+      navigate('/auth');
+      return;
+    }
+
+    if (sections.length === 0) {
+      toast.error('Please add at least one section before saving');
+      return;
+    }
+
     setIsSaving(true);
     try {
-      // TODO: Implement save to Firestore
+      // Convert V2ResumeData to V1 format for compatibility
+      const v1ResumeData = convertV2ToV1(resumeData);
+      
+      // Save resume with scratch-v2 template ID
+      const resumeId = await resumeService.createResume(
+        'scratch-v2',
+        v1ResumeData,
+        {
+          themeColor,
+          title: resumeData.personalInfo.fullName 
+            ? `${resumeData.personalInfo.fullName}'s Resume`
+            : `Resume - ${new Date().toLocaleDateString()}`,
+        }
+      );
+
+      // Store scratch builder metadata (sections, layout) for restoring state
+      // This allows us to restore the scratch builder state when loading
+      const config = generateScratchConfig(sections, selectedLayout, themeColor);
+      await resumeService.updateResume(resumeId, {
+        data: {
+          ...v1ResumeData,
+          // Store scratch builder metadata as part of data
+          // Note: This is a custom field that won't affect rendering
+          scratchBuilderMetadata: {
+            sections,
+            selectedLayoutId: selectedLayout?.id,
+            config,
+          },
+        } as any,
+      });
+
       toast.success('Resume saved successfully!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save resume:', error);
-      toast.error('Failed to save resume');
+      toast.error(error.message || 'Failed to save resume');
     } finally {
       setIsSaving(false);
     }
@@ -192,6 +238,7 @@ const ScratchBuilderV2: React.FC = () => {
                 selectedLayout={selectedLayout}
                 themeColor={themeColor}
                 onResumeDataChange={setResumeData}
+                onRemoveSection={removeSection}
               />
             </div>
           </div>

@@ -133,6 +133,8 @@ interface ResumeRendererProps {
   onRemoveCourse?: (id: string) => void;
   /** Additional className */
   className?: string;
+  /** Callback for removing a section (for scratch builder) */
+  onRemoveSection?: (sectionId: string) => void;
 }
 
 export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
@@ -141,6 +143,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   themeColor,
   sectionOverrides,
   editable = false,
+  onRemoveSection,
   sectionLabels,
   sectionOrder,
   enabledSections,
@@ -244,7 +247,11 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     const baseSections = config.sections.filter(s => {
       if (!isSectionEnabled(s.id)) return false;
       if (s.type === 'header') return false; // Header is rendered separately
-      if (column && s.column !== column) return false;
+      // Filter by column - for scratch builder, use the column from section config
+      if (column) {
+        const sectionColumn = s.column || 'main'; // Default to main if not specified
+        if (sectionColumn !== column) return false;
+      }
       // For scratch builder, only show sections that are explicitly enabled
       // Don't show empty sections
       if (s.enabled === false) return false;
@@ -326,15 +333,32 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       const style: React.CSSProperties = {
         pageBreakInside: 'avoid',
         breakInside: 'avoid',
+        position: 'relative',
       };
       if (pageBreakBefore) {
         style.pageBreakBefore = 'always';
         style.breakBefore = 'page';
       }
+      
+      // Add delete button for scratch builder
+      const deleteButton = editable && onRemoveSection && section.type !== 'header' ? (
+        <button
+          onClick={() => onRemoveSection(section.id)}
+          className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 bg-red-100 hover:bg-red-200 rounded-full shadow-sm z-10"
+          title="Delete section"
+          style={{ transition: 'opacity 0.2s' }}
+        >
+          <svg className="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      ) : null;
+      
       return (
         <>
           {pageBreakBefore && <div style={{ height: '24px' }} />}
-          <div data-section={type} style={style}>
+          <div data-section={type} className="group" style={style}>
+            {deleteButton}
             {node}
           </div>
         </>
@@ -370,6 +394,24 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'experience':
+        // Check if section has a variant - use variant renderer if variant exists
+        const experienceVariant = (section as any).variant;
+        if (experienceVariant) {
+          return wrap('experience',
+            <ExperienceSection
+              key={section.id}
+              items={resumeData.experience}
+              config={config}
+              editable={editable}
+              sectionTitle={title}
+              variantOverride={experienceVariant as any}
+              onAddBulletPoint={onAddBulletPoint}
+              onRemoveBulletPoint={onRemoveBulletPoint}
+              onAddExperience={onAddExperience}
+              onRemoveExperience={onRemoveExperience}
+            />
+          );
+        }
         return wrap('experience',
           <ExperienceSection
             key={section.id}
@@ -398,6 +440,20 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'skills':
+        // Check if section has a variant - use variant renderer if variant exists
+        const skillsVariant = (section as any).variant;
+        if (skillsVariant) {
+          return wrap('skills',
+            <SkillsSection
+              key={section.id}
+              items={resumeData.skills}
+              config={config}
+              editable={editable}
+              sectionTitle={title}
+              variantOverride={skillsVariant as any}
+            />
+          );
+        }
         return wrap('skills',
           <SkillsSection
             key={section.id}

@@ -86,16 +86,52 @@ export function applyVariantDataToResume(
       if (previewData.skills) {
         const skills = previewData.skills;
         if (Array.isArray(skills)) {
-          updatedData.skills = [
-            ...updatedData.skills,
-            ...skills.map((skill: any, index: number) => ({
-              id: `skill-${Date.now()}-${index}`,
-              name: typeof skill === 'string' ? skill : skill.name || String(skill),
-              level: typeof skill === 'object' && skill.level ? skill.level : undefined,
-              category: typeof skill === 'object' && skill.category ? skill.category : 'core',
-            })),
-          ];
+          updatedData.skills = skills.map((skill: any, index: number) => ({
+            id: `skill-${Date.now()}-${index}`,
+            name: typeof skill === 'string' ? skill : skill.name || String(skill),
+            level: typeof skill === 'object' && skill.level ? skill.level : undefined,
+            category: typeof skill === 'object' && skill.category ? skill.category : 'core',
+          }));
+        } else if (typeof skills === 'string') {
+          // Handle inline comma-separated skills
+          const skillNames = skills.split(',').map(s => s.trim()).filter(Boolean);
+          updatedData.skills = skillNames.map((name: string, index: number) => ({
+            id: `skill-${Date.now()}-${index}`,
+            name,
+            category: 'core',
+          }));
         }
+      } else if (previewData.skillGroups) {
+        // Handle grouped skills
+        const allSkills: any[] = [];
+        previewData.skillGroups.forEach((group: any) => {
+          if (Array.isArray(group.skills)) {
+            group.skills.forEach((skillName: string, index: number) => {
+              allSkills.push({
+                id: `skill-${Date.now()}-${group.category}-${index}`,
+                name: skillName,
+                category: group.category || 'core',
+              });
+            });
+          }
+        });
+        updatedData.skills = allSkills;
+      }
+      break;
+
+    case 'experience':
+      // Apply experience variant data
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.experience = previewData.items.map((item: any, index: number) => ({
+          id: `exp-${Date.now()}-${index}`,
+          company: item.company || 'Company Name',
+          position: item.position || 'Job Title',
+          location: item.location || '',
+          startDate: item.startDate || '',
+          endDate: item.endDate || 'Present',
+          description: item.description || '',
+          bulletPoints: item.bulletPoints || item.description || [],
+        }));
       }
       break;
 

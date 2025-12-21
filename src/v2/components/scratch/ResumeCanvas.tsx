@@ -23,6 +23,7 @@ interface ResumeCanvasProps {
   selectedLayout: ScratchLayout | null;
   themeColor: string;
   onResumeDataChange: (data: V2ResumeData) => void;
+  onRemoveSection: (sectionId: string) => void;
 }
 
 export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
@@ -31,6 +32,7 @@ export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
   selectedLayout,
   themeColor,
   onResumeDataChange,
+  onRemoveSection,
 }) => {
   // Generate config from sections
   const generatedConfig = React.useMemo(() => {
@@ -106,6 +108,7 @@ export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
                 return overrides;
               })()}
               editable={true}
+              onRemoveSection={onRemoveSection}
             />
           </InlineEditProvider>
         </StyleOptionsWrapper>

@@ -21,6 +21,8 @@ import { cn } from '@/lib/utils';
 import { getSectionVariants, type SectionVariant } from '@/constants/sectionVariants';
 import { SummaryVariantPreview } from './variants/SummaryVariantPreview';
 import { HeaderVariantPreview } from './variants/HeaderVariantPreview';
+import { SkillsVariantPreview } from './variants/SkillsVariantPreview';
+import { ExperienceVariantPreview } from './variants/ExperienceVariantPreview';
 import type { V2SectionType } from '../../types/resumeData';
 import type { ScratchLayout } from '../../config/scratchLayouts';
 
@@ -194,7 +196,17 @@ export const SectionVariantModal: React.FC<SectionVariantModalProps> = ({
                       <HeaderVariantPreview variant={variant} />
                     </div>
                   )}
-                  {sectionType !== 'summary' && sectionType !== 'header' && (
+                  {sectionType === 'skills' && (
+                    <div className="w-full transform group-hover:scale-[1.02] transition-transform duration-300">
+                      <SkillsVariantPreview variant={variant} />
+                    </div>
+                  )}
+                  {sectionType === 'experience' && (
+                    <div className="w-full transform group-hover:scale-[1.02] transition-transform duration-300">
+                      <ExperienceVariantPreview variant={variant} />
+                    </div>
+                  )}
+                  {sectionType !== 'summary' && sectionType !== 'header' && sectionType !== 'skills' && sectionType !== 'experience' && (
                     <div className="text-center text-muted-foreground text-sm">
                       Preview coming soon
                     </div>

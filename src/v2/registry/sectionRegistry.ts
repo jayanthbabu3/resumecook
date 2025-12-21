@@ -281,7 +281,7 @@ export const SECTION_REGISTRY: Record<V2SectionType, SectionDefinition> = {
       { id: 'two-column-dates', name: 'Two Column', description: 'Dates on left, content on right' },
     ],
     defaultVariant: 'standard',
-    allowMultiple: true,
+    allowMultiple: false, // Only one experience section allowed in scratch builder
     minItems: 0,
     isDefault: true,
     category: 'core',
@@ -380,7 +380,7 @@ export const SECTION_REGISTRY: Record<V2SectionType, SectionDefinition> = {
       { id: 'inline', name: 'Inline', description: 'Inline text with separator' },
     ],
     defaultVariant: 'pills',
-    allowMultiple: true,
+    allowMultiple: false, // Only one skills section allowed in scratch builder
     minItems: 0,
     isDefault: true,
     category: 'core',

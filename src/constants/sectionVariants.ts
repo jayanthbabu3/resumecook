@@ -230,151 +230,128 @@ export const SUMMARY_VARIANTS: SectionVariant[] = [
 // ==================== SKILLS VARIANTS (10) ====================
 export const SKILLS_VARIANTS: SectionVariant[] = [
   {
-    id: 'skill-pills',
-    name: 'Skill Pills',
-    description: 'Horizontal chips with modern pill design',
+    id: 'pills',
+    name: 'Pills',
+    description: 'Rounded pill badges in a flowing horizontal layout. Modern and clean.',
     type: 'skills',
     previewData: {
       title: 'Technical Skills',
-      skills: [
-        'React',
-        'TypeScript',
-        'Node.js',
-        'Python',
-        'AWS',
-        'Docker',
-        'PostgreSQL',
-        'Git'
-      ],
-      style: 'pills'
+      variant: 'pills',
+      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker', 'PostgreSQL', 'Git']
     }
   },
   {
-    id: 'skill-list',
-    name: 'Vertical List',
-    description: 'Clean vertical list with optional proficiency levels',
-    type: 'skills',
-    previewData: {
-      title: 'Skills',
-      skills: [
-        { name: 'React & TypeScript', level: 'Expert' },
-        { name: 'Node.js & Express', level: 'Advanced' },
-        { name: 'Python & Django', level: 'Intermediate' },
-        { name: 'AWS & Cloud Infrastructure', level: 'Advanced' }
-      ],
-      style: 'list'
-    }
-  },
-  {
-    id: 'skill-inline',
-    name: 'Comma Separated',
-    description: 'Space-efficient inline format with comma separation',
+    id: 'bars',
+    name: 'Progress Bars',
+    description: 'Visual progress bars showing proficiency levels. Professional and detailed.',
     type: 'skills',
     previewData: {
       title: 'Core Competencies',
-      skills: 'JavaScript, React, TypeScript, Node.js, Python, AWS, Docker, Kubernetes, PostgreSQL, MongoDB, Git, CI/CD',
-      style: 'inline'
-    }
-  },
-  {
-    id: 'skill-grouped',
-    name: 'Grouped Categories',
-    description: 'Skills organized by categories with subheadings',
-    type: 'skills',
-    previewData: {
-      title: 'Technical Expertise',
-      skillGroups: [
-        {
-          category: 'Frontend',
-          skills: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js']
-        },
-        {
-          category: 'Backend',
-          skills: ['Node.js', 'Python', 'PostgreSQL', 'Redis']
-        },
-        {
-          category: 'DevOps',
-          skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD']
-        }
-      ],
-      style: 'grouped'
-    }
-  },
-  {
-    id: 'skill-bars',
-    name: 'Skill Bars',
-    description: 'Visual representation with proficiency bars',
-    type: 'skills',
-    previewData: {
-      title: 'Skills & Proficiency',
+      variant: 'bars',
       skills: [
-        { name: 'React & Frontend', level: 90 },
-        { name: 'Node.js & Backend', level: 85 },
-        { name: 'Cloud & DevOps', level: 75 },
-        { name: 'Database Design', level: 80 }
-      ],
-      style: 'bars'
+        { name: 'React & TypeScript', level: 5 },
+        { name: 'Node.js', level: 4 },
+        { name: 'Python', level: 4 },
+        { name: 'AWS', level: 3 }
+      ]
     }
   },
   {
-    id: 'skill-grid',
-    name: 'Grid Layout',
-    description: 'Multi-column grid for clean organization',
-    type: 'skills',
-    previewData: {
-      title: 'Technical Skills',
-      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker', 'PostgreSQL', 'Git', 'Kubernetes', 'GraphQL', 'Redis', 'Jenkins'],
-      style: 'grid'
-    }
-  },
-  {
-    id: 'skill-rating',
-    name: 'Star Rating',
-    description: 'Visual star ratings for skill proficiency',
-    type: 'skills',
-    previewData: {
-      title: 'Core Skills',
-      skills: [
-        { name: 'JavaScript/TypeScript', rating: 5 },
-        { name: 'React & Next.js', rating: 5 },
-        { name: 'Node.js & APIs', rating: 4 },
-        { name: 'Cloud & DevOps', rating: 4 }
-      ],
-      style: 'rating'
-    }
-  },
-  {
-    id: 'skill-two-column',
-    name: 'Two-Column Split',
-    description: 'Technical and soft skills in two columns',
-    type: 'skills',
-    previewData: {
-      title: 'Skills Overview',
-      technical: ['React', 'TypeScript', 'Node.js', 'AWS', 'Docker'],
-      soft: ['Leadership', 'Communication', 'Problem Solving', 'Agile'],
-      style: 'two-column'
-    }
-  },
-  {
-    id: 'skill-minimal',
-    name: 'Minimal List',
-    description: 'Clean bullet list without extra styling',
+    id: 'columns',
+    name: 'Two Column',
+    description: 'Skills displayed in two side-by-side columns. Space-efficient and organized.',
     type: 'skills',
     previewData: {
       title: 'Skills',
-      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker'],
-      style: 'minimal'
+      variant: 'columns',
+      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker', 'PostgreSQL', 'Git'],
+      columns: 2
     }
   },
   {
-    id: 'skill-badges',
-    name: 'Skill Badges',
-    description: 'Badge-style with icons and borders',
+    id: 'tags',
+    name: 'Badges',
+    description: 'Square badges with subtle borders. Clean and professional.',
     type: 'skills',
     previewData: {
-      title: 'Technical Proficiencies',
-      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker'],
-      style: 'badges'
+      title: 'Technical Skills',
+      variant: 'tags',
+      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker']
+    }
+  },
+  {
+    id: 'ratings',
+    name: 'Star Ratings',
+    description: 'Skills with star ratings (1-5). Visual and easy to understand.',
+    type: 'skills',
+    previewData: {
+      title: 'Proficiency',
+      variant: 'dots',
+      skills: [
+        { name: 'React', level: 5 },
+        { name: 'TypeScript', level: 4 },
+        { name: 'Node.js', level: 4 },
+        { name: 'Python', level: 3 }
+      ]
+    }
+  },
+  {
+    id: 'bullets',
+    name: 'Bullet Points',
+    description: 'Clean vertical list with bullet points. Simple and ATS-friendly.',
+    type: 'skills',
+    previewData: {
+      title: 'Skills',
+      variant: 'list',
+      skills: ['React & TypeScript', 'Node.js & Express', 'Python & Django', 'AWS & Cloud Infrastructure']
+    }
+  },
+  {
+    id: 'inline',
+    name: 'Inline Comma',
+    description: 'Comma-separated inline format. Space-efficient and traditional.',
+    type: 'skills',
+    previewData: {
+      title: 'Core Competencies',
+      variant: 'inline',
+      skills: 'JavaScript, React, TypeScript, Node.js, Python, AWS, Docker, Kubernetes'
+    }
+  },
+  {
+    id: 'grouped',
+    name: 'Grouped by Category',
+    description: 'Skills organized by categories with clear headings. Structured and professional.',
+    type: 'skills',
+    previewData: {
+      title: 'Technical Expertise',
+      variant: 'grouped',
+      skillGroups: [
+        { category: 'Frontend', skills: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js'] },
+        { category: 'Backend', skills: ['Node.js', 'Python', 'Express', 'Django'] }
+      ]
+    }
+  },
+  {
+    id: 'modern',
+    name: 'Modern Cards',
+    description: 'Modern card-style layout with icons. Contemporary and eye-catching.',
+    type: 'skills',
+    previewData: {
+      title: 'Skills',
+      variant: 'modern',
+      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker']
+    }
+  },
+  {
+    id: 'compact-grid',
+    name: 'Compact Grid',
+    description: 'Dense grid layout maximizing space. Perfect for extensive skill lists.',
+    type: 'skills',
+    previewData: {
+      title: 'Technical Skills',
+      variant: 'columns',
+      skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker', 'PostgreSQL', 'Git', 'Kubernetes', 'MongoDB'],
+      columns: 3
     }
   }
 ];
@@ -382,176 +359,183 @@ export const SKILLS_VARIANTS: SectionVariant[] = [
 // ==================== EXPERIENCE VARIANTS (10) ====================
 export const EXPERIENCE_VARIANTS: SectionVariant[] = [
   {
-    id: 'experience-classic',
-    name: 'Classic Timeline',
-    description: 'Traditional format with company-first layout',
+    id: 'timeline',
+    name: 'Timeline with Dots',
+    description: 'Visual timeline with connecting dots and vertical line. Shows career progression clearly.',
     type: 'experience',
     previewData: {
-      title: 'Work Experience',
+      title: 'Experience',
+      variant: 'timeline',
       items: [{
         company: 'Tech Corp',
         position: 'Senior Software Engineer',
         location: 'San Francisco, CA',
-        startDate: '2020',
+        startDate: '2020-01',
         endDate: 'Present',
-        description: ['Led development of cloud-based microservices', 'Mentored 3 junior developers']
-      }],
-      style: 'classic'
+        bulletPoints: ['Led development of cloud-based microservices', 'Mentored 3 junior developers', 'Improved system performance by 40%']
+      }]
     }
   },
   {
-    id: 'experience-modern',
-    name: 'Modern Card',
-    description: 'Card-based design with visual separation',
+    id: 'cards',
+    name: 'Card Layout',
+    description: 'Each experience in a distinct card with border. Modern and organized.',
     type: 'experience',
     previewData: {
       title: 'Professional Experience',
-      items: [{
-        company: 'Tech Corp',
-        position: 'Senior Software Engineer',
-        startDate: '2020',
-        endDate: 'Present',
-        description: ['Built scalable APIs serving 1M+ users', 'Reduced deployment time by 60%']
-      }],
-      style: 'modern'
-    }
-  },
-  {
-    id: 'experience-minimal',
-    name: 'Minimal Clean',
-    description: 'Minimalist design with essential information',
-    type: 'experience',
-    previewData: {
-      title: 'Experience',
-      items: [{
-        company: 'Tech Corp',
-        position: 'Senior Software Engineer',
-        startDate: '2020',
-        endDate: 'Present',
-        description: ['Cloud architecture', 'Team leadership']
-      }],
-      style: 'minimal'
-    }
-  },
-  {
-    id: 'experience-detailed',
-    name: 'Detailed Format',
-    description: 'Comprehensive format with location and achievements',
-    type: 'experience',
-    previewData: {
-      title: 'Work History',
+      variant: 'cards',
       items: [{
         company: 'Tech Corp',
         position: 'Senior Software Engineer',
         location: 'San Francisco, CA',
-        startDate: '2020',
+        startDate: '2020-01',
         endDate: 'Present',
-        description: ['Architected microservices platform', 'Improved system reliability to 99.9%', 'Led team of 5 engineers']
-      }],
-      style: 'detailed'
+        bulletPoints: ['Built scalable APIs serving 1M+ users', 'Reduced deployment time by 60%']
+      }]
     }
   },
   {
-    id: 'experience-timeline',
-    name: 'Visual Timeline',
-    description: 'Timeline with visual connectors and dots',
-    type: 'experience',
-    previewData: {
-      title: 'Career Timeline',
-      items: [{
-        company: 'Tech Corp',
-        position: 'Senior Software Engineer',
-        startDate: '2020',
-        endDate: 'Present',
-        description: ['Cloud infrastructure', 'Team leadership']
-      }],
-      style: 'timeline'
-    }
-  },
-  {
-    id: 'experience-compact',
-    name: 'Compact View',
-    description: 'Space-efficient single-line format',
-    type: 'experience',
-    previewData: {
-      title: 'Experience',
-      items: [{
-        company: 'Tech Corp',
-        position: 'Senior Software Engineer',
-        startDate: '2020',
-        endDate: 'Present',
-        description: ['Led cloud migration', 'Mentored developers']
-      }],
-      style: 'compact'
-    }
-  },
-  {
-    id: 'experience-boxed',
-    name: 'Boxed Layout',
-    description: 'Each position in a distinct box with border',
-    type: 'experience',
-    previewData: {
-      title: 'Professional Background',
-      items: [{
-        company: 'Tech Corp',
-        position: 'Senior Software Engineer',
-        startDate: '2020',
-        endDate: 'Present',
-        description: ['Full-stack development', 'Cloud architecture']
-      }],
-      style: 'boxed'
-    }
-  },
-  {
-    id: 'experience-achievement',
-    name: 'Achievement-Focused',
-    description: 'Emphasizes achievements with visual markers',
-    type: 'experience',
-    previewData: {
-      title: 'Key Achievements',
-      items: [{
-        company: 'Tech Corp',
-        position: 'Senior Software Engineer',
-        startDate: '2020',
-        endDate: 'Present',
-        description: ['★ Reduced costs by 40%', '★ Deployed 50+ features', '★ Led team of 5']
-      }],
-      style: 'achievement'
-    }
-  },
-  {
-    id: 'experience-sidebar',
-    name: 'Sidebar Timeline',
-    description: 'Dates in sidebar with colored accent line',
+    id: 'left-border',
+    name: 'Left Border Highlight',
+    description: 'Left colored border accent. Clean and professional with visual emphasis.',
     type: 'experience',
     previewData: {
       title: 'Work Experience',
-      items: [{
-        company: 'Tech Corp',
-        position: 'Senior Software Engineer',
-        startDate: '2020',
-        endDate: 'Present',
-        description: ['Cloud architecture', 'Team leadership']
-      }],
-      style: 'sidebar'
-    }
-  },
-  {
-    id: 'experience-executive',
-    name: 'Executive Format',
-    description: 'Premium format for senior positions',
-    type: 'experience',
-    previewData: {
-      title: 'EXECUTIVE EXPERIENCE',
+      variant: 'left-border',
       items: [{
         company: 'Tech Corp',
         position: 'Senior Software Engineer',
         location: 'San Francisco, CA',
-        startDate: '2020',
+        startDate: '2020-01',
         endDate: 'Present',
-        description: ['Strategic leadership in cloud transformation', 'Managed $2M budget and 10-person team']
-      }],
-      style: 'executive'
+        bulletPoints: ['Architected microservices platform', 'Improved system reliability to 99.9%']
+      }]
+    }
+  },
+  {
+    id: 'dates-left',
+    name: 'Dates on Left',
+    description: 'Dates positioned on the left column. Traditional and ATS-friendly.',
+    type: 'experience',
+    previewData: {
+      title: 'Experience',
+      variant: 'dates-left',
+      items: [{
+        company: 'Tech Corp',
+        position: 'Senior Software Engineer',
+        location: 'San Francisco, CA',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: ['Led cloud migration project', 'Mentored team of developers']
+      }]
+    }
+  },
+  {
+    id: 'dates-right',
+    name: 'Dates on Right',
+    description: 'Dates aligned to the right. Space-efficient and modern.',
+    type: 'experience',
+    previewData: {
+      title: 'Professional Background',
+      variant: 'dates-right',
+      items: [{
+        company: 'Tech Corp',
+        position: 'Senior Software Engineer',
+        location: 'San Francisco, CA',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: ['Full-stack development', 'Cloud architecture design']
+      }]
+    }
+  },
+  {
+    id: 'standard',
+    name: 'Standard Format',
+    description: 'Classic format with position, company, and bullet points. Traditional and clear.',
+    type: 'experience',
+    previewData: {
+      title: 'Experience',
+      variant: 'standard',
+      items: [{
+        company: 'Tech Corp',
+        position: 'Senior Software Engineer',
+        location: 'San Francisco, CA',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: ['Led development of cloud-based microservices', 'Mentored 3 junior developers']
+      }]
+    }
+  },
+  {
+    id: 'compact',
+    name: 'Compact View',
+    description: 'Space-efficient single-line format. Perfect for extensive experience lists.',
+    type: 'experience',
+    previewData: {
+      title: 'Experience',
+      variant: 'compact',
+      items: [{
+        company: 'Tech Corp',
+        position: 'Senior Software Engineer',
+        location: 'San Francisco, CA',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: ['Led cloud migration', 'Mentored developers']
+      }]
+    }
+  },
+  {
+    id: 'modern',
+    name: 'Modern Style',
+    description: 'Contemporary design with enhanced spacing and typography. Eye-catching and professional.',
+    type: 'experience',
+    previewData: {
+      title: 'Professional Experience',
+      variant: 'modern',
+      items: [{
+        company: 'Tech Corp',
+        position: 'Senior Software Engineer',
+        location: 'San Francisco, CA',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: ['Built scalable APIs serving 1M+ users', 'Reduced deployment time by 60%']
+      }]
+    }
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal Clean',
+    description: 'Essential information only. Ultra-clean and minimalist design.',
+    type: 'experience',
+    previewData: {
+      title: 'Experience',
+      variant: 'minimal',
+      items: [{
+        company: 'Tech Corp',
+        position: 'Senior Software Engineer',
+        location: 'San Francisco, CA',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: ['Cloud architecture', 'Team leadership']
+      }]
+    }
+  },
+  {
+    id: 'detailed',
+    name: 'Detailed Format',
+    description: 'Comprehensive layout with all details. Perfect for showcasing achievements.',
+    type: 'experience',
+    previewData: {
+      title: 'Work Experience',
+      variant: 'detailed',
+      items: [{
+        company: 'Tech Corp',
+        position: 'Senior Software Engineer',
+        location: 'San Francisco, CA',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: ['Architected microservices platform', 'Improved system reliability to 99.9%', 'Led team of 5 engineers']
+      }]
     }
   }
 ];

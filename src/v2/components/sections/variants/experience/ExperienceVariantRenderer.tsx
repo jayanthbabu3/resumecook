@@ -55,6 +55,8 @@ export const ExperienceVariantRenderer: React.FC<ExperienceVariantRendererProps>
   // Dispatch based on variant
   switch (variant) {
     case 'standard':
+    case 'dates-right':
+      // dates-right uses standard layout with dates on right
       return <ExperienceStandard {...props} />;
     case 'compact':
       return <ExperienceCompact {...props} />;
@@ -63,10 +65,15 @@ export const ExperienceVariantRenderer: React.FC<ExperienceVariantRendererProps>
     case 'cards':
       return <ExperienceCards {...props} />;
     case 'modern':
+    case 'left-border':
+      // left-border uses modern style with left accent
       return <ExperienceModern {...props} />;
     case 'minimal':
       return <ExperienceMinimal {...props} />;
     case 'detailed':
+    case 'dates-left':
+      // dates-left uses detailed format with dates on left
+      return <ExperienceStandard {...props} />;
     case 'academic':
     case 'creative':
     default:

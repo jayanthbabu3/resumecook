@@ -33,5 +33,8 @@ export type ExperienceVariant =
   | 'cards'         // Card-based layout
   | 'minimal'       // Ultra-minimal text only
   | 'modern'        // Modern with accent borders
+  | 'left-border'   // Left colored border accent
+  | 'dates-left'    // Dates on left column
+  | 'dates-right'   // Dates on right side
   | 'academic'      // Academic/research focused
   | 'creative';     // Creative industry style

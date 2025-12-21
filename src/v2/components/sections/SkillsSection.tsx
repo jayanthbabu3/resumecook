@@ -53,7 +53,14 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
 
   // Render based on variant
   const renderSkills = () => {
-    if (variant === 'category-lines') {
+    // Variants that should use SkillsVariantRenderer
+    const variantRendererVariants: SkillsVariant[] = [
+      'bars', 'dots', 'grouped', 'columns', 'category-lines', 
+      'modern', 'detailed', 'list', 'compact', 'radar'
+    ];
+
+    // Use SkillsVariantRenderer for supported variants
+    if (variant && variantRendererVariants.includes(variant as SkillsVariant)) {
       return (
         <SkillsVariantRenderer
           variant={variant as SkillsVariant}
@@ -84,25 +91,39 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
         />
       );
     }
-
-    // Handle columns variant - use SkillsColumns component
-    if (variant === 'columns') {
-      return (
-        <SkillsColumns
-          items={items}
-          config={config}
-          accentColor={accent}
-          editable={editable}
-          columns={skills.columns || 2}
-        />
-      );
-    }
     
     // Map v2 variants to existing InlineEditableSkills variants
-    const editableVariant = variant === 'pills' ? 'pill' : variant === 'tags' ? 'tag' : 'badge';
+    // For pills and tags, use SkillsVariantRenderer if available, otherwise fallback to InlineEditableSkills
+    if (variant === 'pills' || variant === 'tags') {
+      // Try to use SkillsVariantRenderer first
+      try {
+        return (
+          <SkillsVariantRenderer
+            variant={variant as SkillsVariant}
+            items={items}
+            config={config}
+            accentColor={accent}
+            editable={editable}
+          />
+        );
+      } catch {
+        // Fallback to InlineEditableSkills
+        const editableVariant = variant === 'pills' ? 'pill' : 'tag';
+        return (
+          <InlineEditableSkills
+            skills={skillStrings}
+            editable={editable}
+            themeColor={accent}
+            variant={editableVariant}
+            path="skills"
+            fontSize={typography.body.fontSize || '12px'}
+          />
+        );
+      }
+    }
     
-    // Always use InlineEditableSkills for consistency between live and form editor
-    // It handles both editable and non-editable modes with proper styling
+    // Default: use InlineEditableSkills for consistency
+    const editableVariant = variant === 'pills' ? 'pill' : variant === 'tags' ? 'tag' : 'badge';
     return (
       <InlineEditableSkills
         skills={skillStrings}

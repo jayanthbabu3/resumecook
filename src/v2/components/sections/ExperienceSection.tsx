@@ -19,6 +19,7 @@ import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import { Plus, X } from 'lucide-react';
 import { useStyleOptions } from '@/contexts/StyleOptionsContext';
+import { ExperienceVariantRenderer } from './variants/experience/ExperienceVariantRenderer';
 
 interface ExperienceSectionProps {
   items: ExperienceItem[];
@@ -632,6 +633,40 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
       </div>
     );
   };
+
+  // Use ExperienceVariantRenderer for supported variants
+  const variantRendererVariants: ExperienceVariant[] = [
+    'timeline', 'cards', 'standard', 'compact', 'modern', 'minimal', 'detailed',
+    'left-border', 'dates-left', 'dates-right'
+  ];
+
+  // If variant is specified and supported, use ExperienceVariantRenderer
+  if (variant && variantRendererVariants.includes(variant)) {
+    return (
+      <section style={{ marginBottom: spacing.sectionGap }}>
+        <SectionHeading
+          title={sectionTitle}
+          config={config}
+          editable={editable}
+          accentColor={accent}
+        />
+        <div style={{ marginTop: spacing.headingToContent }}>
+          <ExperienceVariantRenderer
+            variant={variant}
+            items={items}
+            config={config}
+            accentColor={accent}
+            editable={editable}
+            onAddBulletPoint={onAddBulletPoint}
+            onRemoveBulletPoint={onRemoveBulletPoint}
+            onAddExperience={onAddExperience}
+            onRemoveExperience={onRemoveExperience}
+            formatDate={formatDate}
+          />
+        </div>
+      </section>
+    );
+  }
 
   if (!items.length && !editable) return null;
 

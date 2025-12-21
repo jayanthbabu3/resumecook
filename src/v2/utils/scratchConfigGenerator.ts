@@ -79,6 +79,12 @@ export function generateScratchConfig(
     order: 0,
   };
 
+  // Find skills and experience sections to set variants
+  const skillsSection = sections.find(s => s.type === 'skills' && s.enabled);
+  const skillsVariantId = skillsSection?.variantId;
+  const experienceSection = sections.find(s => s.type === 'experience' && s.enabled);
+  const experienceVariantId = experienceSection?.variantId;
+
   // Merge with base config - use only scratch sections
   const config: TemplateConfig = {
     ...baseConfig,
@@ -104,6 +110,16 @@ export function generateScratchConfig(
       ...baseConfig.header,
       variant: headerSection.variantId as any, // Use header variant
     } : baseConfig.header,
+    // Update skills config if skills variant is specified
+    skills: skillsVariantId ? {
+      ...baseConfig.skills,
+      variant: skillsVariantId as any, // Use skills variant
+    } : baseConfig.skills,
+    // Update experience config if experience variant is specified
+    experience: experienceVariantId ? {
+      ...baseConfig.experience,
+      variant: experienceVariantId as any, // Use experience variant
+    } : baseConfig.experience,
   };
 
   return config;
