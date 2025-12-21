@@ -48,14 +48,33 @@ export function useTemplateConfig({
     if (sectionOverrides) {
       const existingIds = new Set(result.sections.map(s => s.id));
       
-      // First apply overrides to existing sections
+      // First apply overrides to existing sections and disable by type if needed
       let sections = result.sections.map(section => {
         const override = sectionOverrides[section.id];
-        return override ? { ...section, ...override } : section;
+        // Check if this section type should be disabled
+        const disableTypeKey = `__disable_type_${section.type}`;
+        const shouldDisable = sectionOverrides[disableTypeKey];
+        if (shouldDisable) {
+          return { ...section, enabled: false };
+        }
+        // If override exists, use it; otherwise disable the section (for scratch builder)
+        // This ensures only explicitly added sections are shown
+        if (override) {
+          return { ...section, ...override };
+        }
+        // For scratch builder, disable base sections that aren't overridden
+        // Check if we're in scratch builder mode (has __disable_type keys)
+        const hasDisableKeys = Object.keys(sectionOverrides).some(k => k.startsWith('__disable_type_'));
+        if (hasDisableKeys) {
+          return { ...section, enabled: false };
+        }
+        return section;
       });
       
       // Then append any new sections that are not in base config
       Object.entries(sectionOverrides).forEach(([id, override]) => {
+        // Skip special disable keys and header variant key
+        if (id.startsWith('__disable_type_') || id === '__header_variant') return;
         if (!existingIds.has(id)) {
           const order =
             typeof override.order === 'number'
@@ -79,6 +98,17 @@ export function useTemplateConfig({
 
       // Sort by order to keep deterministic rendering
       sections = sections.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+      // Apply header variant if provided in overrides
+      if (sectionOverrides['__header_variant']) {
+        result = {
+          ...result,
+          header: {
+            ...result.header,
+            variant: sectionOverrides['__header_variant'],
+          },
+        };
+      }
 
       result = {
         ...result,

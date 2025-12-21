@@ -150,3 +150,17 @@ All colors MUST be HSL.
 .group:hover .group-hover\:animate-spin-slow {
   animation: spin-slow 2s linear infinite;
 }
+
+/* Float animation for hero elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}

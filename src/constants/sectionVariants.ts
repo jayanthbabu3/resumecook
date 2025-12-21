@@ -2,9 +2,106 @@ export interface SectionVariant {
   id: string;
   name: string;
   description: string;
-  type: 'summary' | 'skills' | 'experience' | 'education' | 'projects' | 'certifications' | 'languages' | 'interests' | 'references' | 'achievements' | 'publications' | 'volunteer' | 'awards' | 'courses' | 'speaking' | 'patents' | 'portfolio';
+  type: 'header' | 'summary' | 'skills' | 'experience' | 'education' | 'projects' | 'certifications' | 'languages' | 'interests' | 'references' | 'achievements' | 'publications' | 'volunteer' | 'awards' | 'courses' | 'speaking' | 'patents' | 'portfolio';
   previewData: any;
 }
+
+// ==================== HEADER VARIANTS (7) ====================
+export const HEADER_VARIANTS: SectionVariant[] = [
+  {
+    id: 'centered',
+    name: 'Centered Header',
+    description: 'Name centered with contact info below. Clean and professional.',
+    type: 'header',
+    previewData: {
+      title: 'Centered',
+      layout: 'centered',
+      backgroundColor: 'transparent',
+      padding: 'normal',
+      fullWidth: false,
+    }
+  },
+  {
+    id: 'left-aligned',
+    name: 'Left Aligned Header',
+    description: 'Name on left, contact on right. Traditional and ATS-friendly.',
+    type: 'header',
+    previewData: {
+      title: 'Left Aligned',
+      layout: 'left-aligned',
+      backgroundColor: 'transparent',
+      padding: 'normal',
+      fullWidth: false,
+    }
+  },
+  {
+    id: 'banner',
+    name: 'Banner Header',
+    description: 'Full-width colored banner with name and contact. Bold and modern.',
+    type: 'header',
+    previewData: {
+      title: 'Banner',
+      layout: 'banner',
+      backgroundColor: 'primary',
+      padding: 'large',
+      fullWidth: true,
+    }
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal Header',
+    description: 'Just name and title. Ultra-clean and minimalist.',
+    type: 'header',
+    previewData: {
+      title: 'Minimal',
+      layout: 'minimal',
+      backgroundColor: 'transparent',
+      padding: 'small',
+      fullWidth: false,
+    }
+  },
+  {
+    id: 'split',
+    name: 'Split Header',
+    description: 'Name left, contact in columns. Organized and structured.',
+    type: 'header',
+    previewData: {
+      title: 'Split',
+      layout: 'split',
+      backgroundColor: 'transparent',
+      padding: 'normal',
+      fullWidth: false,
+    }
+  },
+  {
+    id: 'photo-left',
+    name: 'Photo Left Header',
+    description: 'Photo on left, name and contact on right. Professional with visual appeal.',
+    type: 'header',
+    previewData: {
+      title: 'Photo Left',
+      layout: 'photo-left',
+      backgroundColor: 'transparent',
+      padding: 'normal',
+      fullWidth: false,
+      showPhoto: true,
+    }
+  },
+  {
+    id: 'photo-right',
+    name: 'Photo Right Header',
+    description: 'Photo on right, name and contact on left. Modern and balanced.',
+    type: 'header',
+    previewData: {
+      title: 'Photo Right',
+      layout: 'photo-right',
+      backgroundColor: 'transparent',
+      padding: 'normal',
+      fullWidth: false,
+      showPhoto: true,
+    }
+  },
+];
 
 // ==================== SUMMARY VARIANTS (10) ====================
 export const SUMMARY_VARIANTS: SectionVariant[] = [
@@ -2084,6 +2181,7 @@ export const PORTFOLIO_VARIANTS: SectionVariant[] = [
 ];
 
 export const SECTION_VARIANTS_MAP = {
+  header: HEADER_VARIANTS,
   summary: SUMMARY_VARIANTS,
   skills: SKILLS_VARIANTS,
   experience: EXPERIENCE_VARIANTS,

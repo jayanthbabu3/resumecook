@@ -31,6 +31,7 @@ import {
   ReferencesSection,
   CoursesSection,
 } from './sections';
+import { SummaryVariantRenderer } from './sections/variants/summary/SummaryVariantRenderer';
 import { Target, Award, Star, Zap, Trophy, CheckCircle2 } from 'lucide-react';
 
 // Icon mapping for different section types
@@ -181,11 +182,16 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   className = '',
 }) => {
   // Get template configuration
-  const { config, getEnabledSections } = useTemplateConfig({
+  // For scratch builder, use the generated config directly
+  const templateConfigHook = useTemplateConfig({
     templateId,
     themeColor,
     sectionOverrides,
   });
+  
+  // If templateId is 'scratch-v2', we need to use a custom config
+  // Otherwise use the hook result
+  const { config, getEnabledSections } = templateConfigHook;
 
   const { layout, spacing, colors, fontFamily } = config;
 
@@ -234,11 +240,14 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
   // Get sections in order, including any custom sections present only in resumeData
   const getOrderedSections = (column?: 'main' | 'sidebar'): SectionConfig[] => {
-    // Base sections from template config
+    // Base sections from template config - only include enabled sections
     const baseSections = config.sections.filter(s => {
       if (!isSectionEnabled(s.id)) return false;
       if (s.type === 'header') return false; // Header is rendered separately
       if (column && s.column !== column) return false;
+      // For scratch builder, only show sections that are explicitly enabled
+      // Don't show empty sections
+      if (s.enabled === false) return false;
       return true;
     });
 
@@ -334,6 +343,22 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
     switch (section.type) {
       case 'summary':
+        // Check if section has a variant - use variant renderer if variant exists
+        const summaryVariant = (section as any).variant;
+        if (summaryVariant) {
+          // Always use variant renderer if variant is specified (even if 'standard')
+          return wrap('summary',
+            <SummaryVariantRenderer
+              key={section.id}
+              variant={summaryVariant}
+              summary={resumeData.personalInfo.summary}
+              config={config}
+              editable={editable}
+              sectionTitle={title}
+            />
+          );
+        }
+        // Fallback to standard renderer only if no variant specified
         return wrap('summary',
           <SummarySection
             key={section.id}
@@ -616,19 +641,25 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
   const headerVariant = config.header?.variant;
   const isBannerHeader = headerVariant === 'banner';
+  
+  // For scratch builder, always reserve header space even if disabled
+  // Check if we're in scratch builder mode (templateId includes 'scratch' or config id is 'scratch-v2')
+  const isScratchBuilder = templateId === 'scratch-v2' || (config as any).id === 'scratch-v2';
+  const shouldReserveHeaderSpace = isScratchBuilder;
 
   // Render single-column layout
   if (layout.type === 'single-column') {
     return (
       <div className={`resume-v2 ${className}`} style={containerStyle}>
         {/* Header */}
-        {isSectionEnabled('header') && (
+        {isSectionEnabled('header') ? (
           <>
             {isBannerHeader ? (
               <HeaderSection
                 resumeData={resumeData}
                 config={config}
                 editable={editable}
+                variantOverride={headerVariant}
               />
             ) : (
               <div
@@ -640,11 +671,18 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
                   resumeData={resumeData}
                   config={config}
                   editable={editable}
+                  variantOverride={headerVariant}
                 />
               </div>
             )}
           </>
-        )}
+        ) : shouldReserveHeaderSpace ? (
+          // Reserve space for header even if not enabled (for scratch builder)
+          <div style={{ 
+            minHeight: isBannerHeader ? '100px' : '80px',
+            padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 0 ${spacing.pagePadding.left}`,
+          }} />
+        ) : null}
 
         {/* Content - Apply padding directly to content wrapper */}
         <div style={contentStyle}>
@@ -702,17 +740,33 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   return (
     <div className={`resume-v2 ${className}`} style={containerStyle}>
       {/* Header - Full width */}
-      {isSectionEnabled('header') && (
+      {isSectionEnabled('header') ? (
         <>
           {isBannerHeader ? (
-            <HeaderSection resumeData={resumeData} config={config} editable={editable} />
+            <HeaderSection 
+              resumeData={resumeData} 
+              config={config} 
+              editable={editable}
+              variantOverride={headerVariant}
+            />
           ) : (
             <div style={headerWrapperPadding}>
-              <HeaderSection resumeData={resumeData} config={config} editable={editable} />
+              <HeaderSection 
+                resumeData={resumeData} 
+                config={config} 
+                editable={editable}
+                variantOverride={headerVariant}
+              />
             </div>
           )}
         </>
-      )}
+      ) : shouldReserveHeaderSpace ? (
+        // Reserve space for header even if not enabled (for scratch builder)
+        <div style={{ 
+          minHeight: isBannerHeader ? '100px' : '80px',
+          ...headerWrapperPadding,
+        }} />
+      ) : null}
 
       {/* Two-column content - Use display:flex with percentage widths for PDF compatibility */}
       <div

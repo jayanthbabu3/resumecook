@@ -59,7 +59,7 @@ const DashboardV2 = () => {
             {/* Create from Scratch Card */}
             <Card
               className="group relative overflow-hidden border border-border/40 hover:border-primary/50 transition-all duration-200 hover:shadow-md cursor-pointer bg-card active:scale-[0.98]"
-              onClick={() => navigate("/builder/scratch")}
+              onClick={() => navigate("/builder/scratch-v2/select-layout")}
             >
               <div className="relative p-3.5 sm:p-4 md:p-5">
                 <div className="flex items-start gap-2.5 sm:gap-3">

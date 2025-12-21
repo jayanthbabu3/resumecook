@@ -25,6 +25,8 @@ import MyResumes from "./pages/MyResumes";
 
 // Resume Builder Pages
 import { DashboardV2, BuilderV2, ProfessionTemplatesV2 } from "./v2/pages";
+import LayoutSelectionScreen from "./v2/pages/LayoutSelectionScreen";
+import ScratchBuilderV2 from "./v2/pages/ScratchBuilderV2";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +83,8 @@ const App = () => (
             <Route path="/templates" element={<DashboardV2 />} />
             <Route path="/templates/:professionId" element={<ProfessionTemplatesV2 />} />
             <Route path="/builder" element={<BuilderV2 />} />
+            <Route path="/builder/scratch-v2/select-layout" element={<LayoutSelectionScreen />} />
+            <Route path="/builder/scratch-v2" element={<ScratchBuilderV2 />} />
 
             {/* Original protected routes (commented out for development):
             <Route

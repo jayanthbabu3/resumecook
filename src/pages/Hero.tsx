@@ -449,229 +449,217 @@ const Hero = () => {
         <Breadcrumbs />
       </div>
 
-      {/* Hero Section */}
-      <section className="relative pb-8 pt-4 md:pb-12 md:pt-6 lg:py-6 bg-gradient-to-br from-background via-muted/10 to-background overflow-hidden">
-        <div className="container mx-auto px-4 md:px-6">
+      {/* Hero Section - Inspired by Stripe, Linear, Vercel */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+        {/* Subtle gradient mesh background */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_60%,rgba(59,130,246,0.08),rgba(255,255,255,0))]" />
+        
+        {/* Subtle grid pattern overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.015]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(0 0 0)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e")`,
+          }}
+        />
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-              {/* Left Side - Content */}
-              <div className="space-y-4 md:space-y-6 text-center lg:text-left mx-auto lg:mx-0 max-w-2xl">
-              {/* Badge */}
-                <div className="inline-flex items-center justify-center lg:justify-start gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary">
-                <Sparkles className="h-3 w-3" />
-                  <span>AI-Powered Resume Builder</span>
-              </div>
-
-              {/* Headline */}
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-foreground">
-                  Creating Competitive
-                  <br />
-                  <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                    Resumes is Easy Now
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+              
+              {/* Left Side - Content (7 columns) */}
+              <div className="lg:col-span-6 space-y-8 text-center lg:text-left">
+                
+                {/* Minimal Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/10 text-xs font-medium text-primary/80 backdrop-blur-sm">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
-                </h1>
+                  <span>AI-Powered Resume Builder</span>
+                </div>
 
-              {/* Subheadline */}
-                <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
-                  Pick your role, choose a template, let AI tailor your resume to any job description. 
-                  Get hired faster with professional, ATS-optimized resumes.
-              </p>
-
-              {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-2 items-center sm:items-center lg:items-start justify-center lg:justify-start">
-                <Button className={cn(primaryButtonClass, "group")} onClick={() => navigate("/templates")}>
-                    <span>Start Building Free</span>
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className={neutralButtonClass}
-                  onClick={() => navigate("/templates")}
-                >
-                  View Templates
-                </Button>
-              </div>
-
-                {/* Stats */}
-                <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-6 md:gap-8 pt-2 md:pt-4">
-                  <div className="text-center">
-                    <div className="text-base md:text-lg font-bold text-primary">
-                      {statsLoading ? "..." : formatCount(stats?.usersCount || 0)}
-                    </div>
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">Active Users</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-base md:text-lg font-bold text-emerald-600">95%</div>
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">ATS Compatible</div>
-            </div>
-                  <div className="text-center">
-                    <div className="text-base md:text-lg font-bold text-primary">
-                      {statsLoading ? "..." : formatCount(stats?.downloadsCount || 0)}
-                    </div>
-                    <div className="text-[10px] sm:text-xs text-muted-foreground">Downloads</div>
-          </div>
-        </div>
-              </div>
-
-              {/* Right Side - Beautiful 3D Resume Showcase */}
-              <div className="relative mt-8 lg:mt-0 hidden lg:block">
-                <div className="relative mx-auto max-w-4xl scale-[0.7] origin-center">
-                  {/* Ambient Glow Effects */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-purple-500/20 to-blue-500/30 rounded-3xl blur-3xl animate-pulse"></div>
-                  <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/20 via-primary/30 to-purple-500/20 rounded-3xl blur-2xl opacity-75"></div>
+                {/* Headline - Clean, impactful */}
+                <div className="space-y-4">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight text-foreground leading-[1.1]">
+                    Build resumes that
+                    <span className="block bg-gradient-to-r from-primary via-blue-600 to-violet-600 bg-clip-text text-transparent">
+                      get you hired
+                    </span>
+                  </h1>
                   
-                  {/* Main 3D Card Stack */}
-                  <div className="relative perspective-1000">
-                    {/* Back Cards (Depth Effect) */}
-                    <div className="absolute inset-0 transform translate-y-8 translate-x-8 rotate-3 opacity-30">
-                      <div className="h-full w-full bg-gradient-to-br from-primary/40 to-purple-500/40 rounded-2xl backdrop-blur-sm"></div>
+                  {/* Subheadline - Concise */}
+                  <p className="text-lg sm:text-xl text-muted-foreground/80 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
+                    Professional templates. AI-powered content. ATS-optimized formatting. 
+                    Create your perfect resume in minutes.
+                  </p>
+                </div>
+
+                {/* CTA Buttons - Stripe/Linear style */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 items-center justify-center lg:justify-start">
+                  <Button 
+                    className="h-12 px-8 text-base font-medium bg-foreground text-background hover:bg-foreground/90 rounded-full shadow-lg shadow-foreground/10 transition-all duration-300 hover:shadow-xl hover:shadow-foreground/20 hover:-translate-y-0.5 group"
+                    onClick={() => navigate("/templates")}
+                  >
+                    <span>Start for free</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="h-12 px-6 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-transparent group"
+                    onClick={() => navigate("/templates")}
+                  >
+                    <span>View templates</span>
+                    <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
+                </div>
+
+                {/* Social Proof - Minimal stats */}
+                <div className="flex items-center justify-center lg:justify-start gap-8 pt-8 border-t border-border/40">
+                  <div className="flex items-center gap-3">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div 
+                          key={i} 
+                          className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-2 border-background flex items-center justify-center text-[10px] font-medium text-gray-600"
+                        >
+                          {['JD', 'AK', 'MR', 'SL'][i-1]}
+                        </div>
+                      ))}
                     </div>
-                    <div className="absolute inset-0 transform translate-y-4 translate-x-4 rotate-2 opacity-50">
-                      <div className="h-full w-full bg-gradient-to-br from-primary/60 to-blue-500/60 rounded-2xl backdrop-blur-sm"></div>
+                    <div className="text-sm">
+                      <span className="font-semibold text-foreground">
+                        {statsLoading ? "..." : formatCount(stats?.usersCount || 0)}+
+                      </span>
+                      <span className="text-muted-foreground ml-1">users</span>
                     </div>
+                  </div>
+                  
+                  <div className="h-8 w-px bg-border/60" />
+                  
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                    <span className="text-sm text-muted-foreground">4.9/5 rating</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Side - Elegant Resume Preview (6 columns) */}
+              <div className="lg:col-span-6 relative hidden lg:flex justify-center items-center">
+                {/* Soft ambient glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-primary/20 via-blue-500/10 to-violet-500/20 rounded-full blur-3xl opacity-60" />
+                
+                {/* Main Resume Card - Glassmorphic */}
+                <div className="relative w-full max-w-md">
+                  {/* Shadow layers for depth */}
+                  <div className="absolute inset-0 translate-x-4 translate-y-4 bg-gradient-to-br from-gray-200/50 to-gray-300/30 rounded-2xl blur-sm" />
+                  <div className="absolute inset-0 translate-x-2 translate-y-2 bg-white/80 rounded-2xl" />
+                  
+                  {/* Main card */}
+                  <div className="relative bg-white rounded-2xl shadow-2xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+                    {/* Header accent bar */}
+                    <div className="h-1.5 bg-gradient-to-r from-primary via-blue-500 to-violet-500" />
                     
-                    {/* Main Resume Card */}
-                    <div className="relative transform hover:scale-105 transition-transform duration-500 ease-out">
-                      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200/50 p-8 space-y-6 backdrop-blur-xl">
-                        {/* Resume Header */}
-                        <div className="flex items-start justify-between pb-6 border-b-2 border-primary/20">
-                          <div className="space-y-2">
-                            <h3 className="text-2xl font-bold text-gray-900">Sarah Anderson</h3>
-                            <p className="text-base font-semibold text-primary">Senior Product Designer</p>
-                            <div className="flex gap-4 text-xs text-gray-600">
-                              <span className="flex items-center gap-1">
-                                <Mail className="w-3 h-3" />
-                                sarah@example.com
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Phone className="w-3 h-3" />
-                                (555) 123-4567
-                              </span>
-                            </div>
-                          </div>
-                          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shadow-lg border-4 border-white">
-                            <span className="text-white font-bold text-xl">SA</span>
-                          </div>
+                    <div className="p-6 space-y-5">
+                      {/* Resume Header */}
+                      <div className="flex items-start gap-4">
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/20">
+                          <span className="text-white font-semibold text-lg">SA</span>
                         </div>
-
-                        {/* Professional Summary */}
-                        <div className="space-y-3">
-                          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
-                            <div className="w-1 h-4 bg-primary rounded-full"></div>
-                            About
-                          </h4>
-                          <div className="space-y-2 pl-3">
-                            <div className="h-2 bg-gradient-to-r from-gray-300 to-transparent rounded w-full"></div>
-                            <div className="h-2 bg-gradient-to-r from-gray-300 to-transparent rounded w-11/12"></div>
-                            <div className="h-2 bg-gradient-to-r from-gray-300 to-transparent rounded w-10/12"></div>
-                          </div>
-                        </div>
-
-                        {/* Experience Highlight */}
-                        <div className="space-y-3">
-                          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
-                            <div className="w-1 h-4 bg-primary rounded-full"></div>
-                            Experience
-                          </h4>
-                          <div className="pl-3 space-y-4">
-                            <div className="border-l-4 border-primary/40 pl-4 space-y-2 hover:border-primary transition-colors">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <p className="font-bold text-gray-800">Lead Designer</p>
-                                  <p className="text-sm text-primary font-medium">TechCorp Inc.</p>
-                                </div>
-                                <span className="text-xs text-gray-500 font-medium">2021 - Present</span>
-                              </div>
-                              <div className="space-y-1">
-                                <div className="h-2 bg-gray-200 rounded w-full"></div>
-                                <div className="h-2 bg-gray-200 rounded w-5/6"></div>
-                              </div>
-                            </div>
-                            
-                            <div className="border-l-4 border-blue-500/40 pl-4 space-y-2 hover:border-blue-500 transition-colors">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <p className="font-bold text-gray-800">Product Designer</p>
-                                  <p className="text-sm text-blue-600 font-medium">StartupXYZ</p>
-                                </div>
-                                <span className="text-xs text-gray-500 font-medium">2019 - 2021</span>
-                              </div>
-                              <div className="space-y-1">
-                                <div className="h-2 bg-gray-200 rounded w-full"></div>
-                                <div className="h-2 bg-gray-200 rounded w-4/5"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Skills */}
-                        <div className="space-y-3">
-                          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
-                            <div className="w-1 h-4 bg-primary rounded-full"></div>
-                            Skills
-                          </h4>
-                          <div className="flex flex-wrap gap-2 pl-3">
-                            <span className="px-4 py-1.5 bg-gradient-to-r from-primary/20 to-primary/10 text-primary text-xs font-medium rounded-full border border-primary/30">
-                              UI/UX Design
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg font-semibold text-gray-900 truncate">Sarah Anderson</h3>
+                          <p className="text-sm font-medium text-primary">Senior Product Designer</p>
+                          <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <Mail className="w-3 h-3" />
+                              sarah@example.com
                             </span>
-                            <span className="px-4 py-1.5 bg-gradient-to-r from-blue-500/20 to-blue-500/10 text-blue-700 text-xs font-medium rounded-full border border-blue-500/30">
-                              Figma
-                            </span>
-                            <span className="px-4 py-1.5 bg-gradient-to-r from-purple-500/20 to-purple-500/10 text-purple-700 text-xs font-medium rounded-full border border-purple-500/30">
-                              Prototyping
-                            </span>
-                            <span className="px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 text-emerald-700 text-xs font-medium rounded-full border border-emerald-500/30">
-                              User Research
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* ATS Badge */}
-                        <div className="flex items-center justify-center pt-4 border-t border-gray-100">
-                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-green-50 rounded-full border border-emerald-200">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                            <span className="text-xs font-semibold text-emerald-700">ATS-Optimized & Ready</span>
                           </div>
                         </div>
                       </div>
 
-                      {/* Shine Effect */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/10 to-transparent transform -translate-x-full animate-[shimmer_3s_ease-in-out_infinite]"></div>
-                    </div>
-                  </div>
-
-                  {/* Floating Feature Pills */}
-                  <div className="absolute -top-8 -left-8 animate-float">
-                    <div className="bg-white rounded-full shadow-xl px-4 py-2 border border-gray-200/50 backdrop-blur-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center">
-                          <Sparkles className="w-4 h-4 text-white" />
+                      {/* Experience Section */}
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-1 h-4 rounded-full bg-primary" />
+                          <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider">Experience</h4>
                         </div>
-                        <div>
-                          <p className="text-xs font-bold text-gray-900">AI-Powered</p>
-                          <p className="text-[10px] text-gray-500">Smart Content</p>
+                        
+                        <div className="space-y-3 pl-3">
+                          <div className="p-3 rounded-lg bg-gray-50/80 border border-gray-100">
+                            <div className="flex justify-between items-start mb-1">
+                              <div>
+                                <p className="font-medium text-sm text-gray-900">Lead Designer</p>
+                                <p className="text-xs text-primary">TechCorp Inc.</p>
+                              </div>
+                              <span className="text-[10px] text-gray-400 font-medium px-2 py-0.5 bg-gray-100 rounded-full">2021 - Present</span>
+                            </div>
+                            <div className="space-y-1 mt-2">
+                              <div className="h-1.5 bg-gray-200 rounded-full w-full" />
+                              <div className="h-1.5 bg-gray-200 rounded-full w-4/5" />
+                            </div>
+                          </div>
+                          
+                          <div className="p-3 rounded-lg bg-gray-50/50 border border-gray-100/50">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p className="font-medium text-sm text-gray-900">Product Designer</p>
+                                <p className="text-xs text-gray-500">StartupXYZ</p>
+                              </div>
+                              <span className="text-[10px] text-gray-400 font-medium px-2 py-0.5 bg-gray-100 rounded-full">2019 - 2021</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Skills */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-1 h-4 rounded-full bg-blue-500" />
+                          <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider">Skills</h4>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 pl-3">
+                          {['UI/UX', 'Figma', 'Prototyping', 'Research'].map((skill) => (
+                            <span 
+                              key={skill}
+                              className="px-2.5 py-1 text-[10px] font-medium text-gray-600 bg-gray-100 rounded-md"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* ATS Badge */}
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                          <span className="text-[10px] font-medium text-emerald-600">ATS-Optimized</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[10px] text-gray-400">
+                          <Download className="w-3 h-3" />
+                          <span>PDF Ready</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="absolute -bottom-8 -right-8 animate-float" style={{ animationDelay: '1s' }}>
-                    <div className="bg-white rounded-full shadow-xl px-4 py-2 border border-gray-200/50 backdrop-blur-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center">
-                          <Zap className="w-4 h-4 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-gray-900">Instant Export</p>
-                          <p className="text-[10px] text-gray-500">PDF Ready</p>
-                        </div>
-                      </div>
+                  {/* Floating elements - Minimal */}
+                  <div className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg shadow-gray-200/50 border border-gray-100 px-3 py-2 animate-float">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      <span className="text-xs font-medium text-gray-700">AI-Enhanced</span>
                     </div>
                   </div>
-
-                  <div className="absolute top-1/3 -left-12 animate-float" style={{ animationDelay: '2s' }}>
-                    <div className="bg-white rounded-full shadow-xl p-3 border border-gray-200/50 backdrop-blur-sm">
-                      <Users className="w-5 h-5 text-primary" />
+                  
+                  <div className="absolute -bottom-3 -left-3 bg-white rounded-xl shadow-lg shadow-gray-200/50 border border-gray-100 px-3 py-2 animate-float" style={{ animationDelay: '1s' }}>
+                    <div className="flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-amber-500" />
+                      <span className="text-xs font-medium text-gray-700">Instant Export</span>
                     </div>
                   </div>
                 </div>
