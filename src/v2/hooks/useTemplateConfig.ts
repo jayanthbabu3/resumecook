@@ -73,8 +73,8 @@ export function useTemplateConfig({
       
       // Then append any new sections that are not in base config
       Object.entries(sectionOverrides).forEach(([id, override]) => {
-        // Skip special disable keys and header variant key
-        if (id.startsWith('__disable_type_') || id === '__header_variant') return;
+        // Skip special keys (disable keys, header variant, layout override)
+        if (id.startsWith('__disable_type_') || id === '__header_variant' || id === '__layout_override') return;
         if (!existingIds.has(id)) {
           const order =
             typeof override.order === 'number'
@@ -105,7 +105,19 @@ export function useTemplateConfig({
           ...result,
           header: {
             ...result.header,
-            variant: sectionOverrides['__header_variant'],
+            variant: sectionOverrides['__header_variant'] as any,
+          },
+        };
+      }
+
+      // Apply layout override if provided (for scratch builder)
+      if (sectionOverrides['__layout_override']) {
+        const layoutOverride = sectionOverrides['__layout_override'] as any;
+        result = {
+          ...result,
+          layout: {
+            ...result.layout,
+            ...layoutOverride,
           },
         };
       }

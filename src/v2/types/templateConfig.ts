@@ -225,7 +225,14 @@ export type SkillsVariant =
   | 'dots'
   | 'columns'
   | 'inline'
-  | 'category-lines';
+  | 'category-lines'
+  | 'modern'
+  | 'detailed'
+  | 'compact'
+  | 'radar'
+  | 'bordered-tags'
+  | 'pills-accent'
+  | 'inline-dots';
 
 export interface SkillsConfig {
   variant: SkillsVariant;

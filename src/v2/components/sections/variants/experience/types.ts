@@ -37,4 +37,6 @@ export type ExperienceVariant =
   | 'dates-left'    // Dates on left column
   | 'dates-right'   // Dates on right side
   | 'academic'      // Academic/research focused
-  | 'creative';     // Creative industry style
+  | 'creative'      // Creative industry style
+  | 'enhanced'      // Production-ready EnhanceCV style
+  | 'timeline-pro'; // Professional timeline with dates on left

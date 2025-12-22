@@ -165,7 +165,14 @@ export type SkillsVariant =
   | 'dots'           // Dot rating system
   | 'columns'        // Multi-column list
   | 'inline'         // Inline text with separator
-  | 'category-lines'; // Grouped headings with inline lists
+  | 'category-lines' // Grouped headings with inline lists
+  | 'modern'         // Modern cards with icons
+  | 'detailed'       // With proficiency levels
+  | 'compact'        // Compact single line
+  | 'radar'          // Radar/spider chart style
+  | 'bordered-tags'  // Production-ready bordered rectangular tags
+  | 'pills-accent'   // Production-ready accent-colored pills
+  | 'inline-dots';   // Production-ready inline with dot separators
 
 export interface SkillsConfig {
   /** Display variant */

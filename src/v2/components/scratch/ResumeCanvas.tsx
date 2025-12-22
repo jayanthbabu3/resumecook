@@ -13,7 +13,7 @@ import type { ScratchLayout } from '../../config/scratchLayouts';
 import { generateScratchConfig } from '../../utils/scratchConfigGenerator';
 import { useTemplateConfig } from '../../hooks/useTemplateConfig';
 import { ResumeRenderer } from '../../components/ResumeRenderer';
-import { InlineEditProvider } from '@/contexts/InlineEditContext';
+import { InlineEditProvider, useInlineEdit } from '@/contexts/InlineEditContext';
 import { StyleOptionsProvider } from '@/contexts/StyleOptionsContext';
 import { StyleOptionsWrapper } from '@/components/resume/StyleOptionsWrapper';
 
@@ -25,6 +25,341 @@ interface ResumeCanvasProps {
   onResumeDataChange: (data: V2ResumeData) => void;
   onRemoveSection: (sectionId: string) => void;
 }
+
+// Inner component that uses the InlineEditContext
+const ResumeCanvasInner: React.FC<{
+  resumeData: V2ResumeData;
+  generatedConfig: any;
+  themeColor: string;
+  onRemoveSection: (sectionId: string) => void;
+}> = ({ resumeData, generatedConfig, themeColor, onRemoveSection }) => {
+  const inlineEdit = useInlineEdit();
+
+  // Add experience handler
+  const handleAddExperience = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('experience', {
+      id: `exp-${Date.now()}`,
+      company: 'Company Name',
+      position: 'Position Title',
+      startDate: new Date().toISOString().slice(0, 7),
+      endDate: '',
+      current: true,
+      description: '',
+      bulletPoints: ['Key achievement or responsibility'],
+      location: '',
+    });
+  }, [inlineEdit]);
+
+  // Remove experience handler
+  const handleRemoveExperience = React.useCallback((expId: string) => {
+    if (!inlineEdit) return;
+    const expIndex = resumeData.experience?.findIndex(e => e.id === expId);
+    if (expIndex !== undefined && expIndex >= 0) {
+      inlineEdit.removeArrayItem('experience', expIndex);
+    }
+  }, [inlineEdit, resumeData.experience]);
+
+  // Add bullet point handler
+  const handleAddBulletPoint = React.useCallback((expId: string) => {
+    if (!inlineEdit) return;
+    inlineEdit.addBulletPoint(expId);
+  }, [inlineEdit]);
+
+  // Remove bullet point handler
+  const handleRemoveBulletPoint = React.useCallback((expId: string, bulletIndex: number) => {
+    if (!inlineEdit) return;
+    inlineEdit.removeBulletPoint(expId, bulletIndex);
+  }, [inlineEdit]);
+
+  // Add education handler
+  const handleAddEducation = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('education', {
+      id: `edu-${Date.now()}`,
+      institution: 'Institution Name',
+      degree: 'Degree',
+      field: 'Field of Study',
+      startDate: '',
+      endDate: new Date().getFullYear().toString(),
+      gpa: '',
+      location: '',
+    });
+  }, [inlineEdit]);
+
+  // Remove education handler
+  const handleRemoveEducation = React.useCallback((eduId: string) => {
+    if (!inlineEdit) return;
+    const eduIndex = resumeData.education?.findIndex(e => e.id === eduId);
+    if (eduIndex !== undefined && eduIndex >= 0) {
+      inlineEdit.removeArrayItem('education', eduIndex);
+    }
+  }, [inlineEdit, resumeData.education]);
+
+  // Add project handler
+  const handleAddProject = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('projects', {
+      id: `proj-${Date.now()}`,
+      name: 'Project Name',
+      description: 'Project description',
+      technologies: [],
+      url: '',
+      startDate: '',
+      endDate: '',
+    });
+  }, [inlineEdit]);
+
+  // Remove project handler
+  const handleRemoveProject = React.useCallback((projId: string) => {
+    if (!inlineEdit) return;
+    const projIndex = resumeData.projects?.findIndex(p => p.id === projId);
+    if (projIndex !== undefined && projIndex >= 0) {
+      inlineEdit.removeArrayItem('projects', projIndex);
+    }
+  }, [inlineEdit, resumeData.projects]);
+
+  // Add certification handler
+  const handleAddCertification = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('certifications', {
+      id: `cert-${Date.now()}`,
+      name: 'Certification Name',
+      issuer: 'Issuing Organization',
+      date: new Date().toISOString().slice(0, 7),
+      url: '',
+    });
+  }, [inlineEdit]);
+
+  // Remove certification handler
+  const handleRemoveCertification = React.useCallback((certId: string) => {
+    if (!inlineEdit) return;
+    const certIndex = resumeData.certifications?.findIndex(c => c.id === certId);
+    if (certIndex !== undefined && certIndex >= 0) {
+      inlineEdit.removeArrayItem('certifications', certIndex);
+    }
+  }, [inlineEdit, resumeData.certifications]);
+
+  // Add language handler
+  const handleAddLanguage = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('languages', {
+      id: `lang-${Date.now()}`,
+      name: 'Language',
+      proficiency: 'Intermediate',
+    });
+  }, [inlineEdit]);
+
+  // Remove language handler
+  const handleRemoveLanguage = React.useCallback((langId: string) => {
+    if (!inlineEdit) return;
+    const langIndex = resumeData.languages?.findIndex(l => l.id === langId);
+    if (langIndex !== undefined && langIndex >= 0) {
+      inlineEdit.removeArrayItem('languages', langIndex);
+    }
+  }, [inlineEdit, resumeData.languages]);
+
+  // Add strength handler
+  const handleAddStrength = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('strengths', {
+      id: `str-${Date.now()}`,
+      text: 'New Strength',
+    });
+  }, [inlineEdit]);
+
+  // Remove strength handler
+  const handleRemoveStrength = React.useCallback((strId: string) => {
+    if (!inlineEdit) return;
+    const strIndex = resumeData.strengths?.findIndex(s => s.id === strId);
+    if (strIndex !== undefined && strIndex >= 0) {
+      inlineEdit.removeArrayItem('strengths', strIndex);
+    }
+  }, [inlineEdit, resumeData.strengths]);
+
+  // Add achievement handler
+  const handleAddAchievement = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('achievements', {
+      id: `ach-${Date.now()}`,
+      text: 'New Achievement',
+    });
+  }, [inlineEdit]);
+
+  // Remove achievement handler
+  const handleRemoveAchievement = React.useCallback((achId: string) => {
+    if (!inlineEdit) return;
+    const achIndex = resumeData.achievements?.findIndex(a => a.id === achId);
+    if (achIndex !== undefined && achIndex >= 0) {
+      inlineEdit.removeArrayItem('achievements', achIndex);
+    }
+  }, [inlineEdit, resumeData.achievements]);
+
+  // Add award handler
+  const handleAddAward = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('awards', {
+      id: `award-${Date.now()}`,
+      title: 'Award Title',
+      issuer: 'Issuing Organization',
+      date: new Date().getFullYear().toString(),
+      description: '',
+    });
+  }, [inlineEdit]);
+
+  // Remove award handler
+  const handleRemoveAward = React.useCallback((awardId: string) => {
+    if (!inlineEdit) return;
+    const awardIndex = resumeData.awards?.findIndex(a => a.id === awardId);
+    if (awardIndex !== undefined && awardIndex >= 0) {
+      inlineEdit.removeArrayItem('awards', awardIndex);
+    }
+  }, [inlineEdit, resumeData.awards]);
+
+  // Add volunteer handler
+  const handleAddVolunteer = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('volunteer', {
+      id: `vol-${Date.now()}`,
+      organization: 'Organization Name',
+      role: 'Volunteer Role',
+      startDate: '',
+      endDate: '',
+      description: '',
+    });
+  }, [inlineEdit]);
+
+  // Remove volunteer handler
+  const handleRemoveVolunteer = React.useCallback((volId: string) => {
+    if (!inlineEdit) return;
+    const volIndex = resumeData.volunteer?.findIndex(v => v.id === volId);
+    if (volIndex !== undefined && volIndex >= 0) {
+      inlineEdit.removeArrayItem('volunteer', volIndex);
+    }
+  }, [inlineEdit, resumeData.volunteer]);
+
+  // Add interest handler
+  const handleAddInterest = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('interests', {
+      id: `int-${Date.now()}`,
+      name: 'New Interest',
+    });
+  }, [inlineEdit]);
+
+  // Remove interest handler
+  const handleRemoveInterest = React.useCallback((intId: string) => {
+    if (!inlineEdit) return;
+    const intIndex = resumeData.interests?.findIndex(i => i.id === intId);
+    if (intIndex !== undefined && intIndex >= 0) {
+      inlineEdit.removeArrayItem('interests', intIndex);
+    }
+  }, [inlineEdit, resumeData.interests]);
+
+  // Add reference handler
+  const handleAddReference = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('references', {
+      id: `ref-${Date.now()}`,
+      name: 'Reference Name',
+      title: 'Title',
+      company: 'Company',
+      email: '',
+      phone: '',
+    });
+  }, [inlineEdit]);
+
+  // Remove reference handler
+  const handleRemoveReference = React.useCallback((refId: string) => {
+    if (!inlineEdit) return;
+    const refIndex = resumeData.references?.findIndex(r => r.id === refId);
+    if (refIndex !== undefined && refIndex >= 0) {
+      inlineEdit.removeArrayItem('references', refIndex);
+    }
+  }, [inlineEdit, resumeData.references]);
+
+  // Add course handler
+  const handleAddCourse = React.useCallback(() => {
+    if (!inlineEdit) return;
+    inlineEdit.addArrayItem('courses', {
+      id: `course-${Date.now()}`,
+      name: 'Course Name',
+      institution: 'Institution',
+      date: new Date().getFullYear().toString(),
+    });
+  }, [inlineEdit]);
+
+  // Remove course handler
+  const handleRemoveCourse = React.useCallback((courseId: string) => {
+    if (!inlineEdit) return;
+    const courseIndex = resumeData.courses?.findIndex(c => c.id === courseId);
+    if (courseIndex !== undefined && courseIndex >= 0) {
+      inlineEdit.removeArrayItem('courses', courseIndex);
+    }
+  }, [inlineEdit, resumeData.courses]);
+
+  return (
+    <ResumeRenderer
+      resumeData={resumeData}
+      templateId="scratch-v2"
+      themeColor={themeColor}
+      sectionOverrides={(() => {
+        const overrides: Record<string, any> = {
+          // Pass the layout configuration from scratch config
+          __layout_override: generatedConfig.layout,
+        };
+        // Add all scratch sections
+        generatedConfig.sections.forEach((section: any) => {
+          overrides[section.id] = section;
+        });
+        // Disable all base template sections that have the same type as scratch sections
+        const scratchSectionTypes = new Set(
+          generatedConfig.sections
+            .filter((s: any) => s.enabled)
+            .map((s: any) => s.type)
+        );
+        scratchSectionTypes.forEach((type: any) => {
+          if (type !== 'header') {
+            overrides[`__disable_type_${type}`] = { type, enabled: false };
+          }
+        });
+        // Pass header config variant if header section exists
+        if (generatedConfig.header?.variant) {
+          overrides['__header_variant'] = generatedConfig.header.variant;
+        }
+        return overrides;
+      })()}
+      editable={true}
+      onRemoveSection={onRemoveSection}
+      onAddExperience={handleAddExperience}
+      onRemoveExperience={handleRemoveExperience}
+      onAddBulletPoint={handleAddBulletPoint}
+      onRemoveBulletPoint={handleRemoveBulletPoint}
+      onAddEducation={handleAddEducation}
+      onRemoveEducation={handleRemoveEducation}
+      onAddProject={handleAddProject}
+      onRemoveProject={handleRemoveProject}
+      onAddCertification={handleAddCertification}
+      onRemoveCertification={handleRemoveCertification}
+      onAddLanguage={handleAddLanguage}
+      onRemoveLanguage={handleRemoveLanguage}
+      onAddStrength={handleAddStrength}
+      onRemoveStrength={handleRemoveStrength}
+      onAddAchievement={handleAddAchievement}
+      onRemoveAchievement={handleRemoveAchievement}
+      onAddAward={handleAddAward}
+      onRemoveAward={handleRemoveAward}
+      onAddVolunteer={handleAddVolunteer}
+      onRemoveVolunteer={handleRemoveVolunteer}
+      onAddInterest={handleAddInterest}
+      onRemoveInterest={handleRemoveInterest}
+      onAddReference={handleAddReference}
+      onRemoveReference={handleRemoveReference}
+      onAddCourse={handleAddCourse}
+      onRemoveCourse={handleRemoveCourse}
+    />
+  );
+};
 
 export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
   resumeData,
@@ -77,37 +412,10 @@ export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
             resumeData={resumeData as any} 
             setResumeData={onResumeDataChange as any}
           >
-            <ResumeRenderer
+            <ResumeCanvasInner
               resumeData={resumeData}
-              templateId="scratch-v2"
+              generatedConfig={generatedConfig}
               themeColor={themeColor}
-              sectionOverrides={(() => {
-                const overrides: Record<string, any> = {};
-                // Add all scratch sections
-                generatedConfig.sections.forEach(section => {
-                  overrides[section.id] = section;
-                });
-                // Disable all base template sections that have the same type as scratch sections
-                // But don't disable header type if we have an explicit header section
-                const scratchSectionTypes = new Set(
-                  generatedConfig.sections
-                    .filter(s => s.enabled)
-                    .map(s => s.type)
-                );
-                scratchSectionTypes.forEach(type => {
-                  // Don't disable header type - header is handled separately
-                  if (type !== 'header') {
-                    // Disable base sections of this type
-                    overrides[`__disable_type_${type}`] = { type, enabled: false };
-                  }
-                });
-                // Pass header config variant if header section exists
-                if (generatedConfig.header?.variant) {
-                  overrides['__header_variant'] = generatedConfig.header.variant;
-                }
-                return overrides;
-              })()}
-              editable={true}
               onRemoveSection={onRemoveSection}
             />
           </InlineEditProvider>

@@ -35,4 +35,7 @@ export type SkillsVariant =
   | 'detailed'      // With proficiency levels
   | 'radar'         // Radar/spider chart style
   | 'modern'        // Modern cards with icons
-  | 'category-lines'; // Grouped headings with inline lists
+  | 'category-lines' // Grouped headings with inline lists
+  | 'bordered-tags'  // Production-ready bordered rectangular tags
+  | 'pills-accent'   // Production-ready accent-colored pills
+  | 'inline-dots';   // Production-ready inline with dot separators

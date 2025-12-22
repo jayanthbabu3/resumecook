@@ -17,6 +17,9 @@ import {
   SkillsColumns,
   SkillsCategoryLines,
 } from './variants';
+import { SkillsBorderedTags } from './SkillsBorderedTags';
+import { SkillsPillsAccent } from './SkillsPillsAccent';
+import { SkillsInlineDots } from './SkillsInlineDots';
 
 // Re-export types for external use
 export type { SkillsVariantProps, SkillsVariant } from './types';
@@ -95,6 +98,39 @@ export const SkillsVariantRenderer: React.FC<SkillsVariantRendererProps> = ({
     case 'compact':
       return <SkillsCompact {...props} separator={variant === 'list' ? 'comma' : 'bullet'} />;
     
+    case 'bordered-tags':
+      // Production-ready bordered tags variant
+      return (
+        <SkillsBorderedTags
+          skills={items}
+          config={config}
+          accentColor={accentColor}
+          editable={editable}
+        />
+      );
+    
+    case 'pills-accent':
+      // Production-ready accent pills variant
+      return (
+        <SkillsPillsAccent
+          skills={items}
+          config={config}
+          accentColor={accentColor}
+          editable={editable}
+        />
+      );
+    
+    case 'inline-dots':
+      // Production-ready inline with dots variant
+      return (
+        <SkillsInlineDots
+          skills={items}
+          config={config}
+          accentColor={accentColor}
+          editable={editable}
+        />
+      );
+
     case 'radar':
     default:
       // Default to pills

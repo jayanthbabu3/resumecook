@@ -14,6 +14,8 @@ import {
   ExperienceCards,
   ExperienceModern,
   ExperienceMinimal,
+  ExperienceEnhanced,
+  ExperienceTimelinePro,
 } from './variants';
 
 // Re-export types for external use
@@ -74,6 +76,12 @@ export const ExperienceVariantRenderer: React.FC<ExperienceVariantRendererProps>
     case 'dates-left':
       // dates-left uses detailed format with dates on left
       return <ExperienceStandard {...props} />;
+    case 'enhanced':
+      // Production-ready variant inspired by EnhanceCV
+      return <ExperienceEnhanced {...props} />;
+    case 'timeline-pro':
+      // Production-ready timeline with dates on left column
+      return <ExperienceTimelinePro {...props} />;
     case 'academic':
     case 'creative':
     default:

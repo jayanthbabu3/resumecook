@@ -353,6 +353,39 @@ export const SKILLS_VARIANTS: SectionVariant[] = [
       skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker', 'PostgreSQL', 'Git', 'Kubernetes', 'MongoDB'],
       columns: 3
     }
+  },
+  {
+    id: 'bordered-tags',
+    name: 'Bordered Tags',
+    description: 'Clean rectangular tags with subtle borders. Professional and ATS-friendly. Adapts to theme colors.',
+    type: 'skills',
+    previewData: {
+      title: 'SKILLS',
+      variant: 'bordered-tags',
+      skills: ['Product Lifecycle Management', 'Agile Methodologies', 'Market Analysis', 'Customer Insights', 'Cross-Functional Collaboration', 'Strategic Planning']
+    }
+  },
+  {
+    id: 'pills-accent',
+    name: 'Accent Pills',
+    description: 'Rounded pill badges with theme-colored background. Modern and eye-catching.',
+    type: 'skills',
+    previewData: {
+      title: 'SKILLS',
+      variant: 'pills-accent',
+      skills: ['Data Analysis', 'Market Research', 'Quantitative Analysis', 'Stakeholder Engagement', 'Project Management Software', 'Presentation Skills']
+    }
+  },
+  {
+    id: 'inline-dots',
+    name: 'Inline with Dots',
+    description: 'Space-efficient inline format with accent-colored dot separators. Clean and professional.',
+    type: 'skills',
+    previewData: {
+      title: 'SKILLS',
+      variant: 'inline-dots',
+      skills: ['Business Development', 'Market Analysis', 'Financial Planning', 'Software Development', 'Strategic Marketing', 'Team Leadership']
+    }
   }
 ];
 
@@ -535,6 +568,50 @@ export const EXPERIENCE_VARIANTS: SectionVariant[] = [
         startDate: '2020-01',
         endDate: 'Present',
         bulletPoints: ['Architected microservices platform', 'Improved system reliability to 99.9%', 'Led team of 5 engineers']
+      }]
+    }
+  },
+  {
+    id: 'enhanced',
+    name: 'Enhanced Professional',
+    description: 'Production-ready design with calendar/location icons, accent-colored company names, and clean bullet points. Inspired by top resume builders.',
+    type: 'experience',
+    previewData: {
+      title: 'EXPERIENCE',
+      variant: 'enhanced',
+      items: [{
+        company: 'TechForward Solutions',
+        position: 'Chief Experience Officer',
+        location: 'Indianapolis, IN',
+        startDate: '2020-01',
+        endDate: 'Present',
+        bulletPoints: [
+          'Developed and implemented an extensive customer experience strategy that achieved a 40% increase in Net Promoter Score (NPS) within the first year',
+          'Led a cross-functional team to enhance customer journey mappings, increasing conversion rates by 25%',
+          'Collaborated closely with product and marketing teams, resulting in a 30% reduction in customer complaints'
+        ]
+      }]
+    }
+  },
+  {
+    id: 'timeline-pro',
+    name: 'Timeline Professional',
+    description: 'Elegant timeline with dates on left column, connecting dots, and company names in accent color. Perfect for showing career progression.',
+    type: 'experience',
+    previewData: {
+      title: 'EXPERIENCE',
+      variant: 'timeline-pro',
+      items: [{
+        company: 'Boston Consulting Group',
+        position: 'Consultant',
+        location: 'Philadelphia, PA',
+        startDate: '2021-01',
+        endDate: 'Present',
+        bulletPoints: [
+          'Analyzed complex datasets to uncover insights that resulted in a strategic plan, ultimately increasing client market share by 20%',
+          'Collaborated closely with stakeholders to deliver project solutions, enhancing project satisfaction metrics by over 35%',
+          'Executed a comprehensive competitive analysis that identified emerging trends'
+        ]
       }]
     }
   }
