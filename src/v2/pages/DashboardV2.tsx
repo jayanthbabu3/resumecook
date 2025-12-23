@@ -55,7 +55,7 @@ const DashboardV2 = () => {
       <main className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
         {/* Compact Quick Actions */}
         <div className="max-w-4xl mx-auto mb-8 md:mb-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {/* Create from Scratch Card */}
             <Card
               className="group relative overflow-hidden border border-border/40 hover:border-primary/50 transition-all duration-200 hover:shadow-md cursor-pointer bg-card active:scale-[0.98]"
@@ -77,6 +77,36 @@ const DashboardV2 = () => {
                     </div>
                     <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
                       Build your resume with drag-and-drop sections
+                    </p>
+                  </div>
+
+                  {/* Arrow */}
+                  <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0 mt-0.5 sm:mt-1" />
+                </div>
+              </div>
+            </Card>
+
+            {/* Grid Canvas Builder Card */}
+            <Card
+              className="group relative overflow-hidden border border-border/40 hover:border-primary/50 transition-all duration-200 hover:shadow-md cursor-pointer bg-card active:scale-[0.98]"
+              onClick={() => navigate("/builder/grid-canvas/select-layout")}
+            >
+              <div className="relative p-3.5 sm:p-4 md:p-5">
+                <div className="flex items-start gap-2.5 sm:gap-3">
+                  {/* Compact Icon */}
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-emerald-500 to-emerald-600 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                      <h3 className="text-xs sm:text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                        Grid Canvas Builder
+                      </h3>
+                    </div>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                      Design layouts with a flexible 12-column grid (beta)
                     </p>
                   </div>
 

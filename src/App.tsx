@@ -27,6 +27,8 @@ import MyResumes from "./pages/MyResumes";
 import { DashboardV2, BuilderV2, ProfessionTemplatesV2 } from "./v2/pages";
 import LayoutSelectionScreen from "./v2/pages/LayoutSelectionScreen";
 import ScratchBuilderV2 from "./v2/pages/ScratchBuilderV2";
+import GridCanvasBuilder from "./v2/pages/GridCanvasBuilder";
+import GridLayoutSelectionScreen from "./v2/pages/GridLayoutSelectionScreen";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +87,9 @@ const App = () => (
             <Route path="/builder" element={<BuilderV2 />} />
             <Route path="/builder/scratch-v2/select-layout" element={<LayoutSelectionScreen />} />
             <Route path="/builder/scratch-v2" element={<ScratchBuilderV2 />} />
+            {/* Grid Canvas Builder Routes (new feature, separate from scratch-v2) */}
+            <Route path="/builder/grid-canvas/select-layout" element={<GridLayoutSelectionScreen />} />
+            <Route path="/builder/grid-canvas" element={<GridCanvasBuilder />} />
 
             {/* Original protected routes (commented out for development):
             <Route
