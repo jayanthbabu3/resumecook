@@ -78,6 +78,7 @@ export interface EducationItem {
   coursework?: string[];
   activities?: string[];
   description?: string;
+  minor?: string;
 }
 
 // ============================================================================

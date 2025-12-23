@@ -331,8 +331,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
     const wrap = (type: string, node: React.ReactNode) => {
       const style: React.CSSProperties = {
-        pageBreakInside: 'avoid',
-        breakInside: 'avoid',
+        // Don't prevent section from breaking - let individual items handle page breaks
         position: 'relative',
       };
       if (pageBreakBefore) {
@@ -781,6 +780,22 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     padding: 0,
   };
 
+  // Calculate sidebar padding - ensure outer edge aligns with page padding
+  // The page padding already handles the outer edges, so sidebar padding should only apply to inner edges
+  const getSidebarPadding = () => {
+    const sidebarPadding = layout.sidebarPadding || '0';
+    if (typeof sidebarPadding === 'string' && sidebarPadding !== '0') {
+      // Parse padding value (assumes single value for all sides)
+      const paddingValue = sidebarPadding.trim();
+      // For right sidebar: no right padding (page padding handles it)
+      // For left sidebar: no left padding (page padding handles it)
+      return isRightSidebar 
+        ? `${paddingValue} 0 ${paddingValue} ${paddingValue}` // top right bottom left
+        : `${paddingValue} ${paddingValue} ${paddingValue} 0`; // top right bottom left
+    }
+    return '0';
+  };
+
   const sidebarColumnStyle: React.CSSProperties = {
     width: sidebarWidth,
     minWidth: '0',
@@ -790,7 +805,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     boxSizing: 'border-box',
     overflowWrap: 'break-word',
     wordWrap: 'break-word',
-    padding: layout.sidebarPadding || 0,
+    padding: getSidebarPadding(),
   };
 
   return (

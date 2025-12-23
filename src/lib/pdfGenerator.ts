@@ -679,9 +679,37 @@ function captureV2ResumeHTMLWithStyles(
         const gap = 24; // 3% of 794px ≈ 24px
         const availableWidth = containerWidth - paddingLeft - paddingRight - gap;
         
-        // Left column (60% of available) = main content
+        // Get columns and check original widths before conversion
         const leftCol = columns[0] as HTMLElement;
-        const leftWidth = Math.floor(availableWidth * 0.60);
+        const rightCol = columns[1] as HTMLElement;
+        
+        // Get original widths to determine which is sidebar
+        const leftOriginalWidth = leftCol.style.width || '';
+        const rightOriginalWidth = rightCol.style.width || '';
+        const leftWidthPercent = leftOriginalWidth.includes('%') ? parseFloat(leftOriginalWidth) : null;
+        const rightWidthPercent = rightOriginalWidth.includes('%') ? parseFloat(rightOriginalWidth) : null;
+        
+        // Check if columns have background color (indicating sidebar) - check both inline and computed
+        const leftInlineBg = leftCol.style.backgroundColor;
+        const rightInlineBg = rightCol.style.backgroundColor;
+        const leftHasBg = leftInlineBg && 
+          leftInlineBg !== 'transparent' && 
+          leftInlineBg !== 'rgba(0, 0, 0, 0)' &&
+          leftInlineBg !== '';
+        const rightHasBg = rightInlineBg && 
+          rightInlineBg !== 'transparent' && 
+          rightInlineBg !== 'rgba(0, 0, 0, 0)' &&
+          rightInlineBg !== '';
+        
+        // Determine which column is sidebar (has background OR is narrower - typically < 50%)
+        const isRightSidebar = rightHasBg || (rightWidthPercent !== null && rightWidthPercent < 50);
+        const isLeftSidebar = leftHasBg || (leftWidthPercent !== null && leftWidthPercent < 50);
+        
+        // Calculate widths based on original percentages or defaults
+        const leftWidth = Math.floor(availableWidth * (leftWidthPercent ? leftWidthPercent / 100 : 0.60));
+        const rightWidth = Math.floor(availableWidth * (rightWidthPercent ? rightWidthPercent / 100 : 0.35));
+        
+        // Apply widths
         leftCol.style.width = `${leftWidth}px`;
         leftCol.style.maxWidth = `${leftWidth}px`;
         leftCol.style.minWidth = `${leftWidth}px`;
@@ -692,9 +720,6 @@ function captureV2ResumeHTMLWithStyles(
         leftCol.style.overflowWrap = 'break-word';
         leftCol.style.wordWrap = 'break-word';
         
-        // Right column (35% of available) = sidebar
-        const rightCol = columns[1] as HTMLElement;
-        const rightWidth = Math.floor(availableWidth * 0.35);
         rightCol.style.width = `${rightWidth}px`;
         rightCol.style.maxWidth = `${rightWidth}px`;
         rightCol.style.minWidth = `${rightWidth}px`;
@@ -704,6 +729,54 @@ function captureV2ResumeHTMLWithStyles(
         rightCol.style.overflow = 'hidden';
         rightCol.style.overflowWrap = 'break-word';
         rightCol.style.wordWrap = 'break-word';
+        
+        // Fix sidebar padding - remove outer edge padding to align with page padding
+        
+        // If right column is sidebar, remove its right padding
+        if (isRightSidebar) {
+          const currentPadding = rightCol.style.padding || '';
+          const paddingTop = rightCol.style.paddingTop || '';
+          const paddingBottom = rightCol.style.paddingBottom || '';
+          const paddingLeft = rightCol.style.paddingLeft || '';
+          
+          if (currentPadding) {
+            // Parse padding and set right to 0
+            const paddingValues = currentPadding.split(' ').filter(Boolean);
+            if (paddingValues.length === 1) {
+              // Single value - apply to top/bottom/left only
+              rightCol.style.padding = `${paddingValues[0]} 0 ${paddingValues[0]} ${paddingValues[0]}`;
+            } else if (paddingValues.length === 4) {
+              // Four values - set right (index 1) to 0
+              rightCol.style.padding = `${paddingValues[0]} 0 ${paddingValues[2]} ${paddingValues[3]}`;
+            }
+          } else if (paddingTop || paddingBottom || paddingLeft) {
+            // Individual properties - set right to 0
+            rightCol.style.paddingRight = '0';
+          }
+        }
+        
+        // If left column is sidebar, remove its left padding
+        if (isLeftSidebar) {
+          const currentPadding = leftCol.style.padding || '';
+          const paddingTop = leftCol.style.paddingTop || '';
+          const paddingBottom = leftCol.style.paddingBottom || '';
+          const paddingRight = leftCol.style.paddingRight || '';
+          
+          if (currentPadding) {
+            // Parse padding and set left to 0
+            const paddingValues = currentPadding.split(' ').filter(Boolean);
+            if (paddingValues.length === 1) {
+              // Single value - apply to top/right/bottom only
+              leftCol.style.padding = `${paddingValues[0]} ${paddingValues[0]} ${paddingValues[0]} 0`;
+            } else if (paddingValues.length === 4) {
+              // Four values - set left (index 3) to 0
+              leftCol.style.padding = `${paddingValues[0]} ${paddingValues[1]} ${paddingValues[2]} 0`;
+            }
+          } else if (paddingTop || paddingBottom || paddingRight) {
+            // Individual properties - set left to 0
+            leftCol.style.paddingLeft = '0';
+          }
+        }
         
         // Set gap
         htmlEl.style.gap = `${gap}px`;
@@ -761,9 +834,15 @@ function captureV2ResumeHTMLWithStyles(
             padding: 0;
           }
           
+          /* Set default page margins - all pages get top margin */
           @page {
             size: A4;
-            margin: 0;
+            margin: 28px 0 0 0;
+          }
+          
+          /* First page has no top margin */
+          @page :first {
+            margin-top: 0;
           }
           
           /* V2 Two-Column Layout Fixes */
@@ -790,6 +869,31 @@ function captureV2ResumeHTMLWithStyles(
             overflow-wrap: break-word !important;
             word-wrap: break-word !important;
             word-break: break-word !important;
+          }
+          
+          /* Fix sidebar padding for two-column layouts - ensure outer edge aligns with page padding */
+          /* The page padding already handles outer edges, so remove padding from column outer edges */
+          /* For two-column layouts, remove left padding from first column and right padding from last column */
+          .resume-v2 > div[style*="display: flex"][style*="flex-direction: row"] {
+            /* Container already has page padding, so columns shouldn't add to outer edges */
+          }
+          
+          .resume-v2 > div[style*="display: flex"][style*="flex-direction: row"] > div:first-child {
+            padding-left: 0 !important;
+          }
+          
+          .resume-v2 > div[style*="display: flex"][style*="flex-direction: row"] > div:last-child {
+            padding-right: 0 !important;
+          }
+          
+          /* Additional fix: if a column has a background color (sidebar), ensure outer edge has no padding */
+          /* This handles cases where background is set via inline style */
+          .resume-v2 > div[style*="display: flex"] > div[style*="background-color"]:not([style*="background-color: transparent"]):not([style*="background-color: rgba(0, 0, 0, 0)"]):last-child {
+            padding-right: 0 !important;
+          }
+          
+          .resume-v2 > div[style*="display: flex"] > div[style*="background-color"]:not([style*="background-color: transparent"]):not([style*="background-color: rgba(0, 0, 0, 0)"]):first-child {
+            padding-left: 0 !important;
           }
           
           /* Prevent content from overflowing columns */
@@ -842,6 +946,41 @@ function captureV2ResumeHTMLWithStyles(
             display: list-item !important;
             list-style-position: outside !important;
             /* Component sets list-style-type inline, preserve it */
+          }
+          
+          /* CRITICAL FIX: Ensure sections have proper top spacing in PDF */
+          /* This is a common problem - sections at top of new page lose spacing */
+          
+          /* Preserve section bottom margins */
+          .resume-v2 [data-section] {
+            margin-bottom: 20px !important;
+          }
+          
+          /* Add top margin for sections with explicit page breaks */
+          .resume-v2 [data-section][style*="page-break-before"],
+          .resume-v2 [data-section][style*="break-before"] {
+            margin-top: 20px !important;
+          }
+          
+          /* CRITICAL: Use padding-top that will be preserved when section breaks to new page */
+          /* Padding is more reliable than margin for page breaks in PDF */
+          .resume-v2 [data-section] {
+            padding-top: 20px !important;
+          }
+          
+          /* Remove padding-top for sections that follow another section (not at page top) */
+          .resume-v2 > div > div > [data-section] ~ [data-section] {
+            padding-top: 0 !important;
+          }
+          
+          /* For single-column layouts */
+          .resume-v2 > div[style*="padding"] > [data-section] ~ [data-section] {
+            padding-top: 0 !important;
+          }
+          
+          /* Ensure first section in each column has the padding (for page top spacing) */
+          .resume-v2 > div > div > [data-section]:first-child {
+            padding-top: 20px !important;
           }
         </style>
       </head>

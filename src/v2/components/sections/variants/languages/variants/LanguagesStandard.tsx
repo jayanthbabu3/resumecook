@@ -78,22 +78,39 @@ export const LanguagesStandard: React.FC<LanguagesVariantProps> = ({
             ) : (
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                     {editable ? (
-                      <InlineEditableText
-                        path={`languages.${index}.language`}
-                        value={lang.language}
-                        style={{ fontWeight: 500, color: typography.itemTitle.color }}
-                        placeholder="Language"
-                      />
+                      <>
+                        <InlineEditableText
+                          path={`languages.${index}.language`}
+                          value={lang.language}
+                          style={{ fontWeight: 500, color: typography.itemTitle.color }}
+                          placeholder="Language"
+                        />
+                        {lang.certification && (
+                          <>
+                            <span style={{ color: typography.body.color }}>•</span>
+                            <InlineEditableText
+                              path={`languages.${index}.certification`}
+                              value={lang.certification}
+                              style={{ fontSize: '12px', color: typography.body.color }}
+                              placeholder="Certification"
+                            />
+                          </>
+                        )}
+                      </>
                     ) : (
                       <span style={{ fontWeight: 500, color: typography.itemTitle.color }}>
-                        {lang.language}:
+                        {lang.language}
+                        {lang.certification && (
+                          <span style={{ fontWeight: 400, color: typography.body.color }}> • {lang.certification}</span>
+                        )}
+                        :
                       </span>
                     )}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '13px', color: '#6b7280' }}>{cefer}</span>
+                    {cefer && <span style={{ fontSize: '13px', color: '#6b7280' }}>{cefer}</span>}
                   </div>
                 </div>
                 

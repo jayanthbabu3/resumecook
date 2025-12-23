@@ -32,7 +32,12 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
         <div 
           key={exp.id || index} 
           className="group relative"
-          style={{ marginBottom: index < items.length - 1 ? spacing.itemGap : 0 }}
+          style={{ 
+            marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
+            // Prevent individual items from breaking across pages
+            pageBreakInside: 'avoid',
+            breakInside: 'avoid',
+          }}
         >
           {/* Delete button */}
           {editable && onRemoveExperience && (

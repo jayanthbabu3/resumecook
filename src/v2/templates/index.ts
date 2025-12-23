@@ -23,6 +23,7 @@ import { refinedPortraitTemplate } from './refined-portrait';
 import { analystClarityTemplate } from './analyst-clarity';
 import { obstacleSolverTemplate } from './obstacle-solver';
 import { terminalThemeTemplate } from './terminal-theme';
+import { professionalSalesTemplate } from './professional-sales';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -44,6 +45,7 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'analyst-clarity-v2': analystClarityTemplate,
   'obstacle-solver-v2': obstacleSolverTemplate,
   'terminal-theme-v2': terminalThemeTemplate,
+  'professional-sales-v2': professionalSalesTemplate,
 };
 
 // ============================================================================
@@ -124,3 +126,4 @@ export { refinedPortraitTemplate } from './refined-portrait';
 export { analystClarityTemplate } from './analyst-clarity';
 export { obstacleSolverTemplate } from './obstacle-solver';
 export { terminalThemeTemplate } from './terminal-theme';
+export { professionalSalesTemplate } from './professional-sales';

@@ -21,6 +21,7 @@ import { refinedPortraitConfig } from './refined-portrait';
 import { analystClarityConfig } from './analyst-clarity';
 import { obstacleSolverConfig } from './obstacle-solver';
 import { terminalThemeConfig } from './terminal-theme';
+import { professionalSalesConfig } from './professional-sales';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -39,6 +40,7 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'analyst-clarity-v2': analystClarityConfig,
   'obstacle-solver-v2': obstacleSolverConfig,
   'terminal-theme-v2': terminalThemeConfig,
+  'professional-sales-v2': professionalSalesConfig,
 };
 
 // Get template by ID
@@ -73,4 +75,5 @@ export {
   analystClarityConfig,
   obstacleSolverConfig,
   terminalThemeConfig,
+  professionalSalesConfig,
 };

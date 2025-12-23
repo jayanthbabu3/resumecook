@@ -71,6 +71,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   const renderItem = (item: ExperienceItem, index: number) => {
     const itemStyle: React.CSSProperties = {
       marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
+      // Prevent individual items from breaking across pages
+      pageBreakInside: 'avoid',
+      breakInside: 'avoid',
     };
 
     const titleStyle: React.CSSProperties = {
@@ -105,6 +108,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 
     // Map bullet character to list-style-type
     const getListStyleType = () => {
+      if (bulletChar === 'numbered') return 'decimal';
       switch (bulletChar) {
         case '•': return 'disc';
         case '◦': return 'circle';
@@ -119,7 +123,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
     const bulletListStyle: React.CSSProperties = {
       ...bodyStyle,
       listStyleType: getListStyleType(),
-      paddingLeft: bulletChar === 'none' ? 0 : '20px',
+      paddingLeft: (bulletChar === 'none' || bulletChar === 'numbered') ? '20px' : '20px',
       margin: 0,
     };
 
@@ -495,6 +499,21 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   />
                 ) : (
                   <span style={subtitleStyle}>{item.company}</span>
+                )}
+                {experience.showLocation && item.location && (
+                  <>
+                    <span style={{ color: colors.text.muted }}>•</span>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`experience.${index}.location`}
+                        value={item.location}
+                        style={{ ...typography.small, color: typography.dates.color }}
+                        placeholder="Location"
+                      />
+                    ) : (
+                      <span style={{ ...typography.small, color: typography.dates.color }}>{item.location}</span>
+                    )}
+                  </>
                 )}
                 
                 {experience.datePosition === 'inline' && (

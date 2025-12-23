@@ -49,6 +49,9 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   const renderItem = (item: EducationItem, index: number) => {
     const itemStyle: React.CSSProperties = {
       marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
+      // Prevent individual items from breaking across pages
+      pageBreakInside: 'avoid',
+      breakInside: 'avoid',
     };
 
     const degreeStyle: React.CSSProperties = {
@@ -87,25 +90,37 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
       
       if (editable) {
         return (
-          <div className="flex items-center gap-1" style={dateStyle}>
+          <div 
+            className="flex items-center gap-1" 
+            style={{
+              ...dateStyle,
+              whiteSpace: 'nowrap',
+              display: 'flex',
+              flexWrap: 'nowrap',
+            }}
+          >
             <InlineEditableDate
               path={`education.${index}.startDate`}
               value={item.startDate}
-              style={dateStyle}
+              style={{ ...dateStyle, whiteSpace: 'nowrap' }}
               formatDisplay={formatDate}
             />
-            <span>-</span>
+            <span style={{ whiteSpace: 'nowrap' }}>-</span>
             <InlineEditableDate
               path={`education.${index}.endDate`}
               value={item.endDate}
-              style={dateStyle}
+              style={{ ...dateStyle, whiteSpace: 'nowrap' }}
               formatDisplay={formatDate}
             />
           </div>
         );
       }
 
-      return <span style={dateStyle}>{dateText}</span>;
+      return (
+        <span style={{ ...dateStyle, whiteSpace: 'nowrap', display: 'inline-block' }}>
+          {dateText}
+        </span>
+      );
     };
 
     // Two-column-dates variant (dates/location on left, content on right)
@@ -121,25 +136,30 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
           <div className="flex">
             {/* Left column - dates and location */}
             <div style={leftColumnStyle}>
-              <div style={dateStyle}>
+              <div style={{ ...dateStyle, whiteSpace: 'nowrap' }}>
                 {editable ? (
-                  <div className="flex items-center gap-1">
+                  <div 
+                    className="flex items-center gap-1"
+                    style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap' }}
+                  >
                     <InlineEditableDate
                       path={`education.${index}.startDate`}
                       value={item.startDate}
-                      style={dateStyle}
+                      style={{ ...dateStyle, whiteSpace: 'nowrap' }}
                       formatDisplay={formatDate}
                     />
-                    <span>-</span>
+                    <span style={{ whiteSpace: 'nowrap' }}>-</span>
                     <InlineEditableDate
                       path={`education.${index}.endDate`}
                       value={item.endDate}
-                      style={dateStyle}
+                      style={{ ...dateStyle, whiteSpace: 'nowrap' }}
                       formatDisplay={formatDate}
                     />
                   </div>
                 ) : (
-                  <div>{`${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}</div>
+                  <div style={{ whiteSpace: 'nowrap', display: 'inline-block' }}>
+                    {`${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}
+                  </div>
                 )}
               </div>
               {item.location && (

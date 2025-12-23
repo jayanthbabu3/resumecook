@@ -99,23 +99,38 @@ export const EducationAcademic: React.FC<EducationVariantProps> = ({
               )}
             </div>
             
-            <div style={{ fontSize: '13px', color: '#6b7280', fontStyle: 'italic' }}>
+            <div style={{ 
+              fontSize: '13px', 
+              color: '#6b7280', 
+              fontStyle: 'italic',
+              whiteSpace: 'nowrap',
+            }}>
               {editable ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '4px',
+                  whiteSpace: 'nowrap',
+                  flexWrap: 'nowrap',
+                }}>
                   <InlineEditableDate
                     path={`education.${index}.startDate`}
                     value={edu.startDate}
                     formatDisplay={formatDate}
+                    style={{ whiteSpace: 'nowrap' }}
                   />
-                  <span> – </span>
+                  <span style={{ whiteSpace: 'nowrap' }}> – </span>
                   <InlineEditableDate
                     path={`education.${index}.endDate`}
                     value={edu.endDate}
                     formatDisplay={formatDate}
+                    style={{ whiteSpace: 'nowrap' }}
                   />
                 </div>
               ) : (
-                `${formatDate ? formatDate(edu.startDate) : edu.startDate} – ${formatDate ? formatDate(edu.endDate) : edu.endDate}`
+                <span style={{ whiteSpace: 'nowrap', display: 'inline-block' }}>
+                  {`${formatDate ? formatDate(edu.startDate) : edu.startDate} – ${formatDate ? formatDate(edu.endDate) : edu.endDate}`}
+                </span>
               )}
             </div>
           </div>

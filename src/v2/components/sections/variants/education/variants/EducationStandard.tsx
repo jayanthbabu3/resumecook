@@ -124,29 +124,37 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
               marginLeft: '16px',
             }}>
               {editable ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '4px',
+                  whiteSpace: 'nowrap',
+                  flexWrap: 'nowrap',
+                }}>
                   {edu.startDate && (
                     <>
                       <InlineEditableDate
                         path={`education.${index}.startDate`}
                         value={edu.startDate}
                         formatDisplay={formatDate}
+                        style={{ whiteSpace: 'nowrap' }}
                       />
-                      <span> – </span>
+                      <span style={{ whiteSpace: 'nowrap' }}> – </span>
                     </>
                   )}
                   {edu.current ? (
-                    <span>Present</span>
+                    <span style={{ whiteSpace: 'nowrap' }}>Present</span>
                   ) : (
                     <InlineEditableDate
                       path={`education.${index}.endDate`}
                       value={edu.endDate}
                       formatDisplay={formatDate}
+                      style={{ whiteSpace: 'nowrap' }}
                     />
                   )}
                 </div>
               ) : (
-                <span>
+                <span style={{ whiteSpace: 'nowrap', display: 'inline-block' }}>
                   {edu.startDate ? `${formatDate ? formatDate(edu.startDate) : edu.startDate} – ` : ''}
                   {edu.current ? 'Present' : (formatDate ? formatDate(edu.endDate) : edu.endDate)}
                 </span>
@@ -195,6 +203,26 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
             }}>
               <span style={{ fontWeight: 500 }}>Relevant Coursework: </span>
               {edu.coursework.join(', ')}
+            </div>
+          )}
+
+          {/* Minor */}
+          {edu.minor && (
+            <div style={{ 
+              fontSize: typography.body.fontSize, 
+              color: typography.body.color,
+              marginTop: '4px',
+            }}>
+              <span style={{ fontWeight: 500 }}>Minor: </span>
+              {editable ? (
+                <InlineEditableText
+                  path={`education.${index}.minor`}
+                  value={edu.minor}
+                  placeholder="Minor field"
+                />
+              ) : (
+                edu.minor
+              )}
             </div>
           )}
         </div>

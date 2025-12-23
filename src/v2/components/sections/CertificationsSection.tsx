@@ -86,7 +86,12 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
     <div
       key={item.id}
       className="group relative"
-      style={{ marginBottom: index < items.length - 1 ? spacing.itemGap : 0 }}
+      style={{ 
+        marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
+        // Prevent individual items from breaking across pages
+        pageBreakInside: 'avoid',
+        breakInside: 'avoid',
+      }}
     >
       <div className="flex justify-between items-start gap-4">
         <div className="flex-1">
