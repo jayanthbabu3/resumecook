@@ -97,7 +97,7 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
   disabled = false,
   templateConfig,
   currentVariant,
-  accentColor = '#0ea5e9',
+  accentColor = '#2563eb', // Default application blue
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -823,7 +823,7 @@ const SingleItemForm: React.FC<SingleItemFormProps> = ({
           value={data?.[field.key]}
           onChange={(v) => onChange(field.key, v)}
           disabled={disabled}
-          accentColor="#0ea5e9"
+          accentColor="#2563eb" // Default application blue
         />
       ))}
     </div>

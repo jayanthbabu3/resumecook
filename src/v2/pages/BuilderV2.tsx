@@ -906,7 +906,7 @@ export const BuilderV2: React.FC = () => {
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <FileEdit className="w-5 h-5 text-cyan-600" />
+                        <FileEdit className="w-5 h-5 text-primary" />
                         <h2 className="text-lg font-bold">Form Editor</h2>
                       </div>
                     </div>
@@ -920,7 +920,7 @@ export const BuilderV2: React.FC = () => {
                       enabledSections={config.sections}
                       sectionTitles={sectionLabels}
                       templateConfig={config}
-                      accentColor={themeColor}
+                      accentColor="#2563eb"
                     />
                   ) : (
                     <ResumeForm 
@@ -957,14 +957,14 @@ export const BuilderV2: React.FC = () => {
                       <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
                         <div
                           className="h-7 sm:h-9 w-1 sm:w-1.5 rounded-full shadow-sm flex-shrink-0"
-                          style={{ background: themeColor }}
+                          className="bg-primary"
                         />
                         <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                           <div
                             className="p-1 sm:p-1.5 rounded-lg flex-shrink-0"
-                            style={{ backgroundColor: `${themeColor}1a` }}
+                            className="bg-primary/10"
                           >
-                            <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: themeColor }} />
+                            <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                           </div>
                           <span className="font-semibold text-gray-800 tracking-tight text-xs sm:text-sm md:text-base whitespace-nowrap">Live Preview</span>
                         </div>
@@ -973,8 +973,7 @@ export const BuilderV2: React.FC = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="h-8 sm:h-9 gap-1.5 sm:gap-2 border-gray-200 text-gray-700 hover:border-[var(--primary-color,rgba(0,0,0,0.2))] hover:text-[var(--primary-color,rgba(0,0,0,0.8))] hover:bg-[var(--primary-color,rgba(0,0,0,0.05))] text-xs sm:text-sm px-2 sm:px-3"
-                          style={{ ['--primary-color' as any]: themeColor }}
+                          className="h-8 sm:h-9 gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3"
                           onClick={() => setShowReorder(true)}
                         >
                           <PanelsTopLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -984,8 +983,7 @@ export const BuilderV2: React.FC = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="h-8 sm:h-9 gap-1.5 sm:gap-2 border-gray-200 text-gray-700 hover:border-[var(--primary-color,rgba(0,0,0,0.2))] hover:text-[var(--primary-color,rgba(0,0,0,0.8))] hover:bg-[var(--primary-color,rgba(0,0,0,0.05))] text-xs sm:text-sm px-2 sm:px-3"
-                          style={{ ['--primary-color' as any]: themeColor }}
+                          className="h-8 sm:h-9 gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3"
                           onClick={handleAddCustomSection}
                         >
                           <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -999,7 +997,7 @@ export const BuilderV2: React.FC = () => {
                               size="sm" 
                               className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-gray-100 rounded-lg sm:rounded-xl transition-all hover:shadow-sm border border-transparent hover:border-gray-200"
                             >
-                              <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" style={{ animationDuration: '3s', color: themeColor }} />
+                              <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-primary" style={{ animationDuration: '3s' }} />
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent align="end" className="w-[90vw] sm:w-96 p-0 shadow-xl border-gray-200 max-h-[85vh] overflow-y-auto">

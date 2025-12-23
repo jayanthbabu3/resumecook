@@ -704,6 +704,13 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
   // Render single-column layout
   if (layout.type === 'single-column') {
+    // For non-banner headers, don't add top padding to content - header's bottom padding handles spacing
+    const contentPaddingStyle: React.CSSProperties = isBannerHeader
+      ? contentStyle
+      : {
+          padding: `0 ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`,
+        };
+
     return (
       <div className={`resume-v2 ${className}`} style={containerStyle}>
         {/* Header */}
@@ -740,7 +747,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         ) : null}
 
         {/* Content - Apply padding directly to content wrapper */}
-        <div style={contentStyle}>
+        <div style={contentPaddingStyle}>
           {getOrderedSections().map(section => renderSection(section))}
         </div>
       </div>

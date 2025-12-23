@@ -472,10 +472,10 @@ const TwoColumnLeftGuide: React.FC<{ themeColor: string }> = ({ themeColor }) =>
       {/* Left Sidebar */}
       <div className="flex-[35%] flex flex-col">
         <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" style={{ color: themeColor }}>
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
             Sidebar
           </div>
-          <div className="h-0.5 w-full" style={{ backgroundColor: themeColor, opacity: 0.3 }}></div>
+          <div className="h-0.5 w-full bg-primary/30"></div>
         </div>
         <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-center text-muted-foreground">
@@ -494,10 +494,10 @@ const TwoColumnLeftGuide: React.FC<{ themeColor: string }> = ({ themeColor }) =>
       {/* Main Content */}
       <div className="flex-[65%] flex flex-col">
         <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" style={{ color: themeColor }}>
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
             Main Content
           </div>
-          <div className="h-0.5 w-full" style={{ backgroundColor: themeColor, opacity: 0.3 }}></div>
+          <div className="h-0.5 w-full bg-primary/30"></div>
         </div>
         <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-center text-muted-foreground">
@@ -517,10 +517,10 @@ const TwoColumnRightGuide: React.FC<{ themeColor: string }> = ({ themeColor }) =
       {/* Main Content */}
       <div className="flex-[65%] flex flex-col">
         <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" style={{ color: themeColor }}>
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
             Main Content
           </div>
-          <div className="h-0.5 w-full" style={{ backgroundColor: themeColor, opacity: 0.3 }}></div>
+          <div className="h-0.5 w-full bg-primary/30"></div>
         </div>
         <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-center text-muted-foreground">
@@ -539,10 +539,10 @@ const TwoColumnRightGuide: React.FC<{ themeColor: string }> = ({ themeColor }) =
       {/* Right Sidebar */}
       <div className="flex-[35%] flex flex-col">
         <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" style={{ color: themeColor }}>
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
             Sidebar
           </div>
-          <div className="h-0.5 w-full" style={{ backgroundColor: themeColor, opacity: 0.3 }}></div>
+          <div className="h-0.5 w-full bg-primary/30"></div>
         </div>
         <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-center text-muted-foreground">
@@ -560,8 +560,8 @@ const SplitLayoutGuide: React.FC<{ themeColor: string }> = ({ themeColor }) => {
   return (
     <div className="flex flex-col h-full">
       {/* Header Area */}
-      <div className="mb-6 pb-4 border-b-2 border-dashed" style={{ borderColor: themeColor, opacity: 0.3 }}>
-        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" style={{ color: themeColor }}>
+      <div className="mb-6 pb-4 border-b-2 border-dashed border-primary/30">
+        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
           Header Area
         </div>
         <div className="h-16 bg-gray-50 rounded border border-dashed border-gray-300 flex items-center justify-center">

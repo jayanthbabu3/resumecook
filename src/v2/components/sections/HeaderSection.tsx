@@ -35,7 +35,6 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   const accent = colors.primary;
   const bannerTextColor = header.textColor || colors.text.light;
   const bannerMetaTextColor = typography.contact.color || '#d1d5db';
-  const bannerLinkColor = colors.secondary || colors.primary;
   const styleOptions = useStyleOptions();
   const showPhoto = styleOptions?.styleOptions?.showPhoto ?? true;
 
@@ -307,19 +306,36 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       case 'banner':
         // Check if photo exists, otherwise show initials
         const showInitials = !personalInfo.photo || !showPhoto;
+        // Get the actual banner background color (theme color or configured)
+        const bannerBgColor = header.backgroundColor || accent;
+        
+        // Helper function to lighten a color for better contrast on dark backgrounds
+        const getLightLinkColor = (bgColor: string): string => {
+          // If secondary color is provided and is lighter, use it
+          if (colors.secondary) {
+            // Check if secondary is lighter (has higher brightness)
+            return colors.secondary;
+          }
+          // Otherwise, use a light tint of the theme color
+          // For most theme colors, use a light blue/cyan that works well
+          return '#bae6fd'; // Light blue that contrasts well with most dark colors
+        };
+        
         const bannerContactStyle: React.CSSProperties = {
           fontSize: typography.contact.fontSize,
           color: bannerMetaTextColor,
         };
         const bannerLinkStyle: React.CSSProperties = {
           fontSize: typography.contact.fontSize,
-          color: bannerLinkColor,
+          color: getLightLinkColor(bannerBgColor),
+          textDecoration: 'none',
+          opacity: 0.95,
         };
         return (
           <div
             data-header="banner"
             style={{
-              backgroundColor: header.backgroundColor || accent,
+              backgroundColor: bannerBgColor,
               padding: header.padding || '24px 32px',
               color: bannerTextColor,
             }}
@@ -374,7 +390,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                   >
                     {(editable || personalInfo.linkedin) && (
                       <div className="flex items-center gap-1.5">
-                        <Linkedin style={{ width: '14px', height: '14px', color: bannerLinkColor }} />
+                        <Linkedin style={{ width: '14px', height: '14px', color: bannerLinkStyle.color }} />
                         {editable ? (
                           <InlineEditableText
                             path="personalInfo.linkedin"
@@ -386,7 +402,12 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                             href={personalInfo.linkedin?.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={bannerLinkStyle}
+                            style={{
+                              ...bannerLinkStyle,
+                              textDecoration: 'none',
+                              fontWeight: 400,
+                            }}
+                            className="hover:opacity-80 transition-opacity"
                           >
                             {personalInfo.linkedin}
                           </a>
@@ -395,7 +416,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                     )}
                     {(editable || personalInfo.github) && (
                       <div className="flex items-center gap-1.5">
-                        <Github style={{ width: '14px', height: '14px', color: bannerLinkColor }} />
+                        <Github style={{ width: '14px', height: '14px', color: bannerLinkStyle.color }} />
                         {editable ? (
                           <InlineEditableText
                             path="personalInfo.github"
@@ -407,7 +428,12 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                             href={personalInfo.github?.startsWith('http') ? personalInfo.github : `https://${personalInfo.github}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={bannerLinkStyle}
+                            style={{
+                              ...bannerLinkStyle,
+                              textDecoration: 'none',
+                              fontWeight: 400,
+                            }}
+                            className="hover:opacity-80 transition-opacity"
                           >
                             {personalInfo.github}
                           </a>
@@ -416,7 +442,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                     )}
                     {(editable || personalInfo.portfolio) && (
                       <div className="flex items-center gap-1.5">
-                        <Globe style={{ width: '14px', height: '14px', color: bannerLinkColor }} />
+                        <Globe style={{ width: '14px', height: '14px', color: bannerLinkStyle.color }} />
                         {editable ? (
                           <InlineEditableText
                             path="personalInfo.portfolio"
@@ -428,7 +454,12 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                             href={personalInfo.portfolio?.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={bannerLinkStyle}
+                            style={{
+                              ...bannerLinkStyle,
+                              textDecoration: 'none',
+                              fontWeight: 400,
+                            }}
+                            className="hover:opacity-80 transition-opacity"
                           >
                             {personalInfo.portfolio}
                           </a>

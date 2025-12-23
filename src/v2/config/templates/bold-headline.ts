@@ -96,7 +96,7 @@ export const boldHeadlineConfig: TemplateConfig = createTemplateConfig({
 
   colors: {
     primary: '#2563eb',
-    secondary: '#0ea5e9',
+    secondary: '#bae6fd', // Light blue/teal for better visibility on banner
     text: {
       primary: '#0f172a',
       secondary: '#1f2937',

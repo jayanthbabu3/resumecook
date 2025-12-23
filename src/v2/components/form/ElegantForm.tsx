@@ -95,7 +95,7 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
   enabledSections,
   sectionTitles = {},
   templateConfig,
-  accentColor = '#0ea5e9',
+  accentColor = '#2563eb', // Default application blue
 }) => {
   const [expandedSections, setExpandedSections] = useState<string[]>(['personal']);
 

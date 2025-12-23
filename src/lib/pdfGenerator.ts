@@ -660,6 +660,22 @@ function captureV2ResumeHTMLWithStyles(
     clone.style.overflow = 'visible';
     clone.style.minHeight = 'auto';
     
+    // Fix spacing for single-column layouts: if content wrapper has padding-top: 0, 
+    // ensure first section also has no top padding (header's bottom padding handles spacing)
+    const contentWrappers = clone.querySelectorAll('div[style*="padding"]');
+    contentWrappers.forEach((wrapper: Element) => {
+      const htmlEl = wrapper as HTMLElement;
+      const paddingTop = htmlEl.style.paddingTop || '';
+      // Check if padding-top is 0 or 0px
+      if (paddingTop === '0' || paddingTop === '0px') {
+        const firstSection = htmlEl.querySelector('[data-section]:first-child');
+        if (firstSection) {
+          (firstSection as HTMLElement).style.paddingTop = '0';
+          (firstSection as HTMLElement).style.marginTop = '0';
+        }
+      }
+    });
+    
     // Fix two-column flex containers - use fixed pixel widths for PDF
     const flexContainers = clone.querySelectorAll('[style*="display: flex"][style*="flex-direction: row"]');
     flexContainers.forEach((container: Element) => {
@@ -965,7 +981,26 @@ function captureV2ResumeHTMLWithStyles(
           /* CRITICAL: Use padding-top that will be preserved when section breaks to new page */
           /* Padding is more reliable than margin for page breaks in PDF */
           .resume-v2 [data-section] {
+            padding-top: 0 !important;
+          }
+          
+          /* Add padding-top only for sections that appear at the top of a new page */
+          .resume-v2 [data-section][style*="page-break-before"],
+          .resume-v2 [data-section][style*="break-before"] {
             padding-top: 20px !important;
+          }
+          
+          /* For single-column layouts: first section after header should NOT have top padding */
+          /* The header's bottom padding already handles the spacing */
+          .resume-v2 > div[style*="padding"] > [data-section]:first-child {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+          }
+          
+          /* For two-column layouts: first section in each column should NOT have top padding */
+          .resume-v2 > div[style*="display: flex"] > div > [data-section]:first-child {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
           }
           
           /* Remove padding-top for sections that follow another section (not at page top) */
@@ -973,14 +1008,9 @@ function captureV2ResumeHTMLWithStyles(
             padding-top: 0 !important;
           }
           
-          /* For single-column layouts */
-          .resume-v2 > div[style*="padding"] > [data-section] ~ [data-section] {
+          /* For single-column layouts - ensure no extra padding on first section */
+          .resume-v2 > div[style*="padding"] > [data-section]:first-child {
             padding-top: 0 !important;
-          }
-          
-          /* Ensure first section in each column has the padding (for page top spacing) */
-          .resume-v2 > div > div > [data-section]:first-child {
-            padding-top: 20px !important;
           }
         </style>
       </head>
