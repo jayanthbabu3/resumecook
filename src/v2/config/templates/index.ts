@@ -33,6 +33,19 @@ import { devopsCommandConfig } from './devops-command';
 import { mobileCraftConfig } from './mobile-craft';
 import { apiLedgerConfig } from './api-ledger';
 
+// Fresher Templates
+import { fresherStarterConfig } from './fresher-starter';
+import { fresherModernConfig } from './fresher-modern';
+import { fresherElegantConfig } from './fresher-elegant';
+import { fresherBoldConfig } from './fresher-bold';
+import { fresherMinimalConfig } from './fresher-minimal';
+import { fresherCreativeConfig } from './fresher-creative';
+import { fresherProfessionalConfig } from './fresher-professional';
+import { fresherCompactConfig } from './fresher-compact';
+import { fresherTechConfig } from './fresher-tech';
+import { fresherGradientConfig } from './fresher-gradient';
+import { fresherClassicConfig } from './fresher-classic';
+
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'executive-split-v2': executiveSplitConfig,
@@ -61,6 +74,18 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'devops-command-v2': devopsCommandConfig,
   'mobile-craft-v2': mobileCraftConfig,
   'api-ledger-v2': apiLedgerConfig,
+  // Fresher Templates
+  'fresher-starter-v2': fresherStarterConfig,
+  'fresher-modern-v2': fresherModernConfig,
+  'fresher-elegant-v2': fresherElegantConfig,
+  'fresher-bold-v2': fresherBoldConfig,
+  'fresher-minimal-v2': fresherMinimalConfig,
+  'fresher-creative-v2': fresherCreativeConfig,
+  'fresher-professional-v2': fresherProfessionalConfig,
+  'fresher-compact-v2': fresherCompactConfig,
+  'fresher-tech-v2': fresherTechConfig,
+  'fresher-gradient-v2': fresherGradientConfig,
+  'fresher-classic-v2': fresherClassicConfig,
 };
 
 // Get template by ID
@@ -106,4 +131,16 @@ export {
   devopsCommandConfig,
   mobileCraftConfig,
   apiLedgerConfig,
+  // Fresher Templates
+  fresherStarterConfig,
+  fresherModernConfig,
+  fresherElegantConfig,
+  fresherBoldConfig,
+  fresherMinimalConfig,
+  fresherCreativeConfig,
+  fresherProfessionalConfig,
+  fresherCompactConfig,
+  fresherTechConfig,
+  fresherGradientConfig,
+  fresherClassicConfig,
 };

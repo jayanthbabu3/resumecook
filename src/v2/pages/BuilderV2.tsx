@@ -561,7 +561,7 @@ export const BuilderV2: React.FC = () => {
     
     // Add dynamic sections from resumeData that aren't in config
     const dynamicSections: typeof configSections = [];
-    (resumeData.sections || []).forEach((s, idx) => {
+    (resumeData.customSections || []).forEach((s, idx) => {
       const titleLower = (s.title || s.id || '').toLowerCase();
       if (configIds.has(s.id)) return;
       if (configTitles.has(titleLower)) return;
@@ -588,7 +588,7 @@ export const BuilderV2: React.FC = () => {
     });
     
     return [...configSections, ...dynamicSections];
-  }, [config.sections, resumeData.sections, sectionOverrides, enabledSections]);
+  }, [config.sections, resumeData.customSections, sectionOverrides, enabledSections]);
 
   // Section management panel
   const renderSectionManager = () => (
@@ -682,206 +682,97 @@ export const BuilderV2: React.FC = () => {
     <div className="flex h-screen flex-col bg-gradient-to-br from-background via-muted/5 to-background">
       <Header />
 
-      {/* Toolbar - Mobile Responsive */}
-      <div className="border-b bg-card/80 backdrop-blur-sm shadow-sm">
-        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3">
-          {/* Mobile Layout - Stacked */}
-          <div className="flex flex-col lg:hidden gap-2">
-            {/* Top Row - Back + Template Name + Download */}
+      {/* Compact Header - Sticky */}
+      <div className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div className="container mx-auto px-2 sm:px-4">
+          {/* Mobile Layout - Single Row */}
+          <div className="lg:hidden py-1.5 sm:py-2">
             <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 min-w-0 flex-1">
+              <div className="flex items-center gap-2 min-w-0">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => navigate('/templates')}
-                  className="gap-1.5 h-9 px-2 sm:px-3"
+                  className="h-7 w-7 p-0"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline">Back</span>
                 </Button>
-                <div className="h-5 w-px bg-gray-200" />
-                <span className="font-medium text-gray-900 text-xs sm:text-sm truncate">{config.name}</span>
+                <span className="font-medium text-xs truncate">{config.name}</span>
               </div>
-              <Button
-                onClick={handleDownload}
-                disabled={isDownloading}
-                size="sm"
-                className="gap-1.5 h-9 px-2 sm:px-3 shrink-0"
-              >
-                {isDownloading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span className="hidden sm:inline">Generating...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4" />
-                    <span className="hidden sm:inline">Download</span>
-                  </>
-                )}
-              </Button>
-            </div>
-
-            {/* Bottom Row - Tabs + Menu */}
-            <div className="flex items-center justify-between gap-2">
-              <Tabs value={editorMode} onValueChange={(v) => setEditorMode(v as 'live' | 'form')} className="flex-1">
-                <TabsList className="bg-muted/50 border w-full">
-                  <TabsTrigger value="live" className="gap-1.5 text-xs sm:text-sm flex-1">
-                    <Edit3 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Live</span>
-                    <span className="sm:hidden">Edit</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="form" className="gap-1.5 text-xs sm:text-sm flex-1">
-                    <FileEdit className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Form</span>
-                    <span className="sm:hidden">Fields</span>
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-              
-              {/* Mobile Menu */}
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9 w-9 p-0 shrink-0">
-                    <Settings className="h-4 w-4" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent align="end" className="w-72 p-3">
-                  <div className="space-y-3">
-                    {/* Theme Color */}
-                    <div className="flex items-center justify-between gap-2">
-                      <label htmlFor="themeColorMobile" className="text-sm font-medium">
-                        Theme Color:
-                      </label>
-                      <input
-                        id="themeColorMobile"
-                        type="color"
-                        value={themeColor}
-                        onChange={(e) => setThemeColor(e.target.value)}
-                        className="h-8 w-12 cursor-pointer rounded border border-border"
-                      />
-                    </div>
-                    
-                    {/* Sections Manager */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                          <LayoutGrid className="w-4 h-4" />
-                          Manage Sections
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80" align="end">
-                        {renderSectionManager()}
-                      </PopoverContent>
-                    </Popover>
-
-                    {/* Save Button */}
-                    <Button
-                      onClick={() => toast.success('Resume saved!')}
-                      variant="outline"
-                      size="sm"
-                      className="w-full justify-start gap-2"
-                    >
-                      <Save className="w-4 h-4" />
-                      Save Resume
+              <div className="flex items-center gap-1">
+                <Tabs value={editorMode} onValueChange={(v) => setEditorMode(v as 'live' | 'form')} className="shrink-0">
+                  <TabsList className="h-7 p-0.5">
+                    <TabsTrigger value="live" className="h-6 px-2 text-xs">
+                      <Edit3 className="h-3 w-3" />
+                    </TabsTrigger>
+                    <TabsTrigger value="form" className="h-6 px-2 text-xs">
+                      <FileEdit className="h-3 w-3" />
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-7 w-7 p-0">
+                      <Settings className="h-3.5 w-3.5" />
                     </Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" className="w-64 p-3">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-medium">Theme:</label>
+                        <input type="color" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} className="h-7 w-10 rounded border" />
+                      </div>
+                      <Button variant="outline" size="sm" className="w-full text-xs" onClick={() => setShowReorder(true)}>
+                        <LayoutGrid className="w-3 h-3 mr-1" /> Sections
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                <Button onClick={handleDownload} disabled={isDownloading} size="sm" className="h-7 px-2">
+                  {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Desktop Layout - 3 Column Grid */}
-          <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-            {/* Left Section - Back + Template Name */}
+          {/* Desktop Layout - Compact Single Row */}
+          <div className="hidden lg:flex items-center justify-between py-2">
             <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/templates')}
-                className="gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back
+              <Button variant="ghost" size="sm" onClick={() => navigate('/templates')} className="gap-1.5 h-8">
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span className="text-sm">Back</span>
               </Button>
-              <div className="h-6 w-px bg-gray-200" />
-              <span className="font-medium text-gray-900">{config.name}</span>
+              <div className="h-4 w-px bg-gray-200" />
+              <span className="font-medium text-sm">{config.name}</span>
             </div>
-
-            {/* Center Section - Tabs */}
-            <div className="flex justify-center">
-              <Tabs value={editorMode} onValueChange={(v) => setEditorMode(v as 'live' | 'form')}>
-                <TabsList className="bg-muted/50 border">
-                  <TabsTrigger value="live" className="gap-2 text-sm">
-                    <Edit3 className="h-4 w-4" />
-                    Live Editor
-                  </TabsTrigger>
-                  <TabsTrigger value="form" className="gap-2 text-sm">
-                    <FileEdit className="h-4 w-4" />
-                    Form Editor
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-
-            {/* Right Section - Controls */}
-            <div className="flex items-center justify-end gap-2">
-              {/* Theme Color */}
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/30 border">
-                <label htmlFor="themeColor" className="text-sm font-medium whitespace-nowrap">
-                  Theme:
-                </label>
-                <input
-                  id="themeColor"
-                  type="color"
-                  value={themeColor}
-                  onChange={(e) => setThemeColor(e.target.value)}
-                  className="h-7 w-10 cursor-pointer rounded border border-border"
-                />
+            <Tabs value={editorMode} onValueChange={(v) => setEditorMode(v as 'live' | 'form')}>
+              <TabsList className="h-8">
+                <TabsTrigger value="live" className="gap-1.5 text-xs h-7">
+                  <Edit3 className="h-3.5 w-3.5" /> Live
+                </TabsTrigger>
+                <TabsTrigger value="form" className="gap-1.5 text-xs h-7">
+                  <FileEdit className="h-3.5 w-3.5" /> Form
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-muted/30 border">
+                <label className="text-xs font-medium">Theme:</label>
+                <input type="color" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} className="h-6 w-8 rounded border" />
               </div>
-
-              {/* Sections Manager */}
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <LayoutGrid className="w-4 h-4" />
-                    Sections
+                  <Button variant="outline" size="sm" className="gap-1.5 h-8 text-xs">
+                    <LayoutGrid className="w-3.5 h-3.5" /> Sections
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80" align="end">
-                  {renderSectionManager()}
-                </PopoverContent>
+                <PopoverContent className="w-80" align="end">{renderSectionManager()}</PopoverContent>
               </Popover>
-
-              {/* Save Button */}
-              <Button
-                onClick={() => toast.success('Resume saved!')}
-                size="sm"
-                variant="outline"
-                className="gap-2"
-              >
-                <Save className="h-4 w-4" />
-                Save
+              <Button onClick={() => toast.success('Saved!')} size="sm" variant="outline" className="gap-1.5 h-8 text-xs">
+                <Save className="h-3.5 w-3.5" /> Save
               </Button>
-
-              {/* Download */}
-              <Button
-                onClick={handleDownload}
-                disabled={isDownloading}
-                size="sm"
-                className="gap-2"
-              >
-                {isDownloading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4" />
-                    Download PDF
-                  </>
-                )}
+              <Button onClick={handleDownload} disabled={isDownloading} size="sm" className="gap-1.5 h-8 text-xs">
+                {isDownloading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generating...</> : <><Download className="h-3.5 w-3.5" /> Download</>}
               </Button>
             </div>
           </div>
@@ -889,9 +780,9 @@ export const BuilderV2: React.FC = () => {
       </div>
 
       <StyleOptionsProvider>
-        {/* Main Content Area - Mobile Responsive */}
+        {/* Main Content Area - Optimized Spacing */}
         <div className="flex-1 overflow-auto">
-          <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4 md:py-6">
+          <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
             <div className={cn(
               "grid gap-3 sm:gap-4 max-w-8xl mx-auto lg:gap-6",
               // Mobile: Always stack vertically
@@ -902,7 +793,7 @@ export const BuilderV2: React.FC = () => {
             )}>
               {/* Form Section - Only in form mode */}
               {editorMode === 'form' && (
-                <div className="max-h-[calc(100vh-10rem)] sm:max-h-[calc(100vh-12rem)] overflow-y-auto space-y-3 sm:space-y-4 rounded-xl sm:rounded-2xl border border-border/50 bg-background px-3 py-4 sm:px-4 sm:py-5 md:px-6 md:py-6 shadow-sm">
+                <div className="max-h-[calc(100vh-7rem)] overflow-y-auto space-y-3 rounded-lg border border-border/50 bg-background px-3 py-3 sm:px-4 sm:py-4 shadow-sm">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -936,7 +827,7 @@ export const BuilderV2: React.FC = () => {
               {/* Preview Section */}
               <div className={cn(
                 "overflow-y-auto overflow-x-visible",
-                editorMode === 'form' ? "lg:sticky lg:top-32 lg:max-h-[calc(100vh-8rem)]" : ""
+                editorMode === 'form' ? "lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)]" : ""
               )}>
                 <div 
                   className="rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-6 overflow-x-visible"
@@ -952,51 +843,25 @@ export const BuilderV2: React.FC = () => {
                       backgroundSize: '20px 20px',
                     }}
                   >
-                    {/* Live Preview Header - Always Horizontal */}
-                    <div className="flex flex-row items-center justify-between gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl border border-white/50 shadow-lg shadow-gray-200/50 w-full max-w-[210mm]">
-                      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
-                        <div
-                          className="h-7 sm:h-9 w-1 sm:w-1.5 rounded-full shadow-sm flex-shrink-0"
-                          className="bg-primary"
-                        />
-                        <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
-                          <div
-                            className="p-1 sm:p-1.5 rounded-lg flex-shrink-0"
-                            className="bg-primary/10"
-                          >
-                            <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-                          </div>
-                          <span className="font-semibold text-gray-800 tracking-tight text-xs sm:text-sm md:text-base whitespace-nowrap">Live Preview</span>
-                        </div>
+                    {/* Compact Preview Header */}
+                    <div className="flex items-center justify-between gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-white/90 backdrop-blur-md rounded-lg border border-white/50 shadow-sm w-full max-w-[210mm]">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <div className="h-6 w-1 rounded-full bg-primary" />
+                        <Eye className="h-3.5 w-3.5 text-primary" />
+                        <span className="font-semibold text-xs sm:text-sm">Live Preview</span>
                       </div>
-                      <div className="flex items-center gap-1 sm:gap-1.5 sm:gap-2 flex-shrink-0">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 sm:h-9 gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3"
-                          onClick={() => setShowReorder(true)}
-                        >
-                          <PanelsTopLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                      <div className="flex items-center gap-1">
+                        <Button variant="outline" size="sm" className="h-7 gap-1 text-xs px-2" onClick={() => setShowReorder(true)}>
+                          <PanelsTopLeft className="h-3 w-3" />
                           <span className="hidden sm:inline">Rearrange</span>
-                          <span className="sm:hidden">Arrange</span>
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 sm:h-9 gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3"
-                          onClick={handleAddCustomSection}
-                        >
-                          <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                          <span className="hidden sm:inline">Add Section</span>
-                          <span className="sm:hidden">Add</span>
+                        <Button variant="outline" size="sm" className="h-7 gap-1 text-xs px-2" onClick={handleAddCustomSection}>
+                          <Plus className="h-3 w-3" />
+                          <span className="hidden sm:inline">Add</span>
                         </Button>
                         <Popover>
                           <PopoverTrigger asChild>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-gray-100 rounded-lg sm:rounded-xl transition-all hover:shadow-sm border border-transparent hover:border-gray-200"
-                            >
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
                               <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-primary" style={{ animationDuration: '3s' }} />
                             </Button>
                           </PopoverTrigger>

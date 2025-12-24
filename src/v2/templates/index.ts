@@ -35,6 +35,19 @@ import { devopsCommandTemplate } from './devops-command';
 import { mobileCraftTemplate } from './mobile-craft';
 import { apiLedgerTemplate } from './api-ledger';
 
+// Fresher Templates
+import { fresherStarterTemplate } from './fresher-starter';
+import { fresherModernTemplate } from './fresher-modern';
+import { fresherElegantTemplate } from './fresher-elegant';
+import { fresherBoldTemplate } from './fresher-bold';
+import { fresherMinimalTemplate } from './fresher-minimal';
+import { fresherCreativeTemplate } from './fresher-creative';
+import { fresherProfessionalTemplate } from './fresher-professional';
+import { fresherCompactTemplate } from './fresher-compact';
+import { fresherTechTemplate } from './fresher-tech';
+import { fresherGradientTemplate } from './fresher-gradient';
+import { fresherClassicTemplate } from './fresher-classic';
+
 // ============================================================================
 // TEMPLATE REGISTRY
 // ============================================================================
@@ -66,6 +79,18 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'devops-command-v2': devopsCommandTemplate,
   'mobile-craft-v2': mobileCraftTemplate,
   'api-ledger-v2': apiLedgerTemplate,
+  // Fresher Templates
+  'fresher-starter-v2': fresherStarterTemplate,
+  'fresher-modern-v2': fresherModernTemplate,
+  'fresher-elegant-v2': fresherElegantTemplate,
+  'fresher-bold-v2': fresherBoldTemplate,
+  'fresher-minimal-v2': fresherMinimalTemplate,
+  'fresher-creative-v2': fresherCreativeTemplate,
+  'fresher-professional-v2': fresherProfessionalTemplate,
+  'fresher-compact-v2': fresherCompactTemplate,
+  'fresher-tech-v2': fresherTechTemplate,
+  'fresher-gradient-v2': fresherGradientTemplate,
+  'fresher-classic-v2': fresherClassicTemplate,
 };
 
 // ============================================================================
@@ -105,6 +130,13 @@ export function getFeaturedTemplates(): TemplateDefinition[] {
  */
 export function getTemplateIds(): string[] {
   return Object.keys(V2_TEMPLATE_REGISTRY);
+}
+
+/**
+ * Get fresher templates
+ */
+export function getFresherTemplates(): TemplateDefinition[] {
+  return getAllTemplates().filter(t => t.meta.tags?.includes('fresher'));
 }
 
 /**
@@ -157,3 +189,16 @@ export { productEngineerTemplate } from './product-engineer';
 export { devopsCommandTemplate } from './devops-command';
 export { mobileCraftTemplate } from './mobile-craft';
 export { apiLedgerTemplate } from './api-ledger';
+
+// Fresher Templates
+export { fresherStarterTemplate } from './fresher-starter';
+export { fresherModernTemplate } from './fresher-modern';
+export { fresherElegantTemplate } from './fresher-elegant';
+export { fresherBoldTemplate } from './fresher-bold';
+export { fresherMinimalTemplate } from './fresher-minimal';
+export { fresherCreativeTemplate } from './fresher-creative';
+export { fresherProfessionalTemplate } from './fresher-professional';
+export { fresherCompactTemplate } from './fresher-compact';
+export { fresherTechTemplate } from './fresher-tech';
+export { fresherGradientTemplate } from './fresher-gradient';
+export { fresherClassicTemplate } from './fresher-classic';

@@ -7,10 +7,12 @@ import {
   Sparkles,
   Star,
   TrendingUp,
+  GraduationCap,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { getAllTemplates } from '../config/templates';
+import { getFresherTemplates } from '../templates';
 import { TemplatePreviewV2 } from '@/v2/components/TemplatePreviewV2';
 import { FavoriteButton } from "@/components/FavoriteButton";
 
@@ -19,7 +21,9 @@ const DEFAULT_THEME_COLOR = "#2563eb";
 const DashboardV2 = () => {
   const navigate = useNavigate();
   const v2Templates = getAllTemplates();
-  const totalTemplateCount = v2Templates.length;
+  const fresherTemplates = getFresherTemplates();
+  const universalTemplateCount = v2Templates.length - fresherTemplates.length;
+  const fresherTemplateCount = fresherTemplates.length;
 
   // Featured templates - show first 4 templates
   // Default colors for templates
@@ -53,69 +57,34 @@ const DashboardV2 = () => {
       </div>
 
       <main className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
-        {/* Compact Quick Actions */}
-        <div className="max-w-4xl mx-auto mb-8 md:mb-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            {/* Create from Scratch Card */}
-            <Card
-              className="group relative overflow-hidden border border-border/40 hover:border-primary/50 transition-all duration-200 hover:shadow-md cursor-pointer bg-card active:scale-[0.98]"
-              onClick={() => navigate("/builder/scratch-v2/select-layout")}
-            >
-              <div className="relative p-3.5 sm:p-4 md:p-5">
-                <div className="flex items-start gap-2.5 sm:gap-3">
-                  {/* Compact Icon */}
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
-                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-                      <h3 className="text-xs sm:text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors">
-                        Create from Scratch
-                      </h3>
-                    </div>
-                    <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                      Build your resume with drag-and-drop sections
-                    </p>
-                  </div>
-
-                  {/* Arrow */}
-                  <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0 mt-0.5 sm:mt-1" />
+        {/* Create Custom Resume Section */}
+        <div className="max-w-5xl mx-auto mb-6">
+          <Card
+            className="group relative overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg cursor-pointer bg-gradient-to-br from-primary/5 via-background to-background active:scale-[0.99]"
+            onClick={() => navigate("/builder/scratch-v2/select-layout")}
+          >
+            <div className="relative p-5 sm:p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <Sparkles className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
                 </div>
-              </div>
-            </Card>
-
-            {/* Grid Canvas Builder Card */}
-            <Card
-              className="group relative overflow-hidden border border-border/40 hover:border-primary/50 transition-all duration-200 hover:shadow-md cursor-pointer bg-card active:scale-[0.98]"
-              onClick={() => navigate("/builder/grid-canvas/select-layout")}
-            >
-              <div className="relative p-3.5 sm:p-4 md:p-5">
-                <div className="flex items-start gap-2.5 sm:gap-3">
-                  {/* Compact Icon */}
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-emerald-500 to-emerald-600 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
-                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-                      <h3 className="text-xs sm:text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors">
-                        Grid Canvas Builder
-                      </h3>
-                    </div>
-                    <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                      Design layouts with a flexible 12-column grid (beta)
-                    </p>
-                  </div>
-
-                  {/* Arrow */}
-                  <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0 mt-0.5 sm:mt-1" />
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-1">
+                    Want to create a custom resume?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    Build your resume from scratch with complete control over layout and sections
+                  </p>
                 </div>
+                <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
               </div>
-            </Card>
+            </div>
+          </Card>
+        </div>
 
+        {/* Template Categories */}
+        <div className="max-w-5xl mx-auto mb-8 md:mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {/* Universal Templates Card */}
             <Card
               className="group relative overflow-hidden border border-border/40 hover:border-primary/50 transition-all duration-200 hover:shadow-md cursor-pointer bg-card active:scale-[0.98]"
@@ -138,7 +107,7 @@ const DashboardV2 = () => {
                         variant="secondary" 
                         className="text-[9px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 h-4 sm:h-5 font-semibold bg-primary/10 text-primary border-primary/20"
                       >
-                        {totalTemplateCount}
+                        {universalTemplateCount}
                       </Badge>
                     </div>
                     <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
@@ -148,6 +117,42 @@ const DashboardV2 = () => {
 
                   {/* Arrow */}
                   <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0 mt-0.5 sm:mt-1" />
+                </div>
+              </div>
+            </Card>
+
+            {/* Fresher Templates Card */}
+            <Card
+              className="group relative overflow-hidden border border-border/40 hover:border-violet-500/50 transition-all duration-200 hover:shadow-md cursor-pointer bg-card active:scale-[0.98]"
+              onClick={() => navigate("/templates/fresher")}
+            >
+              <div className="relative p-3.5 sm:p-4 md:p-5">
+                <div className="flex items-start gap-2.5 sm:gap-3">
+                  {/* Compact Icon */}
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-violet-500 to-purple-600 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                    <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1 flex-wrap">
+                      <h3 className="text-xs sm:text-sm md:text-base font-semibold text-foreground group-hover:text-violet-600 transition-colors">
+                        Fresher Templates
+                      </h3>
+                      <Badge 
+                        variant="secondary" 
+                        className="text-[9px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 h-4 sm:h-5 font-semibold bg-violet-100 text-violet-600 border-violet-200"
+                      >
+                        {fresherTemplateCount}
+                      </Badge>
+                    </div>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                      Perfect for fresh graduates and entry-level candidates
+                    </p>
+                  </div>
+
+                  {/* Arrow */}
+                  <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-hover:text-violet-600 group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0 mt-0.5 sm:mt-1" />
                 </div>
               </div>
             </Card>
