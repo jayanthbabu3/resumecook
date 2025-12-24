@@ -137,22 +137,14 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
   },
 
   skills: {
-    variant: 'pills',
+    variant: 'inline',
     columns: 1,
     showRatings: false,
-    badge: {
-      fontSize: '11px',
-      padding: '4px 10px',
-      borderRadius: '999px',
-      borderWidth: '1px',
-      borderColor: '#a7f3d0',
-      backgroundColor: '#ecfdf5',
-      textColor: '#065f46',
-    },
+    separator: ' • ',
   },
 
   experience: {
-    variant: 'standard',
+    variant: 'enhanced',
     datePosition: 'right',
     showLocation: true,
     bulletStyle: '•',
@@ -180,11 +172,11 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
     { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
     { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Platform Projects', defaultTitle: 'Platform Projects', enabled: true, order: 3, column: 'main' },
-    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 4, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Core Skills', defaultTitle: 'Core Skills', enabled: true, order: 5, column: 'sidebar' },
-    { type: 'achievements', id: 'achievements', title: 'Highlights', defaultTitle: 'Highlights', enabled: false, order: 6, column: 'sidebar' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 7, column: 'sidebar' },
+    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Core Skills', defaultTitle: 'Core Skills', enabled: true, order: 4, column: 'sidebar' },
+    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: true, order: 5, column: 'sidebar' },
+    { type: 'achievements', id: 'achievements', title: 'Highlights', defaultTitle: 'Highlights', enabled: true, order: 6, column: 'sidebar' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 7, column: 'sidebar' },
   ],
 
   fontFamily: {
