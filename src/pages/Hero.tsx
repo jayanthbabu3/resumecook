@@ -68,7 +68,7 @@ const Hero = () => {
   // Template config for form editor demo
   const demoTemplateId = "professional-blue-v2";
   const demoTemplateConfig = getTemplateConfig(demoTemplateId);
-  const demoThemeColor = demoTemplateConfig?.colors?.primary || DEFAULT_THEME_COLOR;
+  const demoThemeColor = DEFAULT_THEME_COLOR;
 
   // State for Form Editor Demo in V2ResumeData format
   const [formEditorData, setFormEditorData] = useState<V2ResumeData>(() => ({
@@ -134,7 +134,7 @@ const Hero = () => {
   // Template config for live editor demo
   const liveEditorTemplateId = "professional-blue-v2";
   const liveEditorTemplateConfig = getTemplateConfig(liveEditorTemplateId);
-  const liveEditorThemeColor = liveEditorTemplateConfig?.colors?.primary || "#059669";
+  const liveEditorThemeColor = DEFAULT_THEME_COLOR;
 
   // State for Live Editor in V2ResumeData format
   const [liveEditorData, setLiveEditorData] = useState<V2ResumeData>(() => ({
@@ -445,9 +445,6 @@ const Hero = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto px-6 pt-4">
-        <Breadcrumbs />
-      </div>
 
       {/* Hero Section - Inspired by Stripe, Linear, Vercel */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
@@ -1107,7 +1104,7 @@ const Hero = () => {
                   </div>
 
                   {/* Main Editor Layout */}
-                  <div className="flex flex-col lg:flex-row gap-0 h-auto">
+                  <div className="flex flex-col lg:flex-row gap-0 h-auto lg:items-start">
                     {/* Left Side - Form Editor */}
                     <div className="w-full lg:w-[40%] bg-gradient-to-br from-slate-50 to-gray-50 border-b lg:border-b-0 lg:border-r border-gray-200 overflow-y-auto max-h-[600px] lg:max-h-[800px]">
                       <div className="p-4 md:p-6">
@@ -1127,69 +1124,69 @@ const Hero = () => {
                     {/* Right Side - Live Preview */}
                     <div className="w-full lg:w-[60%] bg-gradient-to-br from-gray-50 via-gray-50 to-gray-100">
                       <div className="p-2 sm:p-4 md:p-6 h-full overflow-y-auto">
-                        {/* Live Preview Header - Match Builder Style */}
-                        <div className="mb-3 sm:mb-4 flex items-center justify-between gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl border border-white/50 shadow-lg shadow-gray-200/50">
-                          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                            <div
-                              className="h-7 sm:h-9 w-1 sm:w-1.5 rounded-full shadow-sm"
-                              style={{ background: demoThemeColor }}
-                            />
-                            <div className="flex items-center gap-2 sm:gap-2.5">
-                              <div
-                                className="p-1 sm:p-1.5 rounded-lg"
-                                style={{ backgroundColor: `${demoThemeColor}1a` }}
-                              >
-                                <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: demoThemeColor }} />
-                              </div>
-                              <span className="font-semibold text-gray-800 tracking-tight text-sm sm:text-base">Live Preview</span>
-                            </div>
-                          </div>
-                          <Button
-                            onClick={async () => {
-                              try {
-                                const filename = `${formEditorData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
-                                await generatePDFFromPreview("hero-form-preview", filename);
-                                await incrementDownloadsCount();
-                              } catch (error) {
-                                console.error("Download error:", error);
-                              }
-                            }}
-                            size="sm"
-                            className="h-8 sm:h-9 gap-1.5 sm:gap-2 border-gray-200 text-gray-700 hover:border-primary hover:text-primary hover:bg-primary/5 text-xs sm:text-sm px-2 sm:px-3"
-                            style={{ ['--primary-color' as any]: demoThemeColor }}
-                          >
-                            <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                            <span className="hidden sm:inline">Download PDF</span>
-                            <span className="sm:hidden">PDF</span>
-                          </Button>
-                        </div>
-
-                        {/* Resume Preview Container - A4 Dimensions like Builder */}
                         <div 
-                          className="relative w-full overflow-x-auto"
+                          className="relative w-full overflow-x-hidden"
                           style={{
                             background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)',
-                            padding: '1rem',
+                            padding: '0.75rem',
                             borderRadius: '0.75rem',
                           }}
                         >
-                          {/* Dot pattern overlay */}
                           <div 
-                            className="space-y-2 sm:space-y-4 flex flex-col items-center"
+                            className="space-y-0.5 flex flex-col items-center"
                             style={{
                               backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 0.5px, transparent 0)',
                               backgroundSize: '20px 20px',
                             }}
                           >
+                            <div className="relative w-full max-w-[210mm]">
+                              <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl border border-white/50 shadow-lg shadow-gray-200/50">
+                                <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                                  <div
+                                    className="h-7 sm:h-9 w-1 sm:w-1.5 rounded-full shadow-sm"
+                                    style={{ background: demoThemeColor }}
+                                  />
+                                  <div className="flex items-center gap-2 sm:gap-2.5">
+                                    <div
+                                      className="p-1 sm:p-1.5 rounded-lg"
+                                      style={{ backgroundColor: `${demoThemeColor}1a` }}
+                                    >
+                                      <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: demoThemeColor }} />
+                                    </div>
+                                    <div className="flex flex-col leading-tight">
+                                      <span className="font-semibold text-gray-800 tracking-tight text-sm sm:text-base">Live Preview</span>
+                                      <span className="text-[10px] sm:text-xs text-muted-foreground">Click to edit inline</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <Button
+                                  onClick={async () => {
+                                    try {
+                                      const filename = `${formEditorData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                                      await generatePDFFromPreview("hero-form-preview", filename);
+                                      await incrementDownloadsCount();
+                                    } catch (error) {
+                                      console.error("Download error:", error);
+                                    }
+                                  }}
+                                  size="sm"
+                                  className="h-8 sm:h-9 gap-1.5 sm:gap-2 bg-primary text-white hover:bg-primary/90 shadow-sm text-xs sm:text-sm px-3 sm:px-4"
+                                >
+                                  <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                                  <span className="hidden sm:inline">Download PDF</span>
+                                  <span className="sm:hidden">PDF</span>
+                                </Button>
+                              </div>
+                            </div>
+
                             {/* Resume Preview - A4 Size */}
                             <div className="relative w-full max-w-[210mm]">
                               <div 
                                 id="hero-form-preview" 
                                 className="bg-white shadow-2xl shadow-gray-300/50 rounded-xl overflow-hidden ring-1 ring-gray-200/50 mx-auto"
                                 style={{ 
-                                  width: '210mm', 
-                                  minHeight: '297mm',
-                                  minWidth: '210mm',
+                                  width: 'min(210mm, 100%)',
+                                  maxWidth: '210mm',
                                 }}
                               >
                                 <StyleOptionsProvider>
@@ -1279,36 +1276,9 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/15 to-emerald-500/10 rounded-2xl md:rounded-3xl blur-xl md:blur-2xl scale-105"></div>
 
                 <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-emerald-200/50 overflow-hidden">
-                  {/* Editor Header */}
-                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-200 px-3 md:px-6 py-3 md:py-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 md:gap-3">
-                        <div className="w-2 h-2 md:w-3 md:h-3 bg-emerald-400 rounded-full"></div>
-                        <div className="w-2 h-2 md:w-3 md:h-3 bg-teal-400 rounded-full"></div>
-                        <div className="w-2 h-2 md:w-3 md:h-3 bg-cyan-400 rounded-full"></div>
-                        <div className="ml-2 md:ml-4 text-[10px] md:text-xs font-semibold text-emerald-700">Live Editor - Click to Edit Directly</div>
-                      </div>
-                      <Button
-                        onClick={async () => {
-                          try {
-                            const filename = `${liveEditorData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
-                            await generatePDFFromPreview("hero-live-editor-preview", filename);
-                            await incrementDownloadsCount();
-                          } catch (error) {
-                            console.error("Download error:", error);
-                          }
-                        }}
-                        className={cn(buttonBaseClass, "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl h-9 px-3")}
-                      >
-                        <Download className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Resume with Inline Editing - A4 Dimensions like Builder */}
                   <div className="p-2 sm:p-4 md:p-6">
                     <div 
-                      className="relative w-full overflow-x-auto"
+                      className="relative w-full overflow-x-hidden space-y-1.5 sm:space-y-2.5"
                       style={{
                         background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)',
                         padding: '1rem',
@@ -1317,21 +1287,60 @@ const Hero = () => {
                     >
                       {/* Dot pattern overlay */}
                       <div 
-                        className="space-y-2 sm:space-y-4 flex flex-col items-center"
+                        className="space-y-1 flex flex-col items-center"
                         style={{
                           backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 0.5px, transparent 0)',
                           backgroundSize: '20px 20px',
                         }}
                       >
+                        <div className="relative w-full max-w-[210mm]">
+                          <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-white/90 backdrop-blur-md rounded-xl sm:rounded-2xl border border-white/50 shadow-lg shadow-gray-200/50">
+                            <div className="flex items-center gap-2 md:gap-3">
+                              <div
+                                className="h-7 sm:h-9 w-1 sm:w-1.5 rounded-full shadow-sm"
+                                style={{ background: liveEditorThemeColor }}
+                              />
+                              <div className="flex items-center gap-2 sm:gap-2.5">
+                                <div
+                                  className="p-1 sm:p-1.5 rounded-lg"
+                                  style={{ backgroundColor: `${liveEditorThemeColor}1a` }}
+                                >
+                                  <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: liveEditorThemeColor }} />
+                                </div>
+                                <div className="flex flex-col leading-tight">
+                                  <span className="font-semibold text-gray-800 tracking-tight text-sm sm:text-base">Live Preview</span>
+                                  <span className="text-[10px] sm:text-xs text-muted-foreground">Click to edit inline</span>
+                                </div>
+                              </div>
+                            </div>
+                            <Button
+                              onClick={async () => {
+                                try {
+                                  const filename = `${liveEditorData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume.pdf`;
+                                  await generatePDFFromPreview("hero-live-editor-preview", filename);
+                                  await incrementDownloadsCount();
+                                } catch (error) {
+                                  console.error("Download error:", error);
+                                }
+                              }}
+                              size="sm"
+                              className="h-8 sm:h-9 gap-1.5 sm:gap-2 bg-primary text-white hover:bg-primary/90 shadow-sm text-xs sm:text-sm px-3 sm:px-4"
+                            >
+                              <Download className="w-4 h-4" />
+                              <span className="hidden sm:inline">Download PDF</span>
+                              <span className="sm:hidden">PDF</span>
+                            </Button>
+                          </div>
+                        </div>
+
                         {/* Resume Preview - A4 Size with Inline Editing */}
                         <div className="relative w-full max-w-[210mm]">
                           <div 
                             id="hero-live-editor-preview" 
                             className="bg-white shadow-2xl shadow-gray-300/50 rounded-xl overflow-hidden ring-1 ring-gray-200/50 mx-auto"
                             style={{ 
-                              width: '210mm', 
-                              minHeight: '297mm',
-                              minWidth: '210mm',
+                              width: 'min(210mm, 100%)',
+                              maxWidth: '210mm',
                             }}
                           >
                             <StyleOptionsProvider>

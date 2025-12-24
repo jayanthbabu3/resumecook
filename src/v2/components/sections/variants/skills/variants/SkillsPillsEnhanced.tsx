@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import type { SkillsVariantProps } from '../types';
+import { getPillTextColor } from '../utils';
 
 export const SkillsPillsEnhanced: React.FC<SkillsVariantProps> = ({
   items,
@@ -30,7 +31,7 @@ export const SkillsPillsEnhanced: React.FC<SkillsVariantProps> = ({
     borderRadius: '9999px',
     border: `${skills?.badge?.borderWidth || '1px'} solid ${accentColor}`,
     backgroundColor: skills?.badge?.backgroundColor || 'transparent',
-    color: skills?.badge?.textColor || accentColor,
+    color: skills?.badge?.textColor || getPillTextColor(skills?.badge?.backgroundColor, accentColor),
     transition: 'all 0.2s ease',
   };
 

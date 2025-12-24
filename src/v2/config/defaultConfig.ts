@@ -291,6 +291,7 @@ export function applyThemeColors(
           ...result.skills.badge,
           backgroundColor: colors.primary,
           borderColor: colors.primary,
+          textColor: '#ffffff',
         },
       };
     }

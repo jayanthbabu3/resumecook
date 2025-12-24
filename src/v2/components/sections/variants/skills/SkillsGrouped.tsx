@@ -6,6 +6,7 @@
 
 import React from 'react';
 import type { SkillsVariantProps } from './SkillsVariantRenderer';
+import { getPillTextColor } from './utils';
 
 interface SkillsGroupedProps extends SkillsVariantProps {
   /** Number of columns */
@@ -44,7 +45,7 @@ export const SkillsGrouped: React.FC<SkillsGroupedProps> = ({
     borderRadius: '9999px',
     border: `${skills.badge?.borderWidth || '1px'} solid ${accentColor}`,
     backgroundColor: skills.badge?.backgroundColor || 'transparent',
-    color: skills.badge?.textColor || accentColor,
+    color: skills.badge?.textColor || getPillTextColor(skills.badge?.backgroundColor, accentColor),
   };
 
   // If no categories, just render as columns

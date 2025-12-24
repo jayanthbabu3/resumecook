@@ -68,6 +68,8 @@ const SECTION_ICONS: Record<string, React.ElementType> = {
   interests: Star,
 };
 
+const COMPACT_FIELD_INPUT_CLASS = "!text-xs !md:text-xs leading-relaxed placeholder:text-gray-400";
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -188,7 +190,7 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
     return (
       <div className="space-y-2">
         {/* Inline items */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-start gap-2">
           {items.map((item: any) => (
             <InlineEditableItem
               key={item.id}
@@ -209,7 +211,8 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
           <button
             onClick={handleAddItem}
             disabled={disabled}
-            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-full border-2 border-dashed border-gray-300 text-gray-500 hover:border-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all"
+            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-full border-2 border-dashed transition-all self-start hover:bg-transparent"
+            style={{ color: accentColor, borderColor: `${accentColor}66` }}
           >
             <Plus className="w-3 h-3" />
             Add
@@ -246,7 +249,8 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
         <button
           onClick={handleAddItem}
           disabled={disabled}
-          className="w-full py-2.5 text-sm font-medium rounded-lg border-2 border-dashed border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-600 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+          className="w-full py-2.5 text-sm font-medium rounded-lg border-2 border-dashed transition-all flex items-center justify-center gap-2 hover:bg-transparent"
+          style={{ color: accentColor, borderColor: `${accentColor}66` }}
         >
           <Plus className="w-4 h-4" />
           Add {sectionDef.itemName || 'Item'}
@@ -374,7 +378,7 @@ const InlineEditableItem: React.FC<InlineEditableItemProps> = ({
                   value={item[field.key] || ''}
                   onValueChange={(v) => onUpdate(field.key, v)}
                 >
-                  <SelectTrigger className="h-7 text-xs flex-1">
+                  <SelectTrigger className={`h-7 flex-1 ${COMPACT_FIELD_INPUT_CLASS}`}>
                     <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
@@ -411,7 +415,7 @@ const InlineEditableItem: React.FC<InlineEditableItemProps> = ({
                   value={item[field.key] || ''}
                   onChange={(e) => onUpdate(field.key, e.target.value)}
                   placeholder={field.placeholder}
-                  className="h-7 text-xs flex-1"
+                  className={`h-7 flex-1 ${COMPACT_FIELD_INPUT_CLASS}`}
                   autoFocus={field === primaryField}
                 />
               )}
@@ -663,11 +667,11 @@ const CompactField: React.FC<CompactFieldProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           rows={2}
-          className="text-xs resize-none"
+          className={`resize-none ${COMPACT_FIELD_INPUT_CLASS}`}
         />
       ) : type === 'select' ? (
         <Select value={value || ''} onValueChange={onChange} disabled={disabled}>
-          <SelectTrigger className="h-8 text-xs">
+          <SelectTrigger className={`h-8 ${COMPACT_FIELD_INPUT_CLASS}`}>
             <SelectValue placeholder={placeholder || 'Select...'} />
           </SelectTrigger>
           <SelectContent>
@@ -685,7 +689,8 @@ const CompactField: React.FC<CompactFieldProps> = ({
             checked={value || false}
             onChange={(e) => onChange(e.target.checked)}
             disabled={disabled}
-            className="rounded border-gray-300 text-cyan-500 focus:ring-cyan-500"
+            className="rounded border-gray-300"
+            style={{ accentColor }}
           />
           <span className="text-xs text-gray-600">{placeholder || label}</span>
         </label>
@@ -695,7 +700,7 @@ const CompactField: React.FC<CompactFieldProps> = ({
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
-          className="h-8 text-xs"
+          className={`h-8 ${COMPACT_FIELD_INPUT_CLASS}`}
         />
       ) : type === 'number' ? (
         <Input
@@ -706,7 +711,7 @@ const CompactField: React.FC<CompactFieldProps> = ({
           disabled={disabled}
           min={field.min}
           max={field.max}
-          className="h-8 text-xs w-20"
+          className={`h-8 w-20 ${COMPACT_FIELD_INPUT_CLASS}`}
         />
       ) : (
         <Input
@@ -714,7 +719,7 @@ const CompactField: React.FC<CompactFieldProps> = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
-          className="h-8 text-xs"
+          className={`h-8 ${COMPACT_FIELD_INPUT_CLASS}`}
         />
       )}
     </div>
@@ -779,7 +784,7 @@ const ArrayFieldCompact: React.FC<ArrayFieldCompactProps> = ({
                 placeholder={field.placeholder}
                 disabled={disabled}
                 rows={1}
-                className="flex-1 text-xs resize-none min-h-[32px]"
+                className={`flex-1 resize-none min-h-[32px] ${COMPACT_FIELD_INPUT_CLASS}`}
               />
               <button
                 type="button"

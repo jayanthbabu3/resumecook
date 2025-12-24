@@ -6,6 +6,7 @@
 
 import React from 'react';
 import type { SkillsVariantProps } from './SkillsVariantRenderer';
+import { getPillTextColor } from './utils';
 
 export const SkillsPills: React.FC<SkillsVariantProps> = ({
   items,
@@ -24,7 +25,7 @@ export const SkillsPills: React.FC<SkillsVariantProps> = ({
     borderRadius: '9999px',
     border: `${skills.badge?.borderWidth || '1px'} solid ${accentColor}`,
     backgroundColor: skills.badge?.backgroundColor || 'transparent',
-    color: skills.badge?.textColor || accentColor,
+    color: skills.badge?.textColor || getPillTextColor(skills.badge?.backgroundColor, accentColor),
     transition: 'all 0.2s ease',
   };
 

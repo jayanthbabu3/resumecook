@@ -881,8 +881,9 @@ export const BuilderV2: React.FC = () => {
 
               {/* Preview Section */}
               <div className={cn(
-                "overflow-y-auto overflow-x-visible",
-                editorMode === 'form' ? "lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)]" : ""
+                editorMode === 'form'
+                  ? "overflow-y-auto overflow-x-visible lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)]"
+                  : "overflow-visible",
               )}>
                 <div 
                   className="rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-6 overflow-x-visible"
@@ -933,7 +934,12 @@ export const BuilderV2: React.FC = () => {
                     </div>
 
                     {/* Resume Preview Container - Full Width with Horizontal Scroll on Mobile */}
-                    <div className="relative w-full overflow-x-auto overflow-y-visible">
+                    <div
+                      className={cn(
+                        "relative w-full overflow-y-visible",
+                        editorMode === 'form' ? "overflow-x-auto" : "overflow-x-hidden",
+                      )}
+                    >
                       {/* Decorative corner elements - Hidden on mobile */}
                       <div className="hidden sm:block absolute -top-2 -left-2 w-5 h-5 border-l-2 border-t-2 border-cyan-300/50 rounded-tl-lg z-10" />
                       <div className="hidden sm:block absolute -top-2 -right-2 w-5 h-5 border-r-2 border-t-2 border-cyan-300/50 rounded-tr-lg z-10" />

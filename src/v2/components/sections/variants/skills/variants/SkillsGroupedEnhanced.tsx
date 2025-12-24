@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import type { SkillsVariantProps } from '../types';
+import { getPillTextColor } from '../utils';
 
 interface SkillsGroupedEnhancedProps extends SkillsVariantProps {
   columns?: number;
@@ -47,7 +48,7 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
     borderRadius: '9999px',
     border: `${skills?.badge?.borderWidth || '1px'} solid ${accentColor}`,
     backgroundColor: skills?.badge?.backgroundColor || 'transparent',
-    color: skills?.badge?.textColor || accentColor,
+    color: skills?.badge?.textColor || getPillTextColor(skills?.badge?.backgroundColor, accentColor),
   };
 
   // If no categories, just render as columns

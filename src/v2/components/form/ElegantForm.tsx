@@ -72,6 +72,8 @@ const SECTION_ICONS: Record<string, React.ElementType> = {
   summary: FileText,
 };
 
+const FIELD_INPUT_CLASS = "!text-xs !md:text-xs leading-relaxed placeholder:text-gray-400";
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -136,15 +138,15 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
         isExpanded={expandedSections.includes('personal')}
         onToggle={() => toggleSection('personal')}
         accentColor={accentColor}
-        badge={resumeData.personalInfo?.name || 'Add your info'}
+        badge={resumeData.personalInfo?.fullName || 'Add your info'}
       >
         <div className="space-y-4">
           {/* Name & Title Row */}
           <div className="grid grid-cols-2 gap-3">
             <CompactInput
               label="Full Name"
-              value={resumeData.personalInfo?.name || ''}
-              onChange={(v) => updatePersonalInfo('name', v)}
+              value={resumeData.personalInfo?.fullName || ''}
+              onChange={(v) => updatePersonalInfo('fullName', v)}
               placeholder="John Doe"
               icon={User}
             />
@@ -187,13 +189,13 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
           
           {/* Summary */}
           <div className="space-y-1.5">
-            <Label className="text-xs font-medium text-gray-500">Professional Summary</Label>
+            <Label className="text-[11px] font-medium text-gray-500">Professional Summary</Label>
             <Textarea
               value={resumeData.personalInfo?.summary || ''}
               onChange={(e) => updatePersonalInfo('summary', e.target.value)}
               placeholder="Brief overview of your professional background..."
               rows={3}
-              className="text-sm resize-none"
+              className={`resize-none ${FIELD_INPUT_CLASS}`}
             />
           </div>
         </div>
@@ -415,7 +417,7 @@ const CompactInput: React.FC<CompactInputProps> = ({
 }) => {
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-gray-500">{label}</Label>
+      <Label className="text-[11px] font-medium text-gray-500">{label}</Label>
       <div className="relative">
         {Icon && (
           <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -425,7 +427,7 @@ const CompactInput: React.FC<CompactInputProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={cn("h-9 text-sm", Icon && "pl-9")}
+          className={cn(`h-8 ${FIELD_INPUT_CLASS}`, Icon && "pl-9")}
         />
       </div>
     </div>
@@ -477,7 +479,7 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
   return (
     <div className="space-y-3">
       {/* Items grid */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-start gap-2">
         {items.map((item) => {
           const isEditing = editingId === item.id;
           const primaryValue = item[primaryField?.key] || '';
@@ -486,18 +488,41 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
             return (
               <div 
                 key={item.id}
-                className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 border border-gray-200"
+                className="w-full rounded-lg border border-gray-200 bg-white p-3 shadow-sm"
               >
-                <div className="flex flex-col gap-1.5 min-w-[180px]">
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                    Edit {itemName}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="h-7 w-7 rounded-md border border-transparent text-green-600 hover:bg-green-50 hover:border-green-100 transition-colors"
+                      title="Save"
+                    >
+                      <Check className="w-3.5 h-3.5 mx-auto" />
+                    </button>
+                    <button
+                      onClick={() => handleRemove(item.id)}
+                      className="h-7 w-7 rounded-md border border-transparent text-red-500 hover:bg-red-50 hover:border-red-100 transition-colors"
+                      title="Remove"
+                    >
+                      <Trash2 className="w-3.5 h-3.5 mx-auto" />
+                    </button>
+                  </div>
+                </div>
+                <div className="grid gap-2">
                   {fields.map(field => (
-                    <div key={field.key} className="flex items-center gap-2">
-                      <span className="text-[10px] text-gray-400 w-14 shrink-0">{field.label}</span>
+                    <div key={field.key} className="grid grid-cols-[64px_1fr] items-center gap-2">
+                      <span className="text-[10px] text-gray-400 uppercase tracking-wide">
+                        {field.label}
+                      </span>
                       {field.type === 'select' ? (
                         <Select
                           value={item[field.key] || ''}
                           onValueChange={(v) => handleUpdate(item.id, field.key, v)}
                         >
-                          <SelectTrigger className="h-7 text-xs flex-1">
+                          <SelectTrigger className={`h-7 ${FIELD_INPUT_CLASS}`}>
                             <SelectValue placeholder="Select..." />
                           </SelectTrigger>
                           <SelectContent>
@@ -533,26 +558,12 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
                           value={item[field.key] || ''}
                           onChange={(e) => handleUpdate(item.id, field.key, e.target.value)}
                           placeholder={field.placeholder}
-                          className="h-7 text-xs flex-1"
+                          className={`h-7 ${FIELD_INPUT_CLASS}`}
                           autoFocus={field === primaryField}
                         />
                       )}
                     </div>
                   ))}
-                </div>
-                <div className="flex flex-col gap-1">
-                  <button
-                    onClick={() => setEditingId(null)}
-                    className="p-1 rounded hover:bg-green-100 text-green-600"
-                  >
-                    <Check className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => handleRemove(item.id)}
-                    className="p-1 rounded hover:bg-red-100 text-red-500"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
                 </div>
               </div>
             );
@@ -577,7 +588,8 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
         {/* Add button */}
         <button
           onClick={handleAdd}
-          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-full border-2 border-dashed border-gray-300 text-gray-500 hover:border-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium rounded-full border border-dashed transition-all leading-none self-start hover:bg-transparent"
+          style={{ color: accentColor, borderColor: `${accentColor}66` }}
         >
           <Plus className="w-3 h-3" />
           Add {itemName}
@@ -768,7 +780,8 @@ const ComplexItemsEditor: React.FC<ComplexItemsEditorProps> = ({
       {/* Add button */}
       <button
         onClick={handleAdd}
-        className="w-full py-2.5 text-sm font-medium rounded-lg border-2 border-dashed border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-600 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+        className="w-full py-2.5 text-sm font-medium rounded-lg border-2 border-dashed transition-all flex items-center justify-center gap-2 hover:bg-transparent"
+        style={{ color: accentColor, borderColor: `${accentColor}66` }}
       >
         <Plus className="w-4 h-4" />
         Add {itemName}
@@ -811,11 +824,11 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           rows={2}
-          className="text-xs resize-none"
+          className={`resize-none ${FIELD_INPUT_CLASS}`}
         />
       ) : type === 'select' ? (
         <Select value={value || ''} onValueChange={onChange}>
-          <SelectTrigger className="h-8 text-xs">
+        <SelectTrigger className={`h-8 ${FIELD_INPUT_CLASS}`}>
             <SelectValue placeholder={placeholder || 'Select...'} />
           </SelectTrigger>
           <SelectContent>
@@ -842,7 +855,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           type="month"
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className="h-8 text-xs"
+          className={`h-8 ${FIELD_INPUT_CLASS}`}
         />
       ) : type === 'number' ? (
         <Input
@@ -852,14 +865,14 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           placeholder={placeholder}
           min={field.min}
           max={field.max}
-          className="h-8 text-xs w-20"
+          className={`h-8 w-20 ${FIELD_INPUT_CLASS}`}
         />
       ) : (
         <Input
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="h-8 text-xs"
+          className={`h-8 ${FIELD_INPUT_CLASS}`}
         />
       )}
     </div>
@@ -918,8 +931,8 @@ const BulletPointsEditor: React.FC<BulletPointsEditorProps> = ({
                 value={item}
                 onChange={(e) => handleUpdate(index, e.target.value)}
                 placeholder={placeholder}
-                rows={1}
-                className="flex-1 text-xs resize-none min-h-[32px]"
+                rows={2}
+                className={`flex-1 resize-none min-h-[56px] ${FIELD_INPUT_CLASS}`}
               />
               <button
                 onClick={() => handleRemove(index)}
