@@ -24,6 +24,16 @@ import { analystClarityTemplate } from './analyst-clarity';
 import { obstacleSolverTemplate } from './obstacle-solver';
 import { terminalThemeTemplate } from './terminal-theme';
 import { professionalSalesTemplate } from './professional-sales';
+import { frontendHorizonTemplate } from './frontend-horizon';
+import { backendPrecisionTemplate } from './backend-precision';
+import { fullstackAtlasTemplate } from './fullstack-atlas';
+import { platformCoreTemplate } from './platform-core';
+import { cloudOpsTemplate } from './cloud-ops';
+import { systemArchitectTemplate } from './system-architect';
+import { productEngineerTemplate } from './product-engineer';
+import { devopsCommandTemplate } from './devops-command';
+import { mobileCraftTemplate } from './mobile-craft';
+import { apiLedgerTemplate } from './api-ledger';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -46,6 +56,16 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'obstacle-solver-v2': obstacleSolverTemplate,
   'terminal-theme-v2': terminalThemeTemplate,
   'professional-sales-v2': professionalSalesTemplate,
+  'frontend-horizon-v2': frontendHorizonTemplate,
+  'backend-precision-v2': backendPrecisionTemplate,
+  'fullstack-atlas-v2': fullstackAtlasTemplate,
+  'platform-core-v2': platformCoreTemplate,
+  'cloud-ops-v2': cloudOpsTemplate,
+  'system-architect-v2': systemArchitectTemplate,
+  'product-engineer-v2': productEngineerTemplate,
+  'devops-command-v2': devopsCommandTemplate,
+  'mobile-craft-v2': mobileCraftTemplate,
+  'api-ledger-v2': apiLedgerTemplate,
 };
 
 // ============================================================================
@@ -127,3 +147,13 @@ export { analystClarityTemplate } from './analyst-clarity';
 export { obstacleSolverTemplate } from './obstacle-solver';
 export { terminalThemeTemplate } from './terminal-theme';
 export { professionalSalesTemplate } from './professional-sales';
+export { frontendHorizonTemplate } from './frontend-horizon';
+export { backendPrecisionTemplate } from './backend-precision';
+export { fullstackAtlasTemplate } from './fullstack-atlas';
+export { platformCoreTemplate } from './platform-core';
+export { cloudOpsTemplate } from './cloud-ops';
+export { systemArchitectTemplate } from './system-architect';
+export { productEngineerTemplate } from './product-engineer';
+export { devopsCommandTemplate } from './devops-command';
+export { mobileCraftTemplate } from './mobile-craft';
+export { apiLedgerTemplate } from './api-ledger';

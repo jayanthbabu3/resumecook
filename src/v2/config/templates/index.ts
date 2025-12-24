@@ -22,6 +22,16 @@ import { analystClarityConfig } from './analyst-clarity';
 import { obstacleSolverConfig } from './obstacle-solver';
 import { terminalThemeConfig } from './terminal-theme';
 import { professionalSalesConfig } from './professional-sales';
+import { frontendHorizonConfig } from './frontend-horizon';
+import { backendPrecisionConfig } from './backend-precision';
+import { fullstackAtlasConfig } from './fullstack-atlas';
+import { platformCoreConfig } from './platform-core';
+import { cloudOpsConfig } from './cloud-ops';
+import { systemArchitectConfig } from './system-architect';
+import { productEngineerConfig } from './product-engineer';
+import { devopsCommandConfig } from './devops-command';
+import { mobileCraftConfig } from './mobile-craft';
+import { apiLedgerConfig } from './api-ledger';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -41,6 +51,16 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'obstacle-solver-v2': obstacleSolverConfig,
   'terminal-theme-v2': terminalThemeConfig,
   'professional-sales-v2': professionalSalesConfig,
+  'frontend-horizon-v2': frontendHorizonConfig,
+  'backend-precision-v2': backendPrecisionConfig,
+  'fullstack-atlas-v2': fullstackAtlasConfig,
+  'platform-core-v2': platformCoreConfig,
+  'cloud-ops-v2': cloudOpsConfig,
+  'system-architect-v2': systemArchitectConfig,
+  'product-engineer-v2': productEngineerConfig,
+  'devops-command-v2': devopsCommandConfig,
+  'mobile-craft-v2': mobileCraftConfig,
+  'api-ledger-v2': apiLedgerConfig,
 };
 
 // Get template by ID
@@ -76,4 +96,14 @@ export {
   obstacleSolverConfig,
   terminalThemeConfig,
   professionalSalesConfig,
+  frontendHorizonConfig,
+  backendPrecisionConfig,
+  fullstackAtlasConfig,
+  platformCoreConfig,
+  cloudOpsConfig,
+  systemArchitectConfig,
+  productEngineerConfig,
+  devopsCommandConfig,
+  mobileCraftConfig,
+  apiLedgerConfig,
 };
