@@ -35,6 +35,7 @@ interface ProjectsSectionProps {
   sectionTitle?: string;
   onAddItem?: () => void;
   onRemoveItem?: (id: string) => void;
+  variantOverride?: string;
 }
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
@@ -44,9 +45,30 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   sectionTitle = 'Projects',
   onAddItem,
   onRemoveItem,
+  variantOverride,
 }) => {
   const { typography, spacing, colors } = config;
   const accent = colors.primary;
+  
+  // Map variant IDs from sectionVariants.ts to internal variant names
+  const mapVariantId = (variantId: string | undefined): string => {
+    if (!variantId) return 'classic';
+    const variantMap: Record<string, string> = {
+      'projects-classic': 'classic',
+      'projects-card': 'card',
+      'projects-minimal': 'minimal',
+      'projects-timeline': 'timeline',
+      'projects-grid': 'grid',
+      'projects-impact': 'impact',
+      'projects-detailed': 'detailed',
+      'projects-compact': 'compact',
+      'projects-tech-focused': 'tech-focused',
+      'projects-boxed': 'card',
+    };
+    return variantMap[variantId] || 'classic';
+  };
+  
+  const variant = mapVariantId(variantOverride);
   const inlineEdit = useInlineEdit();
 
   const styleContext = useStyleOptions();

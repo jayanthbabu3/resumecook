@@ -10,12 +10,13 @@
  * - Rich UX with visual feedback and micro-interactions
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -100,6 +101,8 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
   accentColor = '#2563eb', // Default application blue
 }) => {
   const [expandedSections, setExpandedSections] = useState<string[]>(['personal']);
+  const [photoUrlInput, setPhotoUrlInput] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => 
@@ -124,6 +127,41 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
 
   const updateSection = (dataKey: string, data: any) => {
     onResumeDataChange({ ...resumeData, [dataKey]: data });
+  };
+
+  const handlePhotoUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result;
+      if (typeof result === 'string') {
+        updatePersonalInfo('photo', result);
+        setPhotoUrlInput('');
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handlePhotoRemove = () => {
+    updatePersonalInfo('photo', '');
+    setPhotoUrlInput('');
+  };
+
+  const applyPhotoUrl = () => {
+    const trimmed = photoUrlInput.trim();
+    if (trimmed) {
+      updatePersonalInfo('photo', trimmed);
+    } else {
+      handlePhotoRemove();
+    }
+  };
+
+  const getInitials = (name: string): string => {
+    if (!name) return 'AB';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
   };
 
   return (
@@ -198,6 +236,106 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
               className={`resize-none ${FIELD_INPUT_CLASS}`}
             />
           </div>
+        </div>
+      </FormSection>
+
+      {/* ================================================================== */}
+      {/* PHOTO SECTION */}
+      {/* ================================================================== */}
+      <FormSection
+        id="photo"
+        title="Profile Photo"
+        icon={Camera}
+        isExpanded={expandedSections.includes('photo')}
+        onToggle={() => toggleSection('photo')}
+        accentColor={accentColor}
+        badge={resumeData.personalInfo?.photo ? 'Photo added' : 'Optional'}
+      >
+        <div className="space-y-3">
+          <div className="flex items-center gap-4">
+            <div
+              className="h-16 w-16 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden"
+              style={{
+                borderColor: resumeData.personalInfo?.photo ? accentColor : '#e5e7eb',
+              }}
+            >
+              {resumeData.personalInfo?.photo ? (
+                <img
+                  src={resumeData.personalInfo.photo}
+                  alt="Profile preview"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <span className="text-xs font-semibold text-gray-400">
+                  {getInitials(resumeData.personalInfo?.fullName || '')}
+                </span>
+              )}
+            </div>
+            <div className="flex-1 space-y-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handlePhotoUpload(file);
+                }}
+                className="hidden"
+              />
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="h-8 text-xs"
+                >
+                  Upload photo
+                </Button>
+                {resumeData.personalInfo?.photo && (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    onClick={handlePhotoRemove}
+                    className="h-8 text-xs text-red-500 hover:text-red-600 hover:bg-red-50"
+                  >
+                    Remove
+                  </Button>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <Input
+                  placeholder="Paste image URL..."
+                  value={photoUrlInput}
+                  onChange={(e) => setPhotoUrlInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && photoUrlInput.trim()) {
+                      applyPhotoUrl();
+                    }
+                  }}
+                  className={`h-8 ${FIELD_INPUT_CLASS}`}
+                />
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={photoUrlInput.trim() ? 'default' : 'outline'}
+                  onClick={applyPhotoUrl}
+                  disabled={!photoUrlInput.trim()}
+                  className="h-8 text-xs"
+                  style={{
+                    backgroundColor: photoUrlInput.trim() ? accentColor : undefined,
+                    borderColor: accentColor,
+                  }}
+                >
+                  Apply
+                </Button>
+              </div>
+            </div>
+          </div>
+          <p className="text-[11px] text-gray-500">
+            If no photo is uploaded, we’ll show your initials in the header.
+          </p>
         </div>
       </FormSection>
 

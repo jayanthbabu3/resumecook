@@ -30,13 +30,33 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
 }) => {
   const { personalInfo, settings } = resumeData;
   const includeSocialLinks = settings?.includeSocialLinks ?? true;
-  const { typography, colors, header, spacing } = config;
+  const { typography, colors, header, spacing, fontFamily } = config;
   const variant = variantOverride || header.variant;
   const accent = colors.primary;
-  const bannerTextColor = header.textColor || colors.text.light;
-  const bannerMetaTextColor = typography.contact.color || '#d1d5db';
+  // For banner variants, always use white text for readability
+  const isBannerVariant = ['banner', 'gradient-banner'].includes(variant);
+  const bannerTextColor = '#ffffff';
+  const bannerMetaTextColor = 'rgba(255, 255, 255, 0.85)';
   const styleOptions = useStyleOptions();
   const showPhoto = styleOptions?.styleOptions?.showPhoto ?? true;
+  
+  // Base font family from config
+  const baseFontFamily = fontFamily?.primary || "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+
+  const parsePx = (value: string, fallback: number) => {
+    const match = value.match(/[\d.]+/);
+    return match ? Number(match[0]) : fallback;
+  };
+
+  // Helper function to darken/lighten a color
+  const adjustColor = (color: string, amount: number): string => {
+    const hex = color.replace('#', '');
+    const num = parseInt(hex, 16);
+    const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+    const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+    const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+  };
 
   // Editable contact item component
   const EditableContactItem: React.FC<{ 
@@ -44,20 +64,23 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     value: string; 
     path: string;
     href?: string;
+    forBanner?: boolean;
   }> = ({
     icon: Icon,
     value,
     path,
     href,
+    forBanner = false,
   }) => {
-    const iconSize = header.contactIcons?.size || typography.contact.fontSize || '14px';
-    // Force icon color to follow template primary (theme) for consistency
-    const iconColor = header.contactIcons?.color || colors.primary || accent;
+    const iconSize = header.contactIcons?.size || '14px';
+    // For banner variants, use white/light colors; otherwise use theme color
+    const iconColor = forBanner ? 'rgba(255, 255, 255, 0.9)' : (header.contactIcons?.color || accent);
     const iconStyle = { width: iconSize, height: iconSize, color: iconColor, flexShrink: 0 } as const;
     
     const textStyle: React.CSSProperties = {
       fontSize: typography.contact.fontSize,
-      color: typography.contact.color,
+      color: forBanner ? 'rgba(255, 255, 255, 0.85)' : typography.contact.color,
+      fontFamily: baseFontFamily,
     };
 
     if (editable) {
@@ -76,15 +99,14 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     }
 
     // In non-editable mode (PDF), don't show empty or invalid values
-    // Also don't show placeholder text like "Click to edit"
     if (!editable && (!value || !value.trim() || value === 'Click to edit' || value.trim() === 'Click to edit')) return null;
     
     const content = (
-      <div className="flex items-center gap-1.5" style={{ fontSize: typography.contact.fontSize }}>
+      <div className="flex items-center gap-1.5" style={{ fontSize: typography.contact.fontSize, fontFamily: baseFontFamily }}>
         {header.contactIcons?.show !== false && (
           <Icon style={iconStyle} />
         )}
-        <span style={{ color: typography.contact.color }}>{value}</span>
+        <span style={{ color: textStyle.color }}>{value}</span>
       </div>
     );
 
@@ -95,7 +117,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           className="hover:opacity-80"
-          style={{ color: typography.contact.color, textDecoration: 'none' }}
+          style={{ color: textStyle.color, textDecoration: 'none' }}
         >
           {content}
         </a>
@@ -111,10 +133,11 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       fontSize: typography.name.fontSize,
       fontWeight: typography.name.fontWeight,
       lineHeight: typography.name.lineHeight,
-      letterSpacing: typography.name.letterSpacing,
+      letterSpacing: typography.name.letterSpacing || '-0.02em',
       textTransform: typography.name.textTransform,
-      color: variant === 'banner' ? bannerTextColor : typography.name.color,
+      color: isBannerVariant ? bannerTextColor : typography.name.color,
       margin: 0,
+      fontFamily: baseFontFamily,
     };
 
     if (editable) {
@@ -133,14 +156,16 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
 
   // Render title
   const renderTitle = () => {
-    if (!personalInfo.title) return null;
+    // Always show title in editable mode
+    if (!editable && !personalInfo.title) return null;
 
     const titleStyle: React.CSSProperties = {
       fontSize: typography.title.fontSize,
       fontWeight: typography.title.fontWeight,
       lineHeight: typography.title.lineHeight,
-      color: variant === 'banner' ? bannerTextColor : accent,
+      color: isBannerVariant ? 'rgba(255, 255, 255, 0.9)' : accent,
       margin: 0,
+      fontFamily: baseFontFamily,
     };
 
     if (editable) {
@@ -219,36 +244,6 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     );
   };
 
-  const renderPhoto = () => {
-    if (!showPhoto || !personalInfo.photo) return null;
-
-    const size = header.photoSize || '80px';
-    const shape = header.photoShape || 'circle'; // circle | square | rounded
-    const borderRadius =
-      shape === 'circle' ? '50%' : shape === 'rounded' ? '12px' : '4px';
-
-    return (
-      <div
-        data-section="photo"
-        className="resume-photo"
-        style={{
-          width: size,
-          height: size,
-          borderRadius,
-          overflow: 'hidden',
-          border: `2px solid ${accent}`,
-          flexShrink: 0,
-        }}
-      >
-        <img
-          src={personalInfo.photo}
-          alt="photo"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-      </div>
-    );
-  };
-
   // Generate initials from name
   const getInitials = (name: string): string => {
     if (!name) return 'AB';
@@ -259,15 +254,67 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     return name.substring(0, 2).toUpperCase();
   };
 
-  // Render initials box
-  const renderInitialsBox = () => {
+  const renderAvatar = (options?: {
+    size?: string;
+    borderColor?: string;
+    textColor?: string;
+    backgroundColor?: string;
+    borderWidth?: string;
+    forBanner?: boolean;
+  }) => {
+    if (!showPhoto) return null;
+
+    const size = options?.size || header.photoSize || '70px';
+    const shape = header.photoShape || 'circle';
+    const borderRadius =
+      shape === 'circle' ? '50%' : shape === 'rounded' ? '12px' : '4px';
+    const forBanner = options?.forBanner || false;
+    
+    // For banner: use semi-transparent white border; otherwise use accent color
+    const borderColor = options?.borderColor || (forBanner ? 'rgba(255, 255, 255, 0.5)' : accent);
+    // For banner: use semi-transparent white bg; otherwise use light accent tint
+    const backgroundColor = options?.backgroundColor || (forBanner ? 'rgba(255, 255, 255, 0.15)' : `${accent}15`);
+
+    if (personalInfo.photo) {
+      return (
+        <div
+          data-section="photo"
+          className="resume-photo"
+          style={{
+            width: size,
+            height: size,
+            borderRadius,
+            overflow: 'hidden',
+            border: `${options?.borderWidth || '2px'} solid ${borderColor}`,
+            flexShrink: 0,
+          }}
+        >
+          <img
+            src={personalInfo.photo}
+            alt="photo"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+      );
+    }
+
     const initials = getInitials(personalInfo.fullName || '');
+    const sizeValue = parsePx(size, 70);
+    // Elegant font sizing: larger initials for better readability
+    const fontSize = Math.max(16, Math.round(sizeValue / 2.5));
+    // For banner: use white text; otherwise use accent color
+    const textColor = options?.textColor || (forBanner ? '#ffffff' : accent);
+
     return (
       <div
+        data-section="photo"
+        className="resume-photo"
         style={{
-          width: '64px',
-          height: '64px',
-          border: '2px solid rgba(255, 255, 255, 0.8)',
+          width: size,
+          height: size,
+          borderRadius,
+          border: `${options?.borderWidth || '2px'} solid ${borderColor}`,
+          backgroundColor,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -276,10 +323,11 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       >
         <span
           style={{
-            fontSize: '24px',
-            fontWeight: 600,
-            color: colors.text.light,
-            letterSpacing: '0.05em',
+            fontSize: `${fontSize}px`,
+            fontWeight: 700,
+            color: textColor,
+            letterSpacing: '0.02em',
+            fontFamily: baseFontFamily,
           }}
         >
           {initials}
@@ -294,7 +342,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
       case 'centered':
         return (
           <div className="text-center" style={{ padding: header.padding }}>
-            <div className="flex justify-center mb-3">{renderPhoto()}</div>
+            <div className="flex justify-center mb-3">{renderAvatar()}</div>
             {renderName()}
             <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
             <div className="flex justify-center" style={{ marginTop: '12px' }}>
@@ -304,32 +352,24 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
         );
 
       case 'banner':
-        // Check if photo exists, otherwise show initials
-        const showInitials = !personalInfo.photo || !showPhoto;
         // Get the actual banner background color (theme color or configured)
         const bannerBgColor = header.backgroundColor || accent;
+        const bannerAvatar = renderAvatar({
+          size: header.photoSize || '64px',
+          forBanner: true,
+        });
         
-        // Helper function to lighten a color for better contrast on dark backgrounds
-        const getLightLinkColor = (bgColor: string): string => {
-          // If secondary color is provided and is lighter, use it
-          if (colors.secondary) {
-            // Check if secondary is lighter (has higher brightness)
-            return colors.secondary;
-          }
-          // Otherwise, use a light tint of the theme color
-          // For most theme colors, use a light blue/cyan that works well
-          return '#bae6fd'; // Light blue that contrasts well with most dark colors
-        };
-        
+        // Banner-specific styles - all text should be white/light for readability
         const bannerContactStyle: React.CSSProperties = {
           fontSize: typography.contact.fontSize,
-          color: bannerMetaTextColor,
+          color: 'rgba(255, 255, 255, 0.85)',
+          fontFamily: baseFontFamily,
         };
         const bannerLinkStyle: React.CSSProperties = {
           fontSize: typography.contact.fontSize,
-          color: getLightLinkColor(bannerBgColor),
+          color: 'rgba(255, 255, 255, 0.9)',
           textDecoration: 'none',
-          opacity: 0.95,
+          fontFamily: baseFontFamily,
         };
         return (
           <div
@@ -341,7 +381,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
             }}
           >
             <div className="flex items-center gap-4">
-              {showInitials ? renderInitialsBox() : renderPhoto()}
+              {bannerAvatar}
               <div className="flex-1">
                 {renderName()}
                 <div 
@@ -477,7 +517,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
         return (
           <div style={{ padding: header.padding }}>
             <div className="flex items-start gap-4">
-              {renderPhoto()}
+              {renderAvatar()}
               <div>
                 {renderName()}
                 <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
@@ -492,7 +532,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           <div style={{ padding: header.padding }}>
             <div className="flex justify-between items-start">
               <div className="flex items-start gap-4">
-                {renderPhoto()}
+                {renderAvatar()}
                 <div>
                   {renderName()}
                   <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
@@ -516,12 +556,157 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'accent-bar':
+        return (
+          <div>
+            {/* Accent bar at top */}
+            <div style={{ 
+              height: '4px', 
+              backgroundColor: accent,
+              width: '100%',
+            }} />
+            <div style={{ padding: header.padding || '20px 24px' }}>
+              <div className="text-center">
+                <div className="flex justify-center mb-3">{renderAvatar()}</div>
+                {renderName()}
+                <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
+                <div className="flex justify-center" style={{ marginTop: '12px' }}>
+                  {renderContact()}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'compact':
+        return (
+          <div style={{ padding: header.padding || '16px 24px', fontFamily: baseFontFamily }}>
+            <div className="flex items-center flex-wrap gap-x-4 gap-y-2">
+              {renderAvatar({ size: '40px', borderWidth: '2px' })}
+              {/* Name */}
+              <div style={{ 
+                fontSize: '22px', 
+                fontWeight: 700, 
+                color: typography.name.color,
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={personalInfo.fullName || 'Your Name'}
+                    style={{ fontSize: '22px', fontWeight: 700, fontFamily: baseFontFamily }}
+                  />
+                ) : (
+                  personalInfo.fullName || 'Your Name'
+                )}
+              </div>
+              {/* Separator */}
+              <span style={{ color: '#d1d5db', fontSize: '20px' }}>|</span>
+              {/* Title */}
+              <div style={{ 
+                fontSize: typography.title.fontSize,
+                fontWeight: typography.title.fontWeight,
+                color: accent,
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.title"
+                    value={personalInfo.title || 'Professional Title'}
+                    style={{ fontSize: typography.title.fontSize, fontWeight: typography.title.fontWeight, color: accent, fontFamily: baseFontFamily }}
+                  />
+                ) : (
+                  personalInfo.title
+                )}
+              </div>
+              {/* Separator */}
+              <span style={{ color: '#d1d5db', fontSize: '20px' }}>|</span>
+              {/* Contact inline */}
+              {renderContact()}
+            </div>
+          </div>
+        );
+
+      case 'gradient-banner':
+        const gradientBg = `linear-gradient(135deg, ${accent} 0%, ${adjustColor(accent, -30)} 100%)`;
+        const gradientAvatar = renderAvatar({
+          size: '70px',
+          forBanner: true,
+          borderWidth: '3px',
+        });
+        const gradientContactStyle: React.CSSProperties = {
+          fontSize: typography.contact.fontSize,
+          color: 'rgba(255, 255, 255, 0.85)',
+          fontFamily: baseFontFamily,
+        };
+        return (
+          <div
+            data-header="gradient-banner"
+            style={{
+              background: gradientBg,
+              padding: header.padding || '28px 32px',
+              color: '#ffffff',
+              fontFamily: baseFontFamily,
+            }}
+          >
+            <div className="flex items-center gap-4">
+              {gradientAvatar}
+              <div className="flex-1">
+                <h1 style={{
+                  fontSize: typography.name.fontSize,
+                  fontWeight: typography.name.fontWeight,
+                  color: '#ffffff',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                  letterSpacing: typography.name.letterSpacing || '-0.02em',
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{ fontSize: typography.name.fontSize, fontWeight: typography.name.fontWeight, color: '#ffffff', fontFamily: baseFontFamily }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+                <div 
+                  className="flex flex-wrap items-center gap-x-4 gap-y-1"
+                  style={{ marginTop: '8px' }}
+                >
+                  {(editable || personalInfo.email) && (
+                    <span style={gradientContactStyle}>
+                      {editable ? (
+                        <InlineEditableText path="personalInfo.email" value={personalInfo.email || 'email@example.com'} style={gradientContactStyle} />
+                      ) : personalInfo.email}
+                    </span>
+                  )}
+                  {(editable || personalInfo.phone) && (
+                    <span style={gradientContactStyle}>
+                      {editable ? (
+                        <InlineEditableText path="personalInfo.phone" value={personalInfo.phone || 'Phone'} style={gradientContactStyle} />
+                      ) : personalInfo.phone}
+                    </span>
+                  )}
+                  {(editable || personalInfo.location) && (
+                    <span style={gradientContactStyle}>
+                      {editable ? (
+                        <InlineEditableText path="personalInfo.location" value={personalInfo.location || 'Location'} style={gradientContactStyle} />
+                      ) : personalInfo.location}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         return (
           <div style={{ padding: header.padding }}>
             <div className="flex items-start gap-4">
-              {renderPhoto()}
+              {renderAvatar()}
               <div>
                 {renderName()}
                 <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
@@ -533,7 +718,15 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     }
   };
 
-  return <header>{renderVariant()}</header>;
+  // Determine if header needs margin-bottom (non-banner headers)
+  const needsMarginBottom = !['banner', 'gradient-banner'].includes(variant);
+  const headerMarginBottom = needsMarginBottom ? '20px' : '0';
+
+  return (
+    <header style={{ marginBottom: headerMarginBottom }}>
+      {renderVariant()}
+    </header>
+  );
 };
 
 export default HeaderSection;

@@ -215,13 +215,16 @@ export interface SkillsConfig {
 // ============================================================================
 
 export type HeaderVariant = 
-  | 'centered'       // Name centered, contact below
-  | 'left-aligned'   // Name left, contact right
-  | 'split'          // Name left, contact in columns
-  | 'banner'         // Full-width colored banner
-  | 'minimal'        // Just name and title
-  | 'photo-left'     // Photo on left side
-  | 'photo-right';   // Photo on right side
+  | 'centered'         // Name centered, contact below
+  | 'left-aligned'     // Name left, contact right
+  | 'split'            // Name left, contact in columns
+  | 'banner'           // Full-width colored banner
+  | 'minimal'          // Just name and title
+  | 'photo-left'       // Photo on left side
+  | 'photo-right'      // Photo on right side
+  | 'accent-bar'       // Thin accent bar top, name centered
+  | 'compact'          // Name | Title | Contact inline
+  | 'gradient-banner'; // Full-width gradient background
 
 export interface HeaderConfig {
   /** Header layout variant */
@@ -333,6 +336,7 @@ export type AchievementsVariant =
   | 'list'           // Title - description format
   | 'bullets'        // Bulleted list
   | 'cards'          // Card style with background
+  | 'metrics'        // Metrics cards with percentages
   | 'numbered'       // Numbered list
   | 'timeline'       // Timeline style
   | 'minimal';       // Clean minimal text

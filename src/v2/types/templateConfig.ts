@@ -196,7 +196,10 @@ export type HeaderVariant =
   | 'banner'
   | 'minimal'
   | 'photo-left'
-  | 'photo-right';
+  | 'photo-right'
+  | 'accent-bar'
+  | 'compact'
+  | 'gradient-banner';
 
 export interface HeaderConfig {
   variant: HeaderVariant;
@@ -308,6 +311,7 @@ export type AchievementsVariant =
   | 'list'
   | 'bullets'
   | 'cards'
+  | 'metrics'
   | 'numbered'
   | 'timeline'
   | 'minimal';

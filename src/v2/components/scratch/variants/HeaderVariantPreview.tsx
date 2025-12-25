@@ -31,6 +31,12 @@ export const HeaderVariantPreview: React.FC<HeaderVariantPreviewProps> = ({ vari
       return <PhotoLeftHeaderPreview data={previewData} />;
     case 'photo-right':
       return <PhotoRightHeaderPreview data={previewData} />;
+    case 'accent-bar':
+      return <AccentBarHeaderPreview data={previewData} />;
+    case 'compact':
+      return <CompactHeaderPreview data={previewData} />;
+    case 'gradient-banner':
+      return <GradientBannerHeaderPreview data={previewData} />;
     default:
       return <DefaultHeaderPreview data={previewData} />;
   }
@@ -124,6 +130,50 @@ const PhotoRightHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
     </div>
     <div className="w-10 h-10 rounded-full bg-primary/20 border-2 border-primary/30 flex-shrink-0 flex items-center justify-center">
       <span className="text-[10px] font-bold text-primary">JD</span>
+    </div>
+  </div>
+);
+
+// Accent Bar Header - Thin accent bar at top
+const AccentBarHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
+  <div className="w-full">
+    <div className="h-1 bg-primary w-full rounded-t mb-2" />
+    <div className="text-center space-y-1.5">
+      <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/30 mx-auto flex items-center justify-center">
+        <span className="text-[9px] font-bold text-primary">JD</span>
+      </div>
+      <div className="text-[11px] font-bold text-gray-900">JOHN DOE</div>
+      <div className="text-[9px] text-gray-600">Senior Software Engineer</div>
+      <div className="text-[8px] text-gray-500">john@example.com • +1 (555) 123-4567</div>
+    </div>
+  </div>
+);
+
+// Compact Header - Single line inline
+const CompactHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
+  <div className="w-full">
+    <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
+      <span className="text-[11px] font-bold text-gray-900">JOHN DOE</span>
+      <span className="text-gray-300">|</span>
+      <span className="text-[9px] text-primary font-medium">Software Engineer</span>
+      <span className="text-gray-300">|</span>
+      <span className="text-[8px] text-gray-500">john@example.com</span>
+      <span className="text-[8px] text-gray-500">• +1 (555) 123-4567</span>
+    </div>
+  </div>
+);
+
+// Gradient Banner Header - Full-width gradient
+const GradientBannerHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
+  <div className="w-full bg-gradient-to-r from-primary to-primary/70 text-white rounded px-3 py-2.5">
+    <div className="flex items-center gap-2">
+      <div className="w-9 h-9 rounded-full border-2 border-white/30 flex-shrink-0 flex items-center justify-center bg-white/10">
+        <span className="text-[9px] font-bold text-white">JD</span>
+      </div>
+      <div className="flex-1">
+        <div className="text-[11px] font-bold">JOHN DOE</div>
+        <div className="text-[8px] opacity-80 mt-0.5">john@example.com • +1 (555) 123-4567</div>
+      </div>
     </div>
   </div>
 );

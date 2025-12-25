@@ -32,7 +32,26 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   onRemoveEducation,
 }) => {
   const { typography, colors, spacing, education } = config;
-  const variant = variantOverride || education.variant;
+  
+  // Map variant IDs from sectionVariants.ts to internal variant names
+  const mapVariantId = (variantId: string | undefined): EducationVariant => {
+    if (!variantId) return education.variant;
+    const variantMap: Record<string, EducationVariant> = {
+      'education-classic': 'standard',
+      'education-modern': 'card',
+      'education-minimal': 'minimal',
+      'education-detailed': 'detailed',
+      'education-timeline': 'timeline',
+      'education-compact': 'compact',
+      'education-honors': 'detailed',
+      'education-boxed': 'card',
+      'education-two-column': 'standard',
+      'education-achievement': 'detailed',
+    };
+    return variantMap[variantId] || education.variant;
+  };
+  
+  const variant = mapVariantId(variantOverride);
   const accent = colors.primary;
 
   // Get style options for date formatting

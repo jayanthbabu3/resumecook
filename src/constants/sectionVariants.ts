@@ -6,99 +6,186 @@ export interface SectionVariant {
   previewData: any;
 }
 
-// ==================== HEADER VARIANTS (7) ====================
+// ==================== HEADER VARIANTS (10) ====================
 export const HEADER_VARIANTS: SectionVariant[] = [
   {
-    id: 'centered',
-    name: 'Centered Header',
-    description: 'Name centered with contact info below. Clean and professional.',
+    id: 'left-aligned',
+    name: 'Classic Left-Aligned',
+    description: 'Traditional layout with name on left, contact below. ATS-friendly and professional.',
     type: 'header',
     previewData: {
-      title: 'Centered',
-      layout: 'centered',
+      title: 'Classic Left-Aligned',
+      layout: 'left-aligned',
       backgroundColor: 'transparent',
-      padding: 'normal',
+      padding: '24px',
       fullWidth: false,
+      showPhoto: false,
+      nameSize: '28px',
+      titleSize: '14px',
+      contactSize: '12px',
     }
   },
   {
-    id: 'left-aligned',
-    name: 'Left Aligned Header',
-    description: 'Name on left, contact on right. Traditional and ATS-friendly.',
+    id: 'centered',
+    name: 'Centered Professional',
+    description: 'Everything centered - photo, name, title, and contact. Elegant and balanced.',
     type: 'header',
     previewData: {
-      title: 'Left Aligned',
-      layout: 'left-aligned',
+      title: 'Centered Professional',
+      layout: 'centered',
       backgroundColor: 'transparent',
-      padding: 'normal',
+      padding: '24px',
       fullWidth: false,
+      showPhoto: true,
+      photoSize: '80px',
+      nameSize: '30px',
+      titleSize: '15px',
+      contactSize: '12px',
     }
   },
   {
     id: 'banner',
-    name: 'Banner Header',
-    description: 'Full-width colored banner with name and contact. Bold and modern.',
+    name: 'Full Banner',
+    description: 'Bold full-width colored banner with white text. Modern and impactful.',
     type: 'header',
     previewData: {
-      title: 'Banner',
+      title: 'Full Banner',
       layout: 'banner',
       backgroundColor: 'primary',
-      padding: 'large',
+      padding: '24px 32px',
       fullWidth: true,
+      showPhoto: true,
+      photoSize: '64px',
+      nameSize: '26px',
+      titleSize: '14px',
+      contactSize: '12px',
+      textColor: 'white',
     }
   },
   {
     id: 'minimal',
-    name: 'Minimal Header',
-    description: 'Just name and title. Ultra-clean and minimalist.',
+    name: 'Minimal Clean',
+    description: 'Ultra-clean with just name and title. Perfect for minimalist resumes.',
     type: 'header',
     previewData: {
-      title: 'Minimal',
+      title: 'Minimal Clean',
       layout: 'minimal',
       backgroundColor: 'transparent',
-      padding: 'small',
+      padding: '20px',
       fullWidth: false,
+      showPhoto: false,
+      nameSize: '32px',
+      titleSize: '14px',
+      contactSize: '12px',
     }
   },
   {
     id: 'split',
-    name: 'Split Header',
-    description: 'Name left, contact in columns. Organized and structured.',
+    name: 'Split Two-Column',
+    description: 'Name and title on left, contact stacked on right. Organized and structured.',
     type: 'header',
     previewData: {
-      title: 'Split',
+      title: 'Split Two-Column',
       layout: 'split',
       backgroundColor: 'transparent',
-      padding: 'normal',
+      padding: '24px',
       fullWidth: false,
+      showPhoto: true,
+      photoSize: '70px',
+      nameSize: '26px',
+      titleSize: '13px',
+      contactSize: '12px',
     }
   },
   {
     id: 'photo-left',
-    name: 'Photo Left Header',
-    description: 'Photo on left, name and contact on right. Professional with visual appeal.',
+    name: 'Photo Left',
+    description: 'Large photo on left with name and contact on right. Professional with visual appeal.',
     type: 'header',
     previewData: {
       title: 'Photo Left',
       layout: 'photo-left',
       backgroundColor: 'transparent',
-      padding: 'normal',
+      padding: '24px',
       fullWidth: false,
       showPhoto: true,
+      photoSize: '90px',
+      nameSize: '26px',
+      titleSize: '14px',
+      contactSize: '12px',
     }
   },
   {
     id: 'photo-right',
-    name: 'Photo Right Header',
-    description: 'Photo on right, name and contact on left. Modern and balanced.',
+    name: 'Photo Right',
+    description: 'Name and contact on left, photo on right. Modern and balanced layout.',
     type: 'header',
     previewData: {
       title: 'Photo Right',
       layout: 'photo-right',
       backgroundColor: 'transparent',
-      padding: 'normal',
+      padding: '24px',
       fullWidth: false,
       showPhoto: true,
+      photoSize: '90px',
+      nameSize: '26px',
+      titleSize: '14px',
+      contactSize: '12px',
+    }
+  },
+  {
+    id: 'accent-bar',
+    name: 'Accent Bar',
+    description: 'Thin accent-colored bar at top with centered content below. Subtle and elegant.',
+    type: 'header',
+    previewData: {
+      title: 'Accent Bar',
+      layout: 'accent-bar',
+      backgroundColor: 'transparent',
+      padding: '20px',
+      fullWidth: false,
+      showPhoto: true,
+      photoSize: '50px',
+      nameSize: '28px',
+      titleSize: '14px',
+      contactSize: '12px',
+      accentBarHeight: '4px',
+    }
+  },
+  {
+    id: 'compact',
+    name: 'Compact Inline',
+    description: 'Space-saving single line with name, title, and contact inline. Great for dense resumes.',
+    type: 'header',
+    previewData: {
+      title: 'Compact Inline',
+      layout: 'compact',
+      backgroundColor: 'transparent',
+      padding: '16px',
+      fullWidth: false,
+      showPhoto: false,
+      nameSize: '22px',
+      titleSize: '13px',
+      contactSize: '12px',
+    }
+  },
+  {
+    id: 'gradient-banner',
+    name: 'Gradient Banner',
+    description: 'Full-width gradient background from accent to darker shade. Premium and modern.',
+    type: 'header',
+    previewData: {
+      title: 'Gradient Banner',
+      layout: 'gradient-banner',
+      backgroundColor: 'gradient',
+      padding: '28px 32px',
+      fullWidth: true,
+      showPhoto: true,
+      photoSize: '70px',
+      nameSize: '28px',
+      titleSize: '14px',
+      contactSize: '12px',
+      textColor: 'white',
     }
   },
 ];
@@ -2241,6 +2328,305 @@ export const PORTFOLIO_VARIANTS: SectionVariant[] = [
   }
 ];
 
+// ==================== ACHIEVEMENTS VARIANTS (10) ====================
+export const ACHIEVEMENTS_VARIANTS: SectionVariant[] = [
+  {
+    id: 'achievements-classic',
+    name: 'Classic List',
+    description: 'Traditional achievement listing with bullet points',
+    type: 'achievements',
+    previewData: {
+      title: 'Key Achievements',
+      items: [
+        { title: 'Increased revenue by 40% through strategic initiatives', description: '' },
+        { title: 'Led successful product launch reaching 100K users in first month', description: '' },
+        { title: 'Reduced operational costs by 25% through process optimization', description: '' }
+      ],
+      style: 'classic'
+    }
+  },
+  {
+    id: 'achievements-metrics',
+    name: 'Metrics-Focused',
+    description: 'Emphasizes quantifiable achievements with numbers',
+    type: 'achievements',
+    previewData: {
+      title: 'ACHIEVEMENTS',
+      items: [
+        { title: '↗ 40% Revenue Growth', description: 'Led strategic initiatives that increased annual revenue' },
+        { title: '↗ 100K+ Users', description: 'Launched product that acquired 100K users in 30 days' },
+        { title: '↗ 25% Cost Reduction', description: 'Optimized processes saving $500K annually' }
+      ],
+      style: 'metrics'
+    }
+  },
+  {
+    id: 'achievements-cards',
+    name: 'Card Layout',
+    description: 'Each achievement in a distinct card',
+    type: 'achievements',
+    previewData: {
+      title: 'Notable Achievements',
+      items: [
+        { title: 'Top Performer Award', description: 'Recognized as top 1% performer company-wide' },
+        { title: 'Patent Holder', description: 'Awarded 2 patents for innovative solutions' }
+      ],
+      style: 'cards'
+    }
+  },
+  {
+    id: 'achievements-timeline',
+    name: 'Timeline View',
+    description: 'Chronological timeline of achievements',
+    type: 'achievements',
+    previewData: {
+      title: 'Achievement Timeline',
+      items: [
+        { title: 'Promoted to Senior Engineer', description: '2023' },
+        { title: 'Led successful product launch', description: '2022' },
+        { title: 'Employee of the Quarter', description: '2021' }
+      ],
+      style: 'timeline'
+    }
+  },
+  {
+    id: 'achievements-minimal',
+    name: 'Minimal List',
+    description: 'Clean, simple bullet points',
+    type: 'achievements',
+    previewData: {
+      title: 'Achievements',
+      items: [
+        { title: 'Increased team productivity by 35%' },
+        { title: 'Delivered 5 major projects ahead of schedule' },
+        { title: 'Mentored 10+ junior developers' }
+      ],
+      style: 'minimal'
+    }
+  }
+];
+
+// ==================== INTERESTS VARIANTS (10) ====================
+export const INTERESTS_VARIANTS: SectionVariant[] = [
+  {
+    id: 'interests-pills',
+    name: 'Pill Badges',
+    description: 'Interests as rounded pill badges',
+    type: 'interests',
+    previewData: {
+      title: 'Interests',
+      items: ['Open Source', 'Machine Learning', 'Photography', 'Hiking', 'Chess', 'Reading'],
+      style: 'pills'
+    }
+  },
+  {
+    id: 'interests-icons',
+    name: 'With Icons',
+    description: 'Interests with emoji icons',
+    type: 'interests',
+    previewData: {
+      title: 'Hobbies & Interests',
+      items: [
+        { name: 'Photography', icon: '📷' },
+        { name: 'Hiking', icon: '🥾' },
+        { name: 'Reading', icon: '📚' },
+        { name: 'Chess', icon: '♟️' }
+      ],
+      style: 'icons'
+    }
+  },
+  {
+    id: 'interests-inline',
+    name: 'Inline Format',
+    description: 'Comma-separated inline list',
+    type: 'interests',
+    previewData: {
+      title: 'Interests',
+      items: ['Technology', 'Travel', 'Music', 'Sports', 'Cooking'],
+      style: 'inline'
+    }
+  },
+  {
+    id: 'interests-minimal',
+    name: 'Minimal List',
+    description: 'Simple bullet point list',
+    type: 'interests',
+    previewData: {
+      title: 'Personal Interests',
+      items: ['Open Source Contributing', 'Tech Blogging', 'Outdoor Activities'],
+      style: 'minimal'
+    }
+  },
+  {
+    id: 'interests-grouped',
+    name: 'Grouped by Category',
+    description: 'Interests organized by category',
+    type: 'interests',
+    previewData: {
+      title: 'Interests',
+      groups: [
+        { category: 'Technical', items: ['Open Source', 'AI/ML', 'Cloud Computing'] },
+        { category: 'Personal', items: ['Photography', 'Travel', 'Reading'] }
+      ],
+      style: 'grouped'
+    }
+  }
+];
+
+// ==================== REFERENCES VARIANTS (10) ====================
+export const REFERENCES_VARIANTS: SectionVariant[] = [
+  {
+    id: 'references-classic',
+    name: 'Classic Format',
+    description: 'Traditional reference listing with full details',
+    type: 'references',
+    previewData: {
+      title: 'References',
+      items: [
+        {
+          name: 'John Smith',
+          title: 'Engineering Director',
+          company: 'Tech Corp',
+          email: 'john.smith@techcorp.com',
+          phone: '+1 (555) 123-4567',
+          relationship: 'Former Manager'
+        }
+      ],
+      style: 'classic'
+    }
+  },
+  {
+    id: 'references-cards',
+    name: 'Card Layout',
+    description: 'Each reference in a distinct card',
+    type: 'references',
+    previewData: {
+      title: 'Professional References',
+      items: [
+        {
+          name: 'Jane Doe',
+          title: 'VP of Engineering',
+          company: 'Innovation Labs',
+          email: 'jane@innovationlabs.com',
+          relationship: 'Direct Supervisor'
+        }
+      ],
+      style: 'cards'
+    }
+  },
+  {
+    id: 'references-minimal',
+    name: 'Minimal Format',
+    description: 'Name and contact only',
+    type: 'references',
+    previewData: {
+      title: 'References',
+      items: [
+        { name: 'John Smith', title: 'Director', company: 'Tech Corp' }
+      ],
+      style: 'minimal'
+    }
+  },
+  {
+    id: 'references-available',
+    name: 'Available Upon Request',
+    description: 'Simple statement that references are available',
+    type: 'references',
+    previewData: {
+      title: 'References',
+      content: 'Available upon request',
+      style: 'available'
+    }
+  },
+  {
+    id: 'references-two-column',
+    name: 'Two-Column Layout',
+    description: 'References in two columns',
+    type: 'references',
+    previewData: {
+      title: 'References',
+      items: [
+        { name: 'John Smith', title: 'Director', company: 'Tech Corp', email: 'john@tech.com' },
+        { name: 'Jane Doe', title: 'Manager', company: 'Startup Inc', email: 'jane@startup.com' }
+      ],
+      style: 'two-column'
+    }
+  }
+];
+
+// ==================== COURSES VARIANTS (10) ====================
+export const COURSES_VARIANTS: SectionVariant[] = [
+  {
+    id: 'courses-classic',
+    name: 'Classic List',
+    description: 'Traditional course listing',
+    type: 'courses',
+    previewData: {
+      title: 'Professional Development',
+      items: [
+        { name: 'AWS Solutions Architect', institution: 'Amazon Web Services', date: '2023' },
+        { name: 'Machine Learning Specialization', institution: 'Coursera', date: '2022' }
+      ],
+      style: 'classic'
+    }
+  },
+  {
+    id: 'courses-cards',
+    name: 'Card Layout',
+    description: 'Each course in a distinct card',
+    type: 'courses',
+    previewData: {
+      title: 'Courses & Training',
+      items: [
+        { name: 'Advanced React Patterns', institution: 'Frontend Masters', date: '2023' }
+      ],
+      style: 'cards'
+    }
+  },
+  {
+    id: 'courses-minimal',
+    name: 'Minimal List',
+    description: 'Clean, simple format',
+    type: 'courses',
+    previewData: {
+      title: 'Courses',
+      items: [
+        { name: 'AWS Solutions Architect', institution: 'AWS' },
+        { name: 'React Advanced Patterns', institution: 'Frontend Masters' }
+      ],
+      style: 'minimal'
+    }
+  },
+  {
+    id: 'courses-timeline',
+    name: 'Timeline View',
+    description: 'Chronological course timeline',
+    type: 'courses',
+    previewData: {
+      title: 'Learning Journey',
+      items: [
+        { name: 'Cloud Architecture', institution: 'AWS', date: '2023' },
+        { name: 'Machine Learning', institution: 'Stanford Online', date: '2022' }
+      ],
+      style: 'timeline'
+    }
+  },
+  {
+    id: 'courses-grouped',
+    name: 'Grouped by Provider',
+    description: 'Courses organized by platform',
+    type: 'courses',
+    previewData: {
+      title: 'Continuous Learning',
+      groups: [
+        { provider: 'Coursera', courses: ['Machine Learning', 'Deep Learning'] },
+        { provider: 'AWS', courses: ['Solutions Architect', 'Developer Associate'] }
+      ],
+      style: 'grouped'
+    }
+  }
+];
+
 export const SECTION_VARIANTS_MAP = {
   header: HEADER_VARIANTS,
   summary: SUMMARY_VARIANTS,
@@ -2256,6 +2642,10 @@ export const SECTION_VARIANTS_MAP = {
   speaking: SPEAKING_VARIANTS,
   patents: PATENTS_VARIANTS,
   portfolio: PORTFOLIO_VARIANTS,
+  achievements: ACHIEVEMENTS_VARIANTS,
+  interests: INTERESTS_VARIANTS,
+  references: REFERENCES_VARIANTS,
+  courses: COURSES_VARIANTS,
 };
 
 export function getSectionVariants(sectionType: string): SectionVariant[] {

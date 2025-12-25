@@ -27,6 +27,7 @@ interface LanguagesSectionProps {
   onAddLanguage?: () => void;
   onRemoveLanguage?: (langId: string) => void;
   onUpdateLanguage?: (langId: string, field: string, value: string) => void;
+  variantOverride?: string;
 }
 
 export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
@@ -37,9 +38,30 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
   onAddLanguage,
   onRemoveLanguage,
   onUpdateLanguage,
+  variantOverride,
 }) => {
   const { typography, colors, spacing } = config;
   const accent = colors.primary;
+  
+  // Map variant IDs from sectionVariants.ts to internal variant names
+  const mapVariantId = (variantId: string | undefined): string => {
+    if (!variantId) return 'classic';
+    const variantMap: Record<string, string> = {
+      'lang-classic': 'classic',
+      'lang-bars': 'bars',
+      'lang-pills': 'pills',
+      'lang-flag': 'flag',
+      'lang-rating': 'rating',
+      'lang-minimal': 'minimal',
+      'lang-inline': 'inline',
+      'lang-compact': 'compact',
+      'lang-detailed': 'detailed',
+      'lang-grid': 'grid',
+    };
+    return variantMap[variantId] || 'classic';
+  };
+  
+  const variant = mapVariantId(variantOverride);
 
   // Map proficiency to level code
   const getProficiencyCode = (proficiency: string): string => {

@@ -17,6 +17,7 @@ interface AchievementsSectionProps {
   sectionTitle?: string;
   onAddItem?: () => void;
   onRemoveItem?: (id: string) => void;
+  variantOverride?: AchievementsVariant;
 }
 
 export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
@@ -26,9 +27,24 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   sectionTitle = 'Achievements',
   onAddItem,
   onRemoveItem,
+  variantOverride,
 }) => {
   const { typography, spacing, colors } = config;
-  const variant: AchievementsVariant = config.achievements?.variant || 'list';
+  
+  // Map variant IDs from sectionVariants.ts to internal variant names
+  const mapVariantId = (variantId: string | undefined): AchievementsVariant => {
+    if (!variantId) return config.achievements?.variant || 'list';
+    const variantMap: Record<string, AchievementsVariant> = {
+      'achievements-classic': 'bullets',
+      'achievements-metrics': 'metrics',
+      'achievements-cards': 'metrics',  // Card Layout shows metrics style
+      'achievements-timeline': 'timeline',
+      'achievements-minimal': 'minimal',
+    };
+    return variantMap[variantId] || config.achievements?.variant || 'list';
+  };
+  
+  const variant: AchievementsVariant = mapVariantId(variantOverride);
   const showIndicators = config.achievements?.showIndicators ?? true;
 
   if (!items || items.length === 0) {
@@ -361,12 +377,87 @@ export const AchievementsSection: React.FC<AchievementsSectionProps> = ({
     </div>
   );
 
+  // Variant: Metrics cards with percentages/numbers
+  const renderMetricsVariant = () => (
+    <div style={{ marginTop: spacing.headingToContent }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+        {(items || []).map((item, index) => {
+          // Extract metric value from title (e.g., "40%" or "100K")
+          const metricMatch = item.title?.match(/^(\d+[%KMB]?)/i);
+          const metricValue = metricMatch ? metricMatch[1] : item.title;
+          const metricLabel = item.description || item.title?.replace(/^\d+[%KMB]?\s*/i, '') || 'Achievement';
+          
+          // Alternate colors for visual variety
+          const bgColors = ['#dcfce7', '#dbeafe', '#fef3c7', '#fce7f3', '#e0e7ff'];
+          const textColors = ['#166534', '#1e40af', '#92400e', '#9d174d', '#3730a3'];
+          const colorIndex = index % bgColors.length;
+          
+          return (
+            <div
+              key={item.id}
+              className="group relative"
+              style={{
+                padding: '12px 16px',
+                backgroundColor: bgColors[colorIndex],
+                borderRadius: '8px',
+                textAlign: 'center',
+              }}
+            >
+              {editable && onRemoveItem && (
+                <button
+                  onClick={() => onRemoveItem(item.id)}
+                  className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                    backgroundColor: 'rgba(0,0,0,0.1)',
+                  }}
+                >
+                  <X style={{ width: '12px', height: '12px' }} />
+                </button>
+              )}
+              <div style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: textColors[colorIndex],
+                marginBottom: '2px',
+              }}>
+                {editable ? (
+                  <InlineEditableText value={metricValue} path={`achievements.${index}.title`} placeholder="40%" />
+                ) : (
+                  metricValue
+                )}
+              </div>
+              <div style={{
+                fontSize: typography.small.fontSize,
+                color: typography.body.color,
+              }}>
+                {editable ? (
+                  <InlineEditableText value={metricLabel} path={`achievements.${index}.description`} placeholder="Revenue Growth" />
+                ) : (
+                  metricLabel
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {renderAddButton()}
+    </div>
+  );
+
   const renderContent = () => {
     switch (variant) {
       case 'bullets':
         return renderBulletsVariant();
       case 'cards':
         return renderCardsVariant();
+      case 'metrics':
+        return renderMetricsVariant();
       case 'numbered':
         return renderNumberedVariant();
       case 'timeline':

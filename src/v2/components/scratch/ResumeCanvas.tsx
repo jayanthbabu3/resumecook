@@ -424,6 +424,8 @@ export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
     );
   };
 
+  const shouldPadGuides = !hasSections;
+
   return (
     <div
       id="scratch-builder-v2-preview"
@@ -437,7 +439,8 @@ export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
         maxWidth: '210mm',
       }}
     >
-      <div className="p-12 h-full">
+      {/* Use config-driven padding for real content; keep guides spaced */}
+      <div className={cn("h-full", shouldPadGuides ? "p-12" : "p-0")}>
         {renderContent()}
       </div>
     </div>
@@ -449,16 +452,26 @@ export const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
 // Single Column Guide
 const SingleColumnGuide: React.FC = () => {
   return (
-    <div className="h-full flex flex-col items-center justify-center py-20">
-      <div className="w-full max-w-[600px] space-y-4">
-        {/* Visual guide line */}
-        <div className="border-l-2 border-dashed border-gray-300 h-full min-h-[400px] ml-8 relative">
-          <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gray-300 border-2 border-white"></div>
-          <div className="absolute -left-2 bottom-0 w-4 h-4 rounded-full bg-gray-300 border-2 border-white"></div>
+    <div className="h-full flex flex-col items-center justify-center py-16">
+      <div className="w-full max-w-[500px] text-center">
+        {/* Visual representation */}
+        <div className="mb-8 mx-auto w-32 h-44 bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-2 p-4">
+          <div className="w-full h-3 bg-primary/20 rounded"></div>
+          <div className="w-full h-2 bg-gray-200 rounded"></div>
+          <div className="w-full h-2 bg-gray-200 rounded"></div>
+          <div className="w-4/5 h-2 bg-gray-200 rounded"></div>
+          <div className="w-full h-2 bg-gray-200 rounded"></div>
+          <div className="w-3/4 h-2 bg-gray-200 rounded"></div>
         </div>
-        <div className="text-center text-muted-foreground mt-8">
-          <p className="text-base font-medium mb-1">Single Column Layout</p>
-          <p className="text-sm">Click sections from the right panel to add them here</p>
+        
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Single Column Layout</h3>
+        <p className="text-sm text-gray-500 mb-6">
+          Click sections from the right panel to add them here
+        </p>
+        
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span>Start by adding a Header section</span>
         </div>
       </div>
     </div>
@@ -468,42 +481,52 @@ const SingleColumnGuide: React.FC = () => {
 // Two Column Left Guide (Sidebar Left, Main Right)
 const TwoColumnLeftGuide: React.FC<{ themeColor: string }> = ({ themeColor }) => {
   return (
-    <div className="flex gap-6 h-full">
-      {/* Left Sidebar */}
-      <div className="flex-[35%] flex flex-col">
-        <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
-            Sidebar
+    <div className="h-full flex flex-col">
+      {/* Header placeholder */}
+      <div className="mb-6 p-4 border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 text-center">
+        <p className="text-sm text-primary/70 font-medium">Header Section</p>
+        <p className="text-xs text-gray-400">Click "Header" in the panel to add</p>
+      </div>
+      
+      {/* Two column layout */}
+      <div className="flex gap-6 flex-1">
+        {/* Left Sidebar */}
+        <div className="w-[35%] flex flex-col">
+          <div className="flex-1 p-4 border-2 border-dashed border-purple-300 rounded-lg bg-purple-50/50">
+            <div className="text-center">
+              <p className="text-sm text-purple-600 font-medium mb-1">Sidebar</p>
+              <p className="text-xs text-purple-400">Skills, Languages, etc.</p>
+              <div className="mt-4 space-y-2">
+                <div className="h-2 bg-purple-200/50 rounded w-full"></div>
+                <div className="h-2 bg-purple-200/50 rounded w-4/5"></div>
+                <div className="h-2 bg-purple-200/50 rounded w-full"></div>
+              </div>
+            </div>
           </div>
-          <div className="h-0.5 w-full bg-primary/30"></div>
         </div>
-        <div className="flex-1 flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <div className="border-l-2 border-dashed border-gray-300 h-32 mx-auto mb-4"></div>
-            <p className="text-xs">Sidebar sections</p>
+        
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col">
+          <div className="flex-1 p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50/50">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 font-medium mb-1">Main Content</p>
+              <p className="text-xs text-gray-400">Experience, Education, etc.</p>
+              <div className="mt-4 space-y-2">
+                <div className="h-2 bg-gray-200 rounded w-full"></div>
+                <div className="h-2 bg-gray-200 rounded w-full"></div>
+                <div className="h-2 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-2 bg-gray-200 rounded w-full"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Vertical Divider */}
-      <div className="w-px bg-gray-200 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-gray-200 bg-white"></div>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-gray-200 bg-white"></div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-[65%] flex flex-col">
-        <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
-            Main Content
-          </div>
-          <div className="h-0.5 w-full bg-primary/30"></div>
-        </div>
-        <div className="flex-1 flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <div className="border-l-2 border-dashed border-gray-300 h-32 mx-auto mb-4"></div>
-            <p className="text-xs">Main content sections</p>
-          </div>
+      
+      {/* Hint */}
+      <div className="mt-6 text-center">
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span>Start by adding a Header section</span>
         </div>
       </div>
     </div>
@@ -513,42 +536,52 @@ const TwoColumnLeftGuide: React.FC<{ themeColor: string }> = ({ themeColor }) =>
 // Two Column Right Guide (Sidebar Right, Main Left)
 const TwoColumnRightGuide: React.FC<{ themeColor: string }> = ({ themeColor }) => {
   return (
-    <div className="flex gap-6 h-full">
-      {/* Main Content */}
-      <div className="flex-[65%] flex flex-col">
-        <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
-            Main Content
+    <div className="h-full flex flex-col">
+      {/* Header placeholder */}
+      <div className="mb-6 p-4 border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 text-center">
+        <p className="text-sm text-primary/70 font-medium">Header Section</p>
+        <p className="text-xs text-gray-400">Click "Header" in the panel to add</p>
+      </div>
+      
+      {/* Two column layout */}
+      <div className="flex gap-6 flex-1">
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col">
+          <div className="flex-1 p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50/50">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 font-medium mb-1">Main Content</p>
+              <p className="text-xs text-gray-400">Experience, Education, etc.</p>
+              <div className="mt-4 space-y-2">
+                <div className="h-2 bg-gray-200 rounded w-full"></div>
+                <div className="h-2 bg-gray-200 rounded w-full"></div>
+                <div className="h-2 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-2 bg-gray-200 rounded w-full"></div>
+              </div>
+            </div>
           </div>
-          <div className="h-0.5 w-full bg-primary/30"></div>
         </div>
-        <div className="flex-1 flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <div className="border-l-2 border-dashed border-gray-300 h-32 mx-auto mb-4"></div>
-            <p className="text-xs">Main content sections</p>
+        
+        {/* Right Sidebar */}
+        <div className="w-[35%] flex flex-col">
+          <div className="flex-1 p-4 border-2 border-dashed border-purple-300 rounded-lg bg-purple-50/50">
+            <div className="text-center">
+              <p className="text-sm text-purple-600 font-medium mb-1">Sidebar</p>
+              <p className="text-xs text-purple-400">Skills, Languages, etc.</p>
+              <div className="mt-4 space-y-2">
+                <div className="h-2 bg-purple-200/50 rounded w-full"></div>
+                <div className="h-2 bg-purple-200/50 rounded w-4/5"></div>
+                <div className="h-2 bg-purple-200/50 rounded w-full"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Vertical Divider */}
-      <div className="w-px bg-gray-200 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-gray-200 bg-white"></div>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-gray-200 bg-white"></div>
-      </div>
-
-      {/* Right Sidebar */}
-      <div className="flex-[35%] flex flex-col">
-        <div className="mb-2">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
-            Sidebar
-          </div>
-          <div className="h-0.5 w-full bg-primary/30"></div>
-        </div>
-        <div className="flex-1 flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <div className="border-l-2 border-dashed border-gray-300 h-32 mx-auto mb-4"></div>
-            <p className="text-xs">Sidebar sections</p>
-          </div>
+      
+      {/* Hint */}
+      <div className="mt-6 text-center">
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span>Start by adding a Header section</span>
         </div>
       </div>
     </div>
@@ -558,55 +591,36 @@ const TwoColumnRightGuide: React.FC<{ themeColor: string }> = ({ themeColor }) =
 // Split Layout Guide (Header + Two Columns)
 const SplitLayoutGuide: React.FC<{ themeColor: string }> = ({ themeColor }) => {
   return (
-    <div className="flex flex-col h-full">
-      {/* Header Area */}
-      <div className="mb-6 pb-4 border-b-2 border-dashed border-primary/30">
-        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 text-primary">
-          Header Area
-        </div>
-        <div className="h-16 bg-gray-50 rounded border border-dashed border-gray-300 flex items-center justify-center">
-          <p className="text-xs text-muted-foreground">Header section will appear here</p>
-        </div>
-      </div>
-
-      {/* Two Columns Below */}
-      <div className="flex gap-6 flex-1">
-        {/* Main Content */}
-        <div className="flex-[60%] flex flex-col">
-          <div className="mb-2">
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" style={{ color: themeColor }}>
-              Main Content
-            </div>
-            <div className="h-0.5 w-full" style={{ backgroundColor: themeColor, opacity: 0.3 }}></div>
+    <div className="h-full flex flex-col items-center justify-center py-12">
+      <div className="w-full max-w-[400px] text-center">
+        {/* Visual representation */}
+        <div className="mb-8 mx-auto w-48">
+          {/* Header area */}
+          <div className="w-full h-10 bg-gradient-to-r from-primary/20 to-primary/10 rounded-t-lg border-2 border-dashed border-primary/30 flex items-center justify-center mb-2">
+            <div className="w-3/4 h-2 bg-primary/30 rounded"></div>
           </div>
-          <div className="flex-1 flex items-center justify-center py-8">
-            <div className="text-center text-muted-foreground">
-              <div className="border-l-2 border-dashed border-gray-300 h-32 mx-auto mb-4"></div>
-              <p className="text-xs">Main content sections</p>
+          {/* Two columns */}
+          <div className="flex gap-2">
+            <div className="flex-1 h-32 bg-gradient-to-br from-gray-100 to-gray-50 rounded-bl-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 p-2">
+              <div className="w-full h-1.5 bg-gray-200 rounded"></div>
+              <div className="w-full h-1.5 bg-gray-200 rounded"></div>
+              <div className="w-4/5 h-1.5 bg-gray-200 rounded"></div>
+            </div>
+            <div className="w-16 h-32 bg-gradient-to-br from-purple-100 to-purple-50 rounded-br-lg border-2 border-dashed border-purple-300 flex flex-col items-center justify-center gap-1 p-2">
+              <div className="w-full h-1.5 bg-purple-200/60 rounded"></div>
+              <div className="w-full h-1.5 bg-purple-200/60 rounded"></div>
             </div>
           </div>
         </div>
-
-        {/* Vertical Divider */}
-        <div className="w-px bg-gray-200 relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-gray-200 bg-white"></div>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-gray-200 bg-white"></div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="flex-[40%] flex flex-col">
-          <div className="mb-2">
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" style={{ color: themeColor }}>
-              Sidebar
-            </div>
-            <div className="h-0.5 w-full" style={{ backgroundColor: themeColor, opacity: 0.3 }}></div>
-          </div>
-          <div className="flex-1 flex items-center justify-center py-8">
-            <div className="text-center text-muted-foreground">
-              <div className="border-l-2 border-dashed border-gray-300 h-32 mx-auto mb-4"></div>
-              <p className="text-xs">Sidebar sections</p>
-            </div>
-          </div>
+        
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Split Layout</h3>
+        <p className="text-sm text-gray-500 mb-6">
+          Header at top with two columns below
+        </p>
+        
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span>Start by adding a Header section</span>
         </div>
       </div>
     </div>
@@ -616,19 +630,28 @@ const SplitLayoutGuide: React.FC<{ themeColor: string }> = ({ themeColor }) => {
 // Compact Layout Guide
 const CompactLayoutGuide: React.FC = () => {
   return (
-    <div className="h-full flex flex-col items-center justify-center py-20">
-      <div className="w-full max-w-[600px] space-y-3">
-        {/* Compact visual guide lines */}
-        <div className="border-l-2 border-dashed border-gray-300 h-full min-h-[400px] ml-8 relative">
-          <div className="absolute -left-2 top-0 w-3 h-3 rounded-full bg-gray-300 border-2 border-white"></div>
-          <div className="absolute -left-2 top-1/4 w-3 h-3 rounded-full bg-gray-300 border-2 border-white"></div>
-          <div className="absolute -left-2 top-2/4 w-3 h-3 rounded-full bg-gray-300 border-2 border-white"></div>
-          <div className="absolute -left-2 top-3/4 w-3 h-3 rounded-full bg-gray-300 border-2 border-white"></div>
-          <div className="absolute -left-2 bottom-0 w-3 h-3 rounded-full bg-gray-300 border-2 border-white"></div>
+    <div className="h-full flex flex-col items-center justify-center py-16">
+      <div className="w-full max-w-[500px] text-center">
+        {/* Visual representation */}
+        <div className="mb-8 mx-auto w-32 h-44 bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 p-3">
+          <div className="w-full h-2.5 bg-primary/20 rounded"></div>
+          <div className="w-full h-1 bg-gray-200 rounded"></div>
+          <div className="w-full h-1 bg-gray-200 rounded"></div>
+          <div className="w-4/5 h-1 bg-gray-200 rounded"></div>
+          <div className="w-full h-1 bg-gray-200 rounded"></div>
+          <div className="w-3/4 h-1 bg-gray-200 rounded"></div>
+          <div className="w-full h-1 bg-gray-200 rounded"></div>
+          <div className="w-4/5 h-1 bg-gray-200 rounded"></div>
         </div>
-        <div className="text-center text-muted-foreground mt-8">
-          <p className="text-base font-medium mb-1">Compact Layout</p>
-          <p className="text-sm">Dense, space-efficient single column</p>
+        
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Compact Layout</h3>
+        <p className="text-sm text-gray-500 mb-6">
+          Dense, space-efficient single column
+        </p>
+        
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span>Start by adding a Header section</span>
         </div>
       </div>
     </div>

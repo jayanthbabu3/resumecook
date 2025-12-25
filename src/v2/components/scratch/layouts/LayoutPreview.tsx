@@ -2,6 +2,7 @@
  * Layout Preview Components
  * 
  * Visual previews for each layout type to help users understand the structure.
+ * Redesigned with more elegant, professional styling.
  */
 
 import React from 'react';
@@ -13,8 +14,6 @@ interface LayoutPreviewProps {
 }
 
 export const LayoutPreview: React.FC<LayoutPreviewProps> = ({ layoutType, className }) => {
-  const baseClasses = "w-full h-full flex flex-col gap-2 p-2";
-  
   switch (layoutType) {
     case 'single-column':
       return <SingleColumnPreview className={className} />;
@@ -33,79 +32,81 @@ export const LayoutPreview: React.FC<LayoutPreviewProps> = ({ layoutType, classN
 
 // Single Column Preview
 const SingleColumnPreview: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("w-full h-full flex flex-col gap-1.5 p-2 bg-white rounded border border-gray-200", className)}>
+  <div className={cn("w-full h-full flex flex-col gap-2 p-3 bg-white rounded-lg border border-gray-200 shadow-sm", className)}>
     {/* Header */}
-    <div className="h-3 bg-blue-500/30 rounded w-full"></div>
+    <div className="h-4 bg-gradient-to-r from-primary/40 to-primary/20 rounded w-full"></div>
     {/* Sections */}
-    <div className="h-2 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-2 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-2 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-2 bg-gray-300/50 rounded w-4/5"></div>
-    <div className="h-2 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-2 bg-gray-300/50 rounded w-3/4"></div>
+    <div className="space-y-1.5 flex-1">
+      <div className="h-2 bg-gray-200 rounded w-full"></div>
+      <div className="h-2 bg-gray-200 rounded w-full"></div>
+      <div className="h-2 bg-gray-200 rounded w-4/5"></div>
+      <div className="h-2 bg-gray-200 rounded w-full"></div>
+      <div className="h-2 bg-gray-200 rounded w-3/4"></div>
+      <div className="h-2 bg-gray-200 rounded w-full"></div>
+    </div>
   </div>
 );
 
 // Two Column Left (Sidebar Left, Main Right)
 const TwoColumnLeftPreview: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("w-full h-full flex gap-1.5 p-2 bg-white rounded border border-gray-200", className)}>
+  <div className={cn("w-full h-full flex gap-2 p-3 bg-white rounded-lg border border-gray-200 shadow-sm", className)}>
     {/* Left Sidebar */}
-    <div className="w-[35%] flex flex-col gap-1">
-      <div className="h-2 bg-purple-500/30 rounded w-full"></div>
-      <div className="h-1.5 bg-purple-500/20 rounded w-full"></div>
-      <div className="h-1.5 bg-purple-500/20 rounded w-full"></div>
-      <div className="h-1.5 bg-purple-500/20 rounded w-4/5"></div>
+    <div className="w-[35%] flex flex-col gap-1.5 bg-purple-50/50 rounded p-1.5">
+      <div className="h-2.5 bg-purple-300/50 rounded w-full"></div>
+      <div className="h-1.5 bg-purple-200/50 rounded w-full"></div>
+      <div className="h-1.5 bg-purple-200/50 rounded w-full"></div>
+      <div className="h-1.5 bg-purple-200/50 rounded w-4/5"></div>
     </div>
     {/* Main Content */}
-    <div className="flex-1 flex flex-col gap-1">
-      <div className="h-2 bg-blue-500/30 rounded w-full"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-4/5"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
+    <div className="flex-1 flex flex-col gap-1.5">
+      <div className="h-3 bg-gradient-to-r from-primary/40 to-primary/20 rounded w-full"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-full"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-full"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-4/5"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-full"></div>
     </div>
   </div>
 );
 
 // Two Column Right (Sidebar Right, Main Left)
 const TwoColumnRightPreview: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("w-full h-full flex gap-1.5 p-2 bg-white rounded border border-gray-200", className)}>
+  <div className={cn("w-full h-full flex gap-2 p-3 bg-white rounded-lg border border-gray-200 shadow-sm", className)}>
     {/* Main Content */}
-    <div className="flex-1 flex flex-col gap-1">
-      <div className="h-2 bg-blue-500/30 rounded w-full"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-4/5"></div>
-      <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
+    <div className="flex-1 flex flex-col gap-1.5">
+      <div className="h-3 bg-gradient-to-r from-primary/40 to-primary/20 rounded w-full"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-full"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-full"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-4/5"></div>
+      <div className="h-1.5 bg-gray-200 rounded w-full"></div>
     </div>
     {/* Right Sidebar */}
-    <div className="w-[35%] flex flex-col gap-1">
-      <div className="h-2 bg-purple-500/30 rounded w-full"></div>
-      <div className="h-1.5 bg-purple-500/20 rounded w-full"></div>
-      <div className="h-1.5 bg-purple-500/20 rounded w-full"></div>
-      <div className="h-1.5 bg-purple-500/20 rounded w-4/5"></div>
+    <div className="w-[35%] flex flex-col gap-1.5 bg-purple-50/50 rounded p-1.5">
+      <div className="h-2.5 bg-purple-300/50 rounded w-full"></div>
+      <div className="h-1.5 bg-purple-200/50 rounded w-full"></div>
+      <div className="h-1.5 bg-purple-200/50 rounded w-full"></div>
+      <div className="h-1.5 bg-purple-200/50 rounded w-4/5"></div>
     </div>
   </div>
 );
 
 // Split Layout (Header + Two Columns)
 const SplitLayoutPreview: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("w-full h-full flex flex-col gap-1.5 p-2 bg-white rounded border border-gray-200", className)}>
+  <div className={cn("w-full h-full flex flex-col gap-2 p-3 bg-white rounded-lg border border-gray-200 shadow-sm", className)}>
     {/* Header */}
-    <div className="h-2.5 bg-blue-500/30 rounded w-full"></div>
+    <div className="h-4 bg-gradient-to-r from-primary/40 to-primary/20 rounded w-full"></div>
     {/* Two Columns */}
-    <div className="flex gap-1.5 flex-1">
+    <div className="flex gap-2 flex-1">
       {/* Main Content */}
       <div className="flex-1 flex flex-col gap-1">
-        <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
-        <div className="h-1.5 bg-gray-300/50 rounded w-full"></div>
-        <div className="h-1.5 bg-gray-300/50 rounded w-4/5"></div>
+        <div className="h-1.5 bg-gray-200 rounded w-full"></div>
+        <div className="h-1.5 bg-gray-200 rounded w-full"></div>
+        <div className="h-1.5 bg-gray-200 rounded w-4/5"></div>
       </div>
       {/* Sidebar */}
-      <div className="w-[40%] flex flex-col gap-1">
-        <div className="h-1.5 bg-purple-500/20 rounded w-full"></div>
-        <div className="h-1.5 bg-purple-500/20 rounded w-full"></div>
-        <div className="h-1.5 bg-purple-500/20 rounded w-4/5"></div>
+      <div className="w-[40%] flex flex-col gap-1 bg-purple-50/50 rounded p-1">
+        <div className="h-1.5 bg-purple-200/50 rounded w-full"></div>
+        <div className="h-1.5 bg-purple-200/50 rounded w-full"></div>
+        <div className="h-1.5 bg-purple-200/50 rounded w-4/5"></div>
       </div>
     </div>
   </div>
@@ -113,17 +114,20 @@ const SplitLayoutPreview: React.FC<{ className?: string }> = ({ className }) => 
 
 // Compact Layout (Dense Single Column)
 const CompactLayoutPreview: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("w-full h-full flex flex-col gap-1 p-1.5 bg-white rounded border border-gray-200", className)}>
+  <div className={cn("w-full h-full flex flex-col gap-1 p-2.5 bg-white rounded-lg border border-gray-200 shadow-sm", className)}>
     {/* Header */}
-    <div className="h-2 bg-blue-500/30 rounded w-full"></div>
+    <div className="h-3 bg-gradient-to-r from-primary/40 to-primary/20 rounded w-full"></div>
     {/* Dense Sections */}
-    <div className="h-1 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-1 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-1 bg-gray-300/50 rounded w-4/5"></div>
-    <div className="h-1 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-1 bg-gray-300/50 rounded w-3/4"></div>
-    <div className="h-1 bg-gray-300/50 rounded w-full"></div>
-    <div className="h-1 bg-gray-300/50 rounded w-4/5"></div>
+    <div className="space-y-1 flex-1">
+      <div className="h-1 bg-gray-200 rounded w-full"></div>
+      <div className="h-1 bg-gray-200 rounded w-full"></div>
+      <div className="h-1 bg-gray-200 rounded w-4/5"></div>
+      <div className="h-1 bg-gray-200 rounded w-full"></div>
+      <div className="h-1 bg-gray-200 rounded w-3/4"></div>
+      <div className="h-1 bg-gray-200 rounded w-full"></div>
+      <div className="h-1 bg-gray-200 rounded w-4/5"></div>
+      <div className="h-1 bg-gray-200 rounded w-full"></div>
+    </div>
   </div>
 );
 

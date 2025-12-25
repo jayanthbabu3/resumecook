@@ -27,6 +27,7 @@ interface AwardsSectionProps {
   sectionTitle?: string;
   onAddItem?: () => void;
   onRemoveItem?: (id: string) => void;
+  variantOverride?: string;
 }
 
 export const AwardsSection: React.FC<AwardsSectionProps> = ({
@@ -36,9 +37,30 @@ export const AwardsSection: React.FC<AwardsSectionProps> = ({
   sectionTitle = 'Awards',
   onAddItem,
   onRemoveItem,
+  variantOverride,
 }) => {
   const { typography, spacing, colors } = config;
   const accent = colors.primary;
+  
+  // Map variant IDs from sectionVariants.ts to internal variant names
+  const mapVariantId = (variantId: string | undefined): string => {
+    if (!variantId) return 'classic';
+    const variantMap: Record<string, string> = {
+      'awards-classic': 'classic',
+      'awards-modern': 'modern',
+      'awards-icon': 'icon',
+      'awards-timeline': 'timeline',
+      'awards-minimal': 'minimal',
+      'awards-detailed': 'detailed',
+      'awards-compact': 'compact',
+      'awards-boxed': 'boxed',
+      'awards-two-column': 'two-column',
+      'awards-highlight': 'highlight',
+    };
+    return variantMap[variantId] || 'classic';
+  };
+  
+  const variant = mapVariantId(variantOverride);
 
   const styleContext = useStyleOptions();
   const formatDate = styleContext?.formatDate || ((date: string) => {

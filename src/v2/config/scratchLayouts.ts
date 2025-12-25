@@ -107,9 +107,9 @@ export const SCRATCH_LAYOUTS: ScratchLayout[] = [
     defaultConfig: {
       layout: {
         type: 'two-column-left',
-        mainWidth: '65%',
+        mainWidth: '62%',
         sidebarWidth: '35%',
-        columnGap: '2rem',
+        columnGap: '24px',
       },
       spacing: {
         sectionGap: '1.25rem',
@@ -147,9 +147,9 @@ export const SCRATCH_LAYOUTS: ScratchLayout[] = [
     defaultConfig: {
       layout: {
         type: 'two-column-right',
-        mainWidth: '65%',
+        mainWidth: '62%',
         sidebarWidth: '35%',
-        columnGap: '2rem',
+        columnGap: '24px',
       },
       spacing: {
         sectionGap: '1.25rem',
@@ -182,8 +182,8 @@ export const SCRATCH_LAYOUTS: ScratchLayout[] = [
       layout: {
         type: 'two-column-right', // Uses two-column internally
         mainWidth: '60%',
-        sidebarWidth: '40%',
-        columnGap: '2rem',
+        sidebarWidth: '35%',
+        columnGap: '24px',
       },
       spacing: {
         sectionGap: '1.5rem',
@@ -242,4 +242,3 @@ export function getLayoutById(id: string): ScratchLayout | undefined {
 export function getLayoutByType(type: ScratchLayoutType): ScratchLayout | undefined {
   return SCRATCH_LAYOUTS.find(layout => layout.layoutType === type);
 }
-

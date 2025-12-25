@@ -3,9 +3,9 @@
  * 
  * Generates template configuration from scratch builder sections.
  * Everything is config-driven based on variant IDs.
+ * IMPORTANT: Only explicitly added sections should appear - no defaults.
  */
 
-import type { TemplateConfig, SectionConfig } from '../types/templateConfig';
 import type { ScratchSection } from '../hooks/useScratchResume';
 import type { ScratchLayout } from '../config/scratchLayouts';
 import { getTemplateConfig } from '../config/templates';
@@ -15,14 +15,20 @@ import { getSectionVariants } from '@/constants/sectionVariants';
 
 /**
  * Generate template config from scratch sections
+ * Only includes sections that have been explicitly added by the user
  */
 export function generateScratchConfig(
   sections: ScratchSection[],
   selectedLayout: ScratchLayout | null,
   themeColor: string = '#2563eb'
-): TemplateConfig {
-  // Start with a default template config
-  const baseConfig = getTemplateConfig('professional-blue-v2') || DEFAULT_TEMPLATE_CONFIG;
+): any {
+  // Start with a minimal base config but EXCLUDE default sections
+  const templateConfig = getTemplateConfig('minimal-v2') || DEFAULT_TEMPLATE_CONFIG;
+  // Create base config without default sections - we only want explicitly added sections
+  const baseConfig = {
+    ...templateConfig,
+    sections: [], // Clear default sections - we'll only use explicitly added ones
+  };
 
   // Apply layout configuration
   const layoutConfig = selectedLayout?.defaultConfig || {};
@@ -31,8 +37,9 @@ export function generateScratchConfig(
   const headerSection = sections.find(s => s.type === 'header');
   const otherSections = sections.filter(s => s.type !== 'header');
 
-  // Generate section configs from scratch sections
-  const sectionConfigs: SectionConfig[] = otherSections
+  // Generate section configs ONLY from explicitly added scratch sections
+  const sectionConfigs = otherSections
+    .filter(s => s.enabled)
     .sort((a, b) => a.order - b.order)
     .map((section) => {
       const sectionDef = getSectionDefinition(section.type);
@@ -44,8 +51,6 @@ export function generateScratchConfig(
         const variant = variants.find(v => v.id === section.variantId);
         if (variant?.previewData?.title) {
           sectionTitle = variant.previewData.title;
-        } else if (variant?.name) {
-          sectionTitle = variant.name;
         }
       }
       
@@ -54,39 +59,39 @@ export function generateScratchConfig(
         id: section.id,
         title: sectionTitle,
         defaultTitle: sectionDef?.defaultTitle || section.type,
-        enabled: section.enabled,
+        enabled: true,
         order: section.order,
         column: section.column,
-        variant: section.variantId, // Store variant ID for rendering
-      } as SectionConfig;
+        variant: section.variantId,
+      };
     });
 
-  // Create header section config (enabled if explicitly added, otherwise disabled but space reserved)
-  const headerSectionConfig: SectionConfig = headerSection ? {
+  // Create header section config ONLY if explicitly added
+  const headerSectionConfig = headerSection ? {
     type: 'header',
     id: 'header',
     title: 'Header',
     defaultTitle: 'Header',
     enabled: true,
     order: 0,
-    variant: headerSection.variantId, // Store header variant ID
-  } : {
-    type: 'header',
-    id: 'header',
-    title: 'Header',
-    defaultTitle: 'Header',
-    enabled: false, // Disabled but space will be reserved
-    order: 0,
-  };
+    variant: headerSection.variantId,
+    // Mark full-width headers
+    fullWidth: isFullWidthHeader(headerSection.variantId),
+  } : null;
 
-  // Find skills and experience sections to set variants
+  // Build final sections array - ONLY explicitly added sections
+  const finalSections: any[] = [];
+  if (headerSectionConfig) {
+    finalSections.push(headerSectionConfig);
+  }
+  finalSections.push(...sectionConfigs);
+
+  // Find section variants
   const skillsSection = sections.find(s => s.type === 'skills' && s.enabled);
-  const skillsVariantId = skillsSection?.variantId;
   const experienceSection = sections.find(s => s.type === 'experience' && s.enabled);
-  const experienceVariantId = experienceSection?.variantId;
 
-  // Merge with base config - use only scratch sections
-  const config: TemplateConfig = {
+  // Create config with ONLY the explicitly added sections
+  const config = {
     ...baseConfig,
     id: 'scratch-v2',
     name: 'Scratch Builder',
@@ -96,32 +101,39 @@ export function generateScratchConfig(
     },
     layout: {
       ...baseConfig.layout,
-      ...layoutConfig.layout,
+      ...(layoutConfig as any).layout,
+      type: selectedLayout?.layoutType || 'single-column',
     },
     spacing: {
       ...baseConfig.spacing,
-      ...layoutConfig.spacing,
+      ...(layoutConfig as any).spacing,
     },
-    // Only use scratch sections + header (enabled or disabled)
-    // This ensures no base template sections appear
-    sections: [headerSectionConfig, ...sectionConfigs],
+    // CRITICAL: Only use explicitly added sections - no defaults
+    sections: finalSections,
     // Update header config if header variant is specified
     header: headerSection ? {
       ...baseConfig.header,
-      variant: headerSection.variantId as any, // Use header variant
+      variant: headerSection.variantId,
     } : baseConfig.header,
     // Update skills config if skills variant is specified
-    skills: skillsVariantId ? {
+    skills: skillsSection ? {
       ...baseConfig.skills,
-      variant: skillsVariantId as any, // Use skills variant
+      variant: skillsSection.variantId,
     } : baseConfig.skills,
     // Update experience config if experience variant is specified
-    experience: experienceVariantId ? {
+    experience: experienceSection ? {
       ...baseConfig.experience,
-      variant: experienceVariantId as any, // Use experience variant
+      variant: experienceSection.variantId,
     } : baseConfig.experience,
   };
 
   return config;
 }
 
+/**
+ * Check if a header variant should be full-width (no padding)
+ */
+export function isFullWidthHeader(variantId: string): boolean {
+  const fullWidthVariants = ['banner', 'photo-banner', 'gradient-banner', 'accent-bar'];
+  return fullWidthVariants.includes(variantId);
+}

@@ -30,6 +30,7 @@ interface CertificationsSectionProps {
   sectionTitle?: string;
   onAddItem?: () => void;
   onRemoveItem?: (id: string) => void;
+  variantOverride?: string;
 }
 
 export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
@@ -39,9 +40,30 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
   sectionTitle = 'Certifications',
   onAddItem,
   onRemoveItem,
+  variantOverride,
 }) => {
   const { typography, spacing, colors } = config;
   const accent = colors.primary;
+  
+  // Map variant IDs from sectionVariants.ts to internal variant names
+  const mapVariantId = (variantId: string | undefined): string => {
+    if (!variantId) return 'classic';
+    const variantMap: Record<string, string> = {
+      'cert-classic': 'classic',
+      'cert-modern': 'modern',
+      'cert-badges': 'badges',
+      'cert-timeline': 'timeline',
+      'cert-compact': 'compact',
+      'cert-minimal': 'minimal',
+      'cert-detailed': 'detailed',
+      'cert-boxed': 'boxed',
+      'cert-grid': 'grid',
+      'cert-icon': 'icon',
+    };
+    return variantMap[variantId] || 'classic';
+  };
+  
+  const variant = mapVariantId(variantOverride);
 
   const styleContext = useStyleOptions();
   const formatDate = styleContext?.formatDate || ((date: string) => {

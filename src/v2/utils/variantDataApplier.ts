@@ -3,11 +3,11 @@
  * 
  * Applies variant preview data to resume data when a section is added.
  * This ensures the preview content appears in the canvas.
+ * Supports ALL section types with proper data mapping.
  */
 
 import type { V2ResumeData } from '../types/resumeData';
 import type { SectionVariant } from '@/constants/sectionVariants';
-import { getSectionVariants } from '@/constants/sectionVariants';
 import type { V2SectionType } from '../types/resumeData';
 
 /**
@@ -23,10 +23,8 @@ export function applyVariantDataToResume(
 
   switch (sectionType) {
     case 'summary':
-      // Apply summary variant data
       if (previewData.content) {
         if (Array.isArray(previewData.content)) {
-          // For bullet point variants, join with newlines
           updatedData.personalInfo = {
             ...updatedData.personalInfo,
             summary: previewData.content.join('\n'),
@@ -41,7 +39,6 @@ export function applyVariantDataToResume(
       break;
 
     case 'experience':
-      // Apply experience variant data
       if (previewData.items && Array.isArray(previewData.items)) {
         updatedData.experience = [
           ...updatedData.experience,
@@ -49,7 +46,7 @@ export function applyVariantDataToResume(
             id: `exp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             position: item.position || '',
             company: item.company || '',
-            location: item.location,
+            location: item.location || '',
             startDate: item.startDate || '',
             endDate: item.endDate || '',
             current: item.current || false,
@@ -61,7 +58,6 @@ export function applyVariantDataToResume(
       break;
 
     case 'education':
-      // Apply education variant data
       if (previewData.items && Array.isArray(previewData.items)) {
         updatedData.education = [
           ...updatedData.education,
@@ -70,7 +66,7 @@ export function applyVariantDataToResume(
             school: item.school || '',
             degree: item.degree || '',
             field: item.field || '',
-            location: item.location,
+            location: item.location || '',
             startDate: item.startDate || '',
             endDate: item.endDate || '',
             gpa: item.gpa,
@@ -82,7 +78,6 @@ export function applyVariantDataToResume(
       break;
 
     case 'skills':
-      // Apply skills variant data
       if (previewData.skills) {
         const skills = previewData.skills;
         if (Array.isArray(skills)) {
@@ -93,7 +88,6 @@ export function applyVariantDataToResume(
             category: typeof skill === 'object' && skill.category ? skill.category : 'core',
           }));
         } else if (typeof skills === 'string') {
-          // Handle inline comma-separated skills
           const skillNames = skills.split(',').map(s => s.trim()).filter(Boolean);
           updatedData.skills = skillNames.map((name: string, index: number) => ({
             id: `skill-${Date.now()}-${index}`,
@@ -102,7 +96,6 @@ export function applyVariantDataToResume(
           }));
         }
       } else if (previewData.skillGroups) {
-        // Handle grouped skills
         const allSkills: any[] = [];
         previewData.skillGroups.forEach((group: any) => {
           if (Array.isArray(group.skills)) {
@@ -119,25 +112,210 @@ export function applyVariantDataToResume(
       }
       break;
 
-    case 'experience':
-      // Apply experience variant data
+    case 'projects':
       if (previewData.items && Array.isArray(previewData.items)) {
-        updatedData.experience = previewData.items.map((item: any, index: number) => ({
-          id: `exp-${Date.now()}-${index}`,
-          company: item.company || 'Company Name',
-          position: item.position || 'Job Title',
-          location: item.location || '',
-          startDate: item.startDate || '',
-          endDate: item.endDate || 'Present',
-          description: item.description || '',
-          bulletPoints: item.bulletPoints || item.description || [],
+        updatedData.projects = [
+          ...(updatedData.projects || []),
+          ...previewData.items.map((item: any) => ({
+            id: `proj-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: item.name || '',
+            description: item.description || '',
+            technologies: item.techStack || item.technologies || [],
+            url: item.url || '',
+            githubUrl: item.githubUrl || '',
+            startDate: item.startDate || '',
+            endDate: item.endDate || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'certifications':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.certifications = [
+          ...(updatedData.certifications || []),
+          ...previewData.items.map((item: any) => ({
+            id: `cert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: item.name || '',
+            issuer: item.issuer || '',
+            date: item.date || '',
+            expiryDate: item.expiryDate || '',
+            credentialId: item.credentialId || '',
+            url: item.url || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'languages':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.languages = [
+          ...(updatedData.languages || []),
+          ...previewData.items.map((item: any) => ({
+            id: `lang-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            language: typeof item === 'string' ? item : item.language || '',
+            proficiency: typeof item === 'object' ? item.proficiency || 'Intermediate' : 'Intermediate',
+          })),
+        ];
+      } else if (previewData.content) {
+        // Handle inline format
+        const langs = previewData.content.split(',').map((l: string) => l.trim());
+        updatedData.languages = langs.map((lang: string) => ({
+          id: `lang-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          language: lang.split('(')[0].trim(),
+          proficiency: lang.includes('(') ? lang.split('(')[1].replace(')', '').trim() : 'Intermediate',
         }));
       }
       break;
 
-    // Add more section types as needed
+    case 'awards':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.awards = [
+          ...(updatedData.awards || []),
+          ...previewData.items.map((item: any) => ({
+            id: `award-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            title: item.title || '',
+            issuer: item.issuer || '',
+            date: item.date || '',
+            description: item.description || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'publications':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.publications = [
+          ...(updatedData.publications || []),
+          ...previewData.items.map((item: any) => ({
+            id: `pub-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            title: item.title || '',
+            publisher: item.publisher || '',
+            date: item.date || '',
+            url: item.url || '',
+            description: item.description || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'volunteer':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.volunteer = [
+          ...(updatedData.volunteer || []),
+          ...previewData.items.map((item: any) => ({
+            id: `vol-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            organization: item.organization || '',
+            role: item.role || '',
+            startDate: item.startDate || '',
+            endDate: item.endDate || '',
+            description: item.description || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'achievements':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.achievements = [
+          ...(updatedData.achievements || []),
+          ...previewData.items.map((item: any) => ({
+            id: `ach-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            title: typeof item === 'string' ? item : item.title || item.text || '',
+            description: typeof item === 'object' ? item.description || '' : '',
+          })),
+        ];
+      }
+      break;
+
+    case 'strengths':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.strengths = [
+          ...(updatedData.strengths || []),
+          ...previewData.items.map((item: any) => ({
+            id: `str-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            text: typeof item === 'string' ? item : item.text || item.title || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'interests':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.interests = [
+          ...(updatedData.interests || []),
+          ...previewData.items.map((item: any) => ({
+            id: `int-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: typeof item === 'string' ? item : item.name || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'references':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.references = [
+          ...(updatedData.references || []),
+          ...previewData.items.map((item: any) => ({
+            id: `ref-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: item.name || '',
+            title: item.title || '',
+            company: item.company || '',
+            email: item.email || '',
+            phone: item.phone || '',
+            relationship: item.relationship || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'speaking':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.speaking = [
+          ...(updatedData.speaking || []),
+          ...previewData.items.map((item: any) => ({
+            id: `speak-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            event: item.event || '',
+            topic: item.topic || '',
+            date: item.date || '',
+            location: item.location || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'patents':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.patents = [
+          ...(updatedData.patents || []),
+          ...previewData.items.map((item: any) => ({
+            id: `pat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            title: item.title || '',
+            patentNumber: item.patentNumber || item.number || '',
+            date: item.date || '',
+            description: item.description || '',
+          })),
+        ];
+      }
+      break;
+
+    case 'courses':
+      if (previewData.items && Array.isArray(previewData.items)) {
+        updatedData.courses = [
+          ...(updatedData.courses || []),
+          ...previewData.items.map((item: any) => ({
+            id: `course-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: item.name || item.title || '',
+            institution: item.institution || item.provider || '',
+            date: item.date || '',
+            description: item.description || '',
+          })),
+        ];
+      }
+      break;
+
     default:
-      // For other sections, try to apply generic data
+      // For header and other sections, no data transformation needed
       break;
   }
 

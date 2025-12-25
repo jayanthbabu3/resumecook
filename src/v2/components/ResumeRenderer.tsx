@@ -337,6 +337,11 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       const style: React.CSSProperties = {
         // Don't prevent section from breaking - let individual items handle page breaks
         position: 'relative',
+        // Add consistent spacing between sections
+        marginTop: spacing.sectionGap || '20px',
+        maxWidth: '100%',
+        overflowWrap: 'break-word',
+        wordBreak: 'break-word',
       };
       if (pageBreakBefore) {
         style.pageBreakBefore = 'always';
@@ -430,6 +435,8 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'education':
+        // Check if section has a variant - use variant renderer if variant exists
+        const educationVariant = (section as any).variant;
         return wrap('education',
           <EducationSection
             key={section.id}
@@ -439,6 +446,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddEducation={onAddEducation}
             onRemoveEducation={onRemoveEducation}
+            variantOverride={educationVariant}
           />
         );
 
@@ -468,6 +476,8 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'achievements':
+        // Check if section has a variant
+        const achievementsVariant = (section as any).variant;
         return wrap('achievements',
           <AchievementsSection
             key={section.id}
@@ -477,6 +487,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddAchievement}
             onRemoveItem={onRemoveAchievement}
+            variantOverride={achievementsVariant}
           />
         );
 
@@ -496,6 +507,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       case 'languages':
         // Get languages from V2 data
         const languageItems = resumeData.languages || [];
+        const languagesVariant = (section as any).variant;
         return wrap('languages',
           <LanguagesSection
             key={section.id}
@@ -506,6 +518,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             onAddLanguage={onAddLanguage}
             onRemoveLanguage={onRemoveLanguage}
             onUpdateLanguage={onUpdateLanguage}
+            variantOverride={languagesVariant}
           />
         );
 
@@ -544,6 +557,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'projects':
+        const projectsVariant = (section as any).variant;
         return wrap('projects',
           <ProjectsSection
             key={section.id}
@@ -553,10 +567,12 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddProject}
             onRemoveItem={onRemoveProject}
+            variantOverride={projectsVariant}
           />
         );
 
       case 'certifications':
+        const certificationsVariant = (section as any).variant;
         return wrap('certifications',
           <CertificationsSection
             key={section.id}
@@ -566,10 +582,12 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddCertification}
             onRemoveItem={onRemoveCertification}
+            variantOverride={certificationsVariant}
           />
         );
 
       case 'awards':
+        const awardsVariant = (section as any).variant;
         return wrap('awards',
           <AwardsSection
             key={section.id}
@@ -579,6 +597,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddAward}
             onRemoveItem={onRemoveAward}
+            variantOverride={awardsVariant}
           />
         );
 
