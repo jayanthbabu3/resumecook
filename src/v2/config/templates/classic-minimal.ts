@@ -86,7 +86,7 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
     itemGap: '14px',
     headingToContent: '12px',
     bulletGap: '5px',
-    contactGap: '12px',
+    contactGap: '16px',
     skillGap: '12px',
   },
 
@@ -122,11 +122,8 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
 
   header: {
     variant: 'left-aligned',
-    showPhoto: true,
-    photoSize: '70px',
-    photoShape: 'circle',
-    photoPosition: 'right',
-    padding: '0 0 16px 0',
+    showPhoto: false,
+    padding: '0 0 20px 0',
     contactIcons: {
       show: false,
       size: '12px',

@@ -104,129 +104,37 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
     color: typography.body.color,
   };
 
-  // Compact variant - clean, no icon inline with text (better for sidebars)
-  const renderCompactItem = (item: CertificationItem, index: number) => (
-    <div
-      key={item.id}
-      className="group relative"
-      style={{ 
-        marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
-        pageBreakInside: 'avoid',
-        breakInside: 'avoid',
-      }}
-    >
-      <div>
-        {editable ? (
-          <InlineEditableText
-            path={`certifications.${index}.name`}
-            value={item.name}
-            as="h3"
-            style={titleStyle}
-            placeholder="Certification Name"
-          />
-        ) : (
-          <h3 style={titleStyle}>
-            {item.name}
-            {item.url && (
-              <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accent, marginLeft: '6px' }}>
-                <ExternalLink className="w-3 h-3 inline" />
-              </a>
-            )}
-          </h3>
-        )}
-        
-        <div className="flex items-center justify-between" style={{ marginTop: '2px' }}>
-          {editable ? (
-            <InlineEditableText
-              path={`certifications.${index}.issuer`}
-              value={item.issuer}
-              style={{ ...subtitleStyle, flex: 1 }}
-              placeholder="Issuing Organization"
-            />
-          ) : (
-            <span style={subtitleStyle}>{item.issuer}</span>
-          )}
-          
-          <span style={{ ...dateStyle, marginLeft: '8px', flexShrink: 0 }}>
-            {editable ? (
-              <InlineEditableDate
-                path={`certifications.${index}.date`}
-                value={item.date}
-                style={dateStyle}
-                formatDisplay={formatDate}
-              />
-            ) : (
-              formatDate(item.date)
-            )}
-          </span>
-        </div>
-      </div>
-
-      {editable && onRemoveItem && (
-        <button
-          onClick={() => onRemoveItem(item.id)}
-          className="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full"
-          title="Remove certification"
-        >
-          <X className="w-3 h-3 text-red-600" />
-        </button>
-      )}
-    </div>
-  );
-
-  // Default/Classic variant - with icon
   const renderItem = (item: CertificationItem, index: number) => (
     <div
       key={item.id}
       className="group relative"
       style={{ 
         marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
+        // Prevent individual items from breaking across pages
         pageBreakInside: 'avoid',
         breakInside: 'avoid',
       }}
     >
-      <div className="flex gap-3">
-        {/* Icon column - fixed width for alignment */}
-        <div className="flex-shrink-0 pt-0.5">
-          <Award className="w-4 h-4" style={{ color: accent }} />
-        </div>
-        
-        {/* Content column */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">
-              {editable ? (
-                <InlineEditableText
-                  path={`certifications.${index}.name`}
-                  value={item.name}
-                  as="h3"
-                  style={titleStyle}
-                  placeholder="Certification Name"
-                />
-              ) : (
-                <h3 style={titleStyle}>
-                  {item.name}
-                  {item.url && (
-                    <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accent, marginLeft: '6px' }}>
-                      <ExternalLink className="w-3 h-3 inline" />
-                    </a>
-                  )}
-                </h3>
-              )}
-            </div>
-            
-            <div style={dateStyle} className="flex-shrink-0 text-right">
-              {editable ? (
-                <InlineEditableDate
-                  path={`certifications.${index}.date`}
-                  value={item.date}
-                  style={dateStyle}
-                  formatDisplay={formatDate}
-                />
-              ) : (
-                <span>{formatDate(item.date)}</span>
-              )}
-            </div>
+      <div className="flex justify-between items-start gap-4">
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <Award className="w-4 h-4 flex-shrink-0" style={{ color: accent }} />
+            {editable ? (
+              <InlineEditableText
+                path={`certifications.${index}.name`}
+                value={item.name}
+                as="h3"
+                style={titleStyle}
+                placeholder="Certification Name"
+              />
+            ) : (
+              <h3 style={titleStyle}>{item.name}</h3>
+            )}
+            {!editable && item.url && (
+              <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accent }}>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            )}
           </div>
           
           {editable ? (
@@ -254,30 +162,42 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
               )}
             </div>
           )}
-          
-          {item.expiryDate && (
-            <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
-              Expires: {formatDate(item.expiryDate)}
-            </div>
-          )}
+        </div>
 
-          {item.description && (
-            <div style={{ ...bodyStyle, marginTop: '4px' }}>
-              {editable ? (
-                <InlineEditableText
-                  path={`certifications.${index}.description`}
-                  value={item.description}
-                  style={bodyStyle}
-                  multiline
-                  placeholder="Description..."
-                />
-              ) : (
-                item.description
-              )}
+        <div style={dateStyle} className="flex-shrink-0 text-right">
+          {editable ? (
+            <InlineEditableDate
+              path={`certifications.${index}.date`}
+              value={item.date}
+              style={dateStyle}
+              formatDisplay={formatDate}
+            />
+          ) : (
+            <div>{formatDate(item.date)}</div>
+          )}
+          {item.expiryDate && (
+            <div style={{ ...typography.small, color: typography.dates.color }}>
+              Expires: {formatDate(item.expiryDate)}
             </div>
           )}
         </div>
       </div>
+
+      {item.description && (
+        <div style={{ ...bodyStyle, marginTop: '6px' }}>
+          {editable ? (
+            <InlineEditableText
+              path={`certifications.${index}.description`}
+              value={item.description}
+              style={bodyStyle}
+              multiline
+              placeholder="Description..."
+            />
+          ) : (
+            item.description
+          )}
+        </div>
+      )}
 
       {editable && onRemoveItem && (
         <button
@@ -291,15 +211,12 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
     </div>
   );
 
-  // Choose render function based on variant
-  const renderFunction = variant === 'compact' || variant === 'minimal' ? renderCompactItem : renderItem;
-
   return (
     <section style={{ marginBottom: spacing.sectionGap }}>
       <SectionHeading title={sectionTitle} config={config} editable={editable} accentColor={accent} />
       
       <div style={{ marginTop: spacing.headingToContent }}>
-        {(items || []).map((item, index) => renderFunction(item, index))}
+        {(items || []).map((item, index) => renderItem(item, index))}
         
         {editable && onAddItem && (
           <button

@@ -46,7 +46,7 @@ export const InlineEditableSkills = ({
   separator = 'bullet',
   fontSize,
 }: InlineEditableSkillsProps) => {
-  const resolvedPath = (path ?? field)?.replace(/^resumeData\./, "") || "skills";
+  const resolvedPath = (path ?? field)?.replace(/^resumeData\./, "");
   const canMutate = editable && Boolean(resolvedPath);
   const { updateField, addArrayItem, removeArrayItem } = useInlineEdit();
   const [isEditing, setIsEditing] = useState(false);
@@ -113,7 +113,7 @@ export const InlineEditableSkills = ({
           </Badge>
         );
 
-      case 'tag': {
+      case 'tag':
         const accentBorder = themeColor ? `${themeColor}33` : '#e5e7eb';
         return (
           <span
@@ -128,7 +128,6 @@ export const InlineEditableSkills = ({
             {skill.name}
           </span>
         );
-      }
 
       case 'compact':
         return (
@@ -174,79 +173,22 @@ export const InlineEditableSkills = ({
   // Handle inline variant differently (needs different container)
   if (variant === 'inline') {
     const separatorChar = separator === 'comma' ? ', ' : separator === 'pipe' ? ' | ' : ' • ';
-    const skillFontSize = fontSize || '12px';
+    const skillFontSize = fontSize || '13px';
     
     return (
       <div className={cn("relative group", className)}>
-        <div style={{ fontSize: skillFontSize, color: 'inherit' }}>
+        <p style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
           {normalizedSkills.map((skill, index) => (
-            <span key={skill.id || index} className="group/skill inline">
-              {canMutate && isEditing && editingIndex === index ? (
-                <span className="inline-flex items-center gap-1">
-                  <Input
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") handleSave(index);
-                      if (e.key === "Escape") {
-                        setEditingIndex(null);
-                        setIsEditing(false);
-                      }
-                    }}
-                    className="h-6 w-24 text-xs inline"
-                    autoFocus
-                  />
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-5 w-5 p-0"
-                    onClick={() => handleSave(index)}
-                  >
-                    <Check className="h-3 w-3" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-5 w-5 p-0"
-                    onClick={() => {
-                      setEditingIndex(null);
-                      setIsEditing(false);
-                    }}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </span>
-              ) : (
-                <span className="relative inline-flex items-center">
-                  <span 
-                    className={canMutate ? "cursor-pointer hover:bg-gray-100 rounded px-0.5 -mx-0.5 transition-colors" : ""}
-                    onClick={() => canMutate && handleEdit(index, skill.name)}
-                  >
-                    {skill.name}
-                  </span>
-                  {canMutate && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(index);
-                      }}
-                      className="ml-0.5 opacity-0 group-hover/skill:opacity-100 transition-opacity text-red-500 hover:text-red-700 inline-flex items-center"
-                      title="Remove skill"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  )}
-                </span>
-              )}
-              {!isEditing || editingIndex !== index ? (index < normalizedSkills.length - 1 && separatorChar) : null}
+            <span key={skill.id || index}>
+              {skill.name}
+              {index < normalizedSkills.length - 1 && separatorChar}
             </span>
           ))}
-        </div>
+        </p>
         {canMutate && (
           <button
             onClick={handleAdd}
-            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
-            style={{ color: themeColor || '#2563eb', borderColor: themeColor || '#2563eb' }}
+            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
           >
             <Plus className="h-3 w-3" />
             Add Skill
@@ -264,76 +206,15 @@ export const InlineEditableSkills = ({
       <div className={cn("relative group", className)}>
         <ul className="ml-5 list-disc space-y-1">
           {normalizedSkills.map((skill, index) => (
-            <li 
-              key={skill.id || index} 
-              className="group/item relative"
-              style={{ fontSize: skillFontSize, color: '#1a1a1a' }}
-            >
-              {canMutate && isEditing && editingIndex === index ? (
-                <div className="flex items-center gap-1 -ml-5">
-                  <Input
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") handleSave(index);
-                      if (e.key === "Escape") {
-                        setEditingIndex(null);
-                        setIsEditing(false);
-                      }
-                    }}
-                    className="h-7 w-48 text-xs"
-                    autoFocus
-                  />
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-7 w-7 p-0"
-                    onClick={() => handleSave(index)}
-                  >
-                    <Check className="h-3 w-3" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-7 w-7 p-0"
-                    onClick={() => {
-                      setEditingIndex(null);
-                      setIsEditing(false);
-                    }}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <span 
-                    className={canMutate ? "cursor-pointer hover:text-gray-600" : ""}
-                    onClick={() => canMutate && handleEdit(index, skill.name)}
-                  >
-                    {skill.name}
-                  </span>
-                  {canMutate && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(index);
-                      }}
-                      className="ml-2 opacity-0 group-hover/item:opacity-100 transition-opacity text-red-500 hover:text-red-700"
-                      title="Remove skill"
-                    >
-                      <X className="h-3 w-3 inline" />
-                    </button>
-                  )}
-                </>
-              )}
+            <li key={skill.id || index} style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
+              {skill.name}
             </li>
           ))}
         </ul>
         {canMutate && (
           <button
             onClick={handleAdd}
-            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
-            style={{ color: themeColor || '#2563eb', borderColor: themeColor || '#2563eb' }}
+            className="mt-2 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
           >
             <Plus className="h-3 w-3" />
             Add Skill
@@ -447,14 +328,15 @@ export const InlineEditableSkills = ({
           </div>
         ))}
         {canMutate && (
-          <button
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-7 px-2 border-dashed"
             onClick={handleAdd}
-            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
-            style={{ color: themeColor || '#2563eb', borderColor: themeColor || '#2563eb' }}
           >
-            <Plus className="h-3 w-3" />
+            <Plus className="h-3 w-3 mr-1" />
             Add Skill
-          </button>
+          </Button>
         )}
       </div>
     </div>
@@ -493,7 +375,7 @@ export const SkillsDisplay = ({
   if (variant === 'inline') {
     const separatorChar = separator === 'comma' ? ', ' : separator === 'pipe' ? ' | ' : ' • ';
     return (
-      <p className={className} style={{ fontSize: skillFontSize, color: 'inherit' }}>
+      <p className={className} style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
         {normalizedSkills.map((skill, index) => (
           <span key={skill.id || index}>
             {skill.name}
@@ -537,7 +419,7 @@ export const SkillsDisplay = ({
               </Badge>
             );
 
-          case 'tag': {
+          case 'tag':
             const accentBorder = themeColor ? `${themeColor}33` : '#e5e7eb';
             return (
               <span
@@ -553,7 +435,6 @@ export const SkillsDisplay = ({
                 {skill.name}
               </span>
             );
-          }
 
           case 'compact':
             return (

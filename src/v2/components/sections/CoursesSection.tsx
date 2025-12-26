@@ -29,7 +29,6 @@ interface CoursesSectionProps {
   sectionTitle?: string;
   onAddItem?: () => void;
   onRemoveItem?: (id: string) => void;
-  variantOverride?: string;
 }
 
 export const CoursesSection: React.FC<CoursesSectionProps> = ({
@@ -39,23 +38,9 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
   sectionTitle = 'Courses & Training',
   onAddItem,
   onRemoveItem,
-  variantOverride,
 }) => {
   const { typography, spacing, colors } = config;
   const accent = colors.primary;
-  
-  // Map variant IDs
-  const mapVariantId = (variantId: string | undefined): string => {
-    if (!variantId) return 'classic';
-    const variantMap: Record<string, string> = {
-      'course-classic': 'classic',
-      'course-compact': 'compact',
-      'course-minimal': 'minimal',
-    };
-    return variantMap[variantId] || variantId;
-  };
-  
-  const variant = mapVariantId(variantOverride || (config as any).courses?.variant);
 
   const styleContext = useStyleOptions();
   const formatDate = styleContext?.formatDate || ((date: string) => {
@@ -93,38 +78,57 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
     color: typography.body.color,
   };
 
-  // Compact variant - clean layout for sidebars, no inline icon
-  const renderCompactItem = (item: CourseItem, index: number) => (
+  const renderItem = (item: CourseItem, index: number) => (
     <div
       key={item.id}
       className="group relative"
       style={{ 
         marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
+        // Prevent individual items from breaking across pages
         pageBreakInside: 'avoid',
         breakInside: 'avoid',
       }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1 min-w-0">
+      <div className="flex justify-between items-start gap-4">
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="w-4 h-4 flex-shrink-0" style={{ color: accent }} />
+            {editable ? (
+              <InlineEditableText
+                path={`courses.${index}.name`}
+                value={item.name}
+                as="h3"
+                style={titleStyle}
+                placeholder="Course Name"
+              />
+            ) : (
+              <h3 style={titleStyle}>{item.name}</h3>
+            )}
+            {item.certificate && (
+              <span title="Certificate earned">
+                <CheckCircle className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
+              </span>
+            )}
+            {!editable && item.url && (
+              <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accent }}>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            )}
+          </div>
+          
           {editable ? (
             <InlineEditableText
-              path={`courses.${index}.name`}
-              value={item.name}
-              as="h3"
-              style={titleStyle}
-              placeholder="Course Name"
+              path={`courses.${index}.provider`}
+              value={item.provider}
+              style={subtitleStyle}
+              placeholder="Provider (e.g., Coursera, Udemy)"
             />
           ) : (
-            <h3 style={titleStyle}>
-              {item.name}
-              {item.certificate && (
-                <CheckCircle className="w-3 h-3 inline ml-1.5" style={{ color: '#10b981' }} />
-              )}
-            </h3>
+            <div style={subtitleStyle}>{item.provider}</div>
           )}
         </div>
-        
-        <div style={{ ...dateStyle, flexShrink: 0 }}>
+
+        <div style={dateStyle} className="flex-shrink-0">
           {editable ? (
             <InlineEditableDate
               path={`courses.${index}.date`}
@@ -137,17 +141,6 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
           )}
         </div>
       </div>
-      
-      {editable ? (
-        <InlineEditableText
-          path={`courses.${index}.provider`}
-          value={item.provider}
-          style={subtitleStyle}
-          placeholder="Provider"
-        />
-      ) : (
-        <div style={subtitleStyle}>{item.provider}</div>
-      )}
 
       {item.description && (
         <div style={{ ...bodyStyle, marginTop: '4px' }}>
@@ -176,113 +169,12 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
     </div>
   );
 
-  // Default/Classic variant - with icon in separate column for proper alignment
-  const renderItem = (item: CourseItem, index: number) => (
-    <div
-      key={item.id}
-      className="group relative"
-      style={{ 
-        marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
-        pageBreakInside: 'avoid',
-        breakInside: 'avoid',
-      }}
-    >
-      <div className="flex gap-3">
-        {/* Icon column - fixed width for alignment */}
-        <div className="flex-shrink-0 pt-0.5">
-          <GraduationCap className="w-4 h-4" style={{ color: accent }} />
-        </div>
-        
-        {/* Content column */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">
-              {editable ? (
-                <InlineEditableText
-                  path={`courses.${index}.name`}
-                  value={item.name}
-                  as="h3"
-                  style={titleStyle}
-                  placeholder="Course Name"
-                />
-              ) : (
-                <h3 style={titleStyle}>
-                  {item.name}
-                  {item.certificate && (
-                    <CheckCircle className="w-3 h-3 inline ml-1.5" style={{ color: '#10b981' }} />
-                  )}
-                  {item.url && (
-                    <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accent, marginLeft: '6px' }}>
-                      <ExternalLink className="w-3 h-3 inline" />
-                    </a>
-                  )}
-                </h3>
-              )}
-            </div>
-            
-            <div style={{ ...dateStyle, flexShrink: 0 }}>
-              {editable ? (
-                <InlineEditableDate
-                  path={`courses.${index}.date`}
-                  value={item.date}
-                  style={dateStyle}
-                  formatDisplay={formatDate}
-                />
-              ) : (
-                formatDate(item.date)
-              )}
-            </div>
-          </div>
-          
-          {editable ? (
-            <InlineEditableText
-              path={`courses.${index}.provider`}
-              value={item.provider}
-              style={subtitleStyle}
-              placeholder="Provider (e.g., Coursera, Udemy)"
-            />
-          ) : (
-            <div style={subtitleStyle}>{item.provider}</div>
-          )}
-
-          {item.description && (
-            <div style={{ ...bodyStyle, marginTop: '4px' }}>
-              {editable ? (
-                <InlineEditableText
-                  path={`courses.${index}.description`}
-                  value={item.description}
-                  style={bodyStyle}
-                  multiline
-                  placeholder="Description..."
-                />
-              ) : (
-                item.description
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {editable && onRemoveItem && (
-        <button
-          onClick={() => onRemoveItem(item.id)}
-          className="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full"
-        >
-          <X className="w-3 h-3 text-red-600" />
-        </button>
-      )}
-    </div>
-  );
-
-  // Choose render function based on variant
-  const renderFunction = variant === 'compact' || variant === 'minimal' ? renderCompactItem : renderItem;
-
   return (
     <section style={{ marginBottom: spacing.sectionGap }}>
       <SectionHeading title={sectionTitle} config={config} editable={editable} accentColor={accent} />
       
       <div style={{ marginTop: spacing.headingToContent }}>
-        {(items || []).map((item, index) => renderFunction(item, index))}
+        {(items || []).map((item, index) => renderItem(item, index))}
         
         {editable && onAddItem && (
           <button

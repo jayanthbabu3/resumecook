@@ -82,7 +82,7 @@ export const DEFAULT_SPACING: SpacingConfig = {
     bottom: '32px',
     left: '32px',
   },
-  sectionGap: '16px',
+  sectionGap: '20px',
   itemGap: '16px',
   headingToContent: '12px',
   bulletGap: '4px',

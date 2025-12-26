@@ -1,250 +1,237 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  FileText,
-  ChevronRight,
-  Sparkles,
-  Star,
-  TrendingUp,
-  GraduationCap,
-  Plus,
-  ArrowRight,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
+/**
+ * Resume Builder V2 - Dashboard Page
+ * 
+ * Landing page for the new v2 builder with template selection.
+ */
+
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Header } from '@/components/Header';
+import { ArrowRight, Sparkles, Layout, Palette, Settings2 } from 'lucide-react';
 import { getAllTemplates } from '../config/templates';
-import { getFresherTemplates } from '../templates';
-import { TemplatePreviewV2 } from '@/v2/components/TemplatePreviewV2';
-import { FavoriteButton } from "@/components/FavoriteButton";
 
-const DashboardV2 = () => {
+export const DashboardV2: React.FC = () => {
   const navigate = useNavigate();
-  const v2Templates = getAllTemplates();
-  const fresherTemplates = getFresherTemplates();
-  const universalTemplateCount = v2Templates.length - fresherTemplates.length;
-  const fresherTemplateCount = fresherTemplates.length;
-  const totalTemplates = v2Templates.length;
+  const templates = getAllTemplates();
 
-  // Featured templates - show first 4 templates
-  const defaultColors = ['#2563eb', '#7c3aed', '#059669', '#e11d48'];
-  const featuredTemplates = v2Templates.slice(0, 4).map((template, index) => ({
-    id: template.id,
-    name: template.name,
-    description: template.description || 'Professional resume template',
-    color: template.colors?.primary || defaultColors[index % defaultColors.length],
-  }));
+  const features = [
+    {
+      icon: Layout,
+      title: 'Config-Driven Templates',
+      description: 'Every aspect of the template is configurable - fonts, spacing, colors, layouts.',
+    },
+    {
+      icon: Settings2,
+      title: 'Section Management',
+      description: 'Add, remove, reorder sections. Customize section titles to match your needs.',
+    },
+    {
+      icon: Palette,
+      title: 'Theme Customization',
+      description: 'Change colors instantly. All elements update automatically.',
+    },
+    {
+      icon: Sparkles,
+      title: 'Industry-Ready Output',
+      description: 'Professional, ATS-friendly resumes that stand out.',
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header />
-
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        
-        {/* Top Section: Create from Scratch (Highlighted) + Quick Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+      
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-medium mb-6">
+            <Sparkles className="w-4 h-4" />
+            Resume Builder V2 Beta
+          </div>
           
-          {/* Create from Scratch - MAIN CTA - Takes 2 columns */}
-          <div
-            onClick={() => navigate("/builder/scratch-v2/select-layout")}
-            className="lg:col-span-2 group relative bg-gradient-to-br from-primary via-primary to-blue-600 rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-0.5 overflow-hidden"
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Build Professional Resumes
+            <br />
+            <span className="text-cyan-600">The Right Way</span>
+          </h1>
+          
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+            A completely redesigned resume builder with configuration-driven templates.
+            Every element is customizable, every section is flexible.
+          </p>
+          
+          <Button
+            size="lg"
+            className="gap-2 bg-cyan-600 hover:bg-cyan-700 text-lg px-8 py-6"
+            onClick={() => navigate('/v2/builder?template=executive-split-v2')}
           >
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-            
-            <div className="relative flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Plus className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-white/90 mb-0.5">
-                    Start Fresh
-                  </h2>
-                  <p className="text-2xl font-bold text-white">
-                    Create Resume from Scratch
-                  </p>
-                </div>
-              </div>
-              <div className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-primary font-semibold group-hover:bg-gray-50 transition-colors">
-                Get Started
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </div>
-            
-            <p className="relative mt-4 text-white/80 text-sm max-w-md">
-              Build a custom resume with complete control over layout, sections, and design
-            </p>
-          </div>
-
-          {/* Quick Stats Card */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <FileText className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Templates</p>
-                <p className="text-2xl font-bold text-gray-900">{totalTemplates}</p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Universal</span>
-                <span className="font-medium text-gray-900">{universalTemplateCount}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Fresher</span>
-                <span className="font-medium text-gray-900">{fresherTemplateCount}</span>
-              </div>
-            </div>
-          </div>
+            Try the New Builder
+            <ArrowRight className="w-5 h-5" />
+          </Button>
         </div>
 
-        {/* Browse by Category */}
-        <div className="mb-10">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">
-            Browse by Category
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+            >
+              <div
+                className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
+                style={{ backgroundColor: '#ecfeff' }}
+              >
+                <feature.icon className="w-6 h-6 text-cyan-600" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+              <p className="text-sm text-gray-600">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Templates Section */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+            Available Templates
           </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {/* Universal */}
-            <div
-              onClick={() => navigate("/templates/all")}
-              className="group flex items-center gap-3 bg-white rounded-xl border border-gray-200 p-4 cursor-pointer transition-all duration-200 hover:border-amber-300 hover:shadow-md"
-            >
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                <Star className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-gray-900 text-sm">Universal</span>
-                  <Badge variant="secondary" className="bg-amber-100 text-amber-700 border-0 text-xs px-1.5 py-0">
-                    {universalTemplateCount}
-                  </Badge>
-                </div>
-                <p className="text-xs text-gray-500 truncate">All industries</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-            </div>
-
-            {/* Fresher */}
-            <div
-              onClick={() => navigate("/templates/fresher")}
-              className="group flex items-center gap-3 bg-white rounded-xl border border-gray-200 p-4 cursor-pointer transition-all duration-200 hover:border-violet-300 hover:shadow-md"
-            >
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                <GraduationCap className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-gray-900 text-sm">Fresher</span>
-                  <Badge variant="secondary" className="bg-violet-100 text-violet-700 border-0 text-xs px-1.5 py-0">
-                    {fresherTemplateCount}
-                  </Badge>
-                </div>
-                <p className="text-xs text-gray-500 truncate">Graduates & entry-level</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-violet-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-            </div>
-
-            {/* Popular */}
-            <div
-              onClick={() => navigate("/templates/all")}
-              className="group flex items-center gap-3 bg-white rounded-xl border border-gray-200 p-4 cursor-pointer transition-all duration-200 hover:border-emerald-300 hover:shadow-md"
-            >
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-gray-900 text-sm">Popular</span>
-                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 border-0 text-xs px-1.5 py-0">
-                    Hot
-                  </Badge>
-                </div>
-                <p className="text-xs text-gray-500 truncate">Most used this month</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-            </div>
-          </div>
-        </div>
-
-        {/* Featured Templates */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-semibold text-gray-900">
-              Featured Templates
-            </h2>
-            <button
-              onClick={() => navigate("/templates/all")}
-              className="text-sm text-gray-500 hover:text-primary flex items-center gap-1 transition-colors"
-            >
-              View all
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {featuredTemplates.map((template, index) => (
+          <p className="text-gray-600 text-center mb-8">
+            Start with a professionally designed template
+          </p>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {templates.map((template) => (
               <div
                 key={template.id}
-                className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer transition-all duration-200 hover:border-gray-300 hover:shadow-lg"
-                onClick={() => navigate(`/builder?template=${template.id}`)}
+                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all cursor-pointer group"
+                onClick={() => navigate(`/v2/builder?template=${template.id}`)}
               >
-                {/* Favorite Button */}
-                <div className="absolute top-2 left-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-lg p-1 shadow-sm">
-                    <FavoriteButton
-                      templateId={template.id}
-                      variant="icon"
-                      size="sm"
-                    />
+                {/* Template Preview Placeholder */}
+                <div className="aspect-[8.5/11] bg-gradient-to-br from-gray-100 to-gray-200 relative">
+                  <div className="absolute inset-4 bg-white rounded shadow-sm p-4">
+                    {/* Mini preview */}
+                    <div className="space-y-3">
+                      <div className="h-6 bg-gray-200 rounded w-3/4" />
+                      <div className="h-3 bg-cyan-200 rounded w-1/2" />
+                      <div className="h-2 bg-gray-100 rounded w-full mt-4" />
+                      <div className="h-2 bg-gray-100 rounded w-5/6" />
+                      <div className="h-2 bg-gray-100 rounded w-4/6" />
+                      <div className="h-4 bg-gray-200 rounded w-1/3 mt-4" />
+                      <div className="h-2 bg-gray-100 rounded w-full" />
+                      <div className="h-2 bg-gray-100 rounded w-5/6" />
+                    </div>
                   </div>
-                </div>
-
-                {/* Template Preview */}
-                <div className="relative aspect-[8.5/11] bg-gray-50">
-                  <div className="absolute inset-2 rounded-lg overflow-hidden bg-white shadow-sm border border-gray-100">
-                    <TemplatePreviewV2
-                      templateId={template.id}
-                      themeColor={template.color}
-                      className="h-full"
-                    />
-                  </div>
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-cyan-600/0 group-hover:bg-cyan-600/10 transition-colors flex items-center justify-center">
                     <Button
-                      size="sm"
-                      className="rounded-lg font-medium shadow-lg"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/builder?template=${template.id}`);
-                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity bg-cyan-600 hover:bg-cyan-700"
                     >
                       Use Template
                     </Button>
                   </div>
                 </div>
-
+                
                 {/* Template Info */}
-                <div className="p-3">
-                  <h3 className="font-medium text-sm text-gray-900 truncate">
-                    {template.name}
-                  </h3>
-                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
-                    {template.description}
-                  </p>
+                <div className="p-4">
+                  <h3 className="font-semibold text-gray-900">{template.name}</h3>
+                  <p className="text-sm text-gray-600 mt-1">{template.description}</p>
+                  <div className="flex items-center gap-2 mt-3">
+                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded capitalize">
+                      {template.category}
+                    </span>
+                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                      {template.layout.type.replace('-', ' ')}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
+            
+            {/* Coming Soon Card */}
+            <div className="bg-gray-50 rounded-xl overflow-hidden border-2 border-dashed border-gray-200 flex items-center justify-center min-h-[400px]">
+              <div className="text-center p-6">
+                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="font-semibold text-gray-600 mb-2">More Templates Coming</h3>
+                <p className="text-sm text-gray-500">
+                  We're adding new templates regularly
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </main>
+
+        {/* Comparison Section */}
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            V2 vs Current Builder
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs">1</span>
+                Current Builder
+              </h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start gap-2">
+                  <span className="text-gray-400">•</span>
+                  120+ templates with individual codebases
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gray-400">•</span>
+                  Styles hardcoded in each template
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gray-400">•</span>
+                  Limited customization options
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gray-400">•</span>
+                  Fixed section order and titles
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-cyan-600 mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-cyan-100 flex items-center justify-center text-xs text-cyan-600">2</span>
+                V2 Builder (New)
+              </h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start gap-2">
+                  <span className="text-cyan-500">✓</span>
+                  Single renderer with config-driven templates
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-cyan-500">✓</span>
+                  All styles in centralized configuration
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-cyan-500">✓</span>
+                  Full customization - fonts, colors, spacing
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-cyan-500">✓</span>
+                  Drag-and-drop section reordering
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-cyan-500">✓</span>
+                  Custom section titles
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-cyan-500">✓</span>
+                  Swappable section variants
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export { DashboardV2 };
 export default DashboardV2;

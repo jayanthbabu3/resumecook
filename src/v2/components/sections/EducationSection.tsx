@@ -5,12 +5,12 @@
  */
 
 import React from 'react';
-import type { TemplateConfig, EducationVariant, EducationItem } from '../../types';
+import type { TemplateConfig, EducationVariant } from '../../types';
+import type { EducationItem } from '@/types/resume';
 import { SectionHeading } from './SectionHeading';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import { Plus, X } from 'lucide-react';
-import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 interface EducationSectionProps {
   items: EducationItem[];
@@ -32,45 +32,21 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   onRemoveEducation,
 }) => {
   const { typography, colors, spacing, education } = config;
-  
-  // Map variant IDs from sectionVariants.ts to internal variant names
-  const mapVariantId = (variantId: string | undefined): EducationVariant => {
-    if (!variantId) return education.variant;
-    const variantMap: Record<string, EducationVariant> = {
-      'education-classic': 'standard',
-      'education-modern': 'card',
-      'education-minimal': 'minimal',
-      'education-detailed': 'detailed',
-      'education-timeline': 'timeline',
-      'education-compact': 'compact',
-      'education-honors': 'detailed',
-      'education-boxed': 'card',
-      'education-two-column': 'standard',
-      'education-achievement': 'detailed',
-    };
-    return variantMap[variantId] || education.variant;
-  };
-  
-  const variant = mapVariantId(variantOverride);
+  const variant = variantOverride || education.variant;
   const accent = colors.primary;
 
-  // Get style options for date formatting
-  const styleContext = useStyleOptions();
-  const formatDate = styleContext?.formatDate || ((date: string) => {
-    // Fallback format if context not available
+  // Format date
+  const formatDate = (date: string) => {
     if (!date) return '';
     const [year, month] = date.split('-');
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${monthNames[parseInt(month) - 1]} ${year}`;
-  });
+  };
 
   // Render single education item
   const renderItem = (item: EducationItem, index: number) => {
     const itemStyle: React.CSSProperties = {
       marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
-      // Prevent individual items from breaking across pages
-      pageBreakInside: 'avoid',
-      breakInside: 'avoid',
     };
 
     const degreeStyle: React.CSSProperties = {
@@ -109,153 +85,24 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
       
       if (editable) {
         return (
-          <div 
-            className="flex items-center gap-1" 
-            style={{
-              ...dateStyle,
-              whiteSpace: 'nowrap',
-              display: 'flex',
-              flexWrap: 'nowrap',
-            }}
-          >
+          <div className="flex items-center gap-1" style={dateStyle}>
             <InlineEditableDate
               path={`education.${index}.startDate`}
               value={item.startDate}
-              style={{ ...dateStyle, whiteSpace: 'nowrap' }}
-              formatDisplay={formatDate}
+              style={dateStyle}
             />
-            <span style={{ whiteSpace: 'nowrap' }}>-</span>
+            <span>-</span>
             <InlineEditableDate
               path={`education.${index}.endDate`}
               value={item.endDate}
-              style={{ ...dateStyle, whiteSpace: 'nowrap' }}
-              formatDisplay={formatDate}
+              style={dateStyle}
             />
           </div>
         );
       }
 
-      return (
-        <span style={{ ...dateStyle, whiteSpace: 'nowrap', display: 'inline-block' }}>
-          {dateText}
-        </span>
-      );
+      return <span style={dateStyle}>{dateText}</span>;
     };
-
-    // Two-column-dates variant (dates/location on left, content on right)
-    if (variant === 'two-column-dates') {
-      const leftColumnStyle: React.CSSProperties = {
-        width: '120px',
-        flexShrink: 0,
-        paddingRight: '16px',
-      };
-
-      return (
-        <div key={item.id} style={itemStyle}>
-          <div className="flex">
-            {/* Left column - dates and location */}
-            <div style={leftColumnStyle}>
-              <div style={{ ...dateStyle, whiteSpace: 'nowrap' }}>
-                {editable ? (
-                  <div 
-                    className="flex items-center gap-1"
-                    style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap' }}
-                  >
-                    <InlineEditableDate
-                      path={`education.${index}.startDate`}
-                      value={item.startDate}
-                      style={{ ...dateStyle, whiteSpace: 'nowrap' }}
-                      formatDisplay={formatDate}
-                    />
-                    <span style={{ whiteSpace: 'nowrap' }}>-</span>
-                    <InlineEditableDate
-                      path={`education.${index}.endDate`}
-                      value={item.endDate}
-                      style={{ ...dateStyle, whiteSpace: 'nowrap' }}
-                      formatDisplay={formatDate}
-                    />
-                  </div>
-                ) : (
-                  <div style={{ whiteSpace: 'nowrap', display: 'inline-block' }}>
-                    {`${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}
-                  </div>
-                )}
-              </div>
-              {item.location && (
-                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`education.${index}.location`}
-                      value={item.location || 'Location'}
-                      style={{ ...typography.small, color: typography.dates.color }}
-                    />
-                  ) : (
-                    item.location
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Right column - education details */}
-            <div className="flex-1 border-l-2 pl-4" style={{ borderColor: colors.border }}>
-              {/* Degree */}
-              {editable ? (
-                <div className="flex items-baseline gap-1 flex-wrap">
-                  <InlineEditableText
-                    path={`education.${index}.degree`}
-                    value={item.degree || 'Degree'}
-                    as="h3"
-                    style={degreeStyle}
-                  />
-                  {education.showField && (
-                    <>
-                      <span style={degreeStyle}></span>
-                      <InlineEditableText
-                        path={`education.${index}.field`}
-                        value={item.field || 'Field of Study'}
-                        style={degreeStyle}
-                      />
-                    </>
-                  )}
-                </div>
-              ) : (
-                <h3 style={degreeStyle}>
-                  {item.degree}
-                  {education.showField && item.field && ` ${item.field}`}
-                </h3>
-              )}
-              
-              {/* School */}
-              {editable ? (
-                <InlineEditableText
-                  path={`education.${index}.school`}
-                  value={item.school}
-                  style={schoolStyle}
-                />
-              ) : (
-                <div style={schoolStyle}>{item.school}</div>
-              )}
-
-              {/* GPA */}
-              {education.showGPA && (editable || item.gpa) && (
-                <div style={{ ...fieldStyle, marginTop: '4px' }} className="flex items-center gap-1">
-                  <span>GPA:</span>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`education.${index}.gpa`}
-                      value={item.gpa || ''}
-                      style={fieldStyle}
-                    />
-                  ) : (
-                    <span>{item.gpa}</span>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
 
     // Standard variant
     if (variant === 'standard' || variant === 'detailed') {
@@ -309,18 +156,10 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
                   </>
                 )}
                 
-                {(editable || item.location) && (
+                {item.location && (
                   <>
                     <span style={{ color: colors.text.muted }}>•</span>
-                    {editable ? (
-                      <InlineEditableText
-                        path={`education.${index}.location`}
-                        value={item.location || 'Location'}
-                        style={dateStyle}
-                      />
-                    ) : (
-                      <span style={dateStyle}>{item.location}</span>
-                    )}
+                    <span style={dateStyle}>{item.location}</span>
                   </>
                 )}
               </div>
@@ -479,65 +318,11 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
       );
     }
 
-    // Minimal variant - stacked layout for sidebars
+    // Minimal variant
     return (
       <div key={item.id} style={itemStyle}>
-        {/* Degree + Field */}
-        {editable ? (
-          <div>
-            <InlineEditableText
-              path={`education.${index}.degree`}
-              value={item.degree || 'Degree'}
-              as="h3"
-              style={degreeStyle}
-            />
-            {education.showField && (
-              <InlineEditableText
-                path={`education.${index}.field`}
-                value={item.field || 'Field of Study'}
-                style={{ ...degreeStyle, display: 'block' }}
-              />
-            )}
-          </div>
-        ) : (
-          <h3 style={degreeStyle}>
-            {item.degree}
-            {education.showField && item.field && (
-              <span style={{ display: 'block' }}>{item.field}</span>
-            )}
-          </h3>
-        )}
-        
-        {/* School + Location */}
-        <div className="flex items-center justify-between" style={{ marginTop: '2px' }}>
-          {editable ? (
-            <InlineEditableText
-              path={`education.${index}.school`}
-              value={item.school}
-              style={schoolStyle}
-            />
-          ) : (
-            <span style={schoolStyle}>{item.school}</span>
-          )}
-          {(editable || item.location) && (
-            editable ? (
-              <InlineEditableText
-                path={`education.${index}.location`}
-                value={item.location || 'Location'}
-                style={{ ...dateStyle, marginLeft: '8px', flexShrink: 0 }}
-              />
-            ) : (
-              <span style={{ ...dateStyle, marginLeft: '8px', flexShrink: 0 }}>{item.location}</span>
-            )
-          )}
-        </div>
-        
-        {/* Dates below */}
-        {education.showDates && (
-          <div style={{ marginTop: '4px' }}>
-            {renderDates()}
-          </div>
-        )}
+        <h3 style={degreeStyle}>{item.degree}</h3>
+        <span style={schoolStyle}>{item.school}</span>
       </div>
     );
   };
@@ -573,10 +358,14 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
         {editable && onAddEducation && (
           <button
             onClick={onAddEducation}
-            className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
-            style={{ color: accent, borderColor: accent }}
+            className="flex items-center gap-2 mt-4 px-4 py-2 text-sm font-medium rounded-lg border-2 border-dashed transition-colors hover:border-solid"
+            style={{ 
+              color: accent, 
+              borderColor: accent,
+              backgroundColor: `${accent}08`,
+            }}
           >
-            <Plus className="h-3 w-3" />
+            <Plus className="w-4 h-4" />
             Add Education
           </button>
         )}

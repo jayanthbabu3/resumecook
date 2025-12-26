@@ -295,13 +295,13 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
           </div>
         )}
 
-        {/* Other languages - single column for better sidebar fit */}
+        {/* Other languages in a grid */}
         {otherLanguages.length > 0 && (
           <div 
             style={{ 
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '8px 24px',
             }}
           >
             {otherLanguages.map((lang, index) => renderLanguageItem(

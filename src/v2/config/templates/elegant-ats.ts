@@ -129,11 +129,8 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
 
   header: {
     variant: 'split',
-    showPhoto: true,
-    photoSize: '60px',
-    photoShape: 'circle',
-    photoPosition: 'right',
-    padding: '14px 0',
+    showPhoto: false,
+    padding: '14px 18px 14px 18px',
     contactIcons: {
       show: true,
       size: '13px',
@@ -141,10 +138,6 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
-  },
-
-  certifications: {
-    variant: 'compact',
   },
 
   skills: {

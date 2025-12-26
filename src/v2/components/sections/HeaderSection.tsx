@@ -233,7 +233,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     return (
       <div 
         className="flex flex-wrap items-center"
-        style={{ columnGap: spacing.contactGap, rowGap: '6px' }}
+        style={{ gap: spacing.contactGap }}
       >
         {filteredContactItems.map((item, index) => (
           <EditableContactItem key={`contact-${index}`} icon={item.icon} value={item.value || ''} path={item.path} />
@@ -551,30 +551,22 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
         );
 
       case 'split':
-        const splitPhotoPosition = header.photoPosition || 'left';
-        const splitAvatar = renderAvatar({ size: header.photoSize || '60px' });
         return (
           <div style={{ padding: header.padding }}>
             <div className="flex justify-between items-start">
-              {/* Left section: Name/Title (with optional photo on left) */}
               <div className="flex items-start gap-4">
-                {splitPhotoPosition === 'left' && splitAvatar}
+                {renderAvatar()}
                 <div>
                   {renderName()}
                   <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
                 </div>
               </div>
-              
-              {/* Right section: Contact info (with optional photo on right) */}
-              <div className="flex items-start gap-4">
-                <div className="text-right">
-                  <div className="flex flex-col items-end gap-1">
-                    {(editable || personalInfo.phone) && <EditableContactItem icon={Phone} value={personalInfo.phone || ''} path="personalInfo.phone" />}
-                    {(editable || personalInfo.email) && <EditableContactItem icon={Mail} value={personalInfo.email || ''} path="personalInfo.email" />}
-                    {(editable || personalInfo.location) && <EditableContactItem icon={MapPin} value={personalInfo.location || ''} path="personalInfo.location" />}
-                  </div>
+              <div className="text-right">
+                <div className="flex flex-col items-end gap-1">
+                  {(editable || personalInfo.phone) && <EditableContactItem icon={Phone} value={personalInfo.phone || ''} path="personalInfo.phone" />}
+                  {(editable || personalInfo.email) && <EditableContactItem icon={Mail} value={personalInfo.email || ''} path="personalInfo.email" />}
+                  {(editable || personalInfo.location) && <EditableContactItem icon={MapPin} value={personalInfo.location || ''} path="personalInfo.location" />}
                 </div>
-                {splitPhotoPosition === 'right' && splitAvatar}
               </div>
             </div>
             {(includeSocialLinks && (editable || personalInfo.linkedin || personalInfo.portfolio || personalInfo.github)) && (
@@ -755,7 +747,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
 
   // Determine if header needs margin-bottom (non-banner headers)
   const needsMarginBottom = !['banner', 'gradient-banner'].includes(variant);
-  const headerMarginBottom = needsMarginBottom ? '10px' : '0';
+  const headerMarginBottom = needsMarginBottom ? '20px' : '0';
 
   return (
     <header style={{ marginBottom: headerMarginBottom }}>
