@@ -135,8 +135,8 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
   },
 
   skills: {
-    variant: 'category-lines',
-    columns: 2,
+    variant: 'inline',
+    columns: 1,
     separator: ' • ',
     badge: {
       fontSize: '11px',
@@ -147,6 +147,18 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
       textColor: '#c8d1da',
       borderColor: '#1f252b',
     },
+  },
+
+  education: {
+    variant: 'minimal',
+    showGPA: false,
+    showField: true,
+    showDates: true,
+    datePosition: 'below',
+  },
+
+  courses: {
+    variant: 'compact',
   },
 
   experience: {

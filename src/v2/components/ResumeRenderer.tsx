@@ -810,28 +810,48 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     padding: 0,
   };
 
-  // Calculate sidebar padding - ensure outer edge aligns with page padding
-  // The page padding already handles the outer edges, so sidebar padding should only apply to inner edges
+  // Calculate sidebar padding - apply padding on all sides for proper content spacing
   const getSidebarPadding = () => {
     const sidebarPadding = layout.sidebarPadding || '0';
     if (typeof sidebarPadding === 'string' && sidebarPadding !== '0') {
-      // Parse padding value (assumes single value for all sides)
-      const paddingValue = sidebarPadding.trim();
-      // For right sidebar: no right padding (page padding handles it)
-      // For left sidebar: no left padding (page padding handles it)
-      return isRightSidebar 
-        ? `${paddingValue} 0 ${paddingValue} ${paddingValue}` // top right bottom left
-        : `${paddingValue} ${paddingValue} ${paddingValue} 0`; // top right bottom left
+      return sidebarPadding;
     }
     return '0';
+  };
+
+  // Generate a light tint of a color for sidebar background
+  const generateLightTint = (hexColor: string, opacity: number = 0.08): string => {
+    // Remove # if present
+    const hex = hexColor.replace('#', '');
+    // Parse RGB values
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    // Return rgba with low opacity for light tint
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  };
+
+  // Get sidebar background - use theme color tint if no explicit background set
+  const getSidebarBackground = (): string => {
+    // If explicit sidebar background is set in layout, use it
+    if (layout.sidebarBackground && layout.sidebarBackground !== 'transparent') {
+      return layout.sidebarBackground;
+    }
+    // If sidebar background is set in colors, use it
+    if (colors.background.sidebar && colors.background.sidebar !== colors.background.page) {
+      return colors.background.sidebar;
+    }
+    // Generate light tint from primary theme color
+    return generateLightTint(colors.primary, 0.08);
   };
 
   const sidebarColumnStyle: React.CSSProperties = {
     width: sidebarWidth,
     minWidth: '0',
-    backgroundColor: layout.sidebarBackground || colors.background.sidebar || colors.background.page,
+    backgroundColor: getSidebarBackground(),
     flexShrink: 0,
-    flexGrow: 0,
+    flexGrow: (layout as any).sidebarFullHeight ? 1 : 0,
+    alignSelf: (layout as any).sidebarFullHeight ? 'stretch' : 'flex-start',
     boxSizing: 'border-box',
     overflowWrap: 'break-word',
     wordWrap: 'break-word',

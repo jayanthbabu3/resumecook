@@ -94,8 +94,8 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
     mainWidth: '64%',
     sidebarWidth: '33%',
     columnGap: '22px',
-    sidebarBackground: '#ecfdf5',
     sidebarPadding: '16px',
+    sidebarFullHeight: true,
   },
 
   colors: {
@@ -109,7 +109,7 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
     },
     background: {
       page: '#ffffff',
-      section: '#ecfdf5',
+      section: '#ffffff',
       accent: '#d1fae5',
     },
     border: '#e2e8f0',
@@ -125,7 +125,10 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
 
   header: {
     variant: 'left-aligned',
-    showPhoto: false,
+    showPhoto: true,
+    photoSize: '70px',
+    photoShape: 'circle',
+    photoPosition: 'right',
     padding: '0 0 16px 0',
     contactIcons: {
       show: true,
@@ -168,15 +171,21 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
     showIndicators: false,
   },
 
+  certifications: {
+    variant: 'compact',
+  },
+
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
     { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
     { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
-    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Core Skills', defaultTitle: 'Core Skills', enabled: true, order: 4, column: 'sidebar' },
-    { type: 'strengths', id: 'strengths', title: 'Strengths', defaultTitle: 'Strengths', enabled: true, order: 5, column: 'sidebar' },
-    { type: 'achievements', id: 'achievements', title: 'Highlights', defaultTitle: 'Highlights', enabled: true, order: 6, column: 'sidebar' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 7, column: 'sidebar' },
+    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 3, column: 'main' },
+    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 4, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Technical Skills', defaultTitle: 'Technical Skills', enabled: true, order: 1, column: 'sidebar' },
+    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: true, order: 2, column: 'sidebar' },
+    { type: 'achievements', id: 'achievements', title: 'Highlights', defaultTitle: 'Highlights', enabled: true, order: 3, column: 'sidebar' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 4, column: 'sidebar' },
+    { type: 'interests', id: 'interests', title: 'Interests', defaultTitle: 'Interests', enabled: true, order: 5, column: 'sidebar' },
   ],
 
   fontFamily: {

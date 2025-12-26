@@ -479,11 +479,65 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
       );
     }
 
-    // Minimal variant
+    // Minimal variant - stacked layout for sidebars
     return (
       <div key={item.id} style={itemStyle}>
-        <h3 style={degreeStyle}>{item.degree}</h3>
-        <span style={schoolStyle}>{item.school}</span>
+        {/* Degree + Field */}
+        {editable ? (
+          <div>
+            <InlineEditableText
+              path={`education.${index}.degree`}
+              value={item.degree || 'Degree'}
+              as="h3"
+              style={degreeStyle}
+            />
+            {education.showField && (
+              <InlineEditableText
+                path={`education.${index}.field`}
+                value={item.field || 'Field of Study'}
+                style={{ ...degreeStyle, display: 'block' }}
+              />
+            )}
+          </div>
+        ) : (
+          <h3 style={degreeStyle}>
+            {item.degree}
+            {education.showField && item.field && (
+              <span style={{ display: 'block' }}>{item.field}</span>
+            )}
+          </h3>
+        )}
+        
+        {/* School + Location */}
+        <div className="flex items-center justify-between" style={{ marginTop: '2px' }}>
+          {editable ? (
+            <InlineEditableText
+              path={`education.${index}.school`}
+              value={item.school}
+              style={schoolStyle}
+            />
+          ) : (
+            <span style={schoolStyle}>{item.school}</span>
+          )}
+          {(editable || item.location) && (
+            editable ? (
+              <InlineEditableText
+                path={`education.${index}.location`}
+                value={item.location || 'Location'}
+                style={{ ...dateStyle, marginLeft: '8px', flexShrink: 0 }}
+              />
+            ) : (
+              <span style={{ ...dateStyle, marginLeft: '8px', flexShrink: 0 }}>{item.location}</span>
+            )
+          )}
+        </div>
+        
+        {/* Dates below */}
+        {education.showDates && (
+          <div style={{ marginTop: '4px' }}>
+            {renderDates()}
+          </div>
+        )}
       </div>
     );
   };

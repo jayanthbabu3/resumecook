@@ -178,7 +178,7 @@ export const InlineEditableSkills = ({
     
     return (
       <div className={cn("relative group", className)}>
-        <div style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
+        <div style={{ fontSize: skillFontSize, color: 'inherit' }}>
           {normalizedSkills.map((skill, index) => (
             <span key={skill.id || index} className="group/skill inline">
               {canMutate && isEditing && editingIndex === index ? (
@@ -493,7 +493,7 @@ export const SkillsDisplay = ({
   if (variant === 'inline') {
     const separatorChar = separator === 'comma' ? ', ' : separator === 'pipe' ? ' | ' : ' • ';
     return (
-      <p className={className} style={{ fontSize: skillFontSize, color: '#1a1a1a' }}>
+      <p className={className} style={{ fontSize: skillFontSize, color: 'inherit' }}>
         {normalizedSkills.map((skill, index) => (
           <span key={skill.id || index}>
             {skill.name}
