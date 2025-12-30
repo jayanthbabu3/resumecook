@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FileText, Loader2, Home } from "lucide-react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link, useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { getCategoryById } from "@/constants/professionCategories";
@@ -16,13 +16,35 @@ const DEFAULT_THEME_COLOR = "#2563eb";
 interface TemplateGridProps {
   templates: TemplateConfig[];
   categoryColor: string;
+  highlightedTemplateId?: string;
+  categoryPath: string;
 }
 
-const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
+const TemplateGrid = ({ templates, categoryColor, highlightedTemplateId, categoryPath }: TemplateGridProps) => {
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(15);
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
+  const highlightedRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to highlighted template on mount
+  useEffect(() => {
+    if (highlightedTemplateId && highlightedRef.current) {
+      setTimeout(() => {
+        highlightedRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 300);
+    }
+  }, [highlightedTemplateId]);
+
+  const handleTemplateClick = (templateId: string) => {
+    // Store the current page path for back navigation
+    sessionStorage.setItem('template-referrer', categoryPath);
+    sessionStorage.setItem('selected-template', templateId);
+    navigate(`/builder?template=${templateId}`);
+  };
 
   const visibleTemplates = templates.slice(0, visibleCount);
   const hasMore = visibleCount < templates.length;
@@ -48,16 +70,25 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
     return () => observer.disconnect();
   }, [hasMore, isLoading, templates.length]);
 
+  const isHighlighted = (templateId: string) => templateId === highlightedTemplateId;
+
   return (
     <div className="space-y-4 md:space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
         {visibleTemplates.map((template, index) => (
           <Card
             key={template.id}
-            className="group relative overflow-hidden border border-border/40 hover:border-primary/60 transition-all duration-500 cursor-pointer bg-card hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1 rounded-xl"
-            onClick={() => navigate(`/builder?template=${template.id}`)}
+            ref={isHighlighted(template.id) ? highlightedRef : null}
+            className={`group relative overflow-hidden border transition-all duration-500 cursor-pointer bg-card hover:shadow-2xl hover:-translate-y-1 rounded-xl ${
+              isHighlighted(template.id)
+                ? 'border-primary ring-2 ring-primary/50 shadow-xl shadow-primary/20'
+                : 'border-border/40 hover:border-primary/60 hover:shadow-primary/10'
+            }`}
+            onClick={() => handleTemplateClick(template.id)}
             style={{
-              boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+              boxShadow: isHighlighted(template.id)
+                ? '0 10px 40px -10px hsl(var(--primary) / 0.3)'
+                : '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
             }}
           >
             {/* Premium gradient overlay on hover */}
@@ -111,7 +142,7 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
                   className="shadow-2xl text-xs md:text-sm px-4 py-2 h-9 md:h-10 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg backdrop-blur-sm border border-white/20 hover:scale-105 transition-transform duration-200"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/v2/builder?template=${template.id}`);
+                    handleTemplateClick(template.id);
                   }}
                 >
                   Use Template
@@ -170,6 +201,10 @@ const TemplateGrid = ({ templates, categoryColor }: TemplateGridProps) => {
 const ProfessionTemplatesV2 = () => {
   const navigate = useNavigate();
   const { professionId } = useParams<{ professionId: string }>();
+  const [searchParams] = useSearchParams();
+
+  // Get highlighted template from URL params (when coming back from builder)
+  const highlightedTemplateId = searchParams.get('highlight');
 
   // Get category data
   const categoryData = professionId ? getCategoryById(professionId) : null;
@@ -234,6 +269,8 @@ const ProfessionTemplatesV2 = () => {
           <TemplateGrid
             templates={templates}
             categoryColor={categoryData.color}
+            highlightedTemplateId={highlightedTemplateId || undefined}
+            categoryPath={`/templates/${professionId}`}
           />
         ) : (
           /* Empty State */

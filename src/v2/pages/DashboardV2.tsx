@@ -184,7 +184,11 @@ const DashboardV2 = () => {
                 <Card
                   key={template.id}
                   className="group relative overflow-hidden border border-border/40 hover:border-primary/60 transition-all duration-500 cursor-pointer bg-card hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1 rounded-xl"
-                  onClick={() => navigate(`/builder?template=${template.id}`)}
+                  onClick={() => {
+                    sessionStorage.setItem('template-referrer', '/templates');
+                    sessionStorage.setItem('selected-template', template.id);
+                    navigate(`/builder?template=${template.id}`);
+                  }}
                   style={{
                     boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
                   }}
@@ -240,6 +244,8 @@ const DashboardV2 = () => {
                         className="shadow-2xl text-xs md:text-sm px-4 py-2 h-9 md:h-10 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg backdrop-blur-sm border border-white/20 hover:scale-105 transition-transform duration-200"
                         onClick={(e) => {
                           e.stopPropagation();
+                          sessionStorage.setItem('template-referrer', '/templates');
+                          sessionStorage.setItem('selected-template', template.id);
                           navigate(`/builder?template=${template.id}`);
                         }}
                       >

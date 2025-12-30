@@ -117,8 +117,8 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
     >
       <div className="flex justify-between items-start gap-4">
         <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <Award className="w-4 h-4 flex-shrink-0" style={{ color: accent }} />
+          <div className="flex items-start gap-2">
+            <Award className="w-4 h-4 flex-shrink-0" style={{ color: accent, marginTop: '2px' }} />
             {editable ? (
               <InlineEditableText
                 path={`certifications.${index}.name`}

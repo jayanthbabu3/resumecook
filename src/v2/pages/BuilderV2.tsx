@@ -822,7 +822,18 @@ export const BuilderV2: React.FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
-                          onClick={() => navigate('/templates')}
+                          onClick={() => {
+                            // Get the referrer page and selected template from sessionStorage
+                            const referrer = sessionStorage.getItem('template-referrer') || '/templates';
+                            const selectedTemplate = sessionStorage.getItem('selected-template');
+
+                            // Navigate back with highlight parameter if template was selected
+                            if (selectedTemplate) {
+                              navigate(`${referrer}?highlight=${selectedTemplate}`);
+                            } else {
+                              navigate(referrer);
+                            }
+                          }}
                           className="h-9 px-3 flex items-center gap-2 rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-100/80 transition-all duration-200 group"
                         >
                           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
