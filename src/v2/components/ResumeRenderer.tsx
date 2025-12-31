@@ -328,7 +328,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   };
 
   // Render a section based on its type, wrapped with data-section for style toggles
-  const renderSection = (section: SectionConfig) => {
+  const renderSection = (section: SectionConfig, isFirstSection: boolean = false) => {
     const title = getSectionTitle(section);
 
     const pageBreakBefore = (section as any).pageBreakBefore;
@@ -337,8 +337,8 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       const style: React.CSSProperties = {
         // Don't prevent section from breaking - let individual items handle page breaks
         position: 'relative',
-        // Add consistent spacing between sections
-        marginTop: spacing.sectionGap || '20px',
+        // Add consistent spacing between sections (less for first section after header)
+        marginTop: isFirstSection ? '12px' : (spacing.sectionGap || '20px'),
         maxWidth: '100%',
         overflowWrap: 'break-word',
         wordBreak: 'break-word',
@@ -771,7 +771,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
         {/* Content - Apply padding directly to content wrapper */}
         <div style={contentPaddingStyle}>
-          {getOrderedSections().map(section => renderSection(section))}
+          {getOrderedSections().map((section, index) => renderSection(section, index === 0))}
         </div>
       </div>
     );
@@ -883,12 +883,12 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       >
         {/* Left column - Sidebar for two-column-left, Main for two-column-right */}
         <div style={isRightSidebar ? mainColumnStyle : sidebarColumnStyle}>
-          {(isRightSidebar ? mainSections : sidebarSections).map(section => renderSection(section))}
+          {(isRightSidebar ? mainSections : sidebarSections).map((section, index) => renderSection(section, index === 0))}
         </div>
 
         {/* Right column - Main for two-column-left, Sidebar for two-column-right */}
         <div style={isRightSidebar ? sidebarColumnStyle : mainColumnStyle}>
-          {(isRightSidebar ? sidebarSections : mainSections).map(section => renderSection(section))}
+          {(isRightSidebar ? sidebarSections : mainSections).map((section, index) => renderSection(section, index === 0))}
         </div>
       </div>
     </div>

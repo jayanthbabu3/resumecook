@@ -145,9 +145,11 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
     // Two-column-dates variant (dates/location on left, content on right)
     if (variant === 'two-column-dates') {
       const leftColumnStyle: React.CSSProperties = {
-        width: '120px',
+        width: '130px',
+        minWidth: '130px',
         flexShrink: 0,
         paddingRight: '16px',
+        textAlign: 'right',
       };
 
       return (
@@ -157,17 +159,14 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
             <div style={leftColumnStyle}>
               <div style={{ ...dateStyle, whiteSpace: 'nowrap' }}>
                 {editable ? (
-                  <div 
-                    className="flex items-center gap-1"
-                    style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap' }}
-                  >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}>
                     <InlineEditableDate
                       path={`education.${index}.startDate`}
                       value={item.startDate}
                       style={{ ...dateStyle, whiteSpace: 'nowrap' }}
                       formatDisplay={formatDate}
                     />
-                    <span style={{ whiteSpace: 'nowrap' }}>-</span>
+                    <span>-</span>
                     <InlineEditableDate
                       path={`education.${index}.endDate`}
                       value={item.endDate}
@@ -176,13 +175,11 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
                     />
                   </div>
                 ) : (
-                  <div style={{ whiteSpace: 'nowrap', display: 'inline-block' }}>
-                    {`${formatDate(item.startDate)} - ${formatDate(item.endDate)}`}
-                  </div>
+                  <span>{formatDate(item.startDate)} - {formatDate(item.endDate)}</span>
                 )}
               </div>
               {item.location && (
-                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
+                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '4px' }}>
                   {editable ? (
                     <InlineEditableText
                       path={`education.${index}.location`}

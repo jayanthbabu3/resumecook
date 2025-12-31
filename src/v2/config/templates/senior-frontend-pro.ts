@@ -127,7 +127,7 @@ export const seniorFrontendProConfig: TemplateConfig = createTemplateConfig({
     photoSize: '70px',
     photoShape: 'circle',
     photoPosition: 'right', // Photo on the right side of header
-    backgroundColor: '#4b5563', // Dark gray banner
+    // No backgroundColor - uses theme color (colors.primary) instead
     textColor: '#ffffff',
     padding: '24px',
     contactIcons: {

@@ -397,9 +397,11 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
     // Two-column-dates variant (dates/location on left, content on right)
     if (variant === 'two-column-dates') {
       const leftColumnStyle: React.CSSProperties = {
-        width: '120px',
+        width: '130px',
+        minWidth: '130px',
         flexShrink: 0,
         paddingRight: '16px',
+        textAlign: 'right',
       };
 
       return (
@@ -407,36 +409,43 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           <div className="flex">
             {/* Left column - dates and location */}
             <div style={leftColumnStyle}>
-              <div style={dateStyle}>
+              <div style={{ ...dateStyle, whiteSpace: 'nowrap' }}>
                 {editable ? (
-                  <div className="flex flex-col gap-0.5">
-                    <div className="flex items-center gap-1">
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}>
+                    <InlineEditableDate
+                      path={`experience.${index}.startDate`}
+                      value={item.startDate}
+                      style={{ ...dateStyle, whiteSpace: 'nowrap' }}
+                      formatDisplay={formatDate}
+                    />
+                    <span>-</span>
+                    {item.current ? (
+                      <span>Present</span>
+                    ) : (
                       <InlineEditableDate
-                        path={`experience.${index}.startDate`}
-                        value={item.startDate}
-                        style={dateStyle}
+                        path={`experience.${index}.endDate`}
+                        value={item.endDate}
+                        style={{ ...dateStyle, whiteSpace: 'nowrap' }}
                         formatDisplay={formatDate}
                       />
-                      <span>-</span>
-                      {item.current ? (
-                        <span>Present</span>
-                      ) : (
-                        <InlineEditableDate
-                          path={`experience.${index}.endDate`}
-                          value={item.endDate}
-                          style={dateStyle}
-                          formatDisplay={formatDate}
-                        />
-                      )}
-                    </div>
+                    )}
                   </div>
                 ) : (
-                  <div>{`${formatDate(item.startDate)} - ${item.current ? 'Present' : formatDate(item.endDate)}`}</div>
+                  <span>{formatDate(item.startDate)} - {item.current ? 'Present' : formatDate(item.endDate)}</span>
                 )}
               </div>
-              {experience.showLocation && (
-                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
-                  San Francisco, CA
+              {experience.showLocation && item.location && (
+                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '4px' }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`experience.${index}.location`}
+                      value={item.location}
+                      style={{ ...typography.small, color: typography.dates.color }}
+                      placeholder="Location"
+                    />
+                  ) : (
+                    item.location
+                  )}
                 </div>
               )}
             </div>

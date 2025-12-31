@@ -139,7 +139,8 @@ export const executiveSplitConfig: TemplateConfig = createTemplateConfig({
     photoSize: '70px',
     photoShape: 'circle',
     photoPosition: 'right', // Photo on the right side of header
-    padding: '0 0 16px 0',
+    padding: '0 0 12px 0',
+    marginBottom: '8px',
     contactIcons: {
       show: true,
       size: '12px',

@@ -123,9 +123,10 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
   header: {
     variant: 'centered',
     showPhoto: true,
-    photoSize: '90px',
+    photoSize: '72px',
     photoShape: 'circle',
-    padding: '0 0 16px 0',
+    photoPosition: 'right', // 'top', 'left', or 'right'
+    padding: '0 0 12px 0',
     contactIcons: {
       show: true,
       size: '12px',

@@ -358,14 +358,54 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   const renderVariant = () => {
     switch (variant) {
       case 'centered':
-        return (
-          <div className="text-center" style={{ padding: header.padding }}>
-            <div className="flex justify-center mb-3">{renderAvatar()}</div>
-            {renderName()}
-            <div style={{ marginTop: '4px' }}>{renderTitle()}</div>
-            <div className="flex justify-center" style={{ marginTop: '12px' }}>
-              {renderContact()}
+        const centeredPhotoPosition = header.photoPosition || 'top'; // 'top', 'left', 'right'
+        const centeredAvatar = header.showPhoto ? renderAvatar({ size: header.photoSize || '72px' }) : null;
+
+        // Photo on top (original centered layout)
+        if (centeredPhotoPosition === 'top' || !header.showPhoto) {
+          return (
+            <div className="text-center" style={{ padding: header.padding }}>
+              {centeredAvatar && (
+                <div className="flex justify-center" style={{ marginBottom: '12px' }}>
+                  {centeredAvatar}
+                </div>
+              )}
+              {renderName()}
+              <div style={{ marginTop: '2px' }}>{renderTitle()}</div>
+              <div
+                className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2"
+                style={{ marginTop: '12px' }}
+              >
+                {renderContact()}
+              </div>
             </div>
+          );
+        }
+
+        // Photo on left or right - horizontal layout
+        // When photo is on one side, text content should be on the opposite side (left-aligned)
+        return (
+          <div
+            className="flex items-center gap-5"
+            style={{
+              padding: header.padding,
+            }}
+          >
+            {centeredPhotoPosition === 'left' && centeredAvatar}
+            <div className="flex-1" style={{ textAlign: 'left' }}>
+              {renderName()}
+              <div style={{ marginTop: '2px' }}>{renderTitle()}</div>
+              <div
+                className="flex flex-wrap items-center gap-x-4 gap-y-2"
+                style={{
+                  marginTop: '10px',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                {renderContact()}
+              </div>
+            </div>
+            {centeredPhotoPosition === 'right' && centeredAvatar}
           </div>
         );
 
@@ -745,9 +785,10 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     }
   };
 
-  // Determine if header needs margin-bottom (non-banner headers)
-  const needsMarginBottom = !['banner', 'gradient-banner'].includes(variant);
-  const headerMarginBottom = needsMarginBottom ? '20px' : '0';
+  // Determine header margin-bottom from config or use sensible defaults
+  const isBannerHeader = ['banner', 'gradient-banner'].includes(variant);
+  const defaultMargin = isBannerHeader ? '0' : '12px';
+  const headerMarginBottom = header.marginBottom ?? defaultMargin;
 
   return (
     <header style={{ marginBottom: headerMarginBottom }}>

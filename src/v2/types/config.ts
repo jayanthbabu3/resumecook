@@ -243,6 +243,8 @@ export interface HeaderConfig {
   textColor?: string;
   /** Padding */
   padding?: string;
+  /** Margin below the header section */
+  marginBottom?: string;
   /** Contact icons style */
   contactIcons?: {
     show: boolean;
