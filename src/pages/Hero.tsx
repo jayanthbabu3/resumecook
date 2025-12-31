@@ -13,6 +13,7 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { getAllTemplates, getTemplateConfig } from "@/v2/config/templates";
 import { ElegantForm } from "@/v2/components/form/ElegantForm";
 import type { V2ResumeData } from "@/v2/types/resumeData";
+import { LinkedInHeroCTA } from "@/components/linkedin";
 
 const DEFAULT_THEME_COLOR = "#2563eb";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
@@ -662,6 +663,15 @@ const Hero = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* LinkedIn Import CTA Section */}
+      <section className="relative py-8 md:py-12">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto">
+            <LinkedInHeroCTA />
           </div>
         </div>
       </section>

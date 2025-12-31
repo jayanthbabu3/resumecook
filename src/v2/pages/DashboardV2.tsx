@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   ChevronRight,
@@ -6,6 +7,7 @@ import {
   GraduationCap,
   ArrowRight,
   CheckCircle2,
+  Zap,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -13,6 +15,7 @@ import { getAllTemplates } from '../config/templates';
 import { getFresherTemplates } from '../templates';
 import { TemplatePreviewV2 } from '@/v2/components/TemplatePreviewV2';
 import { FavoriteButton } from "@/components/FavoriteButton";
+import { LinkedInImportDialog } from "@/components/linkedin";
 
 const DashboardV2 = () => {
   const navigate = useNavigate();
@@ -21,6 +24,9 @@ const DashboardV2 = () => {
   const universalTemplateCount = v2Templates.length - fresherTemplates.length;
   const fresherTemplateCount = fresherTemplates.length;
   const totalTemplates = v2Templates.length;
+
+  // LinkedIn import dialog state
+  const [showLinkedInDialog, setShowLinkedInDialog] = useState(false);
 
   // Featured templates - show first 4 templates
   const defaultColors = ['#2563eb', '#7c3aed', '#059669', '#e11d48'];
@@ -47,7 +53,34 @@ const DashboardV2 = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          {/* LinkedIn Import Card - Featured */}
+          <button
+            onClick={() => setShowLinkedInDialog(true)}
+            className="group relative flex flex-col p-5 bg-gradient-to-br from-[#0A66C2]/5 to-[#0077B5]/10 rounded-2xl border border-[#0A66C2]/20 hover:border-[#0A66C2]/40 hover:shadow-xl hover:shadow-[#0A66C2]/10 transition-all duration-300 text-left"
+          >
+            <div className="flex items-center gap-4 mb-3">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0A66C2] to-[#004182] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-[#0A66C2]/25">
+                <span className="text-white text-lg font-bold">in</span>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2.5">
+                  <h3 className="font-semibold text-gray-900 group-hover:text-[#0A66C2] transition-colors">
+                    Import LinkedIn
+                  </h3>
+                  <span className="inline-flex items-center gap-1 h-5 px-2 rounded-full bg-[#0A66C2] text-white text-[10px] font-bold shadow-sm uppercase tracking-wide">
+                    <Zap className="w-3 h-3" />
+                    Fast
+                  </span>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5 text-[#0A66C2]/40 group-hover:text-[#0A66C2] group-hover:translate-x-1 transition-all" />
+            </div>
+            <p className="text-sm text-gray-600 pl-16">
+              Create your resume in seconds from your LinkedIn profile
+            </p>
+          </button>
+
           {/* Custom Resume Card */}
           <button
             onClick={() => navigate("/builder/scratch-v2/select-layout")}
@@ -65,7 +98,7 @@ const DashboardV2 = () => {
               <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
             </div>
             <p className="text-sm text-gray-500 pl-16">
-              Build a fully customized layout with complete control over sections
+              Build a fully customized layout with complete control
             </p>
           </button>
 
@@ -81,7 +114,7 @@ const DashboardV2 = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-2.5">
                   <h3 className="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">
-                    Universal Templates
+                    Universal
                   </h3>
                   <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-full bg-amber-500 text-white text-xs font-bold shadow-sm">
                     {universalTemplateCount}
@@ -91,7 +124,7 @@ const DashboardV2 = () => {
               <ChevronRight className="w-5 h-5 text-amber-400 group-hover:text-amber-600 group-hover:translate-x-1 transition-all" />
             </div>
             <p className="text-sm text-gray-600 pl-16">
-              Professional designs for all industries and experience levels
+              Professional designs for all industries
             </p>
           </button>
 
@@ -107,7 +140,7 @@ const DashboardV2 = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-2.5">
                   <h3 className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors">
-                    Fresher Templates
+                    Fresher
                   </h3>
                   <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-full bg-violet-500 text-white text-xs font-bold shadow-sm">
                     {fresherTemplateCount}
@@ -117,10 +150,16 @@ const DashboardV2 = () => {
               <ChevronRight className="w-5 h-5 text-violet-400 group-hover:text-violet-600 group-hover:translate-x-1 transition-all" />
             </div>
             <p className="text-sm text-gray-600 pl-16">
-              Perfect for fresh graduates and entry-level candidates
+              Perfect for fresh graduates
             </p>
           </button>
         </div>
+
+        {/* LinkedIn Import Dialog */}
+        <LinkedInImportDialog
+          open={showLinkedInDialog}
+          onOpenChange={setShowLinkedInDialog}
+        />
 
         {/* Features Strip */}
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-12 py-4 px-6 bg-white rounded-2xl border border-gray-100">

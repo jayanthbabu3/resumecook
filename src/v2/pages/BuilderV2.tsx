@@ -88,19 +88,86 @@ export const BuilderV2: React.FC = () => {
       const currentScrollY = window.scrollY;
       const scrollingDown = currentScrollY > lastScrollY.current;
       const scrolledPastThreshold = currentScrollY > 80;
-      
+
       if (scrollingDown && scrolledPastThreshold) {
         setHeaderVisible(false);
       } else if (!scrollingDown) {
         setHeaderVisible(true);
       }
-      
+
       lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Track if we've handled LinkedIn import to prevent template reset from overwriting it
+  const linkedInImportHandled = useRef(false);
+
+  // Handle LinkedIn import data
+  useEffect(() => {
+    const source = searchParams.get('source');
+    if (source === 'linkedin') {
+      const importedDataStr = sessionStorage.getItem('linkedin-import-data');
+      if (importedDataStr) {
+        try {
+          const importedData = JSON.parse(importedDataStr) as V2ResumeData;
+          setResumeData(importedData);
+          sessionStorage.removeItem('linkedin-import-data');
+          linkedInImportHandled.current = true;
+
+          // Dynamically enable sections based on imported data
+          const sectionsToEnable: Record<string, { enabled: boolean; order?: number }> = {};
+          let orderCounter = 100; // Start high to append after existing sections
+
+          // Enable certifications if we have any
+          if (importedData.certifications && importedData.certifications.length > 0) {
+            sectionsToEnable['certifications'] = { enabled: true, order: orderCounter++ };
+          }
+
+          // Enable projects if we have any
+          if (importedData.projects && importedData.projects.length > 0) {
+            sectionsToEnable['projects'] = { enabled: true, order: orderCounter++ };
+          }
+
+          // Enable publications if we have any
+          if (importedData.publications && importedData.publications.length > 0) {
+            sectionsToEnable['publications'] = { enabled: true, order: orderCounter++ };
+          }
+
+          // Enable languages if we have any
+          if (importedData.languages && importedData.languages.length > 0) {
+            sectionsToEnable['languages'] = { enabled: true, order: orderCounter++ };
+          }
+
+          // Enable awards if we have any
+          if (importedData.awards && importedData.awards.length > 0) {
+            sectionsToEnable['awards'] = { enabled: true, order: orderCounter++ };
+          }
+
+          // Enable volunteer if we have any
+          if (importedData.volunteer && importedData.volunteer.length > 0) {
+            sectionsToEnable['volunteer'] = { enabled: true, order: orderCounter++ };
+          }
+
+          // Apply section overrides
+          if (Object.keys(sectionsToEnable).length > 0) {
+            setSectionOverrides(prev => ({ ...prev, ...sectionsToEnable }));
+          }
+
+          toast.success('LinkedIn profile imported successfully!', {
+            description: 'Your resume has been pre-filled with your LinkedIn data.',
+          });
+          // Switch to form mode so user can review/edit
+          setEditorMode('form');
+        } catch (error) {
+          console.error('Failed to parse LinkedIn import data:', error);
+          toast.error('Failed to load imported data');
+        }
+      }
+    }
+  }, [searchParams]);
 
   // Get base template config (without theme overrides) for color slots
   const baseConfig = React.useMemo(() => {
@@ -172,7 +239,13 @@ export const BuilderV2: React.FC = () => {
   }, [config.id]);
 
   // Swap in template-specific mock data when changing templates
+  // Skip if LinkedIn import was handled to prevent overwriting imported data
   React.useEffect(() => {
+    if (linkedInImportHandled.current) {
+      // Reset the flag after first render so future template changes work normally
+      linkedInImportHandled.current = false;
+      return;
+    }
     setResumeData(templateDefinition?.mockData || MOCK_RESUME_DATA);
   }, [templateDefinition]);
 
