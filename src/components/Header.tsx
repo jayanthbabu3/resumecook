@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, Sparkles, GraduationCap } from "lucide-react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import {
@@ -21,15 +21,7 @@ import {
 
 const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { user, signOut } = useFirebaseAuth();
-
-  // Check if we're on builder/editor pages
-  const isBuilderPage = useMemo(() =>
-    location.pathname.startsWith("/builder") ||
-    location.pathname.startsWith("/editor"),
-    [location.pathname]
-  );
 
   // Memoize user-related values to prevent recalculation
   const userInfo = useMemo(() => {
@@ -61,7 +53,6 @@ const HeaderComponent: React.FC = () => {
   const navItems = useMemo(() => {
     const baseItems = [
       { label: "Templates", to: "/templates", icon: LayoutDashboard },
-      { label: "Fresher", to: "/templates/fresher", icon: GraduationCap },
       { label: "ATS Guide", to: "/ats-guidelines", icon: BookOpen },
     ];
 
@@ -75,12 +66,8 @@ const HeaderComponent: React.FC = () => {
     return baseItems;
   }, [!!user]);
 
-  // Quick action for creating resume
-  const showCreateButton = !isBuilderPage;
-
   // Memoize navigation callbacks
-  const handleNavigateHome = useCallback(() => navigate("/templates"), [navigate]);
-  const handleNavigateCreate = useCallback(() => navigate("/builder/scratch-v2/select-layout"), [navigate]);
+  const handleNavigateHome = useCallback(() => navigate("/"), [navigate]);
   const handleNavigateAuth = useCallback(() => navigate("/auth"), [navigate]);
   const handleNavigateTemplates = useCallback(() => navigate("/templates"), [navigate]);
   const handleNavigateMyResumes = useCallback(() => navigate("/my-resumes"), [navigate]);
@@ -104,7 +91,7 @@ const HeaderComponent: React.FC = () => {
             </div>
 
             {/* Brand Text */}
-            <div className="hidden sm:flex flex-col">
+            <div className="flex flex-col">
               <span className="text-base sm:text-lg font-bold tracking-tight text-gray-900">
                 Resume<span className="text-primary">Cook</span>
               </span>
@@ -134,20 +121,6 @@ const HeaderComponent: React.FC = () => {
 
           {/* Right Section */}
           <div className="flex items-center gap-2 sm:gap-3">
-
-            {/* Create Resume Button - Desktop */}
-            {showCreateButton && (
-              <Button
-                onClick={handleNavigateCreate}
-                size="sm"
-                className="hidden md:inline-flex h-9 px-4 rounded-lg font-medium shadow-sm gap-2"
-              >
-                <Sparkles className="h-4 w-4" />
-                <span className="hidden lg:inline">Create Resume</span>
-                <span className="lg:hidden">Create</span>
-              </Button>
-            )}
-
             {/* Sign In Button - Not logged in */}
             {!user && (
               <Button
@@ -242,57 +215,44 @@ const HeaderComponent: React.FC = () => {
                     <Menu className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-80 p-0">
+                <SheetContent side="right" className="w-[300px] p-0 flex flex-col">
                   {/* Mobile Menu Header */}
-                  <div className="p-5 border-b border-gray-100 bg-gray-50/50">
+                  <div className="px-5 py-4 border-b border-gray-100">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/25">
                         <FileText className="h-5 w-5 text-white" />
                       </div>
-                      <div>
-                        <span className="text-lg font-bold text-gray-900">
-                          Resume<span className="text-primary">Cook</span>
-                        </span>
-                      </div>
+                      <span className="text-lg font-bold text-gray-900">
+                        Resume<span className="text-primary">Cook</span>
+                      </span>
                     </div>
                   </div>
 
-                  {/* Quick Action - Mobile */}
-                  {showCreateButton && (
-                    <div className="p-4 border-b border-gray-100">
-                      <SheetClose asChild>
-                        <Button
-                          onClick={handleNavigateCreate}
-                          className="w-full h-11 rounded-xl font-medium gap-2"
-                        >
-                          <Sparkles className="h-4 w-4" />
-                          Create New Resume
-                        </Button>
-                      </SheetClose>
-                    </div>
-                  )}
-
-                  {/* Mobile Navigation */}
-                  <div className="p-4">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
-                      Navigation
-                    </p>
-                    <nav className="space-y-1">
+                  {/* Scrollable Content */}
+                  <div className="flex-1 overflow-y-auto px-4 py-4">
+                    {/* Mobile Navigation */}
+                    <nav className="space-y-1.5">
                       {navItems.map(({ label, to, icon: Icon }) => (
                         <SheetClose asChild key={label}>
                           <NavLink
                             to={to}
                             className={({ isActive }) =>
                               cn(
-                                "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
+                                "flex flex-row items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200",
                                 isActive
                                   ? "bg-primary/10 text-primary"
-                                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                                  : "bg-gray-50 text-gray-700 hover:bg-gray-100"
                               )
                             }
+                            style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
                           >
-                            <Icon className="h-5 w-5" />
-                            {label}
+                            <div
+                              className="w-9 h-9 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center flex-shrink-0"
+                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                              <Icon className="h-[18px] w-[18px]" />
+                            </div>
+                            <span className="text-sm font-medium">{label}</span>
                           </NavLink>
                         </SheetClose>
                       ))}
@@ -300,42 +260,61 @@ const HeaderComponent: React.FC = () => {
 
                     {/* User Section in Mobile */}
                     {user && (
-                      <div className="mt-6 pt-6 border-t border-gray-100">
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
-                          Account
-                        </p>
-                        <div className="px-4 py-3 mb-2 rounded-xl bg-gray-50">
-                          <p className="font-semibold text-sm text-gray-900">{userInfo.displayName}</p>
-                          <p className="text-xs text-gray-500">{userInfo.email}</p>
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        {/* User Card */}
+                        <div
+                          className="flex flex-row items-center gap-3 px-3 py-3 mb-3 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20"
+                          style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                        >
+                          <Avatar className="h-10 w-10 ring-2 ring-white shadow-sm flex-shrink-0">
+                            <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
+                            <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white text-sm font-bold">
+                              {userInfo.initials}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-sm text-gray-900 truncate">{userInfo.displayName}</p>
+                            <p className="text-xs text-gray-500 truncate">{userInfo.email}</p>
+                          </div>
                         </div>
-                        <SheetClose asChild>
-                          <button
-                            onClick={handleNavigateProfile}
-                            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-                          >
-                            <User className="h-5 w-5" />
-                            Profile Settings
-                          </button>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <button
-                            onClick={handleSignOut}
-                            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
-                          >
-                            <LogOut className="h-5 w-5" />
-                            Log out
-                          </button>
-                        </SheetClose>
+
+                        {/* Account Actions */}
+                        <div className="space-y-1.5">
+                          <SheetClose asChild>
+                            <button
+                              onClick={handleNavigateProfile}
+                              className="flex flex-row items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors"
+                              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center flex-shrink-0">
+                                <User className="h-[18px] w-[18px]" />
+                              </div>
+                              <span className="text-sm font-medium">Profile Settings</span>
+                            </button>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <button
+                              onClick={handleSignOut}
+                              className="flex flex-row items-center gap-3 w-full px-3 py-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-red-100 flex items-center justify-center flex-shrink-0">
+                                <LogOut className="h-[18px] w-[18px]" />
+                              </div>
+                              <span className="text-sm font-medium">Log out</span>
+                            </button>
+                          </SheetClose>
+                        </div>
                       </div>
                     )}
 
                     {/* Sign In for Mobile */}
                     {!user && (
-                      <div className="mt-6 pt-6 border-t border-gray-100">
+                      <div className="mt-4 pt-4 border-t border-gray-100">
                         <SheetClose asChild>
                           <Button
                             onClick={handleNavigateAuth}
-                            className="w-full h-11 rounded-xl font-medium"
+                            className="w-full h-11 rounded-xl font-medium text-sm"
                           >
                             Sign In
                           </Button>

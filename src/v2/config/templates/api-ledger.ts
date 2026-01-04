@@ -125,12 +125,10 @@ export const apiLedgerConfig: TemplateConfig = createTemplateConfig({
     variant: 'banner',
     showPhoto: false,
     padding: '32px',
-    backgroundColor: '#5b21b6',
     textColor: '#ffffff',
     contactIcons: {
       show: true,
       size: '12px',
-      color: '#c4b5fd',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
@@ -151,7 +149,7 @@ export const apiLedgerConfig: TemplateConfig = createTemplateConfig({
   },
 
   experience: {
-    variant: 'modern',
+    variant: 'dots-timeline',
     datePosition: 'right',
     showLocation: true,
     bulletStyle: '▸',

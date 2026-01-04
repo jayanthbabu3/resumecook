@@ -46,10 +46,10 @@ const DashboardV2 = () => {
           </p>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          {/* Custom Resume Card */}
-          <button
+        {/* Quick Actions - Two Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12 max-w-3xl mx-auto">
+          {/* Custom Resume Card - Commented out */}
+          {/* <button
             onClick={() => navigate("/builder/scratch-v2/select-layout")}
             className="group relative flex flex-col p-5 bg-white rounded-2xl border border-gray-200/80 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 text-left"
           >
@@ -67,56 +67,56 @@ const DashboardV2 = () => {
             <p className="text-sm text-gray-500 pl-16">
               Build a fully customized layout with complete control over sections
             </p>
-          </button>
+          </button> */}
 
-          {/* Universal Templates Card */}
+          {/* Universal Templates Card - Blue Theme */}
           <button
             onClick={() => navigate("/templates/all")}
-            className="group relative flex flex-col p-5 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200/60 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 text-left"
+            className="group relative flex flex-col p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl border border-blue-200/60 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/15 transition-all duration-300 text-left"
           >
             <div className="flex items-center gap-4 mb-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-amber-500/25">
-                <Briefcase className="w-6 h-6 text-white" />
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-blue-500/30">
+                <Briefcase className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2.5">
-                  <h3 className="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">
+                  <h3 className="font-semibold text-lg text-gray-900 group-hover:text-blue-600 transition-colors">
                     Universal Templates
                   </h3>
-                  <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-full bg-amber-500 text-white text-xs font-bold shadow-sm">
+                  <span className="inline-flex items-center justify-center min-w-[32px] h-7 px-2.5 rounded-full bg-blue-500 text-white text-sm font-bold shadow-sm">
                     {universalTemplateCount}
                   </span>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-amber-400 group-hover:text-amber-600 group-hover:translate-x-1 transition-all" />
+              <ChevronRight className="w-5 h-5 text-blue-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
             </div>
-            <p className="text-sm text-gray-600 pl-16">
+            <p className="text-sm text-gray-600 pl-[72px]">
               Professional designs for all industries and experience levels
             </p>
           </button>
 
-          {/* Fresher Templates Card */}
+          {/* Fresher Templates Card - Green Theme */}
           <button
             onClick={() => navigate("/templates/fresher")}
-            className="group relative flex flex-col p-5 bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-200/60 hover:border-violet-300 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300 text-left"
+            className="group relative flex flex-col p-6 bg-gradient-to-br from-emerald-50 to-green-100/50 rounded-2xl border border-emerald-200/60 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/15 transition-all duration-300 text-left"
           >
             <div className="flex items-center gap-4 mb-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-violet-500/25">
-                <GraduationCap className="w-6 h-6 text-white" />
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-emerald-500/30">
+                <GraduationCap className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2.5">
-                  <h3 className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors">
+                  <h3 className="font-semibold text-lg text-gray-900 group-hover:text-emerald-600 transition-colors">
                     Fresher Templates
                   </h3>
-                  <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-full bg-violet-500 text-white text-xs font-bold shadow-sm">
+                  <span className="inline-flex items-center justify-center min-w-[32px] h-7 px-2.5 rounded-full bg-emerald-500 text-white text-sm font-bold shadow-sm">
                     {fresherTemplateCount}
                   </span>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-violet-400 group-hover:text-violet-600 group-hover:translate-x-1 transition-all" />
+              <ChevronRight className="w-5 h-5 text-emerald-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
             </div>
-            <p className="text-sm text-gray-600 pl-16">
+            <p className="text-sm text-gray-600 pl-[72px]">
               Perfect for fresh graduates and entry-level candidates
             </p>
           </button>

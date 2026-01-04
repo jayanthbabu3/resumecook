@@ -81,29 +81,62 @@ export const BuilderV2: React.FC = () => {
   const [addSectionTargetColumn, setAddSectionTargetColumn] = useState<'main' | 'sidebar'>('main');
   // Toggle between old form and new dynamic form (for testing)
   const [useNewForm, setUseNewForm] = useState(true);
-  
+  // Mobile view state: 'form' or 'preview'
+  const [mobileView, setMobileView] = useState<'form' | 'preview'>('preview');
+  // Mobile resume scale factor
+  const [mobileScale, setMobileScale] = useState(0.5);
+
   const previewRef = useRef<HTMLDivElement>(null);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
   const [headerVisible, setHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
 
-  // Smart header hide on scroll down, show on scroll up
+  // Smart header hide on scroll down, show on scroll up (desktop only)
   useEffect(() => {
     const handleScroll = () => {
+      // Only hide header on desktop (lg breakpoint = 1024px)
+      if (window.innerWidth < 1024) {
+        setHeaderVisible(true);
+        return;
+      }
+
       const currentScrollY = window.scrollY;
-      const scrollingDown = currentScrollY > lastScrollY.current;
-      const scrolledPastThreshold = currentScrollY > 80;
-      
-      if (scrollingDown && scrolledPastThreshold) {
+      const scrollDelta = currentScrollY - lastScrollY.current;
+      const scrolledPastThreshold = currentScrollY > 100;
+
+      // Only toggle if scroll delta is significant (prevents jitter)
+      if (Math.abs(scrollDelta) < 10) {
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      if (scrollDelta > 0 && scrolledPastThreshold) {
         setHeaderVisible(false);
-      } else if (!scrollingDown) {
+      } else if (scrollDelta < 0) {
         setHeaderVisible(true);
       }
-      
+
       lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Calculate mobile scale to fit resume in viewport width
+  useEffect(() => {
+    const calculateScale = () => {
+      // A4 width in pixels (210mm at 96dpi ≈ 794px)
+      const a4WidthPx = 794;
+      // Available width (viewport - padding)
+      const availableWidth = window.innerWidth - 24; // 12px padding on each side
+      const scale = Math.min(availableWidth / a4WidthPx, 1);
+      setMobileScale(scale);
+    };
+
+    calculateScale();
+    window.addEventListener('resize', calculateScale);
+    return () => window.removeEventListener('resize', calculateScale);
   }, []);
 
   // Get base template config (without theme overrides) for color slots
@@ -953,66 +986,102 @@ export const BuilderV2: React.FC = () => {
       <StyleOptionsProvider>
         {/* Main Content */}
         <div className={cn(
-          "min-h-screen pb-8 transition-all duration-300",
-          headerVisible ? "pt-[72px]" : "pt-4"
+          "min-h-screen transition-all duration-300",
+          headerVisible ? "pt-[72px]" : "pt-4",
+          "pb-20 lg:pb-8" // Extra bottom padding on mobile for bottom bar
         )}>
-          
+
+          {/* Mobile Tab Navigation */}
+          <div className="lg:hidden sticky top-[56px] z-40 bg-gray-100 border-b border-gray-200">
+            <div className="flex items-center justify-center p-2 gap-1">
+              <button
+                onClick={() => setMobileView('form')}
+                className={cn(
+                  "flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  mobileView === 'form'
+                    ? "bg-white shadow-sm text-primary"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
+                )}
+              >
+                <FileEdit className="h-4 w-4" />
+                Edit Content
+              </button>
+              <button
+                onClick={() => setMobileView('preview')}
+                className={cn(
+                  "flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  mobileView === 'preview'
+                    ? "bg-white shadow-sm text-primary"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
+                )}
+              >
+                <Eye className="h-4 w-4" />
+                Preview
+              </button>
+            </div>
+          </div>
+
           {/* Main Content Grid */}
           <div className={cn(
-            "container mx-auto py-6 px-4 sm:px-6 lg:px-8",
-            editorMode === 'form' 
-              ? "flex gap-0" 
+            "container mx-auto py-4 lg:py-6 px-3 sm:px-4 lg:px-8",
+            editorMode === 'form'
+              ? "flex gap-0"
               : "flex justify-center"
           )}>
             
-            {/* Form Panel - Only in form mode */}
-            {editorMode === 'form' && (
-              <div className="hidden lg:block w-[380px] flex-shrink-0">
-                <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-                  <div className="p-4 border-b border-gray-100">
-                    <div className="flex items-center gap-2">
-                      <FileEdit className="w-5 h-5 text-primary" />
-                      <h2 className="text-lg font-semibold">Edit Content</h2>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">Changes sync in real-time</p>
+            {/* Form Panel - Desktop: only in form mode, Mobile: when mobileView is 'form' */}
+            <div className={cn(
+              "w-full lg:w-[380px] flex-shrink-0",
+              // Desktop visibility: only show in form mode
+              editorMode === 'form' ? "lg:block" : "lg:hidden",
+              // Mobile visibility: show when mobileView is 'form'
+              mobileView === 'form' ? "block" : "hidden lg:block"
+            )}>
+              <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+                <div className="p-4 border-b border-gray-100 hidden lg:block">
+                  <div className="flex items-center gap-2">
+                    <FileEdit className="w-5 h-5 text-primary" />
+                    <h2 className="text-lg font-semibold">Edit Content</h2>
                   </div>
-                  <div className="p-4">
-                    {useNewForm ? (
-                      <ElegantForm
-                        resumeData={resumeData}
-                        onResumeDataChange={setResumeData}
-                        enabledSections={config.sections}
-                        sectionTitles={sectionLabels}
-                        templateConfig={config}
-                        accentColor="#2563eb"
-                        onOpenAddSection={() => setShowAddSectionModal(true)}
-                      />
-                    ) : (
-                      <ResumeForm 
-                        resumeData={resumeData as any} 
-                        setResumeData={setResumeData as any}
-                        templateId={templateId}
-                        enabledSections={enabledSections}
-                      />
-                    )}
-                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Changes sync in real-time</p>
+                </div>
+                <div className="p-3 lg:p-4">
+                  {useNewForm ? (
+                    <ElegantForm
+                      resumeData={resumeData}
+                      onResumeDataChange={setResumeData}
+                      enabledSections={config.sections}
+                      sectionTitles={sectionLabels}
+                      templateConfig={config}
+                      accentColor="#2563eb"
+                      onOpenAddSection={() => setShowAddSectionModal(true)}
+                    />
+                  ) : (
+                    <ResumeForm
+                      resumeData={resumeData as any}
+                      setResumeData={setResumeData as any}
+                      templateId={templateId}
+                      enabledSections={enabledSections}
+                    />
+                  )}
                 </div>
               </div>
-            )}
+            </div>
 
             {/* Resume Preview with Toolbars */}
             <TooltipProvider delayDuration={100}>
               <div className={cn(
                 "relative flex items-start",
-                editorMode === 'form' ? "flex-1 pl-6" : "justify-center w-full"
+                editorMode === 'form' ? "flex-1 lg:pl-6" : "justify-center w-full",
+                // Hide on mobile when form view is active
+                mobileView === 'form' ? "hidden lg:flex" : "flex"
               )}>
                 {/* Resume Column: Toolbar + Resume */}
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full lg:w-auto">
                   {/* Top Toolbar - Minimal: Back, Mode Toggle (centered), Color, Download */}
-                  <div 
-                    className="mb-4 flex items-center px-3 py-2 rounded-2xl backdrop-blur-sm" 
-                    style={{ 
-                      width: '210mm',
+                  <div
+                    className="mb-3 lg:mb-4 flex items-center px-2 lg:px-3 py-2 rounded-xl lg:rounded-2xl backdrop-blur-sm w-full lg:w-[210mm]"
+                    style={{
                       background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
                       boxShadow: '0 2px 12px -2px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
                     }}
@@ -1047,44 +1116,46 @@ export const BuilderV2: React.FC = () => {
                     {/* Spacer to push center content */}
                     <div className="flex-1" />
 
-                    {/* Center: Mode Toggle or Customize Button */}
-                    {editorMode === 'preview' ? (
-                      <Button 
-                        onClick={() => setEditorMode('live')} 
-                        size="sm" 
-                        className="h-9 px-4 gap-2 rounded-xl"
-                      >
-                        <Edit3 className="h-4 w-4" />
-                        <span className="font-medium">Customize</span>
-                      </Button>
-                    ) : (
-                      <div className="flex items-center bg-gray-100 rounded-xl p-0.5">
-                        <button
+                    {/* Center: Mode Toggle or Customize Button - Hidden on mobile */}
+                    <div className="hidden lg:block">
+                      {editorMode === 'preview' ? (
+                        <Button
                           onClick={() => setEditorMode('live')}
-                          className={cn(
-                            "h-8 px-3.5 flex items-center gap-1.5 rounded-lg text-sm font-medium transition-all duration-200",
-                            editorMode === 'live' 
-                              ? "bg-white shadow-sm text-primary" 
-                              : "text-gray-500 hover:text-gray-700"
-                          )}
+                          size="sm"
+                          className="h-9 px-4 gap-2 rounded-xl"
                         >
-                          <Edit3 className="h-3.5 w-3.5" />
-                          Live
-                        </button>
-                        <button
-                          onClick={() => setEditorMode('form')}
-                          className={cn(
-                            "h-8 px-3.5 flex items-center gap-1.5 rounded-lg text-sm font-medium transition-all duration-200",
-                            editorMode === 'form' 
-                              ? "bg-white shadow-sm text-primary" 
-                              : "text-gray-500 hover:text-gray-700"
-                          )}
-                        >
-                          <FileEdit className="h-3.5 w-3.5" />
-                          Form
-                        </button>
-                      </div>
-                    )}
+                          <Edit3 className="h-4 w-4" />
+                          <span className="font-medium">Customize</span>
+                        </Button>
+                      ) : (
+                        <div className="flex items-center bg-gray-100 rounded-xl p-0.5">
+                          <button
+                            onClick={() => setEditorMode('live')}
+                            className={cn(
+                              "h-8 px-3.5 flex items-center gap-1.5 rounded-lg text-sm font-medium transition-all duration-200",
+                              editorMode === 'live'
+                                ? "bg-white shadow-sm text-primary"
+                                : "text-gray-500 hover:text-gray-700"
+                            )}
+                          >
+                            <Edit3 className="h-3.5 w-3.5" />
+                            Live
+                          </button>
+                          <button
+                            onClick={() => setEditorMode('form')}
+                            className={cn(
+                              "h-8 px-3.5 flex items-center gap-1.5 rounded-lg text-sm font-medium transition-all duration-200",
+                              editorMode === 'form'
+                                ? "bg-white shadow-sm text-primary"
+                                : "text-gray-500 hover:text-gray-700"
+                            )}
+                          >
+                            <FileEdit className="h-3.5 w-3.5" />
+                            Form
+                          </button>
+                        </div>
+                      )}
+                    </div>
 
                     {/* Spacer to push right content */}
                     <div className="flex-1" />
@@ -1200,18 +1271,64 @@ export const BuilderV2: React.FC = () => {
                   </div>
 
                   {/* Resume Document */}
-                  <div className="relative">
-                    <StyleOptionsWrapper>
-                      <div 
-                        id="resume-preview-v2" 
-                        ref={previewRef}
-                        className="bg-white shadow-xl rounded-lg overflow-visible ring-1 ring-gray-200"
-                        style={{ 
-                          width: '210mm', 
-                          minHeight: '297mm',
-                          minWidth: '210mm',
+                  <div className="relative w-full overflow-visible">
+                    {/* Mobile: Scale container to fit screen width */}
+                    <div
+                      className="lg:hidden w-full"
+                      ref={mobileContainerRef}
+                      style={{
+                        height: `calc(297mm * ${mobileScale})`,
+                      }}
+                    >
+                      <div
+                        className="origin-top-left"
+                        style={{
+                          transform: `scale(${mobileScale})`,
+                          transformOrigin: 'top left',
+                          width: '210mm',
                         }}
                       >
+                        <StyleOptionsWrapper>
+                          <div
+                            id="resume-preview-v2-mobile"
+                            className="bg-white shadow-xl rounded-lg overflow-visible ring-1 ring-gray-200"
+                            style={{
+                              width: '210mm',
+                              minHeight: '297mm',
+                            }}
+                          >
+                            <InlineEditProvider
+                              resumeData={resumeData as any}
+                              setResumeData={setResumeData as any}
+                            >
+                              <ResumeRenderer
+                                resumeData={resumeData}
+                                templateId={templateId}
+                                themeColors={themeColors}
+                                sectionOverrides={sectionOverrides}
+                                editable={false}
+                                sectionLabels={sectionLabels}
+                                enabledSections={enabledSections}
+                              />
+                            </InlineEditProvider>
+                          </div>
+                        </StyleOptionsWrapper>
+                      </div>
+                    </div>
+
+                    {/* Desktop: Full size */}
+                    <div className="hidden lg:block">
+                      <StyleOptionsWrapper>
+                        <div
+                          id="resume-preview-v2"
+                          ref={previewRef}
+                          className="bg-white shadow-xl rounded-lg overflow-visible ring-1 ring-gray-200"
+                          style={{
+                            width: '210mm',
+                            minHeight: '297mm',
+                            minWidth: '210mm',
+                          }}
+                        >
                         <InlineEditProvider
                           resumeData={resumeData as any}
                           setResumeData={setResumeData as any}
@@ -1263,17 +1380,18 @@ export const BuilderV2: React.FC = () => {
                             onChangeSectionVariant={handleChangeSectionVariant}
                             onOpenAddSection={handleOpenAddSection}
                           />
-                        </InlineEditProvider>
-                      </div>
-                    </StyleOptionsWrapper>
+                          </InlineEditProvider>
+                        </div>
+                      </StyleOptionsWrapper>
+                    </div>
                   </div>
                 </div>
-                
-                {/* Side Toolbar - Always visible: Sections, Add, Settings, Save */}
+
+                {/* Side Toolbar - Hidden on mobile, visible on desktop */}
                 {editorMode !== 'preview' && (
-                  <div 
-                    className="ml-4 flex flex-col gap-1.5 sticky top-20 self-start p-2 rounded-2xl backdrop-blur-sm"
-                    style={{ 
+                  <div
+                    className="hidden lg:flex ml-4 flex-col gap-1.5 sticky top-20 self-start p-2 rounded-2xl backdrop-blur-sm"
+                    style={{
                       background: 'linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
                       boxShadow: '0 2px 12px -2px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
                     }}
@@ -1353,8 +1471,94 @@ export const BuilderV2: React.FC = () => {
               </div>
             </TooltipProvider>
           </div>
+
+          {/* Mobile Bottom Bar - Fixed at bottom */}
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-3 py-2 safe-area-inset-bottom">
+            <div className="flex items-center justify-around gap-2">
+              {/* Color Picker */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200">
+                    <div
+                      className="w-6 h-6 rounded-full shadow-md ring-2 ring-white"
+                      style={{ backgroundColor: themeColors.primary || themeColor }}
+                    />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent align="center" side="top" className="w-auto p-3 rounded-xl shadow-xl mb-2">
+                  <div className="grid grid-cols-5 gap-2">
+                    {[
+                      '#1a365d', '#1e40af', '#2563eb', '#0891b2', '#0284c7',
+                      '#0f766e', '#0d9488', '#059669', '#16a34a', '#15803d',
+                      '#7c2d12', '#b45309', '#9f1239', '#be185d', '#a21caf',
+                      '#6d28d9', '#7c3aed', '#4338ca', '#4f46e5', '#6366f1',
+                      '#0f172a', '#1e293b', '#334155', '#475569', '#64748b',
+                    ].map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => {
+                          setThemeColor(color);
+                          setThemeColors({ ...themeColors, primary: color });
+                        }}
+                        className={cn(
+                          "w-8 h-8 rounded-full transition-all duration-150",
+                          (themeColors.primary || themeColor) === color
+                            ? "ring-2 ring-offset-2 ring-gray-900 shadow-lg"
+                            : "shadow-sm"
+                        )}
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              {/* Settings */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200">
+                    <Settings className="h-5 w-5 text-gray-600" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent align="center" side="top" className="w-80 p-0 shadow-xl rounded-xl max-h-[60vh] overflow-y-auto mb-2">
+                  <StyleOptionsPanelV2
+                    inPopover={true}
+                    resumeData={resumeData}
+                    enabledSections={enabledSections}
+                    onToggleSection={handleToggleSection}
+                  />
+                </PopoverContent>
+              </Popover>
+
+              {/* Rearrange Sections */}
+              <button
+                onClick={() => setShowReorder(true)}
+                className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
+              >
+                <PanelsTopLeft className="h-5 w-5 text-gray-600" />
+              </button>
+
+              {/* Add Section */}
+              <button
+                onClick={() => setShowAddSectionModal(true)}
+                className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
+              >
+                <Plus className="h-5 w-5 text-gray-600" />
+              </button>
+
+              {/* Download */}
+              <Button
+                onClick={handleDownload}
+                disabled={isDownloading}
+                size="icon"
+                className="h-11 w-11 rounded-xl"
+              >
+                {isDownloading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
+              </Button>
+            </div>
+          </div>
         </div>
-        
+
         {/* Hidden PDF Preview */}
         <div className="hidden">
           <StyleOptionsWrapper>
