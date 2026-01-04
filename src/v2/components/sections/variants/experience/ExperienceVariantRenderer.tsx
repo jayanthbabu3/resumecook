@@ -17,6 +17,7 @@ import {
   ExperienceEnhanced,
   ExperienceTimelinePro,
   ExperiencePremium,
+  ExperienceIconAccent,
 } from './variants';
 
 // Re-export types for external use
@@ -86,6 +87,9 @@ export const ExperienceVariantRenderer: React.FC<ExperienceVariantRendererProps>
     case 'premium':
       // Premium variant with numbered bullets and clean design
       return <ExperiencePremium {...props} />;
+    case 'icon-accent':
+      // Creative card with company icon badge
+      return <ExperienceIconAccent {...props} />;
     case 'academic':
     case 'creative':
     default:

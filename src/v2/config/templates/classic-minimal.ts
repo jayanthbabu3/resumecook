@@ -97,7 +97,7 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
 
   colors: {
     primary: '#1e3a5f', // Navy blue - classic professional
-    secondary: '#3b82f6',
+    secondary: '#3b82f6', // Lighter blue for accents
     text: {
       primary: '#1f2937',
       secondary: '#374151',
@@ -107,7 +107,7 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
     background: {
       page: '#ffffff',
       section: '#ffffff',
-      accent: '#f9fafb',
+      accent: '#f0f7ff', // Soft blue tint for gradient
     },
     border: '#e5e7eb',
   },
@@ -189,6 +189,14 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
 
   fontFamily: {
     primary: "'Source Sans Pro', 'Lato', 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif",
+  },
+
+  // Creative decorations - modern geometric accents inspired by creative resumes
+  decorations: {
+    enabled: true,
+    elements: ['top-accent-line', 'diagonal-shape', 'header-accent', 'bottom-wave'],
+    opacity: 1,
+    gradientBackground: true,
   },
 });
 

@@ -1,7 +1,8 @@
 /**
  * Fullstack Atlas Template Configuration (V2)
  *
- * Split header with balanced typography and full-stack emphasis.
+ * Creative single-column layout with warm amber/orange gradient theme.
+ * Bold header with diagonal accents representing full-stack versatility.
  */
 
 import type { TemplateConfig } from '../../types';
@@ -10,67 +11,68 @@ import { createTemplateConfig } from '../defaultConfig';
 export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
   id: 'fullstack-atlas-v2',
   name: 'Fullstack Atlas',
-  description: 'Split header layout with balanced styling for full-stack engineers.',
-  category: 'modern',
+  description: 'Creative layout with warm gradient theme for full-stack developers.',
+  category: 'creative',
 
   typography: {
     name: {
-      fontSize: '28px',
-      fontWeight: 700,
-      lineHeight: 1.15,
-      letterSpacing: '0.01em',
-      color: '#0f172a',
-      textTransform: 'none',
+      fontSize: '36px',
+      fontWeight: 800,
+      lineHeight: 1.1,
+      letterSpacing: '-0.03em',
+      color: '#78350f',
     },
     title: {
       fontSize: '14px',
       fontWeight: 500,
       lineHeight: 1.4,
-      color: '#0f766e',
+      letterSpacing: '0.06em',
+      textTransform: 'uppercase',
+      color: '#d97706', // Amber accent
     },
     sectionHeading: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 700,
       lineHeight: 1.3,
-      letterSpacing: '0.1em',
+      letterSpacing: '0.14em',
       textTransform: 'uppercase',
-      color: '#0f172a',
+      color: '#d97706',
     },
     itemTitle: {
-      fontSize: '13px',
-      fontWeight: 600,
+      fontSize: '14px',
+      fontWeight: 700,
       lineHeight: 1.4,
-      color: '#0f172a',
+      color: '#78350f',
     },
     itemSubtitle: {
       fontSize: '12px',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
-      color: '#0f766e',
+      color: '#d97706',
     },
     dates: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#64748b',
+      color: '#92400e',
     },
     body: {
       fontSize: '12px',
       fontWeight: 400,
-      lineHeight: 1.6,
-      color: '#1f2937',
+      lineHeight: 1.65,
+      color: '#44403c',
     },
     contact: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.5,
-      color: '#334155',
+      color: '#92400e',
     },
     small: {
       fontSize: '10px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#64748b',
+      color: '#78716c',
     },
   },
 
@@ -78,14 +80,14 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
     pagePadding: {
       top: '28px',
       right: '32px',
-      bottom: '28px',
+      bottom: '32px',
       left: '32px',
     },
-    sectionGap: '18px',
-    itemGap: '12px',
-    headingToContent: '8px',
+    sectionGap: '20px',
+    itemGap: '14px',
+    headingToContent: '10px',
     bulletGap: '5px',
-    contactGap: '10px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 
@@ -95,64 +97,64 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#0f766e',
-    secondary: '#14b8a6',
+    primary: '#d97706', // Amber
+    secondary: '#f59e0b',
     text: {
-      primary: '#0f172a',
-      secondary: '#1f2937',
-      muted: '#64748b',
+      primary: '#78350f',
+      secondary: '#44403c',
+      muted: '#78716c',
       light: '#ffffff',
     },
     background: {
       page: '#ffffff',
-      section: '#f8fafc',
-      accent: '#ecfeff',
+      section: '#fffbeb',
+      accent: '#fef3c7',
     },
-    border: '#e2e8f0',
+    border: '#fde68a',
   },
 
   sectionHeading: {
-    style: 'background',
-    borderWidth: '1px',
-    borderColor: '#e2e8f0',
+    style: 'accent-bar',
+    borderWidth: '3px',
+    borderColor: '#d97706',
     marginBottom: '10px',
-    padding: '6px 10px',
-    backgroundColor: '#ecfeff',
+    padding: '0 0 0 12px',
   },
 
   header: {
     variant: 'split',
     showPhoto: false,
-    padding: '0 0 16px 0',
+    padding: '28px 32px',
+    backgroundColor: 'transparent',
+    textColor: '#78350f',
     contactIcons: {
       show: true,
       size: '12px',
-      color: '#0f766e',
+      color: '#d97706',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
   },
 
   skills: {
-    variant: 'columns',
-    columns: 2,
+    variant: 'pills',
+    columns: 4,
     showRatings: false,
     badge: {
       fontSize: '11px',
-      padding: '4px 8px',
-      borderRadius: '6px',
-      borderWidth: '1px',
-      borderColor: '#ccfbf1',
-      backgroundColor: '#f0fdfa',
-      textColor: '#0f766e',
+      padding: '5px 12px',
+      borderRadius: '18px',
+      borderWidth: '0',
+      backgroundColor: '#fef3c7',
+      textColor: '#92400e',
     },
   },
 
   experience: {
-    variant: 'standard',
+    variant: 'modern',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '•',
+    bulletStyle: '◆',
   },
 
   education: {
@@ -160,32 +162,51 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
     showGPA: false,
     showField: true,
     showDates: true,
-    datePosition: 'inline',
+    datePosition: 'right',
+  },
+
+  projects: {
+    variant: 'modern',
+    showLinks: true,
+    showTech: true,
   },
 
   strengths: {
-    variant: 'minimal',
+    variant: 'inline-badges',
     showIcons: false,
   },
 
   achievements: {
-    variant: 'list',
-    showIndicators: false,
+    variant: 'numbered',
+    showIndicators: true,
+  },
+
+  languages: {
+    variant: 'inline',
+    showCertification: false,
   },
 
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
-    { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
+    { type: 'summary', id: 'summary', title: 'About', defaultTitle: 'About', enabled: true, order: 1, column: 'main' },
     { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 3, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 4, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Skills & Tools', defaultTitle: 'Skills & Tools', enabled: true, order: 3, column: 'main' },
+    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 4, column: 'main' },
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 5, column: 'main' },
-    { type: 'achievements', id: 'achievements', title: 'Highlights', defaultTitle: 'Highlights', enabled: false, order: 6, column: 'main' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 7, column: 'main' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 6, column: 'main' },
   ],
 
   fontFamily: {
-    primary: "'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    primary: "'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    secondary: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  },
+
+  // Creative decorations - curved lines and hexagon cluster for fullstack tech aesthetic
+  decorations: {
+    enabled: true,
+    elements: ['curved-lines', 'hexagon-cluster', 'left-gradient-bar'],
+    opacity: 0.9,
+    gradientBackground: true,
   },
 });
 

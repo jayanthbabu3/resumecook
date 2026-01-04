@@ -777,7 +777,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   // Use ExperienceVariantRenderer for supported variants
   const variantRendererVariants: ExperienceVariant[] = [
     'timeline', 'cards', 'standard', 'compact', 'modern', 'minimal', 'detailed',
-    'left-border', 'dates-left', 'dates-right'
+    'left-border', 'dates-left', 'dates-right', 'icon-accent'
   ];
 
   // If variant is specified and supported, use ExperienceVariantRenderer

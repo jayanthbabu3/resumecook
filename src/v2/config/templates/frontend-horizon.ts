@@ -190,6 +190,13 @@ export const frontendHorizonConfig: TemplateConfig = createTemplateConfig({
   fontFamily: {
     primary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
   },
+
+  // Creative decorations - bottom gradient fade and code brackets for frontend aesthetic
+  decorations: {
+    enabled: true,
+    elements: ['bottom-gradient-fade', 'code-brackets'],
+    opacity: 1,
+  },
 });
 
 export default frontendHorizonConfig;

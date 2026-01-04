@@ -1,7 +1,8 @@
 /**
  * Cloud Ops Template Configuration (V2)
  *
- * Centered header with cloud-inspired palette and clean spacing.
+ * Creative single-column layout with sky blue/cyan cloud-inspired theme.
+ * Features dot pattern and geometric decorations for infrastructure aesthetic.
  */
 
 import type { TemplateConfig } from '../../types';
@@ -10,82 +11,83 @@ import { createTemplateConfig } from '../defaultConfig';
 export const cloudOpsConfig: TemplateConfig = createTemplateConfig({
   id: 'cloud-ops-v2',
   name: 'Cloud Ops',
-  description: 'Centered header with cloud-inspired palette for DevOps and SRE roles.',
-  category: 'modern',
+  description: 'Creative layout with sky blue theme and cloud-inspired decorations for DevOps/SRE roles.',
+  category: 'creative',
 
   typography: {
     name: {
-      fontSize: '28px',
-      fontWeight: 700,
-      lineHeight: 1.2,
-      letterSpacing: '0.02em',
-      color: '#312e81',
-      textTransform: 'uppercase',
+      fontSize: '34px',
+      fontWeight: 800,
+      lineHeight: 1.1,
+      letterSpacing: '-0.02em',
+      color: '#ffffff',
     },
     title: {
       fontSize: '13px',
       fontWeight: 500,
       lineHeight: 1.4,
-      color: '#6366f1',
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      color: '#7dd3fc', // Light sky blue accent
     },
     sectionHeading: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 700,
       lineHeight: 1.3,
-      letterSpacing: '0.1em',
+      letterSpacing: '0.14em',
       textTransform: 'uppercase',
-      color: '#1e1b4b',
+      color: '#0284c7',
     },
     itemTitle: {
-      fontSize: '13px',
-      fontWeight: 600,
+      fontSize: '14px',
+      fontWeight: 700,
       lineHeight: 1.4,
-      color: '#1e1b4b',
+      color: '#0c4a6e',
     },
     itemSubtitle: {
       fontSize: '12px',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
-      color: '#6366f1',
+      color: '#0284c7',
     },
     dates: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#6b7280',
+      color: '#64748b',
     },
     body: {
       fontSize: '12px',
       fontWeight: 400,
-      lineHeight: 1.6,
-      color: '#374151',
+      lineHeight: 1.65,
+      color: '#334155',
     },
     contact: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.5,
-      color: '#4f46e5',
+      color: '#bae6fd',
     },
     small: {
       fontSize: '10px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#6b7280',
+      color: '#64748b',
     },
   },
 
   spacing: {
     pagePadding: {
-      top: '28px',
+      top: '0',
       right: '32px',
-      bottom: '28px',
+      bottom: '32px',
       left: '32px',
     },
     sectionGap: '20px',
-    itemGap: '12px',
-    headingToContent: '8px',
+    itemGap: '14px',
+    headingToContent: '10px',
     bulletGap: '5px',
-    contactGap: '10px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 
@@ -95,63 +97,64 @@ export const cloudOpsConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#4f46e5',
-    secondary: '#6366f1',
+    primary: '#0284c7', // Sky blue
+    secondary: '#38bdf8',
     text: {
-      primary: '#1e1b4b',
-      secondary: '#312e81',
-      muted: '#6b7280',
+      primary: '#0c4a6e',
+      secondary: '#334155',
+      muted: '#64748b',
       light: '#ffffff',
     },
     background: {
       page: '#ffffff',
-      section: '#eef2ff',
-      accent: '#e0e7ff',
+      section: '#f0f9ff',
+      accent: '#bae6fd',
     },
-    border: '#e5e7eb',
+    border: '#7dd3fc',
   },
 
   sectionHeading: {
-    style: 'underline',
-    borderWidth: '2px',
-    borderColor: '#c7d2fe',
+    style: 'accent-bar',
+    borderWidth: '3px',
+    borderColor: '#0284c7',
     marginBottom: '10px',
-    padding: '0 0 6px 0',
+    padding: '0 0 0 12px',
   },
 
   header: {
-    variant: 'centered',
+    variant: 'banner',
     showPhoto: false,
-    padding: '0 0 18px 0',
+    padding: '32px',
+    backgroundColor: '#0369a1', // Deep sky blue
+    textColor: '#ffffff',
     contactIcons: {
       show: true,
       size: '12px',
-      color: '#6366f1',
+      color: '#7dd3fc',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
   },
 
   skills: {
-    variant: 'dots',
-    columns: 2,
+    variant: 'pills',
+    columns: 3,
     showRatings: false,
     badge: {
       fontSize: '11px',
-      padding: '4px 8px',
-      borderRadius: '999px',
-      borderWidth: '1px',
-      borderColor: '#c7d2fe',
-      backgroundColor: '#eef2ff',
-      textColor: '#312e81',
+      padding: '5px 12px',
+      borderRadius: '20px',
+      borderWidth: '0',
+      backgroundColor: '#e0f2fe',
+      textColor: '#0369a1',
     },
   },
 
   experience: {
-    variant: 'two-column-dates',
+    variant: 'modern',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '•',
+    bulletStyle: '▹',
   },
 
   education: {
@@ -159,32 +162,51 @@ export const cloudOpsConfig: TemplateConfig = createTemplateConfig({
     showGPA: false,
     showField: true,
     showDates: true,
-    datePosition: 'inline',
+    datePosition: 'right',
+  },
+
+  projects: {
+    variant: 'modern',
+    showLinks: true,
+    showTech: true,
   },
 
   strengths: {
-    variant: 'minimal',
+    variant: 'inline-badges',
     showIcons: false,
   },
 
   achievements: {
-    variant: 'list',
-    showIndicators: false,
+    variant: 'numbered',
+    showIndicators: true,
+  },
+
+  languages: {
+    variant: 'inline',
+    showCertification: false,
   },
 
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
-    { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Core Skills', defaultTitle: 'Core Skills', enabled: true, order: 2, column: 'main' },
-    { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 3, column: 'main' },
+    { type: 'summary', id: 'summary', title: 'Profile', defaultTitle: 'Profile', enabled: true, order: 1, column: 'main' },
+    { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Cloud Stack', defaultTitle: 'Cloud Stack', enabled: true, order: 3, column: 'main' },
     { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 4, column: 'main' },
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 5, column: 'main' },
-    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: false, order: 6, column: 'main' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 7, column: 'main' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 6, column: 'main' },
   ],
 
   fontFamily: {
-    primary: "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    primary: "'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    secondary: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  },
+
+  // Creative decorations - dot pattern and geometric corner for cloud/infrastructure aesthetic
+  decorations: {
+    enabled: true,
+    elements: ['dot-pattern', 'geometric-corner', 'bottom-left-corner'],
+    opacity: 0.9,
+    gradientBackground: true,
   },
 });
 

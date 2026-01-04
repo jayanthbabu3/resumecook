@@ -126,13 +126,16 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
   },
 
   header: {
-    variant: 'split',
-    showPhoto: false,
-    padding: '14px 0 14px 0',
+    variant: 'elegant-banner',
+    showPhoto: true,
+    photoSize: '80px',
+    photoShape: 'circle',
+    padding: '0',
+    marginBottom: '0',
     contactIcons: {
       show: true,
-      size: '12px',
-      color: '#0f172a',
+      size: '14px',
+      color: '#0ea5e9',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',

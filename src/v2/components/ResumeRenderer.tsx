@@ -34,6 +34,7 @@ import {
 import { SummaryVariantRenderer } from './sections/variants/summary/SummaryVariantRenderer';
 import { SectionOptionsMenu } from './SectionOptionsMenu';
 import { ADDABLE_SECTIONS } from './AddSectionModal';
+import { ResumeDecorations, getGradientBackgroundStyle } from './ResumeDecorations';
 import { Target, Award, Star, Zap, Trophy, CheckCircle2, Plus } from 'lucide-react';
 
 // Icon mapping for different section types
@@ -728,6 +729,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
   // Container styles - Don't use minHeight: 100% as it causes blank first page in PDF
   // Include CSS custom properties for StyleOptionsWrapper to use for scaling
+  const decorationsConfig = config.decorations;
+  const gradientStyle = getGradientBackgroundStyle(decorationsConfig, colors.background.accent || '#f0f7ff');
+
   const containerStyle: React.CSSProperties = {
     fontFamily: fontFamily.primary,
     fontSize: config.typography.body.fontSize,
@@ -737,6 +741,10 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     width: '100%',
     maxWidth: '100%',
     boxSizing: 'border-box',
+    position: 'relative',
+    overflow: 'hidden',
+    // Apply gradient background if decorations enabled
+    ...gradientStyle,
     // CSS variables for StyleOptionsWrapper font scaling
     '--resume-name-size': config.typography.name.fontSize,
     '--resume-section-size': config.typography.sectionHeading.fontSize,
@@ -770,6 +778,16 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
     return (
       <div className={`resume-v2 ${className}`} style={containerStyle}>
+        {/* Decorative Elements */}
+        {decorationsConfig?.enabled && (
+          <ResumeDecorations
+            config={decorationsConfig}
+            primaryColor={colors.primary}
+            secondaryColor={colors.secondary}
+            accentBackground={colors.background.accent}
+          />
+        )}
+
         {/* Header */}
         {isSectionEnabled('header') ? (
           <>
@@ -784,6 +802,8 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
               <div
                 style={{
                   padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 0 ${spacing.pagePadding.left}`,
+                  position: 'relative',
+                  zIndex: 2,
                 }}
               >
                 <HeaderSection
@@ -797,14 +817,14 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
           </>
         ) : shouldReserveHeaderSpace ? (
           // Reserve space for header even if not enabled (for scratch builder)
-          <div style={{ 
+          <div style={{
             minHeight: isBannerHeader ? '100px' : '80px',
             padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 0 ${spacing.pagePadding.left}`,
           }} />
         ) : null}
 
         {/* Content - Apply padding directly to content wrapper */}
-        <div style={contentPaddingStyle}>
+        <div style={{ ...contentPaddingStyle, position: 'relative', zIndex: 2 }}>
           {getOrderedSections().map((section, index) => renderSection(section, index === 0))}
 
           {/* Add Section Button - Single Column */}
@@ -889,21 +909,31 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
   return (
     <div className={`resume-v2 ${className}`} style={containerStyle}>
+      {/* Decorative Elements */}
+      {decorationsConfig?.enabled && (
+        <ResumeDecorations
+          config={decorationsConfig}
+          primaryColor={colors.primary}
+          secondaryColor={colors.secondary}
+          accentBackground={colors.background.accent}
+        />
+      )}
+
       {/* Header - Full width */}
       {isSectionEnabled('header') ? (
         <>
           {isBannerHeader ? (
-            <HeaderSection 
-              resumeData={resumeData} 
-              config={config} 
+            <HeaderSection
+              resumeData={resumeData}
+              config={config}
               editable={editable}
               variantOverride={headerVariant}
             />
           ) : (
-            <div style={headerWrapperPadding}>
-              <HeaderSection 
-                resumeData={resumeData} 
-                config={config} 
+            <div style={{ ...headerWrapperPadding, position: 'relative', zIndex: 2 }}>
+              <HeaderSection
+                resumeData={resumeData}
+                config={config}
                 editable={editable}
                 variantOverride={headerVariant}
               />
@@ -912,7 +942,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         </>
       ) : shouldReserveHeaderSpace ? (
         // Reserve space for header even if not enabled (for scratch builder)
-        <div style={{ 
+        <div style={{
           minHeight: isBannerHeader ? '100px' : '80px',
           ...headerWrapperPadding,
         }} />
@@ -928,6 +958,8 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
           maxWidth: '100%',
           boxSizing: 'border-box',
           gap: layout.columnGap || '24px',
+          position: 'relative',
+          zIndex: 2,
         }}
       >
         {/* Left column - Sidebar for two-column-left, Main for two-column-right */}

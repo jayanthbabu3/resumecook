@@ -107,7 +107,7 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
     background: {
       page: '#ffffff',
       section: '#ffffff',
-      accent: '#f0f4f8',
+      accent: '#e8f0fa', // Soft blue tint for gradient background
     },
     border: '#1e3a5f',
   },
@@ -195,6 +195,14 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
 
   fontFamily: {
     primary: "'Calibri', 'Segoe UI', 'Arial', sans-serif",
+  },
+
+  // Creative decorations - elegant blue accents
+  decorations: {
+    enabled: true,
+    elements: ['side-stripe', 'curved-lines', 'bottom-wave'],
+    opacity: 1,
+    gradientBackground: true,
   },
 });
 

@@ -109,7 +109,7 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
     background: {
       page: '#ffffff',
       section: '#ffffff',
-      accent: '#f5f5f4',
+      accent: '#fdf8f3', // Warm cream tint for gradient background
     },
     border: '#e5e7eb',
   },
@@ -187,6 +187,14 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
 
   fontFamily: {
     primary: "'Source Sans 3', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  },
+
+  // Creative decorations - warm elegant accents
+  decorations: {
+    enabled: true,
+    elements: ['top-accent-line', 'geometric-corner', 'bottom-wave'],
+    opacity: 1,
+    gradientBackground: true,
   },
 });
 

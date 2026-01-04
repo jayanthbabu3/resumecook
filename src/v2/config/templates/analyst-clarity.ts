@@ -184,6 +184,14 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
   fontFamily: {
     primary: "'Inter', 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
   },
+
+  // Creative decorations - analyst-inspired data visualization accents
+  decorations: {
+    enabled: true,
+    elements: ['top-accent-line', 'data-grid', 'circuit-lines'],
+    opacity: 1,
+    gradientBackground: true,
+  },
 });
 
 export default analystClarityConfig;

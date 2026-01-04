@@ -214,7 +214,7 @@ export interface SkillsConfig {
 // HEADER VARIANTS
 // ============================================================================
 
-export type HeaderVariant = 
+export type HeaderVariant =
   | 'centered'         // Name centered, contact below
   | 'left-aligned'     // Name left, contact right
   | 'split'            // Name left, contact in columns
@@ -224,7 +224,8 @@ export type HeaderVariant =
   | 'photo-right'      // Photo on right side
   | 'accent-bar'       // Thin accent bar top, name centered
   | 'compact'          // Name | Title | Contact inline
-  | 'gradient-banner'; // Full-width gradient background
+  | 'gradient-banner'  // Full-width gradient background
+  | 'elegant-banner';  // Gradient banner with centered photo and icon badge
 
 export interface HeaderConfig {
   /** Header layout variant */
@@ -421,6 +422,45 @@ export interface SectionConfig {
 }
 
 // ============================================================================
+// DECORATIONS CONFIGURATION
+// ============================================================================
+
+export type DecorationElement =
+  | 'top-accent-line'      // Gradient line at top of resume
+  | 'corner-blob'          // Organic blob shape in corner
+  | 'corner-circles'       // Decorative circles pattern
+  | 'bottom-wave'          // Wave pattern at bottom
+  | 'dot-pattern'          // Subtle dot grid pattern
+  | 'diagonal-shape'       // Bold diagonal geometric shape (like reference)
+  | 'header-accent'        // Accent shape behind header area
+  | 'side-stripe'          // Vertical stripe accent
+  | 'geometric-corner'     // Elegant layered rectangles in corner
+  | 'curved-lines'         // Flowing curved lines from corner
+  | 'data-grid'            // Analyst-inspired grid with chart line
+  | 'hexagon-cluster'      // Tech-inspired hexagon pattern
+  | 'circuit-lines'        // Circuit board pattern on left side
+  | 'left-gradient-bar'    // Bold gradient bar on left edge
+  | 'left-dots-accent'     // Scattered dots on left side
+  | 'bottom-left-corner'   // Decorative arc in bottom-left corner
+  | 'bottom-gradient-fade' // Gradient fade at bottom of page
+  | 'code-brackets'        // Decorative code brackets for dev resumes
+  | 'header-wave'          // Wave pattern inside banner headers
+  | 'diagonal-lines'       // Diagonal stripes for headers
+  | 'header-circles'       // Overlapping circles for headers
+  | 'header-dots-grid';    // Dot grid pattern for headers
+
+export interface DecorationsConfig {
+  /** Enable decorative elements */
+  enabled: boolean;
+  /** Which decorative elements to show */
+  elements?: DecorationElement[];
+  /** Opacity multiplier for all decorations (0-1) */
+  opacity?: number;
+  /** Use gradient background */
+  gradientBackground?: boolean;
+}
+
+// ============================================================================
 // COMPLETE TEMPLATE CONFIGURATION
 // ============================================================================
 
@@ -435,16 +475,16 @@ export interface TemplateConfig {
   category?: 'professional' | 'creative' | 'minimal' | 'modern' | 'classic';
   /** Template thumbnail URL */
   thumbnail?: string;
-  
+
   // Core configurations
   typography: TypographyConfig;
   spacing: SpacingConfig;
   layout: LayoutConfig;
   colors: ColorConfig;
-  
+
   // Section styling
   sectionHeading: SectionHeadingConfig;
-  
+
   // Component-specific configs
   header: HeaderConfig;
   skills: SkillsConfig;
@@ -456,15 +496,18 @@ export interface TemplateConfig {
 
   // Section order and visibility
   sections: SectionConfig[];
-  
+
   // Font family
   fontFamily: {
     primary: string;
     secondary?: string;
   };
-  
+
   // Theme color slots (1-3 customizable colors)
   colorSlots?: ColorSlot[];
+
+  // Creative decorations (background elements, accent lines, etc.)
+  decorations?: DecorationsConfig;
 }
 
 // ============================================================================

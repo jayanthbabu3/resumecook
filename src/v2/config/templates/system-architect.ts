@@ -1,7 +1,8 @@
 /**
  * System Architect Template Configuration (V2)
  *
- * Executive-grade layout with banner header and structured columns.
+ * Creative single-column layout with sophisticated slate/charcoal theme
+ * and warm rose/coral accents. Centered header with elegant typography.
  */
 
 import type { TemplateConfig } from '../../types';
@@ -10,65 +11,66 @@ import { createTemplateConfig } from '../defaultConfig';
 export const systemArchitectConfig: TemplateConfig = createTemplateConfig({
   id: 'system-architect-v2',
   name: 'System Architect',
-  description: 'Banner-led two-column template for senior system architects.',
-  category: 'professional',
+  description: 'Sophisticated slate theme with rose accents for senior architects.',
+  category: 'creative',
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '38px',
       fontWeight: 700,
-      lineHeight: 1.15,
-      letterSpacing: '0.02em',
-      color: '#f8fafc',
-      textTransform: 'uppercase',
+      lineHeight: 1.1,
+      letterSpacing: '-0.03em',
+      color: '#1e293b',
     },
     title: {
-      fontSize: '12px',
+      fontSize: '14px',
       fontWeight: 500,
       lineHeight: 1.4,
-      color: '#cbd5f5',
-    },
-    sectionHeading: {
-      fontSize: '11px',
-      fontWeight: 700,
-      lineHeight: 1.3,
       letterSpacing: '0.1em',
       textTransform: 'uppercase',
-      color: '#0f172a',
+      color: '#e11d48', // Rose accent
+    },
+    sectionHeading: {
+      fontSize: '10px',
+      fontWeight: 700,
+      lineHeight: 1.3,
+      letterSpacing: '0.16em',
+      textTransform: 'uppercase',
+      color: '#475569',
     },
     itemTitle: {
-      fontSize: '13px',
-      fontWeight: 600,
+      fontSize: '14px',
+      fontWeight: 700,
       lineHeight: 1.4,
-      color: '#0f172a',
+      color: '#1e293b',
     },
     itemSubtitle: {
       fontSize: '12px',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
-      color: '#6366f1',
+      color: '#be123c',
     },
     dates: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
       color: '#64748b',
     },
     body: {
       fontSize: '12px',
       fontWeight: 400,
-      lineHeight: 1.6,
-      color: '#1f2937',
+      lineHeight: 1.65,
+      color: '#334155',
     },
     contact: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.5,
-      color: '#e0e7ff',
+      color: '#64748b',
     },
     small: {
       fontSize: '10px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
       color: '#94a3b8',
     },
@@ -76,89 +78,81 @@ export const systemArchitectConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '0px',
-      right: '28px',
-      bottom: '28px',
-      left: '28px',
+      top: '36px',
+      right: '36px',
+      bottom: '36px',
+      left: '36px',
     },
-    sectionGap: '18px',
-    itemGap: '12px',
-    headingToContent: '8px',
-    bulletGap: '4px',
-    contactGap: '10px',
+    sectionGap: '22px',
+    itemGap: '14px',
+    headingToContent: '10px',
+    bulletGap: '5px',
+    contactGap: '14px',
     skillGap: '8px',
   },
 
   layout: {
-    type: 'two-column',
-    mainWidth: '63%',
-    sidebarWidth: '34%',
-    columnGap: '22px',
-    sidebarBackground: '#f5f7ff',
-    sidebarPadding: '16px',
+    type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
-    primary: '#4f46e5',
-    secondary: '#818cf8',
+    primary: '#e11d48', // Rose
+    secondary: '#fb7185',
     text: {
-      primary: '#0f172a',
-      secondary: '#1f2937',
+      primary: '#1e293b',
+      secondary: '#334155',
       muted: '#64748b',
-      light: '#f8fafc',
+      light: '#ffffff',
     },
     background: {
       page: '#ffffff',
-      section: '#f5f7ff',
-      accent: '#e0e7ff',
+      section: '#f8fafc',
+      accent: '#ffe4e6',
     },
-    border: '#e2e8f0',
+    border: '#fecdd3',
   },
 
   sectionHeading: {
-    style: 'background',
-    borderWidth: '1px',
-    borderColor: '#c7d2fe',
-    marginBottom: '10px',
-    padding: '6px 10px',
-    backgroundColor: '#e0e7ff',
+    style: 'simple',
+    marginBottom: '12px',
   },
 
   header: {
-    variant: 'banner',
+    variant: 'centered',
     showPhoto: false,
-    padding: '26px 28px',
-    backgroundColor: '#1e1b4b',
-    textColor: '#f8fafc',
+    padding: '0 0 24px 0',
+    backgroundColor: 'transparent',
+    textColor: '#1e293b',
     contactIcons: {
       show: true,
       size: '12px',
-      color: '#a5b4fc',
+      color: '#e11d48',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
   },
 
   skills: {
-    variant: 'pills',
-    columns: 1,
+    variant: 'grouped',
+    columns: 2,
     showRatings: false,
     badge: {
       fontSize: '11px',
       padding: '4px 10px',
-      borderRadius: '999px',
+      borderRadius: '4px',
       borderWidth: '1px',
-      borderColor: '#c7d2fe',
-      backgroundColor: '#eef2ff',
-      textColor: '#1e1b4b',
+      borderColor: '#fecdd3',
+      backgroundColor: '#fff1f2',
+      textColor: '#9f1239',
     },
   },
 
   experience: {
-    variant: 'standard',
+    variant: 'left-border',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '•',
+    bulletStyle: '–',
   },
 
   education: {
@@ -166,32 +160,50 @@ export const systemArchitectConfig: TemplateConfig = createTemplateConfig({
     showGPA: false,
     showField: true,
     showDates: true,
-    datePosition: 'inline',
+    datePosition: 'right',
+  },
+
+  projects: {
+    variant: 'cards',
+    showLinks: true,
+    showTech: true,
   },
 
   strengths: {
-    variant: 'minimal',
+    variant: 'inline-badges',
     showIcons: false,
   },
 
   achievements: {
-    variant: 'list',
-    showIndicators: false,
+    variant: 'numbered',
+    showIndicators: true,
+  },
+
+  languages: {
+    variant: 'inline',
+    showCertification: false,
   },
 
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
-    { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
+    { type: 'summary', id: 'summary', title: 'Profile', defaultTitle: 'Profile', enabled: true, order: 1, column: 'main' },
     { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Architecture Projects', defaultTitle: 'Architecture Projects', enabled: true, order: 3, column: 'main' },
-    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 4, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Core Skills', defaultTitle: 'Core Skills', enabled: true, order: 5, column: 'sidebar' },
-    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: false, order: 6, column: 'sidebar' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 7, column: 'sidebar' },
+    { type: 'skills', id: 'skills', title: 'Architecture Expertise', defaultTitle: 'Architecture Expertise', enabled: true, order: 3, column: 'main' },
+    { type: 'projects', id: 'projects', title: 'Key Projects', defaultTitle: 'Key Projects', enabled: true, order: 4, column: 'main' },
+    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 5, column: 'main' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 6, column: 'main' },
   ],
 
   fontFamily: {
-    primary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    primary: "'Sora', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    secondary: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  },
+
+  // Creative decorations - top accent line and side stripe for elegant minimal look
+  decorations: {
+    enabled: true,
+    elements: ['top-accent-line', 'side-stripe', 'bottom-wave'],
+    opacity: 1,
   },
 });
 

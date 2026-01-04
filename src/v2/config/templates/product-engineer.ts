@@ -1,7 +1,8 @@
 /**
  * Product Engineer Template Configuration (V2)
  *
- * Clean professional layout with subtle accent blocks.
+ * Creative single-column layout with vibrant lime-to-emerald gradient theme.
+ * Unique asymmetric header with diagonal accent representing product innovation.
  */
 
 import type { TemplateConfig } from '../../types';
@@ -10,82 +11,83 @@ import { createTemplateConfig } from '../defaultConfig';
 export const productEngineerConfig: TemplateConfig = createTemplateConfig({
   id: 'product-engineer-v2',
   name: 'Product Engineer',
-  description: 'Professional layout with product-focused clarity and structured sections.',
-  category: 'classic',
+  description: 'Creative layout with gradient accents for product-focused engineers.',
+  category: 'creative',
 
   typography: {
     name: {
-      fontSize: '27px',
-      fontWeight: 700,
-      lineHeight: 1.2,
-      letterSpacing: '0.01em',
-      color: '#111827',
-      textTransform: 'none',
+      fontSize: '36px',
+      fontWeight: 800,
+      lineHeight: 1.1,
+      letterSpacing: '-0.03em',
+      color: '#ffffff',
     },
     title: {
       fontSize: '13px',
       fontWeight: 500,
       lineHeight: 1.4,
-      color: '#92400e',
+      letterSpacing: '0.1em',
+      textTransform: 'uppercase',
+      color: '#d9f99d', // Light lime accent
     },
     sectionHeading: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 700,
       lineHeight: 1.3,
-      letterSpacing: '0.08em',
+      letterSpacing: '0.14em',
       textTransform: 'uppercase',
-      color: '#1f2937',
+      color: '#4d7c0f',
     },
     itemTitle: {
-      fontSize: '13px',
-      fontWeight: 600,
+      fontSize: '14px',
+      fontWeight: 700,
       lineHeight: 1.4,
-      color: '#111827',
+      color: '#14532d',
     },
     itemSubtitle: {
       fontSize: '12px',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
-      color: '#92400e',
+      color: '#15803d',
     },
     dates: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#6b7280',
+      color: '#64748b',
     },
     body: {
       fontSize: '12px',
       fontWeight: 400,
-      lineHeight: 1.6,
-      color: '#374151',
+      lineHeight: 1.65,
+      color: '#334155',
     },
     contact: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.5,
-      color: '#4b5563',
+      color: '#ecfccb',
     },
     small: {
       fontSize: '10px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#9ca3af',
+      color: '#64748b',
     },
   },
 
   spacing: {
     pagePadding: {
-      top: '30px',
+      top: '0',
       right: '32px',
-      bottom: '30px',
+      bottom: '32px',
       left: '32px',
     },
-    sectionGap: '18px',
-    itemGap: '12px',
-    headingToContent: '8px',
+    sectionGap: '20px',
+    itemGap: '14px',
+    headingToContent: '10px',
     bulletGap: '5px',
-    contactGap: '10px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 
@@ -95,64 +97,64 @@ export const productEngineerConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#b45309',
-    secondary: '#f59e0b',
+    primary: '#15803d', // Emerald green
+    secondary: '#22c55e',
     text: {
-      primary: '#111827',
-      secondary: '#374151',
-      muted: '#6b7280',
+      primary: '#14532d',
+      secondary: '#334155',
+      muted: '#64748b',
       light: '#ffffff',
     },
     background: {
       page: '#ffffff',
-      section: '#fffbeb',
-      accent: '#fef3c7',
+      section: '#f0fdf4',
+      accent: '#dcfce7',
     },
-    border: '#f3f4f6',
+    border: '#86efac',
   },
 
   sectionHeading: {
-    style: 'background',
-    borderWidth: '1px',
-    borderColor: '#fcd34d',
+    style: 'left-accent',
+    borderWidth: '3px',
+    borderColor: '#22c55e',
     marginBottom: '10px',
-    padding: '6px 10px',
-    backgroundColor: '#fffbeb',
+    padding: '2px 0 2px 12px',
   },
 
   header: {
-    variant: 'left-aligned',
+    variant: 'banner',
     showPhoto: false,
-    padding: '0 0 16px 0',
+    padding: '32px',
+    backgroundColor: '#166534', // Deep emerald
+    textColor: '#ffffff',
     contactIcons: {
       show: true,
       size: '12px',
-      color: '#b45309',
+      color: '#86efac',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
   },
 
   skills: {
-    variant: 'tags',
-    columns: 2,
+    variant: 'pills',
+    columns: 4,
     showRatings: false,
     badge: {
       fontSize: '11px',
-      padding: '4px 8px',
-      borderRadius: '6px',
-      borderWidth: '1px',
-      borderColor: '#fde68a',
-      backgroundColor: '#fffbeb',
-      textColor: '#92400e',
+      padding: '5px 12px',
+      borderRadius: '20px',
+      borderWidth: '0',
+      backgroundColor: '#dcfce7',
+      textColor: '#166534',
     },
   },
 
   experience: {
-    variant: 'standard',
+    variant: 'modern',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '•',
+    bulletStyle: '▸',
   },
 
   education: {
@@ -160,32 +162,51 @@ export const productEngineerConfig: TemplateConfig = createTemplateConfig({
     showGPA: false,
     showField: true,
     showDates: true,
-    datePosition: 'inline',
+    datePosition: 'right',
+  },
+
+  projects: {
+    variant: 'modern',
+    showLinks: true,
+    showTech: true,
   },
 
   strengths: {
-    variant: 'minimal',
+    variant: 'inline-badges',
     showIcons: false,
   },
 
   achievements: {
-    variant: 'list',
-    showIndicators: false,
+    variant: 'numbered',
+    showIndicators: true,
+  },
+
+  languages: {
+    variant: 'inline',
+    showCertification: false,
   },
 
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
-    { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
+    { type: 'summary', id: 'summary', title: 'Profile', defaultTitle: 'Profile', enabled: true, order: 1, column: 'main' },
     { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 3, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 4, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Product Skills', defaultTitle: 'Product Skills', enabled: true, order: 3, column: 'main' },
+    { type: 'projects', id: 'projects', title: 'Shipped Products', defaultTitle: 'Shipped Products', enabled: true, order: 4, column: 'main' },
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 5, column: 'main' },
-    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: false, order: 6, column: 'main' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 7, column: 'main' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 6, column: 'main' },
   ],
 
   fontFamily: {
-    primary: "'Source Sans 3', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    primary: "'Nunito Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    secondary: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  },
+
+  // Creative decorations - gradient fade and geometric elements for product aesthetic
+  decorations: {
+    enabled: true,
+    elements: ['bottom-gradient-fade', 'corner-dots', 'side-accent'],
+    opacity: 0.85,
+    gradientBackground: true,
   },
 });
 

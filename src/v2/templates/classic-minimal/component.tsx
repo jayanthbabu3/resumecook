@@ -1,7 +1,8 @@
 /**
  * Classic Minimal Template Component
- * 
+ *
  * Ultra-clean text-focused design for traditional industries.
+ * Decorations are handled by ResumeRenderer via config.decorations.
  */
 
 import React from 'react';
@@ -21,7 +22,7 @@ import {
 const ClassicMinimalContent: React.FC<Omit<TemplateComponentProps, 'config'>> = (props) => {
   const { config, resumeData, editable } = useBaseTemplate();
   const { spacing, colors, fontFamily } = config;
-  
+
   const sections = useOrderedSections();
 
   // Container styles

@@ -472,9 +472,56 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
               backgroundColor: bannerBgColor,
               padding: header.padding || '24px 32px',
               color: bannerTextColor,
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            <div className="flex items-center gap-5">
+            {/* Decorative background elements */}
+            <svg
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: '100%',
+                height: '100%',
+                pointerEvents: 'none',
+              }}
+              viewBox="0 0 800 160"
+              preserveAspectRatio="none"
+            >
+              {/* Wave patterns */}
+              <path
+                d="M0,80 Q150,20 300,60 T600,40 T800,80 L800,160 L0,160 Z"
+                fill="rgba(255,255,255,0.06)"
+              />
+              <path
+                d="M0,100 Q200,50 400,90 T800,70 L800,160 L0,160 Z"
+                fill="rgba(255,255,255,0.04)"
+              />
+              {/* Flowing lines */}
+              <path
+                d="M0,40 Q100,80 250,50 Q400,20 550,60 Q700,100 800,60"
+                fill="none"
+                stroke="rgba(255,255,255,0.12)"
+                strokeWidth="2"
+              />
+              <path
+                d="M0,70 Q150,40 300,70 Q450,100 600,60 Q750,20 800,50"
+                fill="none"
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth="1.5"
+              />
+              {/* Diagonal accent lines on right */}
+              <line x1="600" y1="0" x2="720" y2="160" stroke="rgba(255,255,255,0.04)" strokeWidth="40" />
+              <line x1="660" y1="0" x2="780" y2="160" stroke="rgba(255,255,255,0.06)" strokeWidth="25" />
+              <line x1="720" y1="0" x2="840" y2="160" stroke="rgba(255,255,255,0.08)" strokeWidth="15" />
+              {/* Corner circles */}
+              <circle cx="750" cy="40" r="60" fill="rgba(255,255,255,0.03)" />
+              <circle cx="780" cy="100" r="40" fill="rgba(255,255,255,0.02)" />
+            </svg>
+            <div className="flex items-center gap-5" style={{ position: 'relative', zIndex: 1 }}>
               {bannerPhotoPosition === 'left' && bannerAvatar}
               <div className="flex-1">
                 {/* Name and Title */}
@@ -734,11 +781,243 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'elegant-banner':
+        // Elegant banner with lighter gradient based on theme color, centered photo, and two-column contact
+        const elegantGradient = `linear-gradient(135deg, ${adjustColor(accent, 30)} 0%, ${adjustColor(accent, 60)} 50%, ${adjustColor(accent, 90)} 100%)`;
+        const elegantPhotoSize = header.photoSize || '80px';
+        const elegantPhotoPx = parsePx(elegantPhotoSize, 80);
+
+        // Render elegant avatar (no badge)
+        const renderElegantAvatar = () => {
+          if (!showPhoto) return null;
+
+          const shape = header.photoShape || 'circle';
+          const initials = getInitials(personalInfo.fullName || '');
+
+          if (editable) {
+            return (
+              <InlineEditablePhoto
+                path="personalInfo.photo"
+                value={personalInfo.photo}
+                size={elegantPhotoSize}
+                shape={shape}
+                borderColor="#ffffff"
+                backgroundColor={`${accent}20`}
+                textColor={accent}
+                borderWidth="4px"
+                editable={editable}
+                initials={initials}
+              />
+            );
+          }
+
+          if (personalInfo.photo) {
+            return (
+              <div
+                data-section="photo"
+                className="resume-photo"
+                style={{
+                  width: elegantPhotoSize,
+                  height: elegantPhotoSize,
+                  borderRadius: shape === 'circle' ? '50%' : shape === 'rounded' ? '12px' : '4px',
+                  overflow: 'hidden',
+                  border: '4px solid #ffffff',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  flexShrink: 0,
+                }}
+              >
+                <img
+                  src={personalInfo.photo}
+                  alt="photo"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+            );
+          }
+
+          return (
+            <div
+              data-section="photo"
+              className="resume-photo"
+              style={{
+                width: elegantPhotoSize,
+                height: elegantPhotoSize,
+                borderRadius: shape === 'circle' ? '50%' : shape === 'rounded' ? '12px' : '4px',
+                border: '4px solid #ffffff',
+                backgroundColor: `${accent}15`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: `${Math.round(elegantPhotoPx / 2.5)}px`,
+                  fontWeight: 700,
+                  color: accent,
+                  letterSpacing: '0.02em',
+                  fontFamily: baseFontFamily,
+                }}
+              >
+                {initials}
+              </span>
+            </div>
+          );
+        };
+
+        // Contact item for elegant banner
+        const elegantContactStyle: React.CSSProperties = {
+          fontSize: typography.contact.fontSize,
+          color: typography.contact.color,
+          fontFamily: baseFontFamily,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        };
+        const elegantIconSize = '14px';
+        const elegantIconColor = accent;
+
+        const renderElegantContact = (icon: React.ElementType, value: string | undefined, path: string, href?: string) => {
+          if (!editable && !value) return null;
+          const Icon = icon;
+
+          return (
+            <div style={elegantContactStyle}>
+              <Icon style={{ width: elegantIconSize, height: elegantIconSize, color: elegantIconColor, flexShrink: 0 }} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{ fontSize: typography.contact.fontSize, color: typography.contact.color, fontFamily: baseFontFamily }}
+                />
+              ) : href ? (
+                <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: typography.contact.color, textDecoration: 'none' }}>
+                  {value}
+                </a>
+              ) : (
+                <span>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div data-header="elegant-banner" style={{ fontFamily: baseFontFamily }}>
+            {/* Gradient banner background */}
+            <div
+              style={{
+                background: elegantGradient,
+                height: '90px',
+                width: '100%',
+              }}
+            />
+
+            {/* Content area with photo overlapping banner */}
+            <div
+              style={{
+                padding: '0 32px 20px 32px',
+                marginTop: `-${elegantPhotoPx / 2}px`,
+                textAlign: 'center',
+              }}
+            >
+              {/* Centered photo with badge */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
+                {renderElegantAvatar()}
+              </div>
+
+              {/* Name */}
+              <h1 style={{
+                fontSize: typography.name.fontSize,
+                fontWeight: typography.name.fontWeight,
+                color: typography.name.color,
+                margin: 0,
+                fontFamily: baseFontFamily,
+                letterSpacing: typography.name.letterSpacing || '-0.01em',
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={personalInfo.fullName || 'Your Name'}
+                    style={{
+                      fontSize: typography.name.fontSize,
+                      fontWeight: typography.name.fontWeight,
+                      color: typography.name.color,
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  personalInfo.fullName || 'Your Name'
+                )}
+              </h1>
+
+              {/* Title with location */}
+              <p style={{
+                fontSize: typography.title.fontSize,
+                fontWeight: typography.title.fontWeight,
+                color: accent,
+                margin: '4px 0 0 0',
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <>
+                    <InlineEditableText
+                      path="personalInfo.title"
+                      value={personalInfo.title || 'Professional Title'}
+                      style={{ fontSize: typography.title.fontSize, color: accent, fontFamily: baseFontFamily }}
+                    />
+                    {' - '}
+                    <InlineEditableText
+                      path="personalInfo.location"
+                      value={personalInfo.location || 'Location'}
+                      style={{ fontSize: typography.title.fontSize, color: accent, fontFamily: baseFontFamily }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {personalInfo.title}
+                    {personalInfo.location && ` - ${personalInfo.location}`}
+                  </>
+                )}
+              </p>
+
+              {/* Contact info in two columns */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  gap: '16px 32px',
+                  marginTop: '16px',
+                  paddingTop: '16px',
+                  borderTop: `1px solid ${colors.border}`,
+                }}
+              >
+                {renderElegantContact(Mail, personalInfo.email, 'personalInfo.email')}
+                {renderElegantContact(Phone, personalInfo.phone, 'personalInfo.phone')}
+                {includeSocialLinks && renderElegantContact(
+                  Linkedin,
+                  personalInfo.linkedin,
+                  'personalInfo.linkedin',
+                  personalInfo.linkedin?.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`
+                )}
+                {includeSocialLinks && renderElegantContact(
+                  Globe,
+                  personalInfo.portfolio,
+                  'personalInfo.portfolio',
+                  personalInfo.portfolio?.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         const photoPosition = header.photoPosition || 'left';
         const avatar = renderAvatar();
-        
+
         return (
           <div style={{ padding: header.padding }}>
             <div className="flex items-start gap-4">
@@ -756,7 +1035,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   };
 
   // Determine header margin-bottom from config or use sensible defaults
-  const isBannerHeader = ['banner', 'gradient-banner'].includes(variant);
+  const isBannerHeader = ['banner', 'gradient-banner', 'elegant-banner'].includes(variant);
   const defaultMargin = isBannerHeader ? '0' : '12px';
   const headerMarginBottom = header.marginBottom ?? defaultMargin;
 

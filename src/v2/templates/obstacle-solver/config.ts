@@ -1,7 +1,8 @@
 /**
  * Obstacle Solver Template Configuration (V2)
  *
- * Teal-accent single column with lined headings, centered header, and grouped skills rows.
+ * Bold coral-accent single column with timeline experience layout,
+ * arrow-style bullets, and unique left-side decorative accents.
  */
 
 import type { TemplateConfig } from '../../types';
@@ -10,8 +11,8 @@ import { createTemplateConfig } from '../../config/defaultConfig';
 export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
   id: 'obstacle-solver-v2',
   name: 'Obstacle Solver',
-  description: 'Teal-accent single column with crisp lines and grouped skill categories.',
-  category: 'professional',
+  description: 'Bold coral-accent single column with timeline layout and left-side accents.',
+  category: 'creative',
 
   typography: {
     name: {
@@ -19,7 +20,7 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
       fontWeight: 800,
       lineHeight: 1.15,
       letterSpacing: '-0.01em',
-      color: '#0b4950',
+      color: '#1e293b',
     },
     title: {
       fontSize: '13px',
@@ -27,7 +28,7 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
       lineHeight: 1.4,
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
-      color: '#0fb5b7',
+      color: '#e85d4c',
     },
     sectionHeading: {
       fontSize: '11px',
@@ -35,43 +36,43 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
       lineHeight: 1.4,
       letterSpacing: '0.2em',
       textTransform: 'uppercase',
-      color: '#0b4950',
+      color: '#1e293b',
     },
     itemTitle: {
       fontSize: '13px',
       fontWeight: 700,
       lineHeight: 1.45,
-      color: '#0b4950',
+      color: '#1e293b',
     },
     itemSubtitle: {
       fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.35,
-      color: '#0fb5b7',
+      color: '#e85d4c',
     },
     dates: {
       fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.35,
-      color: '#5b6b73',
+      color: '#64748b',
     },
     body: {
       fontSize: '12px',
       fontWeight: 400,
       lineHeight: 1.6,
-      color: '#22313a',
+      color: '#334155',
     },
     contact: {
       fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.5,
-      color: '#0b4950',
+      color: '#1e293b',
     },
     small: {
       fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.4,
-      color: '#60727b',
+      color: '#64748b',
     },
   },
 
@@ -96,26 +97,26 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#0fb5b7',
-    secondary: '#0a8c8f',
+    primary: '#e85d4c',
+    secondary: '#d14433',
     text: {
-      primary: '#0b4950',
-      secondary: '#22313a',
-      muted: '#60727b',
+      primary: '#1e293b',
+      secondary: '#334155',
+      muted: '#64748b',
       light: '#ffffff',
     },
     background: {
       page: '#ffffff',
       section: '#ffffff',
-      accent: '#f1f8f9',
+      accent: '#fef5f4',
     },
-    border: '#d9e5e7',
+    border: '#fbd5d0',
   },
 
   sectionHeading: {
     style: 'underline',
     borderWidth: '2px',
-    borderColor: '#0fb5b7',
+    borderColor: '#e85d4c',
     marginBottom: '6px',
     padding: '0 0 6px 0',
   },
@@ -127,7 +128,7 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
     contactIcons: {
       show: true,
       size: '14px',
-      color: '#0fb5b7',
+      color: '#e85d4c',
     },
   },
 
@@ -140,14 +141,15 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
       padding: '4px 10px',
       borderRadius: '9999px',
       borderWidth: '1px',
-      backgroundColor: '#eef7f7',
-      textColor: '#0b4950',
+      backgroundColor: '#fef5f4',
+      textColor: '#1e293b',
     },
   },
 
   experience: {
-    variant: 'accent-side',
+    variant: 'modern',
     showLocation: true,
+    bulletStyle: '▸',
   },
 
   strengths: {
@@ -180,6 +182,14 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
   fontFamily: {
     primary: 'Inter, Arial, sans-serif',
     secondary: 'Source Sans Pro, Arial, sans-serif',
+  },
+
+  // Creative decorations - left-side accents for unique look
+  decorations: {
+    enabled: true,
+    elements: ['left-gradient-bar', 'left-dots-accent', 'bottom-left-corner'],
+    opacity: 1,
+    gradientBackground: true,
   },
 });
 

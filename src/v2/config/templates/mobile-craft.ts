@@ -1,7 +1,8 @@
 /**
  * Mobile Craft Template Configuration (V2)
  *
- * Minimal layout with bright accent for mobile developers.
+ * Unique two-column layout with vibrant coral/orange theme.
+ * Sidebar design with app-card inspired sections for mobile developers.
  */
 
 import type { TemplateConfig } from '../../types';
@@ -10,82 +11,83 @@ import { createTemplateConfig } from '../defaultConfig';
 export const mobileCraftConfig: TemplateConfig = createTemplateConfig({
   id: 'mobile-craft-v2',
   name: 'Mobile Craft',
-  description: 'Minimal single-column template with lively accents for mobile engineers.',
-  category: 'minimal',
+  description: 'Creative layout with wave decorations and vibrant orange theme for mobile engineers.',
+  category: 'creative',
 
   typography: {
     name: {
-      fontSize: '28px',
-      fontWeight: 700,
-      lineHeight: 1.2,
-      letterSpacing: '0.01em',
-      color: '#111827',
-      textTransform: 'none',
+      fontSize: '34px',
+      fontWeight: 800,
+      lineHeight: 1.1,
+      letterSpacing: '-0.02em',
+      color: '#ffffff',
     },
     title: {
       fontSize: '13px',
       fontWeight: 500,
       lineHeight: 1.4,
-      color: '#f97316',
-    },
-    sectionHeading: {
-      fontSize: '11px',
-      fontWeight: 700,
-      lineHeight: 1.3,
       letterSpacing: '0.08em',
       textTransform: 'uppercase',
-      color: '#111827',
+      color: '#fed7aa',
+    },
+    sectionHeading: {
+      fontSize: '10px',
+      fontWeight: 700,
+      lineHeight: 1.3,
+      letterSpacing: '0.14em',
+      textTransform: 'uppercase',
+      color: '#ea580c',
     },
     itemTitle: {
-      fontSize: '13px',
-      fontWeight: 600,
+      fontSize: '14px',
+      fontWeight: 700,
       lineHeight: 1.4,
-      color: '#111827',
+      color: '#7c2d12',
     },
     itemSubtitle: {
       fontSize: '12px',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
-      color: '#f97316',
+      color: '#ea580c',
     },
     dates: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#6b7280',
+      color: '#64748b',
     },
     body: {
       fontSize: '12px',
       fontWeight: 400,
-      lineHeight: 1.6,
-      color: '#374151',
+      lineHeight: 1.65,
+      color: '#334155',
     },
     contact: {
       fontSize: '11px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.5,
-      color: '#4b5563',
+      color: '#fff7ed',
     },
     small: {
       fontSize: '10px',
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#9ca3af',
+      color: '#64748b',
     },
   },
 
   spacing: {
     pagePadding: {
-      top: '28px',
+      top: '0',
       right: '32px',
-      bottom: '28px',
+      bottom: '32px',
       left: '32px',
     },
     sectionGap: '20px',
-    itemGap: '12px',
-    headingToContent: '8px',
+    itemGap: '14px',
+    headingToContent: '10px',
     bulletGap: '5px',
-    contactGap: '10px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 
@@ -95,12 +97,12 @@ export const mobileCraftConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#f97316',
-    secondary: '#fb923c',
+    primary: '#ea580c', // Deep coral orange
+    secondary: '#f97316',
     text: {
-      primary: '#111827',
-      secondary: '#374151',
-      muted: '#6b7280',
+      primary: '#7c2d12',
+      secondary: '#334155',
+      muted: '#64748b',
       light: '#ffffff',
     },
     background: {
@@ -108,42 +110,51 @@ export const mobileCraftConfig: TemplateConfig = createTemplateConfig({
       section: '#fff7ed',
       accent: '#ffedd5',
     },
-    border: '#fde68a',
+    border: '#fdba74',
   },
 
   sectionHeading: {
-    style: 'underline',
-    borderWidth: '2px',
-    borderColor: '#fed7aa',
+    style: 'left-accent',
+    borderWidth: '3px',
+    borderColor: '#f97316',
     marginBottom: '10px',
-    padding: '0 0 6px 0',
+    padding: '2px 0 2px 12px',
   },
 
   header: {
-    variant: 'minimal',
+    variant: 'banner',
     showPhoto: false,
-    padding: '0 0 16px 0',
+    padding: '32px',
+    backgroundColor: '#c2410c', // Deep burnt orange
+    textColor: '#ffffff',
     contactIcons: {
       show: true,
       size: '12px',
-      color: '#f97316',
+      color: '#fdba74',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
   },
 
   skills: {
-    variant: 'inline',
-    columns: 2,
+    variant: 'pills',
+    columns: 4,
     showRatings: false,
-    separator: '·',
+    badge: {
+      fontSize: '11px',
+      padding: '5px 12px',
+      borderRadius: '20px',
+      borderWidth: '0',
+      backgroundColor: '#ffedd5',
+      textColor: '#c2410c',
+    },
   },
 
   experience: {
-    variant: 'compact',
+    variant: 'modern',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '•',
+    bulletStyle: '▸',
   },
 
   education: {
@@ -151,31 +162,51 @@ export const mobileCraftConfig: TemplateConfig = createTemplateConfig({
     showGPA: false,
     showField: true,
     showDates: true,
-    datePosition: 'inline',
+    datePosition: 'right',
+  },
+
+  projects: {
+    variant: 'modern',
+    showLinks: true,
+    showTech: true,
   },
 
   strengths: {
-    variant: 'minimal',
+    variant: 'inline-badges',
     showIcons: false,
   },
 
   achievements: {
-    variant: 'list',
-    showIndicators: false,
+    variant: 'numbered',
+    showIndicators: true,
+  },
+
+  languages: {
+    variant: 'inline',
+    showCertification: false,
   },
 
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
-    { type: 'summary', id: 'summary', title: 'Summary', defaultTitle: 'Summary', enabled: true, order: 1, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 2, column: 'main' },
-    { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 3, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 4, column: 'main' },
+    { type: 'summary', id: 'summary', title: 'Profile', defaultTitle: 'Profile', enabled: true, order: 1, column: 'main' },
+    { type: 'experience', id: 'experience', title: 'Experience', defaultTitle: 'Experience', enabled: true, order: 2, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Tech Stack', defaultTitle: 'Tech Stack', enabled: true, order: 3, column: 'main' },
+    { type: 'projects', id: 'projects', title: 'Featured Apps', defaultTitle: 'Featured Apps', enabled: true, order: 4, column: 'main' },
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 5, column: 'main' },
-    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: false, order: 6, column: 'main' },
+    { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 6, column: 'main' },
   ],
 
   fontFamily: {
-    primary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    primary: "'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    secondary: "'SF Pro Text', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  },
+
+  // Creative decorations - waves and lines in header area
+  decorations: {
+    enabled: true,
+    elements: ['header-wave', 'diagonal-lines', 'bottom-wave'],
+    opacity: 0.9,
+    gradientBackground: true,
   },
 });
 

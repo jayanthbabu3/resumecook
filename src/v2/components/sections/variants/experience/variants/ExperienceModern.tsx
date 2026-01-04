@@ -193,33 +193,32 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
           
           {/* Bullet points */}
           {(exp.bulletPoints?.length > 0 || editable) && (
-            <ul style={{ 
-              margin: 0, 
+            <div style={{
+              margin: 0,
               paddingLeft: 0,
-              listStyleType: 'none',
             }}>
               {exp.bulletPoints?.map((bullet, bulletIndex) => (
-                <li 
+                <div
                   key={bulletIndex}
                   className="group/bullet"
-                  style={{ 
+                  style={{
                     fontSize: typography.body.fontSize,
                     color: typography.body.color,
                     lineHeight: 1.6,
                     marginBottom: '6px',
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '10px',
+                    gap: '8px',
                   }}
                 >
                   <span style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: accentColor,
-                    marginTop: '8px',
+                    color: accentColor,
+                    fontWeight: 600,
                     flexShrink: 0,
-                  }} />
+                    marginTop: '1px',
+                  }}>
+                    {config.experience?.bulletStyle || '▸'}
+                  </span>
                   {editable ? (
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flex: 1 }}>
                       <InlineEditableText
@@ -240,11 +239,11 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
                   ) : (
                     <span style={{ flex: 1 }}>{bullet}</span>
                   )}
-                </li>
+                </div>
               ))}
               
               {editable && onAddBulletPoint && (
-                <li style={{ marginTop: '8px', marginLeft: '16px' }}>
+                <div style={{ marginTop: '8px', marginLeft: '16px' }}>
                   <button
                     onClick={() => onAddBulletPoint(exp.id)}
                     className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
@@ -253,9 +252,9 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
                     <Plus className="w-3 h-3" />
                     Add bullet point
                   </button>
-                </li>
+                </div>
               )}
-            </ul>
+            </div>
           )}
         </div>
       ))}
