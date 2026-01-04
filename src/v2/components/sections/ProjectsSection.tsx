@@ -177,17 +177,41 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             )}
           </div>
           
-          {item.role && (
+          {(item.role || editable) && (
             editable ? (
               <InlineEditableText
                 path={`projects.${index}.role`}
-                value={item.role}
+                value={item.role || ''}
                 style={subtitleStyle}
-                placeholder="Your Role"
+                placeholder="Your Role (optional)"
               />
             ) : (
               <div style={subtitleStyle}>{item.role}</div>
             )
+          )}
+
+          {/* Editable URL fields */}
+          {editable && (
+            <div style={{ marginTop: '4px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <ExternalLink className="w-3 h-3 flex-shrink-0" style={{ color: accent }} />
+                <InlineEditableText
+                  path={`projects.${index}.url`}
+                  value={item.url || ''}
+                  style={{ ...typography.small, color: accent }}
+                  placeholder="Project URL (optional)"
+                />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Github className="w-3 h-3 flex-shrink-0" style={{ color: accent }} />
+                <InlineEditableText
+                  path={`projects.${index}.githubUrl`}
+                  value={item.githubUrl || ''}
+                  style={{ ...typography.small, color: accent }}
+                  placeholder="GitHub URL (optional)"
+                />
+              </div>
+            </div>
           )}
         </div>
 

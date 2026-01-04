@@ -1,20 +1,15 @@
 /**
  * Resume Builder V2 - Style Options Panel
  *
- * Premium, production-ready style options with modern UX.
- * Clean design with intuitive controls and visual previews.
+ * Modern, compact style options with intuitive UX.
+ * Elegant design with visual previews and smooth interactions.
  */
 
 import React from 'react';
 import { useStyleOptions, type HeaderCase, type FontSizeScale, type DividerStyle, type DateFormat, type BulletStyle } from '@/contexts/StyleOptionsContext';
-import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
 import {
   Type,
-  Minus,
-  Eye,
-  RotateCcw,
   Calendar,
   List,
   Image,
@@ -34,8 +29,11 @@ import {
   Code,
   FolderOpen,
   LucideIcon,
-  ChevronDown,
-  Sparkles,
+  ChevronRight,
+  RotateCcw,
+  Minus,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { V2ResumeData } from '../types';
@@ -43,42 +41,25 @@ import type { V2ResumeData } from '../types';
 // Icon mapping for different section types
 const SECTION_ICONS: Record<string, LucideIcon> = {
   strengths: Target,
-  strength: Target,
   achievements: Trophy,
-  achievement: Trophy,
   awards: Award,
-  award: Award,
   highlights: Star,
-  highlight: Star,
   competencies: Zap,
-  competency: Zap,
   qualifications: CheckCircle2,
-  qualification: CheckCircle2,
   interests: Heart,
-  interest: Heart,
-  hobbies: Heart,
-  hobby: Heart,
   languages: Globe,
-  language: Globe,
   projects: FolderOpen,
-  project: FolderOpen,
   certifications: Award,
-  certification: Award,
   skills: Lightbulb,
-  skill: Lightbulb,
   technical: Code,
 };
 
 const getSectionIcon = (sectionId: string, title: string): LucideIcon => {
   const idLower = sectionId.toLowerCase();
   const titleLower = title.toLowerCase();
-
   for (const [key, icon] of Object.entries(SECTION_ICONS)) {
-    if (idLower.includes(key) || titleLower.includes(key)) {
-      return icon;
-    }
+    if (idLower.includes(key) || titleLower.includes(key)) return icon;
   }
-
   return LayoutGrid;
 };
 
@@ -90,62 +71,197 @@ interface StyleOptionsPanelV2Props {
   onToggleSection?: (sectionId: string) => void;
 }
 
-// Collapsible Section Component
-const CollapsibleSection: React.FC<{
-  title: string;
-  icon: LucideIcon;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}> = ({ title, icon: Icon, children, defaultOpen = true }) => {
-  const [isOpen, setIsOpen] = React.useState(defaultOpen);
+// Segment Control Component - Apple-style pill selector
+const SegmentControl: React.FC<{
+  options: { value: string; label: React.ReactNode; title?: string }[];
+  value: string;
+  onChange: (value: string) => void;
+  size?: 'sm' | 'md';
+}> = ({ options, value, onChange, size = 'md' }) => {
+  const selectedIndex = options.findIndex(o => o.value === value);
 
   return (
-    <div className="border border-gray-100 rounded-xl overflow-hidden bg-white">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-3 hover:bg-gray-50/50 transition-colors"
-      >
-        <div className="flex items-center gap-2">
-          <Icon className="w-4 h-4 text-gray-500" />
-          <span className="text-sm font-medium text-gray-700">{title}</span>
-        </div>
-        <ChevronDown className={cn(
-          "w-4 h-4 text-gray-400 transition-transform duration-200",
-          isOpen && "rotate-180"
-        )} />
-      </button>
-      {isOpen && (
-        <div className="px-3 pb-3 pt-1">
-          {children}
-        </div>
-      )}
+    <div className="relative inline-flex p-0.5 bg-gray-100 rounded-lg">
+      {/* Sliding background */}
+      <div
+        className="absolute top-0.5 bottom-0.5 bg-white rounded-md shadow-sm transition-all duration-200 ease-out"
+        style={{
+          left: `calc(${selectedIndex * (100 / options.length)}% + 2px)`,
+          width: `calc(${100 / options.length}% - 4px)`,
+        }}
+      />
+      {options.map((option) => (
+        <button
+          key={option.value}
+          onClick={() => onChange(option.value)}
+          title={option.title}
+          className={cn(
+            "relative z-10 flex-1 px-3 py-1.5 text-center transition-colors duration-200",
+            size === 'sm' ? 'text-xs min-w-[40px]' : 'text-sm min-w-[52px]',
+            value === option.value ? 'text-gray-900 font-medium' : 'text-gray-500 hover:text-gray-700'
+          )}
+        >
+          {option.label}
+        </button>
+      ))}
     </div>
   );
 };
 
-// Option Button Component for consistent styling
-const OptionButton: React.FC<{
-  selected: boolean;
-  onClick: () => void;
+// Visual Selector for dividers with preview
+const DividerSelector: React.FC<{
+  value: DividerStyle;
+  onChange: (value: DividerStyle) => void;
+}> = ({ value, onChange }) => {
+  const dividers: { value: DividerStyle; preview: React.ReactNode }[] = [
+    { value: 'none', preview: <span className="text-[10px] text-gray-400">None</span> },
+    { value: 'thin', preview: <div className="w-full h-px bg-gray-300" /> },
+    { value: 'line', preview: <div className="w-full h-0.5 bg-gray-500" /> },
+    { value: 'dotted', preview: <div className="w-full border-b border-dotted border-gray-400" /> },
+    { value: 'double', preview: <div className="w-full border-b-2 border-double border-gray-400" /> },
+  ];
+
+  return (
+    <div className="flex gap-1.5">
+      {dividers.map((d) => (
+        <button
+          key={d.value}
+          onClick={() => onChange(d.value)}
+          className={cn(
+            "flex-1 h-10 flex items-center justify-center px-2 rounded-lg border transition-all duration-150",
+            value === d.value
+              ? "border-blue-500 bg-blue-50/80 shadow-sm"
+              : "border-gray-200 bg-white hover:border-gray-300"
+          )}
+        >
+          <div className="w-full">{d.preview}</div>
+        </button>
+      ))}
+    </div>
+  );
+};
+
+// Bullet Style Selector
+const BulletSelector: React.FC<{
+  value: BulletStyle;
+  onChange: (value: BulletStyle) => void;
+}> = ({ value, onChange }) => {
+  const bullets: { value: BulletStyle; label: string }[] = [
+    { value: '•', label: '•' },
+    { value: '◦', label: '◦' },
+    { value: '▪', label: '▪' },
+    { value: '▸', label: '▸' },
+    { value: '–', label: '–' },
+    { value: 'none', label: '—' },
+  ];
+
+  return (
+    <div className="flex gap-1">
+      {bullets.map((b) => (
+        <button
+          key={b.value}
+          onClick={() => onChange(b.value)}
+          className={cn(
+            "w-8 h-8 flex items-center justify-center rounded-md text-base transition-all duration-150",
+            value === b.value
+              ? "bg-blue-500 text-white shadow-sm"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+          )}
+        >
+          {b.label}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+// Compact Row Component
+const OptionRow: React.FC<{
+  label: string;
   children: React.ReactNode;
   className?: string;
-}> = ({ selected, onClick, children, className }) => (
-  <button
-    onClick={onClick}
+}> = ({ label, children, className }) => (
+  <div className={cn("flex items-center justify-between gap-4", className)}>
+    <span className="text-xs font-medium text-gray-500 whitespace-nowrap">{label}</span>
+    {children}
+  </div>
+);
+
+// Expandable Section
+const ExpandableSection: React.FC<{
+  title: string;
+  icon: LucideIcon;
+  children: React.ReactNode;
+  defaultExpanded?: boolean;
+  badge?: number;
+}> = ({ title, icon: Icon, children, defaultExpanded = false, badge }) => {
+  const [expanded, setExpanded] = React.useState(defaultExpanded);
+
+  return (
+    <div className="rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center gap-3 px-3.5 py-2.5 hover:bg-gray-50/50 transition-colors"
+      >
+        <div className={cn(
+          "w-7 h-7 rounded-lg flex items-center justify-center transition-colors",
+          expanded ? "bg-blue-100" : "bg-gray-100"
+        )}>
+          <Icon className={cn("w-3.5 h-3.5", expanded ? "text-blue-600" : "text-gray-500")} />
+        </div>
+        <span className="flex-1 text-left text-sm font-medium text-gray-800">{title}</span>
+        {badge !== undefined && (
+          <span className="px-1.5 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-600 rounded">
+            {badge}
+          </span>
+        )}
+        <ChevronRight className={cn(
+          "w-4 h-4 text-gray-400 transition-transform duration-200",
+          expanded && "rotate-90"
+        )} />
+      </button>
+      <div className={cn(
+        "grid transition-all duration-200 ease-out",
+        expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+      )}>
+        <div className="overflow-hidden">
+          <div className="px-3.5 pb-3.5 pt-1 space-y-3">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Toggle Item for sections
+const ToggleItem: React.FC<{
+  icon: LucideIcon;
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}> = ({ icon: Icon, label, checked, onChange }) => (
+  <div
+    onClick={() => onChange(!checked)}
     className={cn(
-      "px-3 py-2 rounded-lg border text-sm font-medium transition-all duration-200",
-      selected
-        ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"
-        : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50",
-      className
+      "flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-all duration-150",
+      checked
+        ? "bg-gray-50 border border-gray-200"
+        : "hover:bg-gray-50"
     )}
   >
-    {children}
-  </button>
+    <Icon className={cn("w-4 h-4", checked ? "text-blue-500" : "text-gray-400")} />
+    <span className={cn("flex-1 text-sm", checked ? "text-gray-800" : "text-gray-500")}>{label}</span>
+    <Switch
+      checked={checked}
+      onCheckedChange={onChange}
+      onClick={(e) => e.stopPropagation()}
+      className="scale-90"
+    />
+  </div>
 );
 
 export const StyleOptionsPanelV2: React.FC<StyleOptionsPanelV2Props> = ({
-  inPopover = false,
   className,
   resumeData,
   enabledSections = [],
@@ -173,252 +289,162 @@ export const StyleOptionsPanelV2: React.FC<StyleOptionsPanelV2Props> = ({
 
   const customSections = resumeData?.sections || [];
 
+  // Count visible sections
+  const visibleCount = [
+    styleOptions.showPhoto,
+    styleOptions.showSummary,
+    styleOptions.showExperience,
+    styleOptions.showEducation,
+    styleOptions.showSkills,
+    styleOptions.showAchievements,
+    styleOptions.showStrengths,
+  ].filter(Boolean).length;
+
   return (
-    <div className={cn("bg-gray-50/50", className)}>
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-sm">
-            <Sparkles className="w-4 h-4 text-white" />
-          </div>
-          <h3 className="font-semibold text-gray-900">Style Options</h3>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
+    <div className={cn("flex flex-col h-full", className)}>
+      {/* Header - Minimal */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-white">
+        <h3 className="text-sm font-semibold text-gray-900">Customize</h3>
+        <button
           onClick={resetStyleOptions}
-          className="h-8 px-3 text-sm text-gray-500 hover:text-gray-700"
+          className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors"
         >
-          <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+          <RotateCcw className="w-3 h-3" />
           Reset
-        </Button>
+        </button>
       </div>
 
-      {/* Content */}
-      <div className="p-4 space-y-3">
-        {/* Typography Section */}
-        <CollapsibleSection title="Typography" icon={Type}>
-          <div className="space-y-4">
-            {/* Header Case */}
-            <div>
-              <Label className="text-xs text-gray-500 mb-2 block">Header Case</Label>
-              <div className="grid grid-cols-3 gap-2">
-                <OptionButton
-                  selected={styleOptions.headerCase === 'uppercase'}
-                  onClick={() => updateStyleOption('headerCase', 'uppercase')}
-                >
-                  ABC
-                </OptionButton>
-                <OptionButton
-                  selected={styleOptions.headerCase === 'capitalize'}
-                  onClick={() => updateStyleOption('headerCase', 'capitalize')}
-                >
-                  Abc
-                </OptionButton>
-                <OptionButton
-                  selected={styleOptions.headerCase === 'lowercase'}
-                  onClick={() => updateStyleOption('headerCase', 'lowercase')}
-                >
-                  abc
-                </OptionButton>
-              </div>
-            </div>
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-gray-50/50">
 
-            {/* Font Size */}
-            <div>
-              <Label className="text-xs text-gray-500 mb-2 block">Font Size</Label>
-              <div className="grid grid-cols-3 gap-2">
-                <OptionButton
-                  selected={styleOptions.fontSizeScale === 'compact'}
-                  onClick={() => updateStyleOption('fontSizeScale', 'compact')}
-                >
-                  <span className="text-xs">Compact</span>
-                </OptionButton>
-                <OptionButton
-                  selected={styleOptions.fontSizeScale === 'normal'}
-                  onClick={() => updateStyleOption('fontSizeScale', 'normal')}
-                >
-                  <span className="text-sm">Normal</span>
-                </OptionButton>
-                <OptionButton
-                  selected={styleOptions.fontSizeScale === 'large'}
-                  onClick={() => updateStyleOption('fontSizeScale', 'large')}
-                >
-                  <span className="text-base">Large</span>
-                </OptionButton>
-              </div>
-            </div>
-          </div>
-        </CollapsibleSection>
+        {/* Typography - Compact inline options */}
+        <ExpandableSection title="Typography" icon={Type} defaultExpanded>
+          <OptionRow label="Header Case">
+            <SegmentControl
+              options={[
+                { value: 'uppercase', label: 'ABC' },
+                { value: 'capitalize', label: 'Abc' },
+                { value: 'lowercase', label: 'abc' },
+              ]}
+              value={styleOptions.headerCase}
+              onChange={(v) => updateStyleOption('headerCase', v as HeaderCase)}
+              size="sm"
+            />
+          </OptionRow>
+          <OptionRow label="Font Size">
+            <SegmentControl
+              options={[
+                { value: 'compact', label: 'S', title: 'Compact' },
+                { value: 'normal', label: 'M', title: 'Normal' },
+                { value: 'large', label: 'L', title: 'Large' },
+              ]}
+              value={styleOptions.fontSizeScale}
+              onChange={(v) => updateStyleOption('fontSizeScale', v as FontSizeScale)}
+              size="sm"
+            />
+          </OptionRow>
+        </ExpandableSection>
 
-        {/* Section Dividers */}
-        <CollapsibleSection title="Section Dividers" icon={Minus}>
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { value: 'none', label: 'None', preview: null },
-              { value: 'thin', label: 'Thin', preview: <div className="w-full h-px bg-gray-300" /> },
-              { value: 'line', label: 'Line', preview: <div className="w-full h-0.5 bg-gray-400" /> },
-              { value: 'dotted', label: 'Dotted', preview: <div className="w-full border-b-2 border-dotted border-gray-400" /> },
-              { value: 'double', label: 'Double', preview: <div className="w-full border-b-[3px] border-double border-gray-400" /> },
-            ].map((style) => (
-              <button
-                key={style.value}
-                onClick={() => updateStyleOption('dividerStyle', style.value as DividerStyle)}
-                className={cn(
-                  "flex flex-col items-center gap-2 p-3 rounded-lg border transition-all duration-200",
-                  styleOptions.dividerStyle === style.value
-                    ? "border-blue-500 bg-blue-50 shadow-sm"
-                    : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
-                )}
-              >
-                <div className="w-full h-4 flex items-center justify-center">
-                  {style.preview || <span className="text-xs text-gray-400">—</span>}
-                </div>
-                <span className={cn(
-                  "text-xs font-medium",
-                  styleOptions.dividerStyle === style.value ? "text-blue-700" : "text-gray-600"
-                )}>
-                  {style.label}
-                </span>
-              </button>
-            ))}
-          </div>
-        </CollapsibleSection>
+        {/* Dividers - Visual selector */}
+        <ExpandableSection title="Dividers" icon={Minus} defaultExpanded>
+          <DividerSelector
+            value={styleOptions.dividerStyle}
+            onChange={(v) => updateStyleOption('dividerStyle', v)}
+          />
+        </ExpandableSection>
 
-        {/* Date Format */}
-        <CollapsibleSection title="Date Format" icon={Calendar}>
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { value: 'short', label: 'Jan 2024' },
-              { value: 'long', label: 'January 2024' },
-              { value: 'medium', label: '01/2024' },
-            ].map((format) => (
-              <OptionButton
-                key={format.value}
-                selected={styleOptions.dateFormat === format.value}
-                onClick={() => updateStyleOption('dateFormat', format.value as DateFormat)}
-                className="text-xs"
-              >
-                {format.label}
-              </OptionButton>
-            ))}
-          </div>
-        </CollapsibleSection>
-
-        {/* Bullet Style */}
-        <CollapsibleSection title="Bullet Style" icon={List}>
-          <div className="grid grid-cols-6 gap-2">
-            {[
-              { value: '•', label: '•', name: 'Disc' },
-              { value: '◦', label: '◦', name: 'Circle' },
-              { value: '▪', label: '▪', name: 'Square' },
-              { value: '▸', label: '▸', name: 'Arrow' },
-              { value: '–', label: '–', name: 'Dash' },
-              { value: 'none', label: '—', name: 'None' },
-            ].map((bullet) => (
-              <button
-                key={bullet.value}
-                onClick={() => updateStyleOption('bulletStyle', bullet.value as BulletStyle)}
-                className={cn(
-                  "aspect-square flex items-center justify-center rounded-lg border text-lg transition-all duration-200",
-                  styleOptions.bulletStyle === bullet.value
-                    ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"
-                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
-                )}
-                title={bullet.name}
-              >
-                {bullet.label}
-              </button>
-            ))}
-          </div>
-        </CollapsibleSection>
+        {/* Date & Bullets - Combined for efficiency */}
+        <ExpandableSection title="Formatting" icon={List} defaultExpanded>
+          <OptionRow label="Date Format">
+            <SegmentControl
+              options={[
+                { value: 'short', label: 'Jan \'24' },
+                { value: 'long', label: 'January' },
+                { value: 'medium', label: '01/24' },
+              ]}
+              value={styleOptions.dateFormat}
+              onChange={(v) => updateStyleOption('dateFormat', v as DateFormat)}
+              size="sm"
+            />
+          </OptionRow>
+          <OptionRow label="Bullets">
+            <BulletSelector
+              value={styleOptions.bulletStyle}
+              onChange={(v) => updateStyleOption('bulletStyle', v)}
+            />
+          </OptionRow>
+        </ExpandableSection>
 
         {/* Sections Visibility */}
-        <CollapsibleSection title="Show/Hide Sections" icon={Eye} defaultOpen={false}>
+        <ExpandableSection
+          title="Sections"
+          icon={visibleCount === 7 ? Eye : EyeOff}
+          badge={visibleCount}
+        >
           <div className="space-y-1">
-            {[
-              { key: 'showPhoto', label: 'Photo', icon: Image },
-              { key: 'showSummary', label: 'Summary', icon: FileText },
-              { key: 'showExperience', label: 'Experience', icon: Briefcase },
-              { key: 'showEducation', label: 'Education', icon: GraduationCap },
-              { key: 'showSkills', label: 'Skills', icon: Lightbulb },
-              { key: 'showAchievements', label: 'Achievements', icon: Trophy },
-              { key: 'showStrengths', label: 'Strengths', icon: Target },
-            ].map((item) => {
-              const Icon = item.icon;
-              const isChecked = styleOptions[item.key as keyof typeof styleOptions] as boolean;
-              return (
-                <div
-                  key={item.key}
-                  className={cn(
-                    "flex items-center justify-between py-2.5 px-3 rounded-lg transition-all duration-200 cursor-pointer",
-                    isChecked ? "bg-white border border-gray-100" : "hover:bg-white/80"
-                  )}
-                  onClick={() => updateStyleOption(item.key as any, !isChecked)}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Icon className={cn(
-                      "w-4 h-4",
-                      isChecked ? "text-blue-500" : "text-gray-400"
-                    )} />
-                    <span className={cn(
-                      "text-sm font-medium",
-                      isChecked ? "text-gray-800" : "text-gray-500"
-                    )}>
-                      {item.label}
-                    </span>
-                  </div>
-                  <Switch
-                    checked={isChecked}
-                    onCheckedChange={(checked) => updateStyleOption(item.key as any, checked)}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              );
-            })}
+            <ToggleItem
+              icon={Image}
+              label="Photo"
+              checked={styleOptions.showPhoto as boolean}
+              onChange={(checked) => updateStyleOption('showPhoto', checked)}
+            />
+            <ToggleItem
+              icon={FileText}
+              label="Summary"
+              checked={styleOptions.showSummary as boolean}
+              onChange={(checked) => updateStyleOption('showSummary', checked)}
+            />
+            <ToggleItem
+              icon={Briefcase}
+              label="Experience"
+              checked={styleOptions.showExperience as boolean}
+              onChange={(checked) => updateStyleOption('showExperience', checked)}
+            />
+            <ToggleItem
+              icon={GraduationCap}
+              label="Education"
+              checked={styleOptions.showEducation as boolean}
+              onChange={(checked) => updateStyleOption('showEducation', checked)}
+            />
+            <ToggleItem
+              icon={Lightbulb}
+              label="Skills"
+              checked={styleOptions.showSkills as boolean}
+              onChange={(checked) => updateStyleOption('showSkills', checked)}
+            />
+            <ToggleItem
+              icon={Trophy}
+              label="Achievements"
+              checked={styleOptions.showAchievements as boolean}
+              onChange={(checked) => updateStyleOption('showAchievements', checked)}
+            />
+            <ToggleItem
+              icon={Target}
+              label="Strengths"
+              checked={styleOptions.showStrengths as boolean}
+              onChange={(checked) => updateStyleOption('showStrengths', checked)}
+            />
           </div>
 
           {/* Custom Sections */}
           {customSections.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <Label className="text-xs text-gray-500 mb-2 block">Custom Sections</Label>
+            <>
+              <div className="my-2 border-t border-gray-100" />
+              <p className="text-[10px] uppercase tracking-wider text-gray-400 font-medium mb-1.5">Custom</p>
               <div className="space-y-1">
-                {customSections.map((section) => {
-                  const Icon = getSectionIcon(section.id, section.title);
-                  const isChecked = enabledSections.includes(section.id);
-                  return (
-                    <div
-                      key={section.id}
-                      className={cn(
-                        "flex items-center justify-between py-2.5 px-3 rounded-lg transition-all duration-200 cursor-pointer",
-                        isChecked ? "bg-white border border-gray-100" : "hover:bg-white/80"
-                      )}
-                      onClick={() => onToggleSection?.(section.id)}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Icon className={cn(
-                          "w-4 h-4",
-                          isChecked ? "text-blue-500" : "text-gray-400"
-                        )} />
-                        <span className={cn(
-                          "text-sm font-medium",
-                          isChecked ? "text-gray-800" : "text-gray-500"
-                        )}>
-                          {section.title}
-                        </span>
-                      </div>
-                      <Switch
-                        checked={isChecked}
-                        onCheckedChange={() => onToggleSection?.(section.id)}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    </div>
-                  );
-                })}
+                {customSections.map((section) => (
+                  <ToggleItem
+                    key={section.id}
+                    icon={getSectionIcon(section.id, section.title)}
+                    label={section.title}
+                    checked={enabledSections.includes(section.id)}
+                    onChange={() => onToggleSection?.(section.id)}
+                  />
+                ))}
               </div>
-            </div>
+            </>
           )}
-        </CollapsibleSection>
+        </ExpandableSection>
       </div>
     </div>
   );

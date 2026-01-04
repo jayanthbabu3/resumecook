@@ -138,18 +138,17 @@ export const StyleOptionsWrapper: React.FC<StyleOptionsWrapperProps> = ({
         --font-scale: ${scale};
       }
 
-      /* Scale all text elements in V2 */
-      .style-options-wrapper .resume-v2 h1 {
-        font-size: calc(var(--resume-name-size, 28px) * ${scale}) !important;
-      }
-      .style-options-wrapper .resume-v2 h2 {
+      /* Scale all text elements in V2 - respect template typography */
+      /* Only scale section content, NOT header which has its own typography config */
+      .style-options-wrapper .resume-v2 section h2 {
         font-size: calc(var(--resume-section-size, 11px) * ${scale}) !important;
       }
-      .style-options-wrapper .resume-v2 h3 {
+      .style-options-wrapper .resume-v2 section h3 {
         font-size: calc(var(--resume-item-size, 14px) * ${scale}) !important;
       }
-      .style-options-wrapper .resume-v2 p,
-      .style-options-wrapper .resume-v2 span:not(.bullet-char) {
+      /* Only apply body size scaling to section content, not header */
+      .style-options-wrapper .resume-v2 section p,
+      .style-options-wrapper .resume-v2 section span:not(.bullet-char) {
         font-size: calc(var(--resume-body-size, 12px) * ${scale}) !important;
       }
 

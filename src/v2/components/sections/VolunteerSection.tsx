@@ -114,9 +114,18 @@ export const VolunteerSection: React.FC<VolunteerSectionProps> = ({
             <div style={subtitleStyle}>{item.organization}</div>
           )}
 
-          {item.location && (
+          {(item.location || editable) && (
             <div style={{ ...typography.small, color: typography.small.color }}>
-              {item.location}
+              {editable ? (
+                <InlineEditableText
+                  path={`volunteer.${index}.location`}
+                  value={item.location || ''}
+                  style={{ ...typography.small, color: typography.small.color }}
+                  placeholder="Location (optional)"
+                />
+              ) : (
+                item.location
+              )}
             </div>
           )}
         </div>
@@ -150,15 +159,15 @@ export const VolunteerSection: React.FC<VolunteerSectionProps> = ({
         </div>
       </div>
 
-      {item.description && (
+      {(item.description || editable) && (
         <div style={{ ...bodyStyle, marginTop: '6px' }}>
           {editable ? (
             <InlineEditableText
               path={`volunteer.${index}.description`}
-              value={item.description}
+              value={item.description || ''}
               style={bodyStyle}
               multiline
-              placeholder="Description..."
+              placeholder="Description (optional)..."
             />
           ) : (
             item.description

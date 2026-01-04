@@ -48,6 +48,7 @@ import {
   Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { MonthYearPicker } from '@/components/ui/month-year-picker';
 import type { SectionDefinition, FormFieldDefinition } from '../../registry/sectionRegistry';
 import type { V2SectionType } from '../../types/resumeData';
 
@@ -695,12 +696,12 @@ const CompactField: React.FC<CompactFieldProps> = ({
           <span className="text-xs text-gray-600">{placeholder || label}</span>
         </label>
       ) : type === 'month' ? (
-        <Input
-          type="month"
+        <MonthYearPicker
           value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={onChange}
           disabled={disabled}
-          className={`h-8 ${COMPACT_FIELD_INPUT_CLASS}`}
+          placeholder={placeholder || 'Select date'}
+          className="h-8"
         />
       ) : type === 'number' ? (
         <Input

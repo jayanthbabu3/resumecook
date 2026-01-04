@@ -51,7 +51,8 @@ import {
   Github,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { 
+import { MonthYearPicker } from '@/components/ui/month-year-picker';
+import {
   getSectionDefinition,
   type FormFieldDefinition,
 } from '../../registry/sectionRegistry';
@@ -86,6 +87,7 @@ interface ElegantFormProps {
   sectionTitles?: Record<string, string>;
   templateConfig?: any;
   accentColor?: string;
+  onOpenAddSection?: () => void;
 }
 
 // ============================================================================
@@ -99,6 +101,7 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
   sectionTitles = {},
   templateConfig,
   accentColor = '#2563eb', // Default application blue
+  onOpenAddSection,
 }) => {
   const [expandedSections, setExpandedSections] = useState<string[]>(['personal']);
   const [photoUrlInput, setPhotoUrlInput] = useState('');
@@ -449,6 +452,33 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
           </FormSection>
         );
       })}
+
+      {/* ================================================================== */}
+      {/* ADD SECTION CARD */}
+      {/* ================================================================== */}
+      {onOpenAddSection && (
+        <button
+          onClick={onOpenAddSection}
+          className="w-full rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:border-gray-300 hover:bg-gray-100/50 transition-all duration-200 p-4 group"
+        >
+          <div className="flex items-center justify-center gap-3">
+            <div
+              className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-white transition-colors"
+              style={{ color: accentColor }}
+            >
+              <Plus className="w-4 h-4" />
+            </div>
+            <div className="text-left">
+              <span className="text-sm font-medium text-gray-600 group-hover:text-gray-800 transition-colors">
+                Add New Section
+              </span>
+              <p className="text-[11px] text-gray-400 group-hover:text-gray-500 transition-colors">
+                Interests, Awards, Publications & more
+              </p>
+            </div>
+          </div>
+        </button>
+      )}
     </div>
   );
 };
@@ -989,11 +1019,11 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           <span className="text-xs text-gray-600">{placeholder || 'Yes'}</span>
         </label>
       ) : type === 'month' ? (
-        <Input
-          type="month"
+        <MonthYearPicker
           value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          className={`h-8 ${FIELD_INPUT_CLASS}`}
+          onChange={onChange}
+          placeholder={placeholder || 'Select date'}
+          className="h-8"
         />
       ) : type === 'number' ? (
         <Input

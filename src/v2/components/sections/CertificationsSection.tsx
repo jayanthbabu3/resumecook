@@ -150,18 +150,38 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
               <div style={subtitleStyle}>{item.issuer}</div>
             )}
 
-            {item.credentialId && (
+            {(item.credentialId || editable) && (
               <div style={{ ...bodyStyle, fontSize: typography.small.fontSize, color: typography.small.color, marginTop: '2px' }}>
                 {editable ? (
-                  <InlineEditableText
-                    path={`certifications.${index}.credentialId`}
-                    value={item.credentialId}
-                    style={{ ...bodyStyle, fontSize: typography.small.fontSize }}
-                    placeholder="Credential ID"
-                  />
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span>ID:</span>
+                    <InlineEditableText
+                      path={`certifications.${index}.credentialId`}
+                      value={item.credentialId || ''}
+                      style={{ ...bodyStyle, fontSize: typography.small.fontSize }}
+                      placeholder="Credential ID (optional)"
+                    />
+                  </span>
                 ) : (
                   <>ID: {item.credentialId}</>
                 )}
+              </div>
+            )}
+
+            {(item.url || editable) && (
+              <div style={{ ...bodyStyle, fontSize: typography.small.fontSize, color: typography.small.color, marginTop: '2px' }}>
+                {editable ? (
+                  <InlineEditableText
+                    path={`certifications.${index}.url`}
+                    value={item.url || ''}
+                    style={{ ...bodyStyle, fontSize: typography.small.fontSize, color: accent }}
+                    placeholder="Certificate URL (optional)"
+                  />
+                ) : item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accent }}>
+                    View Certificate <ExternalLink className="w-3 h-3 inline" />
+                  </a>
+                ) : null}
               </div>
             )}
           </div>
@@ -178,23 +198,35 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({
           ) : (
             <div>{formatDate(item.date)}</div>
           )}
-          {item.expiryDate && (
-            <div style={{ ...typography.small, color: typography.dates.color }}>
-              Expires: {formatDate(item.expiryDate)}
+          {(item.expiryDate || editable) && (
+            <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
+              {editable ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span>Expires:</span>
+                  <InlineEditableDate
+                    path={`certifications.${index}.expiryDate`}
+                    value={item.expiryDate || ''}
+                    style={{ ...typography.small, color: typography.dates.color }}
+                    formatDisplay={formatDate}
+                  />
+                </span>
+              ) : (
+                <>Expires: {formatDate(item.expiryDate || '')}</>
+              )}
             </div>
           )}
         </div>
       </div>
 
-      {item.description && (
-        <div style={{ ...bodyStyle, marginTop: '6px' }}>
+      {(item.description || editable) && (
+        <div style={{ ...bodyStyle, marginTop: '6px', marginLeft: '24px' }}>
           {editable ? (
             <InlineEditableText
               path={`certifications.${index}.description`}
-              value={item.description}
+              value={item.description || ''}
               style={bodyStyle}
               multiline
-              placeholder="Description..."
+              placeholder="Description (optional)..."
             />
           ) : (
             item.description

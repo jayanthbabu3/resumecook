@@ -17,7 +17,34 @@ interface LanguagesEditorProps {
   onChange: (items: LanguageItem[]) => void;
 }
 
-const PROFICIENCY_LEVELS = ['Native', 'Fluent', 'Professional', 'Intermediate', 'Basic'] as const;
+// Proficiency levels with dot counts for visual indicator
+const PROFICIENCY_LEVELS = [
+  { key: 'Native', dots: 5 },
+  { key: 'Fluent', dots: 5 },
+  { key: 'Professional', dots: 4 },
+  { key: 'Advanced', dots: 4 },
+  { key: 'Intermediate', dots: 3 },
+  { key: 'Basic', dots: 2 },
+  { key: 'Elementary', dots: 1 },
+] as const;
+
+// Helper to render proficiency dots
+const ProficiencyDots = ({ level, accentColor = '#2563eb' }: { level: number; accentColor?: string }) => (
+  <span className="flex gap-0.5 ml-2">
+    {[1, 2, 3, 4, 5].map((d) => (
+      <span
+        key={d}
+        style={{
+          width: '6px',
+          height: '6px',
+          borderRadius: '50%',
+          backgroundColor: d <= level ? accentColor : '#e5e7eb',
+          display: 'inline-block',
+        }}
+      />
+    ))}
+  </span>
+);
 
 export function LanguagesEditor({ items, onChange }: LanguagesEditorProps) {
   const addLanguage = () => {
@@ -61,12 +88,18 @@ export function LanguagesEditor({ items, onChange }: LanguagesEditorProps) {
                   onValueChange={(value) => updateLanguage(lang.id, 'proficiency', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue />
+                    <div className="flex items-center justify-between w-full">
+                      <SelectValue />
+                      <ProficiencyDots level={PROFICIENCY_LEVELS.find(l => l.key === lang.proficiency)?.dots || 3} />
+                    </div>
                   </SelectTrigger>
                   <SelectContent>
                     {PROFICIENCY_LEVELS.map((level) => (
-                      <SelectItem key={level} value={level}>
-                        {level}
+                      <SelectItem key={level.key} value={level.key}>
+                        <div className="flex items-center justify-between w-full min-w-[140px]">
+                          <span>{level.key}</span>
+                          <ProficiencyDots level={level.dots} />
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>

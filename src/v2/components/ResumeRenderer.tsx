@@ -32,7 +32,7 @@ import {
   CoursesSection,
 } from './sections';
 import { SummaryVariantRenderer } from './sections/variants/summary/SummaryVariantRenderer';
-import { Target, Award, Star, Zap, Trophy, CheckCircle2 } from 'lucide-react';
+import { Target, Award, Star, Zap, Trophy, CheckCircle2, Plus } from 'lucide-react';
 
 // Icon mapping for different section types
 const SECTION_ICONS: Record<string, React.ReactNode> = {
@@ -137,6 +137,8 @@ interface ResumeRendererProps {
   className?: string;
   /** Callback for removing a section (for scratch builder) */
   onRemoveSection?: (sectionId: string) => void;
+  /** Callback for opening add section modal */
+  onOpenAddSection?: (column: 'main' | 'sidebar') => void;
 }
 
 export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
@@ -186,6 +188,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   onAddCourse,
   onRemoveCourse,
   className = '',
+  onOpenAddSection,
 }) => {
   // Get template configuration
   // For scratch builder, use the generated config directly
@@ -508,8 +511,8 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       case 'languages':
         // Get languages from V2 data
         const languageItems = resumeData.languages || [];
-        // Get variant from config.languages.variant (from template config)
-        const languagesVariant = (config as any).languages?.variant || (section as any).variant || 'standard';
+        // Get variant - prioritize section.variant (from sectionOverrides) over config default
+        const languagesVariant = (section as any).variant || (config as any).languages?.variant || 'standard';
         return wrap('languages',
           <LanguagesSection
             key={section.id}
@@ -780,6 +783,18 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         {/* Content - Apply padding directly to content wrapper */}
         <div style={contentPaddingStyle}>
           {getOrderedSections().map((section, index) => renderSection(section, index === 0))}
+
+          {/* Add Section Button - Single Column */}
+          {editable && onOpenAddSection && (
+            <button
+              onClick={() => onOpenAddSection('main')}
+              className="w-full mt-3 py-2 rounded-xl text-blue-400 hover:text-blue-500 hover:bg-blue-50/30 transition-all flex items-center justify-center gap-1.5 text-sm font-medium print:hidden"
+              style={{ border: '1px dashed #93c5fd' }}
+            >
+              <Plus className="w-4 h-4" />
+              Add Section
+            </button>
+          )}
         </div>
       </div>
     );
@@ -893,11 +908,35 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         {/* Left column - Sidebar for two-column-left, Main for two-column-right */}
         <div style={isRightSidebar ? mainColumnStyle : sidebarColumnStyle}>
           {(isRightSidebar ? mainSections : sidebarSections).map((section, index) => renderSection(section, index === 0))}
+
+          {/* Add Section Button - Left Column */}
+          {editable && onOpenAddSection && (
+            <button
+              onClick={() => onOpenAddSection(isRightSidebar ? 'main' : 'sidebar')}
+              className="w-full mt-3 py-2 rounded-2xl text-blue-400 hover:text-blue-500 hover:bg-blue-50/30 transition-all flex items-center justify-center gap-1 text-xs font-medium print:hidden"
+              style={{ border: '2px dashed #93c5fd' }}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Add Section
+            </button>
+          )}
         </div>
 
         {/* Right column - Main for two-column-left, Sidebar for two-column-right */}
         <div style={isRightSidebar ? sidebarColumnStyle : mainColumnStyle}>
           {(isRightSidebar ? sidebarSections : mainSections).map((section, index) => renderSection(section, index === 0))}
+
+          {/* Add Section Button - Right Column */}
+          {editable && onOpenAddSection && (
+            <button
+              onClick={() => onOpenAddSection(isRightSidebar ? 'sidebar' : 'main')}
+              className="w-full mt-3 py-2 rounded-2xl text-blue-400 hover:text-blue-500 hover:bg-blue-50/30 transition-all flex items-center justify-center gap-1 text-xs font-medium print:hidden"
+              style={{ border: '2px dashed #93c5fd' }}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Add Section
+            </button>
+          )}
         </div>
       </div>
     </div>

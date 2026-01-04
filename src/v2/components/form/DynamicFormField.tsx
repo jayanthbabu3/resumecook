@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/select';
 import { Plus, Trash2, GripVertical } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { MonthYearPicker } from '@/components/ui/month-year-picker';
 import type { FormFieldDefinition } from '../../registry/sectionRegistry';
 
 // ============================================================================
@@ -102,13 +103,11 @@ export const DynamicFormField: React.FC<DynamicFormFieldProps> = ({
             {label}
             {required && <span className="text-red-500 ml-0.5">*</span>}
           </Label>
-          <Input
-            id={key}
-            type="month"
+          <MonthYearPicker
             value={value || ''}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={onChange}
             disabled={disabled}
-            className={inputClass}
+            placeholder={placeholder || 'Select date'}
           />
         </div>
       );

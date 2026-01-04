@@ -582,7 +582,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               style={{ backgroundColor: colors.border }}
             />
           )}
-          
+
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1">
               {editable ? (
@@ -595,18 +595,51 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               ) : (
                 <h3 style={titleStyle}>{item.position}</h3>
               )}
-              
-              <span style={subtitleStyle}>{item.company}</span>
+
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.company`}
+                  value={item.company}
+                  style={subtitleStyle}
+                />
+              ) : (
+                <span style={subtitleStyle}>{item.company}</span>
+              )}
+
+              {experience.showLocation && (editable || item.location) && (
+                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`experience.${index}.location`}
+                      value={item.location || ''}
+                      style={{ ...typography.small, color: typography.dates.color }}
+                      placeholder="Location"
+                    />
+                  ) : (
+                    item.location
+                  )}
+                </div>
+              )}
             </div>
-            
+
             <div className="text-right flex-shrink-0">
               {renderDates()}
             </div>
           </div>
 
-          {item.description && (
+          {(item.description || editable) && (
             <p style={{ ...bodyStyle, marginTop: '6px', marginBottom: '4px' }}>
-              {item.description}
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.description`}
+                  value={item.description || ''}
+                  style={bodyStyle}
+                  multiline
+                  placeholder="Description (optional)..."
+                />
+              ) : (
+                item.description
+              )}
             </p>
           )}
 
@@ -629,16 +662,64 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         >
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1">
-              <h3 style={titleStyle}>{item.position}</h3>
-              <span style={subtitleStyle}>{item.company}</span>
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.position`}
+                  value={item.position}
+                  as="h3"
+                  style={titleStyle}
+                />
+              ) : (
+                <h3 style={titleStyle}>{item.position}</h3>
+              )}
+
+              <div className="flex items-center gap-2 mt-0.5">
+                {editable ? (
+                  <InlineEditableText
+                    path={`experience.${index}.company`}
+                    value={item.company}
+                    style={subtitleStyle}
+                  />
+                ) : (
+                  <span style={subtitleStyle}>{item.company}</span>
+                )}
+
+                {experience.showLocation && (editable || item.location) && (
+                  <>
+                    <span style={{ color: colors.text.muted }}>•</span>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`experience.${index}.location`}
+                        value={item.location || ''}
+                        style={{ ...typography.small, color: typography.dates.color }}
+                        placeholder="Location"
+                      />
+                    ) : (
+                      <span style={{ ...typography.small, color: typography.dates.color }}>{item.location}</span>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
             <div className="text-right flex-shrink-0">
               {renderDates()}
             </div>
           </div>
 
-          {item.description && (
-            <p style={{ ...bodyStyle, marginTop: '8px' }}>{item.description}</p>
+          {(item.description || editable) && (
+            <p style={{ ...bodyStyle, marginTop: '8px' }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.description`}
+                  value={item.description || ''}
+                  style={bodyStyle}
+                  multiline
+                  placeholder="Description (optional)..."
+                />
+              ) : (
+                item.description
+              )}
+            </p>
           )}
 
           {renderBullets()}
@@ -650,10 +731,41 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
     return (
       <div key={item.id} style={itemStyle}>
         <div className="flex justify-between items-baseline gap-4">
-          <div className="flex items-baseline gap-2">
-            <span style={titleStyle}>{item.position}</span>
+          <div className="flex items-baseline gap-2 flex-wrap">
+            {editable ? (
+              <InlineEditableText
+                path={`experience.${index}.position`}
+                value={item.position}
+                style={titleStyle}
+              />
+            ) : (
+              <span style={titleStyle}>{item.position}</span>
+            )}
             <span style={{ color: colors.text.muted }}>at</span>
-            <span style={subtitleStyle}>{item.company}</span>
+            {editable ? (
+              <InlineEditableText
+                path={`experience.${index}.company`}
+                value={item.company}
+                style={subtitleStyle}
+              />
+            ) : (
+              <span style={subtitleStyle}>{item.company}</span>
+            )}
+            {experience.showLocation && (editable || item.location) && (
+              <>
+                <span style={{ color: colors.text.muted }}>•</span>
+                {editable ? (
+                  <InlineEditableText
+                    path={`experience.${index}.location`}
+                    value={item.location || ''}
+                    style={{ ...typography.small, color: typography.dates.color }}
+                    placeholder="Location"
+                  />
+                ) : (
+                  <span style={{ ...typography.small, color: typography.dates.color }}>{item.location}</span>
+                )}
+              </>
+            )}
           </div>
           {renderDates()}
         </div>

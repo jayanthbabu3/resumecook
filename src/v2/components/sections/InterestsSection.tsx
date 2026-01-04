@@ -121,22 +121,36 @@ export const InterestsSection: React.FC<InterestsSectionProps> = ({
               )}
             </div>
             
-            {item.description && (
-              <ul style={{ 
-                margin: 0, 
-                paddingLeft: '20px',
-                listStyleType: 'disc',
-              }}>
-                {item.description.split('\n').filter(Boolean).map((line, i) => (
-                  <li key={i} style={{ 
+            {(item.description || editable) && (
+              editable ? (
+                <InlineEditableText
+                  path={`interests.${index}.description`}
+                  value={item.description || ''}
+                  style={{
                     fontSize: typography.body.fontSize,
                     color: typography.body.color,
-                    marginBottom: '2px',
-                  }}>
-                    {line}
-                  </li>
-                ))}
-              </ul>
+                    marginTop: '4px',
+                  }}
+                  multiline
+                  placeholder="Description or activities (one per line, optional)..."
+                />
+              ) : (
+                <ul style={{
+                  margin: 0,
+                  paddingLeft: '20px',
+                  listStyleType: 'disc',
+                }}>
+                  {item.description?.split('\n').filter(Boolean).map((line, i) => (
+                    <li key={i} style={{
+                      fontSize: typography.body.fontSize,
+                      color: typography.body.color,
+                      marginBottom: '2px',
+                    }}>
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              )
             )}
           </div>
         ))}

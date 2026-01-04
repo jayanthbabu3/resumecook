@@ -427,14 +427,75 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
               style={{ backgroundColor: colors.border }}
             />
           )}
-          
+
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1">
-              <h3 style={degreeStyle}>
-                {item.degree}
-                {education.showField && item.field && ` in ${item.field}`}
-              </h3>
-              <span style={schoolStyle}>{item.school}</span>
+              {editable ? (
+                <div className="flex items-baseline gap-1 flex-wrap">
+                  <InlineEditableText
+                    path={`education.${index}.degree`}
+                    value={item.degree || 'Degree'}
+                    as="h3"
+                    style={degreeStyle}
+                  />
+                  {education.showField && (
+                    <>
+                      <span style={degreeStyle}>in</span>
+                      <InlineEditableText
+                        path={`education.${index}.field`}
+                        value={item.field || 'Field of Study'}
+                        style={degreeStyle}
+                      />
+                    </>
+                  )}
+                </div>
+              ) : (
+                <h3 style={degreeStyle}>
+                  {item.degree}
+                  {education.showField && item.field && ` in ${item.field}`}
+                </h3>
+              )}
+
+              {editable ? (
+                <InlineEditableText
+                  path={`education.${index}.school`}
+                  value={item.school}
+                  style={schoolStyle}
+                />
+              ) : (
+                <span style={schoolStyle}>{item.school}</span>
+              )}
+
+              {(editable || item.location) && (
+                <div style={{ ...typography.small, color: typography.dates.color, marginTop: '2px' }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`education.${index}.location`}
+                      value={item.location || ''}
+                      style={{ ...typography.small, color: typography.dates.color }}
+                      placeholder="Location"
+                    />
+                  ) : (
+                    item.location
+                  )}
+                </div>
+              )}
+
+              {/* GPA */}
+              {education.showGPA && (editable || item.gpa) && (
+                <div style={{ ...fieldStyle, marginTop: '4px' }} className="flex items-center gap-1">
+                  <span>GPA:</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`education.${index}.gpa`}
+                      value={item.gpa || ''}
+                      style={fieldStyle}
+                    />
+                  ) : (
+                    <span>{item.gpa}</span>
+                  )}
+                </div>
+              )}
             </div>
             <div className="text-right flex-shrink-0">
               {renderDates()}
@@ -458,19 +519,78 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
         >
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1">
-              <h3 style={degreeStyle}>
-                {item.degree}
-                {education.showField && item.field && ` in ${item.field}`}
-              </h3>
-              <span style={schoolStyle}>{item.school}</span>
+              {editable ? (
+                <div className="flex items-baseline gap-1 flex-wrap">
+                  <InlineEditableText
+                    path={`education.${index}.degree`}
+                    value={item.degree || 'Degree'}
+                    as="h3"
+                    style={degreeStyle}
+                  />
+                  {education.showField && (
+                    <>
+                      <span style={degreeStyle}>in</span>
+                      <InlineEditableText
+                        path={`education.${index}.field`}
+                        value={item.field || 'Field of Study'}
+                        style={degreeStyle}
+                      />
+                    </>
+                  )}
+                </div>
+              ) : (
+                <h3 style={degreeStyle}>
+                  {item.degree}
+                  {education.showField && item.field && ` in ${item.field}`}
+                </h3>
+              )}
+
+              <div className="flex items-center gap-2 mt-0.5">
+                {editable ? (
+                  <InlineEditableText
+                    path={`education.${index}.school`}
+                    value={item.school}
+                    style={schoolStyle}
+                  />
+                ) : (
+                  <span style={schoolStyle}>{item.school}</span>
+                )}
+
+                {(editable || item.location) && (
+                  <>
+                    <span style={{ color: colors.text.muted }}>•</span>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`education.${index}.location`}
+                        value={item.location || ''}
+                        style={dateStyle}
+                        placeholder="Location"
+                      />
+                    ) : (
+                      <span style={dateStyle}>{item.location}</span>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
             <div className="text-right flex-shrink-0">
               {renderDates()}
             </div>
           </div>
-          
-          {education.showGPA && item.gpa && (
-            <p style={{ ...fieldStyle, marginTop: '8px' }}>GPA: {item.gpa}</p>
+
+          {education.showGPA && (editable || item.gpa) && (
+            <div style={{ ...fieldStyle, marginTop: '8px' }} className="flex items-center gap-1">
+              <span>GPA:</span>
+              {editable ? (
+                <InlineEditableText
+                  path={`education.${index}.gpa`}
+                  value={item.gpa || ''}
+                  style={fieldStyle}
+                />
+              ) : (
+                <span>{item.gpa}</span>
+              )}
+            </div>
           )}
         </div>
       );
@@ -479,8 +599,26 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
     // Minimal variant
     return (
       <div key={item.id} style={itemStyle}>
-        <h3 style={degreeStyle}>{item.degree}</h3>
-        <span style={schoolStyle}>{item.school}</span>
+        {editable ? (
+          <InlineEditableText
+            path={`education.${index}.degree`}
+            value={item.degree || 'Degree'}
+            as="h3"
+            style={degreeStyle}
+          />
+        ) : (
+          <h3 style={degreeStyle}>{item.degree}</h3>
+        )}
+        {editable ? (
+          <InlineEditableText
+            path={`education.${index}.school`}
+            value={item.school}
+            style={schoolStyle}
+          />
+        ) : (
+          <span style={schoolStyle}>{item.school}</span>
+        )}
+        {renderDates()}
       </div>
     );
   };

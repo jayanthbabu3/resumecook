@@ -126,6 +126,19 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
           ) : (
             <div style={subtitleStyle}>{item.provider}</div>
           )}
+
+          {/* Editable URL */}
+          {editable && (
+            <div className="flex items-center gap-1" style={{ ...typography.small, color: accent, marginTop: '2px' }}>
+              <ExternalLink className="w-3 h-3" />
+              <InlineEditableText
+                path={`courses.${index}.url`}
+                value={item.url || ''}
+                style={{ ...typography.small, color: accent }}
+                placeholder="Course URL (optional)"
+              />
+            </div>
+          )}
         </div>
 
         <div style={dateStyle} className="flex-shrink-0">
@@ -142,15 +155,15 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
         </div>
       </div>
 
-      {item.description && (
+      {(item.description || editable) && (
         <div style={{ ...bodyStyle, marginTop: '4px' }}>
           {editable ? (
             <InlineEditableText
               path={`courses.${index}.description`}
-              value={item.description}
+              value={item.description || ''}
               style={bodyStyle}
               multiline
-              placeholder="Description..."
+              placeholder="Description (optional)..."
             />
           ) : (
             item.description

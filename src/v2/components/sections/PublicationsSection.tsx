@@ -118,9 +118,31 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
             <div style={subtitleStyle}>{item.publisher}</div>
           )}
 
-          {item.authors?.length > 0 && (
+          {(item.authors?.length > 0 || editable) && (
             <div style={{ ...typography.small, color: typography.small.color, marginTop: '2px' }}>
-              {item.authors.join(', ')}
+              {editable ? (
+                <InlineEditableText
+                  path={`publications.${index}.authors`}
+                  value={item.authors?.join(', ') || ''}
+                  style={{ ...typography.small, color: typography.small.color }}
+                  placeholder="Authors (comma-separated)"
+                />
+              ) : (
+                item.authors?.join(', ')
+              )}
+            </div>
+          )}
+
+          {/* Editable URL */}
+          {editable && (
+            <div style={{ ...typography.small, color: accent, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <ExternalLink className="w-3 h-3 flex-shrink-0" />
+              <InlineEditableText
+                path={`publications.${index}.url`}
+                value={item.url || ''}
+                style={{ ...typography.small, color: accent }}
+                placeholder="Publication URL (optional)"
+              />
             </div>
           )}
         </div>
@@ -139,15 +161,15 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
         </div>
       </div>
 
-      {item.description && (
+      {(item.description || editable) && (
         <div style={{ ...bodyStyle, marginTop: '4px' }}>
           {editable ? (
             <InlineEditableText
               path={`publications.${index}.description`}
-              value={item.description}
+              value={item.description || ''}
               style={bodyStyle}
               multiline
-              placeholder="Description..."
+              placeholder="Description (optional)..."
             />
           ) : (
             item.description
@@ -155,9 +177,19 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
         </div>
       )}
 
-      {item.doi && (
-        <div style={{ ...typography.small, color: typography.small.color, marginTop: '2px' }}>
-          DOI: {item.doi}
+      {(item.doi || editable) && (
+        <div style={{ ...typography.small, color: typography.small.color, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span>DOI:</span>
+          {editable ? (
+            <InlineEditableText
+              path={`publications.${index}.doi`}
+              value={item.doi || ''}
+              style={{ ...typography.small, color: typography.small.color }}
+              placeholder="DOI (optional)"
+            />
+          ) : (
+            item.doi
+          )}
         </div>
       )}
 

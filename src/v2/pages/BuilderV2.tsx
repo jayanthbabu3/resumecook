@@ -41,6 +41,7 @@ import { cn } from '@/lib/utils';
 import { ResumeForm } from '@/components/resume/ResumeForm';
 import { StyleOptionsPanelV2 } from '../components/StyleOptionsPanelV2';
 import SectionReorderDialog from '../components/SectionReorderDialog';
+import { AddSectionModal } from '../components/AddSectionModal';
 
 import { ResumeRenderer } from '../components/ResumeRenderer';
 import { useTemplateConfig } from '../hooks/useTemplateConfig';
@@ -75,6 +76,9 @@ export const BuilderV2: React.FC = () => {
   const [editorMode, setEditorMode] = useState<'preview' | 'live' | 'form'>('preview');
   const [sectionOverrides, setSectionOverrides] = useState<Record<string, any>>({});
   const [showReorder, setShowReorder] = useState(false);
+  // Add Section Modal state
+  const [showAddSectionModal, setShowAddSectionModal] = useState(false);
+  const [addSectionTargetColumn, setAddSectionTargetColumn] = useState<'main' | 'sidebar'>('main');
   // Toggle between old form and new dynamic form (for testing)
   const [useNewForm, setUseNewForm] = useState(true);
   
@@ -563,6 +567,166 @@ export const BuilderV2: React.FC = () => {
     });
   }, []);
 
+  // Open add section modal
+  const handleOpenAddSection = useCallback((column: 'main' | 'sidebar') => {
+    setAddSectionTargetColumn(column);
+    setShowAddSectionModal(true);
+  }, []);
+
+  // Handle adding a new section from the modal
+  const handleAddSection = useCallback((sectionType: string, variant: string, column: 'main' | 'sidebar') => {
+    // Generate unique section ID
+    const sectionId = sectionType === 'custom'
+      ? `custom-${Date.now()}`
+      : sectionType;
+
+    // Determine next order after all existing sections
+    const overrideOrders = Object.values(sectionOverrides)
+      .map((o: any) => o.order)
+      .filter((o): o is number => typeof o === 'number');
+    const configOrders = config.sections.map(s => s.order ?? 0);
+    const maxOrder = Math.max(...overrideOrders, ...configOrders, 0);
+    const nextOrder = maxOrder + 1;
+
+    // Add default data for the new section
+    if (sectionType === 'custom') {
+      setResumeData(prev => ({
+        ...prev,
+        customSections: [
+          ...(prev.customSections || []),
+          {
+            id: sectionId,
+            title: 'New Section',
+            items: [{ id: `item-${Date.now()}`, content: 'New item' }],
+          },
+        ],
+      }));
+    } else if (sectionType === 'interests') {
+      setResumeData(prev => ({
+        ...prev,
+        interests: [
+          ...(prev.interests || []),
+          { id: `interest-${Date.now()}`, name: 'New Interest' },
+        ],
+      }));
+    } else if (sectionType === 'awards') {
+      setResumeData(prev => ({
+        ...prev,
+        awards: [
+          ...(prev.awards || []),
+          { id: `award-${Date.now()}`, title: 'Award Title', issuer: 'Organization', date: '' },
+        ],
+      }));
+    } else if (sectionType === 'publications') {
+      setResumeData(prev => ({
+        ...prev,
+        publications: [
+          ...(prev.publications || []),
+          { id: `pub-${Date.now()}`, title: 'Publication Title', publisher: 'Publisher', date: '' },
+        ],
+      }));
+    } else if (sectionType === 'volunteer') {
+      setResumeData(prev => ({
+        ...prev,
+        volunteer: [
+          ...(prev.volunteer || []),
+          { id: `vol-${Date.now()}`, organization: 'Organization', role: 'Role', startDate: '', endDate: '', current: false },
+        ],
+      }));
+    } else if (sectionType === 'speaking') {
+      setResumeData(prev => ({
+        ...prev,
+        speaking: [
+          ...(prev.speaking || []),
+          { id: `speak-${Date.now()}`, event: 'Conference', topic: 'Topic', date: '' },
+        ],
+      }));
+    } else if (sectionType === 'patents') {
+      setResumeData(prev => ({
+        ...prev,
+        patents: [
+          ...(prev.patents || []),
+          { id: `patent-${Date.now()}`, title: 'Patent Title', patentNumber: '', date: '', status: 'Pending' as const },
+        ],
+      }));
+    } else if (sectionType === 'references') {
+      setResumeData(prev => ({
+        ...prev,
+        references: [
+          ...(prev.references || []),
+          { id: `ref-${Date.now()}`, name: 'Reference Name', title: 'Title', company: 'Company', relationship: 'Colleague' },
+        ],
+      }));
+    } else if (sectionType === 'courses') {
+      setResumeData(prev => ({
+        ...prev,
+        courses: [
+          ...(prev.courses || []),
+          { id: `course-${Date.now()}`, name: 'Course Name', provider: 'Provider', date: '' },
+        ],
+      }));
+    } else if (sectionType === 'projects') {
+      setResumeData(prev => ({
+        ...prev,
+        projects: [
+          ...(prev.projects || []),
+          { id: `proj-${Date.now()}`, name: 'Project Name', description: 'Description', technologies: [] },
+        ],
+      }));
+    } else if (sectionType === 'certifications') {
+      setResumeData(prev => ({
+        ...prev,
+        certifications: [
+          ...(prev.certifications || []),
+          { id: `cert-${Date.now()}`, name: 'Certification Name', issuer: 'Issuer', date: '' },
+        ],
+      }));
+    } else if (sectionType === 'languages') {
+      setResumeData(prev => ({
+        ...prev,
+        languages: [
+          ...(prev.languages || []),
+          { id: `lang-${Date.now()}`, language: 'Language', proficiency: 'Intermediate' as const },
+        ],
+      }));
+    } else if (sectionType === 'achievements') {
+      setResumeData(prev => ({
+        ...prev,
+        achievements: [
+          ...(prev.achievements || []),
+          { id: `ach-${Date.now()}`, title: 'Achievement', description: '' },
+        ],
+      }));
+    } else if (sectionType === 'strengths') {
+      setResumeData(prev => ({
+        ...prev,
+        strengths: [
+          ...(prev.strengths || []),
+          { id: `str-${Date.now()}`, title: 'Strength', description: '' },
+        ],
+      }));
+    }
+
+    // Add section override with variant and column
+    setSectionOverrides(prev => ({
+      ...prev,
+      [sectionId]: {
+        type: sectionType,
+        title: sectionType === 'custom' ? 'New Section' : sectionType.charAt(0).toUpperCase() + sectionType.slice(1),
+        defaultTitle: sectionType === 'custom' ? 'New Section' : sectionType.charAt(0).toUpperCase() + sectionType.slice(1),
+        enabled: true,
+        order: nextOrder,
+        column,
+        variant,
+      },
+    }));
+
+    // Enable the section
+    setEnabledSections(prev => (prev.includes(sectionId) ? prev : [...prev, sectionId]));
+
+    toast.success(`${sectionType === 'custom' ? 'Custom section' : sectionType.charAt(0).toUpperCase() + sectionType.slice(1)} added!`);
+  }, [config.sections, sectionOverrides]);
+
   // Update section label
   const handleUpdateLabel = useCallback((sectionId: string, newLabel: string) => {
     setSectionLabels(prev => ({
@@ -787,6 +951,7 @@ export const BuilderV2: React.FC = () => {
                         sectionTitles={sectionLabels}
                         templateConfig={config}
                         accentColor="#2563eb"
+                        onOpenAddSection={() => setShowAddSectionModal(true)}
                       />
                     ) : (
                       <ResumeForm 
@@ -921,17 +1086,17 @@ export const BuilderV2: React.FC = () => {
                         </PopoverTrigger>
                         <PopoverContent align="end" className="w-auto p-3 rounded-xl shadow-xl">
                           {/* Professional resume color palette */}
-                          <div className="flex flex-wrap gap-2 max-w-[220px]">
+                          <div className="grid grid-cols-5 gap-2">
                             {[
-                              // Professional Blues (most popular for resumes)
-                              '#1e3a5f', '#1e40af', '#2563eb', '#0369a1', '#0891b2',
-                              // Teal & Green (modern professional)
-                              '#0d9488', '#059669', '#15803d', '#166534', '#365314',
-                              // Burgundy & Red (executive, bold)
-                              '#7f1d1d', '#991b1b', '#b91c1c', '#9f1239', '#881337',
-                              // Purple & Indigo (creative professional)
-                              '#4c1d95', '#5b21b6', '#6d28d9', '#4338ca', '#3730a3',
-                              // Neutral & Classic (timeless)
+                              // Row 1: Blues & Cyan
+                              '#1a365d', '#1e40af', '#2563eb', '#0891b2', '#0284c7',
+                              // Row 2: Teal & Green
+                              '#0f766e', '#0d9488', '#059669', '#16a34a', '#15803d',
+                              // Row 3: Warm & Executive
+                              '#7c2d12', '#b45309', '#9f1239', '#be185d', '#a21caf',
+                              // Row 4: Purple & Indigo
+                              '#6d28d9', '#7c3aed', '#4338ca', '#4f46e5', '#6366f1',
+                              // Row 5: Neutral & Minimal
                               '#0f172a', '#1e293b', '#334155', '#475569', '#64748b',
                             ].map((color) => (
                               <button
@@ -941,16 +1106,18 @@ export const BuilderV2: React.FC = () => {
                                   setThemeColors({ ...themeColors, primary: color });
                                 }}
                                 className={cn(
-                                  "w-8 h-8 rounded-full transition-all duration-150 hover:scale-110 shadow-sm",
-                                  (themeColors.primary || themeColor) === color && "ring-2 ring-offset-2 ring-gray-900"
+                                  "w-8 h-8 rounded-full transition-all duration-150 hover:scale-110",
+                                  (themeColors.primary || themeColor) === color
+                                    ? "ring-2 ring-offset-2 ring-gray-900 shadow-lg"
+                                    : "shadow-sm hover:shadow-md"
                                 )}
                                 style={{ backgroundColor: color }}
                               />
                             ))}
                           </div>
+
                           {/* Custom color input */}
                           <div className="mt-3 pt-3 border-t border-gray-100">
-                            <label className="text-xs text-gray-500 mb-1.5 block">Custom Color</label>
                             <div className="flex items-center gap-2">
                               <input
                                 type="color"
@@ -971,7 +1138,7 @@ export const BuilderV2: React.FC = () => {
                                     setThemeColors({ ...themeColors, primary: val });
                                   }
                                 }}
-                                placeholder="#1e3a5f"
+                                placeholder="#1a365d"
                                 className="h-8 text-xs font-mono w-24"
                               />
                             </div>
@@ -1058,6 +1225,7 @@ export const BuilderV2: React.FC = () => {
                             onRemoveReference={handleRemoveReference}
                             onAddCourse={handleAddCourse}
                             onRemoveCourse={handleRemoveCourse}
+                            onOpenAddSection={handleOpenAddSection}
                           />
                         </InlineEditProvider>
                       </div>
@@ -1092,8 +1260,8 @@ export const BuilderV2: React.FC = () => {
                     {/* Add Section */}
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <button 
-                          onClick={handleAddCustomSection}
+                        <button
+                          onClick={() => setShowAddSectionModal(true)}
                           className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-500 hover:text-gray-700 hover:bg-white/80 transition-all duration-200"
                         >
                           <Plus className="h-4 w-4" />
@@ -1167,6 +1335,7 @@ export const BuilderV2: React.FC = () => {
                   resumeData={resumeData}
                   templateId={templateId}
                   themeColors={themeColors}
+                  sectionOverrides={sectionOverrides}
                   editable={false}
                   sectionLabels={sectionLabels}
                   enabledSections={enabledSections}
@@ -1182,6 +1351,16 @@ export const BuilderV2: React.FC = () => {
         onOpenChange={setShowReorder}
         sections={getAllSectionsForReorder()}
         onApply={handleApplyReorder}
+      />
+
+      <AddSectionModal
+        isOpen={showAddSectionModal}
+        onClose={() => setShowAddSectionModal(false)}
+        onAddSection={handleAddSection}
+        existingSections={enabledSections}
+        layoutType={config.layout.type}
+        targetColumn={addSectionTargetColumn}
+        themeColor={themeColors.primary || '#0891b2'}
       />
     </div>
   );

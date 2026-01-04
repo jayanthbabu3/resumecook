@@ -152,15 +152,15 @@ export const AwardsSection: React.FC<AwardsSectionProps> = ({
         </div>
       </div>
 
-      {item.description && (
+      {(item.description || editable) && (
         <div style={{ ...bodyStyle, marginTop: '4px' }}>
           {editable ? (
             <InlineEditableText
               path={`awards.${index}.description`}
-              value={item.description}
+              value={item.description || ''}
               style={bodyStyle}
               multiline
-              placeholder="Description..."
+              placeholder="Description (optional)..."
             />
           ) : (
             item.description

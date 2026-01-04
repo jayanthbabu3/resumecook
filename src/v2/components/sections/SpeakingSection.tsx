@@ -117,10 +117,32 @@ export const SpeakingSection: React.FC<SpeakingSectionProps> = ({
             <div style={subtitleStyle}>{item.event}</div>
           )}
 
-          {item.location && (
+          {(item.location || editable) && (
             <div className="flex items-center gap-1" style={{ ...typography.small, color: typography.small.color }}>
               <MapPin className="w-3 h-3" />
-              {item.location}
+              {editable ? (
+                <InlineEditableText
+                  path={`speaking.${index}.location`}
+                  value={item.location || ''}
+                  style={{ ...typography.small, color: typography.small.color }}
+                  placeholder="Location (optional)"
+                />
+              ) : (
+                item.location
+              )}
+            </div>
+          )}
+
+          {/* Editable URL */}
+          {editable && (
+            <div className="flex items-center gap-1" style={{ ...typography.small, color: accent, marginTop: '2px' }}>
+              <ExternalLink className="w-3 h-3" />
+              <InlineEditableText
+                path={`speaking.${index}.url`}
+                value={item.url || ''}
+                style={{ ...typography.small, color: accent }}
+                placeholder="Event URL (optional)"
+              />
             </div>
           )}
         </div>
@@ -139,15 +161,15 @@ export const SpeakingSection: React.FC<SpeakingSectionProps> = ({
         </div>
       </div>
 
-      {item.description && (
+      {(item.description || editable) && (
         <div style={{ ...bodyStyle, marginTop: '4px' }}>
           {editable ? (
             <InlineEditableText
               path={`speaking.${index}.description`}
-              value={item.description}
+              value={item.description || ''}
               style={bodyStyle}
               multiline
-              placeholder="Description..."
+              placeholder="Description (optional)..."
             />
           ) : (
             item.description

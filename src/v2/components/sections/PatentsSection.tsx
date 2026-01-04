@@ -108,26 +108,74 @@ export const PatentsSection: React.FC<PatentsSectionProps> = ({
           </div>
           
           <div className="flex items-center gap-2 mt-1">
-            <span style={{ ...typography.small, color: typography.small.color }}>
-              {item.patentNumber}
-            </span>
-            <span
-              style={{
-                fontSize: '10px',
-                padding: '1px 6px',
-                borderRadius: '4px',
-                backgroundColor: `${statusColors[item.status]}20`,
-                color: statusColors[item.status],
-                fontWeight: 500,
-              }}
-            >
-              {item.status}
-            </span>
+            {editable ? (
+              <InlineEditableText
+                path={`patents.${index}.patentNumber`}
+                value={item.patentNumber || ''}
+                style={{ ...typography.small, color: typography.small.color }}
+                placeholder="Patent Number"
+              />
+            ) : (
+              <span style={{ ...typography.small, color: typography.small.color }}>
+                {item.patentNumber}
+              </span>
+            )}
+            {editable ? (
+              <InlineEditableText
+                path={`patents.${index}.status`}
+                value={item.status || 'Pending'}
+                style={{
+                  fontSize: '10px',
+                  padding: '1px 6px',
+                  borderRadius: '4px',
+                  backgroundColor: `${statusColors[item.status] || '#f59e0b'}20`,
+                  color: statusColors[item.status] || '#f59e0b',
+                  fontWeight: 500,
+                }}
+                placeholder="Status"
+              />
+            ) : (
+              <span
+                style={{
+                  fontSize: '10px',
+                  padding: '1px 6px',
+                  borderRadius: '4px',
+                  backgroundColor: `${statusColors[item.status]}20`,
+                  color: statusColors[item.status],
+                  fontWeight: 500,
+                }}
+              >
+                {item.status}
+              </span>
+            )}
           </div>
 
-          {item.inventors?.length > 0 && (
+          {(item.inventors?.length > 0 || editable) && (
             <div style={{ ...typography.small, color: typography.small.color, marginTop: '2px' }}>
-              Inventors: {item.inventors.join(', ')}
+              <span>Inventors: </span>
+              {editable ? (
+                <InlineEditableText
+                  path={`patents.${index}.inventors`}
+                  value={item.inventors?.join(', ') || ''}
+                  style={{ ...typography.small, color: typography.small.color }}
+                  placeholder="Inventor names (comma-separated)"
+                />
+              ) : (
+                item.inventors?.join(', ')
+              )}
+            </div>
+          )}
+
+          {/* Editable URL */}
+          {editable && (
+            <div className="flex items-center gap-1" style={{ ...typography.small, color: accent, marginTop: '2px' }}>
+              <ExternalLink className="w-3 h-3" />
+              <InlineEditableText
+                path={`patents.${index}.url`}
+                value={item.url || ''}
+                style={{ ...typography.small, color: accent }}
+                placeholder="Patent URL (optional)"
+              />
             </div>
           )}
         </div>
@@ -146,15 +194,15 @@ export const PatentsSection: React.FC<PatentsSectionProps> = ({
         </div>
       </div>
 
-      {item.description && (
+      {(item.description || editable) && (
         <div style={{ ...bodyStyle, marginTop: '4px' }}>
           {editable ? (
             <InlineEditableText
               path={`patents.${index}.description`}
-              value={item.description}
+              value={item.description || ''}
               style={bodyStyle}
               multiline
-              placeholder="Description..."
+              placeholder="Description (optional)..."
             />
           ) : (
             item.description
