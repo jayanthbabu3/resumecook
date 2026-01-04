@@ -1,29 +1,23 @@
 /**
- * Patents Compact Variant
+ * Courses Compact Variant
  *
- * Most space-efficient layout - single line per patent.
- * Uses theme colors for styling.
+ * Most space-efficient layout - single line per course.
+ * Minimal info: name, provider, date only.
  */
 
 import React from 'react';
-import { X, Plus, ExternalLink } from 'lucide-react';
+import { X, Plus, CheckCircle } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
-import type { PatentsVariantProps } from '../types';
+import type { CoursesVariantProps } from '../types';
 
-const STATUS_COLORS: Record<string, string> = {
-  Pending: '#f59e0b',
-  Granted: '#10b981',
-  Published: '#3b82f6',
-};
-
-export const PatentsCompact: React.FC<PatentsVariantProps> = ({
+export const CoursesCompact: React.FC<CoursesVariantProps> = ({
   items,
   config,
   accentColor,
   editable = false,
-  onAddPatent,
-  onRemovePatent,
+  onAddCourse,
+  onRemoveCourse,
   formatDate,
 }) => {
   const { typography } = config;
@@ -46,9 +40,9 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
             fontSize: '12px',
           }}
         >
-          {editable && onRemovePatent && (
+          {editable && onRemoveCourse && (
             <button
-              onClick={() => onRemovePatent(item.id)}
+              onClick={() => onRemoveCourse(item.id)}
               className="absolute -right-1 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 bg-red-100 hover:bg-red-200 rounded-full z-10"
             >
               <X className="w-2.5 h-2.5 text-red-600" />
@@ -59,60 +53,30 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', flex: 1 }}>
             {editable ? (
               <InlineEditableText
-                path={`patents.${index}.title`}
-                value={item.title}
+                path={`courses.${index}.name`}
+                value={item.name}
                 style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: '12px' }}
-                placeholder="Patent Title"
+                placeholder="Course Name"
               />
             ) : (
-              <span style={{ fontWeight: 600, color: typography.itemTitle.color }}>{item.title}</span>
+              <span style={{ fontWeight: 600, color: typography.itemTitle.color }}>{item.name}</span>
+            )}
+
+            {item.certificate && (
+              <CheckCircle style={{ width: '10px', height: '10px', color: '#10b981', flexShrink: 0 }} />
             )}
 
             <span style={{ color: '#d1d5db' }}>•</span>
 
             {editable ? (
               <InlineEditableText
-                path={`patents.${index}.patentNumber`}
-                value={item.patentNumber || ''}
-                style={{ color: '#6b7280', fontSize: '11px' }}
-                placeholder="Patent #"
+                path={`courses.${index}.provider`}
+                value={item.provider}
+                style={{ color: accentColor, fontSize: '12px' }}
+                placeholder="Provider"
               />
             ) : (
-              <span style={{ color: '#6b7280', fontSize: '11px' }}>{item.patentNumber}</span>
-            )}
-
-            {/* Status badge */}
-            <span
-              style={{
-                fontSize: '9px',
-                padding: '1px 5px',
-                borderRadius: '3px',
-                backgroundColor: `${STATUS_COLORS[item.status] || STATUS_COLORS.Pending}15`,
-                color: STATUS_COLORS[item.status] || STATUS_COLORS.Pending,
-                fontWeight: 500,
-              }}
-            >
-              {editable ? (
-                <InlineEditableText
-                  path={`patents.${index}.status`}
-                  value={item.status || 'Pending'}
-                  style={{ fontSize: '9px', fontWeight: 500 }}
-                  placeholder="Status"
-                />
-              ) : (
-                item.status
-              )}
-            </span>
-
-            {!editable && item.url && (
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: accentColor, flexShrink: 0 }}
-              >
-                <ExternalLink style={{ width: '10px', height: '10px' }} />
-              </a>
+              <span style={{ color: accentColor }}>{item.provider}</span>
             )}
           </div>
 
@@ -120,7 +84,7 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
           <div style={{ fontSize: '11px', color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
             {editable ? (
               <InlineEditableDate
-                path={`patents.${index}.date`}
+                path={`courses.${index}.date`}
                 value={item.date}
                 formatDisplay={formatDate}
                 style={{ fontSize: '11px' }}
@@ -132,9 +96,9 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
         </div>
       ))}
 
-      {editable && onAddPatent && (
+      {editable && onAddCourse && (
         <button
-          onClick={onAddPatent}
+          onClick={onAddCourse}
           className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
           style={{ color: accentColor, borderColor: accentColor }}
         >
@@ -146,4 +110,4 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
   );
 };
 
-export default PatentsCompact;
+export default CoursesCompact;

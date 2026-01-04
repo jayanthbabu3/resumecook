@@ -1,12 +1,12 @@
 /**
  * Volunteer Standard Variant
  *
- * Traditional experience-like layout for volunteer work.
+ * Compact layout for volunteer work.
  * Uses theme colors for styling.
  */
 
 import React from 'react';
-import { X, Plus, Heart } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { VolunteerVariantProps } from '../types';
@@ -20,37 +20,36 @@ export const VolunteerStandard: React.FC<VolunteerVariantProps> = ({
   onRemoveVolunteer,
   formatDate,
 }) => {
-  const { typography, spacing } = config;
+  const { typography } = config;
 
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       {items.map((item, index) => (
         <div
           key={item.id || index}
           className="group relative"
           style={{
-            padding: '12px 16px',
-            backgroundColor: `${accentColor}06`,
-            borderRadius: '10px',
-            borderLeft: `3px solid ${accentColor}`,
+            padding: '10px 12px',
+            backgroundColor: `${accentColor}05`,
+            borderRadius: '6px',
+            borderLeft: `2px solid ${accentColor}`,
           }}
         >
           {editable && onRemoveVolunteer && (
             <button
               onClick={() => onRemoveVolunteer(item.id)}
-              className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full z-10"
+              className="absolute -right-1 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 bg-red-100 hover:bg-red-200 rounded-full z-10"
             >
               <X className="w-3 h-3 text-red-600" />
             </button>
           )}
 
+          {/* First row: Role - Organization - Date */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
-            <div style={{ flex: 1 }}>
-              {/* Role */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Heart style={{ width: '16px', height: '16px', color: accentColor, flexShrink: 0 }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', flexWrap: 'wrap' }}>
                 {editable ? (
                   <InlineEditableText
                     path={`volunteer.${index}.role`}
@@ -60,7 +59,7 @@ export const VolunteerStandard: React.FC<VolunteerVariantProps> = ({
                       fontWeight: 600,
                       color: typography.itemTitle.color,
                     }}
-                    placeholder="Role/Position"
+                    placeholder="Role"
                   />
                 ) : (
                   <span style={{
@@ -71,65 +70,51 @@ export const VolunteerStandard: React.FC<VolunteerVariantProps> = ({
                     {item.role}
                   </span>
                 )}
-              </div>
-
-              {/* Organization */}
-              <div style={{
-                fontSize: typography.body.fontSize,
-                color: accentColor,
-                fontWeight: 500,
-                marginTop: '2px',
-                marginLeft: '24px',
-              }}>
+                <span style={{ color: '#d1d5db' }}>@</span>
                 {editable ? (
                   <InlineEditableText
                     path={`volunteer.${index}.organization`}
                     value={item.organization}
-                    style={{ color: accentColor, fontWeight: 500 }}
+                    style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}
                     placeholder="Organization"
                   />
                 ) : (
-                  item.organization
+                  <span style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}>
+                    {item.organization}
+                  </span>
+                )}
+                {(item.location || editable) && (
+                  <>
+                    <span style={{ color: '#d1d5db' }}>•</span>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`volunteer.${index}.location`}
+                        value={item.location || ''}
+                        style={{ fontSize: '11px', color: '#6b7280' }}
+                        placeholder="Location"
+                      />
+                    ) : (
+                      <span style={{ fontSize: '11px', color: '#6b7280' }}>{item.location}</span>
+                    )}
+                  </>
                 )}
               </div>
-
-              {/* Location */}
-              {(item.location || editable) && (
-                <div style={{
-                  fontSize: '12px',
-                  color: '#6b7280',
-                  marginTop: '2px',
-                  marginLeft: '24px',
-                }}>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`volunteer.${index}.location`}
-                      value={item.location || ''}
-                      style={{ fontSize: '12px', color: '#6b7280' }}
-                      placeholder="Location (optional)"
-                    />
-                  ) : (
-                    item.location
-                  )}
-                </div>
-              )}
             </div>
 
-            {/* Date Range */}
+            {/* Date */}
             <div style={{
-              fontSize: typography.dates.fontSize,
+              fontSize: '11px',
               color: typography.dates.color,
               whiteSpace: 'nowrap',
-              padding: '2px 8px',
-              backgroundColor: `${accentColor}15`,
-              borderRadius: '4px',
+              flexShrink: 0,
             }}>
               {editable ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                   <InlineEditableDate
                     path={`volunteer.${index}.startDate`}
                     value={item.startDate}
                     formatDisplay={formatDate}
+                    style={{ fontSize: '11px' }}
                   />
                   <span>-</span>
                   {item.current ? (
@@ -139,6 +124,7 @@ export const VolunteerStandard: React.FC<VolunteerVariantProps> = ({
                       path={`volunteer.${index}.endDate`}
                       value={item.endDate}
                       formatDisplay={formatDate}
+                      style={{ fontSize: '11px' }}
                     />
                   )}
                 </div>
@@ -155,48 +141,20 @@ export const VolunteerStandard: React.FC<VolunteerVariantProps> = ({
             <div style={{
               fontSize: typography.body.fontSize,
               color: typography.body.color,
-              marginTop: '10px',
-              marginLeft: '24px',
-              lineHeight: typography.body.lineHeight,
+              marginTop: '6px',
+              lineHeight: 1.5,
             }}>
               {editable ? (
                 <InlineEditableText
                   path={`volunteer.${index}.description`}
                   value={item.description || ''}
                   multiline
-                  placeholder="Description of your volunteer work..."
+                  placeholder="Brief description..."
                 />
               ) : (
                 item.description
               )}
             </div>
-          )}
-
-          {/* Highlights */}
-          {item.highlights && item.highlights.length > 0 && (
-            <ul style={{
-              marginTop: '8px',
-              marginLeft: '24px',
-              paddingLeft: '16px',
-              listStyleType: 'disc',
-            }}>
-              {item.highlights.map((highlight, hIndex) => (
-                <li key={hIndex} style={{
-                  fontSize: typography.body.fontSize,
-                  color: typography.body.color,
-                  marginBottom: '2px',
-                }}>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`volunteer.${index}.highlights.${hIndex}`}
-                      value={highlight}
-                    />
-                  ) : (
-                    highlight
-                  )}
-                </li>
-              ))}
-            </ul>
           )}
         </div>
       ))}
@@ -204,11 +162,11 @@ export const VolunteerStandard: React.FC<VolunteerVariantProps> = ({
       {editable && onAddVolunteer && (
         <button
           onClick={onAddVolunteer}
-          className="mt-2 flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border border-dashed hover:bg-gray-50 transition-colors w-fit"
+          className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
           style={{ color: accentColor, borderColor: accentColor }}
         >
           <Plus className="h-3 w-3" />
-          Add Volunteer Experience
+          Add Volunteer
         </button>
       )}
     </div>

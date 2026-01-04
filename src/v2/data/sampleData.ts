@@ -207,7 +207,45 @@ export const SAMPLE_V2_RESUME_DATA: V2ResumeData = {
       ],
     },
   ],
-  
+
+  interests: [
+    { id: 'int-1', name: 'Technology Trends' },
+    { id: 'int-2', name: 'Public Speaking' },
+    { id: 'int-3', name: 'Podcasting' },
+    { id: 'int-4', name: 'Travel' },
+    { id: 'int-5', name: 'Photography' },
+    { id: 'int-6', name: 'Startup Mentoring' },
+  ],
+
+  awards: [
+    {
+      id: 'award-1',
+      title: 'PR Excellence Award',
+      issuer: 'PRSA',
+      date: '2022-11',
+      description: 'Recognized for outstanding PR campaign execution in the technology sector.',
+    },
+    {
+      id: 'award-2',
+      title: 'Top 40 Under 40',
+      issuer: 'PR Week',
+      date: '2021-06',
+      description: 'Named among the top 40 PR professionals under 40 years of age.',
+    },
+  ],
+
+  references: [
+    {
+      id: 'ref-1',
+      name: 'Sarah Johnson',
+      title: 'VP of Communications',
+      company: 'TechCorp Inc.',
+      email: 'sarah.johnson@techcorp.com',
+      phone: '+1 (555) 987-6543',
+      relationship: 'Former Manager',
+    },
+  ],
+
   settings: {
     includeSocialLinks: true,
     includePhoto: false,

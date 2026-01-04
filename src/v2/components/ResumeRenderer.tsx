@@ -507,6 +507,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'strengths':
+        const strengthsVariant = (section as any).variant || (config as any).strengths?.variant || 'cards';
         return wrap('strengths',
           <StrengthsSection
             key={section.id}
@@ -516,6 +517,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddStrength}
             onRemoveItem={onRemoveStrength}
+            variantOverride={strengthsVariant}
           />
         );
 
@@ -691,6 +693,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'references':
+        const referencesVariant = (section as any).variant;
         return wrap('references',
           <ReferencesSection
             key={section.id}
@@ -700,6 +703,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddReference}
             onRemoveItem={onRemoveReference}
+            variantOverride={referencesVariant}
           />
         );
 
@@ -713,6 +717,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddCourse}
             onRemoveItem={onRemoveCourse}
+            variantOverride={section.variant}
           />
         );
 

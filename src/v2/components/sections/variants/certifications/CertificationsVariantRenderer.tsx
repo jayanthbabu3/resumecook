@@ -36,17 +36,21 @@ export const CertificationsVariantRenderer: React.FC<CertificationsVariantRender
     formatDate,
   };
 
-  switch (variant) {
-    case 'standard':
-    case 'cards':
-    case 'timeline':
-      return <CertificationsStandard {...props} />;
-    case 'badges':
-      return <CertificationsBadges {...props} />;
-    case 'compact':
-    default:
-      return <CertificationsCompact {...props} />;
+  // Dispatch based on variant
+  if (variant === 'badges' || variant === 'cert-badges') {
+    return <CertificationsBadges {...props} />;
   }
+
+  if (variant === 'cards' || variant === 'cert-two-column' || variant === 'cert-boxed') {
+    return <CertificationsBadges {...props} />;
+  }
+
+  if (variant === 'compact' || variant === 'cert-compact' || variant === 'cert-minimal') {
+    return <CertificationsCompact {...props} />;
+  }
+
+  // Default to standard for 'list', 'standard', 'timeline', etc.
+  return <CertificationsStandard {...props} />;
 };
 
 export default CertificationsVariantRenderer;

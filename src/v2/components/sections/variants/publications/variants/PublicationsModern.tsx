@@ -1,12 +1,12 @@
 /**
- * Publications Modern Variant
+ * Publications Modern Variant (Standard)
  *
- * Clean modern layout with icon and card-like appearance.
+ * Compact layout with left border accent.
  * Uses theme colors for styling.
  */
 
 import React from 'react';
-import { X, Plus, BookOpen, ExternalLink } from 'lucide-react';
+import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { PublicationsVariantProps } from '../types';
@@ -20,217 +20,174 @@ export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
   onRemovePublication,
   formatDate,
 }) => {
-  const { typography, spacing } = config;
+  const { typography } = config;
 
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       {items.map((pub, index) => (
         <div
           key={pub.id || index}
           className="group relative"
           style={{
-            padding: '14px 16px',
-            backgroundColor: `${accentColor}08`,
-            borderRadius: '10px',
-            border: `1px solid ${accentColor}15`,
+            padding: '10px 12px',
+            backgroundColor: `${accentColor}05`,
+            borderRadius: '6px',
+            borderLeft: `2px solid ${accentColor}`,
           }}
         >
           {editable && onRemovePublication && (
             <button
               onClick={() => onRemovePublication(pub.id)}
-              className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full z-10"
+              className="absolute -right-1 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 bg-red-100 hover:bg-red-200 rounded-full z-10"
             >
               <X className="w-3 h-3 text-red-600" />
             </button>
           )}
 
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-            {/* Icon */}
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: accentColor,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}>
-              <BookOpen style={{ width: '18px', height: '18px', color: '#fff' }} />
-            </div>
-
+          {/* First row: Title • Publisher | Date */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              {/* Title & Date Row */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
-                <div style={{ flex: 1 }}>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`publications.${index}.title`}
-                      value={pub.title}
-                      style={{
-                        fontSize: typography.itemTitle.fontSize,
-                        fontWeight: 600,
-                        color: typography.itemTitle.color,
-                      }}
-                      placeholder="Publication Title"
-                    />
-                  ) : (
-                    <div style={{
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+                {editable ? (
+                  <InlineEditableText
+                    path={`publications.${index}.title`}
+                    value={pub.title}
+                    style={{
                       fontSize: typography.itemTitle.fontSize,
                       fontWeight: 600,
                       color: typography.itemTitle.color,
-                    }}>
-                      {pub.title}
-                      {pub.url && (
-                        <a
-                          href={pub.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: accentColor, marginLeft: '6px' }}
-                        >
-                          <ExternalLink style={{ width: '12px', height: '12px', display: 'inline' }} />
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
+                    }}
+                    placeholder="Publication Title"
+                  />
+                ) : (
+                  <span style={{
+                    fontSize: typography.itemTitle.fontSize,
+                    fontWeight: 600,
+                    color: typography.itemTitle.color,
+                  }}>
+                    {pub.title}
+                  </span>
+                )}
 
-                <div style={{
-                  fontSize: typography.dates.fontSize,
-                  color: typography.dates.color,
-                  whiteSpace: 'nowrap',
-                  padding: '2px 8px',
-                  backgroundColor: `${accentColor}15`,
-                  borderRadius: '4px',
-                }}>
-                  {editable ? (
-                    <InlineEditableDate
-                      path={`publications.${index}.date`}
-                      value={pub.date}
-                      formatDisplay={formatDate}
-                    />
-                  ) : (
-                    formatDate ? formatDate(pub.date) : pub.date
-                  )}
-                </div>
-              </div>
+                {!editable && pub.url && (
+                  <a
+                    href={pub.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: accentColor, flexShrink: 0 }}
+                  >
+                    <ExternalLink style={{ width: '12px', height: '12px' }} />
+                  </a>
+                )}
 
-              {/* Publisher */}
-              <div style={{
-                fontSize: typography.body.fontSize,
-                color: accentColor,
-                fontWeight: 500,
-                marginTop: '2px',
-              }}>
+                <span style={{ color: '#d1d5db' }}>•</span>
+
                 {editable ? (
                   <InlineEditableText
                     path={`publications.${index}.publisher`}
                     value={pub.publisher}
-                    style={{ color: accentColor, fontWeight: 500 }}
-                    placeholder="Publisher / Journal"
+                    style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}
+                    placeholder="Publisher"
                   />
                 ) : (
-                  pub.publisher
+                  <span style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}>
+                    {pub.publisher}
+                  </span>
                 )}
               </div>
+            </div>
 
-              {/* Authors */}
-              {(pub.authors?.length || editable) && (
-                <div style={{
-                  fontSize: '12px',
-                  color: '#6b7280',
-                  marginTop: '4px',
-                }}>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`publications.${index}.authors`}
-                      value={Array.isArray(pub.authors) ? pub.authors.join(', ') : (pub.authors || '')}
-                      style={{ fontSize: '12px', color: '#6b7280' }}
-                      placeholder="Authors (comma-separated)"
-                    />
-                  ) : (
-                    Array.isArray(pub.authors) ? pub.authors.join(', ') : pub.authors
-                  )}
-                </div>
-              )}
-
-              {/* Description */}
-              {(pub.description || editable) && (
-                <div style={{
-                  fontSize: typography.body.fontSize,
-                  color: typography.body.color,
-                  marginTop: '8px',
-                  lineHeight: typography.body.lineHeight,
-                }}>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`publications.${index}.description`}
-                      value={pub.description || ''}
-                      multiline
-                      placeholder="Description (optional)..."
-                    />
-                  ) : (
-                    pub.description
-                  )}
-                </div>
-              )}
-
-              {/* DOI & URL for editing */}
-              {editable && (
-                <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-                  <div style={{ fontSize: '11px', color: '#6b7280' }}>
-                    DOI: <InlineEditableText
-                      path={`publications.${index}.doi`}
-                      value={pub.doi || ''}
-                      style={{ fontSize: '11px', color: '#6b7280' }}
-                      placeholder="DOI (optional)"
-                    />
-                  </div>
-                  <div style={{ fontSize: '11px', color: accentColor, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <ExternalLink style={{ width: '10px', height: '10px' }} />
-                    <InlineEditableText
-                      path={`publications.${index}.url`}
-                      value={pub.url || ''}
-                      style={{ fontSize: '11px', color: accentColor }}
-                      placeholder="URL (optional)"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* DOI for display */}
-              {!editable && pub.doi && (
-                <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>
-                  DOI: {pub.doi}
-                </div>
+            {/* Date */}
+            <div style={{
+              fontSize: '11px',
+              color: typography.dates.color,
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+            }}>
+              {editable ? (
+                <InlineEditableDate
+                  path={`publications.${index}.date`}
+                  value={pub.date}
+                  formatDisplay={formatDate}
+                  style={{ fontSize: '11px' }}
+                />
+              ) : (
+                formatDate ? formatDate(pub.date) : pub.date
               )}
             </div>
           </div>
+
+          {/* Second row: Authors (if any) */}
+          {(pub.authors?.length || editable) && (
+            <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`publications.${index}.authors`}
+                  value={Array.isArray(pub.authors) ? pub.authors.join(', ') : (pub.authors || '')}
+                  style={{ fontSize: '11px', color: '#6b7280' }}
+                  placeholder="Authors (comma-separated)"
+                />
+              ) : (
+                Array.isArray(pub.authors) ? pub.authors.join(', ') : pub.authors
+              )}
+            </div>
+          )}
+
+          {/* Description */}
+          {(pub.description || editable) && (
+            <div style={{
+              fontSize: typography.body.fontSize,
+              color: typography.body.color,
+              marginTop: '6px',
+              lineHeight: 1.5,
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`publications.${index}.description`}
+                  value={pub.description || ''}
+                  multiline
+                  placeholder="Description..."
+                />
+              ) : (
+                pub.description
+              )}
+            </div>
+          )}
+
+          {/* Editable URL & DOI */}
+          {editable && (
+            <div style={{ display: 'flex', gap: '12px', marginTop: '4px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <ExternalLink style={{ width: '10px', height: '10px', color: accentColor }} />
+                <InlineEditableText
+                  path={`publications.${index}.url`}
+                  value={pub.url || ''}
+                  style={{ fontSize: '10px', color: accentColor }}
+                  placeholder="URL"
+                />
+              </div>
+              <div style={{ fontSize: '10px', color: '#6b7280' }}>
+                DOI: <InlineEditableText
+                  path={`publications.${index}.doi`}
+                  value={pub.doi || ''}
+                  style={{ fontSize: '10px', color: '#6b7280' }}
+                  placeholder="optional"
+                />
+              </div>
+            </div>
+          )}
         </div>
       ))}
 
       {editable && onAddPublication && (
         <button
           onClick={onAddPublication}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            padding: '14px',
-            borderRadius: '10px',
-            border: `2px dashed ${accentColor}40`,
-            backgroundColor: 'transparent',
-            color: accentColor,
-            fontSize: '12px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
-          className="hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
+          style={{ color: accentColor, borderColor: accentColor }}
         >
-          <Plus style={{ width: '14px', height: '14px' }} />
+          <Plus className="h-3 w-3" />
           Add Publication
         </button>
       )}

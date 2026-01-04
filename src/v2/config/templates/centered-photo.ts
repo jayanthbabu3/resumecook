@@ -166,17 +166,33 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
   },
 
   strengths: {
-    variant: 'minimal',
-    showIcons: false,
+    variant: 'cards',
+    showIcons: true,
   },
-  
+
   achievements: {
-    variant: 'list',
-    showIndicators: false,
+    variant: 'standard',
+    showIndicators: true,
   },
 
   languages: {
-    variant: 'flags',
+    variant: 'pills',
+  },
+
+  projects: {
+    variant: 'standard',
+  },
+
+  certifications: {
+    variant: 'standard',
+  },
+
+  volunteer: {
+    variant: 'standard',
+  },
+
+  interests: {
+    variant: 'pills',
   },
 
   sections: [
@@ -185,12 +201,12 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
     { type: 'experience', id: 'experience', title: 'Work Experience', defaultTitle: 'Work Experience', enabled: true, order: 2, column: 'main' },
     { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 3, column: 'main' },
     { type: 'skills', id: 'skills', title: 'Skills', defaultTitle: 'Skills', enabled: true, order: 4, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 5, column: 'main' },
-    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: true, order: 6, column: 'main' },
+    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: true, order: 5, column: 'main' },
+    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 6, column: 'main' },
     { type: 'languages', id: 'languages', title: 'Languages', defaultTitle: 'Languages', enabled: true, order: 7, column: 'main' },
-    { type: 'awards', id: 'awards', title: 'Awards & Achievements', defaultTitle: 'Awards & Achievements', enabled: false, order: 8, column: 'main' },
-    { type: 'volunteer', id: 'volunteer', title: 'Volunteer Experience', defaultTitle: 'Volunteer Experience', enabled: false, order: 9, column: 'main' },
-    { type: 'interests', id: 'interests', title: 'Interests', defaultTitle: 'Interests', enabled: false, order: 10, column: 'main' },
+    { type: 'volunteer', id: 'volunteer', title: 'Volunteer Experience', defaultTitle: 'Volunteer Experience', enabled: true, order: 8, column: 'main' },
+    { type: 'interests', id: 'interests', title: 'Interests', defaultTitle: 'Interests', enabled: true, order: 9, column: 'main' },
+    { type: 'awards', id: 'awards', title: 'Awards & Achievements', defaultTitle: 'Awards & Achievements', enabled: true, order: 10, column: 'main' },
   ],
 
   fontFamily: {

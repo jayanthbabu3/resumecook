@@ -121,6 +121,76 @@ export const SENIOR_FRONTEND_DATA: V2ResumeData = {
   languages: [
     { id: 'lang-1', language: 'English', proficiency: 'Native' as const },
     { id: 'lang-2', language: 'Mandarin', proficiency: 'Fluent' as const },
+    { id: 'lang-3', language: 'Spanish', proficiency: 'Intermediate' as const },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'AWS Certified Developer',
+      issuer: 'Amazon Web Services',
+      date: '2022-06',
+      credentialId: 'AWS-DEV-2022-1234',
+    },
+    {
+      id: 'cert-2',
+      name: 'Google Professional Cloud Developer',
+      issuer: 'Google Cloud',
+      date: '2021-11',
+    },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'E-commerce Platform Redesign',
+      description: 'Led frontend redesign of major e-commerce platform serving 5M+ users',
+      role: 'Lead Developer',
+      technologies: ['React', 'TypeScript', 'GraphQL', 'Tailwind CSS'],
+      techStack: ['React', 'TypeScript', 'GraphQL'],
+      highlights: [
+        'Improved conversion rate by 25%',
+        'Reduced page load time by 60%',
+        'Implemented new checkout flow',
+      ],
+    },
+  ],
+  volunteer: [
+    {
+      id: 'vol-1',
+      organization: 'Code for America',
+      role: 'Volunteer Developer',
+      location: 'San Francisco, CA',
+      startDate: '2021-01',
+      endDate: '',
+      current: true,
+      description: 'Build civic technology applications for local government',
+      highlights: [
+        'Developed open-source tools for community engagement',
+        'Mentored 10+ aspiring developers',
+      ],
+    },
+  ],
+  interests: [
+    { id: 'int-1', name: 'Open Source' },
+    { id: 'int-2', name: 'Web Performance' },
+    { id: 'int-3', name: 'UI/UX Design' },
+    { id: 'int-4', name: 'Tech Mentoring' },
+    { id: 'int-5', name: 'Hiking' },
+  ],
+  awards: [
+    {
+      id: 'award-1',
+      title: 'Employee of the Year',
+      issuer: 'TechCorp Solutions',
+      date: '2022-12',
+      description: 'Recognized for outstanding contributions to the platform team.',
+    },
+    {
+      id: 'award-2',
+      title: 'Innovation Award',
+      issuer: 'Digital Innovations Inc',
+      date: '2020-06',
+      description: 'Best technical implementation of the quarter.',
+    },
   ],
 };
 
@@ -517,6 +587,76 @@ export const FULL_STACK_DATA: V2ResumeData = {
   languages: [
     { id: 'lang-1', language: 'English', proficiency: 'Native' as const },
     { id: 'lang-2', language: 'Korean', proficiency: 'Fluent' as const },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'AWS Certified Solutions Architect',
+      issuer: 'Amazon Web Services',
+      date: '2021-08',
+      credentialId: 'AWS-SA-2021-5678',
+    },
+    {
+      id: 'cert-2',
+      name: 'Professional Scrum Master I',
+      issuer: 'Scrum.org',
+      date: '2020-03',
+    },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Open Source Task Manager',
+      description: 'Built a full-stack task management app with React, Node.js, and PostgreSQL',
+      role: 'Creator & Maintainer',
+      technologies: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
+      techStack: ['React', 'Node.js', 'PostgreSQL'],
+      highlights: [
+        'Over 500 GitHub stars',
+        'Featured in JavaScript Weekly',
+        'Used by 1000+ developers',
+      ],
+      githubUrl: 'github.com/sarahkim/taskmanager',
+    },
+  ],
+  volunteer: [
+    {
+      id: 'vol-1',
+      organization: 'Women Who Code',
+      role: 'Workshop Instructor',
+      location: 'Austin, TX',
+      startDate: '2020-06',
+      endDate: '',
+      current: true,
+      description: 'Teach web development workshops to underrepresented groups in tech',
+      highlights: [
+        'Conducted 15+ workshops on React and Node.js',
+        'Mentored 30+ aspiring developers',
+      ],
+    },
+  ],
+  interests: [
+    { id: 'int-1', name: 'Open Source' },
+    { id: 'int-2', name: 'Tech Blogging' },
+    { id: 'int-3', name: 'Hackathons' },
+    { id: 'int-4', name: 'Rock Climbing' },
+    { id: 'int-5', name: 'Coffee Brewing' },
+  ],
+  awards: [
+    {
+      id: 'award-1',
+      title: 'Best Developer Award',
+      issuer: 'DevStudio Solutions',
+      date: '2022-12',
+      description: 'Recognized for exceptional code quality and team collaboration.',
+    },
+    {
+      id: 'award-2',
+      title: 'Hackathon Winner',
+      issuer: 'Austin Tech Week',
+      date: '2021-09',
+      description: 'First place for building an accessibility-focused web app in 48 hours.',
+    },
   ],
 };
 

@@ -1,12 +1,13 @@
 /**
  * Certifications Badges Variant
- * 
- * Badge-style layout for certifications.
+ *
+ * Compact card-based grid layout for certifications.
  */
 
 import React from 'react';
-import { X, Plus, Award, CheckCircle } from 'lucide-react';
+import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { CertificationsVariantProps } from '../types';
 
 export const CertificationsBadges: React.FC<CertificationsVariantProps> = ({
@@ -23,79 +24,109 @@ export const CertificationsBadges: React.FC<CertificationsVariantProps> = ({
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
       {items.map((cert, index) => (
-        <div 
+        <div
           key={cert.id || index}
           className="group relative"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            padding: '10px 16px',
-            backgroundColor: `${accentColor}08`,
+            padding: '10px 12px',
+            backgroundColor: `${accentColor}06`,
             borderRadius: '8px',
-            border: `1px solid ${accentColor}30`,
+            border: `1px solid ${accentColor}15`,
           }}
         >
           {editable && onRemoveCertification && (
             <button
               onClick={() => onRemoveCertification(cert.id)}
-              className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full z-10"
+              className="absolute -right-1 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 bg-red-100 hover:bg-red-200 rounded-full z-10"
             >
               <X className="w-3 h-3 text-red-600" />
             </button>
           )}
-          
-          <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            backgroundColor: accentColor,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}>
-            <Award style={{ width: '18px', height: '18px', color: '#fff' }} />
-          </div>
-          
-          <div>
+
+          {/* Name */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
             {editable ? (
               <InlineEditableText
                 path={`certifications.${index}.name`}
                 value={cert.name}
-                style={{ 
-                  fontSize: '14px', 
+                style={{
+                  fontSize: typography.itemTitle.fontSize,
                   fontWeight: 600,
                   color: typography.itemTitle.color,
+                  flex: 1,
                 }}
-                placeholder="Certification"
+                placeholder="Certification Name"
               />
             ) : (
-              <div style={{ 
-                fontSize: '14px', 
+              <div style={{
+                fontSize: typography.itemTitle.fontSize,
                 fontWeight: 600,
                 color: typography.itemTitle.color,
+                flex: 1,
               }}>
                 {cert.name}
               </div>
             )}
-            
-            <div style={{ 
-              fontSize: '12px', 
-              color: '#6b7280',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}>
-              <CheckCircle style={{ width: '10px', height: '10px', color: '#22c55e' }} />
-              {cert.issuer}
-            </div>
+
+            {!editable && cert.url && (
+              <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ color: accentColor, flexShrink: 0 }}>
+                <ExternalLink style={{ width: '11px', height: '11px' }} />
+              </a>
+            )}
           </div>
+
+          {/* Issuer & Date inline */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginTop: '4px',
+            fontSize: '10px',
+            color: '#6b7280',
+            flexWrap: 'wrap',
+          }}>
+            {editable ? (
+              <InlineEditableText
+                path={`certifications.${index}.issuer`}
+                value={cert.issuer}
+                style={{ fontSize: '10px', color: accentColor }}
+                placeholder="Issuer"
+              />
+            ) : (
+              <span style={{ color: accentColor }}>{cert.issuer}</span>
+            )}
+
+            <span style={{ color: '#d1d5db' }}>•</span>
+
+            {editable ? (
+              <InlineEditableDate
+                path={`certifications.${index}.date`}
+                value={cert.date}
+                formatDisplay={formatDate}
+                style={{ fontSize: '10px' }}
+              />
+            ) : (
+              <span>{formatDate ? formatDate(cert.date) : cert.date}</span>
+            )}
+          </div>
+
+          {/* Editable URL */}
+          {editable && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '3px', marginTop: '4px' }}>
+              <ExternalLink style={{ width: '9px', height: '9px', color: accentColor }} />
+              <InlineEditableText
+                path={`certifications.${index}.url`}
+                value={cert.url || ''}
+                style={{ fontSize: '10px', color: accentColor }}
+                placeholder="URL"
+              />
+            </div>
+          )}
         </div>
       ))}
-      
+
       {editable && onAddCertification && (
         <button
           onClick={onAddCertification}
@@ -103,18 +134,19 @@ export const CertificationsBadges: React.FC<CertificationsVariantProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
-            padding: '10px 16px',
+            gap: '4px',
+            padding: '12px',
             borderRadius: '8px',
-            border: `2px dashed ${accentColor}40`,
-            backgroundColor: `${accentColor}05`,
+            border: `1px dashed ${accentColor}40`,
+            backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '13px',
+            fontSize: '11px',
             fontWeight: 500,
             cursor: 'pointer',
           }}
+          className="hover:bg-gray-50 transition-colors"
         >
-          <Plus style={{ width: '16px', height: '16px' }} />
+          <Plus style={{ width: '12px', height: '12px' }} />
           Add
         </button>
       )}

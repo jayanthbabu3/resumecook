@@ -21,13 +21,28 @@ export interface ProjectsVariantProps {
   onRemoveProject?: (projectId: string) => void;
   /** Date formatter function */
   formatDate?: (date: string) => string;
+  /** Technology management callbacks (for detailed variant) */
+  onAddTechnology?: (projectIndex: number) => void;
+  onRemoveTechnology?: (projectIndex: number, techIndex: number) => void;
 }
 
-export type ProjectsVariant = 
-  | 'standard'      // Classic layout with description
-  | 'cards'         // Card-based grid layout
-  | 'compact'       // Space-efficient layout
-  | 'timeline'      // Timeline with dates
-  | 'showcase'      // Portfolio showcase style
-  | 'minimal'       // Ultra-minimal
-  | 'detailed';     // Full details with highlights
+export type ProjectsVariant =
+  | 'standard'           // Classic layout with description
+  | 'list'
+  | 'projects-classic'
+  | 'cards'              // Card-based grid layout
+  | 'grid'
+  | 'projects-card'
+  | 'projects-grid'
+  | 'projects-boxed'
+  | 'compact'            // Space-efficient layout
+  | 'projects-compact'
+  | 'timeline'           // Timeline with dates
+  | 'projects-timeline'
+  | 'showcase'           // Portfolio showcase style
+  | 'projects-showcase'
+  | 'minimal'            // Ultra-minimal
+  | 'projects-minimal'
+  | 'detailed'           // Full details with highlights
+  | 'projects-detailed'
+  | 'projects-impact';

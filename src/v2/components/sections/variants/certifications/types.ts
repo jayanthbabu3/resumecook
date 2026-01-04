@@ -15,9 +15,20 @@ export interface CertificationsVariantProps {
   formatDate?: (date: string) => string;
 }
 
-export type CertificationsVariant = 
+export type CertificationsVariant =
   | 'standard'
+  | 'list'
+  | 'cert-classic'
+  | 'cert-modern'
   | 'cards'
+  | 'cert-two-column'
+  | 'cert-boxed'
   | 'compact'
+  | 'cert-compact'
+  | 'cert-minimal'
   | 'badges'
-  | 'timeline';
+  | 'cert-badges'
+  | 'timeline'
+  | 'cert-timeline'
+  | 'cert-detailed'
+  | 'cert-grouped';

@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, Home, FileText, BookOpen, Menu, FolderOpen, ChevronDown, Sparkles, GraduationCap } from "lucide-react";
+import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, Sparkles, GraduationCap } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
@@ -19,14 +19,43 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export const Header = () => {
+const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useFirebaseAuth();
 
   // Check if we're on builder/editor pages
-  const isBuilderPage = location.pathname.startsWith("/builder") ||
-                        location.pathname.startsWith("/editor");
+  const isBuilderPage = useMemo(() =>
+    location.pathname.startsWith("/builder") ||
+    location.pathname.startsWith("/editor"),
+    [location.pathname]
+  );
+
+  // Memoize user-related values to prevent recalculation
+  const userInfo = useMemo(() => {
+    if (!user) return { initials: "U", displayName: "User", email: "", photoURL: undefined };
+
+    let initials = "U";
+    if (user.displayName) {
+      initials = user.displayName.split(' ').map(name => name[0]).join('').slice(0, 2).toUpperCase();
+    } else if (user.email) {
+      initials = user.email.split('@')[0].slice(0, 2).toUpperCase();
+    }
+
+    let displayName = "User";
+    if (user.displayName) {
+      displayName = user.displayName;
+    } else if (user.email) {
+      displayName = user.email.split('@')[0];
+    }
+
+    return {
+      initials,
+      displayName,
+      email: user.email || "",
+      photoURL: user.photoURL || undefined
+    };
+  }, [user?.displayName, user?.email, user?.photoURL]);
 
   // Navigation items based on auth state
   const navItems = useMemo(() => {
@@ -44,39 +73,28 @@ export const Header = () => {
     }
 
     return baseItems;
-  }, [user]);
+  }, [!!user]);
 
   // Quick action for creating resume
   const showCreateButton = !isBuilderPage;
 
-  const getUserInitials = () => {
-    if (user?.displayName) {
-      return user.displayName.split(' ').map(name => name[0]).join('').slice(0, 2).toUpperCase();
-    }
-    if (user?.email) {
-      return user.email.split('@')[0].slice(0, 2).toUpperCase();
-    }
-    return "U";
-  };
-
-  const getUserDisplayName = () => {
-    if (user?.displayName) {
-      return user.displayName;
-    }
-    if (user?.email) {
-      return user.email.split('@')[0];
-    }
-    return "User";
-  };
+  // Memoize navigation callbacks
+  const handleNavigateHome = useCallback(() => navigate("/templates"), [navigate]);
+  const handleNavigateCreate = useCallback(() => navigate("/builder/scratch-v2/select-layout"), [navigate]);
+  const handleNavigateAuth = useCallback(() => navigate("/auth"), [navigate]);
+  const handleNavigateTemplates = useCallback(() => navigate("/templates"), [navigate]);
+  const handleNavigateMyResumes = useCallback(() => navigate("/my-resumes"), [navigate]);
+  const handleNavigateProfile = useCallback(() => navigate("/profile"), [navigate]);
+  const handleSignOut = useCallback(() => signOut(), [signOut]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white supports-[backdrop-filter]:bg-white/95 supports-[backdrop-filter]:backdrop-blur-xl will-change-transform">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-14 sm:h-16 items-center justify-between gap-4">
 
           {/* Logo Section */}
           <button
-            onClick={() => navigate("/templates")}
+            onClick={handleNavigateHome}
             className="group flex items-center gap-2.5 sm:gap-3 -ml-1 px-1 py-1 rounded-xl transition-all duration-200 hover:bg-gray-50 flex-shrink-0"
             aria-label="Resume Cook home"
           >
@@ -120,7 +138,7 @@ export const Header = () => {
             {/* Create Resume Button - Desktop */}
             {showCreateButton && (
               <Button
-                onClick={() => navigate("/builder/scratch-v2/select-layout")}
+                onClick={handleNavigateCreate}
                 size="sm"
                 className="hidden md:inline-flex h-9 px-4 rounded-lg font-medium shadow-sm gap-2"
               >
@@ -133,7 +151,7 @@ export const Header = () => {
             {/* Sign In Button - Not logged in */}
             {!user && (
               <Button
-                onClick={() => navigate("/auth")}
+                onClick={handleNavigateAuth}
                 variant="outline"
                 size="sm"
                 className="hidden sm:inline-flex h-9 px-4 rounded-lg font-medium"
@@ -148,9 +166,9 @@ export const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <button className="hidden md:flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-gray-100 transition-colors duration-200">
                     <Avatar className="h-8 w-8 ring-2 ring-gray-100">
-                      <AvatarImage src={user.photoURL || undefined} alt={getUserDisplayName()} />
+                      <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
                       <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white text-sm font-semibold">
-                        {getUserInitials()}
+                        {userInfo.initials}
                       </AvatarFallback>
                     </Avatar>
                     <ChevronDown className="h-4 w-4 text-gray-400" />
@@ -159,27 +177,27 @@ export const Header = () => {
                 <DropdownMenuContent className="w-56 rounded-xl shadow-lg border-gray-100" align="end">
                   {/* User Info */}
                   <div className="px-3 py-3 border-b border-gray-100">
-                    <p className="font-semibold text-sm text-gray-900">{getUserDisplayName()}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{user.email}</p>
+                    <p className="font-semibold text-sm text-gray-900">{userInfo.displayName}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{userInfo.email}</p>
                   </div>
 
                   <div className="py-1">
                     <DropdownMenuItem
-                      onClick={() => navigate("/templates")}
+                      onClick={handleNavigateTemplates}
                       className="px-3 py-2 cursor-pointer rounded-lg mx-1"
                     >
                       <LayoutDashboard className="mr-2.5 h-4 w-4 text-gray-500" />
                       <span>Templates</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => navigate("/my-resumes")}
+                      onClick={handleNavigateMyResumes}
                       className="px-3 py-2 cursor-pointer rounded-lg mx-1"
                     >
                       <FolderOpen className="mr-2.5 h-4 w-4 text-gray-500" />
                       <span>My Resumes</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => navigate("/profile")}
+                      onClick={handleNavigateProfile}
                       className="px-3 py-2 cursor-pointer rounded-lg mx-1"
                     >
                       <User className="mr-2.5 h-4 w-4 text-gray-500" />
@@ -191,7 +209,7 @@ export const Header = () => {
 
                   <div className="py-1">
                     <DropdownMenuItem
-                      onClick={signOut}
+                      onClick={handleSignOut}
                       className="px-3 py-2 cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50 rounded-lg mx-1"
                     >
                       <LogOut className="mr-2.5 h-4 w-4" />
@@ -206,9 +224,9 @@ export const Header = () => {
             <div className="flex lg:hidden items-center gap-2">
               {user && (
                 <Avatar className="h-8 w-8 ring-2 ring-gray-100 hidden sm:flex">
-                  <AvatarImage src={user.photoURL || undefined} alt={getUserDisplayName()} />
+                  <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
                   <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white text-sm font-semibold">
-                    {getUserInitials()}
+                    {userInfo.initials}
                   </AvatarFallback>
                 </Avatar>
               )}
@@ -244,7 +262,7 @@ export const Header = () => {
                     <div className="p-4 border-b border-gray-100">
                       <SheetClose asChild>
                         <Button
-                          onClick={() => navigate("/builder/scratch-v2/select-layout")}
+                          onClick={handleNavigateCreate}
                           className="w-full h-11 rounded-xl font-medium gap-2"
                         >
                           <Sparkles className="h-4 w-4" />
@@ -287,12 +305,12 @@ export const Header = () => {
                           Account
                         </p>
                         <div className="px-4 py-3 mb-2 rounded-xl bg-gray-50">
-                          <p className="font-semibold text-sm text-gray-900">{getUserDisplayName()}</p>
-                          <p className="text-xs text-gray-500">{user.email}</p>
+                          <p className="font-semibold text-sm text-gray-900">{userInfo.displayName}</p>
+                          <p className="text-xs text-gray-500">{userInfo.email}</p>
                         </div>
                         <SheetClose asChild>
                           <button
-                            onClick={() => navigate("/profile")}
+                            onClick={handleNavigateProfile}
                             className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
                           >
                             <User className="h-5 w-5" />
@@ -301,7 +319,7 @@ export const Header = () => {
                         </SheetClose>
                         <SheetClose asChild>
                           <button
-                            onClick={signOut}
+                            onClick={handleSignOut}
                             className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
                           >
                             <LogOut className="h-5 w-5" />
@@ -316,7 +334,7 @@ export const Header = () => {
                       <div className="mt-6 pt-6 border-t border-gray-100">
                         <SheetClose asChild>
                           <Button
-                            onClick={() => navigate("/auth")}
+                            onClick={handleNavigateAuth}
                             className="w-full h-11 rounded-xl font-medium"
                           >
                             Sign In
@@ -334,3 +352,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export const Header = React.memo(HeaderComponent);

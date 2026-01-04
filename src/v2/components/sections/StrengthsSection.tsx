@@ -17,6 +17,7 @@ interface StrengthsSectionProps {
   sectionTitle?: string;
   onAddItem?: () => void;
   onRemoveItem?: (id: string) => void;
+  variantOverride?: string;
 }
 
 export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
@@ -26,9 +27,10 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
   sectionTitle = 'Strengths',
   onAddItem,
   onRemoveItem,
+  variantOverride,
 }) => {
   const { typography, spacing, colors } = config;
-  const variant: StrengthsVariant = config.strengths?.variant || 'cards';
+  const variant: StrengthsVariant = (variantOverride as StrengthsVariant) || config.strengths?.variant || 'cards';
   const showIcons = config.strengths?.showIcons ?? true;
 
   if (!items || items.length === 0) {

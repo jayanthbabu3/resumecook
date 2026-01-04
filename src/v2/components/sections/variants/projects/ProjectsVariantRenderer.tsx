@@ -11,6 +11,7 @@ import {
   ProjectsStandard,
   ProjectsCards,
   ProjectsCompact,
+  ProjectsDetailed,
 } from './variants';
 
 // Re-export types for external use
@@ -34,6 +35,8 @@ export const ProjectsVariantRenderer: React.FC<ProjectsVariantRendererProps> = (
   onAddProject,
   onRemoveProject,
   formatDate,
+  onAddTechnology,
+  onRemoveTechnology,
 }) => {
   const props: ProjectsVariantProps = {
     items,
@@ -43,22 +46,25 @@ export const ProjectsVariantRenderer: React.FC<ProjectsVariantRendererProps> = (
     onAddProject,
     onRemoveProject,
     formatDate,
+    onAddTechnology,
+    onRemoveTechnology,
   };
 
   // Dispatch based on variant
-  switch (variant) {
-    case 'standard':
-    case 'detailed':
-      return <ProjectsStandard {...props} />;
-    case 'cards':
-    case 'showcase':
-      return <ProjectsCards {...props} />;
-    case 'compact':
-    case 'minimal':
-    case 'timeline':
-    default:
-      return <ProjectsCompact {...props} />;
+  if (variant === 'cards' || variant === 'grid' || variant === 'projects-card' || variant === 'projects-grid' || variant === 'projects-boxed') {
+    return <ProjectsCards {...props} />;
   }
+
+  if (variant === 'detailed' || variant === 'projects-detailed' || variant === 'showcase' || variant === 'projects-showcase' || variant === 'projects-impact') {
+    return <ProjectsDetailed {...props} />;
+  }
+
+  if (variant === 'compact' || variant === 'projects-compact' || variant === 'minimal' || variant === 'projects-minimal') {
+    return <ProjectsCompact {...props} />;
+  }
+
+  // Default to standard for 'standard', 'list', 'timeline', etc.
+  return <ProjectsStandard {...props} />;
 };
 
 export default ProjectsVariantRenderer;

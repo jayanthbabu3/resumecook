@@ -122,6 +122,7 @@ export const ADDABLE_SECTIONS: SectionTypeInfo[] = [
     variants: [
       { id: 'standard', name: 'Standard', description: 'Full contact details' },
       { id: 'compact', name: 'Compact', description: 'Name and title only' },
+      { id: 'cards', name: 'Cards', description: 'Card-based grid layout' },
       { id: 'available', name: 'Available', description: '"Available upon request"' },
     ],
   },
@@ -133,6 +134,7 @@ export const ADDABLE_SECTIONS: SectionTypeInfo[] = [
     dataKey: 'courses',
     variants: [
       { id: 'standard', name: 'Standard', description: 'Course with provider' },
+      { id: 'detailed', name: 'Detailed', description: 'With description' },
       { id: 'cards', name: 'Cards', description: 'Card layout' },
       { id: 'compact', name: 'Compact', description: 'Simple list' },
     ],

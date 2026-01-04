@@ -1,7 +1,7 @@
 /**
- * Projects Cards Variant
+ * Projects Detailed Variant
  *
- * Compact card-based grid layout for portfolio showcase.
+ * Full info with description, tech stack, and highlights.
  * Uses theme colors for styling.
  */
 
@@ -9,10 +9,9 @@ import React from 'react';
 import { X, Plus, ExternalLink, Github } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
-import { useInlineEdit } from '@/contexts/InlineEditContext';
 import type { ProjectsVariantProps } from '../types';
 
-export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
+export const ProjectsDetailed: React.FC<ProjectsVariantProps> = ({
   items,
   config,
   accentColor,
@@ -20,33 +19,26 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
   onAddProject,
   onRemoveProject,
   formatDate,
+  onAddTechnology,
+  onRemoveTechnology,
 }) => {
   const { typography } = config;
-  const inlineEdit = useInlineEdit();
 
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
       {items.map((item, index) => {
         const technologies = item.technologies ?? item.techStack ?? [];
         const techPath = item.technologies ? 'technologies' : 'techStack';
-
-        const handleAddTechnology = () => {
-          inlineEdit?.addArrayItem?.(`projects.${index}.${techPath}`, 'New Tech');
-        };
-
-        const handleRemoveTechnology = (techIndex: number) => {
-          inlineEdit?.removeArrayItem?.(`projects.${index}.${techPath}`, techIndex);
-        };
 
         return (
           <div
             key={item.id || index}
             className="group relative"
             style={{
-              padding: '10px 12px',
-              backgroundColor: `${accentColor}06`,
+              padding: '12px 14px',
+              backgroundColor: `${accentColor}04`,
               borderRadius: '8px',
               border: `1px solid ${accentColor}15`,
             }}
@@ -60,9 +52,9 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
               </button>
             )}
 
-            {/* Name & Date */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
+            {/* First row: Name + Links | Date */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+              <div style={{ flex: 1, display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
                 {editable ? (
                   <InlineEditableText
                     path={`projects.${index}.name`}
@@ -83,51 +75,33 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
                     {item.name}
                   </span>
                 )}
+
+                {!editable && (item.url || item.githubUrl) && (
+                  <>
+                    {item.url && (
+                      <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>
+                        <ExternalLink style={{ width: '12px', height: '12px' }} />
+                      </a>
+                    )}
+                    {item.githubUrl && (
+                      <a href={item.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>
+                        <Github style={{ width: '12px', height: '12px' }} />
+                      </a>
+                    )}
+                  </>
+                )}
               </div>
 
-              {!editable && (item.url || item.githubUrl) && (
-                <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
-                  {item.url && (
-                    <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>
-                      <ExternalLink style={{ width: '11px', height: '11px' }} />
-                    </a>
-                  )}
-                  {item.githubUrl && (
-                    <a href={item.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>
-                      <Github style={{ width: '11px', height: '11px' }} />
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Role & Date */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px', fontSize: '10px', flexWrap: 'wrap' }}>
-              {(item.role || editable) && (
-                <>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`projects.${index}.role`}
-                      value={item.role || ''}
-                      style={{ color: accentColor, fontSize: '10px', fontWeight: 500 }}
-                      placeholder="Role"
-                    />
-                  ) : (
-                    <span style={{ color: accentColor, fontWeight: 500 }}>{item.role}</span>
-                  )}
-                  {(item.startDate || item.endDate || editable) && <span style={{ color: '#d1d5db' }}>•</span>}
-                </>
-              )}
-
+              {/* Date */}
               {(item.startDate || item.endDate || editable) && (
-                <span style={{ color: typography.dates.color }}>
+                <div style={{ fontSize: '11px', color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
                   {editable ? (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                       <InlineEditableDate
                         path={`projects.${index}.startDate`}
                         value={item.startDate || ''}
                         formatDisplay={formatDate}
-                        style={{ fontSize: '10px' }}
+                        style={{ fontSize: '11px' }}
                       />
                       <span>-</span>
                       {item.current ? (
@@ -137,7 +111,7 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
                           path={`projects.${index}.endDate`}
                           value={item.endDate || ''}
                           formatDisplay={formatDate}
-                          style={{ fontSize: '10px' }}
+                          style={{ fontSize: '11px' }}
                         />
                       )}
                     </span>
@@ -148,26 +122,39 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
                       {item.current ? 'Present' : (formatDate ? formatDate(item.endDate || '') : item.endDate)}
                     </span>
                   )}
-                </span>
+                </div>
               )}
             </div>
 
-            {/* Description - truncated */}
+            {/* Role */}
+            {(item.role || editable) && (
+              <div style={{ fontSize: '11px', color: accentColor, fontWeight: 500, marginTop: '2px' }}>
+                {editable ? (
+                  <InlineEditableText
+                    path={`projects.${index}.role`}
+                    value={item.role || ''}
+                    style={{ fontSize: '11px', color: accentColor, fontWeight: 500 }}
+                    placeholder="Your Role"
+                  />
+                ) : (
+                  item.role
+                )}
+              </div>
+            )}
+
+            {/* Description */}
             <div style={{
               fontSize: typography.body.fontSize,
               color: typography.body.color,
-              marginTop: '6px',
-              lineHeight: 1.4,
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
+              marginTop: '8px',
+              lineHeight: 1.5,
             }}>
               {editable ? (
                 <InlineEditableText
                   path={`projects.${index}.description`}
                   value={item.description}
-                  placeholder="Brief description..."
+                  multiline
+                  placeholder="Project description..."
                   style={{ fontSize: typography.body.fontSize }}
                 />
               ) : (
@@ -175,21 +162,46 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
               )}
             </div>
 
+            {/* Highlights */}
+            {(item.highlights?.length || editable) && item.highlights && item.highlights.length > 0 && (
+              <ul style={{
+                fontSize: typography.body.fontSize,
+                color: typography.body.color,
+                marginTop: '6px',
+                paddingLeft: '16px',
+                marginBottom: 0,
+              }}>
+                {item.highlights.map((highlight, hIndex) => (
+                  <li key={hIndex} style={{ marginBottom: '2px' }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path={`projects.${index}.highlights.${hIndex}`}
+                        value={highlight}
+                        placeholder="Highlight"
+                      />
+                    ) : (
+                      highlight
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+
             {/* Tech Stack */}
             {(technologies.length > 0 || editable) && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3px', marginTop: '6px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
                 {technologies.map((tech, techIndex) => (
                   <span
                     key={techIndex}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '3px',
-                      padding: '1px 6px',
-                      fontSize: '9px',
+                      gap: '4px',
+                      padding: '2px 8px',
+                      fontSize: '10px',
                       backgroundColor: `${accentColor}12`,
                       color: accentColor,
-                      borderRadius: '3px',
+                      borderRadius: '4px',
                       fontWeight: 500,
                     }}
                   >
@@ -197,36 +209,33 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
                       <InlineEditableText
                         path={`projects.${index}.${techPath}.${techIndex}`}
                         value={tech}
-                        style={{ fontSize: '9px', fontWeight: 500, color: accentColor }}
+                        style={{ fontSize: '10px', fontWeight: 500, color: accentColor }}
                         placeholder="Tech"
                       />
                     ) : (
                       tech
                     )}
-                    {editable && inlineEdit?.removeArrayItem && (
-                      <button
-                        onClick={() => handleRemoveTechnology(techIndex)}
-                        className="hover:text-red-500"
-                      >
-                        <X style={{ width: '8px', height: '8px' }} />
+                    {editable && onRemoveTechnology && (
+                      <button onClick={() => onRemoveTechnology(index, techIndex)}>
+                        <X style={{ width: '10px', height: '10px' }} />
                       </button>
                     )}
                   </span>
                 ))}
-                {editable && inlineEdit?.addArrayItem && (
+                {editable && onAddTechnology && (
                   <button
-                    onClick={handleAddTechnology}
+                    onClick={() => onAddTechnology(index)}
                     style={{
-                      padding: '1px 6px',
-                      fontSize: '9px',
+                      padding: '2px 8px',
+                      fontSize: '10px',
                       color: accentColor,
                       border: `1px dashed ${accentColor}50`,
-                      borderRadius: '3px',
+                      borderRadius: '4px',
                       backgroundColor: 'transparent',
                       cursor: 'pointer',
                     }}
                   >
-                    +
+                    + Tech
                   </button>
                 )}
               </div>
@@ -234,23 +243,23 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
 
             {/* Editable URLs */}
             {editable && (
-              <div style={{ display: 'flex', gap: '10px', marginTop: '6px', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                  <ExternalLink style={{ width: '9px', height: '9px', color: accentColor }} />
+              <div style={{ display: 'flex', gap: '12px', marginTop: '8px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <ExternalLink style={{ width: '10px', height: '10px', color: accentColor }} />
                   <InlineEditableText
                     path={`projects.${index}.url`}
                     value={item.url || ''}
-                    style={{ fontSize: '9px', color: accentColor }}
-                    placeholder="URL"
+                    style={{ fontSize: '10px', color: accentColor }}
+                    placeholder="Project URL"
                   />
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                  <Github style={{ width: '9px', height: '9px', color: accentColor }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <Github style={{ width: '10px', height: '10px', color: accentColor }} />
                   <InlineEditableText
                     path={`projects.${index}.githubUrl`}
                     value={item.githubUrl || ''}
-                    style={{ fontSize: '9px', color: accentColor }}
-                    placeholder="GitHub"
+                    style={{ fontSize: '10px', color: accentColor }}
+                    placeholder="GitHub URL"
                   />
                 </div>
               </div>
@@ -262,28 +271,15 @@ export const ProjectsCards: React.FC<ProjectsVariantProps> = ({
       {editable && onAddProject && (
         <button
           onClick={onAddProject}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '4px',
-            padding: '12px',
-            borderRadius: '8px',
-            border: `1px dashed ${accentColor}40`,
-            backgroundColor: 'transparent',
-            color: accentColor,
-            fontSize: '11px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
-          className="hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
+          style={{ color: accentColor, borderColor: accentColor }}
         >
-          <Plus style={{ width: '12px', height: '12px' }} />
-          Add
+          <Plus className="h-3 w-3" />
+          Add Project
         </button>
       )}
     </div>
   );
 };
 
-export default ProjectsCards;
+export default ProjectsDetailed;

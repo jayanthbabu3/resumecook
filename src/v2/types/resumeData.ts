@@ -156,6 +156,7 @@ export interface CertificationItem {
 // ============================================================================
 
 export interface ProjectItem {
+  techStack: string[];
   id: string;
   name: string;
   description: string;

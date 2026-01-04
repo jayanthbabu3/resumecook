@@ -1,29 +1,23 @@
 /**
- * Patents Detailed Variant
+ * Courses Detailed Variant
  *
- * More detailed view with description, but still compact.
+ * Full info with description support.
  * Uses theme colors for styling.
  */
 
 import React from 'react';
-import { X, Plus, ExternalLink } from 'lucide-react';
+import { X, Plus, ExternalLink, CheckCircle } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
-import type { PatentsVariantProps } from '../types';
+import type { CoursesVariantProps } from '../types';
 
-const STATUS_COLORS: Record<string, string> = {
-  Pending: '#f59e0b',
-  Granted: '#10b981',
-  Published: '#3b82f6',
-};
-
-export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
+export const CoursesDetailed: React.FC<CoursesVariantProps> = ({
   items,
   config,
   accentColor,
   editable = false,
-  onAddPatent,
-  onRemovePatent,
+  onAddCourse,
+  onRemoveCourse,
   formatDate,
 }) => {
   const { typography } = config;
@@ -43,28 +37,28 @@ export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
             border: `1px solid ${accentColor}15`,
           }}
         >
-          {editable && onRemovePatent && (
+          {editable && onRemoveCourse && (
             <button
-              onClick={() => onRemovePatent(item.id)}
-              className="absolute -right-1 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 bg-red-100 hover:bg-red-200 rounded-full z-10"
+              onClick={() => onRemoveCourse(item.id)}
+              className="absolute -right-1 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p.5 bg-red-100 hover:bg-red-200 rounded-full z-10"
             >
               <X className="w-3 h-3 text-red-600" />
             </button>
           )}
 
-          {/* First row: Title | Status | Date */}
+          {/* First row: Name | Date */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
             <div style={{ flex: 1, display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
               {editable ? (
                 <InlineEditableText
-                  path={`patents.${index}.title`}
-                  value={item.title}
+                  path={`courses.${index}.name`}
+                  value={item.name}
                   style={{
                     fontSize: typography.itemTitle.fontSize,
                     fontWeight: 600,
                     color: typography.itemTitle.color,
                   }}
-                  placeholder="Patent Title"
+                  placeholder="Course Name"
                 />
               ) : (
                 <span style={{
@@ -72,7 +66,24 @@ export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
                   fontWeight: 600,
                   color: typography.itemTitle.color,
                 }}>
-                  {item.title}
+                  {item.name}
+                </span>
+              )}
+
+              {item.certificate && (
+                <span style={{
+                  fontSize: '9px',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  backgroundColor: '#10b98115',
+                  color: '#10b981',
+                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '3px',
+                }}>
+                  <CheckCircle style={{ width: '10px', height: '10px' }} />
+                  Certified
                 </span>
               )}
 
@@ -86,29 +97,6 @@ export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
                   <ExternalLink style={{ width: '12px', height: '12px' }} />
                 </a>
               )}
-
-              {/* Status badge */}
-              <span
-                style={{
-                  fontSize: '10px',
-                  padding: '2px 6px',
-                  borderRadius: '4px',
-                  backgroundColor: `${STATUS_COLORS[item.status] || STATUS_COLORS.Pending}15`,
-                  color: STATUS_COLORS[item.status] || STATUS_COLORS.Pending,
-                  fontWeight: 500,
-                }}
-              >
-                {editable ? (
-                  <InlineEditableText
-                    path={`patents.${index}.status`}
-                    value={item.status || 'Pending'}
-                    style={{ fontSize: '10px', fontWeight: 500 }}
-                    placeholder="Status"
-                  />
-                ) : (
-                  item.status
-                )}
-              </span>
             </div>
 
             {/* Date */}
@@ -120,7 +108,7 @@ export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
             }}>
               {editable ? (
                 <InlineEditableDate
-                  path={`patents.${index}.date`}
+                  path={`courses.${index}.date`}
                   value={item.date}
                   formatDisplay={formatDate}
                   style={{ fontSize: '11px' }}
@@ -131,42 +119,22 @@ export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
             </div>
           </div>
 
-          {/* Second row: Patent Number • Inventors */}
+          {/* Second row: Provider */}
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginTop: '4px',
             fontSize: '11px',
-            color: '#6b7280',
-            flexWrap: 'wrap',
+            color: accentColor,
+            fontWeight: 500,
+            marginTop: '4px',
           }}>
             {editable ? (
               <InlineEditableText
-                path={`patents.${index}.patentNumber`}
-                value={item.patentNumber || ''}
-                style={{ fontSize: '11px', color: accentColor }}
-                placeholder="Patent #"
+                path={`courses.${index}.provider`}
+                value={item.provider}
+                style={{ fontSize: '11px', color: accentColor, fontWeight: 500 }}
+                placeholder="Provider (e.g., Coursera, Udemy)"
               />
             ) : (
-              <span style={{ color: accentColor }}>{item.patentNumber}</span>
-            )}
-
-            {(item.inventors?.length || editable) && (
-              <>
-                <span style={{ color: '#d1d5db' }}>•</span>
-                <span>Inventors: </span>
-                {editable ? (
-                  <InlineEditableText
-                    path={`patents.${index}.inventors`}
-                    value={Array.isArray(item.inventors) ? item.inventors.join(', ') : (item.inventors || '')}
-                    style={{ fontSize: '11px', color: '#6b7280' }}
-                    placeholder="Names"
-                  />
-                ) : (
-                  <span>{Array.isArray(item.inventors) ? item.inventors.join(', ') : item.inventors}</span>
-                )}
-              </>
+              item.provider
             )}
           </div>
 
@@ -180,10 +148,10 @@ export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
             }}>
               {editable ? (
                 <InlineEditableText
-                  path={`patents.${index}.description`}
+                  path={`courses.${index}.description`}
                   value={item.description || ''}
                   multiline
-                  placeholder="Description..."
+                  placeholder="What you learned..."
                   style={{ fontSize: typography.body.fontSize }}
                 />
               ) : (
@@ -197,28 +165,28 @@ export const PatentsDetailed: React.FC<PatentsVariantProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px' }}>
               <ExternalLink style={{ width: '10px', height: '10px', color: accentColor }} />
               <InlineEditableText
-                path={`patents.${index}.url`}
+                path={`courses.${index}.url`}
                 value={item.url || ''}
                 style={{ fontSize: '10px', color: accentColor }}
-                placeholder="Patent URL (optional)"
+                placeholder="Course URL (optional)"
               />
             </div>
           )}
         </div>
       ))}
 
-      {editable && onAddPatent && (
+      {editable && onAddCourse && (
         <button
-          onClick={onAddPatent}
+          onClick={onAddCourse}
           className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
           style={{ color: accentColor, borderColor: accentColor }}
         >
           <Plus className="h-3 w-3" />
-          Add Patent
+          Add Course
         </button>
       )}
     </div>
   );
 };
 
-export default PatentsDetailed;
+export default CoursesDetailed;

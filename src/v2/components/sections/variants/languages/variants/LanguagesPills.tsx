@@ -3,6 +3,7 @@
  *
  * Displays languages as stylish pill badges with proficiency levels.
  * Modern, clean look perfect for tech and creative resumes.
+ * Uses theme accent color for styling.
  */
 
 import React from 'react';
@@ -10,14 +11,43 @@ import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import type { LanguagesVariantProps } from '../types';
 
-const proficiencyColors: Record<string, { bg: string; text: string; border: string }> = {
-  'Native': { bg: '#dcfce7', text: '#166534', border: '#86efac' },
-  'Fluent': { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' },
-  'Professional': { bg: '#e0e7ff', text: '#3730a3', border: '#a5b4fc' },
-  'Advanced': { bg: '#fae8ff', text: '#86198f', border: '#f0abfc' },
-  'Intermediate': { bg: '#fef3c7', text: '#92400e', border: '#fcd34d' },
-  'Basic': { bg: '#f3f4f6', text: '#374151', border: '#d1d5db' },
-  'Elementary': { bg: '#f9fafb', text: '#6b7280', border: '#e5e7eb' },
+// Helper to convert hex to RGB
+const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+};
+
+// Generate theme-based colors with varying opacity based on proficiency level
+const getProficiencyColors = (accentColor: string, proficiency: string): { bg: string; text: string; border: string } => {
+  const rgb = hexToRgb(accentColor);
+  if (!rgb) {
+    return { bg: `${accentColor}15`, text: accentColor, border: `${accentColor}40` };
+  }
+
+  // Different opacity levels based on proficiency
+  const opacityMap: Record<string, number> = {
+    'Native': 0.20,
+    'Fluent': 0.18,
+    'Professional': 0.16,
+    'Advanced': 0.14,
+    'Intermediate': 0.12,
+    'Basic': 0.10,
+    'Elementary': 0.08,
+  };
+
+  const opacity = opacityMap[proficiency] || 0.12;
+
+  return {
+    bg: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`,
+    text: accentColor,
+    border: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity + 0.20})`,
+  };
 };
 
 export const LanguagesPills: React.FC<LanguagesVariantProps> = ({
@@ -35,7 +65,7 @@ export const LanguagesPills: React.FC<LanguagesVariantProps> = ({
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
       {items.map((lang, index) => {
-        const colors = proficiencyColors[lang.proficiency] || { bg: '#f3f4f6', text: '#374151', border: '#d1d5db' };
+        const colors = getProficiencyColors(accentColor, lang.proficiency);
 
         return (
           <div
