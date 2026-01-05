@@ -24,6 +24,8 @@ import { generatePDFFromPreview } from "@/lib/pdfGenerator";
 import { cn } from "@/lib/utils";
 import { useAppStats } from "@/hooks/useAppStats";
 import { formatCount, incrementDownloadsCount } from "@/lib/firestore/statsService";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { Users } from "lucide-react";
 import type { ResumeData } from "@/types/resume";
 
 
@@ -473,7 +475,7 @@ const Hero = () => {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
-                  <span>AI-Powered Resume Builder</span>
+                  <span>Professional Resume Builder</span>
                 </div>
 
                 {/* Headline - Clean, impactful */}
@@ -487,7 +489,7 @@ const Hero = () => {
                   
                   {/* Subheadline - Concise */}
                   <p className="text-lg sm:text-xl text-muted-foreground/80 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
-                    Professional templates. AI-powered content. ATS-optimized formatting. 
+                    Professional templates. ATS-optimized formatting. Easy customization.
                     Create your perfect resume in minutes.
                   </p>
                 </div>
@@ -503,24 +505,55 @@ const Hero = () => {
                   </Button>
                 </div>
 
-                {/* Social Proof - Real stats only */}
+                {/* Social Proof - Real stats with animation */}
                 <div className="flex items-center justify-center lg:justify-start pt-8 border-t border-border/40">
-                  <div className="flex items-center gap-3">
-                    <div className="flex -space-x-2">
-                      {[1, 2, 3, 4].map((i) => (
-                        <div
-                          key={i}
-                          className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-2 border-background flex items-center justify-center text-[10px] font-medium text-gray-600"
-                        >
-                          {['JD', 'AK', 'MR', 'SL'][i-1]}
-                        </div>
-                      ))}
+                  <div className="flex items-center gap-6">
+                    {/* Users count */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex -space-x-2">
+                        {[1, 2, 3, 4].map((i) => (
+                          <div
+                            key={i}
+                            className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-2 border-background flex items-center justify-center text-[10px] font-medium text-gray-600"
+                          >
+                            {['JD', 'AK', 'MR', 'SL'][i-1]}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-semibold text-foreground">
+                          {statsLoading ? "..." : (
+                            <AnimatedCounter
+                              value={stats?.usersCount || 0}
+                              duration={1500}
+                              suffix="+"
+                            />
+                          )}
+                        </span>
+                        <span className="text-muted-foreground ml-1">users</span>
+                      </div>
                     </div>
-                    <div className="text-sm">
-                      <span className="font-semibold text-foreground">
-                        {statsLoading ? "..." : formatCount(stats?.usersCount || 0)}+
-                      </span>
-                      <span className="text-muted-foreground ml-1">users</span>
+
+                    {/* Divider */}
+                    <div className="h-8 w-px bg-border/60" />
+
+                    {/* Downloads count */}
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center">
+                        <Download className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-semibold text-foreground">
+                          {statsLoading ? "..." : (
+                            <AnimatedCounter
+                              value={stats?.downloadsCount || 0}
+                              duration={1500}
+                              suffix="+"
+                            />
+                          )}
+                        </span>
+                        <span className="text-muted-foreground ml-1">downloads</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -640,9 +673,9 @@ const Hero = () => {
                   <div className="absolute -top-6 -right-6 bg-white rounded-2xl shadow-xl shadow-primary/10 border border-gray-100 px-4 py-2.5 animate-float">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/10 to-blue-100 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-primary" />
+                        <CheckCircle2 className="w-4 h-4 text-primary" />
                       </div>
-                      <span className="text-sm font-semibold text-gray-800">AI-Enhanced</span>
+                      <span className="text-sm font-semibold text-gray-800">ATS-Optimized</span>
                     </div>
                   </div>
 

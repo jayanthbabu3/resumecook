@@ -29,6 +29,7 @@ import { toast } from 'sonner';
 import { HELPER_SECTIONS, SECTION_DEFAULT_TITLES } from '@/constants/helperSections';
 import { getMockSectionData, getBlankResumeData } from '@/constants/mockSectionData';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
+import { incrementDownloadsCount } from '@/lib/firestore/statsService';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { ScratchBuilderSection } from '@/components/resume/ScratchBuilderSection';
@@ -398,6 +399,10 @@ export default function ScratchBuilder() {
     try {
       const filename = `${resumeData.personalInfo.fullName?.replace(/\s+/g, '_') || 'resume'}_Resume.pdf`;
       await generatePDFFromPreview('scratch-builder-preview', filename);
+
+      // Increment download count in stats
+      incrementDownloadsCount().catch(console.error);
+
       toast.success('PDF exported successfully!');
     } catch (error) {
       console.error('Failed to export PDF:', error);

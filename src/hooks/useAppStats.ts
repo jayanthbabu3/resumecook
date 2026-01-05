@@ -25,15 +25,13 @@ export const useAppStats = (): UseAppStatsReturn => {
 
     const setupStatsListener = async () => {
       try {
-        // Initialize stats if they don't exist
-        await initializeStats();
-
-        // Set up real-time listener
+        // Set up real-time listener directly without initializing
         const statsRef = doc(db, STATS_COLLECTION, STATS_DOC_ID);
 
         unsubscribe = onSnapshot(
           statsRef,
           (snapshot) => {
+            console.log('Stats snapshot received:', snapshot.exists(), snapshot.data());
             if (snapshot.exists()) {
               const data = snapshot.data();
               setStats({
@@ -42,6 +40,9 @@ export const useAppStats = (): UseAppStatsReturn => {
                 lastUpdated: data.lastUpdated?.toDate() || new Date(),
               });
             } else {
+              // Document doesn't exist, try to initialize
+              console.log('Stats document does not exist, initializing...');
+              initializeStats().catch(console.error);
               setStats({
                 usersCount: 0,
                 downloadsCount: 0,

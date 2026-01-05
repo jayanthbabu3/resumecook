@@ -19,6 +19,7 @@ import { SectionVariantModal } from '../components/scratch/SectionVariantModal';
 import { toast } from 'sonner';
 import type { V2SectionType } from '../types/resumeData';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
+import { incrementDownloadsCount } from '@/lib/firestore/statsService';
 import type { SectionVariant } from '@/constants/sectionVariants';
 import { applyVariantDataToResume } from '../utils/variantDataApplier';
 import { resumeService } from '@/lib/firestore/resumeService';
@@ -156,6 +157,10 @@ const ScratchBuilderV2: React.FC = () => {
     try {
       const filename = `${resumeData.personalInfo.fullName?.replace(/\s+/g, '_') || 'resume'}_Resume.pdf`;
       await generatePDFFromPreview('scratch-builder-v2-preview', filename);
+
+      // Increment download count in stats
+      incrementDownloadsCount().catch(console.error);
+
       toast.success('PDF exported successfully!');
     } catch (error) {
       console.error('Failed to export PDF:', error);

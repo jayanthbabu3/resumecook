@@ -29,6 +29,7 @@ import { resumeServiceV2, type V2Resume } from '../services/resumeServiceV2';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
+import { incrementDownloadsCount } from '@/lib/firestore/statsService';
 import { PDF_STYLES } from '@/lib/pdfStyles';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
 import { StyleOptionsProvider } from '@/contexts/StyleOptionsContext';
@@ -972,6 +973,10 @@ export const BuilderV2: React.FC = () => {
         `${resumeData.personalInfo.fullName || 'Resume'}.pdf`,
         { themeColor, config: pdfConfig }
       );
+
+      // Increment download count in stats
+      incrementDownloadsCount().catch(console.error);
+
       toast.success('Resume downloaded successfully!');
     } catch (error) {
       console.error('Download error:', error);
