@@ -221,12 +221,12 @@ const ATSGuidelines = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-24">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-emerald-100/20" />
         <div className="absolute -top-32 right-1/2 h-64 w-64 translate-x-1/2 rounded-full bg-primary/15 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-72 w-72 -translate-x-1/3 translate-y-1/3 rounded-full bg-emerald-400/20 blur-3xl" />
 
-        <div className="container relative z-10 mx-auto px-6">
+        <div className="container relative z-10 mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/60 px-4 py-2 text-sm font-medium text-primary shadow-sm backdrop-blur">
               <BookOpen className="h-4 w-4" />
@@ -258,6 +258,7 @@ const ATSGuidelines = () => {
                 variant="outline"
                 size="sm"
                 className="h-10 px-6 text-sm font-semibold backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/60"
+                onClick={() => navigate("/templates")}
               >
                 Explore Templates
               </Button>
@@ -278,8 +279,8 @@ const ATSGuidelines = () => {
       </section>
 
       {/* Checklist Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="mx-auto max-w-3xl text-center space-y-2">
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
               Essential Checklist
@@ -337,8 +338,8 @@ const ATSGuidelines = () => {
       </section>
 
       {/* Example Section */}
-      <section className="py-16 bg-muted/20">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16 bg-muted/20">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="mx-auto max-w-3xl text-center space-y-3">
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
               Bring It To Life
@@ -351,13 +352,13 @@ const ATSGuidelines = () => {
             </p>
           </div>
 
-          <div className="mt-12 space-y-8">
+          <div className="mt-8 sm:mt-12 space-y-6 sm:space-y-8">
             {checklistItems.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.title}
-                  className="rounded-2xl border border-border/60 bg-white/90 p-6 shadow-sm"
+                  className="rounded-xl sm:rounded-2xl border border-border/60 bg-white/90 p-4 sm:p-6 shadow-sm"
                 >
                   <div className="mb-5 flex items-start gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -373,8 +374,8 @@ const ATSGuidelines = () => {
                     </div>
                   </div>
 
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <div className="flex flex-col gap-4 rounded-xl border border-rose-200 bg-rose-50/80 p-5">
+                  <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+                    <div className="flex flex-col gap-3 sm:gap-4 rounded-lg sm:rounded-xl border border-rose-200 bg-rose-50/80 p-4 sm:p-5">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-rose-500 shadow-sm">
                           ✕
@@ -398,7 +399,7 @@ const ATSGuidelines = () => {
                       </ul>
                     </div>
 
-                    <div className="flex flex-col gap-4 rounded-xl border border-emerald-200 bg-emerald-50/80 p-5">
+                    <div className="flex flex-col gap-3 sm:gap-4 rounded-lg sm:rounded-xl border border-emerald-200 bg-emerald-50/80 p-4 sm:p-5">
                       <div className="flex items-start gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm">
                           <CheckCircle2 className="h-4 w-4" />
@@ -430,12 +431,12 @@ const ATSGuidelines = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative overflow-hidden py-16 mt-16">
+      <section className="relative overflow-hidden py-10 sm:py-16 mt-8 sm:mt-16">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-emerald-200/30" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-primary/10 to-transparent" />
 
-        <div className="container relative z-10 mx-auto px-6">
-          <div className="mx-auto max-w-3xl rounded-3xl border border-white/40 bg-white/70 p-8 text-center shadow-xl backdrop-blur">
+        <div className="container relative z-10 mx-auto px-4 sm:px-6">
+          <div className="mx-auto max-w-3xl rounded-2xl sm:rounded-3xl border border-white/40 bg-white/70 p-5 sm:p-8 text-center shadow-xl backdrop-blur">
             <div className="space-y-3">
               <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
                 Finish Strong
@@ -461,6 +462,7 @@ const ATSGuidelines = () => {
                 variant="outline"
                 size="sm"
                 className="h-10 px-6 text-sm font-semibold backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/60"
+                onClick={() => navigate("/templates")}
               >
                 View Sample Templates
               </Button>
@@ -469,14 +471,14 @@ const ATSGuidelines = () => {
         </div>
       </section>
 
-      <footer className="mt-16 border-t border-border/60 bg-muted/20">
+      <footer className="mt-8 sm:mt-16 border-t border-border/60 bg-muted/20">
         <div className="container mx-auto px-4 py-4 md:px-6 md:py-5">
           <div className="mx-auto flex max-w-6xl flex-col gap-3 text-center text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:text-sm">
             <div>© {new Date().getFullYear()} ResumeCook. Crafted to help you land your next role.</div>
             <div className="flex items-center justify-center gap-4 text-[11px] uppercase tracking-wide sm:text-xs">
-              <span>Privacy</span>
-              <span>Terms</span>
-              <span>Support</span>
+              <button onClick={() => navigate("/privacy")} className="hover:text-foreground transition-colors">Privacy</button>
+              <button onClick={() => navigate("/terms")} className="hover:text-foreground transition-colors">Terms</button>
+              <button onClick={() => navigate("/support")} className="hover:text-foreground transition-colors">Support</button>
             </div>
           </div>
         </div>

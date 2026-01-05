@@ -3,6 +3,7 @@ import {
   DndContext,
   DragEndEvent,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -42,7 +43,7 @@ interface SortableItemProps {
 }
 
 const SortableItem: React.FC<SortableItemProps> = ({ id, label, locked }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id, disabled: locked });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id, disabled: locked });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -54,20 +55,22 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, label, locked }) => {
       ref={setNodeRef}
       style={style}
       className={cn(
-        'flex items-center gap-2 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm shadow-sm',
-        locked && 'opacity-80 cursor-not-allowed'
+        'flex items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2.5 text-sm shadow-sm touch-none',
+        locked && 'opacity-80 cursor-not-allowed',
+        !locked && 'cursor-grab active:cursor-grabbing',
+        isDragging && 'opacity-50 shadow-lg z-50'
       )}
+      {...(!locked ? { ...attributes, ...listeners } : {})}
     >
       <div
         className={cn(
-          'flex items-center',
-          locked ? 'text-gray-300' : 'text-gray-400 cursor-grab active:cursor-grabbing'
+          'flex items-center flex-shrink-0',
+          locked ? 'text-gray-300' : 'text-gray-400'
         )}
-        {...(!locked ? { ...attributes, ...listeners } : {})}
       >
-        {locked ? <Lock className="h-3.5 w-3.5" /> : <GripVertical className="h-3.5 w-3.5" />}
+        {locked ? <Lock className="h-4 w-4" /> : <GripVertical className="h-4 w-4" />}
       </div>
-      <span className="text-gray-800">{label}</span>
+      <span className="text-gray-800 truncate">{label}</span>
     </div>
   );
 };
@@ -78,7 +81,10 @@ export const SectionReorderDialog: React.FC<SectionReorderDialogProps> = ({
   sections,
   onApply,
 }) => {
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } })
+  );
 
   // Separate into columns
   const initial = useMemo(() => {
@@ -157,9 +163,9 @@ export const SectionReorderDialog: React.FC<SectionReorderDialogProps> = ({
   const isLocked = (id: string) => id === headerId;
 
   const renderColumn = (ids: string[], column: ColumnId, title: string) => (
-    <div className="flex-1 min-w-[220px]">
+    <div className="flex-1 min-w-0 sm:min-w-[220px]">
       <div className="mb-2 text-xs font-semibold text-gray-700 uppercase tracking-wide">{title}</div>
-      <div className="space-y-1.5 rounded-lg bg-gray-50 border border-gray-200 p-2 min-h-[200px]">
+      <div className="space-y-1.5 rounded-lg bg-gray-50 border border-gray-200 p-2 min-h-[120px] sm:min-h-[200px]">
         <SortableContext items={ids} strategy={verticalListSortingStrategy}>
           {ids.map((id) => (
             <SortableItem
@@ -170,7 +176,7 @@ export const SectionReorderDialog: React.FC<SectionReorderDialogProps> = ({
             />
           ))}
           {ids.length === 0 && (
-            <div className="text-xs text-gray-400 italic px-2 py-6 text-center">
+            <div className="text-xs text-gray-400 italic px-2 py-4 sm:py-6 text-center">
               Drag a section here
             </div>
           )}
@@ -186,62 +192,74 @@ export const SectionReorderDialog: React.FC<SectionReorderDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-gray-900">
+      <DialogContent className="max-w-3xl w-[95vw] sm:w-full p-0 gap-0 overflow-hidden max-h-[85vh] sm:max-h-[600px] flex flex-col">
+        <DialogHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b bg-gray-50 flex-shrink-0">
+          <DialogTitle className="text-base sm:text-lg font-semibold text-gray-900">
             Rearrange Sections
           </DialogTitle>
-          <p className="text-sm text-gray-500">
-            Drag and drop to reorder or move sections between columns. Header is locked.
+          <p className="text-xs sm:text-sm text-gray-500">
+            Drag and drop to reorder or move sections between columns.
           </p>
         </DialogHeader>
 
-        <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-          <Badge variant="secondary" className="flex items-center gap-1">
-            <GripVertical className="h-3 w-3" />
-            Drag
-          </Badge>
-          <span>Hold and drag to rearrange</span>
-        </div>
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+          <div className="px-4 sm:px-6 py-3 sm:py-4">
+            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+              <Badge variant="secondary" className="flex items-center gap-1">
+                <GripVertical className="h-3 w-3" />
+                Drag
+              </Badge>
+              <span className="hidden sm:inline">Hold and drag to rearrange</span>
+              <span className="sm:hidden">Hold to drag</span>
+            </div>
 
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {renderColumn(mainIds, 'main', 'Main Column')}
-            {renderColumn(sidebarIds, 'sidebar', 'Sidebar')}
-          </div>
-        </DndContext>
+            <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                {renderColumn(mainIds, 'main', 'Main Column')}
+                {renderColumn(sidebarIds, 'sidebar', 'Sidebar')}
+              </div>
+            </DndContext>
 
-        <div className="mt-4 space-y-2">
-          <div className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
-            Page Breaks
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {sections
-              .filter((s) => s.id !== headerId)
-              .map((s) => (
-                <div
-                  key={s.id}
-                  className="flex items-center justify-between rounded-md border border-gray-200 bg-white px-3 py-2"
-                >
-                  <span className="text-sm text-gray-800">{s.title}</span>
-                  <Switch
-                    checked={pageBreaks[s.id] || false}
-                    onCheckedChange={(checked) =>
-                      setPageBreaks((prev) => ({ ...prev, [s.id]: checked }))
-                    }
-                    className="data-[state=checked]:bg-primary"
-                  />
+            <div className="mt-4 sm:mt-6 space-y-2">
+              <div>
+                <div className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                  Page Breaks
                 </div>
-              ))}
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Start a section on a new page in the PDF
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {sections
+                  .filter((s) => s.id !== headerId)
+                  .map((s) => (
+                    <div
+                      key={s.id}
+                      className="flex items-center justify-between rounded-md border border-gray-200 bg-white px-3 py-2"
+                    >
+                      <span className="text-sm text-gray-800 truncate mr-2">{s.title}</span>
+                      <Switch
+                        checked={pageBreaks[s.id] || false}
+                        onCheckedChange={(checked) =>
+                          setPageBreaks((prev) => ({ ...prev, [s.id]: checked }))
+                        }
+                        className="data-[state=checked]:bg-primary flex-shrink-0"
+                      />
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        <DialogFooter className="mt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t bg-gray-50 flex justify-end gap-2 sm:gap-3 flex-shrink-0">
+          <Button variant="outline" onClick={() => onOpenChange(false)} size="sm" className="sm:size-default">
             Cancel
           </Button>
-          <Button onClick={applyChanges}>Apply</Button>
-        </DialogFooter>
+          <Button onClick={applyChanges} size="sm" className="sm:size-default">
+            Apply
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

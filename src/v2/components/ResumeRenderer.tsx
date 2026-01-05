@@ -763,7 +763,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   // Force font inheritance on all content
   const fontInheritClass = 'resume-font-inherit';
 
-  const headerVariant = config.header?.variant;
+  const headerVariant = config.header?.variant as string | undefined;
+  const validHeaderVariants = ['split', 'centered', 'left-aligned', 'minimal', 'photo-left', 'photo-right', 'accent-bar', 'compact', 'gradient-banner', 'elegant-banner'];
+  const isValidHeaderVariant = headerVariant && validHeaderVariants.includes(headerVariant);
   const isBannerHeader = headerVariant === 'banner';
   
   // For scratch builder, always reserve header space even if disabled
@@ -804,23 +806,23 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
                 resumeData={resumeData}
                 config={config}
                 editable={editable}
-                variantOverride={headerVariant}
+                variantOverride={isValidHeaderVariant ? (headerVariant as any) : undefined}
               />
             ) : (
               <div
-                style={{
-                  padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 0 ${spacing.pagePadding.left}`,
-                  position: 'relative',
-                  zIndex: 2,
-                }}
-              >
-                <HeaderSection
-                  resumeData={resumeData}
-                  config={config}
-                  editable={editable}
-                  variantOverride={headerVariant}
-                />
-              </div>
+                  style={{
+                    padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 0 ${spacing.pagePadding.left}`,
+                    position: 'relative',
+                    zIndex: 2,
+                  }}
+                >
+                  <HeaderSection
+                    resumeData={resumeData}
+                    config={config}
+                    editable={editable}
+                    variantOverride={isValidHeaderVariant ? (headerVariant as any) : undefined}
+                  />
+                </div>
             )}
           </>
         ) : shouldReserveHeaderSpace ? (
@@ -935,7 +937,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
               resumeData={resumeData}
               config={config}
               editable={editable}
-              variantOverride={headerVariant}
+              variantOverride={isValidHeaderVariant ? (headerVariant as any) : undefined}
             />
           ) : (
             <div style={{ ...headerWrapperPadding, position: 'relative', zIndex: 2 }}>
@@ -943,7 +945,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
                 resumeData={resumeData}
                 config={config}
                 editable={editable}
-                variantOverride={headerVariant}
+                variantOverride={isValidHeaderVariant ? (headerVariant as any) : undefined}
               />
             </div>
           )}

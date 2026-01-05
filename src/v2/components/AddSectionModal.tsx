@@ -272,6 +272,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
     if (!isOpen) {
       setSelectedSection(null);
       setSelectedVariant(null);
+      setShowVariants(false);
     }
   }, [isOpen]);
 
@@ -294,25 +295,46 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
 
   const isTwoColumn = layoutType !== 'single-column';
 
+  // Track if we're showing variants on mobile
+  const [showVariants, setShowVariants] = useState(false);
+
+  // Handle section select with mobile variant view
+  const handleSectionSelectMobile = (sectionId: string) => {
+    handleSectionSelect(sectionId);
+    setShowVariants(true);
+  };
+
+  // Go back to section list on mobile
+  const handleBackToSections = () => {
+    setShowVariants(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-6 py-4 border-b bg-gray-50">
-          <DialogTitle className="text-lg font-semibold">Add New Section</DialogTitle>
+      <DialogContent className="max-w-3xl w-[95vw] sm:w-full p-0 gap-0 overflow-hidden max-h-[85vh] sm:max-h-[600px]">
+        <DialogHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b bg-gray-50">
+          <DialogTitle className="text-base sm:text-lg font-semibold">Add New Section</DialogTitle>
         </DialogHeader>
 
-        <div className="flex h-[500px]">
-          {/* Left Panel - Section Types */}
-          <div className="w-56 border-r bg-gray-50/50 flex flex-col">
-            <div className="px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wide">
+        <div className="flex flex-col sm:flex-row h-[60vh] sm:h-[500px] overflow-hidden">
+          {/* Left Panel - Section Types (hidden on mobile when showing variants) */}
+          <div className={`${showVariants ? 'hidden sm:flex' : 'flex'} w-full sm:w-56 border-b sm:border-b-0 sm:border-r bg-gray-50/50 flex-col min-h-0 flex-1 sm:flex-initial overflow-hidden`}>
+            <div className="px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wide flex-shrink-0">
               Section Types
             </div>
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 min-h-0">
               <div className="p-2 space-y-1">
                 {availableSections.map((section) => (
                   <button
                     key={section.id}
-                    onClick={() => handleSectionSelect(section.id)}
+                    onClick={() => {
+                      // On mobile, show variants panel
+                      if (window.innerWidth < 640) {
+                        handleSectionSelectMobile(section.id);
+                      } else {
+                        handleSectionSelect(section.id);
+                      }
+                    }}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all ${
                       selectedSection === section.id
                         ? 'bg-white shadow-sm border border-gray-200'
@@ -345,37 +367,46 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
             </ScrollArea>
           </div>
 
-          {/* Right Panel - Variants */}
-          <div className="flex-1 flex flex-col">
+          {/* Right Panel - Variants (shown on mobile when showVariants is true) */}
+          <div className={`${showVariants ? 'flex' : 'hidden sm:flex'} flex-1 flex-col min-h-0 overflow-hidden`}>
             {selectedSectionInfo ? (
               <>
                 {/* Section Header */}
-                <div className="px-6 py-4 border-b">
+                <div className="px-4 sm:px-6 py-3 sm:py-4 border-b flex-shrink-0">
                   <div className="flex items-center gap-2">
+                    {/* Back button for mobile */}
+                    <button
+                      onClick={handleBackToSections}
+                      className="sm:hidden p-1.5 -ml-1 mr-1 rounded-lg hover:bg-gray-100 text-gray-500"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </button>
                     <span
-                      className="p-2 rounded-lg text-white"
+                      className="p-1.5 sm:p-2 rounded-lg text-white"
                       style={{ backgroundColor: themeColor }}
                     >
                       {selectedSectionInfo.icon}
                     </span>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{selectedSectionInfo.name}</h3>
-                      <p className="text-sm text-gray-500">{selectedSectionInfo.description}</p>
+                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{selectedSectionInfo.name}</h3>
+                      <p className="text-xs sm:text-sm text-gray-500">{selectedSectionInfo.description}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Variants Grid */}
-                <ScrollArea className="flex-1 px-6 py-4">
+                <ScrollArea className="flex-1 min-h-0 px-4 sm:px-6 py-3 sm:py-4">
                   <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
                     Choose a Style
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                     {selectedSectionInfo.variants.map((variant) => (
                       <button
                         key={variant.id}
                         onClick={() => setSelectedVariant(variant.id)}
-                        className={`p-4 rounded-xl border-2 text-left transition-all ${
+                        className={`p-3 sm:p-4 rounded-xl border-2 text-left transition-all ${
                           selectedVariant === variant.id
                             ? 'border-current shadow-sm'
                             : 'border-gray-200 hover:border-gray-300'
@@ -406,14 +437,14 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
 
                   {/* Column Selection for Two-Column Layouts */}
                   {isTwoColumn && (
-                    <div className="mt-6">
-                      <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+                    <div className="mt-4 sm:mt-6">
+                      <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 sm:mb-3">
                         Add to Column
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex gap-2 sm:gap-3">
                         <button
                           onClick={() => setSelectedColumn('main')}
-                          className={`flex-1 p-3 rounded-lg border-2 text-center transition-all ${
+                          className={`flex-1 p-2.5 sm:p-3 rounded-lg border-2 text-center transition-all ${
                             selectedColumn === 'main'
                               ? 'border-current bg-gray-50'
                               : 'border-gray-200 hover:border-gray-300'
@@ -425,13 +456,13 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
                           }`} style={selectedColumn === 'main' ? { color: themeColor } : {}}>
                             Main Column
                           </div>
-                          <div className="text-xs text-gray-500 mt-0.5">
+                          <div className="text-xs text-gray-500 mt-0.5 hidden sm:block">
                             Primary content area
                           </div>
                         </button>
                         <button
                           onClick={() => setSelectedColumn('sidebar')}
-                          className={`flex-1 p-3 rounded-lg border-2 text-center transition-all ${
+                          className={`flex-1 p-2.5 sm:p-3 rounded-lg border-2 text-center transition-all ${
                             selectedColumn === 'sidebar'
                               ? 'border-current bg-gray-50'
                               : 'border-gray-200 hover:border-gray-300'
@@ -443,7 +474,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
                           }`} style={selectedColumn === 'sidebar' ? { color: themeColor } : {}}>
                             Sidebar
                           </div>
-                          <div className="text-xs text-gray-500 mt-0.5">
+                          <div className="text-xs text-gray-500 mt-0.5 hidden sm:block">
                             Secondary column
                           </div>
                         </button>
@@ -453,8 +484,8 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
                 </ScrollArea>
 
                 {/* Footer with Add Button */}
-                <div className="px-6 py-4 border-t bg-gray-50 flex justify-end gap-3">
-                  <Button variant="outline" onClick={onClose}>
+                <div className="px-4 sm:px-6 py-3 sm:py-4 border-t bg-gray-50 flex justify-end gap-2 sm:gap-3 flex-shrink-0">
+                  <Button variant="outline" onClick={onClose} size="sm" className="sm:size-default">
                     Cancel
                   </Button>
                   <Button
@@ -462,9 +493,11 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
                     disabled={!selectedVariant}
                     style={{ backgroundColor: themeColor }}
                     className="text-white hover:opacity-90"
+                    size="sm"
                   >
                     <Plus className="w-4 h-4 mr-1.5" />
-                    Add {selectedSectionInfo.name}
+                    <span className="hidden sm:inline">Add {selectedSectionInfo.name}</span>
+                    <span className="sm:hidden">Add</span>
                   </Button>
                 </div>
               </>

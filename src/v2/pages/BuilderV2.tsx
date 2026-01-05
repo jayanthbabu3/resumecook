@@ -81,13 +81,16 @@ export const BuilderV2: React.FC = () => {
   const [addSectionTargetColumn, setAddSectionTargetColumn] = useState<'main' | 'sidebar'>('main');
   // Toggle between old form and new dynamic form (for testing)
   const [useNewForm, setUseNewForm] = useState(true);
-  // Mobile view state: 'form' or 'preview'
-  const [mobileView, setMobileView] = useState<'form' | 'preview'>('preview');
+  // Mobile view state: 'form', 'preview', or 'live'
+  const [mobileView, setMobileView] = useState<'form' | 'preview' | 'live'>('preview');
   // Mobile resume scale factor
   const [mobileScale, setMobileScale] = useState(0.5);
+  // Mobile resume actual height (for dynamic container sizing)
+  const [mobileResumeHeight, setMobileResumeHeight] = useState(1123); // Default A4 height in px
 
   const previewRef = useRef<HTMLDivElement>(null);
   const mobileContainerRef = useRef<HTMLDivElement>(null);
+  const mobileResumeRef = useRef<HTMLDivElement>(null);
   const [headerVisible, setHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
 
@@ -138,6 +141,25 @@ export const BuilderV2: React.FC = () => {
     window.addEventListener('resize', calculateScale);
     return () => window.removeEventListener('resize', calculateScale);
   }, []);
+
+  // Measure actual resume height for mobile container
+  useEffect(() => {
+    const measureHeight = () => {
+      if (mobileResumeRef.current) {
+        const height = mobileResumeRef.current.scrollHeight;
+        setMobileResumeHeight(height);
+      }
+    };
+
+    // Measure after render and on resize
+    const timeoutId = setTimeout(measureHeight, 100);
+    window.addEventListener('resize', measureHeight);
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', measureHeight);
+    };
+  }, [resumeData, templateId, enabledSections]); // Re-measure when content changes
 
   // Get base template config (without theme overrides) for color slots
   const baseConfig = React.useMemo(() => {
@@ -409,6 +431,7 @@ export const BuilderV2: React.FC = () => {
           name: 'New Project',
           role: 'Owner',
           description: 'Project description',
+          techStack: ['Tech'],
           technologies: ['Tech'],
           highlights: ['Describe an accomplishment or outcome'],
           url: '',
@@ -703,7 +726,7 @@ export const BuilderV2: React.FC = () => {
         ...prev,
         projects: [
           ...(prev.projects || []),
-          { id: `proj-${Date.now()}`, name: 'Project Name', description: 'Description', technologies: [] },
+          { id: `proj-${Date.now()}`, name: 'Project Name', description: 'Description', techStack: [], technologies: [] },
         ],
       }));
     } else if (sectionType === 'certifications') {
@@ -988,7 +1011,7 @@ export const BuilderV2: React.FC = () => {
         <div className={cn(
           "min-h-screen transition-all duration-300",
           headerVisible ? "pt-[72px]" : "pt-4",
-          "pb-20 lg:pb-8" // Extra bottom padding on mobile for bottom bar
+          "pb-0 lg:pb-8" // No bottom padding on mobile, only on desktop
         )}>
 
           {/* Mobile Tab Navigation */}
@@ -997,25 +1020,37 @@ export const BuilderV2: React.FC = () => {
               <button
                 onClick={() => setMobileView('form')}
                 className={cn(
-                  "flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  "flex-1 h-9 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
                   mobileView === 'form'
                     ? "bg-white shadow-sm text-primary"
                     : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
                 )}
               >
-                <FileEdit className="h-4 w-4" />
-                Edit Content
+                <FileEdit className="h-3.5 w-3.5" />
+                Form
+              </button>
+              <button
+                onClick={() => setMobileView('live')}
+                className={cn(
+                  "flex-1 h-9 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
+                  mobileView === 'live'
+                    ? "bg-white shadow-sm text-primary"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
+                )}
+              >
+                <Edit3 className="h-3.5 w-3.5" />
+                Live Edit
               </button>
               <button
                 onClick={() => setMobileView('preview')}
                 className={cn(
-                  "flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  "flex-1 h-9 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
                   mobileView === 'preview'
                     ? "bg-white shadow-sm text-primary"
                     : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
                 )}
               >
-                <Eye className="h-4 w-4" />
+                <Eye className="h-3.5 w-3.5" />
                 Preview
               </button>
             </div>
@@ -1025,17 +1060,19 @@ export const BuilderV2: React.FC = () => {
           <div className={cn(
             "container mx-auto py-4 lg:py-6 px-3 sm:px-4 lg:px-8",
             editorMode === 'form'
-              ? "flex gap-0"
+              ? "flex lg:gap-6"
               : "flex justify-center"
           )}>
             
             {/* Form Panel - Desktop: only in form mode, Mobile: when mobileView is 'form' */}
             <div className={cn(
               "w-full lg:w-[380px] flex-shrink-0",
-              // Desktop visibility: only show in form mode
-              editorMode === 'form' ? "lg:block" : "lg:hidden",
-              // Mobile visibility: show when mobileView is 'form'
-              mobileView === 'form' ? "block" : "hidden lg:block"
+              // Combined visibility logic
+              // Desktop: only show when editorMode is 'form'
+              // Mobile: only show when mobileView is 'form'
+              editorMode === 'form'
+                ? (mobileView === 'form' ? "block" : "hidden lg:block")
+                : (mobileView === 'form' ? "block lg:hidden" : "hidden")
             )}>
               <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
                 <div className="p-4 border-b border-gray-100 hidden lg:block">
@@ -1072,8 +1109,8 @@ export const BuilderV2: React.FC = () => {
             <TooltipProvider delayDuration={100}>
               <div className={cn(
                 "relative flex items-start",
-                editorMode === 'form' ? "flex-1 lg:pl-6" : "justify-center w-full",
-                // Hide on mobile when form view is active
+                editorMode === 'form' ? "flex-1" : "justify-center w-full",
+                // Hide on mobile when form view is active (show for live and preview)
                 mobileView === 'form' ? "hidden lg:flex" : "flex"
               )}>
                 {/* Resume Column: Toolbar + Resume */}
@@ -1274,10 +1311,11 @@ export const BuilderV2: React.FC = () => {
                   <div className="relative w-full overflow-visible">
                     {/* Mobile: Scale container to fit screen width */}
                     <div
-                      className="lg:hidden w-full"
+                      className="lg:hidden w-full mb-20"
                       ref={mobileContainerRef}
                       style={{
-                        height: `calc(297mm * ${mobileScale})`,
+                        // Set container height to match scaled resume height dynamically
+                        height: `${mobileResumeHeight * mobileScale}px`,
                       }}
                     >
                       <div
@@ -1291,10 +1329,10 @@ export const BuilderV2: React.FC = () => {
                         <StyleOptionsWrapper>
                           <div
                             id="resume-preview-v2-mobile"
+                            ref={mobileResumeRef}
                             className="bg-white shadow-xl rounded-lg overflow-visible ring-1 ring-gray-200"
                             style={{
                               width: '210mm',
-                              minHeight: '297mm',
                             }}
                           >
                             <InlineEditProvider
@@ -1306,7 +1344,7 @@ export const BuilderV2: React.FC = () => {
                                 templateId={templateId}
                                 themeColors={themeColors}
                                 sectionOverrides={sectionOverrides}
-                                editable={false}
+                                editable={mobileView === 'live'}
                                 sectionLabels={sectionLabels}
                                 enabledSections={enabledSections}
                               />
