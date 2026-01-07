@@ -10,6 +10,7 @@ import {
   signOut as firebaseSignOut,
   onAuthStateChanged,
   sendEmailVerification,
+  sendPasswordResetEmail,
   updateProfile
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
@@ -52,6 +53,8 @@ interface AuthContextType {
     bio?: string;
   }) => Promise<void>;
   verifyOtp: (email: string, token: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  resendVerificationEmail: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   loading: boolean;
   updateUserProfile: (profileData: Partial<UserProfile>) => Promise<void>;
@@ -92,21 +95,45 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
     try {
       setLoading(true);
       const result = await signInWithEmailAndPassword(auth, email, password);
-      
-      // Update last sign-in timestamp
+
+      // Check if email is verified
+      if (!result.user.emailVerified) {
+        // Send another verification email
+        await sendEmailVerification(result.user);
+        // Sign out unverified user
+        await firebaseSignOut(auth);
+        setUser(null);
+        setUserProfile(null);
+        toast.error('Please verify your email first. A new verification link has been sent.');
+        throw { code: 'auth/email-not-verified', message: 'Email not verified' };
+      }
+
+      // Check if this is the first time the user is logging in after verification
+      const userDoc = await getDoc(doc(db, 'users', result.user.uid));
+      const wasVerified = userDoc.exists() && userDoc.data()?.emailVerified === true;
+
+      // Update last sign-in timestamp and mark as verified
       try {
         await setDoc(doc(db, 'users', result.user.uid), {
           lastSignIn: new Date(),
           updatedAt: new Date(),
+          emailVerified: true,
         }, { merge: true });
+
+        // Increment users count only on first verified login
+        if (!wasVerified) {
+          await incrementUsersCount();
+        }
       } catch (error) {
         console.error('Error updating last sign-in:', error);
       }
-      
+
       toast.success('Signed in successfully');
-      navigate('/dashboard');
+      navigate('/templates');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in');
+      if (error.code !== 'auth/email-not-verified') {
+        toast.error(error.message || 'Failed to sign in');
+      }
       throw error;
     } finally {
       setLoading(false);
@@ -236,15 +263,17 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
       await setDoc(doc(db, 'users', result.user.uid), profileData);
       setUserProfile(profileData);
 
-      // Increment users count in stats
-      try {
-        await incrementUsersCount();
-      } catch (error) {
-        console.error('Error incrementing users count:', error);
-      }
+      // Don't increment users count until email is verified
+      // This will be done after email verification
 
-      toast.success('Account created successfully! Please check your email to verify your account.');
-      navigate('/profile-completion');
+      toast.success('Account created! Please check your email to verify your account.');
+
+      // Sign out the user - they need to verify email first
+      await firebaseSignOut(auth);
+      setUser(null);
+      setUserProfile(null);
+
+      // Don't navigate here - let the Auth page handle it
     } catch (error: any) {
       toast.error(error.message || 'Failed to create account');
       throw error;
@@ -258,6 +287,52 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
     // This is a placeholder for any additional verification logic
     toast.success('Email verification sent! Please check your inbox.');
     navigate('/profile-completion');
+  };
+
+  const resetPassword = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success('Password reset email sent! Please check your inbox.');
+    } catch (error: any) {
+      if (error.code === 'auth/user-not-found') {
+        toast.error('No account found with this email address.');
+      } else if (error.code === 'auth/invalid-email') {
+        toast.error('Please enter a valid email address.');
+      } else if (error.code === 'auth/too-many-requests') {
+        toast.error('Too many requests. Please try again later.');
+      } else {
+        toast.error(error.message || 'Failed to send password reset email.');
+      }
+      throw error;
+    }
+  };
+
+  const resendVerificationEmail = async (email: string, password: string) => {
+    try {
+      // Sign in temporarily to resend verification email
+      const result = await signInWithEmailAndPassword(auth, email, password);
+
+      if (result.user.emailVerified) {
+        toast.success('Your email is already verified! You can sign in now.');
+        await firebaseSignOut(auth);
+        return;
+      }
+
+      await sendEmailVerification(result.user);
+      await firebaseSignOut(auth);
+      setUser(null);
+      setUserProfile(null);
+      toast.success('Verification email sent! Please check your inbox.');
+    } catch (error: any) {
+      if (error.code === 'auth/too-many-requests') {
+        toast.error('Too many requests. Please wait a few minutes before trying again.');
+      } else if (error.code === 'auth/invalid-credential') {
+        toast.error('Invalid email or password.');
+      } else {
+        toast.error(error.message || 'Failed to send verification email.');
+      }
+      throw error;
+    }
   };
 
   const signOut = async () => {
@@ -293,16 +368,18 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      userProfile, 
-      signIn, 
-      signInWithGoogle, 
-      signUp, 
-      verifyOtp, 
-      signOut, 
+    <AuthContext.Provider value={{
+      user,
+      userProfile,
+      signIn,
+      signInWithGoogle,
+      signUp,
+      verifyOtp,
+      resetPassword,
+      resendVerificationEmail,
+      signOut,
       loading,
-      updateUserProfile 
+      updateUserProfile
     }}>
       {children}
     </AuthContext.Provider>

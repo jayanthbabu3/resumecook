@@ -19,6 +19,8 @@ import Profile from "./pages/Profile";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import VerifyEmail from "./pages/VerifyEmail";
 import ATSGuidelines from "./pages/ATSGuidelines";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
 import MyResumes from "./pages/MyResumes";
@@ -62,6 +64,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Hero />} />
             <Route path="/ats-guidelines" element={<ATSGuidelines />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/verify-email" element={<VerifyEmail />} />

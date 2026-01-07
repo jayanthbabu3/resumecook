@@ -31,7 +31,6 @@ export const useAppStats = (): UseAppStatsReturn => {
         unsubscribe = onSnapshot(
           statsRef,
           (snapshot) => {
-            console.log('Stats snapshot received:', snapshot.exists(), snapshot.data());
             if (snapshot.exists()) {
               const data = snapshot.data();
               setStats({
@@ -41,7 +40,6 @@ export const useAppStats = (): UseAppStatsReturn => {
               });
             } else {
               // Document doesn't exist, try to initialize
-              console.log('Stats document does not exist, initializing...');
               initializeStats().catch(console.error);
               setStats({
                 usersCount: 0,

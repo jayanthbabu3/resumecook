@@ -291,10 +291,6 @@ const Hero = () => {
     buttonBaseClass,
     "border border-border/70 text-foreground hover:bg-muted/50 hover:text-foreground",
   );
-  const outlinePrimaryButtonClass = cn(
-    buttonBaseClass,
-    "border border-primary text-primary hover:bg-primary/5",
-  );
 
   useEffect(() => {
     const baseWidth = 816;
@@ -1250,15 +1246,9 @@ const Hero = () => {
 
             {/* Call to Action */}
             <div className="text-center mt-12">
-              <div className="inline-flex flex-col sm:flex-row gap-3">
-                <Button className={primaryButtonClass} onClick={() => navigate("/templates")}>Start Creating Your Resume</Button>
-                <Button variant="outline" className={outlinePrimaryButtonClass} onClick={() => navigate("/templates")}>
-                  Explore All Templates
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground mt-4">
-                Join thousands of professionals who have created stunning resumes with our editor
-              </p>
+              <Button className={primaryButtonClass} onClick={() => navigate("/templates")}>
+                Explore All Templates
+              </Button>
             </div>
           </div>
         </div>
@@ -1556,38 +1546,14 @@ const Hero = () => {
                 Ready to Build Your Resume?
               </h2>
               <p className="text-base text-muted-foreground">
-                Join thousands of professionals who have landed their dream jobs with our platform
+                Choose from professional templates and create your resume in minutes
               </p>
             </div>
-            
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-              <Button className={cn(primaryButtonClass, "group")} onClick={() => navigate("/templates")}>
-                <span>Get Started Now</span>
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                variant="outline"
-                className={neutralButtonClass}
-                onClick={() => navigate("/templates")}
-              >
-                View Examples
-              </Button>
-            </div>
 
-            <div className="flex items-center justify-center gap-6 pt-6 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <Shield className="h-3 w-3" />
-                <span>100% Secure</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Clock className="h-3 w-3" />
-                <span>5 Minutes Setup</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Globe className="h-3 w-3" />
-                <span>No Download Required</span>
-              </div>
-            </div>
+            <Button className={cn(primaryButtonClass, "group")} onClick={() => navigate("/templates")}>
+              <span>Get Started</span>
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </div>
       </section>
@@ -1595,11 +1561,10 @@ const Hero = () => {
       <footer className="border-t border-border/60 bg-muted/20">
         <div className="container mx-auto px-4 py-4 md:px-6 md:py-5">
           <div className="max-w-6xl mx-auto flex flex-col gap-3 text-center text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <div>© {new Date().getFullYear()} ResumeCook. Crafted to help you land your next role.</div>
+            <div>&copy; {new Date().getFullYear()} ResumeCook. Crafted to help you land your next role.</div>
             <div className="flex items-center justify-center gap-4 text-xs uppercase tracking-wide">
-              <span>Privacy</span>
-              <span>Terms</span>
-              <span>Support</span>
+              <button onClick={() => navigate("/privacy")} className="hover:text-foreground transition-colors">Privacy</button>
+              <button onClick={() => navigate("/terms")} className="hover:text-foreground transition-colors">Terms</button>
             </div>
           </div>
         </div>

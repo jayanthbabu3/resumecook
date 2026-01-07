@@ -550,29 +550,22 @@ class ResumeService {
    */
   async getFavoriteTemplates(): Promise<string[]> {
     const user = auth.currentUser;
-    console.log('[ResumeService] getFavoriteTemplates - User:', user?.uid);
-
     if (!user) {
-      console.warn('[ResumeService] No authenticated user');
       return [];
     }
 
     try {
       const docRef = this.getUserPreferencesRef(user.uid);
-      console.log('[ResumeService] Getting favorites from path:', docRef.path);
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
-        console.log('[ResumeService] No favorites document found');
         return [];
       }
 
       const data = docSnap.data();
-      const templateIds = Array.isArray(data.templateIds) ? data.templateIds : [];
-      console.log('[ResumeService] Found favorites:', templateIds);
-      return templateIds;
+      return Array.isArray(data.templateIds) ? data.templateIds : [];
     } catch (error) {
-      console.error('[ResumeService] Error getting favorite templates:', error);
+      console.error('Error getting favorite templates:', error);
       return [];
     }
   }
@@ -590,42 +583,31 @@ class ResumeService {
    */
   async addFavoriteTemplate(templateId: string): Promise<void> {
     const user = auth.currentUser;
-    console.log('[ResumeService] addFavoriteTemplate - User:', user?.uid, 'Template:', templateId);
-
     if (!user) {
-      console.error('[ResumeService] User not authenticated');
       throw new Error('User not authenticated');
     }
 
     try {
       const docRef = this.getUserPreferencesRef(user.uid);
-      console.log('[ResumeService] Document path:', docRef.path);
       const docSnap = await getDoc(docRef);
 
       let favorites: string[] = [];
       if (docSnap.exists()) {
         const data = docSnap.data();
         favorites = Array.isArray(data.templateIds) ? data.templateIds : [];
-        console.log('[ResumeService] Existing favorites:', favorites);
-      } else {
-        console.log('[ResumeService] No existing favorites document');
       }
 
       // Add if not already in favorites
       if (!favorites.includes(templateId)) {
         favorites.push(templateId);
-        console.log('[ResumeService] Writing new favorites:', favorites);
         await setDoc(docRef, {
           templateIds: favorites,
           updatedAt: serverTimestamp(),
         }, { merge: true });
-        console.log('[ResumeService] Successfully added to favorites');
         toast.success('Template added to favorites');
-      } else {
-        console.log('[ResumeService] Template already in favorites');
       }
     } catch (error) {
-      console.error('[ResumeService] Error adding favorite template:', error);
+      console.error('Error adding favorite template:', error);
       toast.error('Failed to add to favorites');
       throw error;
     }
@@ -636,38 +618,29 @@ class ResumeService {
    */
   async removeFavoriteTemplate(templateId: string): Promise<void> {
     const user = auth.currentUser;
-    console.log('[ResumeService] removeFavoriteTemplate - User:', user?.uid, 'Template:', templateId);
-
     if (!user) {
-      console.error('[ResumeService] User not authenticated');
       throw new Error('User not authenticated');
     }
 
     try {
       const docRef = this.getUserPreferencesRef(user.uid);
-      console.log('[ResumeService] Document path:', docRef.path);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
         let favorites: string[] = Array.isArray(data.templateIds) ? data.templateIds : [];
-        console.log('[ResumeService] Current favorites:', favorites);
 
         // Remove from favorites
         favorites = favorites.filter(id => id !== templateId);
-        console.log('[ResumeService] Writing updated favorites:', favorites);
 
         await setDoc(docRef, {
           templateIds: favorites,
           updatedAt: serverTimestamp(),
         }, { merge: true });
-        console.log('[ResumeService] Successfully removed from favorites');
         toast.success('Template removed from favorites');
-      } else {
-        console.log('[ResumeService] No favorites document found');
       }
     } catch (error) {
-      console.error('[ResumeService] Error removing favorite template:', error);
+      console.error('Error removing favorite template:', error);
       toast.error('Failed to remove from favorites');
       throw error;
     }
