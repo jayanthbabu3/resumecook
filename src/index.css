@@ -113,23 +113,12 @@ All colors MUST be HSL.
   }
 }
 
-/* Resume V2 - Force font inheritance on all resume content */
-.resume-v2,
+/* Resume V2 - Font inheritance
+   The resume container (.resume-v2) sets the font-family via inline styles.
+   Child elements inherit this font unless they explicitly override it.
+   This allows the Font Selector to work properly. */
 .resume-v2 * {
-  font-family: inherit !important;
-}
-
-.resume-v2 h1,
-.resume-v2 h2,
-.resume-v2 h3,
-.resume-v2 h4,
-.resume-v2 h5,
-.resume-v2 h6,
-.resume-v2 p,
-.resume-v2 span,
-.resume-v2 li,
-.resume-v2 div {
-  font-family: inherit !important;
+  font-family: inherit;
 }
 
 /* Custom animations */

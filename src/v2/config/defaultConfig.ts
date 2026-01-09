@@ -52,7 +52,7 @@ export const DEFAULT_TYPOGRAPHY: TypographyConfig = {
     color: '#6b7280',
   },
   body: {
-    fontSize: '12px',
+    fontSize: '13px',
     fontWeight: 400,
     lineHeight: 1.6,
     color: '#1a1a1a',

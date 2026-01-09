@@ -23,6 +23,9 @@ interface SkillsSectionProps {
   editable?: boolean;
   sectionTitle?: string;
   variantOverride?: SkillsVariant;
+  onAddSkill?: () => void;
+  onRemoveSkill?: (id: string) => void;
+  onUpdateSkill?: (id: string, field: string, value: string) => void;
 }
 
 export const SkillsSection: React.FC<SkillsSectionProps> = ({
@@ -31,6 +34,9 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
   editable = false,
   sectionTitle = 'Skills',
   variantOverride,
+  onAddSkill,
+  onRemoveSkill,
+  onUpdateSkill,
 }) => {
   const { typography, colors, spacing, skills } = config;
   const variant = variantOverride || skills.variant;
@@ -69,6 +75,9 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
           config={config}
           accentColor={accent}
           editable={editable}
+          onAddSkill={onAddSkill}
+          onRemoveSkill={onRemoveSkill}
+          onUpdateSkill={onUpdateSkill}
         />
       );
     }
@@ -105,6 +114,9 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
             config={config}
             accentColor={accent}
             editable={editable}
+            onAddSkill={onAddSkill}
+            onRemoveSkill={onRemoveSkill}
+            onUpdateSkill={onUpdateSkill}
           />
         );
       } catch {

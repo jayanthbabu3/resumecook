@@ -59,7 +59,7 @@ export const executiveSplitConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '13px',
       fontWeight: 400,
       lineHeight: 1.55,
       color: '#374151',

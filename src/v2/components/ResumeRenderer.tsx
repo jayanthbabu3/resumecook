@@ -56,6 +56,8 @@ interface ResumeRendererProps {
   themeColor?: string;
   /** Theme colors override (multi-color: primary + secondary) */
   themeColors?: { primary?: string; secondary?: string };
+  /** Font family override (for font selector) */
+  fontFamily?: string;
   /** Section overrides (order/column/enabled) */
   sectionOverrides?: Partial<Record<string, Partial<SectionConfig>>>;
   /** Enable inline editing */
@@ -136,6 +138,12 @@ interface ResumeRendererProps {
   onAddCourse?: () => void;
   /** Callback for removing course */
   onRemoveCourse?: (id: string) => void;
+  /** Callback for adding skill */
+  onAddSkill?: () => void;
+  /** Callback for removing skill */
+  onRemoveSkill?: (id: string) => void;
+  /** Callback for updating skill */
+  onUpdateSkill?: (id: string, field: string, value: string) => void;
   /** Additional className */
   className?: string;
   /** Callback for removing a section (for scratch builder) */
@@ -192,9 +200,13 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   onRemoveReference,
   onAddCourse,
   onRemoveCourse,
+  onAddSkill,
+  onRemoveSkill,
+  onUpdateSkill,
   className = '',
   onChangeSectionVariant,
   onOpenAddSection,
+  fontFamily: fontFamilyOverride,
 }) => {
   // Get template configuration
   // For scratch builder, use the generated config directly
@@ -204,12 +216,32 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     themeColors,
     sectionOverrides,
   });
-  
+
   // If templateId is 'scratch-v2', we need to use a custom config
   // Otherwise use the hook result
-  const { config, getEnabledSections } = templateConfigHook;
+  const { config: baseConfig, getEnabledSections } = templateConfigHook;
+
+  // Override font family if provided (for font selector)
+  const config = React.useMemo(() => {
+    if (fontFamilyOverride) {
+      console.log('ResumeRenderer - Applying fontFamily override:', fontFamilyOverride);
+      return {
+        ...baseConfig,
+        fontFamily: {
+          ...baseConfig.fontFamily,
+          primary: fontFamilyOverride,
+        }
+      };
+    }
+    return baseConfig;
+  }, [baseConfig, fontFamilyOverride]);
 
   const { layout, spacing, colors, fontFamily } = config;
+
+  // Debug: Log fontFamily to verify it's being passed correctly
+  React.useEffect(() => {
+    console.log('ResumeRenderer fontFamily:', fontFamily);
+  }, [fontFamily]);
 
   // Get style options for section visibility
   const styleOptionsContext = useStyleOptions();
@@ -486,6 +518,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
               editable={editable}
               sectionTitle={title}
               variantOverride={skillsVariant as any}
+              onAddSkill={onAddSkill}
+              onRemoveSkill={onRemoveSkill}
+              onUpdateSkill={onUpdateSkill}
             />
           );
         }
@@ -496,6 +531,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             config={config}
             editable={editable}
             sectionTitle={title}
+            onAddSkill={onAddSkill}
+            onRemoveSkill={onRemoveSkill}
+            onUpdateSkill={onUpdateSkill}
           />
         );
 
@@ -760,6 +798,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     '--resume-body-size': config.typography.body.fontSize,
   } as React.CSSProperties;
 
+  // Debug: Log container style fontFamily
+  console.log('ResumeRenderer - containerStyle fontFamily:', containerStyle.fontFamily);
+
   // Force font inheritance on all content
   const fontInheritClass = 'resume-font-inherit';
 
@@ -787,7 +828,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         };
 
     return (
-      <div className={`resume-v2 ${className}`} style={containerStyle}>
+      <div className={`resume-v2 ${className}`} style={containerStyle} data-font-family={fontFamily.primary}>
         {/* Decorative Elements */}
         {decorationsConfig?.enabled && (
           <ResumeDecorations
@@ -918,7 +959,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   };
 
   return (
-    <div className={`resume-v2 ${className}`} style={containerStyle}>
+    <div className={`resume-v2 ${className}`} style={containerStyle} data-font-family={fontFamily.primary}>
       {/* Decorative Elements */}
       {decorationsConfig?.enabled && (
         <ResumeDecorations

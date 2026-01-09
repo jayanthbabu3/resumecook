@@ -16,10 +16,10 @@ export const minimalConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '32px',
       fontWeight: 700,
-      lineHeight: 1.2,
-      letterSpacing: '-0.01em',
+      lineHeight: 1.1,
+      letterSpacing: '-0.015em',
       color: '#0f172a',
       textTransform: 'none',
     },
@@ -56,7 +56,7 @@ export const minimalConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '13px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#1f2937',
@@ -123,13 +123,13 @@ export const minimalConfig: TemplateConfig = createTemplateConfig({
   header: {
     variant: 'minimal',
     showPhoto: true,
-    photoSize: '70px',
+    photoSize: '100px',
     photoShape: 'circle',
     photoPosition: 'right', // Photo on the right side of header
-    padding: '0 0 18px 0',
+    padding: '0 0 20px 0',
     contactIcons: {
       show: true,
-      size: '12px',
+      size: '13px',
       color: '#2563eb',
     },
     showSocialLinks: true,

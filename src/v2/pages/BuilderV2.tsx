@@ -44,6 +44,7 @@ import { ResumeForm } from '@/components/resume/ResumeForm';
 import { StyleOptionsPanelV2 } from '../components/StyleOptionsPanelV2';
 import SectionReorderDialog from '../components/SectionReorderDialog';
 import { AddSectionModal } from '../components/AddSectionModal';
+import { FontSelector, RESUME_FONTS } from '../components/FontSelector';
 
 import { ResumeRenderer } from '../components/ResumeRenderer';
 import { useTemplateConfig } from '../hooks/useTemplateConfig';
@@ -96,6 +97,13 @@ export const BuilderV2: React.FC = () => {
   const [mobileScale, setMobileScale] = useState(0.5);
   // Mobile resume actual height (for dynamic container sizing)
   const [mobileResumeHeight, setMobileResumeHeight] = useState(1123); // Default A4 height in px
+  // Font family selector state
+  const [selectedFont, setSelectedFont] = useState<string>(RESUME_FONTS[0].family);
+
+  // Debug: Log when font changes
+  React.useEffect(() => {
+    console.log('Selected font changed to:', selectedFont);
+  }, [selectedFont]);
 
   const previewRef = useRef<HTMLDivElement>(null);
   const mobileContainerRef = useRef<HTMLDivElement>(null);
@@ -308,11 +316,25 @@ export const BuilderV2: React.FC = () => {
   }, [colorSlots]);
 
   // Get template config with theme colors applied
-  const { config } = useTemplateConfig({ 
-    templateId, 
+  const { config: templateConfig } = useTemplateConfig({
+    templateId,
     themeColors,
-    sectionOverrides 
+    sectionOverrides
   });
+
+  // Apply custom font selection to config
+  const config = React.useMemo(() => {
+    const newConfig = {
+      ...templateConfig,
+      fontFamily: {
+        ...templateConfig.fontFamily,
+        primary: selectedFont,
+      }
+    };
+    console.log('BuilderV2 - Applying font to config:', selectedFont);
+    console.log('BuilderV2 - New config fontFamily:', newConfig.fontFamily);
+    return newConfig;
+  }, [templateConfig, selectedFont]);
 
   // Apply reorder from dialog
   const handleApplyReorder = (mainIds: string[], sidebarIds: string[], pageBreaks: Record<string, boolean>) => {
@@ -655,6 +677,26 @@ export const BuilderV2: React.FC = () => {
 
   const handleRemoveCourse = useCallback((id: string) => {
     setResumeData(prev => ({ ...prev, courses: (prev.courses || []).filter(item => item.id !== id) }));
+  }, []);
+
+  const handleAddSkill = useCallback(() => {
+    setResumeData(prev => ({
+      ...prev,
+      skills: [...(prev.skills || []), { id: Date.now().toString(), name: 'New Skill', level: '' }],
+    }));
+  }, []);
+
+  const handleRemoveSkill = useCallback((id: string) => {
+    setResumeData(prev => ({ ...prev, skills: (prev.skills || []).filter(item => item.id !== id) }));
+  }, []);
+
+  const handleUpdateSkill = useCallback((id: string, field: string, value: string) => {
+    setResumeData(prev => ({
+      ...prev,
+      skills: (prev.skills || []).map(skill =>
+        skill.id === id ? { ...skill, [field]: value } : skill
+      ),
+    }));
   }, []);
 
   const handleAddCustomSection = useCallback(() => {
@@ -1249,44 +1291,43 @@ export const BuilderV2: React.FC = () => {
                 <div className="flex flex-col w-full lg:w-auto">
                   {/* Top Toolbar - Minimal: Back, Mode Toggle (centered), Color, Download */}
                   <div
-                    className="mb-3 lg:mb-4 flex items-center px-2 lg:px-3 py-2 rounded-xl lg:rounded-2xl backdrop-blur-sm w-full lg:w-[210mm]"
+                    className="mb-3 lg:mb-4 grid grid-cols-3 items-center gap-2 px-2 lg:px-3 py-2 rounded-xl lg:rounded-2xl backdrop-blur-sm w-full lg:w-[210mm]"
                     style={{
                       background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
                       boxShadow: '0 2px 12px -2px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
                     }}
                   >
                     {/* Left: Back Button */}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => {
-                            // Get the referrer page and selected template from sessionStorage
-                            const referrer = sessionStorage.getItem('template-referrer') || '/templates';
-                            const selectedTemplate = sessionStorage.getItem('selected-template');
+                    <div className="flex justify-start">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            onClick={() => {
+                              // Get the referrer page and selected template from sessionStorage
+                              const referrer = sessionStorage.getItem('template-referrer') || '/templates';
+                              const selectedTemplate = sessionStorage.getItem('selected-template');
 
-                            // Navigate back with highlight parameter if template was selected
-                            if (selectedTemplate) {
-                              navigate(`${referrer}?highlight=${selectedTemplate}`);
-                            } else {
-                              navigate(referrer);
-                            }
-                          }}
-                          className="h-9 px-3 flex items-center gap-2 rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-100/80 transition-all duration-200 group"
-                        >
-                          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                          <span className="text-sm font-medium">Back</span>
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="bg-gray-900 text-white border-0">
-                        Back to Templates
-                      </TooltipContent>
-                    </Tooltip>
-
-                    {/* Spacer to push center content */}
-                    <div className="flex-1" />
+                              // Navigate back with highlight parameter if template was selected
+                              if (selectedTemplate) {
+                                navigate(`${referrer}?highlight=${selectedTemplate}`);
+                              } else {
+                                navigate(referrer);
+                              }
+                            }}
+                            className="h-9 px-3 flex items-center gap-2 rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-100/80 transition-all duration-200 group"
+                          >
+                            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+                            <span className="text-sm font-medium">Back</span>
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="bg-gray-900 text-white border-0">
+                          Back to Templates
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
 
                     {/* Center: Mode Toggle or Customize Button - Hidden on mobile */}
-                    <div className="hidden lg:block">
+                    <div className="hidden lg:flex lg:justify-center">
                       {editorMode === 'preview' ? (
                         <Button
                           onClick={() => setEditorMode('live')}
@@ -1326,11 +1367,16 @@ export const BuilderV2: React.FC = () => {
                       )}
                     </div>
 
-                    {/* Spacer to push right content */}
-                    <div className="flex-1" />
+                    {/* Right: Font Selector + Style Settings + Color Picker + Download */}
+                    <div className="flex items-center justify-end gap-2">
+                      {/* Font Selector */}
+                      <div className="w-48">
+                        <FontSelector
+                          selectedFont={selectedFont}
+                          onFontChange={setSelectedFont}
+                        />
+                      </div>
 
-                    {/* Right: Style Settings + Color Picker + Download */}
-                    <div className="flex items-center gap-2">
                       {/* Style Settings - Always visible */}
                       <Popover>
                         <PopoverTrigger asChild>
@@ -1479,6 +1525,48 @@ export const BuilderV2: React.FC = () => {
                                 editable={mobileView === 'live'}
                                 sectionLabels={sectionLabels}
                                 enabledSections={enabledSections}
+                                fontFamily={selectedFont}
+                                onAddBulletPoint={handleAddBulletPoint}
+                                onRemoveBulletPoint={handleRemoveBulletPoint}
+                                onAddExperience={handleAddExperience}
+                                onRemoveExperience={handleRemoveExperience}
+                                onAddEducation={handleAddEducation}
+                                onRemoveEducation={handleRemoveEducation}
+                                onAddCustomSectionItem={handleAddCustomSectionItem}
+                                onRemoveCustomSectionItem={handleRemoveCustomSectionItem}
+                                onAddLanguage={handleAddLanguage}
+                                onRemoveLanguage={handleRemoveLanguage}
+                                onUpdateLanguage={handleUpdateLanguage}
+                                onAddStrength={handleAddStrength}
+                                onRemoveStrength={handleRemoveStrength}
+                                onAddAchievement={handleAddAchievement}
+                                onRemoveAchievement={handleRemoveAchievement}
+                                onAddProject={handleAddProject}
+                                onRemoveProject={handleRemoveProject}
+                                onAddCertification={handleAddCertification}
+                                onRemoveCertification={handleRemoveCertification}
+                                onAddAward={handleAddAward}
+                                onRemoveAward={handleRemoveAward}
+                                onAddPublication={handleAddPublication}
+                                onRemovePublication={handleRemovePublication}
+                                onAddVolunteer={handleAddVolunteer}
+                                onRemoveVolunteer={handleRemoveVolunteer}
+                                onAddSpeaking={handleAddSpeaking}
+                                onRemoveSpeaking={handleRemoveSpeaking}
+                                onAddPatent={handleAddPatent}
+                                onRemovePatent={handleRemovePatent}
+                                onAddInterest={handleAddInterest}
+                                onRemoveInterest={handleRemoveInterest}
+                                onAddReference={handleAddReference}
+                                onRemoveReference={handleRemoveReference}
+                                onAddCourse={handleAddCourse}
+                                onRemoveCourse={handleRemoveCourse}
+                                onAddSkill={handleAddSkill}
+                                onRemoveSkill={handleRemoveSkill}
+                                onUpdateSkill={handleUpdateSkill}
+                                onRemoveSection={handleRemoveSection}
+                                onChangeSectionVariant={handleChangeSectionVariant}
+                                onOpenAddSection={handleOpenAddSection}
                               />
                             </InlineEditProvider>
                           </div>
@@ -1511,6 +1599,7 @@ export const BuilderV2: React.FC = () => {
                             editable={editorMode === 'live'}
                             sectionLabels={sectionLabels}
                             enabledSections={enabledSections}
+                            fontFamily={selectedFont}
                             onAddBulletPoint={handleAddBulletPoint}
                             onRemoveBulletPoint={handleRemoveBulletPoint}
                             onAddExperience={handleAddExperience}
@@ -1546,6 +1635,9 @@ export const BuilderV2: React.FC = () => {
                             onRemoveReference={handleRemoveReference}
                             onAddCourse={handleAddCourse}
                             onRemoveCourse={handleRemoveCourse}
+                            onAddSkill={handleAddSkill}
+                            onRemoveSkill={handleRemoveSkill}
+                            onUpdateSkill={handleUpdateSkill}
                             onRemoveSection={handleRemoveSection}
                             onChangeSectionVariant={handleChangeSectionVariant}
                             onOpenAddSection={handleOpenAddSection}
@@ -1773,6 +1865,7 @@ export const BuilderV2: React.FC = () => {
                   editable={false}
                   sectionLabels={sectionLabels}
                   enabledSections={enabledSections}
+                  fontFamily={selectedFont}
                 />
               </InlineEditProvider>
             </div>
