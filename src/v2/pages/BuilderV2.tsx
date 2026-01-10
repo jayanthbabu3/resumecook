@@ -111,6 +111,36 @@ export const BuilderV2: React.FC = () => {
   const [headerVisible, setHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
 
+  // Track if LinkedIn data was imported (to prevent template effect from overwriting)
+  const linkedInImportedRef = useRef(false);
+
+  // Check for LinkedIn imported data on mount
+  useEffect(() => {
+    const linkedInData = sessionStorage.getItem('linkedin-import-data');
+    const source = searchParams.get('source');
+
+    console.log('LinkedIn import check:', { hasData: !!linkedInData, source });
+
+    if (linkedInData && source === 'linkedin') {
+      try {
+        const parsedData = JSON.parse(linkedInData);
+        console.log('LinkedIn data parsed:', {
+          name: parsedData.personalInfo?.fullName,
+          experienceCount: parsedData.experience?.length,
+          educationCount: parsedData.education?.length,
+          skillsCount: parsedData.skills?.length,
+        });
+        linkedInImportedRef.current = true;
+        setResumeData(parsedData);
+        // Clear the sessionStorage to prevent re-loading on refresh
+        sessionStorage.removeItem('linkedin-import-data');
+        toast.success('LinkedIn profile imported! You can now edit your resume.');
+      } catch (error) {
+        console.error('Failed to parse LinkedIn data:', error);
+      }
+    }
+  }, [searchParams]);
+
   // Load resume from URL param if present
   useEffect(() => {
     const loadResumeFromUrl = async () => {
@@ -366,9 +396,25 @@ export const BuilderV2: React.FC = () => {
   }, [config.id]);
 
   // Swap in template-specific mock data when changing templates
+  // Skip if LinkedIn data is pending import (to preserve imported data)
   React.useEffect(() => {
+    const source = searchParams.get('source');
+    const hasLinkedInData = sessionStorage.getItem('linkedin-import-data');
+
+    // Don't reset to mock data if we're importing from LinkedIn
+    if (source === 'linkedin' && hasLinkedInData) {
+      console.log('Skipping template mock data - LinkedIn import pending');
+      return;
+    }
+
+    // Also skip if LinkedIn was just imported (ref flag set)
+    if (linkedInImportedRef.current) {
+      linkedInImportedRef.current = false;
+      return;
+    }
+
     setResumeData(templateDefinition?.mockData || MOCK_RESUME_DATA);
-  }, [templateDefinition]);
+  }, [templateDefinition, searchParams]);
 
   // Handle resume data updates from inline editing
   const handleResumeUpdate = useCallback((updater: V2ResumeData | ((prev: V2ResumeData) => V2ResumeData)) => {
@@ -1380,7 +1426,7 @@ export const BuilderV2: React.FC = () => {
                       {/* Style Settings - Always visible */}
                       <Popover>
                         <PopoverTrigger asChild>
-                          <button className="h-9 w-9 flex items-center justify-center rounded-xl hover:bg-gray-100/80 transition-all duration-200 border border-gray-200">
+                          <button className="h-9 w-9 min-w-[2.25rem] flex items-center justify-center rounded-full hover:bg-gray-100/80 transition-all duration-200 border border-gray-200">
                             <Settings className="h-4 w-4 text-gray-600" />
                           </button>
                         </PopoverTrigger>
@@ -1469,11 +1515,11 @@ export const BuilderV2: React.FC = () => {
                       {/* Download Icon */}
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button 
-                            onClick={handleDownload} 
-                            disabled={isDownloading} 
+                          <Button
+                            onClick={handleDownload}
+                            disabled={isDownloading}
                             size="icon"
-                            className="h-9 w-9 rounded-xl"
+                            className="h-9 w-9 min-w-[2.25rem] rounded-full"
                           >
                             {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
                           </Button>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   ChevronRight,
@@ -6,6 +7,7 @@ import {
   GraduationCap,
   ArrowRight,
   CheckCircle2,
+  Linkedin,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -13,9 +15,16 @@ import { getAllTemplates } from '../config/templates';
 import { getFresherTemplates } from '../templates';
 import { TemplatePreviewV2 } from '@/v2/components/TemplatePreviewV2';
 import { FavoriteButton } from "@/components/FavoriteButton";
+import { LinkedInImportModal } from '@/v2/components/LinkedInImportModal';
+import { AuthModal } from '@/components/AuthModal';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 
 const DashboardV2 = () => {
   const navigate = useNavigate();
+  const { user } = useFirebaseAuth();
+  const [linkedInModalOpen, setLinkedInModalOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+
   const v2Templates = getAllTemplates();
   const fresherTemplates = getFresherTemplates();
   const universalTemplateCount = v2Templates.length - fresherTemplates.length;
@@ -30,6 +39,19 @@ const DashboardV2 = () => {
     description: template.description || 'Professional resume template',
     color: template.colors?.primary || defaultColors[index % defaultColors.length],
   }));
+
+  const handleLinkedInClick = () => {
+    if (user) {
+      setLinkedInModalOpen(true);
+    } else {
+      setAuthModalOpen(true);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setAuthModalOpen(false);
+    setLinkedInModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#fafafa]">
@@ -46,78 +68,83 @@ const DashboardV2 = () => {
           </p>
         </div>
 
-        {/* Quick Actions - Two Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12 max-w-3xl mx-auto">
-          {/* Custom Resume Card - Commented out */}
-          {/* <button
-            onClick={() => navigate("/builder/scratch-v2/select-layout")}
-            className="group relative flex flex-col p-5 bg-white rounded-2xl border border-gray-200/80 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 text-left"
+        {/* Quick Actions - Three Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 max-w-5xl mx-auto">
+          {/* LinkedIn Import Card - LinkedIn Blue Theme */}
+          <button
+            onClick={handleLinkedInClick}
+            className="group relative flex flex-col p-5 bg-gradient-to-br from-[#0A66C2]/5 to-[#0A66C2]/10 rounded-2xl border border-[#0A66C2]/20 hover:border-[#0A66C2]/40 hover:shadow-xl hover:shadow-[#0A66C2]/15 transition-all duration-300 text-left"
           >
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-blue-500/25">
-                <Sparkles className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-3 mb-2.5">
+              <div className="w-12 h-12 rounded-xl bg-[#0A66C2] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-[#0A66C2]/30">
+                <Linkedin className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                  Start from Scratch
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-gray-900 group-hover:text-[#0A66C2] transition-colors">
+                    Import from LinkedIn
+                  </h3>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-700 border border-amber-200">
+                    NEW
+                  </span>
+                </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+              <ChevronRight className="w-5 h-5 text-[#0A66C2]/40 group-hover:text-[#0A66C2] group-hover:translate-x-1 transition-all" />
             </div>
-            <p className="text-sm text-gray-500 pl-16">
-              Build a fully customized layout with complete control over sections
+            <p className="text-sm text-gray-600 pl-[60px]">
+              Auto-fill your resume with LinkedIn profile data
             </p>
-          </button> */}
+          </button>
 
           {/* Universal Templates Card - Blue Theme */}
           <button
             onClick={() => navigate("/templates/all")}
-            className="group relative flex flex-col p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl border border-blue-200/60 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/15 transition-all duration-300 text-left"
+            className="group relative flex flex-col p-5 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl border border-blue-200/60 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/15 transition-all duration-300 text-left"
           >
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-blue-500/30">
-                <Briefcase className="w-7 h-7 text-white" />
+            <div className="flex items-center gap-3 mb-2.5">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-blue-500/30">
+                <Briefcase className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-2.5">
-                  <h3 className="font-semibold text-lg text-gray-900 group-hover:text-blue-600 transition-colors">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                     Universal Templates
                   </h3>
-                  <span className="inline-flex items-center justify-center min-w-[32px] h-7 px-2.5 rounded-full bg-blue-500 text-white text-sm font-bold shadow-sm">
+                  <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-full bg-blue-500 text-white text-xs font-bold shadow-sm">
                     {universalTemplateCount}
                   </span>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-blue-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
             </div>
-            <p className="text-sm text-gray-600 pl-[72px]">
-              Professional designs for all industries and experience levels
+            <p className="text-sm text-gray-600 pl-[60px]">
+              Professional designs for all industries
             </p>
           </button>
 
           {/* Fresher Templates Card - Green Theme */}
           <button
             onClick={() => navigate("/templates/fresher")}
-            className="group relative flex flex-col p-6 bg-gradient-to-br from-emerald-50 to-green-100/50 rounded-2xl border border-emerald-200/60 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/15 transition-all duration-300 text-left"
+            className="group relative flex flex-col p-5 bg-gradient-to-br from-emerald-50 to-green-100/50 rounded-2xl border border-emerald-200/60 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/15 transition-all duration-300 text-left"
           >
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-emerald-500/30">
-                <GraduationCap className="w-7 h-7 text-white" />
+            <div className="flex items-center gap-3 mb-2.5">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-emerald-500/30">
+                <GraduationCap className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-2.5">
-                  <h3 className="font-semibold text-lg text-gray-900 group-hover:text-emerald-600 transition-colors">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors">
                     Fresher Templates
                   </h3>
-                  <span className="inline-flex items-center justify-center min-w-[32px] h-7 px-2.5 rounded-full bg-emerald-500 text-white text-sm font-bold shadow-sm">
+                  <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-full bg-emerald-500 text-white text-xs font-bold shadow-sm">
                     {fresherTemplateCount}
                   </span>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-emerald-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
             </div>
-            <p className="text-sm text-gray-600 pl-[72px]">
-              Perfect for fresh graduates and entry-level candidates
+            <p className="text-sm text-gray-600 pl-[60px]">
+              Perfect for graduates and entry-level
             </p>
           </button>
         </div>
@@ -247,6 +274,19 @@ const DashboardV2 = () => {
           </div>
         </div>
       </main>
+
+      {/* LinkedIn Import Modal */}
+      <LinkedInImportModal
+        open={linkedInModalOpen}
+        onOpenChange={setLinkedInModalOpen}
+      />
+
+      {/* Auth Modal - Shows when user tries to use LinkedIn import without being logged in */}
+      <AuthModal
+        open={authModalOpen}
+        onOpenChange={setAuthModalOpen}
+        onSuccess={handleAuthSuccess}
+      />
     </div>
   );
 };
