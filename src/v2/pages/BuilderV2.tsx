@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { resumeServiceV2, type V2Resume } from '../services/resumeServiceV2';
+import { profileService } from '../services/profileService';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
@@ -141,6 +142,35 @@ export const BuilderV2: React.FC = () => {
     }
   }, [searchParams]);
 
+  // Load profile data for new resumes (no resumeId)
+  useEffect(() => {
+    const loadProfileData = async () => {
+      // Skip if we're loading an existing resume or LinkedIn data is pending
+      if (resumeId) return;
+      const source = searchParams.get('source');
+      if (source === 'linkedin') return;
+
+      // Only load profile if user is authenticated
+      if (!user) return;
+
+      try {
+        const profile = await profileService.getProfile();
+        if (profile && profile.personalInfo?.fullName) {
+          console.log('Loading profile data for new resume:', profile.personalInfo.fullName);
+          const resumeData = profileService.profileToResumeData(profile);
+          linkedInImportedRef.current = true; // Prevent template effect from overwriting
+          setResumeData(resumeData);
+          toast.success('Profile data loaded! Customize your resume.');
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        // Silently fail - user can still use mock data
+      }
+    };
+
+    loadProfileData();
+  }, [user, resumeId, searchParams]);
+
   // Load resume from URL param if present
   useEffect(() => {
     const loadResumeFromUrl = async () => {
@@ -236,6 +266,14 @@ export const BuilderV2: React.FC = () => {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.set('resumeId', newResumeId);
         window.history.replaceState({}, '', newUrl.toString());
+      }
+
+      // Sync resume data back to user profile (master data)
+      try {
+        await profileService.syncFromResumeData(resumeData);
+      } catch (syncError) {
+        console.error('Error syncing to profile:', syncError);
+        // Don't show error - resume was saved successfully
       }
     } catch (error) {
       console.error('Error saving resume:', error);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
@@ -24,8 +24,11 @@ import {
   GraduationCap,
   Sparkles,
   FlaskConical,
+  RefreshCw,
+  Database,
 } from 'lucide-react';
 import { importLinkedInProfile, isValidLinkedInUrl } from '../services/linkedinService';
+import { profileService, UserProfile } from '../services/profileService';
 import { getAllTemplates } from '../config/templates';
 import { TemplatePreviewV2 } from './TemplatePreviewV2';
 import { V2ResumeData } from '../types/resumeData';
@@ -224,7 +227,7 @@ interface LinkedInImportModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-type Step = 'input' | 'loading' | 'select-template' | 'error';
+type Step = 'checking' | 'profile-exists' | 'input' | 'loading' | 'select-template' | 'error';
 
 interface ImportedProfile {
   name: string;
@@ -232,42 +235,128 @@ interface ImportedProfile {
   linkedInUrl?: string;
 }
 
+interface ExistingProfileInfo {
+  name: string;
+  experienceCount: number;
+  educationCount: number;
+  skillsCount: number;
+  linkedinImportedAt?: Date;
+}
+
 export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({
   open,
   onOpenChange,
 }) => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<Step>('input');
+  const [step, setStep] = useState<Step>('checking');
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [error, setError] = useState('');
   const [importedData, setImportedData] = useState<V2ResumeData | null>(null);
   const [importedProfile, setImportedProfile] = useState<ImportedProfile | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [isTestMode, setIsTestMode] = useState(false);
+  const [existingProfile, setExistingProfile] = useState<ExistingProfileInfo | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const templates = getAllTemplates();
   const defaultColors = ['#2563eb', '#7c3aed', '#059669', '#e11d48', '#f59e0b', '#0891b2'];
 
+  // Check for existing profile when modal opens
+  useEffect(() => {
+    if (open) {
+      checkExistingProfile();
+    }
+  }, [open]);
+
+  const checkExistingProfile = async () => {
+    setStep('checking');
+    try {
+      const profile = await profileService.getProfile();
+      if (profile && profile.personalInfo?.fullName) {
+        setExistingProfile({
+          name: profile.personalInfo.fullName,
+          experienceCount: profile.experience?.length || 0,
+          educationCount: profile.education?.length || 0,
+          skillsCount: profile.skills?.length || 0,
+          linkedinImportedAt: profile.linkedinImportedAt instanceof Date
+            ? profile.linkedinImportedAt
+            : undefined,
+        });
+        setStep('profile-exists');
+      } else {
+        setStep('input');
+      }
+    } catch (err) {
+      // No profile exists or error, show input
+      setStep('input');
+    }
+  };
+
   const resetModal = () => {
-    setStep('input');
+    setStep('checking');
     setLinkedinUrl('');
     setError('');
     setImportedData(null);
     setImportedProfile(null);
     setSelectedTemplate('');
     setIsTestMode(false);
+    setExistingProfile(null);
+    setIsSaving(false);
+  };
+
+  // Use existing profile - go directly to template selection
+  const handleUseExistingProfile = async () => {
+    setStep('loading');
+    try {
+      const profile = await profileService.getProfile();
+      if (profile) {
+        const resumeData = profileService.profileToResumeData(profile);
+        setImportedData(resumeData);
+        setImportedProfile({
+          name: profile.personalInfo.fullName,
+          photoUrl: profile.personalInfo.photo,
+          linkedInUrl: profile.personalInfo.linkedin,
+        });
+        setStep('select-template');
+      }
+    } catch (err) {
+      setError('Failed to load profile');
+      setStep('error');
+    }
   };
 
   // Test mode - use sample data without API call
-  const handleTestImport = () => {
+  const handleTestImport = async () => {
     setIsTestMode(true);
-    setImportedData(TEST_LINKEDIN_DATA);
-    setImportedProfile({
-      name: TEST_LINKEDIN_DATA.personalInfo.fullName,
-      photoUrl: TEST_LINKEDIN_DATA.personalInfo.photo,
-      linkedInUrl: TEST_LINKEDIN_DATA.personalInfo.linkedin,
-    });
-    setStep('select-template');
+    setIsSaving(true);
+
+    try {
+      // Save test data to profile
+      await profileService.importFromLinkedIn(
+        TEST_LINKEDIN_DATA,
+        TEST_LINKEDIN_DATA.personalInfo.linkedin
+      );
+
+      setImportedData(TEST_LINKEDIN_DATA);
+      setImportedProfile({
+        name: TEST_LINKEDIN_DATA.personalInfo.fullName,
+        photoUrl: TEST_LINKEDIN_DATA.personalInfo.photo,
+        linkedInUrl: TEST_LINKEDIN_DATA.personalInfo.linkedin,
+      });
+      setStep('select-template');
+    } catch (err) {
+      console.error('Failed to save test profile:', err);
+      // Still proceed even if save fails
+      setImportedData(TEST_LINKEDIN_DATA);
+      setImportedProfile({
+        name: TEST_LINKEDIN_DATA.personalInfo.fullName,
+        photoUrl: TEST_LINKEDIN_DATA.personalInfo.photo,
+        linkedInUrl: TEST_LINKEDIN_DATA.personalInfo.linkedin,
+      });
+      setStep('select-template');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleClose = (open: boolean) => {
@@ -293,6 +382,15 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({
 
     try {
       const response = await importLinkedInProfile(linkedinUrl);
+
+      // Try to save to profile in Firebase (non-blocking)
+      try {
+        await profileService.importFromLinkedIn(response.data, linkedinUrl);
+      } catch (saveErr) {
+        console.error('Failed to save profile to Firebase:', saveErr);
+        // Continue even if save fails - user can still create resume
+      }
+
       setImportedData(response.data);
       setImportedProfile(response.linkedinProfile);
       setStep('select-template');
@@ -341,6 +439,8 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({
                 Import from LinkedIn
               </DialogTitle>
               <DialogDescription className="text-sm text-gray-500">
+                {step === 'checking' && 'Checking your profile...'}
+                {step === 'profile-exists' && 'You already have a profile saved'}
                 {step === 'input' && 'Enter your LinkedIn profile URL to get started'}
                 {step === 'loading' && 'Fetching your profile data...'}
                 {step === 'select-template' && 'Choose a template for your resume'}
@@ -352,7 +452,83 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({
 
         {/* Content */}
         <div className="px-6 py-5">
-          {/* Step 1: Input URL */}
+          {/* Checking step - loading spinner */}
+          {step === 'checking' && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 text-[#0A66C2] animate-spin" />
+              <p className="mt-4 text-sm text-gray-500">Checking for existing profile...</p>
+            </div>
+          )}
+
+          {/* Profile Exists step - show options */}
+          {step === 'profile-exists' && existingProfile && (
+            <div className="space-y-5">
+              {/* Existing profile info */}
+              <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Database className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium text-blue-800">Profile found!</span>
+                  </div>
+                  <p className="text-sm text-blue-700 mt-0.5">{existingProfile.name}</p>
+                </div>
+              </div>
+
+              {/* Profile summary */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                  <Briefcase className="w-5 h-5 text-blue-500 mb-1" />
+                  <span className="text-lg font-semibold text-gray-900">{existingProfile.experienceCount}</span>
+                  <span className="text-xs text-gray-500">Experience</span>
+                </div>
+                <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                  <GraduationCap className="w-5 h-5 text-purple-500 mb-1" />
+                  <span className="text-lg font-semibold text-gray-900">{existingProfile.educationCount}</span>
+                  <span className="text-xs text-gray-500">Education</span>
+                </div>
+                <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                  <Sparkles className="w-5 h-5 text-amber-500 mb-1" />
+                  <span className="text-lg font-semibold text-gray-900">{existingProfile.skillsCount}</span>
+                  <span className="text-xs text-gray-500">Skills</span>
+                </div>
+              </div>
+
+              {existingProfile.linkedinImportedAt && (
+                <p className="text-xs text-gray-500 text-center">
+                  Last imported from LinkedIn: {existingProfile.linkedinImportedAt.toLocaleDateString()}
+                </p>
+              )}
+
+              {/* Options */}
+              <div className="space-y-3">
+                <Button
+                  onClick={handleUseExistingProfile}
+                  className="w-full h-11 bg-[#0A66C2] hover:bg-[#004182] gap-2"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  Use Existing Profile
+                </Button>
+
+                <Button
+                  onClick={() => setStep('input')}
+                  variant="outline"
+                  className="w-full h-10 gap-2"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Re-import from LinkedIn
+                </Button>
+
+                <p className="text-xs text-gray-400 text-center">
+                  Re-importing will update your profile with new data from LinkedIn
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Input URL step */}
           {step === 'input' && (
             <div className="space-y-5">
               <div className="space-y-2">

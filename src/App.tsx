@@ -26,7 +26,7 @@ import AuthCallback from "./pages/AuthCallback";
 import MyResumes from "./pages/MyResumes";
 
 // Resume Builder Pages
-import { DashboardV2, BuilderV2, ProfessionTemplatesV2, FresherTemplatesV2 } from "./v2/pages";
+import { DashboardV2, BuilderV2, ProfessionTemplatesV2, FresherTemplatesV2, ProfilePageV2 } from "./v2/pages";
 import LayoutSelectionScreen from "./v2/pages/LayoutSelectionScreen";
 import ScratchBuilderV2 from "./v2/pages/ScratchBuilderV2";
 import GridCanvasBuilder from "./v2/pages/GridCanvasBuilder";
@@ -81,7 +81,7 @@ const App = () => (
             <Route path="/v2/:professionId" element={<RedirectProfessionTemplates />} />
             <Route path="/v2/builder" element={<RedirectEditor />} />
             
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<ProfilePageV2 />} />
             <Route path="/my-resumes" element={<MyResumes />} />
             <Route path="/builder/scratch" element={<ScratchBuilder />} />
 

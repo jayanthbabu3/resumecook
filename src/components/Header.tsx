@@ -60,6 +60,7 @@ const HeaderComponent: React.FC = () => {
       return [
         ...baseItems,
         { label: "My Resumes", to: "/my-resumes", icon: FolderOpen },
+        { label: "Profile", to: "/profile", icon: User },
       ];
     }
 

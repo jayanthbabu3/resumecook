@@ -19,8 +19,38 @@ const MONTHS_FULL = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
+// Parse value - supports both "Mon YYYY" and "YYYY-MM" formats
+const parseValueStatic = (value?: string): { month: number | null; year: number | null } => {
+  if (!value) return { month: null, year: null };
+
+  // Try "Mon YYYY" format first (e.g., "Jan 2024", "January 2024")
+  const displayMatch = value.match(/^([A-Za-z]+)\s*(\d{4})$/);
+  if (displayMatch) {
+    const monthStr = displayMatch[1].toLowerCase();
+    let monthIndex = MONTHS.findIndex(m => m.toLowerCase() === monthStr.slice(0, 3));
+    if (monthIndex === -1) {
+      monthIndex = MONTHS_FULL.findIndex(m => m.toLowerCase() === monthStr);
+    }
+    if (monthIndex !== -1) {
+      return { month: monthIndex, year: parseInt(displayMatch[2]) };
+    }
+  }
+
+  // Try "YYYY-MM" format (e.g., "2024-01")
+  const isoMatch = value.match(/^(\d{4})-(\d{2})$/);
+  if (isoMatch) {
+    const month = parseInt(isoMatch[2]) - 1;
+    const year = parseInt(isoMatch[1]);
+    if (month >= 0 && month < 12) {
+      return { month, year };
+    }
+  }
+
+  return { month: null, year: null };
+};
+
 interface MonthYearPickerProps {
-  value?: string; // Format: "YYYY-MM" or "YYYY-MM-DD"
+  value?: string; // Format: "Mon YYYY" (e.g., "Jan 2024") or "YYYY-MM"
   onChange: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
@@ -29,6 +59,8 @@ interface MonthYearPickerProps {
   minYear?: number;
   maxYear?: number;
   displayFormat?: 'short' | 'long'; // "Jan 2024" vs "January 2024"
+  outputFormat?: 'display' | 'iso'; // "Jan 2024" vs "2024-01"
+  id?: string;
 }
 
 export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
@@ -41,28 +73,20 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
   minYear = 1970,
   maxYear = new Date().getFullYear() + 10,
   displayFormat = 'short',
+  outputFormat = 'display',
+  id,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openAbove, setOpenAbove] = useState(false);
   const [viewYear, setViewYear] = useState(() => {
-    if (value) {
-      const year = parseInt(value.split('-')[0]);
-      return isNaN(year) ? new Date().getFullYear() : year;
-    }
-    return new Date().getFullYear();
+    const parsed = parseValueStatic(value);
+    return parsed.year ?? new Date().getFullYear();
   });
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-  // Parse current value
-  const parseValue = () => {
-    if (!value) return { month: null, year: null };
-    const parts = value.split('-');
-    const year = parseInt(parts[0]);
-    const month = parseInt(parts[1]) - 1; // 0-indexed
-    return {
-      month: isNaN(month) ? null : month,
-      year: isNaN(year) ? null : year,
-    };
-  };
+  // Parse current value - supports both "Mon YYYY" and "YYYY-MM" formats
+  const parseValue = () => parseValueStatic(value);
 
   const { month: selectedMonth, year: selectedYear } = parseValue();
 
@@ -75,7 +99,13 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
 
   // Handle month selection
   const handleMonthSelect = (monthIndex: number) => {
-    const newValue = `${viewYear}-${String(monthIndex + 1).padStart(2, '0')}`;
+    let newValue: string;
+    if (outputFormat === 'iso') {
+      newValue = `${viewYear}-${String(monthIndex + 1).padStart(2, '0')}`;
+    } else {
+      // Display format: "Jan 2024"
+      newValue = `${MONTHS[monthIndex]} ${viewYear}`;
+    }
     onChange(newValue);
     setIsOpen(false);
   };
@@ -107,21 +137,39 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
     }
   }, [selectedYear]);
 
+  // Calculate if dropdown should open above or below
+  const handleOpen = () => {
+    if (disabled) return;
+
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const dropdownHeight = 320; // Approximate height of dropdown
+
+      // Open above if not enough space below
+      setOpenAbove(spaceBelow < dropdownHeight && rect.top > dropdownHeight);
+    }
+
+    setIsOpen(!isOpen);
+  };
+
   const displayValue = formatDisplayValue();
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
       {/* Trigger Button */}
       <button
+        ref={triggerRef}
         type="button"
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        id={id}
+        onClick={handleOpen}
         disabled={disabled}
         className={cn(
           "w-full flex items-center justify-between gap-2 px-3 py-2 text-sm",
           "border rounded-lg bg-white transition-all duration-150",
-          "hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500",
+          "hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
           disabled && "opacity-50 cursor-not-allowed bg-gray-50",
-          isOpen && "border-blue-500 ring-2 ring-blue-500/20",
+          isOpen && "border-primary ring-2 ring-primary/20",
           !isOpen && "border-gray-200"
         )}
       >
@@ -153,7 +201,10 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full min-w-[280px] bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150">
+        <div className={cn(
+          "absolute z-50 w-full min-w-[280px] bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150",
+          openAbove ? "bottom-full mb-1" : "top-full mt-1"
+        )}>
           {/* Year Navigation */}
           <div className="flex items-center justify-between px-3 py-2.5 bg-gray-50 border-b border-gray-100">
             <button
@@ -200,9 +251,9 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
                     className={cn(
                       "py-2.5 px-2 text-sm font-medium rounded-lg transition-all duration-150",
                       isSelected
-                        ? "bg-blue-600 text-white shadow-sm"
+                        ? "bg-primary text-white shadow-sm"
                         : isCurrent
-                        ? "bg-blue-50 text-blue-700 hover:bg-blue-100"
+                        ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-gray-700 hover:bg-gray-100"
                     )}
                   >
@@ -229,11 +280,16 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
               type="button"
               onClick={() => {
                 const now = new Date();
-                const newValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                let newValue: string;
+                if (outputFormat === 'iso') {
+                  newValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                } else {
+                  newValue = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+                }
                 onChange(newValue);
                 setIsOpen(false);
               }}
-              className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
+              className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
             >
               This month
             </button>

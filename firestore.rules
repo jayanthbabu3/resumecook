@@ -49,6 +49,11 @@ service cloud.firestore {
       match /preferences/{docId} {
         allow read, write: if isOwner(userId);
       }
+
+      // Profile subcollection - user's master profile data
+      match /profile/{docId} {
+        allow read, write: if isOwner(userId);
+      }
     }
 
     // ========== PUBLIC RESUMES ==========
