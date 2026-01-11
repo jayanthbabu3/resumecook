@@ -3,6 +3,7 @@
  *
  * Displays languages in a structured grid with visual proficiency indicators.
  * Clean, organized layout ideal for corporate resumes.
+ * Responsive: 1 column in sidebar, 2 columns in main content area.
  * Supports inline editing with clickable dots for proficiency selection.
  */
 
@@ -10,6 +11,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { LanguagesVariantProps } from '../types';
 
 // Proficiency levels mapped to dot count (1-5)
@@ -53,8 +55,30 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
 }) => {
   const { typography } = config;
   const inlineEdit = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Measure container width for responsive layout
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+
+    resizeObserver.observe(container);
+    // Initial measurement
+    setContainerWidth(container.offsetWidth);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -81,9 +105,13 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
     setOpenDropdown(null);
   };
 
+  // Determine layout based on container width
+  // Sidebar is typically ~180-220px, main content is 400px+
+  const isNarrow = containerWidth < 280;
+
   const renderDots = (level: number, index: number) => {
     return (
-      <div style={{ display: 'flex', gap: '4px' }}>
+      <div style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
         {[1, 2, 3, 4, 5].map((dot) => (
           <button
             key={dot}
@@ -94,8 +122,8 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
             disabled={!editable}
             className={editable ? 'cursor-pointer hover:scale-125 transition-transform' : 'cursor-default'}
             style={{
-              width: '8px',
-              height: '8px',
+              width: '6px',
+              height: '6px',
               borderRadius: '50%',
               backgroundColor: dot <= level ? accentColor : '#e5e7eb',
               border: 'none',
@@ -109,11 +137,15 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
   };
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: '12px 24px',
-    }}>
+    <div
+      ref={containerRef}
+      style={{
+        display: 'grid',
+        // Responsive: 1 column for narrow (sidebar), 2 columns for wider areas
+        gridTemplateColumns: isNarrow ? '1fr' : 'repeat(2, 1fr)',
+        gap: isNarrow ? '6px' : '8px 12px',
+      }}
+    >
       {items.map((lang, index) => {
         const level = proficiencyToDots[lang.proficiency] || 3;
 
@@ -125,22 +157,45 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '8px 12px',
+              gap: '8px',
+              padding: isNarrow ? '5px 8px' : '6px 10px',
               backgroundColor: '#f9fafb',
-              borderRadius: '8px',
+              borderRadius: '6px',
               border: '1px solid #f3f4f6',
+              minWidth: 0, // Allow shrinking
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1px',
+              minWidth: 0,
+              flex: 1,
+              overflow: 'hidden',
+            }}>
               {editable ? (
                 <InlineEditableText
                   path={`languages.${index}.language`}
                   value={lang.language}
-                  style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: typography.body.fontSize }}
+                  style={{
+                    fontWeight: 600,
+                    color: typography.itemTitle.color,
+                    fontSize: scaleFontSize('12px'),
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
                   placeholder="Language"
                 />
               ) : (
-                <span style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: typography.body.fontSize }}>
+                <span style={{
+                  fontWeight: 600,
+                  color: typography.itemTitle.color,
+                  fontSize: scaleFontSize('12px'),
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}>
                   {lang.language}
                 </span>
               )}
@@ -150,17 +205,17 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
                   <button
                     onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
                     className="text-left hover:bg-gray-200/50 rounded px-1 -ml-1 transition-colors"
-                    style={{ fontSize: '11px', color: '#9ca3af' }}
+                    style={{ fontSize: '10px', color: '#9ca3af' }}
                   >
                     {lang.proficiency}
                   </button>
                   {openDropdown === index && (
-                    <div className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 py-1 min-w-[120px]">
+                    <div className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 py-1 min-w-[110px]">
                       {proficiencyOptions.map((option) => (
                         <button
                           key={option.key}
                           onClick={() => handleProficiencySelect(index, option.key)}
-                          className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                          className={`w-full text-left px-2 py-1 text-xs hover:bg-gray-50 transition-colors flex items-center justify-between ${
                             lang.proficiency === option.key ? 'bg-gray-100 font-medium' : ''
                           }`}
                           style={{ color: '#374151' }}
@@ -171,8 +226,8 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
                               <span
                                 key={d}
                                 style={{
-                                  width: '4px',
-                                  height: '4px',
+                                  width: '3px',
+                                  height: '3px',
                                   borderRadius: '50%',
                                   backgroundColor: d <= option.dots ? accentColor : '#e5e7eb',
                                   display: 'inline-block',
@@ -186,13 +241,18 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
                   )}
                 </div>
               ) : (
-                <span style={{ fontSize: '11px', color: '#9ca3af' }}>
+                <span style={{ fontSize: '10px', color: '#9ca3af' }}>
                   {lang.proficiency}
                 </span>
               )}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              flexShrink: 0,
+            }}>
               {renderDots(level, index)}
 
               {editable && onRemoveLanguage && (
@@ -211,11 +271,11 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
       {editable && onAddLanguage && (
         <button
           onClick={onAddLanguage}
-          className="flex items-center justify-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border border-dashed hover:bg-gray-50 transition-colors"
+          className="flex items-center justify-center gap-1 text-xs font-medium px-2 py-1.5 rounded-md border border-dashed hover:bg-gray-50 transition-colors"
           style={{ color: accentColor, borderColor: accentColor }}
         >
           <Plus className="h-3 w-3" />
-          Add Language
+          Add
         </button>
       )}
     </div>

@@ -41,6 +41,7 @@ export const InterestsVariantRenderer: React.FC<InterestsVariantRendererProps> =
     case 'standard':
       return <InterestsStandard {...props} />;
     case 'pills':
+    case 'compact': // Map compact to pills for a cleaner look
       return <InterestsPills {...props} />;
     case 'list':
       return <InterestsList {...props} />;

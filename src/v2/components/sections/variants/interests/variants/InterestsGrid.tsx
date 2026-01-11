@@ -1,13 +1,15 @@
 /**
  * Interests Grid Variant
  *
- * 2-column grid layout for interests/hobbies.
+ * Responsive grid layout for interests/hobbies.
+ * 1 column in sidebar, 2 columns in main content.
  * Uses theme colors for styling.
  */
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { X, Plus, Sparkles } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { InterestsVariantProps } from '../types';
 
 export const InterestsGrid: React.FC<InterestsVariantProps> = ({
@@ -19,15 +21,40 @@ export const InterestsGrid: React.FC<InterestsVariantProps> = ({
   onRemoveInterest,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Measure container width for responsive layout
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+
+    resizeObserver.observe(container);
+    setContainerWidth(container.offsetWidth);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   if (!items.length && !editable) return null;
 
+  // Responsive: 1 column for narrow (sidebar <280px), 2 columns for wider
+  const isNarrow = containerWidth < 280;
+
   return (
     <div
+      ref={containerRef}
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '10px',
+        gridTemplateColumns: isNarrow ? '1fr' : 'repeat(2, 1fr)',
+        gap: isNarrow ? '6px' : '8px',
       }}
     >
       {items.map((interest, index) => (
@@ -37,11 +64,12 @@ export const InterestsGrid: React.FC<InterestsVariantProps> = ({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            padding: '10px 12px',
+            gap: '6px',
+            padding: isNarrow ? '6px 8px' : '8px 10px',
             backgroundColor: `${accentColor}08`,
-            borderRadius: '8px',
+            borderRadius: '6px',
             border: `1px solid ${accentColor}15`,
+            minWidth: 0,
           }}
         >
           {editable && onRemoveInterest && (
@@ -55,8 +83,8 @@ export const InterestsGrid: React.FC<InterestsVariantProps> = ({
 
           <Sparkles
             style={{
-              width: '14px',
-              height: '14px',
+              width: '12px',
+              height: '12px',
               color: accentColor,
               flexShrink: 0,
             }}
@@ -67,18 +95,24 @@ export const InterestsGrid: React.FC<InterestsVariantProps> = ({
               path={`interests.${index}.name`}
               value={interest.name}
               style={{
-                fontSize: typography.body.fontSize,
+                fontSize: scaleFontSize('12px'),
                 fontWeight: 500,
                 color: typography.itemTitle.color,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
               placeholder="Interest"
             />
           ) : (
             <span
               style={{
-                fontSize: typography.body.fontSize,
+                fontSize: scaleFontSize('12px'),
                 fontWeight: 500,
                 color: typography.itemTitle.color,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
               {interest.name}
@@ -94,19 +128,19 @@ export const InterestsGrid: React.FC<InterestsVariantProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
-            padding: '10px 12px',
-            borderRadius: '8px',
+            gap: '4px',
+            padding: isNarrow ? '6px 8px' : '8px 10px',
+            borderRadius: '6px',
             border: `2px dashed ${accentColor}40`,
             backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: 500,
             cursor: 'pointer',
           }}
           className="hover:bg-gray-50 transition-colors"
         >
-          <Plus style={{ width: '14px', height: '14px' }} />
+          <Plus style={{ width: '12px', height: '12px' }} />
           Add
         </button>
       )}

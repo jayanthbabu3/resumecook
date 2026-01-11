@@ -183,7 +183,7 @@ export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
   },
 
   languages: {
-    variant: 'pills',
+    variant: 'compact',
     showCertification: false,
   },
 

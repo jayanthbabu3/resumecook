@@ -31,6 +31,7 @@ import {
   LayoutGrid,
   Type,
   Layout,
+  Sparkles,
 } from 'lucide-react';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { resumeServiceV2, type V2Resume } from '../services/resumeServiceV2';
@@ -70,6 +71,9 @@ import { OnboardingTour } from '../components/OnboardingTour';
 
 // Template Selector Modal
 import { TemplateSelectorModal } from '../components/TemplateSelectorModal';
+
+// AI Enhancement Modal
+import { EnhanceWithAIModal } from '../components/EnhanceWithAIModal';
 
 export const BuilderV2: React.FC = () => {
   const navigate = useNavigate();
@@ -116,6 +120,8 @@ export const BuilderV2: React.FC = () => {
   const [selectedFont, setSelectedFont] = useState<string>(RESUME_FONTS[0].family);
   // Template selector modal state
   const [showTemplateSelector, setShowTemplateSelector] = useState(false);
+  // AI Enhancement modal state
+  const [showEnhanceModal, setShowEnhanceModal] = useState(false);
 
   // Debug: Log when font changes
   React.useEffect(() => {
@@ -242,9 +248,40 @@ export const BuilderV2: React.FC = () => {
         const profile = await profileService.getProfile();
         if (profile && profile.personalInfo?.fullName) {
           console.log('Loading profile data for new resume:', profile.personalInfo.fullName);
-          const resumeData = profileService.profileToResumeData(profile);
+          const profileResumeData = profileService.profileToResumeData(profile);
           externalDataImportedRef.current = true; // Prevent template effect from overwriting
-          setResumeData(resumeData);
+          setResumeData(profileResumeData);
+
+          // Dynamically enable sections based on profile data
+          const sectionsToEnable: string[] = ['header'];
+          if (profileResumeData.personalInfo?.summary) sectionsToEnable.push('summary');
+          if (profileResumeData.experience?.length > 0) sectionsToEnable.push('experience');
+          if (profileResumeData.education?.length > 0) sectionsToEnable.push('education');
+          if (profileResumeData.skills?.length > 0) sectionsToEnable.push('skills');
+          if (profileResumeData.languages?.length > 0) sectionsToEnable.push('languages');
+          if (profileResumeData.certifications?.length > 0) sectionsToEnable.push('certifications');
+          if (profileResumeData.projects?.length > 0) sectionsToEnable.push('projects');
+          if (profileResumeData.awards?.length > 0) sectionsToEnable.push('awards');
+          if (profileResumeData.achievements?.length > 0) sectionsToEnable.push('achievements');
+          if (profileResumeData.strengths?.length > 0) sectionsToEnable.push('strengths');
+          if (profileResumeData.volunteer?.length > 0) sectionsToEnable.push('volunteer');
+          if (profileResumeData.publications?.length > 0) sectionsToEnable.push('publications');
+          if (profileResumeData.speaking?.length > 0) sectionsToEnable.push('speaking');
+          if (profileResumeData.patents?.length > 0) sectionsToEnable.push('patents');
+          if (profileResumeData.interests?.length > 0) sectionsToEnable.push('interests');
+          if (profileResumeData.references?.length > 0) sectionsToEnable.push('references');
+          if (profileResumeData.courses?.length > 0) sectionsToEnable.push('courses');
+
+          // Handle custom sections
+          if (profileResumeData.customSections?.length > 0) {
+            profileResumeData.customSections.forEach((section: { id: string }) => {
+              sectionsToEnable.push(section.id);
+            });
+          }
+
+          console.log('Enabling sections from profile:', sectionsToEnable);
+          setEnabledSections(sectionsToEnable);
+
           toast.success('Profile data loaded! Customize your resume.');
         }
       } catch (error) {
@@ -285,9 +322,33 @@ export const BuilderV2: React.FC = () => {
           if (resume.sectionOverrides) {
             setSectionOverrides(resume.sectionOverrides);
           }
-          if (resume.enabledSections) {
-            setEnabledSections(resume.enabledSections);
-          }
+
+          // Restore enabledSections, but also auto-enable sections that have data
+          // This handles cases where resume data has sections that weren't enabled when saved
+          const savedEnabledSections = resume.enabledSections || ['header', 'summary', 'experience', 'education', 'skills'];
+          const sectionsWithData: string[] = ['header']; // Always include header
+
+          if (resume.data.personalInfo?.summary) sectionsWithData.push('summary');
+          if (resume.data.experience?.length > 0) sectionsWithData.push('experience');
+          if (resume.data.education?.length > 0) sectionsWithData.push('education');
+          if (resume.data.skills?.length > 0) sectionsWithData.push('skills');
+          if (resume.data.languages?.length > 0) sectionsWithData.push('languages');
+          if (resume.data.certifications?.length > 0) sectionsWithData.push('certifications');
+          if (resume.data.projects?.length > 0) sectionsWithData.push('projects');
+          if (resume.data.awards?.length > 0) sectionsWithData.push('awards');
+          if (resume.data.achievements?.length > 0) sectionsWithData.push('achievements');
+          if (resume.data.strengths?.length > 0) sectionsWithData.push('strengths');
+          if (resume.data.volunteer?.length > 0) sectionsWithData.push('volunteer');
+          if (resume.data.publications?.length > 0) sectionsWithData.push('publications');
+          if (resume.data.speaking?.length > 0) sectionsWithData.push('speaking');
+          if (resume.data.patents?.length > 0) sectionsWithData.push('patents');
+          if (resume.data.interests?.length > 0) sectionsWithData.push('interests');
+          if (resume.data.references?.length > 0) sectionsWithData.push('references');
+          if (resume.data.courses?.length > 0) sectionsWithData.push('courses');
+
+          // Merge saved enabled sections with sections that have data
+          const mergedSections = [...new Set([...savedEnabledSections, ...sectionsWithData])];
+          setEnabledSections(mergedSections);
 
           toast.success('Resume loaded');
         } else {
@@ -1264,6 +1325,102 @@ export const BuilderV2: React.FC = () => {
     return [...configSections, ...dynamicSections];
   }, [config.sections, resumeData.customSections, sectionOverrides, enabledSections]);
 
+  // Get all sections for the form - includes both config sections AND dynamic sections from resumeData
+  // This ensures sections like projects, publications, languages etc. show in the form when they have data
+  const sectionsForForm = React.useMemo(() => {
+    // Start with config sections, but mark them as enabled based on enabledSections state
+    const baseSections = config.sections.map(s => ({
+      ...s,
+      enabled: enabledSections.includes(s.id),
+    }));
+    const existingIds = new Set(baseSections.map(s => s.id));
+    const existingTypes = new Set(baseSections.map(s => s.type));
+
+    // Standard section types that can be dynamically added if they have data
+    const standardSectionTypes: Array<{
+      type: string;
+      id: string;
+      title: string;
+      hasData: () => boolean;
+      defaultColumn: 'main' | 'sidebar';
+    }> = [
+      { type: 'projects', id: 'projects', title: 'Projects', hasData: () => (resumeData.projects?.length || 0) > 0, defaultColumn: 'main' },
+      { type: 'certifications', id: 'certifications', title: 'Certifications', hasData: () => (resumeData.certifications?.length || 0) > 0, defaultColumn: 'sidebar' },
+      { type: 'awards', id: 'awards', title: 'Awards', hasData: () => (resumeData.awards?.length || 0) > 0, defaultColumn: 'sidebar' },
+      { type: 'publications', id: 'publications', title: 'Publications', hasData: () => (resumeData.publications?.length || 0) > 0, defaultColumn: 'main' },
+      { type: 'volunteer', id: 'volunteer', title: 'Volunteer Experience', hasData: () => (resumeData.volunteer?.length || 0) > 0, defaultColumn: 'main' },
+      { type: 'speaking', id: 'speaking', title: 'Speaking Engagements', hasData: () => (resumeData.speaking?.length || 0) > 0, defaultColumn: 'main' },
+      { type: 'patents', id: 'patents', title: 'Patents', hasData: () => (resumeData.patents?.length || 0) > 0, defaultColumn: 'main' },
+      { type: 'interests', id: 'interests', title: 'Interests', hasData: () => (resumeData.interests?.length || 0) > 0, defaultColumn: 'sidebar' },
+      { type: 'references', id: 'references', title: 'References', hasData: () => (resumeData.references?.length || 0) > 0, defaultColumn: 'main' },
+      { type: 'courses', id: 'courses', title: 'Courses', hasData: () => (resumeData.courses?.length || 0) > 0, defaultColumn: 'sidebar' },
+      { type: 'languages', id: 'languages', title: 'Languages', hasData: () => (resumeData.languages?.length || 0) > 0, defaultColumn: 'sidebar' },
+      { type: 'strengths', id: 'strengths', title: 'Core Strengths', hasData: () => (resumeData.strengths?.length || 0) > 0, defaultColumn: 'sidebar' },
+      { type: 'achievements', id: 'achievements', title: 'Achievements', hasData: () => (resumeData.achievements?.length || 0) > 0, defaultColumn: 'sidebar' },
+    ];
+
+    // Add dynamic standard sections that have data but aren't in template config
+    const dynamicSections: typeof baseSections = [];
+    const maxOrder = Math.max(...baseSections.map(s => s.order ?? 0), 0);
+
+    // Debug logging
+    console.log('sectionsForForm - existingIds:', Array.from(existingIds));
+    console.log('sectionsForForm - existingTypes:', Array.from(existingTypes));
+    console.log('sectionsForForm - enabledSections:', enabledSections);
+    console.log('sectionsForForm - resumeData.projects:', resumeData.projects?.length || 0);
+
+    standardSectionTypes.forEach((sectionDef, idx) => {
+      // Skip if already in config (either by id or type)
+      if (existingIds.has(sectionDef.id) || existingTypes.has(sectionDef.type)) {
+        console.log(`sectionsForForm - ${sectionDef.id} skipped: already in config`);
+        return;
+      }
+
+      // Skip if no data
+      if (!sectionDef.hasData()) {
+        console.log(`sectionsForForm - ${sectionDef.id} skipped: no data`);
+        return;
+      }
+
+      // Skip if not in enabledSections
+      if (!enabledSections.includes(sectionDef.id)) {
+        console.log(`sectionsForForm - ${sectionDef.id} skipped: not in enabledSections`);
+        return;
+      }
+
+      console.log(`sectionsForForm - Adding dynamic section: ${sectionDef.id}`);
+      dynamicSections.push({
+        type: sectionDef.type as any,
+        id: sectionDef.id,
+        title: sectionDef.title,
+        defaultTitle: sectionDef.title,
+        enabled: true,
+        order: maxOrder + idx + 1,
+        column: sectionDef.defaultColumn,
+      });
+    });
+
+    // Also add custom sections that have data
+    (resumeData.customSections || []).forEach((s: { id: string; title: string }, idx: number) => {
+      if (existingIds.has(s.id)) return;
+      if (!enabledSections.includes(s.id)) return;
+
+      dynamicSections.push({
+        type: 'custom' as any,
+        id: s.id,
+        title: s.title || s.id,
+        defaultTitle: s.title || s.id,
+        enabled: true,
+        order: maxOrder + standardSectionTypes.length + idx + 1,
+        column: 'main',
+      });
+    });
+
+    const result = [...baseSections, ...dynamicSections];
+    console.log('sectionsForForm - final result:', result.map(s => ({ id: s.id, type: s.type, enabled: s.enabled })));
+    return result;
+  }, [config.sections, resumeData, enabledSections]);
+
   // Section management panel
   const renderSectionManager = () => (
     <div className="space-y-3">
@@ -1488,6 +1645,28 @@ export const BuilderV2: React.FC = () => {
                       </TooltipTrigger>
                       <TooltipContent side="bottom">
                         <p>Change template</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    {/* Separator */}
+                    <div className="h-5 w-px bg-gray-200" />
+
+                    {/* Enhance with AI Button - Prominent gradient style */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => setShowEnhanceModal(true)}
+                          className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
+                          style={{
+                            background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
+                          }}
+                        >
+                          <Sparkles className="w-4 h-4" />
+                          <span>Enhance with AI</span>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="bg-gray-900 text-white border-0">
+                        <p>AI-powered resume improvement</p>
                       </TooltipContent>
                     </Tooltip>
 
@@ -1751,7 +1930,7 @@ export const BuilderV2: React.FC = () => {
                   <EnhancedForm
                     resumeData={resumeData}
                     onResumeDataChange={setResumeData}
-                    enabledSections={config.sections}
+                    enabledSections={sectionsForForm}
                     sectionTitles={sectionLabels}
                     templateConfig={config}
                     accentColor="#0891b2"
@@ -1808,8 +1987,20 @@ export const BuilderV2: React.FC = () => {
                       <span className="text-sm font-medium">Back</span>
                     </button>
 
-                    {/* Right: Color + Download */}
+                    {/* Right: AI + Color + Download */}
                     <div className="flex items-center gap-2">
+                      {/* Enhance with AI Button - Mobile */}
+                      <button
+                        onClick={() => setShowEnhanceModal(true)}
+                        className="h-9 px-3 flex items-center gap-1.5 rounded-lg text-white font-medium text-sm shadow-md"
+                        style={{
+                          background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
+                        }}
+                      >
+                        <Sparkles className="w-4 h-4" />
+                        <span className="hidden sm:inline">AI</span>
+                      </button>
+
                       {/* Color Picker */}
                       <Popover>
                         <PopoverTrigger asChild>
@@ -2191,6 +2382,35 @@ export const BuilderV2: React.FC = () => {
         }}
         currentTemplateId={templateId}
         themeColor={themeColors.primary || '#0891b2'}
+      />
+
+      {/* AI Enhancement Modal */}
+      <EnhanceWithAIModal
+        isOpen={showEnhanceModal}
+        onClose={() => setShowEnhanceModal(false)}
+        resumeData={resumeData}
+        templateId={templateId}
+        themeColors={themeColors}
+        onApplyEnhancements={(enhancedData, animate) => {
+          if (animate) {
+            // Add a brief visual pulse to the resume preview
+            const previewElement = document.getElementById('resume-preview-v2');
+            if (previewElement) {
+              previewElement.classList.add('animate-pulse');
+              previewElement.style.boxShadow = '0 0 0 4px rgba(139, 92, 246, 0.3)';
+              setTimeout(() => {
+                previewElement.classList.remove('animate-pulse');
+                previewElement.style.boxShadow = '';
+              }, 1500);
+            }
+          }
+          setResumeData(enhancedData);
+          setHasUnsavedChanges(true);
+          toast.success('AI enhancements applied successfully!', {
+            description: 'Your resume has been transformed with powerful improvements.',
+            icon: '✨',
+          });
+        }}
       />
     </div>
   );

@@ -16,6 +16,9 @@
 [functions."generate-pdf"]
   external_node_modules = ["@sparticuz/chromium"]
 
+[functions."enhance-resume"]
+  timeout = 60
+
 [[headers]]
   for = "/.netlify/functions/*"
   [headers.values]

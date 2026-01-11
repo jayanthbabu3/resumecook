@@ -185,7 +185,7 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
   },
 
   languages: {
-    variant: 'bars',
+    variant: 'compact',
   },
 
   sections: [

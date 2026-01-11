@@ -439,6 +439,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
       case 'list':
         return renderListVariant();
       case 'pills':
+      case 'compact': // Map compact to pills for a cleaner look
         return renderPillsVariant();
       case 'grid':
         return renderGridVariant();

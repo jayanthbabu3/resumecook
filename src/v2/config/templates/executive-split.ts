@@ -194,9 +194,9 @@ export const executiveSplitConfig: TemplateConfig = createTemplateConfig({
     showIndicators: true,
   },
 
-  // Languages - grid style
+  // Languages - compact style (horizontal layout)
   languages: {
-    variant: 'grid',
+    variant: 'compact',
   },
 
   // Section order and placement

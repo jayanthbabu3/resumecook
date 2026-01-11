@@ -166,7 +166,7 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
   },
 
   languages: {
-    variant: 'standard',
+    variant: 'compact',
   },
 
   achievements: {

@@ -132,13 +132,13 @@ const FormField: React.FC<{
   required?: boolean;
   hint?: string;
 }> = ({ label, children, required, hint }) => (
-  <div className="space-y-1">
+  <div className="space-y-2">
     <Label className="text-sm font-medium text-gray-700">
       {label}
       {required && <span className="text-red-500 ml-0.5">*</span>}
     </Label>
     {children}
-    {hint && <p className="text-xs text-gray-400">{hint}</p>}
+    {hint && <p className="text-xs text-gray-400 mt-1">{hint}</p>}
   </div>
 );
 
@@ -150,16 +150,16 @@ const SectionHeader: React.FC<{
   subtitle?: string;
   icon: React.ElementType;
 }> = ({ title, subtitle, icon: Icon }) => (
-  <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
+  <div className="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
     <div
-      className="w-9 h-9 rounded-lg flex items-center justify-center"
+      className="w-11 h-11 rounded-xl flex items-center justify-center"
       style={{ backgroundColor: `${WEBSITE_THEME_COLOR}15` }}
     >
-      <Icon className="w-4 h-4" style={{ color: WEBSITE_THEME_COLOR }} />
+      <Icon className="w-5 h-5" style={{ color: WEBSITE_THEME_COLOR }} />
     </div>
     <div>
-      <h2 className="text-base font-semibold text-gray-900">{title}</h2>
-      {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+      <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+      {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
     </div>
   </div>
 );
@@ -255,7 +255,7 @@ const ItemCard: React.FC<{
       "overflow-hidden transition-all duration-200",
       isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
     )}>
-      <div className="p-4">
+      <div className="p-5">
         {children}
       </div>
     </div>
@@ -270,14 +270,14 @@ const PersonalSection: React.FC<{
   data: any;
   onChange: (field: string, value: any) => void;
 }> = ({ data, onChange }) => (
-  <div className="space-y-3">
+  <div className="space-y-5">
     <SectionHeader
       title="Personal Details"
       subtitle="Your basic contact information"
       icon={User}
     />
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <FormField label="First Name" required>
         <Input
           value={data.fullName?.split(' ')[0] || ''}
@@ -286,7 +286,7 @@ const PersonalSection: React.FC<{
             onChange('fullName', `${e.target.value} ${lastName}`.trim());
           }}
           placeholder="John"
-          className="h-10"
+          className="h-11 text-base"
         />
       </FormField>
 
@@ -298,7 +298,7 @@ const PersonalSection: React.FC<{
             onChange('fullName', `${firstName} ${e.target.value}`.trim());
           }}
           placeholder="Doe"
-          className="h-10"
+          className="h-11 text-base"
         />
       </FormField>
     </div>
@@ -308,33 +308,33 @@ const PersonalSection: React.FC<{
         value={data.title || ''}
         onChange={(e) => onChange('title', e.target.value)}
         placeholder="Senior Software Engineer"
-        className="h-10"
+        className="h-11 text-base"
       />
     </FormField>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <FormField label="Email" required>
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             type="email"
             value={data.email || ''}
             onChange={(e) => onChange('email', e.target.value)}
             placeholder="john@example.com"
-            className="h-10 pl-10"
+            className="h-11 pl-11 text-base"
           />
         </div>
       </FormField>
 
       <FormField label="Phone">
         <div className="relative">
-          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             type="tel"
             value={data.phone || ''}
             onChange={(e) => onChange('phone', e.target.value)}
             placeholder="+1 (555) 123-4567"
-            className="h-10 pl-10"
+            className="h-11 pl-11 text-base"
           />
         </div>
       </FormField>
@@ -342,12 +342,12 @@ const PersonalSection: React.FC<{
 
     <FormField label="Location">
       <div className="relative">
-        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
         <Input
           value={data.location || ''}
           onChange={(e) => onChange('location', e.target.value)}
           placeholder="San Francisco, CA"
-          className="h-10 pl-10"
+          className="h-11 pl-11 text-base"
         />
       </div>
     </FormField>
@@ -357,10 +357,10 @@ const PersonalSection: React.FC<{
         value={data.summary || ''}
         onChange={(e) => onChange('summary', e.target.value)}
         placeholder="Experienced software engineer with 5+ years of experience..."
-        className="min-h-[100px] resize-none"
+        className="min-h-[120px] resize-none text-base leading-relaxed"
         maxLength={500}
       />
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-1">
         <span className="text-xs text-gray-400">
           {(data.summary || '').length}/500 characters
         </span>
@@ -373,46 +373,46 @@ const SocialLinksSection: React.FC<{
   data: any;
   onChange: (field: string, value: any) => void;
 }> = ({ data, onChange }) => (
-  <div className="space-y-3">
+  <div className="space-y-5">
     <SectionHeader
       title="Social Links"
       subtitle="Add your professional profiles"
       icon={Link2}
     />
 
-    <div className="space-y-3">
+    <div className="space-y-5">
       <FormField label="LinkedIn">
         <div className="relative">
-          <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Linkedin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             value={data.linkedin || ''}
             onChange={(e) => onChange('linkedin', e.target.value)}
             placeholder="linkedin.com/in/johndoe"
-            className="h-10 pl-10"
+            className="h-11 pl-11 text-base"
           />
         </div>
       </FormField>
 
       <FormField label="GitHub">
         <div className="relative">
-          <Github className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Github className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             value={data.github || ''}
             onChange={(e) => onChange('github', e.target.value)}
             placeholder="github.com/johndoe"
-            className="h-10 pl-10"
+            className="h-11 pl-11 text-base"
           />
         </div>
       </FormField>
 
       <FormField label="Portfolio Website">
         <div className="relative">
-          <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             value={data.portfolio || ''}
             onChange={(e) => onChange('portfolio', e.target.value)}
             placeholder="johndoe.com"
-            className="h-10 pl-10"
+            className="h-11 pl-11 text-base"
           />
         </div>
       </FormField>
@@ -439,26 +439,26 @@ const PhotoSection: React.FC<{
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-5">
       <SectionHeader
         title="Profile Photo"
         subtitle="Add a professional photo (optional)"
         icon={Camera}
       />
 
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-8 py-4">
         {/* Photo Preview */}
         <div className="relative">
           <div
             className={cn(
-              "w-32 h-32 rounded-full border-4 flex items-center justify-center overflow-hidden",
+              "w-36 h-36 rounded-full border-4 flex items-center justify-center overflow-hidden shadow-sm",
               data.photo ? "border-gray-200" : "border-dashed border-gray-300 bg-gray-50"
             )}
           >
             {data.photo ? (
               <img src={data.photo} alt="Profile" className="w-full h-full object-cover" />
             ) : (
-              <Camera className="w-8 h-8 text-gray-400" />
+              <Camera className="w-10 h-10 text-gray-400" />
             )}
           </div>
           {data.photo && (
@@ -466,7 +466,7 @@ const PhotoSection: React.FC<{
               variant="destructive"
               size="sm"
               onClick={() => onChange('photo', '')}
-              className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-7 text-xs"
+              className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-8 text-sm px-4"
             >
               Remove
             </Button>
@@ -474,7 +474,7 @@ const PhotoSection: React.FC<{
         </div>
 
         {/* Upload Options */}
-        <div className="flex flex-col items-center gap-3 w-full max-w-xs">
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
           <input
             ref={fileInputRef}
             type="file"
@@ -488,28 +488,27 @@ const PhotoSection: React.FC<{
           <Button
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full"
+            className="w-full h-11 text-base"
           >
-            <Camera className="w-4 h-4 mr-2" />
+            <Camera className="w-5 h-5 mr-2" />
             Upload Photo
           </Button>
 
-          <div className="flex items-center gap-2 w-full">
+          <div className="flex items-center gap-3 w-full">
             <div className="h-px flex-1 bg-gray-200" />
-            <span className="text-xs text-gray-400">or</span>
+            <span className="text-sm text-gray-400">or</span>
             <div className="h-px flex-1 bg-gray-200" />
           </div>
 
-          <div className="flex gap-2 w-full">
+          <div className="flex gap-3 w-full">
             <Input
               value={photoUrl}
               onChange={(e) => setPhotoUrl(e.target.value)}
               placeholder="Paste image URL"
-              className="h-10 text-sm"
+              className="h-11 text-base flex-1"
             />
             <Button
               variant="secondary"
-              size="sm"
               onClick={() => {
                 if (photoUrl) {
                   onChange('photo', photoUrl);
@@ -517,7 +516,7 @@ const PhotoSection: React.FC<{
                 }
               }}
               disabled={!photoUrl}
-              className="h-10 px-4"
+              className="h-11 px-5 text-base"
             >
               Add
             </Button>
@@ -630,7 +629,7 @@ const ListSection: React.FC<{
               value={item[field.key] || ''}
               onChange={(e) => updateItem(index, field.key, e.target.value)}
               placeholder={field.placeholder}
-              className="h-9"
+              className="h-11 text-base"
             />
           </FormField>
         );
@@ -642,8 +641,8 @@ const ListSection: React.FC<{
               value={item[field.key] || ''}
               onChange={(e) => updateItem(index, field.key, e.target.value)}
               placeholder={field.placeholder}
-              className="min-h-[60px] resize-none text-sm"
-              rows={field.rows || 2}
+              className="min-h-[80px] resize-none text-base"
+              rows={field.rows || 3}
             />
           </FormField>
         );
@@ -681,7 +680,7 @@ const ListSection: React.FC<{
               placeholder={field.placeholder}
               min={field.min}
               max={field.max}
-              className="h-9"
+              className="h-11 text-base"
             />
           </FormField>
         );
@@ -689,20 +688,20 @@ const ListSection: React.FC<{
       case 'rating':
         return (
           <FormField label={field.label}>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
                   type="button"
                   onClick={() => updateItem(index, field.key, star)}
                   className={cn(
-                    "w-7 h-7 rounded transition-colors",
+                    "w-9 h-9 rounded-lg transition-colors",
                     star <= (item[field.key] || 0)
                       ? "bg-yellow-400 text-white"
                       : "bg-gray-100 text-gray-400 hover:bg-gray-200"
                   )}
                 >
-                  <Star className="w-3.5 h-3.5 mx-auto" fill={star <= (item[field.key] || 0) ? "currentColor" : "none"} />
+                  <Star className="w-4 h-4 mx-auto" fill={star <= (item[field.key] || 0) ? "currentColor" : "none"} />
                 </button>
               ))}
             </div>
@@ -727,7 +726,7 @@ const ListSection: React.FC<{
               value={item[field.key] || ''}
               onValueChange={(value) => updateItem(index, field.key, value)}
             >
-              <SelectTrigger className="h-9">
+              <SelectTrigger className="h-11 text-base">
                 <SelectValue placeholder={field.placeholder || `Select ${field.label.toLowerCase()}`} />
               </SelectTrigger>
               <SelectContent>
@@ -755,7 +754,7 @@ const ListSection: React.FC<{
       case 'multiselect':
         return (
           <FormField label={field.label} required={field.required}>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {field.options?.map((option) => {
                 const selected = (item[field.key] || []).includes(option.value);
                 return (
@@ -770,7 +769,7 @@ const ListSection: React.FC<{
                       updateItem(index, field.key, updated);
                     }}
                     className={cn(
-                      "px-2.5 py-1 text-xs font-medium rounded-md border transition-colors",
+                      "px-3 py-1.5 text-sm font-medium rounded-lg border transition-colors",
                       selected
                         ? "bg-blue-50 border-blue-300 text-blue-700"
                         : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
@@ -836,14 +835,14 @@ const ListSection: React.FC<{
   const subtitleKey = getSubtitleField();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <SectionHeader
         title={sectionTitle || definition.defaultTitle}
         subtitle={`Add your ${definition.itemNamePlural}`}
         icon={icon}
       />
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {items.map((item, index) => (
           <ItemCard
             key={item.id || index}
@@ -855,9 +854,9 @@ const ListSection: React.FC<{
             isExpanded={expandedItems.has(index)}
             onToggle={() => toggleItem(index)}
           >
-            <div className="space-y-4">
+            <div className="space-y-5">
               {/* Two-column grid for compact fields */}
-              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+              <div className="grid grid-cols-2 gap-x-5 gap-y-5">
                 {definition.formFields
                   .filter(shouldShowField)
                   .filter(f => !isFullWidth(f))
@@ -885,15 +884,15 @@ const ListSection: React.FC<{
         <button
           type="button"
           onClick={addItem}
-          className="w-full h-12 flex items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-blue-50/50 hover:border-blue-300 transition-all duration-200 group"
+          className="w-full h-14 flex items-center justify-center gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-blue-50/50 hover:border-blue-300 transition-all duration-200 group"
         >
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors group-hover:bg-blue-100"
+            className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors group-hover:bg-blue-100"
             style={{ backgroundColor: `${WEBSITE_THEME_COLOR}10` }}
           >
-            <Plus className="w-4 h-4" style={{ color: WEBSITE_THEME_COLOR }} />
+            <Plus className="w-5 h-5" style={{ color: WEBSITE_THEME_COLOR }} />
           </div>
-          <span className="text-sm font-medium" style={{ color: WEBSITE_THEME_COLOR }}>
+          <span className="text-base font-medium" style={{ color: WEBSITE_THEME_COLOR }}>
             Add {definition.itemName}
           </span>
         </button>
@@ -928,40 +927,40 @@ const BulletPointsEditor: React.FC<{
   };
 
   return (
-    <div className="space-y-2 p-3 rounded-lg bg-gray-50/80 border border-gray-100">
+    <div className="space-y-3 p-4 rounded-xl bg-gray-50/80 border border-gray-100">
       {items.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {items.map((item, index) => (
             <div
               key={index}
-              className="flex items-start gap-2 bg-white rounded-lg p-2 border border-gray-100 shadow-sm group hover:border-gray-200 transition-colors"
+              className="flex items-start gap-3 bg-white rounded-lg p-3 border border-gray-100 shadow-sm group hover:border-gray-200 transition-colors"
             >
               <div
-                className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-1"
+                className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
                 style={{ backgroundColor: `${WEBSITE_THEME_COLOR}15` }}
               >
-                <span className="text-xs font-medium" style={{ color: WEBSITE_THEME_COLOR }}>{index + 1}</span>
+                <span className="text-sm font-medium" style={{ color: WEBSITE_THEME_COLOR }}>{index + 1}</span>
               </div>
               <Input
                 value={item}
                 onChange={(e) => updateItem(index, e.target.value)}
-                className="h-8 flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-0"
+                className="h-9 flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-0 text-base"
               />
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => removeItem(index)}
-                className="h-7 w-7 p-0 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                className="h-8 w-8 p-0 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </Button>
             </div>
           ))}
         </div>
       )}
-      <div className="flex items-center gap-2">
-        <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 bg-gray-100">
-          <Plus className="w-3 h-3 text-gray-400" />
+      <div className="flex items-center gap-3">
+        <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 bg-gray-100">
+          <Plus className="w-3.5 h-3.5 text-gray-400" />
         </div>
         <Input
           value={newItem}
@@ -973,21 +972,21 @@ const BulletPointsEditor: React.FC<{
             }
           }}
           placeholder={placeholder || 'Add bullet point...'}
-          className="h-8 flex-1 border-gray-200 bg-white"
+          className="h-10 flex-1 border-gray-200 bg-white text-base"
         />
         <Button
           size="sm"
           onClick={addItem}
           disabled={!newItem.trim()}
-          className="h-8 px-3 rounded-lg"
+          className="h-10 px-4 rounded-lg text-sm"
           style={{ backgroundColor: newItem.trim() ? WEBSITE_THEME_COLOR : undefined }}
         >
-          <Plus className="w-3.5 h-3.5 mr-1" />
+          <Plus className="w-4 h-4 mr-1" />
           Add
         </Button>
       </div>
       {items.length === 0 && (
-        <p className="text-xs text-gray-400 text-center py-1">
+        <p className="text-sm text-gray-400 text-center py-2">
           Press Enter to add each item
         </p>
       )}
@@ -1288,7 +1287,7 @@ export const EnhancedForm: React.FC<EnhancedFormProps> = ({
       <div className="hidden lg:flex flex-1 flex-col min-w-0 overflow-hidden">
         {/* Scrollable Content */}
         <div ref={contentRef} className="flex-1 overflow-y-auto">
-          <div className="p-4 max-w-2xl">
+          <div className="p-6 max-w-3xl">
             {renderSectionContent()}
           </div>
         </div>

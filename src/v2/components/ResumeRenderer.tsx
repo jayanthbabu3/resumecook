@@ -366,20 +366,32 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       { type: 'achievements', id: 'achievements', title: 'Achievements', hasData: () => (resumeData.achievements?.length || 0) > 0, defaultColumn: 'sidebar' },
     ];
 
-    // Add dynamic sections for standard types that have data but aren't in template config
+    // Add dynamic sections for standard types that have data but either:
+    // 1. Aren't in template config at all, OR
+    // 2. Are in template config but disabled (and we have data for them)
     const dynamicStandardSections: SectionConfig[] = [];
-    standardSectionTypes.forEach(sectionDef => {
-      // Skip if already in template config (by id or type)
-      if (configSectionIds.has(sectionDef.id) || configSectionTypes.has(sectionDef.type)) return;
+    const includedSectionIds = new Set(sections.map(s => s.id));
 
-      // Skip if not enabled (enabledSections is provided but doesn't include this section)
-      if (enabledSections && enabledSections.length > 0 && !enabledSections.includes(sectionDef.id)) return;
+    standardSectionTypes.forEach(sectionDef => {
+      // Skip if already included in sections (either from config as enabled, or already added)
+      if (includedSectionIds.has(sectionDef.id)) return;
 
       // Skip if no data
       if (!sectionDef.hasData()) return;
 
-      // Determine column - for column-filtered calls, only include matching sections
-      const sectionColumn = sectionDef.defaultColumn;
+      // Skip if enabledSections is provided and doesn't include this section
+      if (enabledSections && enabledSections.length > 0 && !enabledSections.includes(sectionDef.id)) return;
+
+      // Check if section exists in config but is disabled
+      const existingConfigSection = config.sections.find(s => s.id === sectionDef.id || s.type === sectionDef.type);
+      const isDisabledInConfig = existingConfigSection && existingConfigSection.enabled === false;
+
+      // If section exists in config and is explicitly enabled, it should already be in sections
+      // If section exists in config but is disabled, and we have data, add it dynamically
+      // If section doesn't exist in config at all, and we have data, add it dynamically
+
+      // Determine column - use config's column if exists, otherwise default
+      const sectionColumn = existingConfigSection?.column || sectionDef.defaultColumn;
       if (column && sectionColumn !== column) return;
 
       // Calculate order - append after existing sections in the same column
@@ -388,15 +400,25 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         .map(s => s.order ?? 0);
       const maxOrder = existingOrdersInColumn.length > 0 ? Math.max(...existingOrdersInColumn) : 0;
 
+      // Use title from config if available, otherwise use default
+      const sectionTitle = existingConfigSection?.title || sectionDef.title;
+
+      // Determine variant:
+      // 1. If section exists in config (even if disabled), use its configured variant
+      // 2. If section doesn't exist in config, use 'compact' as default (better look for dynamically added sections)
+      const existingVariant = (existingConfigSection as any)?.variant;
+      const sectionVariant = existingVariant || 'compact';
+
       dynamicStandardSections.push({
         type: sectionDef.type as any,
         id: sectionDef.id,
-        title: sectionDef.title,
+        title: sectionTitle,
         defaultTitle: sectionDef.title,
         enabled: true,
         order: maxOrder + 1 + dynamicStandardSections.length,
         column: sectionColumn,
-      });
+        variant: sectionVariant,
+      } as SectionConfig);
     });
 
     if (dynamicStandardSections.length > 0) {
@@ -661,8 +683,9 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       case 'languages':
         // Get languages from V2 data
         const languageItems = resumeData.languages || [];
-        // Get variant - prioritize section.variant (from sectionOverrides) over config default
-        const languagesVariant = (section as any).variant || (config as any).languages?.variant || 'standard';
+        // Get variant - prioritize section.variant (from dynamic sections or sectionOverrides) over config default
+        // Default to 'compact' for better look on dynamically added sections
+        const languagesVariant = (section as any).variant || (config as any).languages?.variant || 'compact';
         return wrap('languages',
           <LanguagesSection
             key={section.id}

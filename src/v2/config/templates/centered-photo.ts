@@ -176,7 +176,7 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
   },
 
   languages: {
-    variant: 'pills',
+    variant: 'compact',
   },
 
   projects: {

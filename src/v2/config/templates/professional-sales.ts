@@ -170,7 +170,7 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
   },
 
   languages: {
-    variant: 'bars',
+    variant: 'compact',
     showCertification: false,
   },
 

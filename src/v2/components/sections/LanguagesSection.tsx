@@ -34,8 +34,11 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
   const accent = colors.primary;
 
   // Map variant names to LanguagesVariant type
+  // Default is 'compact' (horizontal layout) for clean, modern look
   const getVariant = (variantId: string | undefined): LanguagesVariant => {
-    if (!variantId) return 'standard';
+    // Default to compact (horizontal layout like: ENGLISH (Native) HINDI (Professional))
+    // This is the standard format for languages across all templates unless explicitly configured otherwise
+    if (!variantId) return 'compact';
 
     // Direct mappings
     const directVariants: LanguagesVariant[] = [
@@ -60,13 +63,13 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
       'lang-flag': 'flags',
       'lang-rating': 'bars',
       'lang-minimal': 'compact',
-      'lang-inline': 'inline',
+      'lang-inline': 'compact', // inline now maps to compact
       'lang-compact': 'compact',
       'lang-detailed': 'standard',
       'lang-grid': 'grid',
     };
 
-    return variantMap[variantId] || 'standard';
+    return variantMap[variantId] || 'compact';
   };
 
   const variant = getVariant(variantOverride);

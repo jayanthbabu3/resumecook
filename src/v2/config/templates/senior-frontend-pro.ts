@@ -178,7 +178,7 @@ export const seniorFrontendProConfig: TemplateConfig = createTemplateConfig({
   },
 
   languages: {
-    variant: 'grid',
+    variant: 'compact',
   },
 
   sections: [

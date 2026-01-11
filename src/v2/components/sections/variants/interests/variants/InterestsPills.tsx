@@ -1,10 +1,14 @@
 /**
  * Interests Pills Variant
+ *
+ * Responsive pill badges for interests/hobbies.
+ * Works well in both sidebar and main content areas.
  */
 
 import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { InterestsVariantProps } from '../types';
 
 export const InterestsPills: React.FC<InterestsVariantProps> = ({
@@ -15,28 +19,35 @@ export const InterestsPills: React.FC<InterestsVariantProps> = ({
   onAddInterest,
   onRemoveInterest,
 }) => {
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
+
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
       {items.map((interest, index) => (
         <div key={interest.id || index} className="group relative">
           <span style={{
             display: 'inline-flex',
             alignItems: 'center',
-            fontSize: '12px',
+            fontSize: scaleFontSize('11px'),
             fontWeight: 500,
-            padding: '4px 12px',
+            padding: '3px 10px',
             borderRadius: '9999px',
             border: `1px solid ${accentColor}`,
             backgroundColor: 'transparent',
             color: accentColor,
+            maxWidth: '150px',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}>
             {editable ? (
               <InlineEditableText
                 path={`interests.${index}.name`}
                 value={interest.name}
-                style={{ fontSize: '12px' }}
+                style={{ fontSize: scaleFontSize('11px') }}
                 placeholder="Interest"
               />
             ) : (
@@ -53,12 +64,12 @@ export const InterestsPills: React.FC<InterestsVariantProps> = ({
           )}
         </div>
       ))}
-      
+
       {editable && onAddInterest && (
         <button
           onClick={onAddInterest}
-          className="flex items-center gap-1 text-xs px-3 py-1 rounded-full border border-dashed hover:bg-gray-50 transition-colors"
-          style={{ color: accentColor, borderColor: accentColor }}
+          className="flex items-center gap-1 text-xs px-2.5 py-0.5 rounded-full border border-dashed hover:bg-gray-50 transition-colors"
+          style={{ color: accentColor, borderColor: accentColor, fontSize: '11px' }}
         >
           <Plus className="w-3 h-3" />
           Add

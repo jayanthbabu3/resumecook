@@ -149,7 +149,7 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
   },
 
   languages: {
-    variant: 'pills',
+    variant: 'compact',
   },
 
   experience: {

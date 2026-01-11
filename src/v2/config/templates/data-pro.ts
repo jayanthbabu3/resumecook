@@ -181,7 +181,7 @@ export const dataProConfig: TemplateConfig = createTemplateConfig({
 
   // Languages - standard style
   languages: {
-    variant: 'standard',
+    variant: 'compact',
   },
 
   sections: [

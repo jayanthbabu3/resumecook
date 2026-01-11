@@ -66,7 +66,7 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {items.map((lang, index) => {
         const profInfo = proficiencyMap[lang.proficiency] || { level: 50, label: lang.proficiency };
 
@@ -81,40 +81,58 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
               </button>
             )}
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px', gap: '8px' }}>
               {editable ? (
                 <InlineEditableText
                   path={`languages.${index}.language`}
                   value={lang.language}
-                  style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: typography.body.fontSize }}
+                  style={{
+                    fontWeight: 600,
+                    color: typography.itemTitle.color,
+                    fontSize: '12px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    minWidth: 0,
+                    flex: 1,
+                  }}
                   placeholder="Language"
                 />
               ) : (
-                <span style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: typography.body.fontSize }}>
+                <span style={{
+                  fontWeight: 600,
+                  color: typography.itemTitle.color,
+                  fontSize: '12px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  minWidth: 0,
+                  flex: 1,
+                }}>
                   {lang.language}
                 </span>
               )}
 
               {/* Proficiency selector */}
               {editable ? (
-                <div className="relative" ref={openDropdown === index ? dropdownRef : null}>
+                <div className="relative flex-shrink-0" ref={openDropdown === index ? dropdownRef : null}>
                   <button
                     onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
-                    className="flex items-center gap-1 px-2 py-0.5 rounded hover:bg-gray-100 transition-colors"
-                    style={{ fontSize: '11px', color: '#6b7280' }}
+                    className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-gray-100 transition-colors"
+                    style={{ fontSize: '10px', color: '#6b7280' }}
                   >
                     {profInfo.label}
                     <ChevronDown className="w-3 h-3" />
                   </button>
                   {openDropdown === index && (
                     <div
-                      className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 py-1 min-w-[120px]"
+                      className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 py-1 min-w-[110px]"
                     >
                       {proficiencyLevels.map((level) => (
                         <button
                           key={level.key}
                           onClick={() => handleProficiencyChange(index, level.key)}
-                          className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 transition-colors ${
+                          className={`w-full text-left px-2 py-1 text-xs hover:bg-gray-50 transition-colors ${
                             lang.proficiency === level.key ? 'bg-gray-100 font-medium' : ''
                           }`}
                           style={{ color: '#374151' }}
@@ -126,7 +144,7 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
                   )}
                 </div>
               ) : (
-                <span style={{ fontSize: '11px', color: '#6b7280' }}>
+                <span style={{ fontSize: '10px', color: '#6b7280', flexShrink: 0 }}>
                   {profInfo.label}
                 </span>
               )}
