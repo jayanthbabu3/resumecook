@@ -200,7 +200,9 @@ export type HeaderVariant =
   | 'accent-bar'
   | 'compact'
   | 'gradient-banner'
-  | 'elegant-banner';
+  | 'elegant-banner'
+  | 'creative-underline'
+  | 'banner-with-summary';
 
 export interface HeaderConfig {
   variant: HeaderVariant;

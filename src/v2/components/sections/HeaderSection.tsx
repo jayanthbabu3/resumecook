@@ -1184,6 +1184,235 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'banner-with-summary':
+        // Dark banner with name, title, professional summary, photo on right, and contact info in two rows at bottom
+        const summaryBgColor = header.backgroundColor || '#1e293b';
+        const summaryPhotoPosition = header.photoPosition || 'right';
+        const summaryPhotoSize = header.photoSize || '100px';
+        const summaryAvatar = renderAvatar({
+          size: summaryPhotoSize,
+          forBanner: true,
+          borderColor: accent,
+          backgroundColor: `${accent}30`,
+          textColor: accent,
+          borderWidth: '4px',
+        });
+
+        // Contact style for banner-with-summary - slightly muted white for text
+        const summaryContactStyle: React.CSSProperties = {
+          fontSize: scaleFontSize(typography.contact.fontSize || '13px'),
+          color: 'rgba(255, 255, 255, 0.85)',
+          fontFamily: baseFontFamily,
+        };
+        const summaryIconSize = header.contactIcons?.size || '16px';
+        // Use accent color for icons to match the screenshot
+        const summaryIconColor = header.contactIcons?.color || accent;
+
+        // Helper to render contact item with icon
+        const renderSummaryContactItem = (
+          icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          isLink?: boolean,
+          href?: string
+        ) => {
+          if (!editable && !value) return null;
+          const Icon = icon;
+          const showIcon = header.contactIcons?.show !== false;
+
+          const content = (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {showIcon && <Icon style={{ width: summaryIconSize, height: summaryIconSize, color: summaryIconColor, flexShrink: 0 }} />}
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={summaryContactStyle}
+                />
+              ) : isLink && href ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ ...summaryContactStyle, textDecoration: 'none' }}
+                >
+                  {value}
+                </a>
+              ) : (
+                <span style={summaryContactStyle}>{value}</span>
+              )}
+            </div>
+          );
+          return content;
+        };
+
+        // Title style (accent color)
+        const summaryTitleStyle: React.CSSProperties = {
+          fontSize: scaleFontSize(typography.title.fontSize || '16px'),
+          fontWeight: typography.title.fontWeight || 500,
+          color: accent,
+          margin: '4px 0 0 0',
+          fontFamily: baseFontFamily,
+        };
+
+        // Summary text style
+        const summaryTextStyle: React.CSSProperties = {
+          fontSize: scaleFontSize(typography.body.fontSize || '14px'),
+          fontWeight: typography.body.fontWeight || 400,
+          lineHeight: 1.7,
+          color: 'rgba(255, 255, 255, 0.75)',
+          margin: '16px 0 0 0',
+          fontFamily: baseFontFamily,
+        };
+
+        return (
+          <div
+            data-header="banner-with-summary"
+            style={{
+              backgroundColor: summaryBgColor,
+              padding: header.padding || '32px 40px',
+              color: '#ffffff',
+              position: 'relative',
+              fontFamily: baseFontFamily,
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            {/* Main content: Name, Title, Summary on left; Photo on right */}
+            <div style={{ display: 'flex', gap: '32px', position: 'relative', zIndex: 1, alignItems: 'flex-start' }}>
+              {/* Left section with photo (if position is left) */}
+              {summaryPhotoPosition === 'left' && summaryAvatar && (
+                <div style={{ flexShrink: 0 }}>
+                  {summaryAvatar}
+                </div>
+              )}
+
+              {/* Main content */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Name */}
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                  fontWeight: typography.name.fontWeight || 700,
+                  lineHeight: typography.name.lineHeight || 1.2,
+                  letterSpacing: typography.name.letterSpacing || '-0.02em',
+                  color: '#ffffff',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                        fontWeight: typography.name.fontWeight || 700,
+                        color: '#ffffff',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                {/* Title with accent color */}
+                {(editable || personalInfo.title) && (
+                  <p style={summaryTitleStyle}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={summaryTitleStyle}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                )}
+
+                {/* Professional Summary */}
+                {(editable || personalInfo.summary) && (
+                  <p style={summaryTextStyle}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.summary"
+                        value={personalInfo.summary || 'Write a brief professional summary here...'}
+                        style={summaryTextStyle}
+                      />
+                    ) : (
+                      personalInfo.summary
+                    )}
+                  </p>
+                )}
+              </div>
+
+              {/* Right section with photo (if position is right) */}
+              {summaryPhotoPosition === 'right' && summaryAvatar && (
+                <div style={{ flexShrink: 0 }}>
+                  {summaryAvatar}
+                </div>
+              )}
+            </div>
+
+            {/* Contact info in two-column layout (left and right) */}
+            <div
+              style={{
+                marginTop: '24px',
+                paddingTop: '20px',
+                borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: '32px',
+              }}
+            >
+              {/* Left column: Email, Location, LinkedIn */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                }}
+              >
+                {renderSummaryContactItem(Mail, personalInfo.email, 'personalInfo.email')}
+                {renderSummaryContactItem(MapPin, personalInfo.location, 'personalInfo.location')}
+                {includeSocialLinks && renderSummaryContactItem(
+                  Linkedin,
+                  personalInfo.linkedin,
+                  'personalInfo.linkedin',
+                  true,
+                  personalInfo.linkedin?.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`
+                )}
+              </div>
+
+              {/* Right column: Phone, Portfolio, GitHub */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                  alignItems: 'flex-end',
+                }}
+              >
+                {renderSummaryContactItem(Phone, personalInfo.phone, 'personalInfo.phone')}
+                {includeSocialLinks && renderSummaryContactItem(
+                  Globe,
+                  personalInfo.portfolio,
+                  'personalInfo.portfolio',
+                  true,
+                  personalInfo.portfolio?.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`
+                )}
+                {includeSocialLinks && renderSummaryContactItem(
+                  Github,
+                  personalInfo.github,
+                  'personalInfo.github',
+                  true,
+                  personalInfo.github?.startsWith('http') ? personalInfo.github : `https://${personalInfo.github}`
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         const photoPosition = header.photoPosition || 'left';
@@ -1206,7 +1435,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   };
 
   // Determine header margin-bottom from config or use sensible defaults
-  const isBannerHeader = ['banner', 'gradient-banner', 'elegant-banner'].includes(variant);
+  const isBannerHeader = ['banner', 'gradient-banner', 'elegant-banner', 'banner-with-summary'].includes(variant);
   const defaultMargin = isBannerHeader ? '0' : '12px';
   const headerMarginBottom = header.marginBottom ?? defaultMargin;
 

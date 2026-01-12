@@ -24,7 +24,7 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
       fontSize: '14px',
       fontWeight: 500,
       lineHeight: 1.4,
-      color: '#22d3ee',
+      color: '#d4a853',
     },
     sectionHeading: {
       fontSize: '11px',
@@ -32,7 +32,7 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
       lineHeight: 1.3,
       letterSpacing: '0.06em',
       textTransform: 'uppercase',
-      color: '#0891b2',
+      color: '#d4a853',
     },
     itemTitle: {
       fontSize: '13px',
@@ -44,7 +44,7 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
       fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
-      color: '#0891b2',
+      color: '#d4a853',
     },
     dates: {
       fontSize: '11px',
@@ -62,7 +62,7 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
       fontSize: '13px',
       fontWeight: 400,
       lineHeight: 1.5,
-      color: '#a5f3fc',
+      color: '#ffffff',
     },
     small: {
       fontSize: '10px',
@@ -88,8 +88,8 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#0891b2',
-    secondary: '#22d3ee',
+    primary: '#d4a853',
+    secondary: '#e6c17a',
     text: {
       primary: '#0f172a',
       secondary: '#334155',
@@ -99,26 +99,29 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
     background: {
       page: '#ffffff',
       section: '#ffffff',
-      accent: '#ecfeff',
+      accent: '#fdf8ed',
     },
-    border: '#cffafe',
+    border: '#f5e6c8',
   },
 
   sectionHeading: {
     style: 'left-border',
     borderWidth: '3px',
-    borderColor: '#0891b2',
+    borderColor: '#d4a853',
     marginBottom: '10px',
     padding: '0 0 0 10px',
   },
 
   header: {
-    variant: 'banner',
-    showPhoto: false,
-    padding: '24px',
-    backgroundColor: '#0f172a',
+    variant: 'banner-with-summary',
+    showPhoto: true,
+    photoSize: '80px',
+    photoShape: 'circle',
+    photoPosition: 'right',
+    padding: '28px 32px',
+    backgroundColor: '#334155',
     textColor: '#ffffff',
-    contactIcons: { show: true, size: '12px', color: '#22d3ee' },
+    contactIcons: { show: true, size: '14px', color: '#d4a853' },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
   },
@@ -132,9 +135,9 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
       padding: '4px 8px',
       borderRadius: '4px',
       borderWidth: '1px',
-      borderColor: '#0891b2',
-      backgroundColor: '#ecfeff',
-      textColor: '#0891b2',
+      borderColor: '#d4a853',
+      backgroundColor: '#fdf8ed',
+      textColor: '#d4a853',
     },
   },
 
@@ -165,13 +168,12 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
 
   sections: [
     { type: 'header', id: 'header', title: 'Header', defaultTitle: 'Header', enabled: true, order: 0 },
-    { type: 'summary', id: 'summary', title: 'About Me', defaultTitle: 'About Me', enabled: true, order: 1, column: 'main' },
-    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 2, column: 'main' },
-    { type: 'skills', id: 'skills', title: 'Technical Skills', defaultTitle: 'Technical Skills', enabled: true, order: 3, column: 'main' },
-    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 4, column: 'main' },
-    { type: 'experience', id: 'experience', title: 'Internships', defaultTitle: 'Internships', enabled: true, order: 5, column: 'main' },
-    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: true, order: 6, column: 'main' },
-    { type: 'achievements', id: 'achievements', title: 'Achievements', defaultTitle: 'Achievements', enabled: true, order: 7, column: 'main' },
+    { type: 'education', id: 'education', title: 'Education', defaultTitle: 'Education', enabled: true, order: 1, column: 'main' },
+    { type: 'skills', id: 'skills', title: 'Technical Skills', defaultTitle: 'Technical Skills', enabled: true, order: 2, column: 'main' },
+    { type: 'projects', id: 'projects', title: 'Projects', defaultTitle: 'Projects', enabled: true, order: 3, column: 'main' },
+    { type: 'experience', id: 'experience', title: 'Internships', defaultTitle: 'Internships', enabled: true, order: 4, column: 'main' },
+    { type: 'certifications', id: 'certifications', title: 'Certifications', defaultTitle: 'Certifications', enabled: true, order: 5, column: 'main' },
+    { type: 'achievements', id: 'achievements', title: 'Achievements', defaultTitle: 'Achievements', enabled: true, order: 6, column: 'main' },
   ],
 
   fontFamily: {

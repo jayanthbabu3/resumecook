@@ -226,7 +226,8 @@ export type HeaderVariant =
   | 'compact'          // Name | Title | Contact inline
   | 'gradient-banner'  // Full-width gradient background
   | 'elegant-banner'   // Gradient banner with centered photo and icon badge
-  | 'creative-underline'; // Creative header with stylized underline and modern layout
+  | 'creative-underline' // Creative header with stylized underline and modern layout
+  | 'banner-with-summary'; // Dark banner with name, title, summary and contact info
 
 export interface HeaderConfig {
   /** Header layout variant */

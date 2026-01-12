@@ -174,22 +174,22 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
   return (
     <div className={cn(
-      'bg-white rounded-2xl border shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md',
+      'bg-white rounded-xl sm:rounded-2xl border shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md',
       colors.border
     )}>
       {/* Header */}
       <div className={cn(
-        'px-6 py-4 bg-gradient-to-r to-white flex items-center justify-between',
+        'px-3 py-2.5 sm:px-6 sm:py-4 bg-gradient-to-r to-white flex items-center justify-between',
         colors.bg
       )}>
-        <div className="flex items-center gap-3">
-          <div className={cn('p-2 rounded-xl bg-white shadow-sm', colors.icon)}>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className={cn('p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-white shadow-sm', colors.icon)}>
             {icon}
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">{title}</h3>
+            <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{title}</h3>
             {badge && (
-              <Badge variant="secondary" className="mt-1 text-xs font-normal">
+              <Badge variant="secondary" className="mt-0.5 text-[10px] sm:text-xs font-normal">
                 {badge}
               </Badge>
             )}
@@ -199,19 +199,19 @@ const SectionCard: React.FC<SectionCardProps> = ({
           <Button
             size="sm"
             onClick={onAdd}
-            className={cn('gap-1.5 rounded-xl text-white shadow-sm', colors.button)}
+            className={cn('gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl text-white shadow-sm h-7 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm', colors.button)}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             Add
           </Button>
         )}
       </div>
 
       {/* Content */}
-      <div className="px-6 py-4">
+      <div className="px-2.5 py-2.5 sm:px-6 sm:py-4">
         {isEmpty ? (
-          <div className="text-center py-8">
-            <div className={cn('w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3', colors.icon)}>
+          <div className="text-center py-6 sm:py-8">
+            <div className={cn('w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-2 sm:mb-3', colors.icon)}>
               {icon}
             </div>
             <p className="text-sm text-gray-500">{emptyMessage}</p>
@@ -220,7 +220,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={onAdd}
-                className="mt-3 gap-1.5 rounded-lg"
+                className="mt-2 sm:mt-3 gap-1.5 rounded-lg"
               >
                 <Plus className="h-4 w-4" />
                 Add your first item
@@ -306,7 +306,7 @@ const SortableItemCard: React.FC<SortableItemCardProps> = ({ id, children, onEdi
       ref={setNodeRef}
       style={style}
       className={cn(
-        "group relative p-4 rounded-xl bg-gray-50/50 hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all duration-200",
+        "group relative p-2.5 sm:p-4 rounded-lg sm:rounded-xl bg-gray-50/50 hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all duration-200",
         isDragging && "opacity-50 shadow-lg border-primary/30 bg-white z-50"
       )}
     >
@@ -1571,7 +1571,7 @@ const ProfilePageV2: React.FC = () => {
                 items={profile?.experience?.map(e => e.id) || []}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {profile?.experience.map((exp) => (
                     <SortableItemCard
                       key={exp.id}
@@ -1579,35 +1579,35 @@ const ProfilePageV2: React.FC = () => {
                       onEdit={() => openEditModal('experience', exp.id)}
                       onDelete={() => setDeleteConfirm({ open: true, section: 'experience', itemId: exp.id })}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
+                      <div className="flex items-start gap-2 sm:gap-4">
+                        <div className="p-2 rounded-lg bg-primary/10 hidden sm:block">
                           <Building2 className="h-5 w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 pr-12 sm:pr-0">
                           <h4 className="font-semibold text-gray-900">{exp.position}</h4>
-                          <p className="text-gray-600">{exp.company}</p>
-                          <div className="flex items-center gap-3 mt-1.5 text-sm text-gray-500">
+                          <p className="text-gray-600 text-sm">{exp.company}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-3 mt-1 sm:mt-1.5 text-sm text-gray-500">
                             <span className="flex items-center gap-1">
-                              <Calendar className="h-3.5 w-3.5" />
+                              <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
                               {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
                             </span>
                             {exp.location && (
                               <span className="flex items-center gap-1">
-                                <MapPin className="h-3.5 w-3.5" />
+                                <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
                                 {exp.location}
                               </span>
                             )}
                           </div>
                           {exp.bulletPoints && exp.bulletPoints.length > 0 && (
-                            <ul className="mt-3 space-y-1">
+                            <ul className="mt-1.5 sm:mt-3 space-y-0.5 sm:space-y-1">
                               {exp.bulletPoints.slice(0, 2).map((point, idx) => (
-                                <li key={idx} className="text-sm text-gray-600 flex items-start gap-2">
-                                  <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                                <li key={idx} className="text-sm text-gray-600 flex items-start gap-1.5 sm:gap-2">
+                                  <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
                                   <span className="line-clamp-1">{point}</span>
                                 </li>
                               ))}
                               {exp.bulletPoints.length > 2 && (
-                                <li className="text-sm text-primary">
+                                <li className="text-sm text-primary pl-5 sm:pl-0">
                                   +{exp.bulletPoints.length - 2} more
                                 </li>
                               )}
@@ -1646,7 +1646,7 @@ const ProfilePageV2: React.FC = () => {
                 items={profile?.education?.map(e => e.id) || []}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {profile?.education.map((edu) => (
                     <SortableItemCard
                       key={edu.id}
@@ -1654,16 +1654,16 @@ const ProfilePageV2: React.FC = () => {
                       onEdit={() => openEditModal('education', edu.id)}
                       onDelete={() => setDeleteConfirm({ open: true, section: 'education', itemId: edu.id })}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
+                      <div className="flex items-start gap-2 sm:gap-4">
+                        <div className="p-2 rounded-lg bg-primary/10 hidden sm:block">
                           <GraduationCap className="h-5 w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 pr-12 sm:pr-0">
                           <h4 className="font-semibold text-gray-900">{edu.degree} in {edu.field}</h4>
-                          <p className="text-gray-600">{edu.school}</p>
-                          <div className="flex items-center gap-3 mt-1.5 text-sm text-gray-500">
+                          <p className="text-gray-600 text-sm">{edu.school}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-3 mt-1 sm:mt-1.5 text-sm text-gray-500">
                             <span className="flex items-center gap-1">
-                              <Calendar className="h-3.5 w-3.5" />
+                              <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
                               {edu.startDate} - {edu.current ? 'Present' : edu.endDate}
                             </span>
                             {edu.gpa && (
@@ -1982,7 +1982,7 @@ const ProfilePageV2: React.FC = () => {
                 items={profile?.publications?.map(p => p.id) || []}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {profile?.publications?.map((pub) => (
                     <SortableItemCard
                       key={pub.id}
@@ -1990,29 +1990,29 @@ const ProfilePageV2: React.FC = () => {
                       onEdit={() => openEditModal('publications', pub.id)}
                       onDelete={() => setDeleteConfirm({ open: true, section: 'publications', itemId: pub.id })}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
+                      <div className="flex items-start gap-2 sm:gap-4">
+                        <div className="p-2 rounded-lg bg-primary/10 hidden sm:block">
                           <BookOpen className="h-5 w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 pr-12 sm:pr-0">
                           <div className="flex items-start justify-between gap-2">
-                            <h4 className="font-semibold text-gray-900 line-clamp-1">{pub.title}</h4>
+                            <h4 className="font-semibold text-gray-900 line-clamp-2 sm:line-clamp-1">{pub.title}</h4>
                             {pub.url && (
                               <a
                                 href={pub.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-1 rounded hover:bg-primary/10 text-primary flex-shrink-0"
+                                className="p-1 rounded hover:bg-primary/10 text-primary flex-shrink-0 hidden sm:block"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 <ExternalLink className="h-4 w-4" />
                               </a>
                             )}
                           </div>
-                          <p className="text-gray-600">{pub.publisher}</p>
-                          <p className="text-sm text-gray-500 mt-1">{pub.date}</p>
+                          <p className="text-gray-600 text-sm">{pub.publisher}</p>
+                          <p className="text-sm text-gray-500 mt-0.5 sm:mt-1">{pub.date}</p>
                           {pub.description && (
-                            <p className="text-sm text-gray-500 mt-2 line-clamp-2">{pub.description}</p>
+                            <p className="text-sm text-gray-500 mt-1 sm:mt-2 line-clamp-2">{pub.description}</p>
                           )}
                         </div>
                       </div>
@@ -2047,7 +2047,7 @@ const ProfilePageV2: React.FC = () => {
                 items={profile?.volunteer?.map(v => v.id) || []}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {profile?.volunteer?.map((vol) => (
                     <SortableItemCard
                       key={vol.id}
@@ -2055,21 +2055,21 @@ const ProfilePageV2: React.FC = () => {
                       onEdit={() => openEditModal('volunteer', vol.id)}
                       onDelete={() => setDeleteConfirm({ open: true, section: 'volunteer', itemId: vol.id })}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
+                      <div className="flex items-start gap-2 sm:gap-4">
+                        <div className="p-2 rounded-lg bg-primary/10 hidden sm:block">
                           <Heart className="h-5 w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 pr-12 sm:pr-0">
                           <h4 className="font-semibold text-gray-900">{vol.role}</h4>
-                          <p className="text-gray-600">{vol.organization}</p>
-                          <div className="flex items-center gap-3 mt-1.5 text-sm text-gray-500">
+                          <p className="text-gray-600 text-sm">{vol.organization}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-3 mt-1 sm:mt-1.5 text-sm text-gray-500">
                             <span className="flex items-center gap-1">
-                              <Calendar className="h-3.5 w-3.5" />
+                              <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
                               {vol.startDate} - {vol.current ? 'Present' : vol.endDate}
                             </span>
                           </div>
                           {vol.description && (
-                            <p className="text-sm text-gray-500 mt-2 line-clamp-2">{vol.description}</p>
+                            <p className="text-sm text-gray-500 mt-1 sm:mt-2 line-clamp-2">{vol.description}</p>
                           )}
                         </div>
                       </div>
@@ -2134,7 +2134,7 @@ const ProfilePageV2: React.FC = () => {
                 items={profile?.speaking?.map(s => s.id) || []}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {profile?.speaking?.map((talk) => (
                     <SortableItemCard
                       key={talk.id}
@@ -2142,21 +2142,21 @@ const ProfilePageV2: React.FC = () => {
                       onEdit={() => openEditModal('speaking', talk.id)}
                       onDelete={() => setDeleteConfirm({ open: true, section: 'speaking', itemId: talk.id })}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
+                      <div className="flex items-start gap-2 sm:gap-4">
+                        <div className="p-2 rounded-lg bg-primary/10 hidden sm:block">
                           <Mic className="h-5 w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 pr-12 sm:pr-0">
                           <h4 className="font-semibold text-gray-900">{talk.topic}</h4>
-                          <p className="text-gray-600">{talk.event}</p>
-                          <div className="flex items-center gap-3 mt-1.5 text-sm text-gray-500">
+                          <p className="text-gray-600 text-sm">{talk.event}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-3 mt-1 sm:mt-1.5 text-sm text-gray-500">
                             <span className="flex items-center gap-1">
-                              <Calendar className="h-3.5 w-3.5" />
+                              <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
                               {talk.date}
                             </span>
                             {talk.location && (
                               <span className="flex items-center gap-1">
-                                <MapPin className="h-3.5 w-3.5" />
+                                <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
                                 {talk.location}
                               </span>
                             )}
@@ -2193,7 +2193,7 @@ const ProfilePageV2: React.FC = () => {
                 items={profile?.patents?.map(p => p.id) || []}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {profile?.patents?.map((patent) => (
                     <SortableItemCard
                       key={patent.id}
@@ -2201,16 +2201,16 @@ const ProfilePageV2: React.FC = () => {
                       onEdit={() => openEditModal('patents', patent.id)}
                       onDelete={() => setDeleteConfirm({ open: true, section: 'patents', itemId: patent.id })}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
+                      <div className="flex items-start gap-2 sm:gap-4">
+                        <div className="p-2 rounded-lg bg-primary/10 hidden sm:block">
                           <Lightbulb className="h-5 w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 pr-12 sm:pr-0">
                           <h4 className="font-semibold text-gray-900">{patent.title}</h4>
-                          <p className="text-gray-600">{patent.patentNumber}</p>
-                          <div className="flex items-center gap-3 mt-1.5 text-sm text-gray-500">
+                          <p className="text-gray-600 text-sm">{patent.patentNumber}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-3 mt-1 sm:mt-1.5 text-sm text-gray-500">
                             <span className="flex items-center gap-1">
-                              <Calendar className="h-3.5 w-3.5" />
+                              <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
                               {patent.date}
                             </span>
                             <Badge variant="outline" className="text-xs">
@@ -2279,8 +2279,8 @@ const ProfilePageV2: React.FC = () => {
       {/* Edit Modal */}
       <Dialog open={editModal.open} onOpenChange={(open) => !open && setEditModal({ ...editModal, open: false })}>
         <DialogContent className="sm:max-w-2xl">
-          <DialogHeader className="pb-4 border-b">
-            <DialogTitle className="text-xl">
+          <DialogHeader className="px-4 py-3 sm:px-6 sm:py-4 border-b flex-shrink-0">
+            <DialogTitle className="text-base sm:text-xl">
               {editModal.mode === 'edit' ? 'Edit' : 'Add'} {editModal.section === 'personal' ? 'Personal Information' :
                 editModal.section === 'experience' ? 'Work Experience' :
                 editModal.section === 'education' ? 'Education' :
@@ -2297,124 +2297,124 @@ const ProfilePageV2: React.FC = () => {
                 editModal.section === 'patents' ? 'Patent' :
                 editModal.section}
             </DialogTitle>
-            <DialogDescription className="text-base">
+            <DialogDescription className="text-xs sm:text-sm line-clamp-1 sm:line-clamp-none">
               {editModal.section === 'personal'
-                ? 'Update your personal and contact information. This will be displayed on your profile and resumes.'
+                ? 'Update your personal and contact information'
                 : `${editModal.mode === 'edit' ? 'Update' : 'Add'} your ${editModal.section} details`
               }
             </DialogDescription>
           </DialogHeader>
 
-          <div className="py-6 max-h-[65vh] overflow-y-auto px-1">
+          <div className="py-3 sm:py-6 flex-1 overflow-y-auto px-4 sm:px-6">
             {/* Personal Info Form */}
             {editModal.section === 'personal' && (
-              <div className="space-y-5">
-                <div className="grid grid-cols-2 gap-5">
-                  <div className="col-span-2">
-                    <Label htmlFor="fullName" className="text-sm font-medium">Full Name</Label>
+              <div className="space-y-3 sm:space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="fullName" className="text-xs sm:text-sm font-medium">Full Name</Label>
                     <Input
                       id="fullName"
                       value={personalForm.fullName}
                       onChange={(e) => setPersonalForm({ ...personalForm, fullName: e.target.value })}
                       placeholder="John Doe"
-                      className="mt-2 h-11"
+                      className="mt-1.5 h-9 sm:h-11 text-sm"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                    <Label htmlFor="email" className="text-xs sm:text-sm font-medium">Email</Label>
                     <Input
                       id="email"
                       type="email"
                       value={personalForm.email}
                       onChange={(e) => setPersonalForm({ ...personalForm, email: e.target.value })}
                       placeholder="john@example.com"
-                      className="mt-2 h-11"
+                      className="mt-1.5 h-9 sm:h-11 text-sm"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone" className="text-sm font-medium">Phone</Label>
+                    <Label htmlFor="phone" className="text-xs sm:text-sm font-medium">Phone</Label>
                     <Input
                       id="phone"
                       value={personalForm.phone}
                       onChange={(e) => setPersonalForm({ ...personalForm, phone: e.target.value })}
                       placeholder="+1 (555) 000-0000"
-                      className="mt-2 h-11"
+                      className="mt-1.5 h-9 sm:h-11 text-sm"
                     />
                   </div>
-                  <div className="col-span-2">
-                    <Label htmlFor="title" className="text-sm font-medium">Professional Title</Label>
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="title" className="text-xs sm:text-sm font-medium">Professional Title</Label>
                     <Input
                       id="title"
                       value={personalForm.title}
                       onChange={(e) => setPersonalForm({ ...personalForm, title: e.target.value })}
                       placeholder="Senior Software Engineer"
-                      className="mt-2 h-11"
+                      className="mt-1.5 h-9 sm:h-11 text-sm"
                     />
                   </div>
-                  <div className="col-span-2">
-                    <Label htmlFor="location" className="text-sm font-medium">Location</Label>
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="location" className="text-xs sm:text-sm font-medium">Location</Label>
                     <Input
                       id="location"
                       value={personalForm.location}
                       onChange={(e) => setPersonalForm({ ...personalForm, location: e.target.value })}
                       placeholder="San Francisco, CA"
-                      className="mt-2 h-11"
+                      className="mt-1.5 h-9 sm:h-11 text-sm"
                     />
                   </div>
-                  <div className="col-span-2">
-                    <Label htmlFor="summary" className="text-sm font-medium">Professional Summary</Label>
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="summary" className="text-xs sm:text-sm font-medium">Professional Summary</Label>
                     <Textarea
                       id="summary"
                       value={personalForm.summary}
                       onChange={(e) => setPersonalForm({ ...personalForm, summary: e.target.value })}
-                      placeholder="Brief professional summary describing your experience, skills, and career goals..."
-                      rows={5}
-                      className="mt-2 resize-none"
+                      placeholder="Brief professional summary..."
+                      rows={4}
+                      className="mt-1.5 resize-none text-sm"
                     />
                   </div>
-                  <div className="col-span-2">
-                    <Label htmlFor="photo" className="text-sm font-medium">Photo URL</Label>
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="photo" className="text-xs sm:text-sm font-medium">Photo URL</Label>
                     <Input
                       id="photo"
                       value={personalForm.photo}
                       onChange={(e) => setPersonalForm({ ...personalForm, photo: e.target.value })}
                       placeholder="https://..."
-                      className="mt-2 h-11"
+                      className="mt-1.5 h-9 sm:h-11 text-sm"
                     />
                   </div>
-                  
+
                   {/* Social Links Section */}
-                  <div className="col-span-2 pt-4 border-t mt-2">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-4">Social Links</h4>
-                    <div className="grid grid-cols-2 gap-5">
+                  <div className="sm:col-span-2 pt-3 sm:pt-4 border-t mt-1 sm:mt-2">
+                    <h4 className="text-xs sm:text-sm font-semibold text-gray-700 mb-3 sm:mb-4">Social Links</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                       <div>
-                        <Label htmlFor="linkedin" className="text-sm font-medium">LinkedIn</Label>
+                        <Label htmlFor="linkedin" className="text-xs sm:text-sm font-medium">LinkedIn</Label>
                         <Input
                           id="linkedin"
                           value={personalForm.linkedin}
                           onChange={(e) => setPersonalForm({ ...personalForm, linkedin: e.target.value })}
-                          placeholder="https://linkedin.com/in/..."
-                          className="mt-2 h-11"
+                          placeholder="linkedin.com/in/..."
+                          className="mt-1.5 h-9 sm:h-11 text-sm"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="github" className="text-sm font-medium">GitHub</Label>
+                        <Label htmlFor="github" className="text-xs sm:text-sm font-medium">GitHub</Label>
                         <Input
                           id="github"
                           value={personalForm.github}
                           onChange={(e) => setPersonalForm({ ...personalForm, github: e.target.value })}
-                          placeholder="https://github.com/..."
-                          className="mt-2 h-11"
+                          placeholder="github.com/..."
+                          className="mt-1.5 h-9 sm:h-11 text-sm"
                         />
                       </div>
-                      <div className="col-span-2">
-                        <Label htmlFor="portfolio" className="text-sm font-medium">Portfolio Website</Label>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="portfolio" className="text-xs sm:text-sm font-medium">Portfolio Website</Label>
                         <Input
                           id="portfolio"
                           value={personalForm.portfolio}
                           onChange={(e) => setPersonalForm({ ...personalForm, portfolio: e.target.value })}
-                          placeholder="https://yourportfolio.com"
-                          className="mt-2 h-11"
+                          placeholder="yourportfolio.com"
+                          className="mt-1.5 h-9 sm:h-11 text-sm"
                         />
                       </div>
                     </div>
@@ -2425,9 +2425,9 @@ const ProfilePageV2: React.FC = () => {
 
             {/* Experience Form */}
             {editModal.section === 'experience' && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="position">Position / Job Title</Label>
                     <Input
                       id="position"
@@ -2437,7 +2437,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="company">Company</Label>
                     <Input
                       id="company"
@@ -2468,7 +2468,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2 flex items-center gap-2">
+                  <div className="sm:col-span-2 flex items-center gap-2">
                     <Checkbox
                       id="current"
                       checked={experienceForm.current || false}
@@ -2482,7 +2482,7 @@ const ProfilePageV2: React.FC = () => {
                       I currently work here
                     </Label>
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="expLocation">Location</Label>
                     <Input
                       id="expLocation"
@@ -2492,7 +2492,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="description">Description</Label>
                     <Textarea
                       id="description"
@@ -2503,7 +2503,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="bulletPoints">Key Achievements (one per line)</Label>
                     <Textarea
                       id="bulletPoints"
@@ -2524,8 +2524,8 @@ const ProfilePageV2: React.FC = () => {
             {/* Education Form */}
             {editModal.section === 'education' && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="school">School / University</Label>
                     <Input
                       id="school"
@@ -2744,7 +2744,7 @@ const ProfilePageV2: React.FC = () => {
                     className="mt-1.5"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="projUrl">Live URL (optional)</Label>
                     <Input
@@ -2876,8 +2876,8 @@ const ProfilePageV2: React.FC = () => {
             {/* Volunteer Form */}
             {editModal.section === 'volunteer' && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="volRole">Role / Position</Label>
                     <Input
                       id="volRole"
@@ -2887,7 +2887,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="organization">Organization</Label>
                     <Input
                       id="organization"
@@ -2918,7 +2918,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2 flex items-center gap-2">
+                  <div className="sm:col-span-2 flex items-center gap-2">
                     <Checkbox
                       id="volCurrent"
                       checked={volunteerForm.current || false}
@@ -2932,7 +2932,7 @@ const ProfilePageV2: React.FC = () => {
                       I currently volunteer here
                     </Label>
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="volDescription">Description (optional)</Label>
                     <Textarea
                       id="volDescription"
@@ -2976,8 +2976,8 @@ const ProfilePageV2: React.FC = () => {
             {/* References Form */}
             {editModal.section === 'references' && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="refName">Full Name</Label>
                     <Input
                       id="refName"
@@ -3007,7 +3007,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="refRelationship">Relationship</Label>
                     <Input
                       id="refRelationship"
@@ -3045,8 +3045,8 @@ const ProfilePageV2: React.FC = () => {
             {/* Speaking Form */}
             {editModal.section === 'speaking' && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="talkTopic">Topic / Title</Label>
                     <Input
                       id="talkTopic"
@@ -3056,7 +3056,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="talkEvent">Event / Conference</Label>
                     <Input
                       id="talkEvent"
@@ -3086,7 +3086,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="talkUrl">Recording/Slides URL (optional)</Label>
                     <Input
                       id="talkUrl"
@@ -3096,7 +3096,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="talkDesc">Description (optional)</Label>
                     <Textarea
                       id="talkDesc"
@@ -3114,8 +3114,8 @@ const ProfilePageV2: React.FC = () => {
             {/* Patents Form */}
             {editModal.section === 'patents' && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="patentTitle">Patent Title</Label>
                     <Input
                       id="patentTitle"
@@ -3145,7 +3145,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="patentStatus">Status</Label>
                     <Select
                       value={patentForm.status || 'Pending'}
@@ -3161,7 +3161,7 @@ const ProfilePageV2: React.FC = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="patentUrl">Patent URL (optional)</Label>
                     <Input
                       id="patentUrl"
@@ -3171,7 +3171,7 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Label htmlFor="patentDesc">Description (optional)</Label>
                     <Textarea
                       id="patentDesc"
@@ -3187,17 +3187,17 @@ const ProfilePageV2: React.FC = () => {
             )}
           </div>
 
-          <DialogFooter className="pt-4 border-t mt-2 gap-3 sm:gap-3">
+          <DialogFooter className="px-4 py-3 sm:px-6 sm:py-4 border-t flex-shrink-0 gap-2 sm:gap-3">
             <Button
               variant="outline"
-              size="lg"
+              size="default"
               onClick={() => setEditModal({ open: false, section: null, itemId: null, mode: 'add' })}
-              className="px-6"
+              className="w-full sm:w-auto h-9 sm:h-10 text-sm"
             >
               Cancel
             </Button>
             <Button
-              size="lg"
+              size="default"
               onClick={() => {
                 switch (editModal.section) {
                   case 'personal':
@@ -3245,10 +3245,10 @@ const ProfilePageV2: React.FC = () => {
                 }
               }}
               disabled={saving}
-              className="gap-2 px-8 bg-primary hover:bg-primary/90"
+              className="w-full sm:w-auto gap-2 h-9 sm:h-10 text-sm px-6 bg-primary hover:bg-primary/90"
             >
               {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-              {editModal.mode === 'edit' ? 'Save Changes' : 'Add'}
+              {editModal.mode === 'edit' ? 'Save' : 'Add'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -3257,15 +3257,16 @@ const ProfilePageV2: React.FC = () => {
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteConfirm.open} onOpenChange={(open) => !open && setDeleteConfirm({ open: false, section: null, itemId: null })}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete Item</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this item? This action cannot be undone.
+          <DialogHeader className="px-4 py-3 sm:px-6 sm:py-4 border-b flex-shrink-0">
+            <DialogTitle className="text-base sm:text-lg">Delete Item</DialogTitle>
+            <DialogDescription className="text-xs sm:text-sm">
+              Are you sure? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="px-4 py-3 sm:px-6 sm:py-4 border-t flex-shrink-0 gap-2 sm:gap-3">
             <Button
               variant="outline"
+              className="w-full sm:w-auto h-9 sm:h-10 text-sm"
               onClick={() => setDeleteConfirm({ open: false, section: null, itemId: null })}
             >
               Cancel
@@ -3274,7 +3275,7 @@ const ProfilePageV2: React.FC = () => {
               variant="destructive"
               onClick={handleDelete}
               disabled={saving}
-              className="gap-2"
+              className="w-full sm:w-auto h-9 sm:h-10 text-sm gap-2"
             >
               {saving && <Loader2 className="h-4 w-4 animate-spin" />}
               Delete

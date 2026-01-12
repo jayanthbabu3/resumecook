@@ -918,9 +918,10 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   const fontInheritClass = 'resume-font-inherit';
 
   const headerVariant = config.header?.variant as string | undefined;
-  const validHeaderVariants = ['split', 'centered', 'left-aligned', 'minimal', 'photo-left', 'photo-right', 'accent-bar', 'compact', 'gradient-banner', 'elegant-banner'];
+  const validHeaderVariants = ['split', 'centered', 'left-aligned', 'minimal', 'photo-left', 'photo-right', 'accent-bar', 'compact', 'gradient-banner', 'elegant-banner', 'banner-with-summary', 'creative-underline'];
   const isValidHeaderVariant = headerVariant && validHeaderVariants.includes(headerVariant);
-  const isBannerHeader = headerVariant === 'banner';
+  // Banner headers should render edge-to-edge without wrapper padding
+  const isBannerHeader = headerVariant === 'banner' || headerVariant === 'banner-with-summary' || headerVariant === 'gradient-banner' || headerVariant === 'elegant-banner';
   
   // For scratch builder, always reserve header space even if disabled
   // Check if we're in scratch builder mode (templateId includes 'scratch' or config id is 'scratch-v2')

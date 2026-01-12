@@ -37,6 +37,8 @@ export const HeaderVariantPreview: React.FC<HeaderVariantPreviewProps> = ({ vari
       return <CompactHeaderPreview data={previewData} />;
     case 'gradient-banner':
       return <GradientBannerHeaderPreview data={previewData} />;
+    case 'banner-with-summary':
+      return <BannerWithSummaryHeaderPreview data={previewData} />;
     default:
       return <DefaultHeaderPreview data={previewData} />;
   }
@@ -174,6 +176,29 @@ const GradientBannerHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
         <div className="text-[11px] font-bold">JOHN DOE</div>
         <div className="text-[8px] opacity-80 mt-0.5">john@example.com • +1 (555) 123-4567</div>
       </div>
+    </div>
+  </div>
+);
+
+// Banner with Summary Header - Dark banner with summary included
+const BannerWithSummaryHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
+  <div className="w-full bg-slate-800 text-white rounded px-3 py-2.5">
+    <div className="flex gap-2">
+      <div className="flex-1">
+        <div className="text-[11px] font-bold">JOHN DOE</div>
+        <div className="text-[9px] text-primary mt-0.5">Senior Software Engineer</div>
+        <div className="text-[7px] opacity-70 mt-1 line-clamp-2">
+          Experienced software engineer with expertise in building scalable web applications...
+        </div>
+      </div>
+      <div className="w-10 h-10 rounded-full border-2 border-primary/50 flex-shrink-0 flex items-center justify-center bg-primary/20">
+        <span className="text-[10px] font-bold text-primary">JD</span>
+      </div>
+    </div>
+    <div className="mt-2 pt-1.5 border-t border-white/10 flex flex-wrap gap-2 text-[7px] opacity-70">
+      <span>john@example.com</span>
+      <span>•</span>
+      <span>+1 (555) 123-4567</span>
     </div>
   </div>
 );

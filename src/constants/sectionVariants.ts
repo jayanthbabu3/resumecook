@@ -188,6 +188,26 @@ export const HEADER_VARIANTS: SectionVariant[] = [
       textColor: 'white',
     }
   },
+  {
+    id: 'banner-with-summary',
+    name: 'Banner with Summary',
+    description: 'Dark banner with name, title, professional summary, and photo. No separate summary section needed.',
+    type: 'header',
+    previewData: {
+      title: 'Banner with Summary',
+      layout: 'banner-with-summary',
+      backgroundColor: 'dark',
+      padding: '28px 32px',
+      fullWidth: true,
+      showPhoto: true,
+      photoSize: '80px',
+      nameSize: '28px',
+      titleSize: '14px',
+      contactSize: '12px',
+      textColor: 'white',
+      includesSummary: true,
+    }
+  },
 ];
 
 // ==================== SUMMARY VARIANTS (10) ====================

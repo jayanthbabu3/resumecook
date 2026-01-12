@@ -75,6 +75,10 @@ import { TemplateSelectorModal } from '../components/TemplateSelectorModal';
 // AI Enhancement Modal
 import { EnhanceWithAIModal } from '../components/EnhanceWithAIModal';
 
+// Job Tailor Modal
+import { JobTailorModal } from '../components/JobTailorModal';
+import { Target } from 'lucide-react';
+
 export const BuilderV2: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -122,6 +126,8 @@ export const BuilderV2: React.FC = () => {
   const [showTemplateSelector, setShowTemplateSelector] = useState(false);
   // AI Enhancement modal state
   const [showEnhanceModal, setShowEnhanceModal] = useState(false);
+  // Job Tailor modal state
+  const [showJobTailorModal, setShowJobTailorModal] = useState(false);
 
   // Debug: Log when font changes
   React.useEffect(() => {
@@ -1591,7 +1597,7 @@ export const BuilderV2: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 overflow-x-hidden">
       {/* Smart Header - Hides on scroll down, shows on scroll up */}
       <div
         className={cn(
@@ -1605,18 +1611,109 @@ export const BuilderV2: React.FC = () => {
       <StyleOptionsProvider>
         {/* Main Content */}
         <div className={cn(
-          "min-h-screen transition-all duration-300",
-          headerVisible ? "pt-[72px]" : "pt-4",
+          "min-h-screen transition-all duration-300 overflow-x-hidden",
+          "pt-0 lg:pt-[72px]", // No top padding on mobile (fixed elements handle it), desktop needs space for header
           "pb-0 lg:pb-8" // No bottom padding on mobile, only on desktop
         )}>
 
-          {/* Mobile Tab Navigation */}
-          <div className="lg:hidden sticky top-[56px] z-40 bg-gray-100 border-b border-gray-200">
-            <div className="flex items-center justify-center p-2 gap-1">
+          {/* Mobile Header with Back, Tabs, and Actions - Fixed below main header */}
+          <div className="lg:hidden fixed top-[56px] left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+            {/* Top row: Back + AI buttons + Download */}
+            <div className="flex items-center justify-between px-2 py-1.5 border-b border-gray-100">
+              {/* Back Button */}
+              <button
+                onClick={() => {
+                  const referrer = sessionStorage.getItem('template-referrer') || '/templates';
+                  const selectedTemplate = sessionStorage.getItem('selected-template');
+                  if (selectedTemplate) {
+                    navigate(`${referrer}?highlight=${selectedTemplate}`);
+                  } else {
+                    navigate(referrer);
+                  }
+                }}
+                className="h-8 w-8 flex items-center justify-center rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+
+              {/* Center: AI Buttons */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setShowEnhanceModal(true)}
+                  className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
+                  }}
+                >
+                  <Sparkles className="w-3 h-3" />
+                  <span>AI</span>
+                </button>
+                <button
+                  onClick={() => setShowJobTailorModal(true)}
+                  className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                  }}
+                >
+                  <Target className="w-3 h-3" />
+                  <span>Job</span>
+                </button>
+              </div>
+
+              {/* Right: Color + Download */}
+              <div className="flex items-center gap-1">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-all duration-200">
+                      <div
+                        className="w-5 h-5 rounded-full shadow-sm ring-1 ring-gray-200"
+                        style={{ backgroundColor: themeColors.primary || themeColor }}
+                      />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" className="w-auto p-3 rounded-xl shadow-xl">
+                    <div className="grid grid-cols-5 gap-2">
+                      {[
+                        '#1a365d', '#1e40af', '#2563eb', '#0891b2', '#0284c7',
+                        '#0f766e', '#0d9488', '#059669', '#16a34a', '#15803d',
+                        '#7c2d12', '#b45309', '#9f1239', '#be185d', '#a21caf',
+                        '#6d28d9', '#7c3aed', '#4338ca', '#4f46e5', '#6366f1',
+                      ].map((color) => (
+                        <button
+                          key={color}
+                          onClick={() => {
+                            setThemeColor(color);
+                            setThemeColors({ ...themeColors, primary: color });
+                          }}
+                          className={cn(
+                            "w-8 h-8 rounded-full transition-all duration-150 hover:scale-110",
+                            (themeColors.primary || themeColor) === color
+                              ? "ring-2 ring-offset-2 ring-gray-900 shadow-lg"
+                              : "shadow-sm hover:shadow-md"
+                          )}
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                <Button
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                  size="icon"
+                  className="h-8 w-8 rounded-lg"
+                >
+                  {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
+
+            {/* Bottom row: Tabs */}
+            <div className="flex items-center px-2 py-1.5 gap-1 bg-gray-50">
               <button
                 onClick={() => setMobileView('form')}
                 className={cn(
-                  "flex-1 h-9 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
+                  "flex-1 h-8 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
                   mobileView === 'form'
                     ? "bg-white shadow-sm text-primary"
                     : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
@@ -1628,7 +1725,7 @@ export const BuilderV2: React.FC = () => {
               <button
                 onClick={() => setMobileView('live')}
                 className={cn(
-                  "flex-1 h-9 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
+                  "flex-1 h-8 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
                   mobileView === 'live'
                     ? "bg-white shadow-sm text-primary"
                     : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
@@ -1640,7 +1737,7 @@ export const BuilderV2: React.FC = () => {
               <button
                 onClick={() => setMobileView('preview')}
                 className={cn(
-                  "flex-1 h-9 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
+                  "flex-1 h-8 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
                   mobileView === 'preview'
                     ? "bg-white shadow-sm text-primary"
                     : "text-gray-500 hover:text-gray-700 hover:bg-white/50"
@@ -1661,18 +1758,16 @@ export const BuilderV2: React.FC = () => {
               )}
             >
               <div className="container mx-auto px-4 lg:px-6">
-                <div className="flex items-center justify-between py-2 gap-2">
-                  {/* Left Section: Navigation */}
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between py-2 gap-4">
+                  {/* Left Section: Back + Mode Toggle */}
+                  <div className="flex items-center gap-3">
                     {/* Logo when header is hidden */}
                     {!headerVisible && (
                       <button
                         onClick={() => navigate('/')}
-                        className="flex items-center gap-2 text-gray-900 hover:opacity-80 transition-opacity mr-1"
+                        className="flex items-center gap-2 text-gray-900 hover:opacity-80 transition-opacity"
                       >
-                        <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary"
-                        >
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary">
                           <FileText className="w-4 h-4 text-white" />
                         </div>
                       </button>
@@ -1698,49 +1793,7 @@ export const BuilderV2: React.FC = () => {
                     {/* Separator */}
                     <div className="h-5 w-px bg-gray-200" />
 
-                    {/* Change Template Button */}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => setShowTemplateSelector(true)}
-                          className="h-9 px-3 flex items-center gap-1.5 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
-                        >
-                          <Layout className="w-4 h-4" />
-                          <span className="text-sm font-medium">Template</span>
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom">
-                        <p>Change template</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    {/* Separator */}
-                    <div className="h-5 w-px bg-gray-200" />
-
-                    {/* Enhance with AI Button - Prominent gradient style */}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => setShowEnhanceModal(true)}
-                          className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
-                          style={{
-                            background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
-                          }}
-                        >
-                          <Sparkles className="w-4 h-4" />
-                          <span>Enhance with AI</span>
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="bg-gray-900 text-white border-0">
-                        <p>AI-powered resume improvement</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                  </div>
-
-                  {/* Center Section: Mode Toggle + Key Features */}
-                  <div className="flex items-center gap-2">
-                    {/* Mode Toggle - Always visible, prominently in center */}
+                    {/* Mode Toggle - Primary action */}
                     <div className="flex items-center bg-gray-100 rounded-lg p-0.5">
                       <button
                         data-tour="form-mode"
@@ -1769,27 +1822,151 @@ export const BuilderV2: React.FC = () => {
                         Live
                       </button>
                     </div>
+                  </div>
 
-                    {/* Separator */}
-                    <div className="h-5 w-px bg-gray-200" />
-                    {/* Font Selector */}
-                    <div className="w-36" data-tour="font-selector">
+                  {/* Center Section: AI Features (most prominent) */}
+                  <div className="flex items-center gap-2">
+                    {/* Enhance with AI Button */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => setShowEnhanceModal(true)}
+                          className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
+                          style={{
+                            background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
+                          }}
+                        >
+                          <Sparkles className="w-4 h-4" />
+                          <span>Enhance with AI</span>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="bg-gray-900 text-white border-0">
+                        <p>AI-powered resume improvement</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    {/* Tailor for Job Button */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => setShowJobTailorModal(true)}
+                          className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
+                          style={{
+                            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                          }}
+                        >
+                          <Target className="w-4 h-4" />
+                          <span>Tailor for Job</span>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="bg-gray-900 text-white border-0">
+                        <p>Optimize resume for a specific job</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+
+                  {/* Right Section: Customization + Actions */}
+                  <div className="flex items-center gap-2">
+                    {/* Font Selector - Directly visible */}
+                    <div className="w-32" data-tour="font-selector">
                       <FontSelector
                         selectedFont={selectedFont}
                         onFontChange={setSelectedFont}
                       />
                     </div>
 
-                    {/* Sections - Add/Rearrange */}
+                    {/* Color Picker - Quick access */}
                     <Popover>
                       <PopoverTrigger asChild>
-                        <button data-tour="sections-menu" className="h-9 px-3 flex items-center gap-1.5 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200">
-                          <Layers className="h-4 w-4" />
-                          <span className="text-sm font-medium">Sections</span>
+                        <button data-tour="color-picker" className="h-9 px-2.5 flex items-center gap-1.5 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200">
+                          <div
+                            className="w-5 h-5 rounded-full shadow-sm ring-1 ring-gray-200"
+                            style={{ backgroundColor: themeColors.primary || themeColor }}
+                          />
                           <ChevronDown className="h-3 w-3 text-gray-400" />
                         </button>
                       </PopoverTrigger>
-                      <PopoverContent align="center" side="bottom" className="w-64 p-2 shadow-xl rounded-xl">
+                      <PopoverContent align="end" className="w-auto p-3 rounded-xl shadow-xl">
+                        <div className="grid grid-cols-5 gap-2">
+                          {[
+                            '#1a365d', '#1e40af', '#2563eb', '#0891b2', '#0284c7',
+                            '#0f766e', '#0d9488', '#059669', '#16a34a', '#15803d',
+                            '#7c2d12', '#b45309', '#9f1239', '#be185d', '#a21caf',
+                            '#6d28d9', '#7c3aed', '#4338ca', '#4f46e5', '#6366f1',
+                          ].map((color) => (
+                            <button
+                              key={color}
+                              onClick={() => {
+                                setThemeColor(color);
+                                setThemeColors({ ...themeColors, primary: color });
+                              }}
+                              className={cn(
+                                "w-7 h-7 rounded-full transition-all duration-150 hover:scale-110",
+                                (themeColors.primary || themeColor) === color
+                                  ? "ring-2 ring-offset-2 ring-gray-900"
+                                  : "hover:ring-1 hover:ring-gray-300"
+                              )}
+                              style={{ backgroundColor: color }}
+                            />
+                          ))}
+                        </div>
+                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                          <input
+                            type="color"
+                            value={themeColors.primary || themeColor}
+                            onChange={(e) => {
+                              setThemeColor(e.target.value);
+                              setThemeColors({ ...themeColors, primary: e.target.value });
+                            }}
+                            className="w-7 h-7 rounded cursor-pointer border-0 p-0"
+                          />
+                          <Input
+                            type="text"
+                            value={themeColors.primary || themeColor}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              if (/^#[0-9A-Fa-f]{0,6}$/.test(val)) {
+                                setThemeColor(val);
+                                setThemeColors({ ...themeColors, primary: val });
+                              }
+                            }}
+                            placeholder="#1a365d"
+                            className="h-7 text-xs font-mono w-20"
+                          />
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+
+                    {/* Separator */}
+                    <div className="h-5 w-px bg-gray-200" />
+
+                    {/* Template Button */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => setShowTemplateSelector(true)}
+                          className="h-9 w-9 flex items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
+                        >
+                          <Layout className="w-4 h-4" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        <p>Change template</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    {/* Sections Button */}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          data-tour="sections-menu"
+                          className="h-9 w-9 flex items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
+                          title="Manage sections"
+                        >
+                          <Layers className="h-4 w-4" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent align="end" side="bottom" className="w-64 p-2 shadow-xl rounded-xl">
                         <div className="space-y-1">
                           <button
                             onClick={() => {
@@ -1817,33 +1994,22 @@ export const BuilderV2: React.FC = () => {
                               <div className="text-xs text-gray-500">Reorder & manage sections</div>
                             </div>
                           </button>
-                          <div className="h-px bg-gray-100 my-1" />
-                          <button
-                            onClick={() => setShowReorder(true)}
-                            className="w-full h-10 px-3 flex items-center gap-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
-                              <SeparatorHorizontal className="h-4 w-4 text-purple-600" />
-                            </div>
-                            <div className="text-left">
-                              <div className="text-sm font-medium">Page Breaks</div>
-                              <div className="text-xs text-gray-500">Control PDF page layout</div>
-                            </div>
-                          </button>
                         </div>
                       </PopoverContent>
                     </Popover>
 
-                    {/* Style Settings with Label */}
+                    {/* Styling Button */}
                     <Popover>
                       <PopoverTrigger asChild>
-                        <button data-tour="styling-menu" className="h-9 px-3 flex items-center gap-1.5 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200">
+                        <button
+                          data-tour="styling-menu"
+                          className="h-9 w-9 flex items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
+                          title="Advanced styling"
+                        >
                           <Settings className="h-4 w-4" />
-                          <span className="text-sm font-medium">Styling</span>
-                          <ChevronDown className="h-3 w-3 text-gray-400" />
                         </button>
                       </PopoverTrigger>
-                      <PopoverContent align="center" side="bottom" className="w-96 p-0 shadow-xl rounded-xl max-h-[80vh] overflow-y-auto">
+                      <PopoverContent align="end" side="bottom" className="w-96 p-0 shadow-xl rounded-xl max-h-[80vh] overflow-y-auto">
                         <StyleOptionsPanelV2
                           inPopover={true}
                           resumeData={resumeData}
@@ -1853,75 +2019,9 @@ export const BuilderV2: React.FC = () => {
                       </PopoverContent>
                     </Popover>
 
-                    {/* Color Picker with Label */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <button data-tour="color-picker" className="h-9 px-3 flex items-center gap-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200">
-                          <div
-                            className="w-5 h-5 rounded-full shadow-sm ring-1 ring-gray-200"
-                            style={{ backgroundColor: themeColors.primary || themeColor }}
-                          />
-                          <span className="text-sm font-medium">Color</span>
-                          <ChevronDown className="h-3 w-3 text-gray-400" />
-                        </button>
-                      </PopoverTrigger>
-                      <PopoverContent align="center" className="w-auto p-3 rounded-xl shadow-xl">
-                        <div className="grid grid-cols-5 gap-2">
-                          {[
-                            '#1a365d', '#1e40af', '#2563eb', '#0891b2', '#0284c7',
-                            '#0f766e', '#0d9488', '#059669', '#16a34a', '#15803d',
-                            '#7c2d12', '#b45309', '#9f1239', '#be185d', '#a21caf',
-                            '#6d28d9', '#7c3aed', '#4338ca', '#4f46e5', '#6366f1',
-                            '#0f172a', '#1e293b', '#334155', '#475569', '#64748b',
-                          ].map((color) => (
-                            <button
-                              key={color}
-                              onClick={() => {
-                                setThemeColor(color);
-                                setThemeColors({ ...themeColors, primary: color });
-                              }}
-                              className={cn(
-                                "w-8 h-8 rounded-full transition-all duration-150 hover:scale-110",
-                                (themeColors.primary || themeColor) === color
-                                  ? "ring-2 ring-offset-2 ring-gray-900 shadow-lg"
-                                  : "shadow-sm hover:shadow-md"
-                              )}
-                              style={{ backgroundColor: color }}
-                            />
-                          ))}
-                        </div>
-                        <div className="mt-3 pt-3 border-t border-gray-100">
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="color"
-                              value={themeColors.primary || themeColor}
-                              onChange={(e) => {
-                                setThemeColor(e.target.value);
-                                setThemeColors({ ...themeColors, primary: e.target.value });
-                              }}
-                              className="w-8 h-8 rounded-lg cursor-pointer border-0 p-0"
-                            />
-                            <Input
-                              type="text"
-                              value={themeColors.primary || themeColor}
-                              onChange={(e) => {
-                                const val = e.target.value;
-                                if (/^#[0-9A-Fa-f]{0,6}$/.test(val)) {
-                                  setThemeColor(val);
-                                  setThemeColors({ ...themeColors, primary: val });
-                                }
-                              }}
-                              placeholder="#1a365d"
-                              className="h-8 text-xs font-mono w-24"
-                            />
-                          </div>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+                    {/* Separator before actions */}
+                    <div className="h-5 w-px bg-gray-200" />
 
-                  {/* Right Section: Actions */}
-                  <div className="flex items-center gap-2">
                     {/* Save Button */}
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -1965,10 +2065,10 @@ export const BuilderV2: React.FC = () => {
             </div>
           </TooltipProvider>
 
-          {/* Main Content Grid - Add top margin for fixed toolbar on desktop */}
+          {/* Main Content Grid - Add top margin for fixed headers */}
           <div className={cn(
             "container mx-auto py-2 px-3 sm:px-4 lg:px-4",
-            "lg:mt-[60px]", // Space for fixed toolbar
+            "mt-[146px] lg:mt-[60px]", // Space for fixed elements (mobile: 56px header + 82px toolbar + 8px gap = 146px, desktop: 60px toolbar)
             editorMode === 'form'
               ? "flex lg:gap-2"
               : "flex justify-center"
@@ -2028,95 +2128,6 @@ export const BuilderV2: React.FC = () => {
               )}>
                 {/* Resume Column */}
                 <div className="flex flex-col w-full lg:w-auto">
-                  {/* Mobile-only Toolbar - Hidden on desktop since we have unified toolbar */}
-                  <div
-                    className="lg:hidden mb-3 flex items-center justify-between gap-2 px-2 py-2 rounded-xl backdrop-blur-sm w-full"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
-                      boxShadow: '0 2px 12px -2px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
-                    }}
-                  >
-                    {/* Back Button */}
-                    <button
-                      onClick={() => {
-                        const referrer = sessionStorage.getItem('template-referrer') || '/templates';
-                        const selectedTemplate = sessionStorage.getItem('selected-template');
-                        if (selectedTemplate) {
-                          navigate(`${referrer}?highlight=${selectedTemplate}`);
-                        } else {
-                          navigate(referrer);
-                        }
-                      }}
-                      className="h-9 px-3 flex items-center gap-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100/80 transition-all duration-200"
-                    >
-                      <ArrowLeft className="w-4 h-4" />
-                      <span className="text-sm font-medium">Back</span>
-                    </button>
-
-                    {/* Right: AI + Color + Download */}
-                    <div className="flex items-center gap-2">
-                      {/* Enhance with AI Button - Mobile */}
-                      <button
-                        onClick={() => setShowEnhanceModal(true)}
-                        className="h-9 px-3 flex items-center gap-1.5 rounded-lg text-white font-medium text-sm shadow-md"
-                        style={{
-                          background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
-                        }}
-                      >
-                        <Sparkles className="w-4 h-4" />
-                        <span className="hidden sm:inline">AI</span>
-                      </button>
-
-                      {/* Color Picker */}
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <button className="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-gray-100/80 transition-all duration-200">
-                            <div
-                              className="w-6 h-6 rounded-full shadow-md ring-2 ring-white cursor-pointer"
-                              style={{ backgroundColor: themeColors.primary || themeColor }}
-                            />
-                          </button>
-                        </PopoverTrigger>
-                        <PopoverContent align="end" className="w-auto p-3 rounded-xl shadow-xl">
-                          <div className="grid grid-cols-5 gap-2">
-                            {[
-                              '#1a365d', '#1e40af', '#2563eb', '#0891b2', '#0284c7',
-                              '#0f766e', '#0d9488', '#059669', '#16a34a', '#15803d',
-                              '#7c2d12', '#b45309', '#9f1239', '#be185d', '#a21caf',
-                              '#6d28d9', '#7c3aed', '#4338ca', '#4f46e5', '#6366f1',
-                              '#0f172a', '#1e293b', '#334155', '#475569', '#64748b',
-                            ].map((color) => (
-                              <button
-                                key={color}
-                                onClick={() => {
-                                  setThemeColor(color);
-                                  setThemeColors({ ...themeColors, primary: color });
-                                }}
-                                className={cn(
-                                  "w-8 h-8 rounded-full transition-all duration-150 hover:scale-110",
-                                  (themeColors.primary || themeColor) === color
-                                    ? "ring-2 ring-offset-2 ring-gray-900 shadow-lg"
-                                    : "shadow-sm hover:shadow-md"
-                                )}
-                                style={{ backgroundColor: color }}
-                              />
-                            ))}
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-
-                      {/* Download */}
-                      <Button
-                        onClick={handleDownload}
-                        disabled={isDownloading}
-                        size="icon"
-                        className="h-9 w-9 rounded-lg"
-                      >
-                        {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                  </div>
-
                   {/* Resume Document */}
                   <div className="relative w-full overflow-visible">
                     {/* Mobile: Scale container to fit screen width */}
@@ -2287,50 +2298,84 @@ export const BuilderV2: React.FC = () => {
           </div>
 
           {/* Mobile Bottom Bar - Fixed at bottom */}
-          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-3 py-2 safe-area-inset-bottom">
-            <div className="flex items-center justify-around gap-2">
-              {/* Color Picker */}
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-2 py-2 safe-area-inset-bottom">
+            <div className="flex items-center justify-between gap-1">
+              {/* Template */}
+              <button
+                onClick={() => setShowTemplateSelector(true)}
+                className="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
+                title="Change template"
+              >
+                <Layout className="h-5 w-5 text-gray-600" />
+              </button>
+
+              {/* Font Selector */}
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200">
-                    <div
-                      className="w-6 h-6 rounded-full shadow-md ring-2 ring-white"
-                      style={{ backgroundColor: themeColors.primary || themeColor }}
-                    />
+                  <button
+                    className="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
+                    title="Change font"
+                  >
+                    <Type className="h-5 w-5 text-gray-600" />
                   </button>
                 </PopoverTrigger>
-                <PopoverContent align="center" side="top" className="w-auto p-3 rounded-xl shadow-xl mb-2">
-                  <div className="grid grid-cols-5 gap-2">
-                    {[
-                      '#1a365d', '#1e40af', '#2563eb', '#0891b2', '#0284c7',
-                      '#0f766e', '#0d9488', '#059669', '#16a34a', '#15803d',
-                      '#7c2d12', '#b45309', '#9f1239', '#be185d', '#a21caf',
-                      '#6d28d9', '#7c3aed', '#4338ca', '#4f46e5', '#6366f1',
-                      '#0f172a', '#1e293b', '#334155', '#475569', '#64748b',
-                    ].map((color) => (
+                <PopoverContent align="start" side="top" className="w-48 p-2 shadow-xl rounded-xl mb-2">
+                  <div className="text-xs font-medium text-gray-500 mb-2 px-2">Font Family</div>
+                  <div className="space-y-1 max-h-48 overflow-y-auto">
+                    {RESUME_FONTS.map((font) => (
                       <button
-                        key={color}
-                        onClick={() => {
-                          setThemeColor(color);
-                          setThemeColors({ ...themeColors, primary: color });
-                        }}
+                        key={font.family}
+                        onClick={() => setSelectedFont(font.family)}
                         className={cn(
-                          "w-8 h-8 rounded-full transition-all duration-150",
-                          (themeColors.primary || themeColor) === color
-                            ? "ring-2 ring-offset-2 ring-gray-900 shadow-lg"
-                            : "shadow-sm"
+                          "w-full px-2 py-1.5 text-left text-sm rounded-lg transition-colors",
+                          selectedFont === font.family
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "hover:bg-gray-100 text-gray-700"
                         )}
-                        style={{ backgroundColor: color }}
-                      />
+                        style={{ fontFamily: font.family }}
+                      >
+                        {font.name}
+                      </button>
                     ))}
                   </div>
                 </PopoverContent>
               </Popover>
 
-              {/* Settings */}
+              {/* Sections */}
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200">
+                  <button
+                    className="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
+                    title="Manage sections"
+                  >
+                    <Layers className="h-5 w-5 text-gray-600" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent align="center" side="top" className="w-56 p-2 shadow-xl rounded-xl mb-2">
+                  <button
+                    onClick={() => setShowAddSectionModal(true)}
+                    className="w-full h-10 px-3 flex items-center gap-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <Plus className="h-4 w-4 text-green-600" />
+                    <span className="text-sm font-medium">Add Section</span>
+                  </button>
+                  <button
+                    onClick={() => setShowReorder(true)}
+                    className="w-full h-10 px-3 flex items-center gap-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <LayoutGrid className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm font-medium">Rearrange</span>
+                  </button>
+                </PopoverContent>
+              </Popover>
+
+              {/* Settings/Styling */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
+                    title="Styling options"
+                  >
                     <Settings className="h-5 w-5 text-gray-600" />
                   </button>
                 </PopoverTrigger>
@@ -2344,32 +2389,17 @@ export const BuilderV2: React.FC = () => {
                 </PopoverContent>
               </Popover>
 
-              {/* Rearrange Sections */}
-              <button
-                onClick={() => setShowReorder(true)}
-                className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
-              >
-                <PanelsTopLeft className="h-5 w-5 text-gray-600" />
-              </button>
-
-              {/* Add Section */}
-              <button
-                onClick={() => setShowAddSectionModal(true)}
-                className="h-11 w-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
-              >
-                <Plus className="h-5 w-5 text-gray-600" />
-              </button>
-
               {/* Save */}
               <button
                 onClick={handleSaveResume}
                 disabled={isSaving}
                 className={cn(
-                  "h-11 w-11 flex items-center justify-center rounded-xl transition-all duration-200",
+                  "h-10 w-10 flex items-center justify-center rounded-xl transition-all duration-200",
                   hasUnsavedChanges
                     ? "bg-amber-50 text-amber-600"
                     : "hover:bg-gray-100 text-gray-600"
                 )}
+                title={hasUnsavedChanges ? "Save changes" : "Saved"}
               >
                 {isSaving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
               </button>
@@ -2379,7 +2409,8 @@ export const BuilderV2: React.FC = () => {
                 onClick={handleDownload}
                 disabled={isDownloading}
                 size="icon"
-                className="h-11 w-11 rounded-xl"
+                className="h-10 w-10 rounded-xl"
+                title="Download PDF"
               >
                 {isDownloading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
               </Button>
@@ -2475,6 +2506,32 @@ export const BuilderV2: React.FC = () => {
           toast.success('AI enhancements applied successfully!', {
             description: 'Your resume has been transformed with powerful improvements.',
             icon: '✨',
+          });
+        }}
+      />
+
+      {/* Job Tailor Modal */}
+      <JobTailorModal
+        isOpen={showJobTailorModal}
+        onClose={() => setShowJobTailorModal(false)}
+        templateId={templateId}
+        themeColors={themeColors}
+        onComplete={(tailoredData, analysis) => {
+          // Add a visual pulse to the resume preview
+          const previewElement = document.getElementById('resume-preview-v2');
+          if (previewElement) {
+            previewElement.classList.add('animate-pulse');
+            previewElement.style.boxShadow = '0 0 0 4px rgba(245, 158, 11, 0.3)';
+            setTimeout(() => {
+              previewElement.classList.remove('animate-pulse');
+              previewElement.style.boxShadow = '';
+            }, 1500);
+          }
+          setResumeData(tailoredData);
+          setHasUnsavedChanges(true);
+          toast.success('Resume tailored successfully!', {
+            description: `Match score: ${analysis.matchScore}% - Your resume is now optimized for this job.`,
+            icon: '🎯',
           });
         }}
       />
