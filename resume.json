@@ -1,0 +1,200 @@
+{
+    "success": true,
+    "data": {
+        "version": "2.0",
+        "personalInfo": {
+            "fullName": "Robert Thompson",
+            "email": "r.thompson@techexec.com",
+            "phone": "+1-555-0125",
+            "location": "New York, New York",
+            "title": "Chief Technology Officer",
+            "summary": "Visionary technology executive with 15+ years of experience leading engineering organizations and driving digital transformation.",
+            "linkedin": "linkedin.com/in/robertthompson",
+            "github": "",
+            "portfolio": "",
+            "website": ""
+        },
+        "experience": [
+            {
+                "id": "exp-1643723400-abc123",
+                "company": "GlobalTech Enterprises",
+                "position": "Chief Technology Officer",
+                "location": "",
+                "startDate": "Jun 2008",
+                "endDate": "Present",
+                "current": true,
+                "description": "Lead technology strategy and engineering organization for $10B enterprise software company",
+                "bulletPoints": [
+                    "Scaled engineering team from 50 to 500+ engineers across 8 global offices while maintaining quality",
+                    "Led digital transformation initiative that migrated 100+ legacy applications to cloud infrastructure",
+                    "Established AI/ML center of excellence, developing products that generated $500M in new revenue",
+                    "Reduced infrastructure costs by 40% through cloud optimization and DevOps practices",
+                    "Improved engineering productivity by 60% through implementation of modern development practices"
+                ]
+            },
+            {
+                "id": "exp-1643723400-def456",
+                "company": "Innovation Systems Inc",
+                "position": "VP of Engineering",
+                "location": "",
+                "startDate": "Jun 2015",
+                "endDate": "Nov 2013",
+                "current": false,
+                "description": "Led engineering organization for high-growth SaaS company",
+                "bulletPoints": [
+                    "Built and scaled engineering team from 10 to 150 engineers across product, platform, and DevOps",
+                    "Delivered 5 major product releases on time and under budget, serving enterprise clients",
+                    "Implemented microservices architecture that improved system reliability to 99.99%",
+                    "Established engineering processes that reduced bug density by 75%"
+                ]
+            },
+            {
+                "id": "exp-1643723400-ghi789",
+                "company": "CloudScale Technologies",
+                "position": "Director of Engineering",
+                "location": "",
+                "startDate": "Mar 2012",
+                "endDate": "May 2015",
+                "current": false,
+                "description": "Managed cloud platform engineering team",
+                "bulletPoints": [
+                    "Led development of cloud platform serving 10M+ users with 99.9% uptime",
+                    "Managed team of 25 engineers across multiple time zones",
+                    "Reduced infrastructure costs by 35% through optimization and automation"
+                ]
+            },
+            {
+                "id": "exp-1643723400-jkl012",
+                "company": "StartUp Ventures",
+                "position": "Founding Engineer",
+                "location": "",
+                "startDate": "Sep 2008",
+                "endDate": "Feb 2012",
+                "current": false,
+                "description": "Early employee at successful startup",
+                "bulletPoints": [
+                    "Built core platform architecture from scratch",
+                    "Contributed to company growth from 5 to 50 employees",
+                    "Led technical due diligence for successful acquisition"
+                ]
+            }
+        ],
+        "education": [
+            {
+                "id": "edu-1643723400-abc123",
+                "school": "Harvard Business School",
+                "degree": "MBA in Business Administration",
+                "field": "Business Administration",
+                "location": "Cambridge, Massachusetts",
+                "startDate": "Sep 2010",
+                "endDate": "May 2012",
+                "gpa": ""
+            },
+            {
+                "id": "edu-1643723400-def456",
+                "school": "Carnegie Mellon University",
+                "degree": "Master's Degree in Computer Science",
+                "field": "Computer Science",
+                "location": "Pittsburgh, Pennsylvania",
+                "startDate": "Sep 2006",
+                "endDate": "May 2008",
+                "gpa": ""
+            },
+            {
+                "id": "edu-1643723400-ghi789",
+                "school": "University of Michigan",
+                "degree": "Bachelor's Degree in Computer Engineering",
+                "field": "Computer Engineering",
+                "location": "Ann Arbor, Michigan",
+                "startDate": "Sep 2002",
+                "endDate": "Jan 2026",
+                "gpa": ""
+            }
+        ],
+        "skills": [
+            {
+                "id": "skill-1643723400-abc123",
+                "name": "Technology Strategy",
+                "category": "Technical"
+            },
+            {
+                "id": "skill-1643723400-def456",
+                "name": "Team Leadership",
+                "category": "Soft Skills"
+            },
+            {
+                "id": "skill-1643723400-ghi789",
+                "name": "Cloud Architecture",
+                "category": "Technical"
+            },
+            {
+                "id": "skill-1643723400-jkl012",
+                "name": "Digital Transformation",
+                "category": "Technical"
+            },
+            {
+                "id": "skill-1643723400-mno345",
+                "name": "DevOps",
+                "category": "Technical"
+            },
+            {
+                "id": "skill-1643723400-pqr678",
+                "name": "AI/ML Strategy",
+                "category": "Technical"
+            },
+            {
+                "id": "skill-1643723400-stu901",
+                "name": "Budget Management",
+                "category": "Soft Skills"
+            },
+            {
+                "id": "skill-1643723400-vwx234",
+                "name": "Product Management",
+                "category": "Soft Skills"
+            },
+            {
+                "id": "skill-1643723400-yz567",
+                "name": "Agile/Scrum",
+                "category": "Technical"
+            },
+            {
+                "id": "skill-1643723400-abc890",
+                "name": "Stakeholder Management",
+                "category": "Soft Skills"
+            }
+        ],
+        "languages": [],
+        "certifications": [],
+        "projects": [],
+        "awards": [
+            {
+                "id": "award-1643723400-abc123",
+                "title": "Digital Transformation Leader",
+                "issuer": "",
+                "date": "",
+                "description": "Successfully led company-wide digital transformation, generating $2B in operational efficiencies"
+            },
+            {
+                "id": "award-1643723400-def456",
+                "title": "Team Scaling Excellence",
+                "issuer": "",
+                "date": "",
+                "description": "Built and scaled high-performing engineering organization from 50 to 500+ engineers globally"
+            },
+            {
+                "id": "award-1643723400-ghi789",
+                "title": "Innovation Driver",
+                "issuer": "",
+                "date": "",
+                "description": "Established AI/ML center of excellence that created $500M in new revenue streams"
+            }
+        ],
+        "volunteer": [],
+        "settings": {
+            "includeSocialLinks": true,
+            "includePhoto": false,
+            "dateFormat": "MMM YYYY"
+        }
+    },
+    "extractedTextLength": 3335
+}

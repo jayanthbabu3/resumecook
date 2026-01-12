@@ -1,0 +1,96 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+  functions = "netlify/functions"
+
+[dev]
+  command = "npm run dev -- --port 3000"
+  autoLaunch = false
+  framework = "#custom"
+  targetPort = 3000
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@sparticuz/chromium"]
+
+[functions."generate-pdf"]
+  external_node_modules = ["@sparticuz/chromium"]
+
+[functions."enhance-resume"]
+  timeout = 60
+
+[functions."create-checkout-session"]
+  timeout = 30
+
+[functions."stripe-webhook"]
+  timeout = 30
+
+[functions."customer-portal"]
+  timeout = 30
+
+# Note: CORS headers are handled dynamically in each function
+# to support multiple origins (production + localhost for dev)
+# See allowedOrigins in each function file
+
+# =============================================================================
+# Security Headers (Production Best Practices)
+# =============================================================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevent clickjacking attacks
+    X-Frame-Options = "SAMEORIGIN"
+    # Prevent MIME type sniffing
+    X-Content-Type-Options = "nosniff"
+    # Enable XSS protection
+    X-XSS-Protection = "1; mode=block"
+    # Control referrer information
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Permissions policy (formerly Feature-Policy)
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # Content Security Policy - adjust as needed for your app
+    # Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.supabase.co wss://*.firebaseio.com;"
+
+# =============================================================================
+# Cache Control Headers
+# =============================================================================
+# Static assets - long cache
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Images - medium cache
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Fonts - long cache
+[[headers]]
+  for = "*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.woff"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# =============================================================================
+# SPA Redirects (React Router support)
+# =============================================================================
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

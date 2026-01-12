@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { TemplatePreview } from './TemplatePreview';
+import { FavoriteButton } from './FavoriteButton';
 import { cn } from '@/lib/utils';
 
 interface Template {
@@ -20,14 +21,35 @@ interface TemplateCarouselProps {
 
 export const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
   templates,
-  themeColors = ["#7c3aed", "#2563eb", "#059669", "#e11d48"],
+  themeColors = ["#2563eb"],
   onTemplateSelect,
   className = "",
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [itemsPerView, setItemsPerView] = useState(3);
   const containerRef = useRef<HTMLDivElement>(null);
-  const itemsPerView = 3;
+
+  // Update itemsPerView based on screen size
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerView(1); // Mobile: 1 template per view
+      } else {
+        setItemsPerView(3); // Desktop: 3 templates per view
+      }
+    };
+
+    updateItemsPerView();
+    window.addEventListener('resize', updateItemsPerView);
+    return () => window.removeEventListener('resize', updateItemsPerView);
+  }, []);
+
+  // Reset currentIndex when itemsPerView changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [itemsPerView]);
+
   const maxIndex = Math.max(0, templates.length - itemsPerView);
 
   const nextSlide = () => {
@@ -100,26 +122,46 @@ export const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
             <div
               key={template.id}
               className="flex-shrink-0 px-2"
-              style={{ width: '28.3333%' }}
+              style={{ width: itemsPerView === 1 ? '100%' : '33.3333%' }}
             >
                      <div className="group cursor-pointer bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 rounded-xl p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
                        {/* Template Preview */}
                        <div className="relative">
-                  <div 
-                    className="overflow-hidden rounded-lg bg-white shadow-lg group-hover:shadow-2xl transition-shadow duration-300 border border-gray-200"
-                    style={{ 
+                  <div
+                    className="overflow-hidden rounded-lg bg-white shadow-lg group-hover:shadow-2xl transition-shadow duration-300 border border-gray-200 relative"
+                    style={{
                       aspectRatio: '1 / 1.414', // Standard A4 aspect ratio for proper resume display
                       width: '100%',
-                      minHeight: '350px'
+                      minHeight: itemsPerView === 1 ? '280px' : '350px'
                     }}
                   >
-                    <TemplatePreview
+                    <div className="absolute inset-0 overflow-hidden">
+                      <div 
+                        className="origin-top-left"
+                        style={{
+                          transform: 'scale(0.35)',
+                          width: '285.7%',
+                          minHeight: '285.7%'
+                        }}
+                      >
+                        <TemplatePreview
+                          templateId={template.id}
+                          themeColor={themeColors[index % themeColors.length]}
+                          className="w-full h-full"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Favorite Button - Top Right */}
+                  <div className="absolute top-2 right-2 z-20">
+                    <FavoriteButton
                       templateId={template.id}
-                      themeColor={themeColors[index % themeColors.length]}
-                      className="h-full"
+                      variant="icon"
+                      size="sm"
                     />
                   </div>
-                  
+
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
                     <Button

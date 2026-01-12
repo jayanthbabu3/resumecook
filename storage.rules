@@ -1,0 +1,95 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Helper function to validate image file
+    function isValidImage() {
+      return request.resource.contentType.matches('image/.*')
+             && request.resource.size < 5 * 1024 * 1024; // Max 5MB
+    }
+
+    // Helper function to validate PDF file
+    function isValidPDF() {
+      return request.resource.contentType == 'application/pdf'
+             && request.resource.size < 10 * 1024 * 1024; // Max 10MB
+    }
+
+    // ========== USER PROFILE PHOTOS ==========
+    // Path: users/{userId}/profile/photo.{ext}
+    match /users/{userId}/profile/{fileName} {
+      // Users can read their own profile files
+      allow read: if isOwner(userId);
+
+      // Users can upload their own profile photo (images only)
+      allow write: if isOwner(userId) && isValidImage();
+
+      // Allow delete for profile cleanup
+      allow delete: if isOwner(userId);
+    }
+
+    // ========== USER RESUME EXPORTS ==========
+    // Path: users/{userId}/exports/{resumeId}.pdf
+    match /users/{userId}/exports/{fileName} {
+      // Users can read their own exported PDFs
+      allow read: if isOwner(userId);
+
+      // Users can upload exported PDFs
+      allow write: if isOwner(userId) && isValidPDF();
+
+      // Users can delete old exports
+      allow delete: if isOwner(userId);
+    }
+
+    // ========== USER RESUME ASSETS ==========
+    // Path: users/{userId}/resumes/{resumeId}/assets/{fileName}
+    // For images or attachments within resumes
+    match /users/{userId}/resumes/{resumeId}/assets/{fileName} {
+      // Users can read their own resume assets
+      allow read: if isOwner(userId);
+
+      // Users can upload images to their resumes
+      allow write: if isOwner(userId) && isValidImage();
+
+      // Users can delete resume assets
+      allow delete: if isOwner(userId);
+    }
+
+    // ========== PUBLIC RESUME THUMBNAILS ==========
+    // Path: public/thumbnails/{resumeId}.png
+    // For publicly shared resume preview images
+    match /public/thumbnails/{fileName} {
+      // Anyone can view public thumbnails
+      allow read: if true;
+
+      // Only authenticated users can upload (system generates these)
+      allow write: if isAuthenticated() && isValidImage();
+
+      // Only the owner can delete (checked via custom claims or server)
+      allow delete: if isAuthenticated();
+    }
+
+    // ========== TEMP UPLOADS ==========
+    // Path: temp/{userId}/{fileName}
+    // For temporary file processing (auto-cleanup recommended)
+    match /temp/{userId}/{fileName} {
+      // Users can manage their temp files
+      allow read, write, delete: if isOwner(userId);
+    }
+
+    // ========== DEFAULT DENY ==========
+    // Deny all other access by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

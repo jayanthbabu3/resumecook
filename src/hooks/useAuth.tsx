@@ -1,13 +1,23 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
+// Lightweight local auth types and storage to run without a backend
+interface LocalUser {
+  id: string;
+  email: string;
+  user_metadata?: Record<string, any>;
+}
+
+interface LocalSession {
+  user: LocalUser;
+}
+
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: LocalUser | null;
+  session: LocalSession | null;
   signIn: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signUp: (email: string, password: string, userData: {
     fullName: string;
     phone?: string;
@@ -26,46 +36,46 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<LocalUser | null>(null);
+  const [session, setSession] = useState<LocalSession | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
+    // Bootstrap from localStorage to simulate a session without any backend
+    const raw = localStorage.getItem('resumecook_local_session');
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw) as LocalSession;
+        setSession(parsed);
+        setUser(parsed.user);
+      } catch {
+        // ignore parse error
       }
-    );
-
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    }
+    setLoading(false);
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      toast.success('Welcome back!');
-      navigate('/dashboard');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in');
-      throw error;
-    }
+    // Accept any credentials and create a local session
+    const localUser: LocalUser = { id: 'dev-user', email };
+    const localSession: LocalSession = { user: localUser };
+    localStorage.setItem('resumecook_local_session', JSON.stringify(localSession));
+    setUser(localUser);
+    setSession(localSession);
+    toast.success('Signed in (local)');
+    navigate('/dashboard');
+  };
+
+  const signInWithGoogle = async () => {
+    // Directly create a local session for Google as well
+    const localUser: LocalUser = { id: 'dev-user', email: 'google-user@example.com' };
+    const localSession: LocalSession = { user: localUser };
+    localStorage.setItem('resumecook_local_session', JSON.stringify(localSession));
+    setUser(localUser);
+    setSession(localSession);
+    toast.success('Signed in with Google (local)');
+    navigate('/dashboard');
   };
 
   const signUp = async (email: string, password: string, userData: {
@@ -78,76 +88,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     professionalTitle?: string;
     bio?: string;
   }) => {
-    try {
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth`,
-          data: {
-            full_name: userData.fullName,
-            phone: userData.phone || '',
-            location: userData.location || '',
-            linkedin_url: userData.linkedinUrl || '',
-            github_url: userData.githubUrl || '',
-            portfolio_url: userData.portfolioUrl || '',
-            professional_title: userData.professionalTitle || '',
-            bio: userData.bio || '',
-          }
-        }
-      });
-      
-      if (signUpError) {
-        const msg = (signUpError.message || '').toLowerCase();
-        if (msg.includes('already') || msg.includes('exist') || signUpError.status === 400 || signUpError.status === 422) {
-          toast.error('An account with this email already exists. Please sign in instead.');
-          throw new Error('User already exists');
-        }
-        throw signUpError;
-      }
-      
-      toast.success('Verification email sent! Please check your inbox.');
-      navigate(`/verify-email?email=${encodeURIComponent(email)}`);
-    } catch (error: any) {
-      if (error.message !== 'User already exists') {
-        toast.error(error.message || 'Failed to sign up');
-      }
-      throw error;
-    }
+    // Create local user and move forward to profile completion
+    const localUser: LocalUser = { id: 'dev-user', email, user_metadata: { full_name: userData.fullName } };
+    const localSession: LocalSession = { user: localUser };
+    localStorage.setItem('resumecook_local_session', JSON.stringify(localSession));
+    setUser(localUser);
+    setSession(localSession);
+    toast.success('Account created (local)');
+    navigate('/profile-completion');
   };
 
   const verifyOtp = async (email: string, token: string) => {
-    try {
-      const { error } = await supabase.auth.verifyOtp({
-        email,
-        token,
-        type: 'email'
-      });
-
-      if (error) throw error;
-
-      toast.success('Email verified successfully!');
-      navigate('/profile-completion');
-    } catch (error: any) {
-      toast.error(error.message || 'Invalid verification code');
-      throw error;
-    }
+    // No-op in local mode; just move forward
+    toast.success('Email verified (local)');
+    navigate('/profile-completion');
   };
 
   const signOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      toast.success('Signed out successfully');
-      navigate('/');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to sign out');
-    }
+    localStorage.removeItem('resumecook_local_session');
+    setUser(null);
+    setSession(null);
+    toast.success('Signed out');
+    navigate('/');
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, signIn, signUp, verifyOtp, signOut, loading }}>
+    <AuthContext.Provider value={{ user, session, signIn, signInWithGoogle, signUp, verifyOtp, signOut, loading }}>
       {children}
     </AuthContext.Provider>
   );

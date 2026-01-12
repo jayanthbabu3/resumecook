@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,7 +11,7 @@ import { CheckCircle2, Phone, MapPin, Briefcase, Linkedin, Github, Globe, User }
 import { Header } from '@/components/Header';
 
 const ProfileCompletion = () => {
-  const { user } = useAuth();
+  const { user } = useFirebaseAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [profileExists, setProfileExists] = useState(false);
@@ -23,22 +22,20 @@ const ProfileCompletion = () => {
       return;
     }
 
-    // Check if profile already exists
-    const checkProfile = async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-      
-      if (data && (data.phone || data.location || data.professional_title)) {
-        // Profile has optional data, redirect to dashboard
-        setProfileExists(true);
-        navigate('/dashboard');
+    // Check local profile
+    const key = `profile_${user.uid}`;
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      try {
+        const data = JSON.parse(raw) as Record<string, any>;
+        if (data && (data.phone || data.location || data.professional_title)) {
+          setProfileExists(true);
+          navigate('/dashboard');
+        }
+      } catch {
+        // ignore
       }
-    };
-
-    checkProfile();
+    }
   }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,29 +45,20 @@ const ProfileCompletion = () => {
     setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
 
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          phone: formData.get('phone') as string || null,
-          location: formData.get('location') as string || null,
-          linkedin_url: formData.get('linkedinUrl') as string || null,
-          github_url: formData.get('githubUrl') as string || null,
-          portfolio_url: formData.get('portfolioUrl') as string || null,
-          professional_title: formData.get('professionalTitle') as string || null,
-          bio: formData.get('bio') as string || null,
-        })
-        .eq('id', user.id);
-
-      if (error) throw error;
-
-      toast.success('Profile completed successfully!');
-      navigate('/dashboard');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update profile');
-    } finally {
-      setIsSubmitting(false);
-    }
+    const key = `profile_${user.uid}`;
+    const data = {
+      phone: (formData.get('phone') as string) || '',
+      location: (formData.get('location') as string) || '',
+      linkedin_url: (formData.get('linkedinUrl') as string) || '',
+      github_url: (formData.get('githubUrl') as string) || '',
+      portfolio_url: (formData.get('portfolioUrl') as string) || '',
+      professional_title: (formData.get('professionalTitle') as string) || '',
+      bio: (formData.get('bio') as string) || '',
+    };
+    localStorage.setItem(key, JSON.stringify(data));
+    toast.success('Profile completed (local)');
+    navigate('/dashboard');
+    setIsSubmitting(false);
   };
 
   const handleSkip = () => {

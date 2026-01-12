@@ -1,328 +1,180 @@
-import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import {
   FileText,
-  Briefcase,
-  Code,
-  GraduationCap,
-  Calculator,
-  Users,
-  ArrowRight,
+  ChevronRight,
   Sparkles,
 } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { TemplateCarousel } from "@/components/TemplateCarousel";
-
-const professions = [
-  {
-    id: "software",
-    name: "Software Development",
-    description: "Professional templates optimized for developers and engineers",
-    icon: Code,
-    templates: [
-      "software",
-      "frontend",
-      "backend",
-      "fullstack",
-      "senior",
-      "senior-frontend",
-      "senior-backend",
-    ],
-  },
-  {
-    id: "freshers",
-    name: "Freshers & Entry Level",
-    description: "Professional templates designed for career starters and graduates",
-    icon: GraduationCap,
-    templates: ["graduate", "starter", "fresher", "premium-fresher", "fresher-elite"],
-  },
-  {
-    id: "all",
-    name: "Universal Professions",
-    description: "Professional templates suitable for any industry and role",
-    icon: Briefcase,
-    templates: [
-      "professional",
-      "modern",
-      "minimal",
-      "executive",
-      "premium-universal",
-      "premium-pro",
-    ],
-  },
-];
-
-const templates = [
-  {
-    id: "professional",
-    name: "Classic Professional",
-    description:
-      "Traditional single-column format ideal for corporate environments",
-    highlights: ["Single Column", "ATS-Optimized", "Clean Design"],
-  },
-  {
-    id: "modern",
-    name: "Contemporary Design",
-    description: "Contemporary design perfect for creative industries",
-    highlights: ["Two-Column", "Modern Typography", "Creative Layout"],
-  },
-  {
-    id: "minimal",
-    name: "Elegant Minimal",
-    description: "Sophisticated simplicity with generous whitespace",
-    highlights: ["Generous Whitespace", "Easy to Scan", "Timeless"],
-  },
-  {
-    id: "executive",
-    name: "Executive Leadership",
-    description: "Bold design crafted for senior positions and leadership",
-    highlights: ["Strong Presence", "Premium Aesthetic", "Leadership Style"],
-  },
-  {
-    id: "frontend",
-    name: "Frontend Developer",
-    description: "Tech-focused design with skills grid layout",
-    highlights: ["Skills Grid", "Tech-Optimized", "Modern Look"],
-  },
-  {
-    id: "fullstack",
-    name: "Full Stack Engineer",
-    description:
-      "Professional layout showcasing comprehensive technical expertise",
-    highlights: ["Single Column", "Color Themes", "Professional Tech"],
-  },
-  {
-    id: "backend",
-    name: "Backend Developer",
-    description: "Clean technical design focused on backend development",
-    highlights: ["Technical & Clean", "API-Focused", "Backend Optimized"],
-  },
-  {
-    id: "graduate",
-    name: "Graduate Excellence",
-    description: "Modern two-column layout emphasizing education and potential",
-    highlights: ["Two-Column", "Education-Focused", "Premium Design"],
-  },
-  {
-    id: "starter",
-    name: "Career Starter",
-    description:
-      "Clean single-column design perfect for entry-level candidates",
-    highlights: ["Single Column", "Skills Highlight", "Fresh Look"],
-  },
-  {
-    id: "fresher",
-    name: "Fresher Premium",
-    description:
-      "ATS-optimized premium template with elegant design for fresh graduates",
-    highlights: ["ATS-Friendly", "Premium Design", "Two-Column Layout"],
-  },
-  {
-    id: "premium-fresher",
-    name: "Premium Graduate",
-    description:
-      "Modern premium template with gradient design and skill levels for fresh graduates",
-    highlights: ["Gradient Design", "Skill Levels", "Modern Layout", "ATS-Optimized"],
-  },
-  {
-    id: "fresher-elite",
-    name: "Fresher Elite",
-    description:
-      "Modern premium design with colored header, timeline layout, and visual skill indicators",
-    highlights: ["Colored Header", "Timeline Design", "Visual Skills", "ATS-Optimized"],
-  },
-  {
-    id: "premium-universal",
-    name: "Premium Universal",
-    description:
-      "Elegant and simple ATS-friendly template suitable for all industries and experience levels",
-    highlights: ["ATS-Optimized", "Clean Layout", "Universal Design", "Professional"],
-  },
-  {
-    id: "premium-pro",
-    name: "Premium Pro",
-    description:
-      "Modern premium design with side accent panel and sophisticated typography",
-    highlights: ["Side Accent Panel", "Modern Design", "ATS-Optimized", "Distinctive"],
-  },
-  {
-    id: "software",
-    name: "Lead Software Engineer",
-    description:
-      "Striking two-column layout with strengths, achievements, and theme variants",
-    highlights: ["Bold Header", "Impact Metrics", "Theme Variants"],
-  },
-  {
-    id: "senior-frontend",
-    name: "Senior Frontend Designer",
-    description:
-      "Vibrant two-column layout with visual skill charts and project highlights",
-    highlights: ["Creative Layout", "Skill Charts", "UI/UX Focus"],
-  },
-  {
-    id: "senior-backend",
-    name: "Senior Backend Engineer",
-    description:
-      "Reliability-first layout focused on distributed systems, scale, and leadership",
-    highlights: [
-      "Architecture Focus",
-      "Reliability Metrics",
-      "Team Leadership",
-    ],
-  },
-  {
-    id: "senior",
-    name: "Senior Software Engineer",
-    description:
-      "Two-column layout highlighting achievements and technical leadership",
-    highlights: ["Two-Column", "Achievement Focused", "Tech Leadership"],
-  },
-];
+import {
+  professionCategories,
+} from "@/constants/professionCategories";
+import { templateMetaMap } from "@/constants/templateMeta";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
-
       {/* Elegant Header */}
       <div className="border-b border-border/30 bg-gradient-to-br from-muted/5 via-muted/10 to-muted/5">
-        <div className="container mx-auto px-6 py-8">
-          <div className="max-w-3xl mx-auto text-center space-y-4">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                <FileText className="h-5 w-5 text-primary" />
+        <div className="container mx-auto px-4 md:px-6 py-6 md:py-12">
+          <div className="max-w-3xl mx-auto text-center space-y-3 md:space-y-4">
+            <div className="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-4">
+              <div className="h-8 w-8 md:h-10 md:w-10 rounded-lg md:rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                <FileText className="h-5 w-5 md:h-6 md:w-6 text-primary" />
               </div>
-              <h1 className="text-3xl font-bold text-foreground">
-                Professional Resume Templates
+              <h1 className="text-2xl md:text-4xl font-bold text-foreground">
+                Resume Templates
               </h1>
             </div>
-            <p className="text-base text-muted-foreground leading-relaxed">
-              Choose from our curated collection of templates designed for different career stages.
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto px-4">
+              Choose your profession to find the perfect template for your career
             </p>
           </div>
         </div>
       </div>
 
-      <main className="container mx-auto px-6 py-8">
-        {/* Experienced Professionals Section */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500/15 to-blue-600/8 flex items-center justify-center">
-              <Briefcase className="h-5 w-5 text-blue-600" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold text-foreground mb-1">
-                For Experienced Professionals
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Advanced templates designed for seasoned professionals
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 rounded-full">
-              <Sparkles className="h-3.5 w-3.5 text-blue-600" />
-              <span className="text-xs font-medium text-blue-700">
-                {templates.filter(t => !['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id)).length}
-              </span>
-            </div>
-          </div>
-          
-          <TemplateCarousel
-            templates={templates.filter(t => !['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id))}
-            themeColors={["#2563eb", "#7c3aed", "#059669", "#e11d48", "#ea580c", "#0d9488"]}
-            onTemplateSelect={(templateId) => {
-              navigate(`/editor/${templateId}`);
-            }}
-          />
-        </section>
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-12">
+        {/* Quick Actions Section */}
+        <div className="mb-8 md:mb-12">
+          <h2 className="text-lg md:text-xl font-bold text-foreground mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+              {/* Create from Scratch Card */}
+              <Card
+                className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
+                onClick={() => navigate("/builder/scratch")}
+              >
+                <div className="relative p-6">
+                  {/* Icon */}
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-br from-primary to-primary/80">
+                    <Sparkles className="h-6 w-6 md:h-7 md:w-7 text-white" />
+                  </div>
 
-        {/* Freshers Section */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-green-500/15 to-green-600/8 flex items-center justify-center">
-              <GraduationCap className="h-5 w-5 text-green-600" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold text-foreground mb-1">
-                For Freshers & New Graduates
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Beginner-friendly templates for new graduates and entry-level positions
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-50 rounded-full">
-              <Sparkles className="h-3.5 w-3.5 text-green-600" />
-              <span className="text-xs font-medium text-green-700">
-                {templates.filter(t => ['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id)).length}
-              </span>
-            </div>
-          </div>
-          
-          <TemplateCarousel
-            templates={templates.filter(t => ['fresher', 'graduate', 'starter', 'premium-fresher', 'fresher-elite'].includes(t.id))}
-            themeColors={["#059669", "#0d9488", "#2563eb", "#7c3aed", "#e11d48", "#ea580c"]}
-            onTemplateSelect={(templateId) => {
-              navigate(`/editor/${templateId}`);
-            }}
-          />
-        </section>
+                  {/* Content */}
+                  <div className="space-y-2">
+                    <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                      Create from Scratch
+                    </h3>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                      Build your resume with drag-and-drop sections
+                    </p>
+                  </div>
 
+                  {/* Arrow */}
+                  <ChevronRight className="absolute bottom-6 right-6 h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+                </div>
+              </Card>
 
-        {/* Features Section */}
-        <div className="max-w-5xl mx-auto mt-20">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold text-foreground mb-3">
-              Why Choose Our Templates?
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Built with modern design principles and optimized for success
-            </p>
+              {/* Browse All Templates Card */}
+              {(() => {
+                const allCategory = professionCategories.find((cat) => cat.isAll);
+                if (!allCategory) return null;
+                const IconComponent = allCategory.icon;
+
+                return (
+                  <Card
+                    key={allCategory.id}
+                    className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
+                    onClick={() => navigate(`/dashboard/${allCategory.id}`)}
+                  >
+                    <div className="relative p-6">
+                      {/* Icon */}
+                      <div
+                        className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+                        style={{
+                          background: `linear-gradient(135deg, ${allCategory.gradientFrom} 0%, ${allCategory.gradientTo} 100%)`,
+                        }}
+                      >
+                        <IconComponent className="h-6 w-6 md:h-7 md:w-7 text-white" />
+                      </div>
+
+                      {/* Content */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                            {allCategory.name}
+                          </h3>
+                          <span
+                            className="text-xs font-semibold px-2 py-1 rounded-full"
+                            style={{
+                              backgroundColor: `${allCategory.color}15`,
+                              color: allCategory.color,
+                            }}
+                          >
+                            {allCategory.templateIds.filter((id) => templateMetaMap[id]?.name).length}
+                          </span>
+                        </div>
+                        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                          {allCategory.description}
+                        </p>
+                      </div>
+
+                      {/* Arrow */}
+                      <ChevronRight className="absolute bottom-6 right-6 h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+                    </div>
+                  </Card>
+                );
+              })()}
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="group text-center">
-              <div className="relative mb-6">
-                <div className="h-16 w-16 mx-auto rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:from-primary/20 group-hover:to-primary/10 transition-all duration-300">
-                  <FileText className="h-8 w-8 text-primary" />
-                </div>
-                <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <h3 className="text-lg font-semibold mb-3 text-foreground">Fully Customizable</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Modify colors, fonts, sections, and layout to match your personal style and brand
-              </p>
-            </div>
-            
-            <div className="group text-center">
-              <div className="relative mb-6">
-                <div className="h-16 w-16 mx-auto rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center group-hover:from-emerald-200 group-hover:to-emerald-100 transition-all duration-300">
-                  <Calculator className="h-8 w-8 text-emerald-600" />
-                </div>
-                <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-emerald-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <h3 className="text-lg font-semibold mb-3 text-foreground">ATS Optimized</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                All templates are designed to pass Applicant Tracking Systems and get noticed
-              </p>
-            </div>
-            
-            <div className="group text-center">
-              <div className="relative mb-6">
-                <div className="h-16 w-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-100 transition-all duration-300">
-                  <Users className="h-8 w-8 text-blue-600" />
-                </div>
-                <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-blue-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <h3 className="text-lg font-semibold mb-3 text-foreground">Professional Quality</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Industry-standard designs that impress recruiters and hiring managers
-              </p>
-            </div>
+        </div>
+
+        {/* Profession Categories Grid */}
+        <div>
+          <h2 className="text-lg md:text-xl font-bold text-foreground mb-4">Browse by Profession</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            {professionCategories
+              .filter((category) => !category.isAll)
+              .map((category) => {
+                const IconComponent = category.icon;
+
+                return (
+                  <Card
+                    key={category.id}
+                    className="group relative overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg cursor-pointer bg-card"
+                    onClick={() => navigate(`/dashboard/${category.id}`)}
+                  >
+                      <div className="relative p-6">
+                        {/* Icon */}
+                        <div
+                          className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+                          style={{
+                            background: `linear-gradient(135deg, ${category.gradientFrom} 0%, ${category.gradientTo} 100%)`,
+                          }}
+                        >
+                          <IconComponent className="h-6 w-6 md:h-7 md:w-7 text-white" />
+                        </div>
+
+                        {/* Content */}
+                        <div className="space-y-2">
+                          <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                            {category.name}
+                          </h3>
+                          <p className="text-xs md:text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                            {category.description}
+                          </p>
+
+                          {/* Template Count Badge */}
+                          <div className="flex items-center justify-between pt-3">
+                            <span
+                              className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                              style={{
+                                backgroundColor: `${category.color}15`,
+                                color: category.color,
+                              }}
+                            >
+                              {category.templateIds.filter((id) => templateMetaMap[id]?.name).length} templates
+                            </span>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
           </div>
         </div>
       </main>

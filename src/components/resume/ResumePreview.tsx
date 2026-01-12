@@ -1,22 +1,6 @@
-import type { ResumeData } from "@/pages/Editor";
-import { ProfessionalTemplate } from "./templates/ProfessionalTemplate";
-import { ModernTemplate } from "./templates/ModernTemplate";
-import { MinimalTemplate } from "./templates/MinimalTemplate";
-import { ExecutiveTemplate } from "./templates/ExecutiveTemplate";
-import { FrontendTemplate } from "./templates/FrontendTemplate";
-import { FullstackTemplate } from "./templates/FullstackTemplate";
-import { BackendTemplate } from "./templates/BackendTemplate";
-import { GraduateTemplate } from "./templates/GraduateTemplate";
-import { StarterTemplate } from "./templates/StarterTemplate";
-import { FresherTemplate } from "./templates/FresherTemplate";
-import { PremiumFresherTemplate } from "./templates/PremiumFresherTemplate";
-import { SeniorTemplate } from "./templates/SeniorTemplate";
-import { SeniorFrontendTemplate } from "./templates/SeniorFrontendTemplate";
-import { SeniorBackendTemplate } from "./templates/SeniorBackendTemplate";
-import { SoftwareTemplate } from "./templates/SoftwareTemplate";
-import { PremiumUniversalTemplate } from "./templates/PremiumUniversalTemplate";
-import { PremiumProTemplate } from "./templates/PremiumProTemplate";
-import { FresherEliteTemplate } from "./templates/FresherEliteTemplate";
+import type { ResumeData } from "@/types/resume";
+import { ResumeRenderer } from "@/v2/components/ResumeRenderer";
+import { convertV1ToV2 } from "@/v2/utils/dataConverter";
 
 interface ResumePreviewProps {
   resumeData: ResumeData;
@@ -24,43 +8,31 @@ interface ResumePreviewProps {
   themeColor?: string;
 }
 
+/**
+ * ResumePreview - V1 wrapper (deprecated)
+ * Now uses V2 templates internally
+ */
 export const ResumePreview = ({
   resumeData,
   templateId,
-  themeColor = "#7c3aed",
+  themeColor = "#2563eb",
 }: ResumePreviewProps) => {
-  const templates = {
-    professional: ProfessionalTemplate,
-    modern: ModernTemplate,
-    minimal: MinimalTemplate,
-    executive: ExecutiveTemplate,
-    frontend: FrontendTemplate,
-    fullstack: FullstackTemplate,
-    backend: BackendTemplate,
-    graduate: GraduateTemplate,
-    starter: StarterTemplate,
-    fresher: FresherTemplate,
-    "premium-fresher": PremiumFresherTemplate,
-    senior: SeniorTemplate,
-    "senior-frontend": SeniorFrontendTemplate,
-    "senior-backend": SeniorBackendTemplate,
-    software: SoftwareTemplate,
-    "premium-universal": PremiumUniversalTemplate,
-    "premium-pro": PremiumProTemplate,
-    "fresher-elite": FresherEliteTemplate,
-  };
-
-  const Template =
-    templates[templateId as keyof typeof templates] || ProfessionalTemplate;
+  // Map V1 template IDs to V2 template IDs
+  const v2TemplateId = templateId.endsWith('-v2') 
+    ? templateId 
+    : `${templateId}-v2`;
+  
+  // Convert resume data to V2 format
+  const v2ResumeData = convertV1ToV2(resumeData);
 
   return (
-    <div
-      className="flex h-full w-full items-start justify-center overflow-auto bg-gray-100 p-3 sm:p-4"
-      id="resume-preview"
-    >
-      <div className="relative w-full max-w-[210mm] rounded-lg bg-white shadow-2xl">
-        <Template resumeData={resumeData} themeColor={themeColor} />
-      </div>
+    <div className="w-full h-full bg-white">
+      <ResumeRenderer
+        resumeData={v2ResumeData}
+        templateId={v2TemplateId}
+        themeColor={themeColor}
+        editable={false}
+      />
     </div>
   );
 };
