@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
+import { SubscriptionCard } from '@/components/SubscriptionCard';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -163,7 +164,10 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
       <Header />
-      <div className="max-w-3xl mx-auto py-8 p-4">
+      <div className="max-w-3xl mx-auto py-8 p-4 space-y-6">
+        {/* Subscription Card */}
+        <SubscriptionCard />
+
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">My Profile</CardTitle>

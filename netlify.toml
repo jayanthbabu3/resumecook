@@ -19,6 +19,15 @@
 [functions."enhance-resume"]
   timeout = 60
 
+[functions."create-checkout-session"]
+  timeout = 30
+
+[functions."stripe-webhook"]
+  timeout = 30
+
+[functions."customer-portal"]
+  timeout = 30
+
 # Note: CORS headers are handled dynamically in each function
 # to support multiple origins (production + localhost for dev)
 # See allowedOrigins in each function file

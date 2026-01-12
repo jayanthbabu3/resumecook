@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin, Check, X, Crown, Wand2, Upload, Linkedin, Infinity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -209,20 +209,22 @@ const Hero = () => {
     projects: [
       {
         id: "proj-0",
-        title: "DevFlow CLI",
+        name: "DevFlow CLI",
         role: "Creator & Maintainer",
         description: "Built a developer productivity CLI tool with 2,000+ GitHub stars that automates common development workflows",
         technologies: ["Go", "Cobra", "GitHub Actions"],
-        link: "github.com/sarahjdev/devflow",
+        techStack: ["Go", "Cobra", "GitHub Actions"],
+        url: "github.com/sarahjdev/devflow",
         startDate: "2022-01",
         endDate: ""
       },
       {
         id: "proj-1",
-        title: "Real-time Analytics Dashboard",
+        name: "Real-time Analytics Dashboard",
         role: "Lead Developer",
         description: "Developed a real-time analytics dashboard for monitoring application performance metrics",
         technologies: ["React", "D3.js", "WebSocket", "Node.js"],
+        techStack: ["React", "D3.js", "WebSocket", "Node.js"],
         startDate: "2021-06",
         endDate: "2021-12"
       }
@@ -245,7 +247,7 @@ const Hero = () => {
     ],
     languages: [
       { id: "lang-0", language: "English", proficiency: "Native" },
-      { id: "lang-1", language: "Spanish", proficiency: "Conversational" }
+      { id: "lang-1", language: "Spanish", proficiency: "Intermediate" }
     ],
     achievements: [
       { id: "ach-0", title: "Engineering Excellence Award", description: "Recognized for outstanding contributions to platform reliability", date: "2023" },
@@ -1704,6 +1706,149 @@ const Hero = () => {
                   Tools and tips to help you advance in your career and land better opportunities.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-16 md:py-20 relative overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-violet-50" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(59,130,246,0.1),transparent)]" />
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center space-y-4 mb-12">
+              <Badge variant="outline" className="px-4 py-1.5 text-sm font-medium border-primary/20 bg-primary/5">
+                <Sparkles className="h-3.5 w-3.5 mr-1.5 text-primary" />
+                Simple Pricing
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Free to start,{" "}
+                <span className="bg-gradient-to-r from-primary via-blue-600 to-violet-600 bg-clip-text text-transparent">
+                  Pro to grow
+                </span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Build professional resumes for free. Upgrade to Pro for AI-powered features.
+              </p>
+            </div>
+
+            {/* Pricing Cards */}
+            <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {/* Free Plan */}
+              <div className="rounded-xl border border-border/60 bg-white/80 backdrop-blur-sm p-4 shadow-sm hover:shadow-md transition-all">
+                <div className="space-y-3">
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground">Free</h3>
+                    <p className="text-xs text-muted-foreground">Forever free</p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-foreground">$0</span>
+                    <span className="text-sm text-muted-foreground">/mo</span>
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    className="w-full h-9 text-sm font-medium"
+                    onClick={() => navigate("/templates")}
+                  >
+                    Get Started
+                    <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                  </Button>
+
+                  <ul className="space-y-1.5 pt-3 border-t border-border/60">
+                    {[
+                      "Resume Builder",
+                      "All Templates",
+                      "Style Customization",
+                      "PDF Download",
+                      "Manual Editing",
+                    ].map((feature, index) => (
+                      <li key={index} className="flex items-center gap-2 text-xs">
+                        <Check className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" />
+                        <span className="text-foreground">{feature}</span>
+                      </li>
+                    ))}
+                    {[
+                      "LinkedIn Import",
+                      "AI Enhancement",
+                      "Job Tailoring",
+                    ].map((feature, index) => (
+                      <li key={index} className="flex items-center gap-2 text-xs">
+                        <X className="h-3.5 w-3.5 text-gray-300 flex-shrink-0" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Pro Plan */}
+              <div className="relative rounded-xl border-2 border-primary bg-white/90 backdrop-blur-sm p-4 shadow-lg">
+                {/* Popular Badge */}
+                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
+                  <Badge className="bg-primary text-white px-2 py-0.5 text-[10px] font-semibold shadow-md">
+                    <Crown className="h-2.5 w-2.5 mr-1" />
+                    Popular
+                  </Badge>
+                </div>
+
+                <div className="space-y-3 pt-1">
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground flex items-center gap-1.5">
+                      Pro
+                      <Sparkles className="h-3.5 w-3.5 text-primary" />
+                    </h3>
+                    <p className="text-xs text-muted-foreground">AI superpowers</p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-foreground">$9</span>
+                    <span className="text-sm text-muted-foreground">/mo</span>
+                    <span className="ml-1.5 text-[10px] text-muted-foreground">(₹149 India)</span>
+                  </div>
+
+                  <Button
+                    className="w-full h-9 text-sm font-medium bg-primary hover:bg-primary/90 shadow-md shadow-primary/20"
+                    onClick={() => navigate("/pricing")}
+                  >
+                    <Zap className="mr-1.5 h-3.5 w-3.5" />
+                    Upgrade
+                  </Button>
+
+                  <ul className="space-y-1.5 pt-3 border-t border-border/60">
+                    <li className="text-[10px] text-muted-foreground">Everything in Free, plus:</li>
+                    {[
+                      "LinkedIn Import",
+                      "Resume Upload & Parse",
+                      "AI Resume Enhancement",
+                      "Job Tailoring",
+                      "Generate from Job Description",
+                      "Multiple Resumes",
+                    ].map((feature, index) => (
+                      <li key={index} className="flex items-center gap-2 text-xs">
+                        <Check className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                        <span className="text-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* View Full Pricing Link */}
+            <div className="text-center mt-6">
+              <button
+                className="inline-flex items-center text-sm text-primary hover:text-primary/80 font-medium transition-colors"
+                onClick={() => navigate("/pricing")}
+              >
+                View full pricing details
+                <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+              </button>
             </div>
           </div>
         </div>

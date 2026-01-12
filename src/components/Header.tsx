@@ -1,9 +1,11 @@
 import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown } from "lucide-react";
+import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
+import { useSubscription } from "@/hooks/useSubscription";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +24,7 @@ import {
 const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
   const { user, signOut } = useFirebaseAuth();
+  const { isPro } = useSubscription();
 
   // Memoize user-related values to prevent recalculation
   const userInfo = useMemo(() => {
@@ -53,6 +56,7 @@ const HeaderComponent: React.FC = () => {
   const navItems = useMemo(() => {
     const baseItems = [
       { label: "Templates", to: "/templates", icon: LayoutDashboard },
+      { label: "Pricing", to: "/pricing", icon: CreditCard },
       { label: "ATS Guide", to: "/ats-guidelines", icon: BookOpen },
     ];
 
@@ -139,19 +143,42 @@ const HeaderComponent: React.FC = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="hidden md:flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-gray-100 transition-colors duration-200">
-                    <Avatar className="h-8 w-8 ring-2 ring-gray-100">
-                      <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
-                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white text-sm font-semibold">
-                        {userInfo.initials}
-                      </AvatarFallback>
-                    </Avatar>
+                    <div className="relative">
+                      <Avatar className={cn(
+                        "h-8 w-8 ring-2",
+                        isPro ? "ring-primary/50" : "ring-gray-100"
+                      )}>
+                        <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
+                        <AvatarFallback className={cn(
+                          "text-white text-sm font-semibold",
+                          isPro
+                            ? "bg-gradient-to-br from-primary to-violet-600"
+                            : "bg-gradient-to-br from-primary to-primary/80"
+                        )}>
+                          {userInfo.initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      {isPro && (
+                        <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center ring-2 ring-white">
+                          <Crown className="h-2.5 w-2.5 text-white" />
+                        </div>
+                      )}
+                    </div>
                     <ChevronDown className="h-4 w-4 text-gray-400" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 rounded-xl shadow-lg border-gray-100" align="end">
                   {/* User Info */}
                   <div className="px-3 py-3 border-b border-gray-100">
-                    <p className="font-semibold text-sm text-gray-900">{userInfo.displayName}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold text-sm text-gray-900">{userInfo.displayName}</p>
+                      {isPro && (
+                        <Badge className="bg-gradient-to-r from-primary to-violet-600 text-white text-[10px] px-1.5 py-0 h-4 border-0">
+                          <Sparkles className="h-2.5 w-2.5 mr-0.5" />
+                          PRO
+                        </Badge>
+                      )}
+                    </div>
                     <p className="text-xs text-gray-500 mt-0.5">{userInfo.email}</p>
                   </div>
 
@@ -197,12 +224,27 @@ const HeaderComponent: React.FC = () => {
             {/* Mobile Menu */}
             <div className="flex lg:hidden items-center gap-2">
               {user && (
-                <Avatar className="h-8 w-8 ring-2 ring-gray-100 hidden sm:flex">
-                  <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
-                  <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white text-sm font-semibold">
-                    {userInfo.initials}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="relative hidden sm:flex">
+                  <Avatar className={cn(
+                    "h-8 w-8 ring-2",
+                    isPro ? "ring-primary/50" : "ring-gray-100"
+                  )}>
+                    <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
+                    <AvatarFallback className={cn(
+                      "text-white text-sm font-semibold",
+                      isPro
+                        ? "bg-gradient-to-br from-primary to-violet-600"
+                        : "bg-gradient-to-br from-primary to-primary/80"
+                    )}>
+                      {userInfo.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  {isPro && (
+                    <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center ring-2 ring-white">
+                      <Crown className="h-2.5 w-2.5 text-white" />
+                    </div>
+                  )}
+                </div>
               )}
 
               <Sheet>
@@ -264,17 +306,45 @@ const HeaderComponent: React.FC = () => {
                       <div className="mt-4 pt-4 border-t border-gray-100">
                         {/* User Card */}
                         <div
-                          className="flex flex-row items-center gap-3 px-3 py-3 mb-3 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20"
+                          className={cn(
+                            "flex flex-row items-center gap-3 px-3 py-3 mb-3 rounded-xl border",
+                            isPro
+                              ? "bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/30"
+                              : "bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20"
+                          )}
                           style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
                         >
-                          <Avatar className="h-10 w-10 ring-2 ring-white shadow-sm flex-shrink-0">
-                            <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
-                            <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white text-sm font-bold">
-                              {userInfo.initials}
-                            </AvatarFallback>
-                          </Avatar>
+                          <div className="relative flex-shrink-0">
+                            <Avatar className={cn(
+                              "h-10 w-10 ring-2 shadow-sm",
+                              isPro ? "ring-primary/50" : "ring-white"
+                            )}>
+                              <AvatarImage src={userInfo.photoURL} alt={userInfo.displayName} />
+                              <AvatarFallback className={cn(
+                                "text-white text-sm font-bold",
+                                isPro
+                                  ? "bg-gradient-to-br from-primary to-violet-600"
+                                  : "bg-gradient-to-br from-primary to-primary/80"
+                              )}>
+                                {userInfo.initials}
+                              </AvatarFallback>
+                            </Avatar>
+                            {isPro && (
+                              <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center ring-2 ring-white">
+                                <Crown className="h-2.5 w-2.5 text-white" />
+                              </div>
+                            )}
+                          </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm text-gray-900 truncate">{userInfo.displayName}</p>
+                            <div className="flex items-center gap-2">
+                              <p className="font-semibold text-sm text-gray-900 truncate">{userInfo.displayName}</p>
+                              {isPro && (
+                                <Badge className="bg-gradient-to-r from-primary to-violet-600 text-white text-[10px] px-1.5 py-0 h-4 border-0">
+                                  <Sparkles className="h-2.5 w-2.5 mr-0.5" />
+                                  PRO
+                                </Badge>
+                              )}
+                            </div>
                             <p className="text-xs text-gray-500 truncate">{userInfo.email}</p>
                           </div>
                         </div>

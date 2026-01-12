@@ -52,6 +52,7 @@ import { MonthYearPicker } from '@/components/ui/month-year-picker';
 import { toast } from 'sonner';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { profileService, UserProfile } from '../services/profileService';
+import { SubscriptionCard } from '@/components/SubscriptionCard';
 import { cn } from '@/lib/utils';
 import {
   User,
@@ -1517,6 +1518,9 @@ const ProfilePageV2: React.FC = () => {
           completeness={completeness}
           onEditPersonal={() => openEditModal('personal')}
         />
+
+        {/* Subscription Section */}
+        <SubscriptionCard className="mt-6" />
 
         {/* Summary Section */}
         <div className="mt-6 p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
