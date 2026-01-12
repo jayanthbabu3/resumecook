@@ -21,7 +21,9 @@ import { ResumeUploadModal } from '@/v2/components/ResumeUploadModal';
 import { TemplateSelectorModal } from '@/v2/components/TemplateSelectorModal';
 import { JobTailorModal } from '@/v2/components/JobTailorModal';
 import { AuthModal } from '@/components/AuthModal';
+import { ProFeatureModal } from '@/v2/components/ProFeatureModal';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import type { V2ResumeData } from '../types';
 
 interface TailorAnalysis {
@@ -37,6 +39,7 @@ interface TailorAnalysis {
 const DashboardV2 = () => {
   const navigate = useNavigate();
   const { user } = useFirebaseAuth();
+  const { isPro } = useSubscription();
   const [linkedInModalOpen, setLinkedInModalOpen] = useState(false);
   const [resumeUploadModalOpen, setResumeUploadModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -44,6 +47,9 @@ const DashboardV2 = () => {
   const [jobTailorModalOpen, setJobTailorModalOpen] = useState(false);
   const [pendingResumeData, setPendingResumeData] = useState<V2ResumeData | null>(null);
   const [pendingTailorAnalysis, setPendingTailorAnalysis] = useState<TailorAnalysis | null>(null);
+  // Pro Feature Modal state
+  const [proModalOpen, setProModalOpen] = useState(false);
+  const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
 
   const v2Templates = getAllTemplates();
   const fresherTemplates = getFresherTemplates();
@@ -61,10 +67,38 @@ const DashboardV2 = () => {
   }));
 
   const handleLinkedInClick = () => {
-    if (user) {
-      setLinkedInModalOpen(true);
+    if (!user || !isPro) {
+      setProModalFeature({
+        name: 'LinkedIn Import',
+        description: 'Import your professional profile instantly',
+      });
+      setProModalOpen(true);
     } else {
-      setAuthModalOpen(true);
+      setLinkedInModalOpen(true);
+    }
+  };
+
+  const handleResumeUploadClick = () => {
+    if (!user || !isPro) {
+      setProModalFeature({
+        name: 'Resume Upload',
+        description: 'Parse existing PDF/DOCX files with smart AI',
+      });
+      setProModalOpen(true);
+    } else {
+      setResumeUploadModalOpen(true);
+    }
+  };
+
+  const handleJobTailorClick = () => {
+    if (!user || !isPro) {
+      setProModalFeature({
+        name: 'Job Tailoring',
+        description: 'Match any job description automatically with AI',
+      });
+      setProModalOpen(true);
+    } else {
+      setJobTailorModalOpen(true);
     }
   };
 
@@ -186,7 +220,7 @@ const DashboardV2 = () => {
 
           {/* Upload Resume */}
           <button
-            onClick={() => setResumeUploadModalOpen(true)}
+            onClick={handleResumeUploadClick}
             className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
           >
             <div className="flex items-start justify-between mb-4">
@@ -207,7 +241,7 @@ const DashboardV2 = () => {
 
           {/* Tailor for Job */}
           <button
-            onClick={() => setJobTailorModalOpen(true)}
+            onClick={handleJobTailorClick}
             className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left col-span-2 sm:col-span-1"
           >
             <div className="flex items-start justify-between mb-4">
@@ -395,6 +429,14 @@ const DashboardV2 = () => {
         onClose={() => setJobTailorModalOpen(false)}
         onComplete={handleJobTailorComplete}
         themeColor="#f59e0b"
+      />
+
+      {/* Pro Feature Modal - Shows for non-logged-in or non-Pro users */}
+      <ProFeatureModal
+        isOpen={proModalOpen}
+        onClose={() => setProModalOpen(false)}
+        featureName={proModalFeature.name}
+        featureDescription={proModalFeature.description}
       />
     </div>
   );

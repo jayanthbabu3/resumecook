@@ -1,3 +1,3 @@
-import { DS_FRESHER_DATA } from '../../data/fresherMockData';
-export const mockData = DS_FRESHER_DATA;
+import { UIUX_FRESHER_DATA } from '../../data/fresherMockData';
+export const mockData = UIUX_FRESHER_DATA;
 export default mockData;

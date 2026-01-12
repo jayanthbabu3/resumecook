@@ -30,7 +30,7 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
       {items.map((item, index) => {
         const technologies = item.technologies ?? item.techStack ?? [];
         const techPath = item.technologies ? 'technologies' : 'techStack';
@@ -48,7 +48,7 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
             key={item.id || index}
             className="group relative"
             style={{
-              padding: '8px 0',
+              padding: '4px 0',
               borderBottom: '1px solid #f3f4f6',
             }}
           >

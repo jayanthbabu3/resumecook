@@ -22,7 +22,7 @@ export interface SkillsVariantProps {
   onUpdateSkill?: (skillId: string, field: string, value: any) => void;
 }
 
-export type SkillsVariant = 
+export type SkillsVariant =
   | 'pills'         // Rounded pill badges
   | 'tags'          // Tag-style badges
   | 'bars'          // Progress bars
@@ -36,6 +36,8 @@ export type SkillsVariant =
   | 'radar'         // Radar/spider chart style
   | 'modern'        // Modern cards with icons
   | 'category-lines' // Grouped headings with inline lists
+  | 'table'          // Table format with categories
   | 'bordered-tags'  // Production-ready bordered rectangular tags
   | 'pills-accent'   // Production-ready accent-colored pills
-  | 'inline-dots';   // Production-ready inline with dot separators
+  | 'inline-dots'    // Production-ready inline with dot separators
+  | 'boxed';         // Stacked bordered boxes - one skill per box

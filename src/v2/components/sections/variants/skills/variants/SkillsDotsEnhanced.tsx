@@ -39,8 +39,15 @@ export const SkillsDotsEnhanced: React.FC<SkillsVariantProps> = ({
     }
   };
 
+  // Use 2-column grid layout for better space utilization
+  const columns = config.skills?.columns || 2;
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: `repeat(${columns}, 1fr)`,
+      gap: '10px 24px'
+    }}>
       {items.map((skill, index) => {
         const level = skill.level || 3;
         const displayLevel = hoverIndex === index && hoverLevel !== null ? hoverLevel : level;
@@ -115,14 +122,16 @@ export const SkillsDotsEnhanced: React.FC<SkillsVariantProps> = ({
       })}
       
       {editable && onAddSkill && (
-        <button
-          onClick={onAddSkill}
-          className="mt-2 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
-          style={{ color: accentColor, borderColor: accentColor }}
-        >
-          <Plus className="h-3 w-3" />
-          Add Skill
-        </button>
+        <div style={{ gridColumn: `span ${columns}` }}>
+          <button
+            onClick={onAddSkill}
+            className="mt-2 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
+            style={{ color: accentColor, borderColor: accentColor }}
+          >
+            <Plus className="h-3 w-3" />
+            Add Skill
+          </button>
+        </div>
       )}
     </div>
   );

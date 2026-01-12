@@ -31,6 +31,7 @@ export type AchievementsVariant =
   | 'minimal'
   | 'metrics'
   | 'numbered'
+  | 'boxed'              // Stacked bordered boxes
   | 'achievements-classic'
   | 'achievements-metrics'
   | 'achievements-cards'

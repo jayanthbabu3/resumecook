@@ -16,10 +16,12 @@ import {
   SkillsCompact,
   SkillsColumns,
   SkillsCategoryLines,
+  SkillsTable,
 } from './variants';
 import { SkillsBorderedTags } from './SkillsBorderedTags';
 import { SkillsPillsAccent } from './SkillsPillsAccent';
 import { SkillsInlineDots } from './SkillsInlineDots';
+import { SkillsBoxed } from './SkillsBoxed';
 
 // Re-export types for external use
 export type { SkillsVariantProps, SkillsVariant } from './types';
@@ -124,6 +126,21 @@ export const SkillsVariantRenderer: React.FC<SkillsVariantRendererProps> = ({
       // Production-ready inline with dots variant
       return (
         <SkillsInlineDots
+          skills={items}
+          config={config}
+          accentColor={accentColor}
+          editable={editable}
+        />
+      );
+
+    case 'table':
+      // Table format with category rows
+      return <SkillsTable {...props} />;
+
+    case 'boxed':
+      // Stacked bordered boxes - one skill per box
+      return (
+        <SkillsBoxed
           skills={items}
           config={config}
           accentColor={accentColor}

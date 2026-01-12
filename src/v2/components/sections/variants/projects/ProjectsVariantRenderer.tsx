@@ -12,6 +12,7 @@ import {
   ProjectsCards,
   ProjectsCompact,
   ProjectsDetailed,
+  ProjectsGrid,
 } from './variants';
 
 // Re-export types for external use
@@ -51,8 +52,13 @@ export const ProjectsVariantRenderer: React.FC<ProjectsVariantRendererProps> = (
   };
 
   // Dispatch based on variant
-  if (variant === 'cards' || variant === 'grid' || variant === 'projects-card' || variant === 'projects-grid' || variant === 'projects-boxed') {
+  if (variant === 'cards' || variant === 'projects-card' || variant === 'projects-boxed') {
     return <ProjectsCards {...props} />;
+  }
+
+  // New grid variant - 2-3 columns side by side
+  if (variant === 'grid' || variant === 'projects-grid' || variant === 'two-column' || variant === 'three-column') {
+    return <ProjectsGrid {...props} columns={variant === 'three-column' ? 3 : 2} />;
   }
 
   if (variant === 'detailed' || variant === 'projects-detailed' || variant === 'showcase' || variant === 'projects-showcase' || variant === 'projects-impact') {

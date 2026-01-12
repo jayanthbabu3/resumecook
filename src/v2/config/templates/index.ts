@@ -39,6 +39,13 @@ import { fresherMinimalConfig } from './fresher-minimal';
 import { fresherProfessionalConfig } from './fresher-professional';
 import { fresherTechConfig } from './fresher-tech';
 import { fresherClassicConfig } from './fresher-classic';
+import { fresherTechnicalConfig } from './fresher-technical';
+import { fresherAtsProConfig } from './fresher-ats-pro';
+import { fresherCreativeCardConfig } from './fresher-creative-card';
+
+// Professional Templates
+import { adminAssistantProConfig } from './admin-assistant-pro';
+import { projectManagerProConfig } from './project-manager-pro';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -74,6 +81,12 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'fresher-professional-v2': fresherProfessionalConfig,
   'fresher-tech-v2': fresherTechConfig,
   'fresher-classic-v2': fresherClassicConfig,
+  'fresher-technical-v2': fresherTechnicalConfig,
+  'fresher-ats-pro-v2': fresherAtsProConfig,
+  'fresher-creative-card-v2': fresherCreativeCardConfig,
+  // Professional Templates
+  'admin-assistant-pro-v2': adminAssistantProConfig,
+  'project-manager-pro-v2': projectManagerProConfig,
 };
 
 // Get template by ID
@@ -125,4 +138,10 @@ export {
   fresherProfessionalConfig,
   fresherTechConfig,
   fresherClassicConfig,
+  fresherTechnicalConfig,
+  fresherAtsProConfig,
+  fresherCreativeCardConfig,
+  // Professional Templates
+  adminAssistantProConfig,
+  projectManagerProConfig,
 };

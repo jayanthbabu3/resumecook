@@ -1,13 +1,3 @@
-/**
- * Executive Split Template Mock Data
- * 
- * Sample resume data optimized for the executive split layout.
- * Features an experienced CTO with strong achievements.
- */
-
-import type { ResumeData } from '@/types/resume';
-import { EXECUTIVE_CTO_DATA } from '@/v2/data/mockData';
-
-export const mockData: ResumeData = EXECUTIVE_CTO_DATA;
-
+import { JAYANTH_RESUME_DATA } from '../../data/mockData';
+export const mockData = JAYANTH_RESUME_DATA;
 export default mockData;

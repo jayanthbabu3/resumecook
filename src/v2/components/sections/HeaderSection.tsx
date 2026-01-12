@@ -1413,6 +1413,663 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'sidebar-card':
+        // Card-style header with accent sidebar stripe on left
+        const sidebarCardAvatar = renderAvatar({
+          size: header.photoSize || '70px',
+          borderColor: accent,
+          backgroundColor: `${accent}15`,
+          textColor: accent,
+          borderWidth: '3px',
+        });
+
+        const sidebarCardContactStyle: React.CSSProperties = {
+          fontSize: scaleFontSize(typography.contact.fontSize),
+          color: typography.contact.color,
+          fontFamily: baseFontFamily,
+        };
+
+        return (
+          <div
+            data-header="sidebar-card"
+            style={{
+              display: 'flex',
+              fontFamily: baseFontFamily,
+              border: `1px solid ${colors.border}`,
+              borderRadius: '8px',
+              overflow: 'hidden',
+              margin: header.padding || '0',
+            }}
+          >
+            {/* Accent sidebar stripe */}
+            <div
+              style={{
+                width: '6px',
+                backgroundColor: accent,
+                flexShrink: 0,
+              }}
+            />
+
+            {/* Main content */}
+            <div style={{ flex: 1, padding: '24px 28px' }}>
+              <div className="flex items-start gap-5">
+                {showPhoto && sidebarCardAvatar}
+                <div className="flex-1">
+                  {/* Name */}
+                  <h1 style={{
+                    fontSize: scaleFontSize(typography.name.fontSize),
+                    fontWeight: typography.name.fontWeight,
+                    color: typography.name.color,
+                    margin: 0,
+                    letterSpacing: typography.name.letterSpacing || '-0.02em',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.fullName"
+                        value={personalInfo.fullName || 'Your Name'}
+                        style={{
+                          fontSize: scaleFontSize(typography.name.fontSize),
+                          fontWeight: typography.name.fontWeight,
+                          color: typography.name.color,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.fullName || 'Your Name'
+                    )}
+                  </h1>
+
+                  {/* Title with accent color */}
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: typography.title.fontWeight,
+                    color: accent,
+                    margin: '6px 0 0 0',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize),
+                          fontWeight: typography.title.fontWeight,
+                          color: accent,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+
+                  {/* Contact in row */}
+                  <div
+                    className="flex flex-wrap items-center gap-x-4 gap-y-2"
+                    style={{ marginTop: '14px' }}
+                  >
+                    {renderContact()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'modern-split':
+        // Modern split: Name/title on left, contact grid on right
+        const modernSplitAvatar = renderAvatar({
+          size: header.photoSize || '60px',
+          borderColor: accent,
+          backgroundColor: `${accent}10`,
+          textColor: accent,
+          borderWidth: '2px',
+        });
+
+        const modernSplitContactStyle: React.CSSProperties = {
+          fontSize: scaleFontSize(typography.contact.fontSize),
+          color: typography.contact.color,
+          fontFamily: baseFontFamily,
+        };
+        const modernSplitIconSize = header.contactIcons?.size || '13px';
+
+        const renderModernSplitContact = (
+          icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          href?: string
+        ) => {
+          if (!editable && !value) return null;
+          const Icon = icon;
+          const showIcon = header.contactIcons?.show !== false;
+
+          return (
+            <div className="flex items-center gap-2" style={modernSplitContactStyle}>
+              {showIcon && <Icon style={{ width: modernSplitIconSize, height: modernSplitIconSize, color: accent, flexShrink: 0 }} />}
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={modernSplitContactStyle}
+                />
+              ) : href ? (
+                <a href={href} target="_blank" rel="noopener noreferrer" style={{ ...modernSplitContactStyle, textDecoration: 'none' }}>
+                  {value}
+                </a>
+              ) : (
+                <span>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="modern-split"
+            style={{
+              padding: header.padding || '24px 28px',
+              fontFamily: baseFontFamily,
+              borderBottom: `2px solid ${accent}`,
+            }}
+          >
+            <div className="flex justify-between items-start gap-6">
+              {/* Left: Photo + Name/Title */}
+              <div className="flex items-center gap-4">
+                {showPhoto && modernSplitAvatar}
+                <div>
+                  <h1 style={{
+                    fontSize: scaleFontSize(typography.name.fontSize),
+                    fontWeight: typography.name.fontWeight,
+                    color: typography.name.color,
+                    margin: 0,
+                    letterSpacing: typography.name.letterSpacing || '-0.02em',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.fullName"
+                        value={personalInfo.fullName || 'Your Name'}
+                        style={{
+                          fontSize: scaleFontSize(typography.name.fontSize),
+                          fontWeight: typography.name.fontWeight,
+                          color: typography.name.color,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.fullName || 'Your Name'
+                    )}
+                  </h1>
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: typography.title.fontWeight,
+                    color: accent,
+                    margin: '4px 0 0 0',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize),
+                          fontWeight: typography.title.fontWeight,
+                          color: accent,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right: Contact grid (2 columns) */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, auto)',
+                  gap: '8px 24px',
+                  justifyItems: 'start',
+                }}
+              >
+                {renderModernSplitContact(Mail, personalInfo.email, 'personalInfo.email')}
+                {renderModernSplitContact(Phone, personalInfo.phone, 'personalInfo.phone')}
+                {renderModernSplitContact(MapPin, personalInfo.location, 'personalInfo.location')}
+                {includeSocialLinks && renderModernSplitContact(
+                  Linkedin,
+                  personalInfo.linkedin,
+                  'personalInfo.linkedin',
+                  personalInfo.linkedin?.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`
+                )}
+                {includeSocialLinks && renderModernSplitContact(
+                  Github,
+                  personalInfo.github,
+                  'personalInfo.github',
+                  personalInfo.github?.startsWith('http') ? personalInfo.github : `https://${personalInfo.github}`
+                )}
+                {includeSocialLinks && renderModernSplitContact(
+                  Globe,
+                  personalInfo.portfolio,
+                  'personalInfo.portfolio',
+                  personalInfo.portfolio?.startsWith('http') ? personalInfo.portfolio : `https://${personalInfo.portfolio}`
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'boxed-accent':
+        // Boxed header with accent color border and centered content
+        const boxedAccentAvatar = renderAvatar({
+          size: header.photoSize || '72px',
+          borderColor: accent,
+          backgroundColor: `${accent}12`,
+          textColor: accent,
+          borderWidth: '3px',
+        });
+
+        const boxedContactStyle: React.CSSProperties = {
+          fontSize: scaleFontSize(typography.contact.fontSize),
+          color: typography.contact.color,
+          fontFamily: baseFontFamily,
+        };
+
+        return (
+          <div
+            data-header="boxed-accent"
+            style={{
+              border: `2px solid ${accent}`,
+              borderRadius: '12px',
+              padding: header.padding || '28px 32px',
+              margin: '0',
+              fontFamily: baseFontFamily,
+              backgroundColor: `${accent}05`,
+            }}
+          >
+            <div className="text-center">
+              {/* Photo centered */}
+              {showPhoto && (
+                <div className="flex justify-center" style={{ marginBottom: '16px' }}>
+                  {boxedAccentAvatar}
+                </div>
+              )}
+
+              {/* Name */}
+              <h1 style={{
+                fontSize: scaleFontSize(typography.name.fontSize),
+                fontWeight: typography.name.fontWeight,
+                color: typography.name.color,
+                margin: 0,
+                letterSpacing: typography.name.letterSpacing || '-0.02em',
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={personalInfo.fullName || 'Your Name'}
+                    style={{
+                      fontSize: scaleFontSize(typography.name.fontSize),
+                      fontWeight: typography.name.fontWeight,
+                      color: typography.name.color,
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  personalInfo.fullName || 'Your Name'
+                )}
+              </h1>
+
+              {/* Title with accent underline */}
+              <div style={{ position: 'relative', display: 'inline-block', marginTop: '8px' }}>
+                <p style={{
+                  fontSize: scaleFontSize(typography.title.fontSize),
+                  fontWeight: typography.title.fontWeight,
+                  color: accent,
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.title"
+                      value={personalInfo.title || 'Professional Title'}
+                      style={{
+                        fontSize: scaleFontSize(typography.title.fontSize),
+                        fontWeight: typography.title.fontWeight,
+                        color: accent,
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.title
+                  )}
+                </p>
+                {/* Accent underline */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '-6px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '50px',
+                    height: '3px',
+                    backgroundColor: accent,
+                    borderRadius: '2px',
+                  }}
+                />
+              </div>
+
+              {/* Contact info centered */}
+              <div
+                className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2"
+                style={{ marginTop: '20px' }}
+              >
+                {renderContact()}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'summary-photo-right':
+        // Professional header with name, title, summary paragraph, contact row with separators, and photo on top-right
+        const summaryPhotoRightSize = header.photoSize || '90px';
+        const summaryPhotoRightAvatar = renderAvatar({
+          size: summaryPhotoRightSize,
+          borderColor: '#e5e7eb',
+          backgroundColor: '#f8fafc',
+          textColor: accent,
+          borderWidth: '2px',
+        });
+
+        // Contact items with separator style
+        const renderSeparatedContact = () => {
+          const contactItems = [
+            { value: personalInfo.phone, path: 'personalInfo.phone' },
+            { value: personalInfo.location, path: 'personalInfo.location' },
+            { value: personalInfo.email, path: 'personalInfo.email' },
+            { value: personalInfo.linkedin, path: 'personalInfo.linkedin' },
+          ].filter(item => editable || (item.value && item.value.trim()));
+
+          return (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '0',
+                fontSize: scaleFontSize(typography.contact.fontSize),
+                color: typography.contact.color,
+                fontFamily: baseFontFamily,
+              }}
+            >
+              {contactItems.map((item, index) => (
+                <React.Fragment key={item.path}>
+                  {index > 0 && (
+                    <span style={{ margin: '0 12px', color: typography.dates.color }}>/</span>
+                  )}
+                  {editable ? (
+                    <InlineEditableText
+                      path={item.path}
+                      value={item.value || 'Click to edit'}
+                      style={{ fontSize: scaleFontSize(typography.contact.fontSize), color: typography.contact.color, fontFamily: baseFontFamily }}
+                    />
+                  ) : (
+                    <span>{item.value}</span>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="summary-photo-right"
+            style={{
+              padding: header.padding || '0',
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Main content row with photo on right */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+              {/* Left content area */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Name in accent color */}
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize),
+                  fontWeight: typography.name.fontWeight,
+                  lineHeight: typography.name.lineHeight,
+                  letterSpacing: typography.name.letterSpacing || '-0.01em',
+                  color: accent,
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize),
+                        fontWeight: typography.name.fontWeight,
+                        color: accent,
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                {/* Title */}
+                <p style={{
+                  fontSize: scaleFontSize(typography.title.fontSize),
+                  fontWeight: typography.title.fontWeight,
+                  lineHeight: typography.title.lineHeight,
+                  color: typography.title.color || typography.text?.primary || '#1a1a1a',
+                  margin: '4px 0 0 0',
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.title"
+                      value={personalInfo.title || 'Professional Title'}
+                      style={{
+                        fontSize: scaleFontSize(typography.title.fontSize),
+                        fontWeight: typography.title.fontWeight,
+                        color: typography.title.color || typography.text?.primary || '#1a1a1a',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.title
+                  )}
+                </p>
+
+                {/* Summary paragraph */}
+                {(editable || personalInfo.summary) && (
+                  <p style={{
+                    fontSize: scaleFontSize(typography.body.fontSize),
+                    fontWeight: typography.body.fontWeight,
+                    lineHeight: typography.body.lineHeight,
+                    color: typography.body.color,
+                    margin: '16px 0 0 0',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.summary"
+                        value={personalInfo.summary || 'Write a brief professional summary here...'}
+                        style={{
+                          fontSize: scaleFontSize(typography.body.fontSize),
+                          fontWeight: typography.body.fontWeight,
+                          lineHeight: typography.body.lineHeight,
+                          color: typography.body.color,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.summary
+                    )}
+                  </p>
+                )}
+              </div>
+
+              {/* Photo on right */}
+              {showPhoto && (
+                <div style={{ flexShrink: 0 }}>
+                  {summaryPhotoRightAvatar}
+                </div>
+              )}
+            </div>
+
+            {/* Contact info row with top and bottom separator lines */}
+            <div
+              style={{
+                marginTop: '20px',
+                padding: '14px 0',
+                borderTop: `1px solid ${colors.border}`,
+                borderBottom: `1px solid ${colors.border}`,
+              }}
+            >
+              {renderSeparatedContact()}
+            </div>
+          </div>
+        );
+
+      case 'boxed-contact-icons':
+        // Professional header with serif name, title, contact in bordered boxes with icons
+        // Used in Project Manager Pro template - matches Jane Rutherford design
+        const boxedIconsContactStyle: React.CSSProperties = {
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 14px',
+          border: `1px solid ${colors.border || '#e5e7eb'}`,
+          borderRadius: '4px',
+          fontSize: scaleFontSize(typography.contact.fontSize),
+          color: typography.contact.color,
+          fontFamily: baseFontFamily,
+          whiteSpace: 'nowrap',
+        };
+
+        const boxedIconsIconStyle = {
+          width: '14px',
+          height: '14px',
+          color: accent,
+          flexShrink: 0,
+        };
+
+        const renderBoxedIconsContactItem = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          href?: string
+        ) => {
+          if (!editable && !value) return null;
+
+          return (
+            <div style={boxedIconsContactStyle}>
+              <Icon style={boxedIconsIconStyle} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{
+                    fontSize: scaleFontSize(typography.contact.fontSize),
+                    color: typography.contact.color,
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : href ? (
+                <a href={href} style={{ color: typography.contact.color, textDecoration: 'none' }}>
+                  {value}
+                </a>
+              ) : (
+                <span>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="boxed-contact-icons"
+            style={{
+              padding: header.padding || '0',
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Name - Large serif style */}
+            <h1 style={{
+              fontSize: scaleFontSize(typography.name.fontSize),
+              fontWeight: typography.name.fontWeight,
+              lineHeight: typography.name.lineHeight,
+              letterSpacing: typography.name.letterSpacing || '-0.02em',
+              color: typography.name.color || accent,
+              margin: 0,
+              fontFamily: fontFamily?.secondary || "'Georgia', 'Times New Roman', serif",
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.fullName"
+                  value={personalInfo.fullName || 'Your Name'}
+                  style={{
+                    fontSize: scaleFontSize(typography.name.fontSize),
+                    fontWeight: typography.name.fontWeight,
+                    color: typography.name.color || accent,
+                    fontFamily: fontFamily?.secondary || "'Georgia', 'Times New Roman', serif",
+                  }}
+                />
+              ) : (
+                personalInfo.fullName || 'Your Name'
+              )}
+            </h1>
+
+            {/* Title */}
+            <p style={{
+              fontSize: scaleFontSize(typography.title.fontSize),
+              fontWeight: typography.title.fontWeight || 600,
+              lineHeight: typography.title.lineHeight,
+              color: typography.title.color || typography.text?.primary || '#1a1a1a',
+              margin: '6px 0 0 0',
+              fontFamily: baseFontFamily,
+              letterSpacing: '0.02em',
+              textTransform: 'uppercase',
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.title"
+                  value={personalInfo.title || 'Professional Title'}
+                  style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: typography.title.fontWeight || 600,
+                    color: typography.title.color || typography.text?.primary || '#1a1a1a',
+                    fontFamily: baseFontFamily,
+                    textTransform: 'uppercase',
+                  }}
+                />
+              ) : (
+                personalInfo.title
+              )}
+            </p>
+
+            {/* Contact row in bordered boxes */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              marginTop: '16px',
+            }}>
+              {renderBoxedIconsContactItem(Phone, personalInfo.phone, 'personalInfo.phone')}
+              {renderBoxedIconsContactItem(MapPin, personalInfo.location, 'personalInfo.location')}
+              {renderBoxedIconsContactItem(Mail, personalInfo.email, 'personalInfo.email', personalInfo.email ? `mailto:${personalInfo.email}` : undefined)}
+              {renderBoxedIconsContactItem(Linkedin, personalInfo.linkedin, 'personalInfo.linkedin', personalInfo.linkedin ? `https://linkedin.com/in/${personalInfo.linkedin.replace(/.*linkedin\.com\/in\//, '')}` : undefined)}
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         const photoPosition = header.photoPosition || 'left';

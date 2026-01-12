@@ -901,7 +901,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     maxWidth: '100%',
     boxSizing: 'border-box',
     position: 'relative',
-    overflow: 'hidden',
+    overflow: 'visible', // Changed from 'hidden' to allow decorations to be visible
     // Apply gradient background if decorations enabled
     ...gradientStyle,
     // CSS variables for StyleOptionsWrapper font scaling

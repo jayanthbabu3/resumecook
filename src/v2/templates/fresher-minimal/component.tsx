@@ -34,8 +34,9 @@ const FresherMinimalContent: React.FC<Omit<TemplateComponentProps, 'config'>> = 
 
   return (
     <div style={containerStyle}>
+      {/* Header outside content div for full-width top decorative line */}
+      <HeaderSection resumeData={resumeData} config={config} editable={editable} />
       <div style={contentStyle}>
-        <HeaderSection resumeData={resumeData} config={config} editable={editable} />
         {sections.map((section) => (
           <TemplateSectionRenderer key={section.id} section={section} {...props} />
         ))}

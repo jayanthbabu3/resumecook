@@ -41,4 +41,5 @@ export type ExperienceVariant =
   | 'enhanced'        // Production-ready EnhanceCV style
   | 'timeline-pro'    // Professional timeline with dates on left
   | 'icon-accent'     // Creative card with company icon badge
+  | 'icon-clean'      // Clean layout with circular icon, position in accent color
   | 'dots-timeline';  // Simple connected dots timeline

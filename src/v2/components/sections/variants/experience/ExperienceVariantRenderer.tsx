@@ -18,6 +18,7 @@ import {
   ExperienceTimelinePro,
   ExperiencePremium,
   ExperienceIconAccent,
+  ExperienceIconClean,
   ExperienceDotsTimeline,
 } from './variants';
 
@@ -91,6 +92,9 @@ export const ExperienceVariantRenderer: React.FC<ExperienceVariantRendererProps>
     case 'icon-accent':
       // Creative card with company icon badge
       return <ExperienceIconAccent {...props} />;
+    case 'icon-clean':
+      // Clean layout with circular icon, position in accent color
+      return <ExperienceIconClean {...props} />;
     case 'dots-timeline':
       // Simple connected dots timeline
       return <ExperienceDotsTimeline {...props} />;

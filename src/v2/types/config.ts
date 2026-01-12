@@ -451,7 +451,8 @@ export type DecorationElement =
   | 'header-wave'          // Wave pattern inside banner headers
   | 'diagonal-lines'       // Diagonal stripes for headers
   | 'header-circles'       // Overlapping circles for headers
-  | 'header-dots-grid';    // Dot grid pattern for headers
+  | 'header-dots-grid'     // Dot grid pattern for headers
+  | 'full-page-gradient';  // Full page gradient background for PDF compatibility
 
 export interface DecorationsConfig {
   /** Enable decorative elements */

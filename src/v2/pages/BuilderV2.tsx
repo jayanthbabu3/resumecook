@@ -60,7 +60,7 @@ import { ResumeRenderer } from '../components/ResumeRenderer';
 import { useTemplateConfig } from '../hooks/useTemplateConfig';
 import { getTemplateConfig } from '../config/templates';
 import { MOCK_RESUME_DATA } from '../data/mockData';
-import type { V2ResumeData } from '../types';
+import type { V2ResumeData, SectionType } from '../types';
 import { getTemplate } from '../templates';
 
 // V2 Dynamic Form (config-driven)
@@ -79,6 +79,10 @@ import { EnhanceWithAIModal } from '../components/EnhanceWithAIModal';
 import { JobTailorModal } from '../components/JobTailorModal';
 import { Target } from 'lucide-react';
 
+// Pro Feature Modal
+import { ProFeatureModal } from '../components/ProFeatureModal';
+import { useSubscription } from '@/hooks/useSubscription';
+
 export const BuilderV2: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -86,6 +90,7 @@ export const BuilderV2: React.FC = () => {
   const resumeId = searchParams.get('resumeId');
   const templateDefinition = getTemplate(templateId);
   const { user } = useFirebaseAuth();
+  const { isPro } = useSubscription();
 
   const initialResumeData = React.useMemo(
     () => templateDefinition?.mockData || MOCK_RESUME_DATA,
@@ -128,6 +133,9 @@ export const BuilderV2: React.FC = () => {
   const [showEnhanceModal, setShowEnhanceModal] = useState(false);
   // Job Tailor modal state
   const [showJobTailorModal, setShowJobTailorModal] = useState(false);
+  // Pro Feature modal state
+  const [showProModal, setShowProModal] = useState(false);
+  const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
 
   // Debug: Log when font changes
   React.useEffect(() => {
@@ -1443,7 +1451,7 @@ export const BuilderV2: React.FC = () => {
 
     standardSectionTypes.forEach((sectionDef, idx) => {
       // Skip if already in config (either by id or type)
-      if (existingIds.has(sectionDef.id) || existingTypes.has(sectionDef.type)) {
+      if (existingIds.has(sectionDef.id) || existingTypes.has(sectionDef.type as SectionType)) {
         console.log(`sectionsForForm - ${sectionDef.id} skipped: already in config`);
         return;
       }
@@ -1830,7 +1838,17 @@ export const BuilderV2: React.FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
-                          onClick={() => setShowEnhanceModal(true)}
+                          onClick={() => {
+                            if (!user || !isPro) {
+                              setProModalFeature({
+                                name: 'AI Enhancement',
+                                description: 'AI-powered resume improvement to make your resume stand out',
+                              });
+                              setShowProModal(true);
+                            } else {
+                              setShowEnhanceModal(true);
+                            }
+                          }}
                           className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
                           style={{
                             background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
@@ -1849,7 +1867,17 @@ export const BuilderV2: React.FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
-                          onClick={() => setShowJobTailorModal(true)}
+                          onClick={() => {
+                            if (!user || !isPro) {
+                              setProModalFeature({
+                                name: 'Job Tailoring',
+                                description: 'Optimize your resume for specific job descriptions',
+                              });
+                              setShowProModal(true);
+                            } else {
+                              setShowJobTailorModal(true);
+                            }
+                          }}
                           className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
                           style={{
                             background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
@@ -2027,7 +2055,17 @@ export const BuilderV2: React.FC = () => {
                       <TooltipTrigger asChild>
                         <button
                           data-tour="save-btn"
-                          onClick={handleSaveResume}
+                          onClick={() => {
+                            if (!user) {
+                              setProModalFeature({
+                                name: 'Save Resume',
+                                description: 'Sign in to save your resume and access it from anywhere',
+                              });
+                              setShowProModal(true);
+                            } else {
+                              handleSaveResume();
+                            }
+                          }}
                           disabled={isSaving}
                           className={cn(
                             "h-9 px-3 flex items-center gap-1.5 rounded-lg border transition-all duration-200",
@@ -2067,10 +2105,11 @@ export const BuilderV2: React.FC = () => {
 
           {/* Main Content Grid - Add top margin for fixed headers */}
           <div className={cn(
-            "container mx-auto py-2 px-3 sm:px-4 lg:px-4",
+            "container mx-auto px-3 sm:px-4 lg:px-4",
+            "pt-2 pb-2 lg:pt-3 lg:pb-4", // Padding top/bottom
             "mt-[146px] lg:mt-[60px]", // Space for fixed elements (mobile: 56px header + 82px toolbar + 8px gap = 146px, desktop: 60px toolbar)
             editorMode === 'form'
-              ? "flex lg:gap-2"
+              ? "flex lg:gap-[5px] items-start"
               : "flex justify-center"
           )}>
 
@@ -2122,9 +2161,14 @@ export const BuilderV2: React.FC = () => {
             <TooltipProvider delayDuration={100}>
               <div className={cn(
                 "relative flex items-start",
-                editorMode === 'form' ? "flex-1" : "justify-center w-full",
+                editorMode === 'form' ? "flex-1 lg:justify-start" : "w-full justify-center",
                 // Hide on mobile when form view is active (show for live and preview)
-                mobileView === 'form' ? "hidden lg:flex" : "flex"
+                mobileView === 'form' ? "hidden lg:flex" : "flex justify-center",
+                // Keep centered in live mode on desktop
+                editorMode !== 'form' && "lg:justify-center",
+                // Match the form panel's height and overflow behavior
+                "lg:overflow-y-auto lg:overflow-x-hidden",
+                headerVisible ? "lg:h-[calc(100vh-140px)]" : "lg:h-[calc(100vh-80px)]"
               )}>
                 {/* Resume Column */}
                 <div className="flex flex-col w-full lg:w-auto">
@@ -2391,7 +2435,17 @@ export const BuilderV2: React.FC = () => {
 
               {/* Save */}
               <button
-                onClick={handleSaveResume}
+                onClick={() => {
+                  if (!user) {
+                    setProModalFeature({
+                      name: 'Save Resume',
+                      description: 'Sign in to save your resume and access it from anywhere',
+                    });
+                    setShowProModal(true);
+                  } else {
+                    handleSaveResume();
+                  }
+                }}
                 disabled={isSaving}
                 className={cn(
                   "h-10 w-10 flex items-center justify-center rounded-xl transition-all duration-200",
@@ -2534,6 +2588,14 @@ export const BuilderV2: React.FC = () => {
             icon: '🎯',
           });
         }}
+      />
+
+      {/* Pro Feature Modal */}
+      <ProFeatureModal
+        isOpen={showProModal}
+        onClose={() => setShowProModal(false)}
+        featureName={proModalFeature.name}
+        featureDescription={proModalFeature.description}
       />
     </div>
   );

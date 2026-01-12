@@ -12,3 +12,4 @@ export { SkillsModern } from './SkillsModern';
 export { SkillsCompact } from './SkillsCompact';
 export { SkillsColumns } from './SkillsColumns';
 export { SkillsCategoryLines } from './SkillsCategoryLines';
+export { SkillsTable } from './SkillsTable';

@@ -106,6 +106,32 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
           borderRadius: '4px',
         };
 
+      case 'background-filled':
+        // Solid dark background with white text (like traditional resumes)
+        return {
+          ...base,
+          backgroundColor: sectionHeading.backgroundColor || colors.secondary || '#1a1a1a',
+          padding: sectionHeading.padding || '6px 12px',
+          borderRadius: '0',
+        };
+
+      case 'background-accent':
+        // Solid accent color background with white text
+        return {
+          ...base,
+          backgroundColor: accent,
+          padding: sectionHeading.padding || '6px 12px',
+          borderRadius: '2px',
+        };
+
+      case 'underline-thick':
+        // Thick underline like traditional technical resumes
+        return {
+          ...base,
+          borderBottom: `3px solid ${accent}`,
+          paddingBottom: '4px',
+        };
+
       case 'dotted':
         return {
           ...base,

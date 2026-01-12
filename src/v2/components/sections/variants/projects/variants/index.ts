@@ -8,3 +8,4 @@ export { ProjectsStandard } from './ProjectsStandard';
 export { ProjectsCards } from './ProjectsCards';
 export { ProjectsCompact } from './ProjectsCompact';
 export { ProjectsDetailed } from './ProjectsDetailed';
+export { ProjectsGrid } from './ProjectsGrid';

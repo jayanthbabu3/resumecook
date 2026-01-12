@@ -62,9 +62,9 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
   const renderSkills = () => {
     // Variants that should use SkillsVariantRenderer
     const variantRendererVariants: SkillsVariant[] = [
-      'bars', 'dots', 'grouped', 'columns', 'category-lines', 
+      'bars', 'dots', 'grouped', 'columns', 'category-lines',
       'modern', 'detailed', 'list', 'compact', 'radar',
-      'bordered-tags', 'pills-accent', 'inline-dots'
+      'bordered-tags', 'pills-accent', 'inline-dots', 'table'
     ];
 
     // Use SkillsVariantRenderer for supported variants

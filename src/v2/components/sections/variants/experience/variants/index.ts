@@ -14,4 +14,5 @@ export { ExperienceEnhanced } from './ExperienceEnhanced';
 export { ExperienceTimelinePro } from './ExperienceTimelinePro';
 export { ExperiencePremium } from './ExperiencePremium';
 export { ExperienceIconAccent } from './ExperienceIconAccent';
+export { ExperienceIconClean } from './ExperienceIconClean';
 export { ExperienceDotsTimeline } from './ExperienceDotsTimeline';

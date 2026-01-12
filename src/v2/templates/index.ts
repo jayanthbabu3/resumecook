@@ -41,6 +41,13 @@ import { fresherMinimalTemplate } from './fresher-minimal';
 import { fresherProfessionalTemplate } from './fresher-professional';
 import { fresherTechTemplate } from './fresher-tech';
 import { fresherClassicTemplate } from './fresher-classic';
+import { fresherTechnicalTemplate } from './fresher-technical';
+import { fresherAtsProTemplate } from './fresher-ats-pro';
+import { fresherCreativeCardTemplate } from './fresher-creative-card';
+
+// Professional Templates
+import { adminAssistantProTemplate } from './admin-assistant-pro';
+import { projectManagerProTemplate } from './project-manager-pro';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -79,6 +86,12 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'fresher-professional-v2': fresherProfessionalTemplate,
   'fresher-tech-v2': fresherTechTemplate,
   'fresher-classic-v2': fresherClassicTemplate,
+  'fresher-technical-v2': fresherTechnicalTemplate,
+  'fresher-ats-pro-v2': fresherAtsProTemplate,
+  'fresher-creative-card-v2': fresherCreativeCardTemplate,
+  // Professional Templates
+  'admin-assistant-pro-v2': adminAssistantProTemplate,
+  'project-manager-pro-v2': projectManagerProTemplate,
 };
 
 // ============================================================================
@@ -184,3 +197,9 @@ export { fresherMinimalTemplate } from './fresher-minimal';
 export { fresherProfessionalTemplate } from './fresher-professional';
 export { fresherTechTemplate } from './fresher-tech';
 export { fresherClassicTemplate } from './fresher-classic';
+export { fresherTechnicalTemplate } from './fresher-technical';
+export { fresherAtsProTemplate } from './fresher-ats-pro';
+export { fresherCreativeCardTemplate } from './fresher-creative-card';
+
+// Professional Templates
+export { adminAssistantProTemplate } from './admin-assistant-pro';

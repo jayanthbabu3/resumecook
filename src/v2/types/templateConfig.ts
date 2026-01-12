@@ -133,14 +133,17 @@ export interface ColorConfig {
 // ============================================================================
 
 export type SectionHeadingStyle =
-  | 'simple'        // Just text
-  | 'underline'     // Line under heading
-  | 'left-border'   // Colored bar on left
-  | 'background'    // Full background color
-  | 'dotted'        // Dotted underline
-  | 'double-line'   // Double line under
-  | 'icon-left'     // Icon before text
-  | 'accent-text';  // Colored text
+  | 'simple'            // Just text
+  | 'underline'         // Line under heading
+  | 'left-border'       // Colored bar on left
+  | 'background'        // Light background color
+  | 'background-filled' // Solid dark background with white text
+  | 'background-accent' // Solid accent color background
+  | 'underline-thick'   // Thick underline
+  | 'dotted'            // Dotted underline
+  | 'double-line'       // Double line under
+  | 'icon-left'         // Icon before text
+  | 'accent-text';      // Colored text
 
 export interface SectionHeadingConfig {
   style: SectionHeadingStyle;
@@ -202,7 +205,12 @@ export type HeaderVariant =
   | 'gradient-banner'
   | 'elegant-banner'
   | 'creative-underline'
-  | 'banner-with-summary';
+  | 'banner-with-summary'
+  | 'sidebar-card'       // Card-style header with accent sidebar stripe
+  | 'modern-split'       // Modern split with name on left, contact grid on right
+  | 'boxed-accent'       // Boxed header with accent border
+  | 'summary-photo-right' // Name, title, summary with photo on right and contact separator line
+  | 'boxed-contact-icons'; // Serif name, title, contact in bordered boxes with icons, summary section below
 
 export interface HeaderConfig {
   variant: HeaderVariant;
@@ -236,13 +244,15 @@ export type SkillsVariant =
   | 'columns'
   | 'inline'
   | 'category-lines'
+  | 'table'           // Table format with categories
   | 'modern'
   | 'detailed'
   | 'compact'
   | 'radar'
   | 'bordered-tags'
   | 'pills-accent'
-  | 'inline-dots';
+  | 'inline-dots'
+  | 'boxed';          // Stacked bordered boxes - one skill per box
 
 export interface SkillsConfig {
   variant: SkillsVariant;
@@ -269,7 +279,12 @@ export type ExperienceVariant =
   | 'minimal'
   | 'two-column-dates'
   | 'accent-card'
-  | 'accent-side';
+  | 'accent-side'
+  | 'dots-timeline'    // Connected dots timeline
+  | 'timeline-pro'     // Professional timeline with dates on left
+  | 'enhanced'         // EnhanceCV-style variant
+  | 'premium'          // Premium with numbered bullets
+  | 'icon-accent';     // Creative card with icon badge
 
 export interface ExperienceConfig {
   variant: ExperienceVariant;
@@ -321,7 +336,8 @@ export type AchievementsVariant =
   | 'metrics'
   | 'numbered'
   | 'timeline'
-  | 'minimal';
+  | 'minimal'
+  | 'boxed';          // Stacked bordered boxes
 
 export interface AchievementsConfig {
   variant: AchievementsVariant;

@@ -971,6 +971,22 @@ function captureV2ResumeHTMLWithStyles(
           .resume-v2 [data-section][style*="break-before"] {
             padding-top: 20px !important;
           }
+
+          /* Ensure gradient backgrounds and decorations render in PDF */
+          .resume-v2 > div[style*="background: linear-gradient"],
+          .resume-v2 > div[style*="background:linear-gradient"],
+          .resume-v2 div[style*="background: linear-gradient"],
+          .resume-v2 div[style*="background:linear-gradient"] {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* Ensure absolute positioned decorations are visible */
+          .resume-v2 > div[style*="position: absolute"],
+          .resume-v2 > div[style*="position:absolute"] {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
         </style>
       </head>
       <body>

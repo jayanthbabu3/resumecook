@@ -884,6 +884,30 @@ const DotPattern: React.FC<{ color: string; opacity: number }> = ({ color, opaci
 );
 
 /**
+ * Full Page Gradient - Creates a gradient overlay across the entire page
+ * Uses a solid div element for reliable PDF rendering
+ * Note: Uses fixed position in a relative container to ensure full coverage
+ */
+const FullPageGradient: React.FC<{ accentColor: string; opacity: number }> = ({ accentColor, opacity }) => (
+  <div
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      minHeight: '100%',
+      background: `linear-gradient(160deg, #ffffff 0%, #ffffff 60%, ${accentColor} 100%)`,
+      opacity,
+      pointerEvents: 'none',
+      zIndex: 0,
+      WebkitPrintColorAdjust: 'exact',
+      printColorAdjust: 'exact',
+    } as React.CSSProperties}
+  />
+);
+
+/**
  * Main decorations component
  */
 export const ResumeDecorations: React.FC<ResumeDecorationsProps> = ({
@@ -1014,6 +1038,8 @@ export const ResumeDecorations: React.FC<ResumeDecorationsProps> = ({
         );
       case 'header-dots-grid':
         return <HeaderDotsGrid key={element} color="#ffffff" opacity={opacity} />;
+      case 'full-page-gradient':
+        return <FullPageGradient key={element} accentColor={accentBackground || `${primaryColor}20`} opacity={opacity} />;
       default:
         return null;
     }

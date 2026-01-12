@@ -10,6 +10,7 @@ import {
   AchievementsStandard,
   AchievementsCompact,
   AchievementsBadges,
+  AchievementsBoxed,
 } from './variants';
 
 // Re-export types for external use
@@ -41,6 +42,10 @@ export const AchievementsVariantRenderer: React.FC<AchievementsVariantRendererPr
   };
 
   // Dispatch based on variant
+  if (variant === 'boxed') {
+    return <AchievementsBoxed {...props} />;
+  }
+
   if (variant === 'badges' || variant === 'cards' || variant === 'achievements-cards' || variant === 'metrics' || variant === 'achievements-metrics') {
     return <AchievementsBadges {...props} />;
   }

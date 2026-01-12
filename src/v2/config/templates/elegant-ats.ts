@@ -26,7 +26,7 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
       fontSize: '14px',
       fontWeight: 500,
       lineHeight: 1.3,
-      color: '#0ea5e9',
+      color: '#1e40af',
     },
     sectionHeading: {
       fontSize: '12px',
@@ -46,7 +46,7 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
       fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
-      color: '#0ea5e9',
+      color: '#1e40af',
     },
     dates: {
       fontSize: '12px',
@@ -100,8 +100,8 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#0ea5e9', // Sky blue - modern professional
-    secondary: '#0891b2',
+    primary: '#1e40af', // Deep blue - elegant professional
+    secondary: '#1e3a8a',
     text: {
       primary: '#0f172a',
       secondary: '#1e293b',
@@ -120,7 +120,7 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
   sectionHeading: {
     style: 'left-border',
     borderWidth: '3px',
-    borderColor: '#0ea5e9',
+    borderColor: '#1e40af',
     padding: '0 0 8px 12px',
     marginBottom: '10px',
   },
@@ -135,7 +135,7 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
     contactIcons: {
       show: true,
       size: '14px',
-      color: '#0ea5e9',
+      color: '#1e40af',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',

@@ -1,3 +1,3 @@
-import { CS_FRESHER_DATA } from '../../data/fresherMockData';
-export const mockData = CS_FRESHER_DATA;
+import { ECE_FRESHER_DATA } from '../../data/fresherMockData';
+export const mockData = ECE_FRESHER_DATA;
 export default mockData;

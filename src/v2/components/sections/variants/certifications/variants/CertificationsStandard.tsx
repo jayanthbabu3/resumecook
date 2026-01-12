@@ -29,13 +29,13 @@ export const CertificationsStandard: React.FC<CertificationsVariantProps> = ({
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
       {items.map((cert, index) => (
         <div
           key={cert.id || index}
           className="group relative"
           style={{
-            padding: '6px 0',
+            padding: '4px 0',
             borderBottom: index < items.length - 1 ? '1px solid #f3f4f6' : 'none',
           }}
         >

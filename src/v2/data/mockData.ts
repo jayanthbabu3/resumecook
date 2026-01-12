@@ -888,10 +888,294 @@ export const SOFTWARE_ENGINEER_DATA: V2ResumeData = {
 };
 
 // ============================================================================
+// JAYANTH BABU SOMINENI - DEFAULT MOCK DATA
+// ============================================================================
+
+export const JAYANTH_RESUME_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth babu Somineni',
+    email: 'jsomineni@gmail.com',
+    phone: '+918074325415',
+    location: 'Hyderabad, Telangana, India',
+    title: 'Lead Mobile Software Engineer',
+    summary: 'Lead Mobile Software Engineer with 8+ years of experience in native and cross-platform mobile development, leveraging expertise in React, Angular, and NodeJs to deliver scalable and robust solutions. Proven track record of driving technical initiatives, collaborating with cross-functional teams, and mentoring junior engineers. Passionate about adopting modern software engineering practices, including Agile methodologies and DevSecOps, to drive continuous improvement and innovation.',
+    linkedin: 'https://www.linkedin.com/in/jayanth-babu-somineni',
+    portfolio: 'https://programwithjayanth.com',
+    github: '',
+    photo: 'https://media.licdn.com/dms/image/v2/C5103AQE_spKjw4XomQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1585635440546?e=1769644800&v=beta&t=B2V4Al0r91MXWzL1tbA-0KOWtocn4aYsfOYCvIxRYrc',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      company: 'ServiceNow',
+      position: 'Senior Software Engineer',
+      startDate: 'May 2024',
+      endDate: 'Present',
+      current: true,
+      location: 'Hyderabad, Telangana, India',
+      description: 'Lead the development of multiple high-visibility mobile applications, utilizing expertise in React, Angular, and NodeJs to drive technical initiatives and collaborate with cross-functional teams.',
+      bulletPoints: [
+        'Architected and implemented scalable mobile applications using React and Angular, resulting in improved user engagement and customer satisfaction.',
+        'Collaborated with cross-functional teams to design, develop, and deploy mobile solutions, ensuring alignment with business and customer goals.',
+        'Mentored junior engineers in modern software engineering practices, including Agile methodologies and DevSecOps, to drive continuous improvement and innovation.',
+        'Utilized expertise in NodeJs to develop and deploy server-side applications, integrating with mobile frontends to provide seamless user experiences.',
+        'Worked closely with product teams to gather requirements, design, and develop mobile applications, ensuring timely delivery and high-quality solutions.',
+      ],
+    },
+    {
+      id: 'exp-2',
+      company: 'Morgan Stanley',
+      position: 'Full Stack Developer',
+      startDate: 'Sep 2019',
+      endDate: 'May 2024',
+      current: false,
+      location: 'Greater Bengaluru Area',
+      description: 'Developed and maintained multiple web applications using React, Angular, and NodeJs, collaborating with cross-functional teams to drive technical initiatives and deliver high-quality solutions.',
+      bulletPoints: [
+        'Developed and deployed multiple web applications using React and Angular, resulting in improved user engagement and customer satisfaction.',
+        'Collaborated with cross-functional teams to design, develop, and deploy web solutions, ensuring alignment with business and customer goals.',
+        'Utilized expertise in NodeJs to develop and deploy server-side applications, integrating with web frontends to provide seamless user experiences.',
+        'Worked closely with product teams to gather requirements, design, and develop web applications, ensuring timely delivery and high-quality solutions.',
+        'Participated in code reviews and ensured adherence to coding standards, driving continuous improvement and innovation in software development practices.',
+      ],
+    },
+    {
+      id: 'exp-3',
+      company: 'Capgemini',
+      position: 'Frontend Web Developer',
+      startDate: 'Oct 2018',
+      endDate: 'Sep 2019',
+      current: false,
+      location: 'Bengaluru, Karnataka, India',
+      description: '',
+      bulletPoints: [
+        'Developed and maintained multiple web applications using React and Angular, collaborating with cross-functional teams to drive technical initiatives and deliver high-quality solutions.',
+        'Utilized expertise in HTML5, CSS, and JavaScript to develop and deploy web applications, ensuring improved user engagement and customer satisfaction.',
+        'Worked closely with product teams to gather requirements, design, and develop web applications, ensuring timely delivery and high-quality solutions.',
+        'Participated in code reviews and ensured adherence to coding standards, driving continuous improvement and innovation in software development practices.',
+        'Collaborated with backend teams to integrate web frontends with server-side applications, providing seamless user experiences.',
+      ],
+    },
+    {
+      id: 'exp-4',
+      company: 'InnovaPath, INC.',
+      position: 'Web Developer',
+      startDate: 'Dec 2015',
+      endDate: 'Sep 2018',
+      current: false,
+      location: 'Hyderabad, Telangana, India',
+      description: '',
+      bulletPoints: [
+        'Developed and maintained multiple web applications using React and Angular, collaborating with cross-functional teams to drive technical initiatives and deliver high-quality solutions.',
+        'Utilized expertise in HTML5, CSS, and JavaScript to develop and deploy web applications, ensuring improved user engagement and customer satisfaction.',
+        'Worked closely with product teams to gather requirements, design, and develop web applications, ensuring timely delivery and high-quality solutions.',
+        'Participated in code reviews and ensured adherence to coding standards, driving continuous improvement and innovation in software development practices.',
+        'Collaborated with backend teams to integrate web frontends with server-side applications, providing seamless user experiences.',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'QIS College of Engineering & Technology',
+      degree: 'BTech - Bachelor of Technology',
+      field: 'Mechanical Engineering',
+      startDate: '2011',
+      endDate: '2015',
+      current: false,
+      location: '',
+      gpa: '',
+    },
+    {
+      id: 'edu-2',
+      school: 'Vikas Public Residential School - India',
+      degree: 'Intermediate',
+      field: 'MPC',
+      startDate: '2009',
+      endDate: '2011',
+      current: false,
+      location: '',
+      gpa: 'A',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'TypeScript', category: 'Technical' },
+    { id: 'skill-2', name: 'React.js', category: 'Technical' },
+    { id: 'skill-3', name: 'Node.js', category: 'Technical' },
+    { id: 'skill-4', name: 'JavaScript', category: 'Technical' },
+    { id: 'skill-5', name: 'Angular', category: 'Technical' },
+    { id: 'skill-6', name: 'MongoDB', category: 'Technical' },
+    { id: 'skill-7', name: 'GraphQL', category: 'Technical' },
+    { id: 'skill-8', name: 'Next.js', category: 'Technical' },
+    { id: 'skill-9', name: 'Redux.js', category: 'Technical' },
+    { id: 'skill-10', name: 'HTML5', category: 'Technical' },
+    { id: 'skill-11', name: 'CSS', category: 'Technical' },
+    { id: 'skill-12', name: 'Git', category: 'Technical' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Angular Certificate',
+      issuer: 'HackerRank',
+      date: 'Apr 2021',
+      credentialId: '',
+      url: '',
+    },
+    {
+      id: 'cert-2',
+      name: 'JavaScript',
+      issuer: 'TestDome',
+      date: 'Nov 2019',
+      expiryDate: 'Nov 2022',
+      credentialId: '',
+      url: '',
+    },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Team Opinion',
+      description: 'Created own full stack project during lockdown to play fun game with team members.',
+      startDate: 'Mar 2020',
+      endDate: 'Apr 2020',
+      url: 'http://fun-quiz.now.sh',
+      technologies: [],
+      highlights: [],
+    },
+    {
+      id: 'proj-2',
+      name: 'Talentscreen',
+      description: '',
+      startDate: 'Jan 2016',
+      endDate: 'Jul 2018',
+      url: 'http://talentscreen.io',
+      technologies: [],
+      highlights: [],
+    },
+  ],
+  publications: [
+    {
+      id: 'pub-1',
+      title: 'Complete guide on Python modules',
+      publisher: 'Analytics Vidhya',
+      date: 'Mar 10, 2020',
+      description: 'Complete guide on Python modules',
+      url: 'https://medium.com/analytics-vidhya/complete-guide-on-python-modules-d82d6c09fac9',
+    },
+    {
+      id: 'pub-2',
+      title: 'A Complete Guide to the Math Object in JavaScript',
+      publisher: 'Level Up Coding',
+      date: 'Feb 1, 2020',
+      description: 'A Complete Guide to the Math Object in JavaScript',
+      url: 'https://levelup.gitconnected.com/complete-guide-on-math-object-in-javascript-5c641254f288',
+    },
+    {
+      id: 'pub-3',
+      title: 'How to generate PDF invoices with JavaScript',
+      publisher: 'Level Up Coding',
+      date: 'Jan 9, 2020',
+      description: 'generate PDF invoices with JavaScript',
+      url: 'https://levelup.gitconnected.com/how-to-generate-pdf-invoices-with-javascript-159279f9243e',
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Led Mobile App Modernization',
+      description: 'Spearheaded the migration of legacy mobile applications to React Native, reducing development time by 40% and improving user engagement metrics.',
+      metric: '40% faster',
+    },
+    {
+      id: 'ach-2',
+      title: 'Performance Optimization Champion',
+      description: 'Optimized application load times across 5 enterprise applications, achieving sub-2-second load times and improving customer satisfaction scores.',
+      metric: '60% improvement',
+    },
+    {
+      id: 'ach-3',
+      title: 'Team Leadership Excellence',
+      description: 'Successfully mentored 8 junior engineers, with 5 receiving promotions within 18 months of mentorship.',
+      metric: '5 promotions',
+    },
+  ],
+  strengths: [
+    {
+      id: 'str-1',
+      title: 'Full Stack Development',
+      description: 'Expert in building end-to-end solutions using React, Angular, Node.js, and modern cloud technologies.',
+      icon: 'Code',
+    },
+    {
+      id: 'str-2',
+      title: 'Technical Leadership',
+      description: 'Proven ability to lead cross-functional teams, drive architectural decisions, and mentor junior developers.',
+      icon: 'Users',
+    },
+    {
+      id: 'str-3',
+      title: 'Agile & DevSecOps',
+      description: 'Strong advocate for Agile methodologies and DevSecOps practices to ensure continuous improvement and secure delivery.',
+      icon: 'Shield',
+    },
+    {
+      id: 'str-4',
+      title: 'Problem Solving',
+      description: 'Excellent analytical skills with a track record of solving complex technical challenges and optimizing system performance.',
+      icon: 'Lightbulb',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  volunteer: [
+    {
+      id: 'vol-1',
+      organization: 'Tech Community Hyderabad',
+      role: 'Technical Speaker & Mentor',
+      location: 'Hyderabad, India',
+      startDate: '2020-01',
+      endDate: '',
+      current: true,
+      description: 'Conduct technical workshops and mentor aspiring developers in web and mobile technologies.',
+      highlights: [
+        'Delivered 10+ technical sessions on React and JavaScript',
+        'Mentored 20+ aspiring developers in their career journey',
+      ],
+    },
+  ],
+  interests: [
+    { id: 'int-1', name: 'Open Source', description: 'Contributing to open source projects and building community tools.' },
+    { id: 'int-2', name: 'Tech Blogging', description: 'Writing technical articles on Medium and personal blog.' },
+    { id: 'int-3', name: 'Mobile Development', description: 'Exploring new mobile frameworks and cross-platform technologies.' },
+    { id: 'int-4', name: 'Cloud Technologies', description: 'Learning and experimenting with cloud-native architectures.' },
+  ],
+  awards: [
+    {
+      id: 'award-1',
+      title: 'Innovation Award',
+      issuer: 'Morgan Stanley',
+      date: '2022-12',
+      description: 'Recognized for developing an innovative solution that automated manual reporting processes.',
+    },
+    {
+      id: 'award-2',
+      title: 'Best Team Collaboration',
+      issuer: 'ServiceNow',
+      date: '2024-06',
+      description: 'Awarded for exceptional cross-team collaboration in delivering a critical mobile platform.',
+    },
+  ],
+};
+
+// ============================================================================
 // LEGACY MOCK DATA (for backward compatibility)
 // ============================================================================
 
-export const MOCK_RESUME_DATA: V2ResumeData = SENIOR_FRONTEND_DATA;
+export const MOCK_RESUME_DATA: V2ResumeData = JAYANTH_RESUME_DATA;
 
 // Empty resume data for new resumes
 export const EMPTY_RESUME_DATA: V2ResumeData = {
