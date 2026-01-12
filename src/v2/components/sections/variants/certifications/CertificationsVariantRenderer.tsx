@@ -1,5 +1,11 @@
 /**
  * Certifications Variant Renderer
+ *
+ * Available variants:
+ * - standard: Clean list with name, issuer, date (most common)
+ * - compact: Single-line minimal format
+ * - detailed: Full info with icon, credential ID, expiry, description
+ * - badges/grid: Two-column grid layout
  */
 
 import React from 'react';
@@ -8,6 +14,7 @@ import {
   CertificationsStandard,
   CertificationsBadges,
   CertificationsCompact,
+  CertificationsDetailed,
 } from './variants';
 
 export type { CertificationsVariantProps, CertificationsVariant } from './types';
@@ -36,20 +43,22 @@ export const CertificationsVariantRenderer: React.FC<CertificationsVariantRender
     formatDate,
   };
 
-  // Dispatch based on variant
-  if (variant === 'badges' || variant === 'cert-badges') {
+  // Detailed variant - shows all fields with icon
+  if (variant === 'detailed' || variant === 'cert-detailed' || variant === 'timeline' || variant === 'cert-timeline') {
+    return <CertificationsDetailed {...props} />;
+  }
+
+  // Grid/badges variant - two-column layout
+  if (variant === 'badges' || variant === 'cert-badges' || variant === 'cards' || variant === 'cert-two-column' || variant === 'cert-boxed') {
     return <CertificationsBadges {...props} />;
   }
 
-  if (variant === 'cards' || variant === 'cert-two-column' || variant === 'cert-boxed') {
-    return <CertificationsBadges {...props} />;
-  }
-
+  // Compact variant - single line
   if (variant === 'compact' || variant === 'cert-compact' || variant === 'cert-minimal') {
     return <CertificationsCompact {...props} />;
   }
 
-  // Default to standard for 'list', 'standard', 'timeline', etc.
+  // Default to standard - clean list format
   return <CertificationsStandard {...props} />;
 };
 

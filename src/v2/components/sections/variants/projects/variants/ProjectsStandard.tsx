@@ -48,10 +48,8 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
             key={item.id || index}
             className="group relative"
             style={{
-              padding: '10px 12px',
-              backgroundColor: `${accentColor}05`,
-              borderRadius: '6px',
-              borderLeft: `2px solid ${accentColor}`,
+              padding: '8px 0',
+              borderBottom: '1px solid #f3f4f6',
             }}
           >
             {editable && onRemoveProject && (
@@ -91,12 +89,12 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
                   {!editable && (item.url || item.githubUrl) && (
                     <>
                       {item.url && (
-                        <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>
+                        <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280' }}>
                           <ExternalLink style={{ width: '12px', height: '12px' }} />
                         </a>
                       )}
                       {item.githubUrl && (
-                        <a href={item.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: accentColor }}>
+                        <a href={item.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280' }}>
                           <Github style={{ width: '12px', height: '12px' }} />
                         </a>
                       )}
@@ -110,11 +108,11 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
                         <InlineEditableText
                           path={`projects.${index}.role`}
                           value={item.role || ''}
-                          style={{ fontSize: scaleFontSize('12px'), color: accentColor, fontWeight: 500 }}
+                          style={{ fontSize: scaleFontSize('12px'), color: '#6b7280', fontWeight: 500 }}
                           placeholder="Role"
                         />
                       ) : (
-                        <span style={{ fontSize: scaleFontSize('12px'), color: accentColor, fontWeight: 500 }}>
+                        <span style={{ fontSize: scaleFontSize('12px'), color: '#6b7280', fontWeight: 500 }}>
                           {item.role}
                         </span>
                       )}
@@ -188,8 +186,8 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
                       gap: '4px',
                       padding: '2px 8px',
                       fontSize: scaleFontSize('10px'),
-                      backgroundColor: `${accentColor}12`,
-                      color: accentColor,
+                      backgroundColor: '#f3f4f6',
+                      color: '#374151',
                       borderRadius: '4px',
                       fontWeight: 500,
                     }}
@@ -198,7 +196,7 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
                       <InlineEditableText
                         path={`projects.${index}.${techPath}.${techIndex}`}
                         value={tech}
-                        style={{ fontSize: scaleFontSize('10px'), fontWeight: 500, color: accentColor }}
+                        style={{ fontSize: scaleFontSize('10px'), fontWeight: 500, color: '#374151' }}
                         placeholder="Tech"
                       />
                     ) : (
@@ -220,8 +218,8 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
                     style={{
                       padding: '2px 8px',
                       fontSize: scaleFontSize('10px'),
-                      color: accentColor,
-                      border: `1px dashed ${accentColor}50`,
+                      color: '#6b7280',
+                      border: '1px dashed #d1d5db',
                       borderRadius: '4px',
                       backgroundColor: 'transparent',
                       cursor: 'pointer',
@@ -237,20 +235,20 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
             {editable && (
               <div style={{ display: 'flex', gap: '12px', marginTop: '6px', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <ExternalLink style={{ width: '10px', height: '10px', color: accentColor }} />
+                  <ExternalLink style={{ width: '10px', height: '10px', color: '#6b7280' }} />
                   <InlineEditableText
                     path={`projects.${index}.url`}
                     value={item.url || ''}
-                    style={{ fontSize: scaleFontSize('10px'), color: accentColor }}
+                    style={{ fontSize: scaleFontSize('10px'), color: '#6b7280' }}
                     placeholder="URL"
                   />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Github style={{ width: '10px', height: '10px', color: accentColor }} />
+                  <Github style={{ width: '10px', height: '10px', color: '#6b7280' }} />
                   <InlineEditableText
                     path={`projects.${index}.githubUrl`}
                     value={item.githubUrl || ''}
-                    style={{ fontSize: scaleFontSize('10px'), color: accentColor }}
+                    style={{ fontSize: scaleFontSize('10px'), color: '#6b7280' }}
                     placeholder="GitHub"
                   />
                 </div>
@@ -264,7 +262,7 @@ export const ProjectsStandard: React.FC<ProjectsVariantProps> = ({
         <button
           onClick={onAddProject}
           className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
-          style={{ color: accentColor, borderColor: accentColor }}
+          style={{ color: '#6b7280', borderColor: '#d1d5db' }}
         >
           <Plus className="h-3 w-3" />
           Add Project

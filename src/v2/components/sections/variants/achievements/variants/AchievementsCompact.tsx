@@ -31,9 +31,7 @@ export const AchievementsCompact: React.FC<AchievementsVariantProps> = ({
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '4px 8px',
-            backgroundColor: index % 2 === 0 ? `${accentColor}08` : 'transparent',
-            borderRadius: '4px',
+            padding: '4px 0',
             fontSize: '11px',
           }}
         >
@@ -52,7 +50,7 @@ export const AchievementsCompact: React.FC<AchievementsVariantProps> = ({
               width: '4px',
               height: '4px',
               borderRadius: '50%',
-              backgroundColor: accentColor,
+              backgroundColor: '#9ca3af',
               flexShrink: 0,
             }}
           />

@@ -285,14 +285,20 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
     const size = options?.size || header.photoSize || '70px';
     const shape = header.photoShape || 'circle';
     const forBanner = options?.forBanner || false;
-    
-    // For banner: use semi-transparent white border; otherwise use accent color
-    const borderColor = options?.borderColor || (forBanner ? 'rgba(255, 255, 255, 0.5)' : accent);
+
+    // For banner: use white border for clean contrast; otherwise use accent color
+    const borderColor = options?.borderColor || (forBanner ? 'rgba(255, 255, 255, 0.95)' : accent);
     // For banner: use semi-transparent white bg; otherwise use light accent tint
-    const backgroundColor = options?.backgroundColor || (forBanner ? 'rgba(255, 255, 255, 0.15)' : `${accent}15`);
+    const backgroundColor = options?.backgroundColor || (forBanner ? 'rgba(255, 255, 255, 0.2)' : `${accent}15`);
     // For banner: use white text; otherwise use accent color
     const textColor = options?.textColor || (forBanner ? '#ffffff' : accent);
     const initials = getInitials(personalInfo.fullName || '');
+    // Better border width for banner photos
+    const borderWidth = options?.borderWidth || (forBanner ? '3px' : '2px');
+    // Enhanced shadow for banner photos
+    const boxShadow = forBanner
+      ? '0 4px 16px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1)'
+      : '0 4px 12px rgba(0, 0, 0, 0.1)';
 
     // Use InlineEditablePhoto in editable mode for direct file selection
     if (editable) {
@@ -305,7 +311,8 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           borderColor={borderColor}
           backgroundColor={backgroundColor}
           textColor={textColor}
-          borderWidth={options?.borderWidth || '2px'}
+          borderWidth={borderWidth}
+          boxShadow={boxShadow}
           editable={editable}
           initials={initials}
         />
@@ -326,8 +333,8 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
             flexShrink: 0,
             borderRadius,
             overflow: 'hidden',
-            border: `3px solid ${borderColor}`,
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            border: `${borderWidth} solid ${borderColor}`,
+            boxShadow,
           }}
         >
           <img
@@ -353,12 +360,12 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           height: size,
           flexShrink: 0,
           borderRadius,
-          border: `3px solid ${borderColor}`,
+          border: `${borderWidth} solid ${borderColor}`,
           backgroundColor,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          boxShadow,
         }}
       >
         <span

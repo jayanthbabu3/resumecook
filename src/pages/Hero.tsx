@@ -47,21 +47,21 @@ const Hero = () => {
 
   // State for interactive demo form
   const [demoFormData, setDemoFormData] = useState({
-    fullName: "John Doe",
-    email: "john.doe@email.com",
-    phone: "+1 (555) 123-4567",
-    location: "San Francisco, CA",
-    summary: "Experienced software engineer with 5+ years of expertise in full-stack development. Passionate about creating scalable web applications and leading technical teams.",
-    jobTitle: "Senior Software Engineer",
-    company: "Tech Solutions Inc.",
-    startDate: "2022-01",
+    fullName: "Emily Chen",
+    email: "emily.chen@gmail.com",
+    phone: "+1 (628) 555-0147",
+    location: "New York, NY",
+    summary: "Full-stack developer with 4+ years of experience building web applications. Proficient in modern JavaScript frameworks and passionate about creating intuitive user experiences.",
+    jobTitle: "Software Engineer",
+    company: "Google",
+    startDate: "2022-03",
     endDate: "",
-    description: "Led development of scalable web applications using React and Node.js. Collaborated with cross-functional teams to deliver high-quality software solutions.",
-    skills: ["React", "Node.js", "JavaScript", "TypeScript", "Python"]
+    description: "Building and maintaining internal tools used by 5,000+ employees. Reduced page load times by 50% through performance optimizations.",
+    skills: ["JavaScript", "React", "Python", "Go", "Kubernetes"]
   });
 
   // Separate state for skills input - initialize with existing skills
-  const [skillsInput, setSkillsInput] = useState("React, Node.js, JavaScript, TypeScript, Python");
+  const [skillsInput, setSkillsInput] = useState("JavaScript, React, Python, Go, Kubernetes");
   const [previewScale, setPreviewScale] = useState(0.6);
   const [previewHeight, setPreviewHeight] = useState(1120);
   const previewContainerRef = useRef<HTMLDivElement | null>(null);
@@ -76,60 +76,61 @@ const Hero = () => {
   const [formEditorData, setFormEditorData] = useState<V2ResumeData>(() => ({
     version: '2.0',
     personalInfo: {
-      fullName: "Michael Chen",
-      email: "michael.chen@email.com",
-      phone: "+1 (555) 987-6543",
-      location: "Seattle, WA",
-      title: "Chief Technology Officer",
-      summary: "Visionary technology executive with 15+ years of experience leading engineering teams and driving digital transformation. Proven track record of scaling organizations, implementing innovative solutions, and delivering exceptional business outcomes."
+      fullName: "David Martinez",
+      email: "david.martinez@outlook.com",
+      phone: "+1 (512) 555-0198",
+      location: "Austin, TX",
+      title: "Product Manager",
+      linkedin: "linkedin.com/in/davidmartinez",
+      summary: "Data-driven product manager with 5+ years of experience launching B2B SaaS products. Skilled at translating customer needs into product requirements and collaborating with engineering teams to deliver impactful solutions."
     },
     experience: [
       {
         id: "exp-0",
-        position: "Chief Technology Officer",
-        company: "TechVision Inc.",
-        startDate: "2020-01",
+        position: "Senior Product Manager",
+        company: "Salesforce",
+        startDate: "2021-06",
         endDate: "",
         current: true,
         description: "",
         bulletPoints: [
-          "Spearheaded digital transformation initiatives, increasing operational efficiency by 45%",
-          "Led a team of 120+ engineers across multiple product lines",
-          "Architected cloud migration strategy saving $2M annually"
+          "Led product roadmap for analytics platform serving 50,000+ enterprise customers",
+          "Increased feature adoption by 35% through data-driven UX improvements",
+          "Collaborated with 3 engineering teams to deliver quarterly product releases"
         ]
       },
       {
         id: "exp-1",
-        position: "VP of Engineering",
-        company: "Innovation Labs",
-        startDate: "2016-03",
-        endDate: "2019-12",
+        position: "Product Manager",
+        company: "HubSpot",
+        startDate: "2019-01",
+        endDate: "2021-05",
         current: false,
         description: "",
         bulletPoints: [
-          "Built and scaled engineering organization from 20 to 85 team members",
-          "Launched 3 successful products generating $50M in annual revenue",
-          "Implemented agile methodologies improving delivery speed by 60%"
+          "Launched email automation features generating $8M in new ARR",
+          "Conducted 100+ customer interviews to identify product opportunities",
+          "Reduced customer churn by 20% through improved onboarding flows"
         ]
       }
     ],
     education: [
       {
         id: "edu-0",
-        school: "Stanford University",
-        degree: "Master of Science",
-        field: "Computer Science",
-        location: "Stanford, CA",
-        startDate: "2010-09",
-        endDate: "2012-06"
+        school: "University of Texas at Austin",
+        degree: "Master of Business Administration",
+        field: "Technology Management",
+        location: "Austin, TX",
+        startDate: "2016-08",
+        endDate: "2018-05"
       }
     ],
     skills: [
-      { id: "skill-0", name: "Strategic Planning", level: 10, category: "core" },
-      { id: "skill-1", name: "Cloud Architecture", level: 9, category: "core" },
-      { id: "skill-2", name: "Team Leadership", level: 8, category: "core" },
-      { id: "skill-3", name: "Digital Transformation", level: 7, category: "core" },
-      { id: "skill-4", name: "Product Strategy", level: 7, category: "core" }
+      { id: "skill-0", name: "Product Strategy", level: 10, category: "core" },
+      { id: "skill-1", name: "User Research", level: 9, category: "core" },
+      { id: "skill-2", name: "Agile/Scrum", level: 9, category: "core" },
+      { id: "skill-3", name: "SQL", level: 8, category: "core" },
+      { id: "skill-4", name: "Figma", level: 7, category: "toolbox" }
     ]
   }));
 
@@ -142,71 +143,119 @@ const Hero = () => {
   const [liveEditorData, setLiveEditorData] = useState<V2ResumeData>(() => ({
     version: '2.0',
     personalInfo: {
-      fullName: "Michael Chen",
-      email: "michael.chen@email.com",
-      phone: "+1 (555) 987-6543",
-      location: "Seattle, WA",
-      title: "Chief Technology Officer",
-      summary: "Visionary technology executive with 15+ years of experience leading engineering teams and driving digital transformation. Proven track record of scaling organizations, implementing innovative solutions, and delivering exceptional business outcomes."
+      fullName: "Sarah Johnson",
+      email: "sarah.johnson@gmail.com",
+      phone: "+1 (415) 555-0142",
+      location: "San Francisco, CA",
+      title: "Senior Software Engineer",
+      linkedin: "linkedin.com/in/sarahjohnson",
+      github: "github.com/sarahjdev",
+      summary: "Results-driven software engineer with 6+ years of experience building scalable web applications. Expertise in React, Node.js, and cloud technologies. Passionate about writing clean, maintainable code and mentoring junior developers."
     },
     experience: [
       {
         id: "exp-0",
-        position: "Chief Technology Officer",
-        company: "TechVision Inc.",
-        startDate: "2020-01",
+        position: "Senior Software Engineer",
+        company: "Stripe",
+        location: "San Francisco, CA",
+        startDate: "2021-03",
         endDate: "",
         current: true,
         description: "",
         bulletPoints: [
-          "Spearheaded digital transformation initiatives, increasing operational efficiency by 45%",
-          "Led a team of 120+ engineers across multiple product lines",
-          "Architected cloud migration strategy saving $2M annually"
+          "Architected and built payment processing features handling $2B+ in transactions monthly",
+          "Led migration of legacy services to microservices architecture, reducing latency by 40%",
+          "Mentored 4 junior engineers and conducted 50+ technical interviews"
         ]
       },
       {
         id: "exp-1",
-        position: "VP of Engineering",
-        company: "Innovation Labs",
-        startDate: "2016-03",
-        endDate: "2019-12",
+        position: "Software Engineer",
+        company: "Airbnb",
+        location: "San Francisco, CA",
+        startDate: "2018-06",
+        endDate: "2021-02",
         current: false,
         description: "",
         bulletPoints: [
-          "Built and scaled engineering organization from 20 to 85 team members",
-          "Launched 3 successful products generating $50M in annual revenue",
-          "Implemented agile methodologies improving delivery speed by 60%"
+          "Developed search and filtering features improving booking conversion by 15%",
+          "Built real-time messaging system serving 10M+ daily active users",
+          "Collaborated with design team to implement accessible UI components"
         ]
       }
     ],
     education: [
       {
         id: "edu-0",
-        school: "Stanford University",
-        degree: "Master of Science",
+        school: "University of California, Berkeley",
+        degree: "Bachelor of Science",
         field: "Computer Science",
-        location: "Stanford, CA",
-        startDate: "2010-09",
-        endDate: "2012-06"
+        location: "Berkeley, CA",
+        startDate: "2014-08",
+        endDate: "2018-05",
+        gpa: "3.8"
       }
     ],
     skills: [
-      { id: "skill-0", name: "Strategic Planning", level: 10, category: "core" },
-      { id: "skill-1", name: "Cloud Architecture", level: 9, category: "core" },
-      { id: "skill-2", name: "Team Leadership", level: 8, category: "core" },
-      { id: "skill-3", name: "Digital Transformation", level: 7, category: "core" },
-      { id: "skill-4", name: "Product Strategy", level: 7, category: "core" }
+      { id: "skill-0", name: "React", level: 10, category: "core" },
+      { id: "skill-1", name: "TypeScript", level: 9, category: "core" },
+      { id: "skill-2", name: "Node.js", level: 9, category: "core" },
+      { id: "skill-3", name: "PostgreSQL", level: 8, category: "core" },
+      { id: "skill-4", name: "AWS", level: 8, category: "core" },
+      { id: "skill-5", name: "Docker", level: 7, category: "toolbox" },
+      { id: "skill-6", name: "GraphQL", level: 7, category: "toolbox" },
+      { id: "skill-7", name: "Redis", level: 7, category: "toolbox" }
+    ],
+    projects: [
+      {
+        id: "proj-0",
+        title: "DevFlow CLI",
+        role: "Creator & Maintainer",
+        description: "Built a developer productivity CLI tool with 2,000+ GitHub stars that automates common development workflows",
+        technologies: ["Go", "Cobra", "GitHub Actions"],
+        link: "github.com/sarahjdev/devflow",
+        startDate: "2022-01",
+        endDate: ""
+      },
+      {
+        id: "proj-1",
+        title: "Real-time Analytics Dashboard",
+        role: "Lead Developer",
+        description: "Developed a real-time analytics dashboard for monitoring application performance metrics",
+        technologies: ["React", "D3.js", "WebSocket", "Node.js"],
+        startDate: "2021-06",
+        endDate: "2021-12"
+      }
+    ],
+    certifications: [
+      {
+        id: "cert-0",
+        name: "AWS Solutions Architect - Professional",
+        issuer: "Amazon Web Services",
+        date: "2023-01",
+        credentialId: "AWS-SAP-12345"
+      },
+      {
+        id: "cert-1",
+        name: "Google Cloud Professional Developer",
+        issuer: "Google Cloud",
+        date: "2022-06",
+        credentialId: "GCP-PD-67890"
+      }
     ],
     languages: [
       { id: "lang-0", language: "English", proficiency: "Native" },
-      { id: "lang-1", language: "Spanish", proficiency: "Professional" },
-      { id: "lang-2", language: "Mandarin", proficiency: "Intermediate" }
+      { id: "lang-1", language: "Spanish", proficiency: "Conversational" }
+    ],
+    achievements: [
+      { id: "ach-0", title: "Engineering Excellence Award", description: "Recognized for outstanding contributions to platform reliability", date: "2023" },
+      { id: "ach-1", title: "Hackathon Winner", description: "1st place at Stripe Internal Hackathon for building an AI-powered code review tool", date: "2022" }
     ],
     interests: [
-      { id: "interest-0", name: "Technology Innovation" },
-      { id: "interest-1", name: "Leadership Development" },
-      { id: "interest-2", name: "Open Source Contributions" },
-      { id: "interest-3", name: "Mountain Biking" }
+      { id: "int-0", name: "Open Source Development" },
+      { id: "int-1", name: "Tech Blogging" },
+      { id: "int-2", name: "Rock Climbing" },
+      { id: "int-3", name: "Photography" }
     ]
   }));
 
@@ -1426,10 +1475,10 @@ const Hero = () => {
               <div className="relative max-w-4xl mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/15 to-emerald-500/10 rounded-2xl md:rounded-3xl blur-xl md:blur-2xl scale-105"></div>
 
-                <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-emerald-200/50 overflow-hidden">
-                  <div className="p-2 sm:p-4 md:p-6">
-                    <div 
-                      className="relative w-full overflow-x-hidden space-y-1.5 sm:space-y-2.5"
+                <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-emerald-200/50">
+                  <div className="p-2 sm:p-4 md:p-6 overflow-visible">
+                    <div
+                      className="relative w-full space-y-1.5 sm:space-y-2.5"
                       style={{
                         background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)',
                         padding: '1rem',

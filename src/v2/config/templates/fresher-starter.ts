@@ -1,9 +1,9 @@
 /**
  * Fresher Starter Template Configuration
  *
- * Bold modern design with vibrant purple-pink gradient for fresh graduates.
- * Eye-catching banner header with geometric decorations.
- * Perfect for standing out in entry-level applications.
+ * Clean, professional design for fresh graduates.
+ * Theme color used sparingly - primarily in header and section headings.
+ * ATS-friendly and perfect for entry-level applications.
  */
 
 import type { TemplateConfig } from '../../types';
@@ -12,44 +12,44 @@ import { createTemplateConfig } from '../defaultConfig';
 export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
   id: 'fresher-starter-v2',
   name: 'Fresher Starter',
-  description: 'Bold modern design with vibrant gradient for fresh graduates starting their career.',
+  description: 'Clean professional design for fresh graduates.',
   category: 'creative',
 
   typography: {
     name: {
-      fontSize: '38px',
-      fontWeight: 800,
-      lineHeight: 1.1,
-      letterSpacing: '-0.03em',
+      fontSize: '32px',
+      fontWeight: 700,
+      lineHeight: 1.2,
+      letterSpacing: '-0.02em',
       color: '#ffffff',
     },
     title: {
-      fontSize: '14px',
-      fontWeight: 600,
+      fontSize: '13px',
+      fontWeight: 500,
       lineHeight: 1.4,
-      letterSpacing: '0.08em',
+      letterSpacing: '0.02em',
       textTransform: 'uppercase',
-      color: '#fcd34d', // Bright yellow accent on purple
+      color: 'rgba(255, 255, 255, 0.9)',
     },
     sectionHeading: {
-      fontSize: '11px',
-      fontWeight: 800,
+      fontSize: '10px',
+      fontWeight: 700,
       lineHeight: 1.3,
-      letterSpacing: '0.12em',
+      letterSpacing: '0.08em',
       textTransform: 'uppercase',
-      color: '#7c3aed',
+      color: '#374151',
     },
     itemTitle: {
-      fontSize: '14px',
-      fontWeight: 700,
+      fontSize: '13px',
+      fontWeight: 600,
       lineHeight: 1.4,
-      color: '#1e1b4b',
+      color: '#1f2937',
     },
     itemSubtitle: {
       fontSize: '12px',
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: 1.4,
-      color: '#7c3aed',
+      color: '#4b5563',
     },
     dates: {
       fontSize: '11px',
@@ -58,16 +58,16 @@ export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '13px',
       fontWeight: 400,
-      lineHeight: 1.7,
-      color: '#374151',
+      lineHeight: 1.65,
+      color: '#4b5563',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '13px',
       fontWeight: 500,
       lineHeight: 1.5,
-      color: '#e9d5ff',
+      color: 'rgba(255, 255, 255, 0.9)',
     },
     small: {
       fontSize: '10px',
@@ -80,16 +80,16 @@ export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
   spacing: {
     pagePadding: {
       top: '0',
-      right: '28px',
-      bottom: '28px',
-      left: '28px',
+      right: '32px',
+      bottom: '24px',
+      left: '32px',
     },
-    sectionGap: '18px',
-    itemGap: '12px',
+    sectionGap: '16px',
+    itemGap: '10px',
     headingToContent: '10px',
-    bulletGap: '5px',
-    contactGap: '14px',
-    skillGap: '6px',
+    bulletGap: '4px',
+    contactGap: '16px',
+    skillGap: '8px',
   },
 
   layout: {
@@ -98,40 +98,43 @@ export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#7c3aed', // Vibrant purple
-    secondary: '#a855f7',
+    primary: '#7c3aed',
+    secondary: '#8b5cf6',
     text: {
-      primary: '#1e1b4b',
-      secondary: '#374151',
+      primary: '#1f2937',
+      secondary: '#4b5563',
       muted: '#6b7280',
       light: '#ffffff',
     },
     background: {
       page: '#ffffff',
-      section: '#faf5ff',
-      accent: '#ede9fe',
+      section: '#f9fafb',
+      accent: '#f3f4f6',
     },
-    border: '#c4b5fd',
+    border: '#e5e7eb',
   },
 
   sectionHeading: {
-    style: 'accent-bar',
-    borderWidth: '4px',
-    borderColor: '#a855f7',
+    style: 'underline',
+    borderWidth: '1px',
+    borderColor: '#e5e7eb',
     marginBottom: '12px',
-    padding: '0 0 0 14px',
+    padding: '0 0 6px 0',
   },
 
   header: {
     variant: 'banner',
-    showPhoto: false,
-    padding: '36px 32px',
-    backgroundColor: '#6d28d9', // Deep purple
+    showPhoto: true,
+    photoSize: '64px',
+    photoShape: 'circle',
+    photoPosition: 'left',
+    padding: '24px 32px',
+    // backgroundColor uses theme's primary color (colors.primary) by default
     textColor: '#ffffff',
     contactIcons: {
       show: true,
-      size: '13px',
-      color: '#c4b5fd',
+      size: '12px',
+      color: 'rgba(255, 255, 255, 0.85)',
     },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
@@ -142,20 +145,21 @@ export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
     columns: 4,
     showRatings: false,
     badge: {
-      fontSize: '11px',
-      padding: '6px 14px',
-      borderRadius: '20px',
-      borderWidth: '0',
-      backgroundColor: '#ede9fe',
-      textColor: '#6d28d9',
+      fontSize: '10px',
+      padding: '5px 12px',
+      borderRadius: '4px',
+      borderWidth: '1px',
+      backgroundColor: '#f9fafb',
+      textColor: '#374151',
+      borderColor: '#e5e7eb',
     },
   },
 
   experience: {
-    variant: 'modern',
+    variant: 'standard',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '▸',
+    bulletStyle: '•',
   },
 
   education: {
@@ -167,14 +171,18 @@ export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
   },
 
   projects: {
-    variant: 'modern',
+    variant: 'standard',
     showLinks: true,
     showTech: true,
   },
 
+  certifications: {
+    variant: 'compact',
+  },
+
   achievements: {
-    variant: 'numbered',
-    showIndicators: true,
+    variant: 'compact',
+    showIndicators: false,
   },
 
   strengths: {
@@ -200,16 +208,16 @@ export const fresherStarterConfig: TemplateConfig = createTemplateConfig({
   ],
 
   fontFamily: {
-    primary: "'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-    secondary: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    primary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    secondary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
   },
 
-  // Creative decorations - geometric patterns for bold modern look
+  // Minimal decorations for clean professional look
   decorations: {
-    enabled: true,
-    elements: ['geometric-corner', 'dot-pattern', 'corner-blob'],
-    opacity: 0.9,
-    gradientBackground: true,
+    enabled: false,
+    elements: [],
+    opacity: 0,
+    gradientBackground: false,
   },
 });
 

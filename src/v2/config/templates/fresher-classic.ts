@@ -53,13 +53,13 @@ export const fresherClassicConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     body: {
-      fontSize: '11px',
+      fontSize: '13px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#374151',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '13px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',

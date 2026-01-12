@@ -19,9 +19,20 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { LinkedInImportModal } from '@/v2/components/LinkedInImportModal';
 import { ResumeUploadModal } from '@/v2/components/ResumeUploadModal';
 import { TemplateSelectorModal } from '@/v2/components/TemplateSelectorModal';
+import { JobTailorModal } from '@/v2/components/JobTailorModal';
 import { AuthModal } from '@/components/AuthModal';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import type { V2ResumeData } from '../types';
+
+interface TailorAnalysis {
+  matchScore: number;
+  keywordsFound: string[];
+  keywordsMissing: string[];
+  keywordsAdded: string[];
+  summaryEnhanced: boolean;
+  experienceEnhanced: boolean;
+  roleAlignment?: string;
+}
 
 const DashboardV2 = () => {
   const navigate = useNavigate();
@@ -30,7 +41,9 @@ const DashboardV2 = () => {
   const [resumeUploadModalOpen, setResumeUploadModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [templateSelectorOpen, setTemplateSelectorOpen] = useState(false);
+  const [jobTailorModalOpen, setJobTailorModalOpen] = useState(false);
   const [pendingResumeData, setPendingResumeData] = useState<V2ResumeData | null>(null);
+  const [pendingTailorAnalysis, setPendingTailorAnalysis] = useState<TailorAnalysis | null>(null);
 
   const v2Templates = getAllTemplates();
   const fresherTemplates = getFresherTemplates();
@@ -85,6 +98,14 @@ const DashboardV2 = () => {
     }
   };
 
+  // Handle job tailor completion - show template selector
+  const handleJobTailorComplete = (data: V2ResumeData, analysis: TailorAnalysis) => {
+    setPendingResumeData(data);
+    setPendingTailorAnalysis(analysis);
+    setJobTailorModalOpen(false);
+    setTemplateSelectorOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#fafafa]">
       <Header />
@@ -100,104 +121,111 @@ const DashboardV2 = () => {
           </p>
         </div>
 
-        {/* Quick Actions - Four Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 max-w-6xl mx-auto">
-          {/* LinkedIn Import Card - LinkedIn Blue Theme */}
-          <button
-            onClick={handleLinkedInClick}
-            className="group relative flex flex-col p-5 bg-gradient-to-br from-[#0A66C2]/5 to-[#0A66C2]/10 rounded-2xl border border-[#0A66C2]/20 hover:border-[#0A66C2]/40 hover:shadow-xl hover:shadow-[#0A66C2]/15 transition-all duration-300 text-left"
-          >
-            <div className="flex items-center gap-3 mb-2.5">
-              <div className="w-12 h-12 rounded-xl bg-[#0A66C2] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-[#0A66C2]/30">
-                <Linkedin className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 group-hover:text-[#0A66C2] transition-colors">
-                  Import LinkedIn
-                </h3>
-              </div>
-              <ChevronRight className="w-5 h-5 text-[#0A66C2]/40 group-hover:text-[#0A66C2] group-hover:translate-x-1 transition-all" />
-            </div>
-            <p className="text-sm text-gray-600 pl-[60px]">
-              Auto-fill from your profile
-            </p>
-          </button>
-
-          {/* Upload Resume Card - Purple Theme */}
-          <button
-            onClick={() => setResumeUploadModalOpen(true)}
-            className="group relative flex flex-col p-5 bg-gradient-to-br from-purple-50 to-violet-100/50 rounded-2xl border border-purple-200/60 hover:border-purple-300 hover:shadow-xl hover:shadow-purple-500/15 transition-all duration-300 text-left"
-          >
-            <div className="flex items-center gap-3 mb-2.5">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-purple-500/30">
-                <FileUp className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
-                    Upload Resume
-                  </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700 border border-purple-200">
-                    AI
-                  </span>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-purple-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
-            </div>
-            <p className="text-sm text-gray-600 pl-[60px]">
-              Parse existing PDF/DOCX
-            </p>
-          </button>
-
-          {/* Universal Templates Card - Blue Theme */}
+        {/* Quick Actions - Five Column Layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-10 max-w-5xl mx-auto">
+          {/* Pro Templates */}
           <button
             onClick={() => navigate("/templates/all")}
-            className="group relative flex flex-col p-5 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl border border-blue-200/60 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/15 transition-all duration-300 text-left"
+            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
           >
-            <div className="flex items-center gap-3 mb-2.5">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-blue-500/30">
-                <Briefcase className="w-6 h-6 text-white" />
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-100 to-blue-200 flex items-center justify-center">
+                <Briefcase className="w-5 h-5 text-indigo-600" />
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    Pro Templates
-                  </h3>
-                  <span className="inline-flex items-center justify-center min-w-[24px] h-5 px-1.5 rounded-full bg-blue-500 text-white text-[10px] font-bold shadow-sm">
-                    {universalTemplateCount}
-                  </span>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-blue-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+              <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-indigo-500 text-white text-[11px] font-bold shadow-sm">
+                {universalTemplateCount}
+              </span>
             </div>
-            <p className="text-sm text-gray-600 pl-[60px]">
-              For all industries
+            <h3 className="font-semibold text-gray-900 text-sm mb-1">
+              Pro Templates
+            </h3>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Premium designs for all professional industries.
             </p>
           </button>
 
-          {/* Fresher Templates Card - Green Theme */}
+          {/* Fresher */}
           <button
             onClick={() => navigate("/templates/fresher")}
-            className="group relative flex flex-col p-5 bg-gradient-to-br from-emerald-50 to-green-100/50 rounded-2xl border border-emerald-200/60 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/15 transition-all duration-300 text-left"
+            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
           >
-            <div className="flex items-center gap-3 mb-2.5">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-emerald-500/30">
-                <GraduationCap className="w-6 h-6 text-white" />
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-100 to-green-200 flex items-center justify-center">
+                <GraduationCap className="w-5 h-5 text-emerald-600" />
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors">
-                    Fresher
-                  </h3>
-                  <span className="inline-flex items-center justify-center min-w-[24px] h-5 px-1.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold shadow-sm">
-                    {fresherTemplateCount}
-                  </span>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-emerald-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
+              <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-emerald-500 text-white text-[11px] font-bold shadow-sm">
+                {fresherTemplateCount}
+              </span>
             </div>
-            <p className="text-sm text-gray-600 pl-[60px]">
-              Graduates & entry-level
+            <h3 className="font-semibold text-gray-900 text-sm mb-1">
+              Fresher
+            </h3>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Specialized layouts for graduates & entry-level.
+            </p>
+          </button>
+
+          {/* Import LinkedIn */}
+          <button
+            onClick={handleLinkedInClick}
+            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                <Linkedin className="w-5 h-5 text-[#0A66C2]" />
+              </div>
+              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-all mt-1" />
+            </div>
+            <h3 className="font-semibold text-gray-900 text-sm mb-1">
+              Import LinkedIn
+            </h3>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Auto-fill from your professional profile instantly.
+            </p>
+          </button>
+
+          {/* Upload Resume */}
+          <button
+            onClick={() => setResumeUploadModalOpen(true)}
+            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-100 to-violet-200 flex items-center justify-center">
+                <FileUp className="w-5 h-5 text-purple-600" />
+              </div>
+              <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">
+                AI
+              </span>
+            </div>
+            <h3 className="font-semibold text-gray-900 text-sm mb-1">
+              Upload Resume
+            </h3>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Parse existing PDF/DOCX files with smart AI.
+            </p>
+          </button>
+
+          {/* Tailor for Job */}
+          <button
+            onClick={() => setJobTailorModalOpen(true)}
+            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left col-span-2 sm:col-span-1"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-orange-500" />
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] font-semibold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded">
+                  AI
+                </span>
+                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-all" />
+              </div>
+            </div>
+            <h3 className="font-semibold text-gray-900 text-sm mb-1">
+              Tailor for Job
+            </h3>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Match any job description automatically.
             </p>
           </button>
         </div>
@@ -355,9 +383,18 @@ const DashboardV2 = () => {
         onClose={() => {
           setTemplateSelectorOpen(false);
           setPendingResumeData(null);
+          setPendingTailorAnalysis(null);
         }}
         onSelect={handleTemplateSelect}
-        themeColor="#8b5cf6"
+        themeColor={pendingTailorAnalysis ? "#f59e0b" : "#8b5cf6"}
+      />
+
+      {/* Job Tailor Modal - Tailor resume for job description */}
+      <JobTailorModal
+        isOpen={jobTailorModalOpen}
+        onClose={() => setJobTailorModalOpen(false)}
+        onComplete={handleJobTailorComplete}
+        themeColor="#f59e0b"
       />
     </div>
   );

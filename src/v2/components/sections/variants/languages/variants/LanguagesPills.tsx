@@ -6,10 +6,21 @@
  * Uses theme accent color for styling.
  */
 
-import React from 'react';
-import { X, Plus } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { X, Plus, ChevronDown } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useInlineEdit } from '@/contexts/InlineEditContext';
 import type { LanguagesVariantProps } from '../types';
+
+const proficiencyOptions: { key: string; label: string }[] = [
+  { key: 'Native', label: 'Native' },
+  { key: 'Fluent', label: 'Fluent' },
+  { key: 'Professional', label: 'Professional' },
+  { key: 'Advanced', label: 'Advanced' },
+  { key: 'Intermediate', label: 'Intermediate' },
+  { key: 'Basic', label: 'Basic' },
+  { key: 'Elementary', label: 'Elementary' },
+];
 
 // Helper to convert hex to RGB
 const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
@@ -59,6 +70,27 @@ export const LanguagesPills: React.FC<LanguagesVariantProps> = ({
   onRemoveLanguage,
 }) => {
   const { typography } = config;
+  const inlineEdit = useInlineEdit();
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleProficiencyChange = (index: number, newProficiency: string) => {
+    if (inlineEdit) {
+      inlineEdit.updateField(`languages.${index}.proficiency`, newProficiency);
+    }
+    setOpenDropdown(null);
+  };
 
   if (!items.length && !editable) return null;
 
@@ -94,13 +126,48 @@ export const LanguagesPills: React.FC<LanguagesVariantProps> = ({
                 {lang.language}
               </span>
             )}
-            <span style={{
-              fontSize: '11px',
-              color: colors.text,
-              opacity: 0.8,
-            }}>
-              {lang.proficiency}
-            </span>
+
+            {/* Proficiency with dropdown in edit mode */}
+            {editable ? (
+              <div className="relative" ref={openDropdown === index ? dropdownRef : null}>
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
+                  className="flex items-center gap-0.5 hover:opacity-70 transition-opacity"
+                  style={{
+                    fontSize: '11px',
+                    color: colors.text,
+                    opacity: 0.8,
+                  }}
+                >
+                  {lang.proficiency}
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+                {openDropdown === index && (
+                  <div className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 py-1 min-w-[120px]">
+                    {proficiencyOptions.map((level) => (
+                      <button
+                        key={level.key}
+                        onClick={() => handleProficiencyChange(index, level.key)}
+                        className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 transition-colors ${
+                          lang.proficiency === level.key ? 'bg-gray-100 font-medium' : ''
+                        }`}
+                        style={{ color: '#374151' }}
+                      >
+                        {level.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <span style={{
+                fontSize: '11px',
+                color: colors.text,
+                opacity: 0.8,
+              }}>
+                {lang.proficiency}
+              </span>
+            )}
 
             {editable && onRemoveLanguage && (
               <button

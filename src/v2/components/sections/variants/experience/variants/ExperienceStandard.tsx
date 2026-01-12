@@ -76,9 +76,9 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
                 </h3>
               )}
               
-              <div style={{ 
-                fontSize: typography.body.fontSize, 
-                color: accentColor,
+              <div style={{
+                fontSize: typography.body.fontSize,
+                color: typography.itemSubtitle?.color || '#4b5563',
                 fontWeight: 500,
                 marginTop: '2px',
               }}>
@@ -87,7 +87,7 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
                     <InlineEditableText
                       path={`experience.${index}.company`}
                       value={exp.company}
-                      style={{ color: accentColor, fontWeight: 500 }}
+                      style={{ color: typography.itemSubtitle?.color || '#4b5563', fontWeight: 500 }}
                       placeholder="Company Name"
                     />
                     {exp.location && (

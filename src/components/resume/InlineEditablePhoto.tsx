@@ -27,6 +27,8 @@ interface InlineEditablePhotoProps {
   textColor?: string;
   /** Border width */
   borderWidth?: string;
+  /** Box shadow for the photo */
+  boxShadow?: string;
   /** Whether editing is enabled */
   editable?: boolean;
   /** Initials to display when no photo */
@@ -48,6 +50,7 @@ export const InlineEditablePhoto: React.FC<InlineEditablePhotoProps> = ({
   backgroundColor = '#0891b215',
   textColor = '#0891b2',
   borderWidth = '2px',
+  boxShadow,
   editable = true,
   initials = 'AB',
   onCustomUpdate,
@@ -128,6 +131,7 @@ export const InlineEditablePhoto: React.FC<InlineEditablePhotoProps> = ({
     borderRadius,
     overflow: 'hidden',
     border: `${borderWidth} solid ${borderColor}`,
+    boxShadow: boxShadow || '0 4px 12px rgba(0, 0, 0, 0.1)',
     flexShrink: 0,
     position: 'relative',
     ...style,

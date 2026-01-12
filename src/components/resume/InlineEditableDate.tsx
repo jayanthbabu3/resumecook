@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useInlineEdit } from "@/contexts/InlineEditContext";
 import { cn } from "@/lib/utils";
-import { Calendar, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -16,6 +17,11 @@ interface InlineEditableDateProps {
   style?: React.CSSProperties;
   formatDisplay?: (date: string) => string;
   editable?: boolean;
+}
+
+interface DropdownPosition {
+  top: number;
+  left: number;
 }
 
 export const InlineEditableDate = ({
@@ -37,7 +43,18 @@ export const InlineEditableDate = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({ top: 0, left: 0 });
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Use a wrapper span that we control, since dynamic Component doesn't forward refs
+  const wrapperRef = useRef<HTMLSpanElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Track mount state for SSR safety
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
 
   // Parse value to get current year for picker
   const parseValue = () => {
@@ -61,18 +78,86 @@ export const InlineEditableDate = ({
     }
   }, [selectedYear]);
 
+  // Calculate dropdown position using fixed positioning (viewport-relative)
+  const updatePosition = useCallback(() => {
+    if (!wrapperRef.current) return;
+
+    const rect = wrapperRef.current.getBoundingClientRect();
+    const dropdownWidth = 260;
+    const dropdownHeight = 280;
+
+    // Calculate centered position relative to viewport (fixed positioning)
+    let left = rect.left + rect.width / 2 - dropdownWidth / 2;
+    let top = rect.bottom + 4;
+
+    // Ensure dropdown stays within viewport horizontally
+    if (left < 10) left = 10;
+    if (left + dropdownWidth > window.innerWidth - 10) {
+      left = window.innerWidth - dropdownWidth - 10;
+    }
+
+    // If dropdown would go below viewport, show it above the trigger
+    if (top + dropdownHeight > window.innerHeight - 10) {
+      top = rect.top - dropdownHeight - 4;
+      if (top < 10) top = 10;
+    }
+
+    setDropdownPosition({ top, left });
+  }, []);
+
+  // Update position when opening and on scroll/resize
+  useEffect(() => {
+    if (!isOpen || !isMounted) return;
+
+    // Initial position calculation
+    updatePosition();
+
+    const handleScrollOrResize = () => updatePosition();
+
+    window.addEventListener('scroll', handleScrollOrResize, true);
+    window.addEventListener('resize', handleScrollOrResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollOrResize, true);
+      window.removeEventListener('resize', handleScrollOrResize);
+    };
+  }, [isOpen, isMounted, updatePosition]);
+
   // Close on outside click
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const isOutsideWrapper = !wrapperRef.current?.contains(target);
+      const isOutsideDropdown = !dropdownRef.current?.contains(target);
+
+      if (isOutsideWrapper && isOutsideDropdown) {
         setIsOpen(false);
       }
     };
 
-    if (isOpen) {
+    // Small delay to prevent immediate close on the click that opened it
+    const timeoutId = setTimeout(() => {
       document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, 10);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Close on escape key
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen]);
 
   const handleMonthSelect = (monthIndex: number) => {
@@ -85,21 +170,20 @@ export const InlineEditableDate = ({
 
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     if (resolvedPath) {
       updateField(resolvedPath, '');
     }
     setIsOpen(false);
   };
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleTriggerClick = (e: React.MouseEvent) => {
     if (!canEdit) return;
     e.stopPropagation();
-    setIsOpen(!isOpen);
+    e.preventDefault();
+    setIsOpen(prev => !prev);
   };
 
-  const displayValue = formatDisplay ? formatDisplay(resolvedValue) : resolvedValue;
-
-  // Format display value if not using custom formatter
   const getDisplayText = () => {
     if (!resolvedValue) return placeholder;
     if (formatDisplay) return formatDisplay(resolvedValue);
@@ -109,13 +193,116 @@ export const InlineEditableDate = ({
     return placeholder;
   };
 
+  // Render the dropdown via portal to document.body
+  const renderDropdown = () => {
+    if (!canEdit || !isOpen || !isMounted) return null;
+
+    return createPortal(
+      <div
+        ref={dropdownRef}
+        style={{
+          position: 'fixed',
+          top: dropdownPosition.top,
+          left: dropdownPosition.left,
+          minWidth: '260px',
+          zIndex: 999999,
+        }}
+        className="bg-white rounded-xl border border-gray-200 shadow-2xl"
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Year Navigation */}
+        <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-b border-gray-100 rounded-t-xl">
+          <button
+            type="button"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); e.preventDefault(); setViewYear(v => v - 1); }}
+            className="p-1 hover:bg-white rounded transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4 text-gray-600" />
+          </button>
+          <span className="text-sm font-semibold text-gray-700">{viewYear}</span>
+          <button
+            type="button"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); e.preventDefault(); setViewYear(v => v + 1); }}
+            className="p-1 hover:bg-white rounded transition-colors"
+          >
+            <ChevronRight className="w-4 h-4 text-gray-600" />
+          </button>
+        </div>
+
+        {/* Month Grid */}
+        <div className="p-2">
+          <div className="grid grid-cols-4 gap-1">
+            {MONTHS.map((month, index) => {
+              const isSelected = selectedMonth === index && selectedYear === viewYear;
+              const isCurrent = new Date().getMonth() === index && new Date().getFullYear() === viewYear;
+
+              return (
+                <button
+                  key={month}
+                  type="button"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleMonthSelect(index); }}
+                  className={cn(
+                    "py-2 px-1.5 text-xs font-medium rounded-lg transition-all",
+                    isSelected
+                      ? "bg-blue-600 text-white"
+                      : isCurrent
+                      ? "bg-blue-50 text-blue-700 hover:bg-blue-100"
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}
+                >
+                  {month}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-t border-gray-100 rounded-b-xl">
+          <button
+            type="button"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={handleClear}
+            className="text-[10px] font-medium text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              const now = new Date();
+              const newValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+              if (resolvedPath) {
+                updateField(resolvedPath, newValue);
+              }
+              setIsOpen(false);
+            }}
+            className="text-[10px] font-medium text-blue-600 hover:text-blue-700 transition-colors"
+          >
+            This month
+          </button>
+        </div>
+      </div>,
+      document.body
+    );
+  };
+
   return (
-    <div ref={containerRef} className="relative inline-block">
-      {/* Display Text */}
+    <span
+      ref={wrapperRef}
+      onClick={handleTriggerClick}
+      onMouseEnter={() => canEdit && setIsFocused(true)}
+      onMouseLeave={() => canEdit && setIsFocused(false)}
+      style={{ display: 'inline' }}
+    >
       <Component
-        onClick={handleClick}
-        onMouseEnter={() => canEdit && setIsFocused(true)}
-        onMouseLeave={() => canEdit && setIsFocused(false)}
         className={cn(
           canEdit ? "cursor-pointer" : "cursor-default",
           "transition-all rounded px-1 inline-flex items-center gap-1",
@@ -129,87 +316,7 @@ export const InlineEditableDate = ({
       >
         {getDisplayText()}
       </Component>
-
-      {/* Inline Picker Dropdown */}
-      {canEdit && isOpen && (
-        <div
-          className="absolute z-50 mt-1 bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150"
-          style={{ minWidth: '260px', left: '50%', transform: 'translateX(-50%)' }}
-        >
-          {/* Year Navigation */}
-          <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-b border-gray-100">
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); setViewYear(v => v - 1); }}
-              className="p-1 hover:bg-white rounded transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4 text-gray-600" />
-            </button>
-            <span className="text-sm font-semibold text-gray-700">{viewYear}</span>
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); setViewYear(v => v + 1); }}
-              className="p-1 hover:bg-white rounded transition-colors"
-            >
-              <ChevronRight className="w-4 h-4 text-gray-600" />
-            </button>
-          </div>
-
-          {/* Month Grid */}
-          <div className="p-2">
-            <div className="grid grid-cols-4 gap-1">
-              {MONTHS.map((month, index) => {
-                const isSelected = selectedMonth === index && selectedYear === viewYear;
-                const isCurrent = new Date().getMonth() === index && new Date().getFullYear() === viewYear;
-
-                return (
-                  <button
-                    key={month}
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); handleMonthSelect(index); }}
-                    className={cn(
-                      "py-2 px-1.5 text-xs font-medium rounded-lg transition-all",
-                      isSelected
-                        ? "bg-blue-600 text-white"
-                        : isCurrent
-                        ? "bg-blue-50 text-blue-700 hover:bg-blue-100"
-                        : "text-gray-700 hover:bg-gray-100"
-                    )}
-                  >
-                    {month}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-t border-gray-100">
-            <button
-              type="button"
-              onClick={handleClear}
-              className="text-[10px] font-medium text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              Clear
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                const now = new Date();
-                const newValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-                if (resolvedPath) {
-                  updateField(resolvedPath, newValue);
-                }
-                setIsOpen(false);
-              }}
-              className="text-[10px] font-medium text-blue-600 hover:text-blue-700 transition-colors"
-            >
-              This month
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+      {renderDropdown()}
+    </span>
   );
 };

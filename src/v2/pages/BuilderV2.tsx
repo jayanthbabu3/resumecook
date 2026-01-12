@@ -233,13 +233,70 @@ export const BuilderV2: React.FC = () => {
     }
   }, [searchParams]);
 
+  // Check for job-tailored resume data on mount
+  useEffect(() => {
+    const jobTailorData = sessionStorage.getItem('job-tailor-data');
+    const source = searchParams.get('source');
+
+    if (jobTailorData && source === 'job-tailor') {
+      try {
+        const { resumeData: tailoredData, analysis } = JSON.parse(jobTailorData);
+        externalDataImportedRef.current = true;
+        setResumeData(tailoredData);
+
+        // Dynamically enable sections based on tailored data
+        const sectionsToEnable: string[] = ['header'];
+
+        if (tailoredData.personalInfo?.summary) sectionsToEnable.push('summary');
+        if (tailoredData.experience?.length > 0) sectionsToEnable.push('experience');
+        if (tailoredData.education?.length > 0) sectionsToEnable.push('education');
+        if (tailoredData.skills?.length > 0) sectionsToEnable.push('skills');
+        if (tailoredData.languages?.length > 0) sectionsToEnable.push('languages');
+        if (tailoredData.certifications?.length > 0) sectionsToEnable.push('certifications');
+        if (tailoredData.projects?.length > 0) sectionsToEnable.push('projects');
+        if (tailoredData.awards?.length > 0) sectionsToEnable.push('awards');
+        if (tailoredData.achievements?.length > 0) sectionsToEnable.push('achievements');
+        if (tailoredData.strengths?.length > 0) sectionsToEnable.push('strengths');
+        if (tailoredData.volunteer?.length > 0) sectionsToEnable.push('volunteer');
+        if (tailoredData.publications?.length > 0) sectionsToEnable.push('publications');
+        if (tailoredData.speaking?.length > 0) sectionsToEnable.push('speaking');
+        if (tailoredData.patents?.length > 0) sectionsToEnable.push('patents');
+        if (tailoredData.interests?.length > 0) sectionsToEnable.push('interests');
+        if (tailoredData.references?.length > 0) sectionsToEnable.push('references');
+        if (tailoredData.courses?.length > 0) sectionsToEnable.push('courses');
+
+        // Handle custom sections
+        if (tailoredData.customSections?.length > 0) {
+          tailoredData.customSections.forEach((section: { id: string }) => {
+            sectionsToEnable.push(section.id);
+          });
+        }
+
+        console.log('Enabling sections from tailored resume:', sectionsToEnable);
+        setEnabledSections(sectionsToEnable);
+
+        // Clear the sessionStorage to prevent re-loading on refresh
+        sessionStorage.removeItem('job-tailor-data');
+
+        // Show success toast with match score
+        const matchScore = analysis?.matchScore || 0;
+        const keywordsAdded = analysis?.keywordsAdded?.length || 0;
+        toast.success(`Resume tailored for job! Match score: ${matchScore}%`, {
+          description: keywordsAdded > 0 ? `Added ${keywordsAdded} relevant keywords` : 'Your resume has been optimized',
+        });
+      } catch (error) {
+        console.error('Failed to parse job-tailored resume data:', error);
+      }
+    }
+  }, [searchParams]);
+
   // Load profile data for new resumes (no resumeId)
   useEffect(() => {
     const loadProfileData = async () => {
       // Skip if we're loading an existing resume or external data is pending
       if (resumeId) return;
       const source = searchParams.get('source');
-      if (source === 'linkedin' || source === 'upload') return;
+      if (source === 'linkedin' || source === 'upload' || source === 'job-tailor') return;
 
       // Only load profile if user is authenticated
       if (!user) return;
@@ -578,8 +635,10 @@ export const BuilderV2: React.FC = () => {
     const source = searchParams.get('source');
     const hasLinkedInData = sessionStorage.getItem('linkedin-import-data');
     const hasUploadedResumeData = sessionStorage.getItem('resume-upload-data');
+    const hasJobTailorData = sessionStorage.getItem('job-tailor-data');
     const hasPendingImport = (source === 'linkedin' && hasLinkedInData) ||
-                             (source === 'upload' && hasUploadedResumeData);
+                             (source === 'upload' && hasUploadedResumeData) ||
+                             (source === 'job-tailor' && hasJobTailorData);
 
     // Don't reset sections if:
     // 1. External data import is pending (storage still has data)
@@ -596,6 +655,7 @@ export const BuilderV2: React.FC = () => {
     const source = searchParams.get('source');
     const hasLinkedInData = sessionStorage.getItem('linkedin-import-data');
     const hasUploadedResumeData = sessionStorage.getItem('resume-upload-data');
+    const hasJobTailorData = sessionStorage.getItem('job-tailor-data');
 
     // Don't reset to mock data if we're importing from LinkedIn
     if (source === 'linkedin' && hasLinkedInData) {
@@ -606,6 +666,12 @@ export const BuilderV2: React.FC = () => {
     // Don't reset to mock data if we're importing from uploaded resume
     if (source === 'upload' && hasUploadedResumeData) {
       console.log('Skipping template mock data - Resume upload pending');
+      return;
+    }
+
+    // Don't reset to mock data if we're importing from job tailor
+    if (source === 'job-tailor' && hasJobTailorData) {
+      console.log('Skipping template mock data - Job tailor pending');
       return;
     }
 

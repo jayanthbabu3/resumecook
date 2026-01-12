@@ -24,7 +24,7 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
   if (!items.length && !editable) return null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
       {items.map((cert, index) => (
         <div
           key={cert.id || index}
@@ -34,9 +34,7 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '8px',
-            padding: '5px 8px',
-            backgroundColor: index % 2 === 0 ? `${accentColor}04` : 'transparent',
-            borderRadius: '4px',
+            padding: '4px 0',
             fontSize: '11px',
           }}
         >
@@ -68,11 +66,11 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
               <InlineEditableText
                 path={`certifications.${index}.issuer`}
                 value={cert.issuer}
-                style={{ color: accentColor, fontSize: '11px' }}
+                style={{ color: '#6b7280', fontSize: '11px' }}
                 placeholder="Issuer"
               />
             ) : (
-              <span style={{ color: accentColor }}>{cert.issuer}</span>
+              <span style={{ color: '#6b7280' }}>{cert.issuer}</span>
             )}
           </div>
 

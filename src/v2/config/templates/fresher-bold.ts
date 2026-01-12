@@ -60,13 +60,13 @@ export const fresherBoldConfig: TemplateConfig = createTemplateConfig({
       color: '#64748b',
     },
     body: {
-      fontSize: '11px',
+      fontSize: '13px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#334155',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '13px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#cbd5e1',

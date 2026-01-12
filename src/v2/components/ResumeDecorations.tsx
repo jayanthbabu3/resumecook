@@ -203,7 +203,8 @@ const CornerCircles: React.FC<{ color: string; opacity: number }> = ({ color, op
 );
 
 /**
- * Bottom wave - wave pattern at bottom-left
+ * Bottom wave - subtle wave pattern at bottom-left
+ * Creates a soft, elegant accent that doesn't distract from content
  */
 const BottomWave: React.FC<{ color: string; opacity: number }> = ({ color, opacity }) => (
   <div
@@ -211,50 +212,33 @@ const BottomWave: React.FC<{ color: string; opacity: number }> = ({ color, opaci
       position: 'absolute',
       bottom: 0,
       left: 0,
-      width: '250px',
-      height: '200px',
+      width: '150px',
+      height: '120px',
       overflow: 'hidden',
       pointerEvents: 'none',
       zIndex: 1,
     }}
   >
     <svg
-      viewBox="0 0 200 160"
+      viewBox="0 0 150 120"
       style={{
         position: 'absolute',
-        bottom: '-20px',
-        left: '-20px',
-        width: '250px',
-        height: '200px',
+        bottom: '-10px',
+        left: '-10px',
+        width: '150px',
+        height: '120px',
       }}
     >
       <defs>
         <linearGradient id="waveGradient" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={color} stopOpacity={0.12 * opacity} />
-          <stop offset="100%" stopColor={color} stopOpacity={0.04 * opacity} />
+          <stop offset="0%" stopColor={color} stopOpacity={0.05 * opacity} />
+          <stop offset="100%" stopColor={color} stopOpacity={0.02 * opacity} />
         </linearGradient>
       </defs>
       <path
-        d="M0,160 L0,80 Q50,50 100,80 T200,60 L200,160 Z"
+        d="M0,120 L0,60 Q40,35 80,55 T150,45 L150,120 Z"
         fill="url(#waveGradient)"
       />
-    </svg>
-    {/* Decorative dots */}
-    <svg
-      viewBox="0 0 80 80"
-      style={{
-        position: 'absolute',
-        bottom: '35px',
-        left: '35px',
-        width: '60px',
-        height: '60px',
-      }}
-    >
-      <circle cx="12" cy="12" r="4" fill={color} fillOpacity={0.15 * opacity} />
-      <circle cx="35" cy="10" r="3" fill={color} fillOpacity={0.12 * opacity} />
-      <circle cx="10" cy="35" r="3" fill={color} fillOpacity={0.12 * opacity} />
-      <circle cx="30" cy="30" r="3.5" fill={color} fillOpacity={0.10 * opacity} />
-      <circle cx="55" cy="20" r="2.5" fill={color} fillOpacity={0.08 * opacity} />
     </svg>
   </div>
 );
@@ -326,7 +310,8 @@ const GeometricCorner: React.FC<{ primaryColor: string; secondaryColor: string; 
 );
 
 /**
- * Curved lines - elegant flowing lines in top-right
+ * Curved lines - subtle flowing lines in top-right corner
+ * Creates a soft, elegant accent that doesn't distract from content
  */
 const CurvedLines: React.FC<{ primaryColor: string; secondaryColor: string; opacity: number }> = ({
   primaryColor,
@@ -338,48 +323,39 @@ const CurvedLines: React.FC<{ primaryColor: string; secondaryColor: string; opac
       position: 'absolute',
       top: 0,
       right: 0,
-      width: '250px',
-      height: '250px',
+      width: '180px',
+      height: '180px',
       overflow: 'hidden',
       pointerEvents: 'none',
       zIndex: 1,
     }}
   >
-    <svg viewBox="0 0 250 250" style={{ width: '100%', height: '100%' }}>
-      {/* Outer flowing curve */}
+    <svg viewBox="0 0 180 180" style={{ width: '100%', height: '100%' }}>
+      {/* Soft outer arc - very subtle */}
       <path
-        d="M250,0 Q250,120 130,180 Q80,205 0,200"
+        d="M180,0 Q180,80 100,130 Q60,155 0,150"
         fill="none"
         stroke={primaryColor}
-        strokeWidth="40"
-        strokeOpacity={0.08 * opacity}
+        strokeWidth="25"
+        strokeOpacity={0.04 * opacity}
         strokeLinecap="round"
       />
-      {/* Middle curve */}
+      {/* Middle accent arc */}
       <path
-        d="M250,0 Q240,90 150,140 Q100,165 40,160"
+        d="M180,0 Q170,60 120,95 Q80,120 40,115"
         fill="none"
         stroke={secondaryColor}
-        strokeWidth="25"
-        strokeOpacity={0.10 * opacity}
-        strokeLinecap="round"
-      />
-      {/* Inner accent curve */}
-      <path
-        d="M250,0 Q230,60 170,100 Q130,125 80,120"
-        fill="none"
-        stroke={primaryColor}
         strokeWidth="12"
-        strokeOpacity={0.12 * opacity}
+        strokeOpacity={0.05 * opacity}
         strokeLinecap="round"
       />
       {/* Thin highlight line */}
       <path
-        d="M250,0 Q220,40 180,70 Q150,90 110,90"
+        d="M180,0 Q160,35 130,55 Q105,72 75,70"
         fill="none"
-        stroke={secondaryColor}
+        stroke={primaryColor}
         strokeWidth="3"
-        strokeOpacity={0.18 * opacity}
+        strokeOpacity={0.08 * opacity}
         strokeLinecap="round"
       />
     </svg>

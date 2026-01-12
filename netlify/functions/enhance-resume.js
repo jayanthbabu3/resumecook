@@ -48,128 +48,138 @@ EXPERIENCE - ROLE DESCRIPTION & BULLET POINTS
 
 ROLE DESCRIPTION (description field):
 If the "description" field is empty, contains placeholder text like "Brief description of your role...",
-or is missing, you MUST generate a brief 1-2 sentence description based on the bullet points and role context.
+or is missing, you MUST generate a brief 1-2 sentence description that:
+- Is SPECIFIC to the company name and job title
+- Mentions the team size, product type, or domain if inferable
+- Sets context for the bullet points below
+- Feels like it was written by someone who actually worked there
 
-The description should:
-- Summarize the overall scope of the role
-- Mention key technologies or domains if relevant
-- Be written in professional third-person or neutral tone
-- NOT repeat the bullet points, but provide context for them
+GOOD Examples:
+- "Led frontend development for the customer-facing dashboard serving enterprise clients in the fintech space."
+- "Core member of a 6-person engineering team building the company's flagship SaaS product."
+- "Owned end-to-end development of internal tools used by 200+ employees across departments."
 
-═══════════════════════════════════════════════════════════
-BULLET POINT GENERATION - CORE PRINCIPLES
-═══════════════════════════════════════════════════════════
-
-⭐ IMPORTANT: Generate DIVERSE bullet points based on the person's:
-1. Listed SKILLS in their resume (match bullet points to their actual tech stack)
-2. Job TITLE and SENIORITY level
-3. INDUSTRY/DOMAIN they work in
-4. Existing highlights (enhance and ADD NEW DIFFERENT ones, don't repeat)
-
-🎯 KEY RULE: Each experience entry should have 5-6 UNIQUE bullet points covering:
-- Core technical responsibilities (based on their skills)
-- Collaboration & teamwork
-- Quality & best practices
-- Problem-solving & optimization
-- Tools & technologies specific to their stack
-
-🔄 DIVERSITY REQUIREMENT:
-- If they already have bullet points, KEEP the good ones and ADD 2-3 NEW DIFFERENT ones
-- NEVER duplicate similar bullet points across different job entries
-- For each job, focus on DIFFERENT aspects of the role
-- Use VARIED action verbs (don't repeat the same verb twice in one job)
+BAD Examples (too generic):
+- "Senior Software Engineer working on software projects." (too vague)
+- "Developed web applications using modern technologies." (no specifics)
 
 ═══════════════════════════════════════════════════════════
-BULLET POINT TEMPLATES BY ROLE (Pick DIFFERENT ones each time!)
+BULLET POINT GENERATION - MAKE EACH EXPERIENCE UNIQUE!
 ═══════════════════════════════════════════════════════════
 
->>> FRONTEND DEVELOPER - Core Competency Areas <<<
+⭐ CRITICAL: Each job's bullet points must feel like they describe THAT SPECIFIC ROLE, not a generic template.
 
-Category 1: UI Development & Implementation
-• Developed responsive and accessible web applications using HTML5, CSS3, and JavaScript (ES6+)
-• Built scalable UI components using React.js with hooks, context API, and reusable patterns
-• Translated Figma/Adobe XD designs into pixel-perfect, production-ready user interfaces
-• Created interactive dashboards and data visualization components using charting libraries
-• Implemented complex form handling with validation, error states, and user feedback
+🎯 FOR EACH EXPERIENCE, WRITE BULLET POINTS THAT:
+1. Reference the SPECIFIC context (company type, product, team, domain)
+2. Show PROGRESSION from junior to senior roles (more ownership, leadership, architecture in senior roles)
+3. Highlight DIFFERENT accomplishments per job (don't repeat themes across jobs)
+4. Include specifics like: feature names, system types, team interactions, processes improved
 
-Category 2: Performance & Optimization
-• Improved page load performance by optimizing assets, implementing code splitting, and lazy loading
-• Reduced bundle size through tree-shaking, dynamic imports, and efficient dependency management
-• Implemented caching strategies and service workers for offline functionality
-• Optimized rendering performance using React.memo, useMemo, and useCallback hooks
-• Conducted Lighthouse audits and improved Core Web Vitals scores
+🔄 UNIQUENESS REQUIREMENTS:
+- Job 1 might focus on: Feature development, API integrations, working with designers
+- Job 2 might focus on: Performance optimization, mentoring, code review processes
+- Job 3 might focus on: Architecture decisions, cross-team collaboration, CI/CD setup
+- NEVER use the same bullet point structure twice across different jobs
 
-Category 3: API Integration & State Management
-• Integrated REST APIs and handled async data fetching using Axios/Fetch with proper error handling
-• Managed application state using Redux/Context API/Zustand for predictable data flow
-• Implemented real-time features using WebSocket connections and server-sent events
-• Built custom hooks for reusable data fetching and business logic
-• Handled authentication flows including JWT tokens, OAuth, and session management
+📝 BULLET POINT FORMULA FOR AUTHENTICITY:
+"[Action Verb] + [Specific What] + [Context/For What Purpose] + [Outcome or Scope if known]"
 
-Category 4: Testing & Quality
-• Wrote unit and integration tests using Jest and React Testing Library
-• Implemented end-to-end testing with Cypress/Playwright for critical user flows
-• Ensured cross-browser compatibility testing across Chrome, Firefox, Safari, and Edge
-• Maintained code quality through ESLint, Prettier, and TypeScript strict mode
-• Participated in code reviews, providing feedback and ensuring coding standards
+GOOD Examples:
+- "Architected and implemented the real-time notification system handling 10K+ concurrent WebSocket connections"
+- "Partnered with the payments team to integrate Stripe billing, reducing checkout abandonment through improved UX"
+- "Established code review guidelines and PR templates adopted across 3 frontend teams"
+- "Migrated legacy jQuery codebase to React, improving developer velocity and enabling component reuse"
+- "Built the admin dashboard from scratch, providing customer support team with order management capabilities"
 
-Category 5: Collaboration & Process
-• Collaborated with designers, backend developers, and product managers in Agile teams
-• Participated in sprint planning, daily standups, and retrospective meetings
-• Documented component APIs and usage guidelines for team knowledge sharing
-• Mentored junior developers on React best practices and modern JavaScript
-• Contributed to technical discussions and architecture decisions
+BAD Examples (too generic):
+- "Developed and maintained multiple web applications" (what apps? what purpose?)
+- "Collaborated with cross-functional teams" (doing what specifically?)
+- "Ensured high performance and scalability" (how? for what?)
 
->>> REACT-SPECIFIC BULLET POINTS (Use when React skills are listed) <<<
-• Built reusable and maintainable React components following atomic design principles
-• Managed complex component state using useState, useReducer, and Context API
-• Implemented client-side routing using React Router with protected routes and lazy loading
-• Optimized React performance using memoization techniques (useMemo, useCallback, React.memo)
-• Handled form state and validation using React Hook Form/Formik with Yup schemas
-• Integrated UI frameworks like Material UI, Ant Design, or Tailwind CSS with custom theming
-• Debugged and resolved UI issues using React DevTools and browser developer tools
-• Implemented error boundaries and fallback UI for graceful error handling
+🎯 SENIORITY PROGRESSION:
+Junior (0-2 yrs): Implementation focus, learning, supporting features, bug fixes, working under guidance
+Mid (2-5 yrs): Owning features end-to-end, code reviews, mentoring, process improvements
+Senior (5+ yrs): Technical leadership, architecture, cross-team influence, defining standards, strategic decisions
 
->>> ANGULAR-SPECIFIC BULLET POINTS (Use when Angular skills are listed) <<<
-• Developed enterprise applications using Angular with TypeScript and RxJS
-• Implemented reactive forms with complex validation and dynamic field generation
-• Managed application state using NgRx/NGXS with actions, reducers, and effects
-• Created reusable Angular modules, components, and services following DRY principles
-• Implemented lazy loading modules for improved initial load performance
-• Used Angular Material components with custom theme configuration
-• Wrote unit tests using Jasmine/Karma and e2e tests with Protractor/Cypress
+🔢 QUANTITY PER EXPERIENCE:
+- Current/Recent job: 5-6 detailed bullet points
+- Previous jobs: 4-5 bullet points
+- Older jobs (5+ years ago): 3-4 bullet points
 
->>> VUE.JS-SPECIFIC BULLET POINTS (Use when Vue skills are listed) <<<
-• Built single-page applications using Vue.js with Composition API and TypeScript
-• Managed application state using Vuex/Pinia with modules and persistent storage
-• Implemented routing using Vue Router with navigation guards and dynamic routes
-• Created reusable Vue components with props validation and custom events
-• Used Vuetify/Quasar framework for consistent Material Design UI
-• Implemented server-side rendering using Nuxt.js for SEO optimization
+═══════════════════════════════════════════════════════════
+BULLET POINT INSPIRATION BY ROLE (CUSTOMIZE, don't copy verbatim!)
+═══════════════════════════════════════════════════════════
 
->>> FULL STACK DEVELOPER <<<
-• Designed and developed full-stack web applications with React/Vue frontend and Node.js backend
-• Created RESTful APIs using Express.js/NestJS with proper routing and middleware
-• Implemented GraphQL APIs using Apollo Server with resolvers and schema design
-• Designed database schemas using PostgreSQL/MongoDB with efficient indexing strategies
-• Implemented user authentication using JWT, OAuth 2.0, and session management
-• Deployed applications to cloud platforms (AWS/GCP/Azure) using containerization
-• Set up CI/CD pipelines using GitHub Actions/Jenkins for automated deployments
-• Implemented WebSocket connections for real-time features like chat and notifications
-• Wrote database migrations and seeds for consistent development environments
-• Monitored application health using logging, metrics, and alerting systems
+⚠️ IMPORTANT: Use these as INSPIRATION only. Each bullet point you write should:
+1. Be customized to the specific company/role context
+2. Include unique details that make it feel authentic
+3. NEVER be copied word-for-word from this template
 
->>> BACKEND DEVELOPER <<<
-• Developed scalable microservices architecture using Node.js/Python/Java/Go
-• Designed and optimized database schemas for high-performance data operations
-• Implemented message queues using RabbitMQ/Kafka/SQS for async processing
-• Built secure API endpoints with input validation, rate limiting, and authentication
-• Created comprehensive API documentation using Swagger/OpenAPI specifications
-• Implemented caching layers using Redis/Memcached for improved response times
-• Wrote background jobs and scheduled tasks for data processing workflows
-• Handled database migrations and schema versioning for safe deployments
-• Implemented logging, monitoring, and alerting for production observability
-• Participated in on-call rotations and incident response procedures
+>>> FRONTEND DEVELOPER - Themes to Cover (pick different themes per job!) <<<
+
+Theme A - Building Features (customize with actual feature context):
+• "Built the [specific feature] module enabling [what users can do]"
+• "Developed the [dashboard/portal/interface] used by [user type] to [accomplish what]"
+• "Created [number] reusable components forming the basis of the [product] design system"
+
+Theme B - Technical Challenges (be specific about what was solved):
+• "Resolved critical [rendering/performance/memory] issues affecting [what part of app]"
+• "Implemented [caching/lazy loading/virtualization] to handle [large datasets/complex views]"
+• "Migrated [old tech] to [new tech] while maintaining zero downtime for [X users]"
+
+Theme C - Team & Process (show collaboration with specifics):
+• "Established [review/testing/documentation] standards adopted by [team size] engineers"
+• "Onboarded [number] new developers through pair programming and code walkthroughs"
+• "Drove adoption of [TypeScript/testing/accessibility] practices across [scope]"
+
+Theme D - Quality & Reliability:
+• "Increased test coverage from [X]% to [Y]% for [critical module/entire codebase]"
+• "Reduced [bug reports/production incidents] by implementing [specific practice]"
+• "Set up [monitoring/alerting/error tracking] providing visibility into [what]"
+
+Theme E - Ownership & Impact:
+• "Owned the [module/feature/system] end-to-end from design review to production release"
+• "Led technical planning for [feature] affecting [user count/revenue/core metric]"
+• "Served as primary point of contact for [specific area] handling [stakeholder type] requests"
+
+>>> TECHNOLOGY-SPECIFIC THEMES (adapt to their actual tech stack) <<<
+
+React/Vue/Angular - CUSTOMIZE based on what they built:
+• "Architected the [specific feature] using [framework] with [state management] for [purpose]"
+• "Reduced initial bundle size by [approach], improving load time for [user segment]"
+• "Implemented [specific UI pattern] enabling [user capability] with [tech details]"
+
+>>> FULL STACK DEVELOPER - Themes by layer <<<
+
+Frontend Work (be specific about what UI/UX was built):
+• "Designed and built the [customer portal/admin panel/dashboard] providing [functionality]"
+• "Created a responsive [feature type] interface used by [user count/type] daily"
+
+API & Backend (mention specific endpoints/services):
+• "Developed [number] RESTful endpoints powering the [feature/module] functionality"
+• "Built the [authentication/payment/notification] service handling [scope/volume]"
+
+Database & Data (mention what data problems were solved):
+• "Optimized [query type] queries reducing [page/report] load time from [X] to [Y]"
+• "Designed the data model for [feature] supporting [scale/requirements]"
+
+DevOps & Infrastructure:
+• "Configured [CI/CD tool] pipeline automating [testing/deployment] for [scope]"
+• "Set up [monitoring tool] dashboards tracking [metrics] across [environments]"
+
+>>> BACKEND DEVELOPER - Focus areas (pick different ones per role) <<<
+
+API Design:
+• "Architected the [API name/type] serving [X] requests/day with [latency] response times"
+• "Documented [number] endpoints using [OpenAPI/Swagger] enabling frontend team velocity"
+
+Data & Performance:
+• "Implemented [caching strategy] reducing database load by [outcome]"
+• "Designed [queue/job] system processing [volume] of [task type] asynchronously"
+
+Reliability & Operations:
+• "Established [alerting/monitoring] for [critical paths] reducing incident response time"
+• "Led post-mortems for [incident type] implementing [preventive measures]"
 
 >>> MOBILE DEVELOPER (React Native/Flutter) <<<
 • Developed cross-platform mobile applications using React Native/Flutter
@@ -317,7 +327,19 @@ RESPONSE FORMAT
   ]
 }
 
-NOW ENHANCE THIS RESUME (remember: NO fake percentages, DIVERSE bullets, MATCH to their skills):
+═══════════════════════════════════════════════════════════
+FINAL CHECKLIST BEFORE GENERATING
+═══════════════════════════════════════════════════════════
+Before returning, verify:
+☐ Each experience has a UNIQUE role description mentioning company/product context
+☐ Bullet points feel specific to THAT job (not generic templates)
+☐ NO two experiences have similar bullet points (each job highlights different things)
+☐ Senior roles show leadership/architecture; Junior roles show learning/implementation
+☐ Technologies mentioned in bullets MATCH their listed skills
+☐ NO fake percentages or statistics invented
+☐ Each bullet has: Action Verb + Specific What + Context + (Optional) Outcome
+
+NOW ENHANCE THIS RESUME (make each experience feel AUTHENTIC and UNIQUE):
 `;
 
 const handler = async (event) => {

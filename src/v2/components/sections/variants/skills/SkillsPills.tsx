@@ -19,14 +19,17 @@ export const SkillsPills: React.FC<SkillsVariantProps> = ({
   const styleContext = useStyleOptions();
   const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
+  // Use configured borderColor if provided, otherwise fall back to accent color
+  const borderColor = skills.badge?.borderColor || accentColor;
+
   const pillStyle: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
     fontSize: scaleFontSize(skills.badge?.fontSize || '12px'),
     fontWeight: 500,
     padding: skills.badge?.padding || '4px 12px',
-    borderRadius: '9999px',
-    border: `${skills.badge?.borderWidth || '1px'} solid ${accentColor}`,
+    borderRadius: skills.badge?.borderRadius || '9999px',
+    border: `${skills.badge?.borderWidth || '1px'} solid ${borderColor}`,
     backgroundColor: skills.badge?.backgroundColor || 'transparent',
     color: skills.badge?.textColor || getPillTextColor(skills.badge?.backgroundColor, accentColor),
     transition: 'all 0.2s ease',

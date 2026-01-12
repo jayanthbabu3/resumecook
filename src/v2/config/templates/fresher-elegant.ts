@@ -60,13 +60,13 @@ export const fresherElegantConfig: TemplateConfig = createTemplateConfig({
       color: '#78716c',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '13px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#44403c',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '13px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#57534e',
