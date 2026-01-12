@@ -8,6 +8,7 @@ import React from 'react';
 import type { TemplateConfig, AchievementItem } from '../../types';
 import { SectionHeading } from './SectionHeading';
 import { AchievementsVariantRenderer, type AchievementsVariant } from './variants/achievements/AchievementsVariantRenderer';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 interface AchievementsSectionProps {
   items: AchievementItem[];

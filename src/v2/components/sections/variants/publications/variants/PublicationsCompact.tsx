@@ -34,7 +34,7 @@ export const PublicationsCompact: React.FC<PublicationsVariantProps> = ({
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '6px 10px',
+            padding: '6px 0',
             backgroundColor: index % 2 === 0 ? `${accentColor}04` : 'transparent',
             borderRadius: '4px',
             fontSize: '12px',

@@ -49,7 +49,7 @@ export const SummarySection: React.FC<SummarySectionProps> = ({
         editable={editable}
         accentColor={accent}
       />
-      
+
       <div style={{ marginTop: spacing.headingToContent }}>
         {editable ? (
           <InlineEditableText

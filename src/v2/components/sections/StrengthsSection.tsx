@@ -9,6 +9,7 @@ import type { TemplateConfig, StrengthsVariant, StrengthItem } from '../../types
 import { SectionHeading } from './SectionHeading';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { Target, Star, Zap, CheckCircle2, X, Plus } from 'lucide-react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 interface StrengthsSectionProps {
   items: StrengthItem[];

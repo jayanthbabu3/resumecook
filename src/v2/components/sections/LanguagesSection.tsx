@@ -9,6 +9,7 @@ import React from 'react';
 import type { TemplateConfig, LanguageItem } from '../../types';
 import { SectionHeading } from './SectionHeading';
 import { LanguagesVariantRenderer, type LanguagesVariant } from '../sections/variants/languages';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 interface LanguagesSectionProps {
   items: LanguageItem[];

@@ -819,7 +819,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         editable={editable}
         accentColor={accent}
       />
-      
+
       <div style={{ marginTop: spacing.headingToContent }}>
         {items.map((item, index) => (
           <div key={item.id} className="group relative">

@@ -57,16 +57,11 @@ export const PublicationsSection: React.FC<PublicationsSectionProps> = ({
   // Determine the variant to use
   const variant: PublicationsVariant = (variantOverride as PublicationsVariant) || 'modern';
 
-  // Calculate content left padding to align with section heading text
-  // When section heading uses left-border style, content should align with the heading text
-  const sectionHeadingStyle = config.sectionHeading?.style;
-  const contentLeftPadding = sectionHeadingStyle === 'left-border' ? '15px' : '0';
-
   return (
     <section style={{ marginBottom: spacing.sectionGap }}>
       <SectionHeading title={sectionTitle} config={config} editable={editable} accentColor={accent} />
 
-      <div style={{ marginTop: spacing.headingToContent, paddingLeft: contentLeftPadding }}>
+      <div style={{ marginTop: spacing.headingToContent }}>
         <PublicationsVariantRenderer
           variant={variant}
           items={items}

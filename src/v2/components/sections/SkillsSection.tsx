@@ -16,6 +16,7 @@ import { SectionHeading } from './SectionHeading';
 import { InlineEditableSkills } from '@/components/resume/InlineEditableSkills';
 import { SkillsColumns } from './variants/skills/variants/SkillsColumns';
 import { SkillsVariantRenderer } from './variants/skills/SkillsVariantRenderer';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 interface SkillsSectionProps {
   items: SkillItem[];
@@ -159,7 +160,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
         editable={editable}
         accentColor={accent}
       />
-      
+
       <div style={{ marginTop: spacing.headingToContent }}>
         {renderSkills()}
       </div>
