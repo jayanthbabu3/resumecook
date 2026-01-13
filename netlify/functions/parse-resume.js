@@ -22,240 +22,29 @@ async function extractTextFromPDF(buffer) {
   return fullText;
 }
 
-// Complete V2ResumeData JSON schema - ALL possible sections
-// This schema supports every section type that exists in our template system
-const RESUME_SCHEMA = `{
-  "version": "2.0",
-  "personalInfo": {
-    "fullName": "string (required - full name of person)",
-    "email": "string (email address)",
-    "phone": "string (phone number)",
-    "location": "string (city, state/country)",
-    "title": "string (professional title/headline like 'Senior Software Engineer')",
-    "summary": "string (professional summary/objective paragraph)",
-    "linkedin": "string (LinkedIn URL)",
-    "github": "string (GitHub URL)",
-    "portfolio": "string (portfolio/personal website URL)",
-    "website": "string (any other website)"
-  },
-  "experience": [
-    {
-      "id": "string (unique id)",
-      "company": "string (required - company name)",
-      "position": "string (required - job title)",
-      "location": "string (city, state)",
-      "startDate": "string (format: 'MMM YYYY' e.g. 'Jan 2020')",
-      "endDate": "string ('MMM YYYY' or 'Present' for current job)",
-      "current": "boolean (true if current job)",
-      "description": "string (brief role description)",
-      "bulletPoints": ["array of achievements/responsibilities as strings"]
-    }
-  ],
-  "education": [
-    {
-      "id": "string",
-      "school": "string (required - institution name)",
-      "degree": "string (e.g. 'Bachelor of Science', 'MBA')",
-      "field": "string (field of study/major)",
-      "location": "string",
-      "startDate": "string",
-      "endDate": "string",
-      "gpa": "string (if mentioned)"
-    }
-  ],
-  "skills": [
-    {
-      "id": "string",
-      "name": "string (required - skill name)",
-      "category": "string (e.g. 'Technical', 'Programming', 'Soft Skills', 'Tools', 'Frameworks')"
-    }
-  ],
-  "languages": [
-    {
-      "id": "string",
-      "language": "string (language name)",
-      "proficiency": "string (Native/Fluent/Professional/Advanced/Intermediate/Basic)"
-    }
-  ],
-  "certifications": [
-    {
-      "id": "string",
-      "name": "string (certification name)",
-      "issuer": "string (issuing organization)",
-      "date": "string (date obtained)",
-      "credentialId": "string (credential ID if available)",
-      "url": "string (verification URL if available)"
-    }
-  ],
-  "projects": [
-    {
-      "id": "string",
-      "name": "string (project name)",
-      "description": "string (project description)",
-      "technologies": ["array of technologies used"],
-      "url": "string (project URL/link)",
-      "startDate": "string",
-      "endDate": "string",
-      "highlights": ["array of key achievements/features"]
-    }
-  ],
-  "awards": [
-    {
-      "id": "string",
-      "title": "string (award name)",
-      "issuer": "string (awarding organization)",
-      "date": "string",
-      "description": "string"
-    }
-  ],
-  "achievements": [
-    {
-      "id": "string",
-      "title": "string (achievement title)",
-      "description": "string (achievement description)",
-      "date": "string",
-      "metric": "string (quantifiable result if any)"
-    }
-  ],
-  "strengths": [
-    {
-      "id": "string",
-      "name": "string (strength/core competency)",
-      "description": "string (optional description)"
-    }
-  ],
-  "volunteer": [
-    {
-      "id": "string",
-      "organization": "string (organization name)",
-      "role": "string (volunteer role/title)",
-      "location": "string",
-      "startDate": "string",
-      "endDate": "string",
-      "description": "string",
-      "highlights": ["array of contributions"]
-    }
-  ],
-  "publications": [
-    {
-      "id": "string",
-      "title": "string (publication title)",
-      "publisher": "string (journal/conference/publisher)",
-      "date": "string",
-      "url": "string (link to publication)",
-      "description": "string",
-      "authors": "string (co-authors if any)"
-    }
-  ],
-  "speaking": [
-    {
-      "id": "string",
-      "title": "string (talk/presentation title)",
-      "event": "string (conference/event name)",
-      "date": "string",
-      "location": "string",
-      "description": "string",
-      "url": "string (link to slides/video)"
-    }
-  ],
-  "patents": [
-    {
-      "id": "string",
-      "title": "string (patent title)",
-      "patentNumber": "string",
-      "date": "string (filing/grant date)",
-      "description": "string",
-      "url": "string"
-    }
-  ],
-  "interests": [
-    {
-      "id": "string",
-      "name": "string (interest/hobby name)",
-      "description": "string"
-    }
-  ],
-  "references": [
-    {
-      "id": "string",
-      "name": "string (reference name)",
-      "title": "string (their job title)",
-      "company": "string (their company)",
-      "relationship": "string (e.g. 'Former Manager')",
-      "email": "string",
-      "phone": "string"
-    }
-  ],
-  "courses": [
-    {
-      "id": "string",
-      "name": "string (course name)",
-      "institution": "string (where taken)",
-      "date": "string",
-      "description": "string",
-      "url": "string (certificate URL if any)"
-    }
-  ],
-  "customSections": [
-    {
-      "id": "string",
-      "title": "string (section title - e.g. 'Military Service', 'Research', 'Affiliations')",
-      "items": [
-        {
-          "id": "string",
-          "title": "string (item title)",
-          "content": "string (item content/description)",
-          "date": "string",
-          "url": "string"
-        }
-      ]
-    }
-  ]
-}`;
+// OPTIMIZED: Reduced schema from ~215 lines to reference-based approach
+// LLMs already understand resume structures - no need for verbose schema
 
-const AI_PROMPT = `You are an expert resume parser. Your task is to extract ALL information from the resume and return a complete JSON object.
+const AI_PROMPT = `Parse this resume into JSON. Return JSON only, no markdown.
 
-CRITICAL INSTRUCTIONS:
-1. Return ONLY valid JSON - no explanations, no markdown code blocks, no text before or after
-2. Extract EVERY section found in the resume - do not skip any information
-3. Generate unique IDs using format: "section-index" (e.g., "exp-0", "edu-1", "proj-2")
-4. For dates, use format "MMM YYYY" (e.g., "Jan 2020"). If only year, use "2020"
-5. If a field is not found, use empty string "" or empty array []
+SECTIONS to extract:
+- personalInfo: {fullName, email, phone, location, title, summary, linkedin, github, portfolio, website}
+- experience[]: {id, company, position, location, startDate, endDate, current, description, bulletPoints[]}
+- education[]: {id, school, degree, field, location, startDate, endDate, gpa}
+- skills[]: {id, name, category}
+- languages[]: {id, language, proficiency}
+- certifications[]: {id, name, issuer, date, credentialId, url}
+- projects[]: {id, name, description, technologies[], url, startDate, endDate, highlights[]}
+- awards[], achievements[], strengths[], volunteer[], publications[], speaking[], patents[], interests[], references[], courses[]
+- customSections[]: for non-standard sections like Military Service, Affiliations
 
-SECTION MAPPING - Map resume sections to these standard fields:
-- Work Experience / Employment / Professional Experience → "experience"
-- Education / Academic Background / Qualifications → "education"
-- Skills / Technical Skills / Core Competencies → "skills"
-- Languages / Language Proficiency → "languages"
-- Certifications / Licenses / Credentials → "certifications"
-- Projects / Portfolio / Personal Projects / Side Projects → "projects"
-- Awards / Honors / Recognition → "awards"
-- Achievements / Accomplishments / Key Results → "achievements"
-- Strengths / Core Strengths / Key Competencies → "strengths"
-- Volunteer / Community Service / Pro Bono → "volunteer"
-- Publications / Papers / Research → "publications"
-- Speaking / Presentations / Conferences → "speaking"
-- Patents / Inventions → "patents"
-- Interests / Hobbies → "interests"
-- References → "references"
-- Courses / Training / Professional Development → "courses"
+RULES:
+1. Generate IDs as "type-index" (e.g., "exp-0", "edu-1")
+2. Dates as "MMM YYYY" or just year
+3. Use empty string "" or [] for missing fields
+4. Extract ALL bullet points into bulletPoints arrays
 
-CUSTOM SECTIONS - For any section that doesn't fit the above (e.g., "Military Service", "Research Experience", "Affiliations", "Memberships", "Board Positions", etc.):
-- Add to "customSections" array with the original section title preserved
-- Each custom section has: id, title, and items array
-
-EXTRACTION PRIORITIES:
-1. Parse ALL bullet points from job descriptions into bulletPoints arrays
-2. Extract technologies/tools mentioned in projects
-3. Capture quantifiable metrics and achievements
-4. Preserve URLs for projects, publications, certifications
-5. Include ALL skills mentioned anywhere in the resume
-6. Don't miss any dates, locations, or contact information
-
-SCHEMA:
-${RESUME_SCHEMA}
-
-RESUME TEXT TO PARSE:
+RESUME:
 `;
 
 const handler = async (event) => {
@@ -296,16 +85,17 @@ const handler = async (event) => {
     };
   }
 
-  // Get API key from environment - support Groq (free), Anthropic, and OpenAI
+  // Get API keys from environment - Priority: Gemini > Groq > Claude > OpenAI
+  const geminiKey = process.env.GEMINI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;
 
-  if (!groqKey && !anthropicKey && !openaiKey) {
+  if (!geminiKey && !groqKey && !anthropicKey && !openaiKey) {
     return {
       statusCode: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "AI service not configured. Please set GROQ_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY." }),
+      body: JSON.stringify({ error: "AI service not configured. Please set GEMINI_API_KEY, GROQ_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY." }),
     };
   }
 
@@ -409,22 +199,59 @@ const handler = async (event) => {
 
     console.log(`Extracted ${extractedText.length} characters from ${fileName}`);
 
-    // Call AI to structure the data - prioritize Groq (free tier)
+    // Call AI to structure the data - Priority: Gemini > Groq > Claude > OpenAI
     let structuredData;
+    let lastError;
 
-    if (groqKey) {
-      structuredData = await parseWithGroq(groqKey, extractedText);
-    } else if (anthropicKey) {
-      structuredData = await parseWithClaude(anthropicKey, extractedText);
-    } else if (openaiKey) {
-      structuredData = await parseWithOpenAI(openaiKey, extractedText);
+    // Try Gemini first (primary)
+    if (geminiKey) {
+      try {
+        console.log("Trying Gemini 2.5 Flash...");
+        structuredData = await parseWithGemini(geminiKey, extractedText);
+      } catch (err) {
+        console.error("Gemini failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to Groq
+    if (!structuredData && groqKey) {
+      try {
+        console.log("Trying Groq...");
+        structuredData = await parseWithGroq(groqKey, extractedText);
+      } catch (err) {
+        console.error("Groq failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to Claude
+    if (!structuredData && anthropicKey) {
+      try {
+        console.log("Trying Claude...");
+        structuredData = await parseWithClaude(anthropicKey, extractedText);
+      } catch (err) {
+        console.error("Claude failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to OpenAI
+    if (!structuredData && openaiKey) {
+      try {
+        console.log("Trying OpenAI...");
+        structuredData = await parseWithOpenAI(openaiKey, extractedText);
+      } catch (err) {
+        console.error("OpenAI failed:", err.message);
+        lastError = err;
+      }
     }
 
     if (!structuredData) {
       return {
         statusCode: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "Failed to parse resume with AI" }),
+        body: JSON.stringify({ error: "Failed to parse resume with AI. All providers failed." }),
       };
     }
 
@@ -455,6 +282,76 @@ const handler = async (event) => {
   }
 };
 
+// Parse with Gemini 2.5 Flash (PRIMARY)
+async function parseWithGemini(apiKey, resumeText) {
+  const modelName = "gemini-2.5-flash";
+
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: AI_PROMPT + resumeText,
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.1,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 8192,
+            // Note: responseMimeType removed - causes 400 error on Gemini 2.5
+          },
+        }),
+      }
+    );
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Gemini API error:", response.status, errorText);
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const content = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!content) {
+      throw new Error("No content in Gemini response");
+    }
+
+    // Extract JSON from response
+    let jsonStr = content;
+    const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[1];
+    }
+
+    return JSON.parse(jsonStr.trim());
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('Gemini API request timed out');
+    }
+    throw error;
+  }
+}
+
 // Parse with Groq (FREE - using Llama 3.3 70B)
 async function parseWithGroq(apiKey, resumeText) {
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -468,7 +365,7 @@ async function parseWithGroq(apiKey, resumeText) {
       messages: [
         {
           role: "system",
-          content: "You are an expert resume parser. Return only valid JSON, no explanations or markdown code blocks.",
+          content: "You are an expert resume parser.",
         },
         {
           role: "user",
@@ -477,6 +374,7 @@ async function parseWithGroq(apiKey, resumeText) {
       ],
       max_tokens: 8000,
       temperature: 0.1, // Low temperature for consistent parsing
+      response_format: { type: "json_object" }, // Groq supports JSON mode
     }),
   });
 
@@ -556,11 +454,11 @@ async function parseWithOpenAI(apiKey, resumeText) {
       "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "gpt-3.5-turbo", // Using 3.5 for cost efficiency
+      model: "gpt-4o-mini", // Upgraded for better parsing + JSON mode support
       messages: [
         {
           role: "system",
-          content: "You are an expert resume parser. Return only valid JSON, no explanations.",
+          content: "You are an expert resume parser.",
         },
         {
           role: "user",
@@ -569,6 +467,7 @@ async function parseWithOpenAI(apiKey, resumeText) {
       ],
       max_tokens: 4096,
       temperature: 0.1, // Low temperature for consistent parsing
+      response_format: { type: "json_object" }, // Guarantees valid JSON output
     }),
   });
 

@@ -17,220 +17,18 @@
  * User fills in: company names, dates, education details, contact info
  */
 
-const GENERATE_RESUME_PROMPT = `You are an expert resume writer helping someone create a professional resume from scratch based on a job description. Your goal is to create a realistic, ATS-optimized resume structure that the user can then fill in with their actual details.
+// OPTIMIZED: Reduced from ~235 lines to ~30 lines
+const GENERATE_RESUME_PROMPT = `Generate a resume structure from this job description. Return JSON only.
 
-═══════════════════════════════════════════════════════════════
-CRITICAL RULES - ABSOLUTE REQUIREMENTS (MUST FOLLOW!)
-═══════════════════════════════════════════════════════════════
-1. NEVER invent fake company names - use placeholder "[Company Name]"
-2. NEVER invent fake dates - leave dates as empty strings ""
-3. NEVER fabricate specific numbers, metrics, or statistics
-4. DO create realistic, role-appropriate bullet points
-5. DO extract real skills from the job description
-6. DO create a compelling professional summary
-7. RETURN only valid JSON - no markdown, no explanations
+RULES:
+1. Use "[Company Name]" for companies, empty "" for dates (user fills these)
+2. Extract skills from the JD
+3. Create 1-3 experiences based on seniority (entry=1-2, mid=2-3, senior=3)
+4. Each bullet point must be UNIQUE - no repeated themes across experiences
+5. No fake metrics/numbers
+6. Use "highlights" array for bullet points
 
-⚠️ CRITICAL - BULLET POINT UNIQUENESS (THIS IS MANDATORY):
-8. EVERY bullet point MUST be 100% unique across the ENTIRE resume
-9. NEVER repeat the same point with different words - each bullet must describe a DIFFERENT accomplishment
-10. NEVER copy-paste or rephrase the same achievement across experiences
-11. Each experience section should show DIFFERENT aspects of the candidate's capabilities
-12. If you run out of unique ideas, use FEWER bullet points rather than repeating content
-
-═══════════════════════════════════════════════════════════════
-JOB DESCRIPTION ANALYSIS
-═══════════════════════════════════════════════════════════════
-Analyze the job description to extract:
-1. Required years of experience (to determine number of positions to create)
-2. Must-have technical skills
-3. Nice-to-have skills
-4. Key responsibilities and daily work
-5. Seniority level (entry-level, mid-level, senior, lead)
-6. Industry/domain context
-
-═══════════════════════════════════════════════════════════════
-EXPERIENCE GENERATION RULES
-═══════════════════════════════════════════════════════════════
-
-Based on the required experience level in the job description:
-- Entry-level (0-2 years): Create 1-2 experience entries
-- Mid-level (2-5 years): Create 2-3 experience entries
-- Senior (5+ years): Create 3 experience entries
-
-For EACH experience entry:
-1. Position Title: Use a realistic title that would lead to the target role
-   - If target is "Senior Frontend Developer", previous roles might be:
-     "Frontend Developer" → "[Company Name]"
-     "Junior Web Developer" → "[Company Name]"
-
-2. Company: ALWAYS use "[Company Name]" - user will fill this
-3. Location: Use "[City, State]" as placeholder
-4. Dates: ALWAYS empty strings "" - user will fill this
-5. Description: One-line role summary relevant to job requirements
-
-6. Bullet Points (4-6 per experience) - THIS IS THE MOST IMPORTANT PART:
-   ⚠️ UNIQUENESS IS MANDATORY - NO EXCEPTIONS:
-   - EVERY single bullet point must be COMPLETELY UNIQUE across ALL experiences
-   - NEVER use similar phrasing, structure, or accomplishments
-   - If Experience 1 mentions "collaboration with teams", Experience 2 CANNOT mention team collaboration
-   - Track what you've written - no thematic overlap allowed
-   - Quality over quantity - 4 unique bullets beats 6 repetitive ones
-
-   Each bullet should also:
-   - Start with a strong action verb (vary these too!)
-   - Be specific to the role and industry
-   - Mention technologies/skills from the job description
-   - Describe realistic accomplishments without fake metrics
-
-   ⚠️ DUPLICATION CHECK: Before writing each bullet, ask yourself:
-   "Have I already written something similar anywhere in this resume?"
-   If YES → write something completely different
-
-═══════════════════════════════════════════════════════════════
-BULLET POINT EXAMPLES BY ROLE TYPE
-═══════════════════════════════════════════════════════════════
-
-FOR SOFTWARE DEVELOPER ROLES:
-✅ "Developed and maintained RESTful APIs using Node.js and Express to support core product features"
-✅ "Collaborated with design team to implement responsive UI components using React and TypeScript"
-✅ "Participated in code reviews and contributed to team's best practices documentation"
-✅ "Integrated third-party services and APIs to extend platform functionality"
-✅ "Optimized database queries and implemented caching strategies to improve application performance"
-
-FOR PRODUCT MANAGER ROLES:
-✅ "Conducted user research and synthesized insights to inform product roadmap decisions"
-✅ "Collaborated with engineering teams to define requirements and prioritize feature development"
-✅ "Created and maintained product documentation including PRDs and user stories"
-✅ "Facilitated cross-functional meetings to align stakeholders on product direction"
-
-FOR DATA ANALYST ROLES:
-✅ "Built and maintained dashboards using Tableau to track key business metrics"
-✅ "Performed exploratory data analysis to identify trends and opportunities"
-✅ "Collaborated with stakeholders to translate business questions into analytical projects"
-✅ "Developed SQL queries and Python scripts to automate data extraction processes"
-
-FOR MARKETING ROLES:
-✅ "Developed and executed multi-channel marketing campaigns across digital platforms"
-✅ "Created content strategies aligned with brand voice and business objectives"
-✅ "Analyzed campaign performance data to optimize marketing spend and messaging"
-✅ "Collaborated with sales team to develop lead nurturing programs"
-
-═══════════════════════════════════════════════════════════════
-PROFESSIONAL SUMMARY
-═══════════════════════════════════════════════════════════════
-Write a 2-3 sentence summary that:
-- Opens with role title and experience level hint
-- Highlights 3-4 key skills that match the job description
-- Ends with value proposition aligned to the role
-
-Example for Frontend Developer:
-"Frontend Developer with expertise in building responsive web applications using React, TypeScript, and modern CSS frameworks. Skilled in collaborating with cross-functional teams to deliver user-centric solutions with clean, maintainable code. Passionate about performance optimization and creating intuitive user experiences."
-
-═══════════════════════════════════════════════════════════════
-SKILLS GENERATION
-═══════════════════════════════════════════════════════════════
-Extract skills directly from the job description and categorize them:
-- Technical/Hard Skills: Programming languages, frameworks, tools
-- Soft Skills: Communication, leadership, collaboration (limit to 3-4)
-
-Only include skills that are explicitly mentioned or directly implied by the job.
-
-═══════════════════════════════════════════════════════════════
-PROJECTS (Optional, for technical roles)
-═══════════════════════════════════════════════════════════════
-If the role is technical, create 1-2 project ideas:
-- Name: Generic but realistic (e.g., "E-commerce Platform", "Task Management App")
-- Description: Brief overview using relevant technologies from the JD
-- Technologies: List from the job requirements
-- User will fill in actual details or remove
-
-═══════════════════════════════════════════════════════════════
-RESPONSE FORMAT
-═══════════════════════════════════════════════════════════════
-{
-  "personalInfo": {
-    "fullName": "[USER_PROVIDED_NAME]",
-    "email": "[USER_PROVIDED_EMAIL]",
-    "phone": "",
-    "location": "[City, State]",
-    "linkedin": "",
-    "github": "",
-    "portfolio": "",
-    "title": "[Target Role Title from JD]",
-    "summary": "[Generated professional summary]"
-  },
-  "experience": [
-    {
-      "id": "exp-1",
-      "position": "[Realistic prior role title]",
-      "company": "[Company Name]",
-      "location": "[City, State]",
-      "startDate": "",
-      "endDate": "",
-      "current": false,
-      "description": "[One-line role summary]",
-      "highlights": [
-        "[5-6 unique, JD-tailored bullet points]"
-      ]
-    }
-  ],
-  "education": [
-    {
-      "id": "edu-1",
-      "school": "[University/College Name]",
-      "degree": "[Relevant Degree]",
-      "field": "[Relevant Field based on JD]",
-      "startDate": "",
-      "endDate": "",
-      "location": "[City, State]",
-      "gpa": "",
-      "achievements": []
-    }
-  ],
-  "skills": [
-    { "id": "skill-1", "name": "[Skill from JD]", "category": "Technical" }
-  ],
-  "projects": [
-    {
-      "id": "proj-1",
-      "name": "[Project Name]",
-      "description": "[Brief description using JD technologies]",
-      "technologies": ["Tech1", "Tech2"],
-      "url": "",
-      "startDate": "",
-      "endDate": ""
-    }
-  ],
-  "certifications": [],
-  "languages": [],
-  "achievements": [],
-  "_metadata": {
-    "generatedFromJD": true,
-    "targetRole": "[Role from JD]",
-    "experienceLevel": "[entry/mid/senior]",
-    "fieldsToFill": ["company names", "dates", "education details", "contact info"]
-  }
-}
-
-═══════════════════════════════════════════════════════════════
-FINAL CHECKLIST (VERIFY BEFORE RETURNING!)
-═══════════════════════════════════════════════════════════════
-☐ All company names are "[Company Name]" placeholders
-☐ All dates are empty strings ""
-☐ Bullet points are realistic and tailored to the JD
-☐ Skills are extracted from the actual job description
-☐ Summary aligns with the target role
-☐ Experience count matches the seniority level in JD
-☐ No fake metrics or statistics
-
-⚠️ CRITICAL UNIQUENESS VERIFICATION:
-☐ Read through ALL bullet points - is each one TRULY unique?
-☐ No repeated themes (collaboration, optimization, leadership) across experiences
-☐ No similar sentence structures or phrasing patterns
-☐ Each experience highlights DIFFERENT skills and accomplishments
-☐ If duplicates found → REWRITE before returning
-
-NOW GENERATE THE RESUME:
+OUTPUT: {personalInfo, experience[], education[], skills[], projects[], certifications[], languages[], achievements[], _metadata}
 
 `;
 
@@ -271,17 +69,18 @@ const handler = async (event) => {
     };
   }
 
-  // Get API keys from environment
+  // Get API keys from environment - Priority: Gemini > Groq > Claude > OpenAI
+  const geminiKey = process.env.GEMINI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;
 
-  if (!groqKey && !anthropicKey && !openaiKey) {
+  if (!geminiKey && !groqKey && !anthropicKey && !openaiKey) {
     return {
       statusCode: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       body: JSON.stringify({
-        error: "AI service not configured. Please set GROQ_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY."
+        error: "AI service not configured. Please set GEMINI_API_KEY, GROQ_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY."
       }),
     };
   }
@@ -333,22 +132,59 @@ ${jobDescription}
     console.log(`Generating resume for: ${userName}`);
     console.log(`Target role: ${jobTitle || 'Not specified'}`);
 
-    // Call AI to generate the resume
+    // Call AI to generate the resume - Priority: Gemini > Groq > Claude > OpenAI
     let generatedData;
+    let lastError;
 
-    if (groqKey) {
-      generatedData = await generateWithGroq(groqKey, userContext);
-    } else if (anthropicKey) {
-      generatedData = await generateWithClaude(anthropicKey, userContext);
-    } else if (openaiKey) {
-      generatedData = await generateWithOpenAI(openaiKey, userContext);
+    // Try Gemini first (primary)
+    if (geminiKey) {
+      try {
+        console.log("Trying Gemini 2.5 Flash...");
+        generatedData = await generateWithGemini(geminiKey, userContext);
+      } catch (err) {
+        console.error("Gemini failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to Groq
+    if (!generatedData && groqKey) {
+      try {
+        console.log("Trying Groq...");
+        generatedData = await generateWithGroq(groqKey, userContext);
+      } catch (err) {
+        console.error("Groq failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to Claude
+    if (!generatedData && anthropicKey) {
+      try {
+        console.log("Trying Claude...");
+        generatedData = await generateWithClaude(anthropicKey, userContext);
+      } catch (err) {
+        console.error("Claude failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to OpenAI
+    if (!generatedData && openaiKey) {
+      try {
+        console.log("Trying OpenAI...");
+        generatedData = await generateWithOpenAI(openaiKey, userContext);
+      } catch (err) {
+        console.error("OpenAI failed:", err.message);
+        lastError = err;
+      }
     }
 
     if (!generatedData) {
       return {
         statusCode: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "Failed to generate resume" }),
+        body: JSON.stringify({ error: "Failed to generate resume. All AI providers failed." }),
       };
     }
 
@@ -382,6 +218,76 @@ ${jobDescription}
   }
 };
 
+// Generate with Gemini 2.5 Flash (PRIMARY)
+async function generateWithGemini(apiKey, userContext) {
+  const modelName = "gemini-2.5-flash";
+
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: GENERATE_RESUME_PROMPT + userContext,
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.4,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 8192,
+            // Note: responseMimeType removed - causes 400 error on Gemini 2.5
+          },
+        }),
+      }
+    );
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Gemini API error:", response.status, errorText);
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const content = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!content) {
+      throw new Error("No content in Gemini response");
+    }
+
+    // Extract JSON from response
+    let jsonStr = content;
+    const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[1];
+    }
+
+    return JSON.parse(jsonStr.trim());
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('Gemini API request timed out');
+    }
+    throw error;
+  }
+}
+
 // Generate with Groq (FREE)
 async function generateWithGroq(apiKey, userContext) {
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -395,7 +301,7 @@ async function generateWithGroq(apiKey, userContext) {
       messages: [
         {
           role: "system",
-          content: "You are an expert resume writer. Return only valid JSON, no explanations or markdown code blocks.",
+          content: "You are an expert resume writer.",
         },
         {
           role: "user",
@@ -404,6 +310,7 @@ async function generateWithGroq(apiKey, userContext) {
       ],
       max_tokens: 6000,
       temperature: 0.4,
+      response_format: { type: "json_object" }, // Groq supports JSON mode
     }),
   });
 
@@ -486,7 +393,7 @@ async function generateWithOpenAI(apiKey, userContext) {
       messages: [
         {
           role: "system",
-          content: "You are an expert resume writer. Return only valid JSON.",
+          content: "You are an expert resume writer.",
         },
         {
           role: "user",
@@ -495,6 +402,7 @@ async function generateWithOpenAI(apiKey, userContext) {
       ],
       max_tokens: 6000,
       temperature: 0.4,
+      response_format: { type: "json_object" }, // Guarantees valid JSON output
     }),
   });
 

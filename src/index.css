@@ -158,3 +158,176 @@ All colors MUST be HSL.
 .safe-area-inset-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
+
+/* ============================================================================
+   CHAT WITH RESUME - Animation Styles
+   ============================================================================ */
+
+/* Section highlight animation when updated via chat */
+@keyframes section-highlight {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+  20% {
+    box-shadow: 0 0 20px 8px rgba(139, 92, 246, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+.animate-section-highlight {
+  animation: section-highlight 2s ease-out;
+}
+
+/* Glow effect for highlighted sections */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px 5px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px 10px rgba(139, 92, 246, 0.5);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* Subtle border highlight */
+@keyframes border-highlight {
+  0% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: rgba(139, 92, 246, 0.6);
+  }
+  100% {
+    border-color: transparent;
+  }
+}
+
+.animate-border-highlight {
+  animation: border-highlight 2s ease-in-out;
+  border: 2px solid transparent;
+  border-radius: 8px;
+}
+
+/* Text shimmer effect for new content */
+@keyframes text-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-text-shimmer {
+  background: linear-gradient(
+    90deg,
+    currentColor 0%,
+    rgba(139, 92, 246, 0.8) 50%,
+    currentColor 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: text-shimmer 2s linear;
+}
+
+/* Fade-in animation for new content */
+@keyframes content-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-content-fade-in {
+  animation: content-fade-in 0.5s ease-out;
+}
+
+/* Chat bubble animations */
+@keyframes slide-up-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.3s ease-out;
+}
+
+/* Typing dots animation */
+@keyframes typing-dot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.animate-typing-dot {
+  animation: typing-dot 1.4s ease-in-out infinite;
+}
+
+.animate-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.animate-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Resume section wrapper for highlighting */
+.resume-section-wrapper {
+  position: relative;
+  transition: all 0.3s ease-out;
+}
+
+.resume-section-wrapper.highlighted {
+  z-index: 10;
+}
+
+.resume-section-wrapper.highlighted::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.1) 0%,
+    rgba(99, 102, 241, 0.1) 100%
+  );
+  pointer-events: none;
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* Success checkmark animation */
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-checkmark {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkmark 0.5s ease-out forwards;
+}

@@ -17,6 +17,18 @@
   external_node_modules = ["@sparticuz/chromium"]
 
 [functions."enhance-resume"]
+  timeout = 90
+
+[functions."parse-resume"]
+  timeout = 60
+
+[functions."generate-resume-from-job"]
+  timeout = 60
+
+[functions."tailor-resume-for-job"]
+  timeout = 60
+
+[functions."chat-with-resume"]
   timeout = 60
 
 [functions."create-checkout-session"]

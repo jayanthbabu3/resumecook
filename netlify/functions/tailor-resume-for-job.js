@@ -9,193 +9,24 @@
  * - Suggesting missing skills
  * - Calculating a match score
  *
- * Uses Groq (free tier) as primary, with fallback to Anthropic/OpenAI.
+ * Provider priority: Groq (fastest) > Gemini > Claude > OpenAI
+ * Groq is prioritized because it responds in 3-5 seconds, crucial for Netlify free tier (10s limit)
  */
 
-const JOB_TAILOR_PROMPT = `You are an expert resume writer and ATS optimization specialist. Your job is to tailor a resume to match a specific job description while keeping all content truthful, unique, and authentic.
+// OPTIMIZED: Reduced from ~200 lines to ~25 lines
+const JOB_TAILOR_PROMPT = `Tailor this resume for the job description. Return JSON only.
 
-═══════════════════════════════════════════════════════════════
-CRITICAL RULES - ABSOLUTE REQUIREMENTS (MUST FOLLOW!)
-═══════════════════════════════════════════════════════════════
-1. NEVER invent percentages, numbers, or metrics that aren't in the original resume
-2. NEVER add fake statistics like "improved by 40%", "reduced by 60%", "increased 25%"
-3. NEVER fabricate user counts, revenue figures, or team sizes
-4. ONLY use metrics if they exist in the original resume text
-5. PRESERVE exactly: names, companies, job titles, dates, locations, contact info
-6. RETURN only valid JSON - no markdown, no explanations
+RULES:
+1. PRESERVE: names, companies, titles, dates, locations, IDs, contact info
+2. REWRITE summary to match JD requirements
+3. REFRAME bullet points to emphasize JD-relevant skills (use "highlights" array)
+4. Integrate JD keywords naturally - no stuffing
+5. NO fake metrics - only use numbers from original resume
+6. Each bullet must be UNIQUE - no repeated themes across experiences
 
-⚠️ CRITICAL - BULLET POINT UNIQUENESS (THIS IS MANDATORY!):
-7. EVERY bullet point MUST be 100% unique across the ENTIRE resume
-8. NEVER create duplicate or similar bullet points, even with different wording
-9. NEVER repeat the same accomplishment, theme, or idea across experiences
-10. Each experience must showcase DIFFERENT aspects of the candidate
-11. Quality over quantity - 4 unique bullets beats 6 repetitive ones
-12. Before finalizing, VERIFY no two bullets say the same thing
-
-═══════════════════════════════════════════════════════════════
-JOB DESCRIPTION ANALYSIS - DO THIS FIRST
-═══════════════════════════════════════════════════════════════
-Before tailoring, extract from the job description:
-1. MUST-HAVE skills/technologies (explicitly required)
-2. NICE-TO-HAVE skills (preferred/bonus)
-3. Key responsibilities and daily work
-4. Team structure hints (cross-functional, agile, etc.)
-5. Seniority expectations (leadership, mentoring, etc.)
-6. Domain/industry context (fintech, healthcare, e-commerce, etc.)
-
-═══════════════════════════════════════════════════════════════
-PROFESSIONAL SUMMARY - JOB-ALIGNED
-═══════════════════════════════════════════════════════════════
-Rewrite the summary to directly address THIS job:
-- Line 1: [Role] with [X] years in [domain relevant to JD]
-- Line 2: Highlight 3-4 skills that MATCH the JD requirements
-- Line 3: Value prop that addresses what THIS company is looking for
-
-GOOD Example (for a Frontend role at a fintech company):
-"Frontend Developer with 5+ years building scalable web applications in the financial services sector. Expert in React, TypeScript, and component-driven architecture with experience implementing secure, compliant user interfaces. Passionate about performance optimization and creating intuitive experiences for complex financial workflows."
-
-BAD Example (too generic):
-"Experienced developer looking for new opportunities to grow."
-
-═══════════════════════════════════════════════════════════════
-EXPERIENCE BULLET POINTS - MAKE EACH ONE COUNT!
-═══════════════════════════════════════════════════════════════
-
-⭐ CRITICAL: Each bullet point should feel TAILORED to this specific job, not generic.
-
-STRATEGY FOR EACH EXPERIENCE:
-1. REFRAME existing bullets to emphasize JD-relevant aspects
-2. ADD 2-3 NEW bullets that directly address JD requirements (based on their actual skills)
-3. PRIORITIZE bullets that match the job's key responsibilities
-4. Each experience should have 5-6 strong, UNIQUE bullet points
-
-📝 BULLET POINT FORMULA FOR JOB TAILORING:
-"[Action Verb from JD language] + [Specific accomplishment] + [Using JD-relevant tech/skill] + [Business context if applicable]"
-
-EXAMPLES OF TAILORING (if JD mentions "scalable systems" and "cross-functional collaboration"):
-
-BEFORE (generic):
-"Developed web applications using React"
-
-AFTER (tailored):
-"Architected scalable React component library serving 15+ product teams, establishing patterns for consistent UI across the platform"
-
-BEFORE (generic):
-"Worked with backend team on API integration"
-
-AFTER (tailored):
-"Partnered with backend engineers to design and implement RESTful API contracts, reducing integration bugs and accelerating feature delivery"
-
-🎯 WHAT TO EMPHASIZE BASED ON JD:
-- If JD mentions "leadership" → Add bullets about mentoring, leading initiatives, making decisions
-- If JD mentions "performance" → Add bullets about optimization, load time, scalability
-- If JD mentions "collaboration" → Add bullets about cross-team work, stakeholder communication
-- If JD mentions specific tech → Ensure bullets reference that tech with specific use cases
-- If JD mentions "ownership" → Add bullets about end-to-end delivery, taking initiative
-
-🔄 UNIQUENESS ACROSS EXPERIENCES (CRITICAL - NO EXCEPTIONS!):
-⚠️ THIS IS THE MOST IMPORTANT RULE FOR QUALITY:
-- Job 1 bullets must be COMPLETELY DIFFERENT from Job 2 bullets
-- NEVER repeat themes like "collaboration", "optimization", "leadership" across jobs
-- Each job should highlight DIFFERENT skills from the JD requirements
-- Show PROGRESSION: recent roles show more senior responsibilities
-- Before writing a bullet, CHECK if similar content exists elsewhere in resume
-
-⚠️ DUPLICATION CHECK (DO THIS FOR EVERY BULLET):
-Ask yourself: "Have I already written something similar in ANY experience?"
-If YES → Write something completely different
-If UNSURE → Write something completely different
-
-EXAMPLES OF FORBIDDEN DUPLICATES:
-❌ Job 1: "Collaborated with cross-functional teams on projects"
-❌ Job 2: "Worked closely with teams across departments" (SAME THEME - NOT ALLOWED)
-
-✅ Job 1: "Collaborated with designers to implement responsive UI components"
-✅ Job 2: "Optimized database queries reducing page load time significantly" (DIFFERENT THEME)
-
-═══════════════════════════════════════════════════════════════
-KEYWORD INJECTION - NATURAL INTEGRATION
-═══════════════════════════════════════════════════════════════
-- Extract 10-15 key terms from the JD (technologies, methodologies, soft skills)
-- Integrate these NATURALLY into bullet points where truthful
-- Max 2-3 new keywords per bullet - avoid stuffing
-- If a keyword doesn't fit their experience truthfully, add to suggestedSkills
-
-GOOD keyword integration:
-"Led migration to microservices architecture using Docker and Kubernetes, improving deployment frequency"
-(naturally includes: microservices, Docker, Kubernetes, deployment)
-
-BAD keyword stuffing:
-"Used Docker, Kubernetes, microservices, CI/CD, agile for various projects"
-(just listing keywords without context)
-
-═══════════════════════════════════════════════════════════════
-SKILLS SECTION OPTIMIZATION
-═══════════════════════════════════════════════════════════════
-- Reorder skills: JD MUST-HAVE skills first, then NICE-TO-HAVE, then others
-- DO NOT add skills they don't have
-- Track which JD skills are missing → add to suggestedSkills
-
-═══════════════════════════════════════════════════════════════
-MATCH SCORE CALCULATION
-═══════════════════════════════════════════════════════════════
-Calculate matchScore (0-100) based on:
-- Skills match: What % of required skills do they have? (40% weight)
-- Responsibilities: Can their experience map to JD duties? (30% weight)
-- Seniority: Does their level match JD expectations? (20% weight)
-- Domain: Do they have relevant industry experience? (10% weight)
-
-═══════════════════════════════════════════════════════════════
-RESPONSE FORMAT
-═══════════════════════════════════════════════════════════════
-{
-  ...all original fields with tailored content...,
-  "personalInfo": {
-    ...original with JOB-SPECIFIC enhanced summary...
-  },
-  "experience": [
-    {
-      ...original identity fields preserved...,
-      "description": "Role description framed for THIS job",
-      "highlights": ["5-6 UNIQUE, JOB-TAILORED bullet points"]
-    }
-  ],
-  "_analysis": {
-    "matchScore": 75,
-    "keywordsFound": ["React", "TypeScript", "API"],
-    "keywordsMissing": ["GraphQL", "AWS"],
-    "keywordsAdded": ["agile", "cross-functional", "scalable"],
-    "summaryEnhanced": true,
-    "experienceEnhanced": true,
-    "roleAlignment": "Strong match - candidate has 4/5 required skills and relevant experience"
-  },
-  "suggestedSkills": [
-    { "id": "sug-0", "name": "GraphQL", "category": "Technical", "reason": "Required in JD - consider learning" },
-    { "id": "sug-1", "name": "AWS", "category": "Technical", "reason": "Listed as preferred - would strengthen candidacy" }
-  ]
-}
-
-═══════════════════════════════════════════════════════════════
-FINAL CHECKLIST BEFORE RETURNING (VERIFY ALL!)
-═══════════════════════════════════════════════════════════════
-☐ Summary directly addresses THIS job's requirements
-☐ JD keywords are naturally integrated (not stuffed)
-☐ NO fake metrics or statistics invented
-☐ Skills reordered with JD-relevant ones first
-☐ Missing skills noted in suggestedSkills with helpful reasons
-☐ Match score reflects honest assessment
-
-⚠️ CRITICAL UNIQUENESS VERIFICATION (MANDATORY!):
-☐ Read through ALL bullet points across ALL experiences
-☐ Verify ZERO duplicate themes or similar accomplishments
-☐ Each experience showcases DIFFERENT skills and achievements
-☐ No repeated patterns like "worked with teams" appearing twice
-☐ No similar sentence structures used multiple times
-☐ If ANY duplicates found → REWRITE THEM before returning
-
-This uniqueness check is NON-NEGOTIABLE. Duplicate content = plagiarism = immediate rejection by recruiters.
-
-NOW TAILOR THIS RESUME FOR THE JOB DESCRIPTION:
+INCLUDE in response:
+- _analysis: {matchScore (0-100), keywordsFound[], keywordsMissing[], keywordsAdded[]}
+- suggestedSkills: [{id, name, category, reason}] for missing JD skills
 
 `;
 
@@ -236,17 +67,18 @@ const handler = async (event) => {
     };
   }
 
-  // Get API keys from environment
+  // Get API keys from environment - Priority: Gemini > Groq > Claude > OpenAI
+  const geminiKey = process.env.GEMINI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;
 
-  if (!groqKey && !anthropicKey && !openaiKey) {
+  if (!geminiKey && !groqKey && !anthropicKey && !openaiKey) {
     return {
       statusCode: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       body: JSON.stringify({
-        error: "AI service not configured. Please set GROQ_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY."
+        error: "AI service not configured. Please set GEMINI_API_KEY, GROQ_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY."
       }),
     };
   }
@@ -297,22 +129,68 @@ ${JSON.stringify(cleanData, null, 2)}
     console.log(`Tailoring resume for: ${cleanData.personalInfo?.fullName || 'Unknown'}`);
     console.log(`Job: ${jobTitle || 'Not specified'} at ${companyName || 'Not specified'}`);
 
-    // Call AI to tailor the resume
+    // Call AI to tailor the resume - Priority: Groq (fastest) > Gemini > Claude > OpenAI
+    // Groq is prioritized because it responds in 3-5 seconds, crucial for Netlify free tier (10s limit)
     let tailoredData;
+    let lastError;
 
+    // Try Groq first (fastest - often under 5 seconds)
     if (groqKey) {
-      tailoredData = await tailorWithGroq(groqKey, jobContext);
-    } else if (anthropicKey) {
-      tailoredData = await tailorWithClaude(anthropicKey, jobContext);
-    } else if (openaiKey) {
-      tailoredData = await tailorWithOpenAI(openaiKey, jobContext);
+      try {
+        console.log("Trying Groq (fastest provider)...");
+        tailoredData = await tailorWithGroq(groqKey, jobContext);
+      } catch (err) {
+        console.error("Groq failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to Gemini
+    if (!tailoredData && geminiKey) {
+      try {
+        console.log("Trying Gemini 2.5 Flash...");
+        tailoredData = await tailorWithGemini(geminiKey, jobContext);
+      } catch (err) {
+        console.error("Gemini failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to Claude
+    if (!tailoredData && anthropicKey) {
+      try {
+        console.log("Trying Claude...");
+        tailoredData = await tailorWithClaude(anthropicKey, jobContext);
+      } catch (err) {
+        console.error("Claude failed:", err.message);
+        lastError = err;
+      }
+    }
+
+    // Fallback to OpenAI (slowest - often 15-30+ seconds)
+    if (!tailoredData && openaiKey) {
+      try {
+        console.log("Trying OpenAI...");
+        tailoredData = await tailorWithOpenAI(openaiKey, jobContext);
+      } catch (err) {
+        console.error("OpenAI failed:", err.message);
+        lastError = err;
+      }
     }
 
     if (!tailoredData) {
+      const errorDetails = lastError?.message || "Unknown error";
+      console.error("All AI providers failed. Last error:", errorDetails);
       return {
         statusCode: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "Failed to tailor resume" }),
+        body: JSON.stringify({
+          error: "Failed to tailor resume. All AI providers failed.",
+          details: errorDetails,
+          suggestion: errorDetails.includes('timed out')
+            ? "The AI service is taking too long. Please try again in a moment."
+            : "Please try again or contact support if the issue persists."
+        }),
       };
     }
 
@@ -357,142 +235,259 @@ ${JSON.stringify(cleanData, null, 2)}
   }
 };
 
+// Tailor with Gemini 2.5 Flash (PRIMARY)
+async function tailorWithGemini(apiKey, jobContext) {
+  const modelName = "gemini-2.5-flash";
+
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: JOB_TAILOR_PROMPT + jobContext,
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.3,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 8192,
+            // Note: responseMimeType removed - causes 400 error on Gemini 2.5
+          },
+        }),
+      }
+    );
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Gemini API error:", response.status, errorText);
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const content = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!content) {
+      throw new Error("No content in Gemini response");
+    }
+
+    // Extract JSON from response
+    let jsonStr = content;
+    const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[1];
+    }
+
+    return JSON.parse(jsonStr.trim());
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('Gemini API request timed out');
+    }
+    throw error;
+  }
+}
+
 // Tailor with Groq (FREE)
 async function tailorWithGroq(apiKey, jobContext) {
-  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert resume writer and ATS specialist. Return only valid JSON, no explanations or markdown code blocks.",
-        },
-        {
-          role: "user",
-          content: JOB_TAILOR_PROMPT + jobContext,
-        },
-      ],
-      max_tokens: 8000,
-      temperature: 0.3,
-    }),
-  });
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Groq API error:", response.status, errorText);
-    throw new Error(`Groq API error: ${response.status}`);
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          {
+            role: "system",
+            content: "You are an expert resume writer and ATS specialist.",
+          },
+          {
+            role: "user",
+            content: JOB_TAILOR_PROMPT + jobContext,
+          },
+        ],
+        max_tokens: 8000,
+        temperature: 0.3,
+        response_format: { type: "json_object" }, // Groq supports JSON mode
+      }),
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Groq API error:", response.status, errorText);
+      throw new Error(`Groq API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const content = result.choices?.[0]?.message?.content;
+
+    if (!content) {
+      throw new Error("No content in Groq response");
+    }
+
+    // Extract JSON from response
+    let jsonStr = content;
+    const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[1];
+    }
+
+    return JSON.parse(jsonStr.trim());
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('Groq API request timed out');
+    }
+    throw error;
   }
-
-  const result = await response.json();
-  const content = result.choices?.[0]?.message?.content;
-
-  if (!content) {
-    throw new Error("No content in Groq response");
-  }
-
-  // Extract JSON from response
-  let jsonStr = content;
-  const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (jsonMatch) {
-    jsonStr = jsonMatch[1];
-  }
-
-  return JSON.parse(jsonStr.trim());
 }
 
 // Tailor with Claude
 async function tailorWithClaude(apiKey, jobContext) {
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-3-haiku-20240307",
-      max_tokens: 8000,
-      messages: [
-        {
-          role: "user",
-          content: JOB_TAILOR_PROMPT + jobContext,
-        },
-      ],
-    }),
-  });
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Claude API error:", response.status, errorText);
-    throw new Error(`Claude API error: ${response.status}`);
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: "claude-3-haiku-20240307",
+        max_tokens: 8000,
+        messages: [
+          {
+            role: "user",
+            content: JOB_TAILOR_PROMPT + jobContext,
+          },
+        ],
+      }),
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Claude API error:", response.status, errorText);
+      throw new Error(`Claude API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const content = result.content?.[0]?.text;
+
+    if (!content) {
+      throw new Error("No content in Claude response");
+    }
+
+    let jsonStr = content;
+    const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[1];
+    }
+
+    return JSON.parse(jsonStr.trim());
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('Claude API request timed out');
+    }
+    throw error;
   }
-
-  const result = await response.json();
-  const content = result.content?.[0]?.text;
-
-  if (!content) {
-    throw new Error("No content in Claude response");
-  }
-
-  let jsonStr = content;
-  const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (jsonMatch) {
-    jsonStr = jsonMatch[1];
-  }
-
-  return JSON.parse(jsonStr.trim());
 }
 
 // Tailor with OpenAI
 async function tailorWithOpenAI(apiKey, jobContext) {
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert resume writer and ATS specialist. Return only valid JSON.",
-        },
-        {
-          role: "user",
-          content: JOB_TAILOR_PROMPT + jobContext,
-        },
-      ],
-      max_tokens: 8000,
-      temperature: 0.3,
-    }),
-  });
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("OpenAI API error:", response.status, errorText);
-    throw new Error(`OpenAI API error: ${response.status}`);
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: "You are an expert resume writer and ATS specialist.",
+          },
+          {
+            role: "user",
+            content: JOB_TAILOR_PROMPT + jobContext,
+          },
+        ],
+        max_tokens: 8000,
+        temperature: 0.3,
+        response_format: { type: "json_object" }, // Guarantees valid JSON output
+      }),
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("OpenAI API error:", response.status, errorText);
+      throw new Error(`OpenAI API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const content = result.choices?.[0]?.message?.content;
+
+    if (!content) {
+      throw new Error("No content in OpenAI response");
+    }
+
+    let jsonStr = content;
+    const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[1];
+    }
+
+    return JSON.parse(jsonStr.trim());
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('OpenAI API request timed out');
+    }
+    throw error;
   }
-
-  const result = await response.json();
-  const content = result.choices?.[0]?.message?.content;
-
-  if (!content) {
-    throw new Error("No content in OpenAI response");
-  }
-
-  let jsonStr = content;
-  const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (jsonMatch) {
-    jsonStr = jsonMatch[1];
-  }
-
-  return JSON.parse(jsonStr.trim());
 }
 
 // Validate tailored data - ensure critical fields are preserved

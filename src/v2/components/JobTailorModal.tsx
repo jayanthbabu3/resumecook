@@ -440,21 +440,53 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
     setProgressMessage(PROGRESS_MESSAGES[0]);
 
     try {
-      const response = await fetch('/.netlify/functions/tailor-resume-for-job', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          resumeData,
-          jobDescription,
-          jobTitle: jobTitle || undefined,
-          companyName: companyName || undefined,
-        }),
-      });
+      // Create AbortController for frontend timeout (slightly longer than backend)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 65000); // 65 second timeout
 
-      const result = await response.json();
+      let response: Response;
+      try {
+        response = await fetch('/.netlify/functions/tailor-resume-for-job', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify({
+            resumeData,
+            jobDescription,
+            jobTitle: jobTitle || undefined,
+            companyName: companyName || undefined,
+          }),
+        });
+        clearTimeout(timeoutId);
+      } catch (fetchError: any) {
+        clearTimeout(timeoutId);
+        if (fetchError.name === 'AbortError') {
+          throw new Error('Request timed out. The AI service is taking too long. Please try again.');
+        }
+        throw fetchError;
+      }
+
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let result: any;
+
+      try {
+        const text = await response.text();
+        // Check if response looks like a timeout error from Netlify
+        if (text.startsWith('TimeoutError') || text.includes('Task timed out')) {
+          throw new Error('The server timed out processing your request. This usually happens on free Netlify plans (10s limit). Please try again or upgrade to Netlify Pro for longer timeouts.');
+        }
+        result = JSON.parse(text);
+      } catch (parseError: any) {
+        if (parseError.message.includes('server timed out')) {
+          throw parseError;
+        }
+        console.error('Failed to parse response:', parseError);
+        throw new Error('The server returned an invalid response. This may be a timeout issue. Please try again.');
+      }
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to tailor resume');
+        throw new Error(result.error || result.details || 'Failed to tailor resume');
       }
 
       if (result.success && result.data) {

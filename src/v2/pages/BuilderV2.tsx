@@ -83,6 +83,11 @@ import { Target } from 'lucide-react';
 import { ProFeatureModal } from '../components/ProFeatureModal';
 import { useSubscription } from '@/hooks/useSubscription';
 
+// Chat With Resume - Conversational Resume Builder
+import { ChatWithResume } from '../components/ChatWithResume';
+import { ResumeAnimationProvider } from '../contexts/ResumeAnimationContext';
+import type { ChatResumeUpdatePayload } from '../types/chat';
+
 export const BuilderV2: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -136,6 +141,9 @@ export const BuilderV2: React.FC = () => {
   // Pro Feature modal state
   const [showProModal, setShowProModal] = useState(false);
   const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
+
+  // Chat mode state - when true, shows chat panel instead of form
+  const [isChatMode, setIsChatMode] = useState(false);
 
   // Debug: Log when font changes
   React.useEffect(() => {
@@ -1321,6 +1329,136 @@ export const BuilderV2: React.FC = () => {
     toast.success('Section removed');
   }, []);
 
+  /**
+   * Handle resume updates from the AI chat
+   * Uses a robust approach to:
+   * 1. Update the resume data
+   * 2. ONLY enable sections that were actually modified by the AI (not all sections with data)
+   *
+   * This ensures that when the user asks to add "cricket" to interests,
+   * only the interests section is enabled - not all other sections.
+   */
+  const handleChatResumeUpdate = useCallback((payload: ChatResumeUpdatePayload) => {
+    const { data, updatedSections } = payload;
+
+    console.log('[Chat Update] Received payload:', {
+      updatedSections,
+      hasCustomSections: !!data.customSections,
+      customSectionsCount: data.customSections?.length || 0,
+      customSections: data.customSections
+    });
+
+    // Update the resume data
+    setResumeData(data);
+    setHasUnsavedChanges(true);
+
+    // Only process sections that were ACTUALLY updated by the AI
+    if (!updatedSections || updatedSections.length === 0) {
+      return;
+    }
+
+    // Map AI section names to our internal section IDs
+    // Using switch-case for robustness and explicit handling
+    const sectionsToEnable: string[] = [];
+
+    for (const section of updatedSections) {
+      switch (section) {
+        // Personal info related sections
+        case 'personalInfo':
+          // Personal info doesn't need enabling, it's always visible
+          // But if summary was updated, enable the summary section
+          if (payload.updates.personalInfo?.summary) {
+            sectionsToEnable.push('summary');
+          }
+          break;
+        case 'summary':
+          sectionsToEnable.push('summary');
+          break;
+
+        // Core resume sections
+        case 'experience':
+          sectionsToEnable.push('experience');
+          break;
+        case 'education':
+          sectionsToEnable.push('education');
+          break;
+        case 'skills':
+          sectionsToEnable.push('skills');
+          break;
+        case 'languages':
+          sectionsToEnable.push('languages');
+          break;
+        case 'certifications':
+          sectionsToEnable.push('certifications');
+          break;
+        case 'projects':
+          sectionsToEnable.push('projects');
+          break;
+
+        // Additional sections
+        case 'achievements':
+          sectionsToEnable.push('achievements');
+          break;
+        case 'strengths':
+          sectionsToEnable.push('strengths');
+          break;
+        case 'awards':
+          sectionsToEnable.push('awards');
+          break;
+        case 'publications':
+          sectionsToEnable.push('publications');
+          break;
+        case 'volunteer':
+          sectionsToEnable.push('volunteer');
+          break;
+        case 'speaking':
+          sectionsToEnable.push('speaking');
+          break;
+        case 'patents':
+          sectionsToEnable.push('patents');
+          break;
+        case 'interests':
+          sectionsToEnable.push('interests');
+          break;
+        case 'references':
+          sectionsToEnable.push('references');
+          break;
+        case 'courses':
+          sectionsToEnable.push('courses');
+          break;
+
+        // Custom sections - enable each by their individual ID
+        case 'customSections':
+          // Custom sections have dynamic IDs, enable each one
+          console.log('[Chat Update] Processing customSections case, data.customSections:', data.customSections);
+          if (data.customSections && data.customSections.length > 0) {
+            data.customSections.forEach((customSection: { id: string; title?: string }) => {
+              console.log(`[Chat Update] Adding customSection to enable: ${customSection.id} (${customSection.title})`);
+              sectionsToEnable.push(customSection.id);
+            });
+          }
+          break;
+
+        default:
+          // Unknown section - log for debugging but don't break
+          console.warn(`[Chat Update] Unknown section: ${section}`);
+          break;
+      }
+    }
+
+    // Enable only the sections that were actually updated
+    if (sectionsToEnable.length > 0) {
+      setEnabledSections(prev => {
+        const newSections = sectionsToEnable.filter(s => !prev.includes(s));
+        if (newSections.length > 0) {
+          console.log(`[Chat Update] Enabling sections: ${newSections.join(', ')}`);
+          return [...prev, ...newSections];
+        }
+        return prev;
+      });
+    }
+  }, []);
+
   // Download PDF - uses hidden clean preview (form editor mode) for PDF generation
   const handleDownload = async () => {
     setIsDownloading(true);
@@ -1891,6 +2029,7 @@ export const BuilderV2: React.FC = () => {
                         <p>Optimize resume for a specific job</p>
                       </TooltipContent>
                     </Tooltip>
+
                   </div>
 
                   {/* Right Section: Customization + Actions */}
@@ -2105,67 +2244,77 @@ export const BuilderV2: React.FC = () => {
 
           {/* Main Content Grid - Add top margin for fixed headers */}
           <div className={cn(
-            "container mx-auto px-3 sm:px-4 lg:px-4",
+            // When chat is open, use full width with justified content
+            isChatMode
+              ? "w-full px-4 lg:px-6"
+              : "container mx-auto px-3 sm:px-4 lg:px-4",
             "pt-2 pb-2 lg:pt-3 lg:pb-4", // Padding top/bottom
             "mt-[146px] lg:mt-[60px]", // Space for fixed elements (mobile: 56px header + 82px toolbar + 8px gap = 146px, desktop: 60px toolbar)
             editorMode === 'form'
-              ? "flex lg:gap-[5px] items-start"
-              : "flex justify-center"
+              ? "flex lg:gap-4 items-start"
+              : "flex justify-center",
+            // When chat is open, center the content and use tighter gap
+            isChatMode && "lg:justify-center lg:gap-5"
           )}>
 
-            {/* Form Panel - Desktop: only in form mode, Mobile: when mobileView is 'form' */}
+            {/* Form Panel - Hidden when chat mode is open */}
             {/* Sticky so form stays visible while scrolling resume preview */}
-            <div className={cn(
-              "w-full lg:w-[480px] xl:w-[520px] flex-shrink-0",
-              // Height: 100vh minus toolbar and header
-              headerVisible ? "lg:h-[calc(100vh-140px)]" : "lg:h-[calc(100vh-80px)]",
-              "h-auto",
-              // Sticky positioning - stays below the fixed toolbar
-              "lg:sticky",
-              headerVisible ? "lg:top-[132px]" : "lg:top-[68px]",
-              // Combined visibility logic
-              // Desktop: only show when editorMode is 'form'
-              // Mobile: only show when mobileView is 'form'
-              editorMode === 'form'
-                ? (mobileView === 'form' ? "block" : "hidden lg:block")
-                : (mobileView === 'form' ? "block lg:hidden" : "hidden")
-            )}>
-              <div className="rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col overflow-hidden">
-                {useNewForm ? (
-                  <EnhancedForm
-                    resumeData={resumeData}
-                    onResumeDataChange={setResumeData}
-                    enabledSections={sectionsForForm}
-                    sectionTitles={sectionLabels}
-                    templateConfig={config}
-                    accentColor="#0891b2"
-                    onOpenAddSection={() => setShowAddSectionModal(true)}
-                    hideHeader={true}
-                  />
-                ) : (
-                  <div className="flex-1 overflow-hidden">
-                    <div className="p-3 lg:p-4 h-full overflow-y-auto">
-                      <ResumeForm
-                        resumeData={resumeData as any}
-                        setResumeData={setResumeData as any}
-                        templateId={templateId}
-                        enabledSections={enabledSections}
-                      />
+            {!isChatMode && (
+              <div className={cn(
+                "w-full lg:w-[480px] xl:w-[520px] flex-shrink-0",
+                // Height: 100vh minus toolbar and header
+                headerVisible ? "lg:h-[calc(100vh-140px)]" : "lg:h-[calc(100vh-80px)]",
+                "h-auto",
+                // Sticky positioning - stays below the fixed toolbar
+                "lg:sticky",
+                headerVisible ? "lg:top-[132px]" : "lg:top-[68px]",
+                // Combined visibility logic
+                // Desktop: only show when editorMode is 'form'
+                // Mobile: only show when mobileView is 'form'
+                editorMode === 'form'
+                  ? (mobileView === 'form' ? "block" : "hidden lg:block")
+                  : (mobileView === 'form' ? "block lg:hidden" : "hidden")
+              )}>
+                <div className="rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col overflow-hidden">
+                  {useNewForm ? (
+                    <EnhancedForm
+                      resumeData={resumeData}
+                      onResumeDataChange={setResumeData}
+                      enabledSections={sectionsForForm}
+                      sectionTitles={sectionLabels}
+                      templateConfig={config}
+                      accentColor="#0891b2"
+                      onOpenAddSection={() => setShowAddSectionModal(true)}
+                      hideHeader={true}
+                    />
+                  ) : (
+                    <div className="flex-1 overflow-hidden">
+                      <div className="p-3 lg:p-4 h-full overflow-y-auto">
+                        <ResumeForm
+                          resumeData={resumeData as any}
+                          setResumeData={setResumeData as any}
+                          templateId={templateId}
+                          enabledSections={enabledSections}
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Resume Preview */}
             <TooltipProvider delayDuration={100}>
               <div className={cn(
                 "relative flex items-start",
-                editorMode === 'form' ? "flex-1 lg:justify-start" : "w-full justify-center",
+                // When chat is open, don't use flex-1 so it stays compact
+                isChatMode
+                  ? "lg:justify-start"
+                  : editorMode === 'form' ? "flex-1 lg:justify-start" : "w-full justify-center",
                 // Hide on mobile when form view is active (show for live and preview)
                 mobileView === 'form' ? "hidden lg:flex" : "flex justify-center",
                 // Keep centered in live mode on desktop
-                editorMode !== 'form' && "lg:justify-center",
+                editorMode !== 'form' && !isChatMode && "lg:justify-center",
                 // Match the form panel's height and overflow behavior
                 "lg:overflow-y-auto lg:overflow-x-hidden",
                 headerVisible ? "lg:h-[calc(100vh-140px)]" : "lg:h-[calc(100vh-80px)]"
@@ -2339,7 +2488,68 @@ export const BuilderV2: React.FC = () => {
                 {/* Side toolbar removed - all features now in top toolbar for better discoverability */}
               </div>
             </TooltipProvider>
+
+            {/* Chat Panel - Shows on right side when chat is open (desktop) */}
+            {isChatMode && (
+              <div className={cn(
+                "w-[380px] xl:w-[420px] flex-shrink-0",
+                // Height: 100vh minus toolbar and header
+                headerVisible ? "lg:h-[calc(100vh-140px)]" : "lg:h-[calc(100vh-80px)]",
+                "h-auto",
+                // Sticky positioning - stays below the fixed toolbar
+                "lg:sticky",
+                headerVisible ? "lg:top-[132px]" : "lg:top-[68px]",
+                // Hide on mobile - we show full screen overlay instead
+                "hidden lg:block"
+              )}>
+                <ResumeAnimationProvider>
+                  <ChatWithResume
+                    resumeData={resumeData}
+                    onResumeUpdate={handleChatResumeUpdate}
+                    onHighlightSections={(sections) => {
+                      // Add a visual pulse to the resume preview when sections are updated
+                      const previewElement = document.getElementById('resume-preview-v2');
+                      if (previewElement && sections.length > 0) {
+                        previewElement.classList.add('animate-pulse');
+                        previewElement.style.boxShadow = '0 0 0 4px rgba(139, 92, 246, 0.3)';
+                        setTimeout(() => {
+                          previewElement.classList.remove('animate-pulse');
+                          previewElement.style.boxShadow = '';
+                        }, 2000);
+                      }
+                    }}
+                    mode="panel"
+                    onClose={() => setIsChatMode(false)}
+                  />
+                </ResumeAnimationProvider>
+              </div>
+            )}
           </div>
+
+          {/* Mobile Chat Overlay - Full screen on mobile */}
+          {isChatMode && (
+            <div className="lg:hidden fixed inset-0 z-50 bg-white">
+              <ResumeAnimationProvider>
+                <ChatWithResume
+                  resumeData={resumeData}
+                  onResumeUpdate={handleChatResumeUpdate}
+                  onHighlightSections={(sections) => {
+                    const previewElement = document.getElementById('resume-preview-v2-mobile');
+                    if (previewElement && sections.length > 0) {
+                      previewElement.classList.add('animate-pulse');
+                      previewElement.style.boxShadow = '0 0 0 4px rgba(139, 92, 246, 0.3)';
+                      setTimeout(() => {
+                        previewElement.classList.remove('animate-pulse');
+                        previewElement.style.boxShadow = '';
+                      }, 2000);
+                    }
+                  }}
+                  mode="panel"
+                  onClose={() => setIsChatMode(false)}
+                />
+              </ResumeAnimationProvider>
+            </div>
+          )}
 
           {/* Mobile Bottom Bar - Fixed at bottom */}
           <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-2 py-2 safe-area-inset-bottom">
@@ -2597,6 +2807,33 @@ export const BuilderV2: React.FC = () => {
         featureName={proModalFeature.name}
         featureDescription={proModalFeature.description}
       />
+
+      {/* Floating Chat Button - Opens chat panel on the right */}
+      {!isChatMode && (
+        <button
+          onClick={() => setIsChatMode(true)}
+          className={cn(
+            'fixed z-50',
+            // Desktop: bottom right with full text
+            'lg:bottom-6 lg:right-6',
+            // Mobile: above the bottom bar, centered
+            'bottom-20 right-4',
+            'flex items-center gap-2 rounded-full',
+            // Desktop: larger with text
+            'lg:px-5 lg:py-3.5',
+            // Mobile: compact icon-only or smaller
+            'px-4 py-3',
+            'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600',
+            'text-white font-medium shadow-lg shadow-purple-500/30',
+            'hover:shadow-xl hover:shadow-purple-500/40',
+            'active:scale-95',
+            'transition-all duration-200'
+          )}
+        >
+          <Sparkles className="w-5 h-5" />
+          <span className="hidden sm:inline">Talk with Resume</span>
+        </button>
+      )}
     </div>
   );
 };

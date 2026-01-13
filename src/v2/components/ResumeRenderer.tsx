@@ -243,6 +243,11 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     console.log('ResumeRenderer fontFamily:', fontFamily);
   }, [fontFamily]);
 
+  // Debug: Log customSections changes
+  React.useEffect(() => {
+    console.log('[ResumeRenderer] customSections changed:', resumeData.customSections);
+  }, [resumeData.customSections]);
+
   // Get style options for section visibility
   const styleOptionsContext = useStyleOptions();
 
@@ -440,11 +445,22 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     const blockedTitles = new Set(['my life philosophy']);
 
     const dynamicSections: SectionConfig[] = [];
+    console.log('[ResumeRenderer] Processing customSections:', resumeData.customSections);
     (resumeData.customSections || []).forEach((s, idx) => {
       const titleLower = (s.title || s.id || '').toLowerCase();
-      if (blockedTitles.has(titleLower)) return;
-      if (configIds.has(s.id)) return;
-      if (configTitles.has(titleLower)) return;
+      console.log(`[ResumeRenderer] Checking customSection: id=${s.id}, title=${s.title}`);
+      if (blockedTitles.has(titleLower)) {
+        console.log(`[ResumeRenderer] Skipping blocked title: ${titleLower}`);
+        return;
+      }
+      if (configIds.has(s.id)) {
+        console.log(`[ResumeRenderer] Skipping - configIds has: ${s.id}`);
+        return;
+      }
+      if (configTitles.has(titleLower)) {
+        console.log(`[ResumeRenderer] Skipping - configTitles has: ${titleLower}`);
+        return;
+      }
       // Heuristic: send strengths/achievements to sidebar by default
       const inferredColumn: 'main' | 'sidebar' =
         (titleLower.includes('strength') || titleLower.includes('achievement'))
@@ -454,7 +470,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       // If a specific column is requested, only include matching column sections
       if (column && column !== dynamicColumn) return;
       const orderStart = maxOrderByColumn(dynamicColumn) || 0;
-      dynamicSections.push({
+      const newDynamicSection = {
         type: 'custom',
         id: s.id,
         title: s.title || s.id,
@@ -462,11 +478,15 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         enabled: true,
         order: orderStart + idx + 1, // append after existing sections in that column
         column: dynamicColumn,
-      });
+      };
+      console.log(`[ResumeRenderer] Adding dynamic customSection:`, newDynamicSection);
+      dynamicSections.push(newDynamicSection as SectionConfig);
     });
 
+    console.log('[ResumeRenderer] Final dynamicSections:', dynamicSections);
     if (dynamicSections.length) {
       sections = [...sections, ...dynamicSections];
+      console.log('[ResumeRenderer] Total sections after adding dynamic:', sections.length);
     }
 
     // Remove banned/legacy sections
@@ -703,14 +723,20 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       case 'custom':
         // Find the custom section data - match by id, partial id, or title
         const customSections = resumeData.customSections || [];
+        console.log(`[ResumeRenderer] Rendering custom section: looking for id=${section.id}, title=${section.title}`);
+        console.log(`[ResumeRenderer] Available customSections:`, customSections);
         const customSection = customSections.find(
-          s => s.id === section.id || 
+          s => s.id === section.id ||
                s.id === `section-${section.id}` ||
                s.id.includes(section.id) ||
                s.title.toLowerCase() === section.title.toLowerCase()
         );
-        
-        if (!customSection && !editable) return null;
+        console.log(`[ResumeRenderer] Found customSection:`, customSection);
+
+        if (!customSection && !editable) {
+          console.log(`[ResumeRenderer] No customSection found and not editable - returning null`);
+          return null;
+        }
 
         const sectionIndex = customSections.findIndex(
           s => s.id === section.id || 
