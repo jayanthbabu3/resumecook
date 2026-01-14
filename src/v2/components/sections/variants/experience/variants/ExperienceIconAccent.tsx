@@ -220,13 +220,9 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
 
             {/* Bullet points with accent squares */}
             {(exp.bulletPoints?.length > 0 || editable) && (
-              <ul style={{
-                margin: 0,
-                paddingLeft: 0,
-                listStyleType: 'none',
-              }}>
+              <div style={{ margin: 0, padding: 0 }}>
                 {exp.bulletPoints?.map((bullet, bulletIndex) => (
-                  <li
+                  <div
                     key={bulletIndex}
                     className="group/bullet"
                     style={{
@@ -268,11 +264,11 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                     ) : (
                       <span style={{ flex: 1 }}>{bullet}</span>
                     )}
-                  </li>
+                  </div>
                 ))}
 
                 {editable && onAddBulletPoint && (
-                  <li style={{ marginTop: '8px', marginLeft: '15px' }}>
+                  <div style={{ marginTop: '8px', marginLeft: '15px' }}>
                     <button
                       onClick={() => onAddBulletPoint(exp.id)}
                       className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-white/50 transition-colors"
@@ -281,9 +277,9 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                       <Plus className="w-3 h-3" />
                       Add bullet point
                     </button>
-                  </li>
+                  </div>
                 )}
-              </ul>
+              </div>
             )}
           </div>
         </div>

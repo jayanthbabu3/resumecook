@@ -167,8 +167,6 @@ export const fresherAtsProConfig: TemplateConfig = createTemplateConfig({
     showGPA: true,
     showField: true,
     showDates: true,
-    showHonors: true,
-    showCoursework: false,
     datePosition: 'left',
   },
 

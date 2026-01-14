@@ -19,7 +19,7 @@ const MONTHS_FULL = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-// Parse value - supports both "Mon YYYY" and "YYYY-MM" formats
+// Parse value - supports "Mon YYYY", "YYYY-MM", and "YYYY" formats
 const parseValueStatic = (value?: string): { month: number | null; year: number | null } => {
   if (!value) return { month: null, year: null };
 
@@ -44,6 +44,12 @@ const parseValueStatic = (value?: string): { month: number | null; year: number 
     if (month >= 0 && month < 12) {
       return { month, year };
     }
+  }
+
+  // Try year-only format (e.g., "2024") - default to January
+  const yearOnlyMatch = value.match(/^(\d{4})$/);
+  if (yearOnlyMatch) {
+    return { month: 0, year: parseInt(yearOnlyMatch[1]) };
   }
 
   return { month: null, year: null };

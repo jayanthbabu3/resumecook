@@ -227,7 +227,10 @@ export type HeaderVariant =
   | 'gradient-banner'  // Full-width gradient background
   | 'elegant-banner'   // Gradient banner with centered photo and icon badge
   | 'creative-underline' // Creative header with stylized underline and modern layout
-  | 'banner-with-summary'; // Dark banner with name, title, summary and contact info
+  | 'banner-with-summary' // Dark banner with name, title, summary and contact info
+  | 'clean-summary-contact' // Clean header with name, title, summary paragraph, and horizontal contact bar with icons
+  | 'photo-summary-contact-bar' // Photo left, name/title/summary right, gray contact bar below
+  | 'gradient-split-contact'; // Blue gradient banner with content left and contact icons right
 
 export interface HeaderConfig {
   /** Header layout variant */
@@ -293,14 +296,15 @@ export interface ExperienceConfig {
 // EDUCATION DISPLAY CONFIGURATION
 // ============================================================================
 
-export type EducationVariant = 
-  | 'standard'       // Full details
-  | 'compact'        // Single line
-  | 'detailed'       // With description
-  | 'timeline'       // Visual timeline
-  | 'card'           // Card style
-  | 'minimal'        // Just degree and school
-  | 'two-column-dates'; // Dates/location on left column, content on right
+export type EducationVariant =
+  | 'standard'         // Full details
+  | 'compact'          // Single line
+  | 'detailed'         // With description
+  | 'timeline'         // Visual timeline
+  | 'card'             // Card style
+  | 'minimal'          // Just degree and school
+  | 'two-column-dates' // Dates/location on left column, content on right
+  | 'sidebar-minimal'; // Clean sidebar format: Degree • Year, Institution below
 
 export interface EducationConfig {
   /** Display variant */

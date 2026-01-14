@@ -55,7 +55,7 @@ export function useTemplateConfig({
     
     if (sectionOverrides) {
       const existingIds = new Set(result.sections.map(s => s.id));
-      
+
       // First apply overrides to existing sections and disable by type if needed
       let sections = result.sections.map(section => {
         const override = sectionOverrides[section.id];

@@ -175,7 +175,6 @@ export const adminAssistantProConfig: TemplateConfig = createTemplateConfig({
     showGPA: false,
     showField: true,
     showDates: true,
-    showHonors: true,
     datePosition: 'right',
   },
 

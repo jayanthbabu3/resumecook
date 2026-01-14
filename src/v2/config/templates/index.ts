@@ -46,6 +46,12 @@ import { fresherCreativeCardConfig } from './fresher-creative-card';
 // Professional Templates
 import { adminAssistantProConfig } from './admin-assistant-pro';
 import { projectManagerProConfig } from './project-manager-pro';
+import { impactLeaderConfig } from './impact-leader';
+import { techInnovatorConfig } from './tech-innovator';
+import { retailManagerProConfig } from './retail-manager-pro';
+import { theaterActorProConfig } from './theater-actor-pro';
+import { cioExecutiveConfig } from './cio-executive';
+import { hrProfessionalConfig } from './hr-professional';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -87,6 +93,12 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   // Professional Templates
   'admin-assistant-pro-v2': adminAssistantProConfig,
   'project-manager-pro-v2': projectManagerProConfig,
+  'impact-leader-v2': impactLeaderConfig,
+  'tech-innovator-v2': techInnovatorConfig,
+  'retail-manager-pro-v2': retailManagerProConfig,
+  'theater-actor-pro-v2': theaterActorProConfig,
+  'cio-executive-v2': cioExecutiveConfig,
+  'hr-professional-v2': hrProfessionalConfig,
 };
 
 // Get template by ID
@@ -144,4 +156,10 @@ export {
   // Professional Templates
   adminAssistantProConfig,
   projectManagerProConfig,
+  impactLeaderConfig,
+  techInnovatorConfig,
+  retailManagerProConfig,
+  theaterActorProConfig,
+  cioExecutiveConfig,
+  hrProfessionalConfig,
 };

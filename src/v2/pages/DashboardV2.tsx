@@ -9,19 +9,20 @@ import {
   CheckCircle2,
   Linkedin,
   FileUp,
+  MessageSquareText,
+  Target,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { getAllTemplates } from '../config/templates';
 import { getFresherTemplates } from '../templates';
-import { TemplatePreviewV2 } from '@/v2/components/TemplatePreviewV2';
-import { FavoriteButton } from "@/components/FavoriteButton";
 import { LinkedInImportModal } from '@/v2/components/LinkedInImportModal';
 import { ResumeUploadModal } from '@/v2/components/ResumeUploadModal';
 import { TemplateSelectorModal } from '@/v2/components/TemplateSelectorModal';
 import { JobTailorModal } from '@/v2/components/JobTailorModal';
 import { AuthModal } from '@/components/AuthModal';
 import { ProFeatureModal } from '@/v2/components/ProFeatureModal';
+import { ChatWithResumeIntroModal } from '@/v2/components/ChatWithResumeIntroModal';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import type { V2ResumeData } from '../types';
@@ -50,21 +51,14 @@ const DashboardV2 = () => {
   // Pro Feature Modal state
   const [proModalOpen, setProModalOpen] = useState(false);
   const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
+  // Chat with Resume Intro Modal state
+  const [chatIntroModalOpen, setChatIntroModalOpen] = useState(false);
 
   const v2Templates = getAllTemplates();
   const fresherTemplates = getFresherTemplates();
   const universalTemplateCount = v2Templates.length - fresherTemplates.length;
   const fresherTemplateCount = fresherTemplates.length;
   const totalTemplates = v2Templates.length;
-
-  // Featured templates - show first 4 templates
-  const defaultColors = ['#2563eb', '#7c3aed', '#059669', '#e11d48'];
-  const featuredTemplates = v2Templates.slice(0, 4).map((template, index) => ({
-    id: template.id,
-    name: template.name,
-    description: template.description || 'Professional resume template',
-    color: template.colors?.primary || defaultColors[index % defaultColors.length],
-  }));
 
   const handleLinkedInClick = () => {
     if (!user || !isPro) {
@@ -100,6 +94,26 @@ const DashboardV2 = () => {
     } else {
       setJobTailorModalOpen(true);
     }
+  };
+
+  const handleChatWithResumeClick = () => {
+    if (!user || !isPro) {
+      setProModalFeature({
+        name: 'Chat with Resume',
+        description: 'Build your resume through natural conversation with AI',
+      });
+      setProModalOpen(true);
+    } else {
+      // Show intro modal with template selection
+      setChatIntroModalOpen(true);
+    }
+  };
+
+  // Handle template selection from chat intro modal
+  const handleChatTemplateSelect = (templateId: string) => {
+    setChatIntroModalOpen(false);
+    // Navigate to builder with chat mode and selected template
+    navigate(`/builder?mode=chat&template=${templateId}`);
   };
 
   const handleAuthSuccess = () => {
@@ -141,252 +155,206 @@ const DashboardV2 = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50/60 via-white to-gray-50/50">
       <Header />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-12">
         {/* Hero Section */}
-        <div className="text-center mb-10 sm:mb-14">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 tracking-tight mb-3">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight mb-2">
             Create Your Perfect Resume
           </h1>
-          <p className="text-gray-500 text-sm sm:text-base max-w-2xl mx-auto">
-            Choose from <span className="font-semibold text-gray-700">{totalTemplates} industry-ready templates</span> designed to help you land your dream job
+          <p className="text-gray-600 text-sm max-w-xl mx-auto">
+            Choose from <span className="font-semibold text-primary">{totalTemplates} professional templates</span> designed to land your dream job
           </p>
         </div>
 
-        {/* Quick Actions - Five Column Layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-10 max-w-5xl mx-auto">
-          {/* Pro Templates */}
-          <button
-            onClick={() => navigate("/templates/all")}
-            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-100 to-blue-200 flex items-center justify-center">
-                <Briefcase className="w-5 h-5 text-indigo-600" />
+        {/* Templates Section */}
+        <div className="mb-6 sm:mb-10">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
+            Choose a Template
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {/* Pro Templates */}
+            <button
+              onClick={() => navigate("/templates?category=professional")}
+              className="group relative bg-gradient-to-br from-blue-50 via-white to-indigo-50/50 rounded-xl border border-blue-100 p-4 sm:p-5 hover:shadow-lg hover:shadow-blue-100/50 hover:border-blue-200 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-100/40 to-transparent rounded-bl-full" />
+              <div className="relative flex items-start gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-blue-200">
+                  <Briefcase className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-gray-900 text-[15px]">Pro Templates</h3>
+                    <span className="inline-flex items-center justify-center min-w-[26px] h-[26px] px-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs font-bold shadow-sm">
+                      {universalTemplateCount}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Premium designs for experienced professionals
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-blue-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
               </div>
-              <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-indigo-500 text-white text-[11px] font-bold shadow-sm">
-                {universalTemplateCount}
-              </span>
-            </div>
-            <h3 className="font-semibold text-gray-900 text-sm mb-1">
-              Pro Templates
-            </h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Premium designs for all professional industries.
-            </p>
-          </button>
+            </button>
 
-          {/* Fresher */}
-          <button
-            onClick={() => navigate("/templates/fresher")}
-            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-100 to-green-200 flex items-center justify-center">
-                <GraduationCap className="w-5 h-5 text-emerald-600" />
+            {/* Fresher Templates */}
+            <button
+              onClick={() => navigate("/templates?category=fresher")}
+              className="group relative bg-gradient-to-br from-emerald-50 via-white to-green-50/50 rounded-xl border border-emerald-100 p-4 sm:p-5 hover:shadow-lg hover:shadow-emerald-100/50 hover:border-emerald-200 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-emerald-100/40 to-transparent rounded-bl-full" />
+              <div className="relative flex items-start gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-emerald-200">
+                  <GraduationCap className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-gray-900 text-[15px]">Fresher Templates</h3>
+                    <span className="inline-flex items-center justify-center min-w-[26px] h-[26px] px-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-bold shadow-sm">
+                      {fresherTemplateCount}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Perfect for graduates and entry-level candidates
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-emerald-300 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
               </div>
-              <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-emerald-500 text-white text-[11px] font-bold shadow-sm">
-                {fresherTemplateCount}
-              </span>
-            </div>
-            <h3 className="font-semibold text-gray-900 text-sm mb-1">
-              Fresher
-            </h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Specialized layouts for graduates & entry-level.
-            </p>
-          </button>
+            </button>
+          </div>
+        </div>
 
-          {/* Import LinkedIn */}
-          <button
-            onClick={handleLinkedInClick}
-            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                <Linkedin className="w-5 h-5 text-[#0A66C2]" />
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-all mt-1" />
-            </div>
-            <h3 className="font-semibold text-gray-900 text-sm mb-1">
-              Import LinkedIn
-            </h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Auto-fill from your professional profile instantly.
-            </p>
-          </button>
+        {/* AI Features Section */}
+        <div className="mb-6 sm:mb-10">
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">AI-Powered Features</h2>
+            <span className="text-xs font-bold text-white bg-gradient-to-r from-violet-500 to-purple-600 px-2.5 py-0.5 rounded-full shadow-sm">
+              PRO
+            </span>
+          </div>
 
-          {/* Upload Resume */}
-          <button
-            onClick={handleResumeUploadClick}
-            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-100 to-violet-200 flex items-center justify-center">
-                <FileUp className="w-5 h-5 text-purple-600" />
-              </div>
-              <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">
-                AI
-              </span>
-            </div>
-            <h3 className="font-semibold text-gray-900 text-sm mb-1">
-              Upload Resume
-            </h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Parse existing PDF/DOCX files with smart AI.
-            </p>
-          </button>
-
-          {/* Tailor for Job */}
-          <button
-            onClick={handleJobTailorClick}
-            className="group relative bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all duration-300 text-left col-span-2 sm:col-span-1"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-orange-500" />
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-[10px] font-semibold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded">
-                  AI
+          <div className="grid sm:grid-cols-2 gap-4">
+            {/* Chat with Resume - Featured */}
+            <button
+              onClick={handleChatWithResumeClick}
+              className="group relative bg-gradient-to-br from-violet-50 via-white to-purple-50/50 rounded-xl border border-violet-100 p-4 sm:p-5 hover:shadow-lg hover:shadow-violet-100/50 hover:border-violet-200 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-violet-100/40 to-transparent rounded-bl-full" />
+              <div className="absolute top-0 right-0 z-20">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-gradient-to-r from-violet-500 to-purple-600 px-2 py-1 rounded-bl-lg rounded-tr-xl shadow-sm">
+                  <Sparkles className="w-2.5 h-2.5" />
+                  NEW
                 </span>
-                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-all" />
               </div>
-            </div>
-            <h3 className="font-semibold text-gray-900 text-sm mb-1">
-              Tailor for Job
-            </h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Match any job description automatically.
-            </p>
-          </button>
+              <div className="relative flex items-start gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-violet-200">
+                  <MessageSquareText className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 text-[15px] mb-1">Chat with Resume</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Build your resume through natural conversation with AI
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-violet-300 group-hover:text-violet-600 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
+              </div>
+            </button>
+
+            {/* Upload Resume */}
+            <button
+              onClick={handleResumeUploadClick}
+              className="group relative bg-gradient-to-br from-sky-50 via-white to-cyan-50/50 rounded-xl border border-sky-100 p-4 sm:p-5 hover:shadow-lg hover:shadow-sky-100/50 hover:border-sky-200 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-sky-100/40 to-transparent rounded-bl-full" />
+              <div className="relative flex items-start gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-cyan-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-sky-200">
+                  <FileUp className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 text-[15px] mb-1">Upload Resume</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Upload PDF or DOCX and AI extracts your information
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-sky-300 group-hover:text-sky-600 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
+              </div>
+            </button>
+
+            {/* Tailor for Job */}
+            <button
+              onClick={handleJobTailorClick}
+              className="group relative bg-gradient-to-br from-amber-50 via-white to-orange-50/50 rounded-xl border border-amber-100 p-4 sm:p-5 hover:shadow-lg hover:shadow-amber-100/50 hover:border-amber-200 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-100/40 to-transparent rounded-bl-full" />
+              <div className="relative flex items-start gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-amber-200">
+                  <Target className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 text-[15px] mb-1">Tailor for Job</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Paste job description and AI optimizes your resume
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-amber-300 group-hover:text-amber-600 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
+              </div>
+            </button>
+
+            {/* Import LinkedIn */}
+            <button
+              onClick={handleLinkedInClick}
+              className="group relative bg-gradient-to-br from-blue-50 via-white to-sky-50/50 rounded-xl border border-blue-100 p-4 sm:p-5 hover:shadow-lg hover:shadow-blue-100/50 hover:border-blue-200 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-100/40 to-transparent rounded-bl-full" />
+              <div className="relative flex items-start gap-3 sm:gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0077B5] to-[#0A66C2] flex items-center justify-center flex-shrink-0 shadow-md shadow-blue-200">
+                  <Linkedin className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 text-[15px] mb-1">Import from LinkedIn</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Import your work experience and skills instantly
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-blue-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Features Strip */}
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-12 py-4 px-6 bg-white rounded-2xl border border-gray-100">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            <span>ATS-Friendly</span>
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-6 sm:mb-10 py-3 px-4 bg-gradient-to-r from-emerald-50 via-white to-blue-50 rounded-xl border border-gray-100">
+          <div className="flex items-center gap-1.5 text-sm text-gray-700">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span className="font-medium">ATS-Friendly</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            <span>PDF Export</span>
+          <div className="flex items-center gap-1.5 text-sm text-gray-700">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span className="font-medium">PDF Export</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            <span>Live Preview</span>
+          <div className="flex items-center gap-1.5 text-sm text-gray-700">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span className="font-medium">Live Preview</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            <span>Easy Customization</span>
+          <div className="flex items-center gap-1.5 text-sm text-gray-700">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span className="font-medium">Easy Customization</span>
           </div>
         </div>
 
-        {/* Featured Templates Section */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-                Popular Templates
-              </h2>
-              <p className="text-sm text-gray-500 mt-0.5">
-                Most chosen by professionals this month
-              </p>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-500 hover:text-gray-900 gap-1.5 font-medium"
-              onClick={() => navigate("/templates/all")}
-            >
-              View all {totalTemplates}
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            {featuredTemplates.map((template) => (
-              <div
-                key={template.id}
-                className="group cursor-pointer"
-                onClick={() => {
-                  sessionStorage.setItem('template-referrer', '/templates');
-                  sessionStorage.setItem('selected-template', template.id);
-                  navigate(`/builder?template=${template.id}`);
-                }}
-              >
-                {/* Template Preview Card */}
-                <div className="relative bg-white rounded-2xl border border-gray-200/80 overflow-hidden hover:border-gray-300 hover:shadow-2xl hover:shadow-gray-300/40 transition-all duration-300 group-hover:-translate-y-1">
-                  {/* Favorite Button */}
-                  <div className="absolute top-3 left-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <div className="bg-white/95 backdrop-blur-sm rounded-lg p-1.5 shadow-md">
-                      <FavoriteButton
-                        templateId={template.id}
-                        variant="icon"
-                        size="sm"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Preview Container */}
-                  <div className="aspect-[8.5/11] relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-                    <div className="absolute inset-2.5 rounded-xl overflow-hidden bg-white shadow-sm ring-1 ring-gray-200/50">
-                      <TemplatePreviewV2
-                        templateId={template.id}
-                        themeColor={template.color}
-                        className="h-full"
-                      />
-                    </div>
-
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-5">
-                      <Button
-                        size="sm"
-                        className="bg-white text-gray-900 hover:bg-gray-50 shadow-xl text-sm font-medium px-5 h-10 rounded-xl"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          sessionStorage.setItem('template-referrer', '/templates');
-                          sessionStorage.setItem('selected-template', template.id);
-                          navigate(`/builder?template=${template.id}`);
-                        }}
-                      >
-                        Use Template
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Template Info */}
-                  <div className="p-4 border-t border-gray-100">
-                    <h3 className="font-semibold text-sm text-gray-900 truncate group-hover:text-blue-600 transition-colors">
-                      {template.name}
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-1 truncate">
-                      {template.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Browse All CTA */}
-        <div className="mt-14 text-center">
-          <div className="inline-flex flex-col items-center gap-3 p-8 bg-white rounded-3xl border border-gray-200/80 shadow-sm">
-            <p className="text-gray-600 text-sm">
-              Can't find what you're looking for?
-            </p>
-            <Button
-              size="lg"
-              className="gap-2 px-8 h-12 text-base font-medium rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
-              onClick={() => navigate("/templates/all")}
-            >
-              Browse All {totalTemplates} Templates
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-          </div>
+        {/* Browse All Templates CTA */}
+        <div className="text-center">
+          <Button
+            size="lg"
+            className="gap-2 px-6 h-11 text-sm font-semibold rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-200 hover:shadow-lg transition-all"
+            onClick={() => navigate("/templates")}
+          >
+            Browse All {totalTemplates} Templates
+            <ArrowRight className="w-4 h-4" />
+          </Button>
         </div>
       </main>
 
@@ -401,7 +369,7 @@ const DashboardV2 = () => {
         isOpen={resumeUploadModalOpen}
         onClose={() => setResumeUploadModalOpen(false)}
         onSuccess={handleResumeUploadSuccess}
-        themeColor="#8b5cf6"
+        themeColor="#3b82f6"
       />
 
       {/* Auth Modal - Shows when user tries to use LinkedIn import without being logged in */}
@@ -420,7 +388,7 @@ const DashboardV2 = () => {
           setPendingTailorAnalysis(null);
         }}
         onSelect={handleTemplateSelect}
-        themeColor={pendingTailorAnalysis ? "#f59e0b" : "#8b5cf6"}
+        themeColor="#3b82f6"
       />
 
       {/* Job Tailor Modal - Tailor resume for job description */}
@@ -428,7 +396,7 @@ const DashboardV2 = () => {
         isOpen={jobTailorModalOpen}
         onClose={() => setJobTailorModalOpen(false)}
         onComplete={handleJobTailorComplete}
-        themeColor="#f59e0b"
+        themeColor="#3b82f6"
       />
 
       {/* Pro Feature Modal - Shows for non-logged-in or non-Pro users */}
@@ -437,6 +405,13 @@ const DashboardV2 = () => {
         onClose={() => setProModalOpen(false)}
         featureName={proModalFeature.name}
         featureDescription={proModalFeature.description}
+      />
+
+      {/* Chat with Resume Intro Modal */}
+      <ChatWithResumeIntroModal
+        isOpen={chatIntroModalOpen}
+        onClose={() => setChatIntroModalOpen(false)}
+        onSelectTemplate={handleChatTemplateSelect}
       />
     </div>
   );

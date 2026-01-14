@@ -31,8 +31,55 @@ export interface VariantInfo {
   description: string;
 }
 
+// Core sections with variants (not addable, but need variant info for live editor)
+export const CORE_SECTIONS: SectionTypeInfo[] = [
+  {
+    id: 'experience',
+    name: 'Experience',
+    description: 'Work experience',
+    icon: <Briefcase className="w-4 h-4" />,
+    dataKey: 'experience',
+    variants: [
+      { id: 'standard', name: 'Standard', description: 'Traditional stacked layout' },
+      { id: 'compact', name: 'Compact', description: 'Condensed single-line header' },
+      { id: 'accent-card', name: 'Accent Card', description: 'Card with accent border' },
+      { id: 'timeline', name: 'Timeline', description: 'Visual timeline style' },
+    ],
+  },
+  {
+    id: 'education',
+    name: 'Education',
+    description: 'Educational background',
+    icon: <GraduationCap className="w-4 h-4" />,
+    dataKey: 'education',
+    variants: [
+      { id: 'standard', name: 'Standard', description: 'Traditional layout' },
+      { id: 'compact', name: 'Compact', description: 'Space-efficient format' },
+      { id: 'detailed', name: 'Detailed', description: 'Full details with coursework' },
+      { id: 'timeline', name: 'Timeline', description: 'Timeline style' },
+    ],
+  },
+  {
+    id: 'skills',
+    name: 'Skills',
+    description: 'Technical and soft skills',
+    icon: <Award className="w-4 h-4" />,
+    dataKey: 'skills',
+    variants: [
+      { id: 'pills', name: 'Pills', description: 'Rounded pill badges' },
+      { id: 'tags', name: 'Tags', description: 'Tag-style badges' },
+      { id: 'table', name: 'Table', description: 'Category-skill table format' },
+      { id: 'grouped', name: 'Grouped', description: 'Skills grouped by category' },
+      { id: 'dots', name: 'Dots', description: 'Proficiency dots' },
+      { id: 'bars', name: 'Bars', description: 'Progress bars' },
+      { id: 'bordered-tags', name: 'Bordered Tags', description: 'Tags with borders' },
+    ],
+  },
+];
+
 // Available sections that users can add - exported for use in SectionOptionsMenu
 export const ADDABLE_SECTIONS: SectionTypeInfo[] = [
+  ...CORE_SECTIONS,
   {
     id: 'interests',
     name: 'Interests',

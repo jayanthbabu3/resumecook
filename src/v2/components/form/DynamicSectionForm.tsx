@@ -110,28 +110,29 @@ export const DynamicSectionForm: React.FC<DynamicSectionFormProps> = ({
   );
 
   // Helper to get nested config value (e.g., 'skills.showRatings')
+  // Returns true only if the config value is explicitly true
   const getConfigValue = (path: string): boolean => {
-    if (!templateConfig || !path) return true;
+    if (!templateConfig || !path) return false;
     const parts = path.split('.');
     let value: any = templateConfig;
     for (const part of parts) {
-      if (value === undefined || value === null) return true;
+      if (value === undefined || value === null) return false;
       value = value[part];
     }
-    return value !== false; // Default to true if not explicitly false
+    return value === true; // Only true if explicitly set to true
   };
 
   // Filter fields based on template config and variant
   const getVisibleFields = (): FormFieldDefinition[] => {
     return sectionDef.formFields.filter(field => {
-      // Check showWhenConfig
+      // Check showWhenConfig - only show if explicitly enabled
       if (field.showWhenConfig && !getConfigValue(field.showWhenConfig)) {
         return false;
       }
       // Check showForVariants
       if (field.showForVariants && field.showForVariants.length > 0) {
         const variant = currentVariant || sectionDef.defaultVariant;
-        if (variant && !field.showForVariants.includes(variant)) {
+        if (!variant || !field.showForVariants.includes(variant)) {
           return false;
         }
       }

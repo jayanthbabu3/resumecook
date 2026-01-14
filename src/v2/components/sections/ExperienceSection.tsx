@@ -57,9 +57,19 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   const formatDate = styleContext?.formatDate || ((date: string) => {
     // Fallback format if context not available
     if (!date) return '';
+    // Handle year-only format (e.g., "2024")
+    if (/^\d{4}$/.test(date)) {
+      return `Jan ${date}`;
+    }
+    // Handle YYYY-MM format
     const [year, month] = date.split('-');
+    if (!month) return date;
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${monthNames[parseInt(month) - 1]} ${year}`;
+    const monthIndex = parseInt(month) - 1;
+    if (monthIndex >= 0 && monthIndex < 12) {
+      return `${monthNames[monthIndex]} ${year}`;
+    }
+    return date;
   });
   
   // Get bullet character

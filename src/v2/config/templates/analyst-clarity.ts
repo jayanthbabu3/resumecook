@@ -163,7 +163,6 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
     showField: true,
     showDates: true,
     datePosition: 'inline',
-    showCoursework: false,
   },
 
   strengths: {

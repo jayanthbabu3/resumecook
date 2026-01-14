@@ -35,7 +35,7 @@ export const fresherTechnicalConfig: TemplateConfig = createTemplateConfig({
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.02em',
-      color: '#4b5563',
+      color: '#2563eb',
     },
     sectionHeading: {
       fontSize: '11px',
@@ -73,7 +73,7 @@ export const fresherTechnicalConfig: TemplateConfig = createTemplateConfig({
       fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.5,
-      color: '#4b5563',
+      color: '#374151',
     },
     small: {
       fontSize: '10px',
@@ -123,16 +123,18 @@ export const fresherTechnicalConfig: TemplateConfig = createTemplateConfig({
     marginBottom: '14px',
   },
 
-  // Modern split header with name on left, contact grid on right
+  // Banner header with summary - white background version
   header: {
-    variant: 'modern-split',
-    showPhoto: false,
-    photoSize: '60px',
-    photoShape: 'rounded',
-    padding: '0',
-    backgroundColor: 'transparent',
+    variant: 'banner-with-summary',
+    showPhoto: true,
+    photoSize: '80px',
+    photoShape: 'circle',
+    photoPosition: 'right',
+    padding: '28px 32px',
+    backgroundColor: '#ffffff',
     textColor: '#111827',
-    contactIcons: { show: true, size: '12px', color: '#2563eb' },
+    borderBottom: '2px solid #2563eb',
+    contactIcons: { show: true, size: '14px', color: '#2563eb' },
     showSocialLinks: true,
     socialLinksVariant: 'horizontal',
   },
@@ -166,8 +168,6 @@ export const fresherTechnicalConfig: TemplateConfig = createTemplateConfig({
     showGPA: true,
     showField: true,
     showDates: true,
-    showHonors: true,
-    showCoursework: true,
     datePosition: 'right',
   },
 

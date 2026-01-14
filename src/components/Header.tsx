@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles } from "lucide-react";
+import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
@@ -55,6 +55,7 @@ const HeaderComponent: React.FC = () => {
   // Navigation items based on auth state
   const navItems = useMemo(() => {
     const baseItems = [
+      { label: "Dashboard", to: "/dashboard", icon: Home },
       { label: "Templates", to: "/templates", icon: LayoutDashboard },
       { label: "Pricing", to: "/pricing", icon: CreditCard },
       { label: "ATS Guide", to: "/ats-guidelines", icon: BookOpen },
@@ -74,6 +75,7 @@ const HeaderComponent: React.FC = () => {
   // Memoize navigation callbacks
   const handleNavigateHome = useCallback(() => navigate("/"), [navigate]);
   const handleNavigateAuth = useCallback(() => navigate("/auth"), [navigate]);
+  const handleNavigateDashboard = useCallback(() => navigate("/dashboard"), [navigate]);
   const handleNavigateTemplates = useCallback(() => navigate("/templates"), [navigate]);
   const handleNavigateMyResumes = useCallback(() => navigate("/my-resumes"), [navigate]);
   const handleNavigateProfile = useCallback(() => navigate("/profile"), [navigate]);
@@ -183,6 +185,13 @@ const HeaderComponent: React.FC = () => {
                   </div>
 
                   <div className="py-1">
+                    <DropdownMenuItem
+                      onClick={handleNavigateDashboard}
+                      className="px-3 py-2 cursor-pointer rounded-lg mx-1"
+                    >
+                      <Home className="mr-2.5 h-4 w-4 text-gray-500" />
+                      <span>Dashboard</span>
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={handleNavigateTemplates}
                       className="px-3 py-2 cursor-pointer rounded-lg mx-1"

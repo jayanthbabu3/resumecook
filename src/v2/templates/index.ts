@@ -48,6 +48,12 @@ import { fresherCreativeCardTemplate } from './fresher-creative-card';
 // Professional Templates
 import { adminAssistantProTemplate } from './admin-assistant-pro';
 import { projectManagerProTemplate } from './project-manager-pro';
+import { impactLeaderTemplate } from './impact-leader';
+import { techInnovatorTemplate } from './tech-innovator';
+import { retailManagerProTemplate } from './retail-manager-pro';
+import { theaterActorProTemplate } from './theater-actor-pro';
+import { cioExecutiveTemplate } from './cio-executive';
+import { hrProfessionalTemplate } from './hr-professional';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -92,6 +98,12 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   // Professional Templates
   'admin-assistant-pro-v2': adminAssistantProTemplate,
   'project-manager-pro-v2': projectManagerProTemplate,
+  'impact-leader-v2': impactLeaderTemplate,
+  'tech-innovator-v2': techInnovatorTemplate,
+  'retail-manager-pro-v2': retailManagerProTemplate,
+  'theater-actor-pro-v2': theaterActorProTemplate,
+  'cio-executive-v2': cioExecutiveTemplate,
+  'hr-professional-v2': hrProfessionalTemplate,
 };
 
 // ============================================================================
@@ -203,3 +215,9 @@ export { fresherCreativeCardTemplate } from './fresher-creative-card';
 
 // Professional Templates
 export { adminAssistantProTemplate } from './admin-assistant-pro';
+export { impactLeaderTemplate } from './impact-leader';
+export { techInnovatorTemplate } from './tech-innovator';
+export { retailManagerProTemplate } from './retail-manager-pro';
+export { theaterActorProTemplate } from './theater-actor-pro';
+export { cioExecutiveTemplate } from './cio-executive';
+export { hrProfessionalTemplate } from './hr-professional';

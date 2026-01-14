@@ -73,6 +73,24 @@ export function ChatWithResume({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // Auto-resize textarea based on content
+  const adjustTextareaHeight = useCallback(() => {
+    const textarea = inputRef.current;
+    if (textarea) {
+      // Reset height to auto to get the correct scrollHeight
+      textarea.style.height = 'auto';
+      // Set height to scrollHeight, capped at max height
+      const maxHeight = 150; // Max 150px height
+      const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+      textarea.style.height = `${newHeight}px`;
+    }
+  }, []);
+
+  // Trigger resize when input value changes
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [inputValue, adjustTextareaHeight]);
+
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -158,6 +176,7 @@ export function ChatWithResume({
             onSuggestedQuestion={handleSuggestedQuestion}
             onClear={clearChat}
             onClose={handleClose}
+            onAdjustHeight={adjustTextareaHeight}
           />
         ) : (
           <ChatButton onClick={toggleChat} />
@@ -184,6 +203,7 @@ export function ChatWithResume({
       onSuggestedQuestion={handleSuggestedQuestion}
       onClear={clearChat}
       onClose={handleClose}
+      onAdjustHeight={adjustTextareaHeight}
       className={className}
     />
   );
@@ -237,6 +257,7 @@ interface SidePanelChatProps {
   onSuggestedQuestion: (question: string) => void;
   onClear: () => void;
   onClose: () => void;
+  onAdjustHeight: () => void;
   className?: string;
 }
 
@@ -256,6 +277,7 @@ function SidePanelChat({
   onSuggestedQuestion,
   onClear,
   onClose,
+  onAdjustHeight,
   className,
 }: SidePanelChatProps) {
   const showQuickActions = messages.length <= 1;
@@ -406,54 +428,57 @@ function SidePanelChat({
       </div>
 
       {/* Input */}
-      <form onSubmit={onSubmit} className="p-4 bg-white border-t border-gray-100">
-        <div className="flex items-end gap-2">
-          <div className="flex-1 relative">
+      <div className="p-3 sm:p-4 bg-white border-t border-gray-100">
+        <form onSubmit={onSubmit}>
+          <div className="flex items-end gap-2 sm:gap-3 bg-gray-50 rounded-2xl border border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20 transition-all duration-200 p-1.5 sm:p-2">
             <textarea
               ref={inputRef}
               value={inputValue}
-              onChange={(e) => onInputChange(e.target.value)}
+              onChange={(e) => {
+                onInputChange(e.target.value);
+                onAdjustHeight();
+              }}
               onKeyDown={onKeyDown}
               placeholder="Tell me about yourself..."
               rows={1}
               className={cn(
-                'w-full px-4 py-3 pr-12',
-                'bg-gray-50 border border-gray-200 rounded-xl',
+                'flex-1 px-3 py-2.5 sm:py-3',
+                'bg-transparent border-none',
                 'text-sm text-gray-900 placeholder:text-gray-400',
-                'focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400',
-                'resize-none max-h-32',
+                'focus:outline-none',
+                'resize-none overflow-y-auto',
                 'transition-all duration-200'
               )}
               style={{
-                minHeight: '48px',
-                height: 'auto',
+                minHeight: '44px',
+                maxHeight: '150px',
               }}
               disabled={isLoading}
             />
+            <Button
+              type="submit"
+              disabled={!inputValue.trim() || isLoading}
+              className={cn(
+                'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
+                'bg-gradient-to-r from-violet-500 to-purple-600',
+                'hover:from-violet-600 hover:to-purple-700',
+                'disabled:opacity-40 disabled:cursor-not-allowed',
+                'shadow-md hover:shadow-lg',
+                'transition-all duration-200'
+              )}
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+              ) : (
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+              )}
+            </Button>
           </div>
-          <Button
-            type="submit"
-            disabled={!inputValue.trim() || isLoading}
-            className={cn(
-              'h-12 w-12 rounded-xl',
-              'bg-gradient-to-r from-violet-600 to-purple-600',
-              'hover:from-violet-700 hover:to-purple-700',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              'shadow-md hover:shadow-lg',
-              'transition-all duration-200'
-            )}
-          >
-            {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <Send className="w-5 h-5" />
-            )}
-          </Button>
-        </div>
+        </form>
         <p className="text-[10px] text-gray-400 mt-2 text-center">
           Press Enter to send, Shift+Enter for new line
         </p>
-      </form>
+      </div>
     </div>
   );
 }
@@ -478,6 +503,7 @@ interface FloatingChatPanelProps {
   onSuggestedQuestion: (question: string) => void;
   onClear: () => void;
   onClose: () => void;
+  onAdjustHeight: () => void;
 }
 
 function FloatingChatPanel({
@@ -496,6 +522,7 @@ function FloatingChatPanel({
   onSuggestedQuestion,
   onClear,
   onClose,
+  onAdjustHeight,
 }: FloatingChatPanelProps) {
   const showQuickActions = messages.length <= 1;
 
@@ -637,54 +664,57 @@ function FloatingChatPanel({
       </div>
 
       {/* Input */}
-      <form onSubmit={onSubmit} className="p-3 bg-white border-t border-gray-100">
-        <div className="flex items-end gap-2">
-          <div className="flex-1 relative">
+      <div className="p-3 bg-white border-t border-gray-100">
+        <form onSubmit={onSubmit}>
+          <div className="flex items-end gap-2 bg-gray-50 rounded-2xl border border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20 transition-all duration-200 p-1.5">
             <textarea
               ref={inputRef}
               value={inputValue}
-              onChange={(e) => onInputChange(e.target.value)}
+              onChange={(e) => {
+                onInputChange(e.target.value);
+                onAdjustHeight();
+              }}
               onKeyDown={onKeyDown}
               placeholder="Tell me about yourself..."
               rows={1}
               className={cn(
-                'w-full px-4 py-2.5 pr-12',
-                'bg-gray-50 border border-gray-200 rounded-xl',
+                'flex-1 px-3 py-2.5',
+                'bg-transparent border-none',
                 'text-sm text-gray-900 placeholder:text-gray-400',
-                'focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400',
-                'resize-none max-h-32',
+                'focus:outline-none',
+                'resize-none overflow-y-auto',
                 'transition-all duration-200'
               )}
               style={{
-                minHeight: '44px',
-                height: 'auto',
+                minHeight: '40px',
+                maxHeight: '120px',
               }}
               disabled={isLoading}
             />
+            <Button
+              type="submit"
+              disabled={!inputValue.trim() || isLoading}
+              className={cn(
+                'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
+                'bg-gradient-to-r from-violet-500 to-purple-600',
+                'hover:from-violet-600 hover:to-purple-700',
+                'disabled:opacity-40 disabled:cursor-not-allowed',
+                'shadow-md hover:shadow-lg',
+                'transition-all duration-200'
+              )}
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Send className="w-4 h-4" />
+              )}
+            </Button>
           </div>
-          <Button
-            type="submit"
-            disabled={!inputValue.trim() || isLoading}
-            className={cn(
-              'h-11 w-11 rounded-xl',
-              'bg-gradient-to-r from-violet-600 to-purple-600',
-              'hover:from-violet-700 hover:to-purple-700',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              'shadow-md hover:shadow-lg',
-              'transition-all duration-200'
-            )}
-          >
-            {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <Send className="w-5 h-5" />
-            )}
-          </Button>
-        </div>
+        </form>
         <p className="text-[10px] text-gray-400 mt-2 text-center">
           Press Enter to send, Shift+Enter for new line
         </p>
-      </form>
+      </div>
     </div>
   );
 }

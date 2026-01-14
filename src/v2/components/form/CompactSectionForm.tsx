@@ -27,9 +27,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { 
-  Plus, 
-  Trash2, 
+import {
+  Plus,
+  Trash2,
   ChevronDown,
   ChevronRight,
   Pencil,
@@ -46,6 +46,7 @@ import {
   FolderKanban,
   FileText,
   Star,
+  Palette,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthYearPicker } from '@/components/ui/month-year-picker';
@@ -75,6 +76,12 @@ const COMPACT_FIELD_INPUT_CLASS = "!text-xs !md:text-xs leading-relaxed placehol
 // TYPES
 // ============================================================================
 
+interface VariantOption {
+  id: string;
+  name: string;
+  description: string;
+}
+
 interface CompactSectionFormProps {
   sectionDef: SectionDefinition;
   sectionType: V2SectionType;
@@ -85,6 +92,10 @@ interface CompactSectionFormProps {
   templateConfig?: any;
   currentVariant?: string;
   accentColor?: string;
+  /** Available variants for this section */
+  variants?: VariantOption[];
+  /** Callback when variant is changed */
+  onChangeVariant?: (variantId: string) => void;
 }
 
 // ============================================================================
@@ -101,9 +112,12 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
   templateConfig,
   currentVariant,
   accentColor = '#2563eb', // Default application blue
+  variants = [],
+  onChangeVariant,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [showVariantDropdown, setShowVariantDropdown] = useState(false);
 
   const Icon = SECTION_ICONS[sectionType] || FileText;
   const displayTitle = title || sectionDef.defaultTitle;
@@ -113,21 +127,22 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
   // Determine if this is a "simple" section (inline editable)
   const isSimpleSection = ['skills', 'languages', 'strengths', 'achievements', 'interests'].includes(sectionType);
 
-  // Get visible fields based on config
+  // Get visible fields based on config - only show fields explicitly enabled
   const getVisibleFields = (): FormFieldDefinition[] => {
     return sectionDef.formFields.filter(field => {
-      if (field.showWhenConfig) {
+      if (field.showWhenConfig && templateConfig) {
         const parts = field.showWhenConfig.split('.');
         let value: any = templateConfig;
         for (const part of parts) {
-          if (value === undefined || value === null) return true;
+          if (value === undefined || value === null) return false;
           value = value[part];
         }
-        if (value === false) return false;
+        // Only show if explicitly set to true
+        if (value !== true) return false;
       }
       if (field.showForVariants && field.showForVariants.length > 0) {
         const variant = currentVariant || sectionDef.defaultVariant;
-        if (variant && !field.showForVariants.includes(variant)) return false;
+        if (!variant || !field.showForVariants.includes(variant)) return false;
       }
       return true;
     });
@@ -317,6 +332,50 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
         
         <CollapsibleContent>
           <div className="px-4 pb-4 pt-1 border-t border-gray-100">
+            {/* Variant Selector - Only show if variants available and not header/summary */}
+            {variants.length > 0 && onChangeVariant && sectionType !== 'header' && sectionType !== 'summary' && (
+              <div className="mb-3 pb-3 border-b border-gray-100">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wide">Display Style</span>
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowVariantDropdown(!showVariantDropdown)}
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-gray-200 hover:border-gray-300 bg-white transition-colors"
+                      style={{ color: accentColor }}
+                    >
+                      <Palette className="w-3.5 h-3.5" />
+                      <span>{variants.find(v => v.id === currentVariant)?.name || 'Default'}</span>
+                      <ChevronDown className={cn("w-3 h-3 transition-transform", showVariantDropdown && "rotate-180")} />
+                    </button>
+                    {showVariantDropdown && (
+                      <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                        {variants.map((variant) => (
+                          <button
+                            key={variant.id}
+                            onClick={() => {
+                              onChangeVariant(variant.id);
+                              setShowVariantDropdown(false);
+                            }}
+                            className={cn(
+                              "w-full text-left px-3 py-2 text-sm transition-colors flex items-center justify-between",
+                              currentVariant === variant.id ? "bg-gray-50" : "hover:bg-gray-50"
+                            )}
+                          >
+                            <div>
+                              <div className="font-medium text-gray-900">{variant.name}</div>
+                              <div className="text-[11px] text-gray-500">{variant.description}</div>
+                            </div>
+                            {currentVariant === variant.id && (
+                              <Check className="w-4 h-4 flex-shrink-0" style={{ color: accentColor }} />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
             {isMultiItem ? (
               isSimpleSection ? renderSimpleSection() : renderComplexSection()
             ) : (

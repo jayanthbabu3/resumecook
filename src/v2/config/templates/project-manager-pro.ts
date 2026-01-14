@@ -181,7 +181,6 @@ export const projectManagerProConfig: TemplateConfig = createTemplateConfig({
     showGPA: false,
     showField: true,
     showDates: true,
-    showHonors: false,
     datePosition: 'right',
   },
 

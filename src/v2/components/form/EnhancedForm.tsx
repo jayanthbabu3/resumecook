@@ -45,6 +45,7 @@ import {
   Github,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
   Sparkles,
   BookOpen,
   Heart,
@@ -56,6 +57,7 @@ import {
   GripVertical,
   Check,
   X,
+  Palette,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthYearPicker } from '@/components/ui/month-year-picker';
@@ -70,6 +72,12 @@ import type { TemplateSectionConfig } from '../../types/templateConfig';
 // TYPES
 // ============================================================================
 
+interface VariantOption {
+  id: string;
+  name: string;
+  description: string;
+}
+
 interface EnhancedFormProps {
   resumeData: any;
   onResumeDataChange: (data: any) => void;
@@ -79,6 +87,12 @@ interface EnhancedFormProps {
   accentColor?: string;
   onOpenAddSection?: () => void;
   hideHeader?: boolean;
+  /** Section overrides containing variant info */
+  sectionOverrides?: Record<string, any>;
+  /** Callback when variant is changed */
+  onChangeSectionVariant?: (sectionId: string, variantId: string) => void;
+  /** Available variants per section type */
+  sectionVariants?: Record<string, VariantOption[]>;
 }
 
 interface NavItem {
@@ -534,7 +548,10 @@ const ListSection: React.FC<{
   onChange: (data: any[]) => void;
   sectionTitle?: string;
   templateConfig?: any;
-}> = ({ sectionType, data, onChange, sectionTitle, templateConfig }) => {
+  variants?: VariantOption[];
+  currentVariant?: string;
+  onChangeVariant?: (variantId: string) => void;
+}> = ({ sectionType, data, onChange, sectionTitle, templateConfig, variants, currentVariant, onChangeVariant }) => {
   const definition = getSectionDefinition(sectionType);
   // Track which items are expanded - last item is expanded by default
   const [expandedItems, setExpandedItems] = useState<Set<number>>(() => {
@@ -542,11 +559,13 @@ const ListSection: React.FC<{
     // If there are items, expand the last one by default
     return new Set(items.length > 0 ? [items.length - 1] : []);
   });
+  const [showVariantDropdown, setShowVariantDropdown] = useState(false);
 
   if (!definition) return null;
 
   const icon = SECTION_ICONS[sectionType] || FileText;
   const items = data || [];
+  const showVariantSelector = variants && variants.length > 0 && onChangeVariant;
 
   const toggleItem = (index: number) => {
     setExpandedItems(prev => {
@@ -603,10 +622,37 @@ const ListSection: React.FC<{
     });
   };
 
-  // Show all fields - ignore showWhenConfig to ensure all fields are visible
+  // Filter fields based on showWhenConfig and showForVariants
   const shouldShowField = (field: FormFieldDefinition) => {
-    // Always show required fields and common fields
-    // Only hide fields explicitly marked as hidden for this section
+    // Check showWhenConfig - evaluates dot-notation path against templateConfig
+    if (field.showWhenConfig && templateConfig) {
+      const parts = field.showWhenConfig.split('.');
+      let value: any = templateConfig;
+      for (const part of parts) {
+        if (value === undefined || value === null) {
+          // Path doesn't exist in config - hide the field
+          return false;
+        }
+        value = value[part];
+      }
+      // Hide field if config value is false or undefined (not explicitly enabled)
+      if (value !== true) {
+        return false;
+      }
+    }
+
+    // Check showForVariants - field only shows for specific variants
+    if (field.showForVariants && field.showForVariants.length > 0) {
+      // If no variant is selected, don't show variant-specific fields
+      if (!currentVariant) {
+        return false;
+      }
+      // Check if current variant is in the allowed list
+      if (!field.showForVariants.includes(currentVariant)) {
+        return false;
+      }
+    }
+
     return true;
   };
 
@@ -842,6 +888,49 @@ const ListSection: React.FC<{
         icon={icon}
       />
 
+      {/* Variant Selector */}
+      {showVariantSelector && (
+        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+          <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Display Style</span>
+          <div className="relative">
+            <button
+              onClick={() => setShowVariantDropdown(!showVariantDropdown)}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:border-gray-300 bg-white transition-colors"
+              style={{ color: WEBSITE_THEME_COLOR }}
+            >
+              <Palette className="w-4 h-4" />
+              <span>{variants?.find(v => v.id === currentVariant)?.name || 'Default'}</span>
+              <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", showVariantDropdown && "rotate-180")} />
+            </button>
+            {showVariantDropdown && (
+              <div className="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                {variants?.map((variant) => (
+                  <button
+                    key={variant.id}
+                    onClick={() => {
+                      onChangeVariant?.(variant.id);
+                      setShowVariantDropdown(false);
+                    }}
+                    className={cn(
+                      "w-full text-left px-3 py-2.5 text-sm transition-colors flex items-center justify-between",
+                      currentVariant === variant.id ? "bg-gray-50" : "hover:bg-gray-50"
+                    )}
+                  >
+                    <div>
+                      <div className="font-medium text-gray-900">{variant.name}</div>
+                      <div className="text-xs text-gray-500">{variant.description}</div>
+                    </div>
+                    {currentVariant === variant.id && (
+                      <Check className="w-4 h-4 flex-shrink-0" style={{ color: WEBSITE_THEME_COLOR }} />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="space-y-4">
         {items.map((item, index) => (
           <ItemCard
@@ -1007,6 +1096,9 @@ export const EnhancedForm: React.FC<EnhancedFormProps> = ({
   accentColor = '#2563eb',
   onOpenAddSection,
   hideHeader = false,
+  sectionOverrides = {},
+  onChangeSectionVariant,
+  sectionVariants = {},
 }) => {
   const [activeSection, setActiveSection] = useState('personal');
   const [isNavCollapsed, setIsNavCollapsed] = useState(true); // Collapsed by default
@@ -1092,6 +1184,11 @@ export const EnhancedForm: React.FC<EnhancedFormProps> = ({
         // Dynamic sections (experience, education, etc.)
         const sectionConfig = enabledSections.find(s => s.type === activeSection);
         if (sectionConfig) {
+          const variants = sectionVariants[activeSection] || [];
+          const sectionTypeConfig = templateConfig?.[activeSection];
+          const currentVariant = sectionOverrides[sectionConfig.id]?.variant || sectionTypeConfig?.variant;
+          const showVariantSelector = variants.length > 0 && onChangeSectionVariant && activeSection !== 'header' && activeSection !== 'summary';
+
           return (
             <ListSection
               sectionType={activeSection as V2SectionType}
@@ -1099,6 +1196,9 @@ export const EnhancedForm: React.FC<EnhancedFormProps> = ({
               onChange={(data) => updateSection(activeSection, data)}
               sectionTitle={sectionTitles[activeSection]}
               templateConfig={templateConfig}
+              variants={showVariantSelector ? variants : undefined}
+              currentVariant={currentVariant}
+              onChangeVariant={showVariantSelector ? (variantId) => onChangeSectionVariant(sectionConfig.id, variantId) : undefined}
             />
           );
         }

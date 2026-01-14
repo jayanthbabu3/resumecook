@@ -1867,7 +1867,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                   fontSize: scaleFontSize(typography.title.fontSize),
                   fontWeight: typography.title.fontWeight,
                   lineHeight: typography.title.lineHeight,
-                  color: typography.title.color || typography.text?.primary || '#1a1a1a',
+                  color: typography.title.color || colors.text.primary || '#1a1a1a',
                   margin: '4px 0 0 0',
                   fontFamily: baseFontFamily,
                 }}>
@@ -1878,7 +1878,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                       style={{
                         fontSize: scaleFontSize(typography.title.fontSize),
                         fontWeight: typography.title.fontWeight,
-                        color: typography.title.color || typography.text?.primary || '#1a1a1a',
+                        color: typography.title.color || colors.text.primary || '#1a1a1a',
                         fontFamily: baseFontFamily,
                       }}
                     />
@@ -2032,7 +2032,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
               fontSize: scaleFontSize(typography.title.fontSize),
               fontWeight: typography.title.fontWeight || 600,
               lineHeight: typography.title.lineHeight,
-              color: typography.title.color || typography.text?.primary || '#1a1a1a',
+              color: typography.title.color || colors.text.primary || '#1a1a1a',
               margin: '6px 0 0 0',
               fontFamily: baseFontFamily,
               letterSpacing: '0.02em',
@@ -2045,7 +2045,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                   style={{
                     fontSize: scaleFontSize(typography.title.fontSize),
                     fontWeight: typography.title.fontWeight || 600,
-                    color: typography.title.color || typography.text?.primary || '#1a1a1a',
+                    color: typography.title.color || colors.text.primary || '#1a1a1a',
                     fontFamily: baseFontFamily,
                     textTransform: 'uppercase',
                   }}
@@ -2066,6 +2066,737 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
               {renderBoxedIconsContactItem(MapPin, personalInfo.location, 'personalInfo.location')}
               {renderBoxedIconsContactItem(Mail, personalInfo.email, 'personalInfo.email', personalInfo.email ? `mailto:${personalInfo.email}` : undefined)}
               {renderBoxedIconsContactItem(Linkedin, personalInfo.linkedin, 'personalInfo.linkedin', personalInfo.linkedin ? `https://linkedin.com/in/${personalInfo.linkedin.replace(/.*linkedin\.com\/in\//, '')}` : undefined)}
+            </div>
+          </div>
+        );
+
+      case 'clean-summary-contact':
+        // Clean professional header with: Name (bold black), Title (accent), Summary paragraph, Horizontal contact icons bar
+        // Used for Retail Manager Pro template - matches Carolyn Potter design
+        const cleanSummaryIconSize = header.contactIcons?.size || '14px';
+        const cleanSummaryIconColor = header.contactIcons?.color || accent;
+
+        const renderCleanContactItem = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          href?: string
+        ) => {
+          if (!editable && !value) return null;
+
+          const textStyle: React.CSSProperties = {
+            fontSize: scaleFontSize(typography.contact.fontSize || '12px'),
+            color: typography.contact.color || '#6b7280',
+            fontFamily: baseFontFamily,
+          };
+
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Icon style={{
+                width: cleanSummaryIconSize,
+                height: cleanSummaryIconSize,
+                color: cleanSummaryIconColor,
+                flexShrink: 0
+              }} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={textStyle}
+                />
+              ) : href ? (
+                <a href={href} style={{ ...textStyle, textDecoration: 'none' }}>
+                  {value}
+                </a>
+              ) : (
+                <span style={textStyle}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="clean-summary-contact"
+            style={{
+              padding: header.padding || '0',
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Name - Large bold black */}
+            <h1 style={{
+              fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+              fontWeight: typography.name.fontWeight || 700,
+              lineHeight: typography.name.lineHeight || 1.2,
+              letterSpacing: typography.name.letterSpacing || '-0.02em',
+              color: typography.name.color || '#1a1a1a',
+              margin: 0,
+              fontFamily: baseFontFamily,
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.fullName"
+                  value={personalInfo.fullName || 'Your Name'}
+                  style={{
+                    fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                    fontWeight: typography.name.fontWeight || 700,
+                    color: typography.name.color || '#1a1a1a',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                personalInfo.fullName || 'Your Name'
+              )}
+            </h1>
+
+            {/* Title - Accent color */}
+            {(editable || personalInfo.title) && (
+              <p style={{
+                fontSize: scaleFontSize(typography.title.fontSize || '16px'),
+                fontWeight: typography.title.fontWeight || 500,
+                lineHeight: typography.title.lineHeight || 1.4,
+                color: accent,
+                margin: '6px 0 0 0',
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.title"
+                    value={personalInfo.title || 'Professional Title'}
+                    style={{
+                      fontSize: scaleFontSize(typography.title.fontSize || '16px'),
+                      fontWeight: typography.title.fontWeight || 500,
+                      color: accent,
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  personalInfo.title
+                )}
+              </p>
+            )}
+
+            {/* Summary paragraph - below title */}
+            {(editable || personalInfo.summary) && (
+              <div style={{
+                marginTop: '14px',
+                fontSize: scaleFontSize(typography.body.fontSize || '13px'),
+                fontWeight: typography.body.fontWeight || 400,
+                lineHeight: typography.body.lineHeight || 1.6,
+                color: typography.body.color || '#4b5563',
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.summary"
+                    value={personalInfo.summary || 'Write your professional summary here...'}
+                    style={{
+                      fontSize: scaleFontSize(typography.body.fontSize || '13px'),
+                      color: typography.body.color || '#4b5563',
+                      fontFamily: baseFontFamily,
+                      lineHeight: typography.body.lineHeight || 1.6,
+                    }}
+                    multiline
+                  />
+                ) : (
+                  <p style={{ margin: 0 }}>{personalInfo.summary}</p>
+                )}
+              </div>
+            )}
+
+            {/* Horizontal contact bar with icons */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '20px',
+              marginTop: '16px',
+              paddingTop: '12px',
+              borderTop: `1px solid ${colors.border || '#e5e7eb'}`,
+            }}>
+              {renderCleanContactItem(Mail, personalInfo.email, 'personalInfo.email', personalInfo.email ? `mailto:${personalInfo.email}` : undefined)}
+              {renderCleanContactItem(Phone, personalInfo.phone, 'personalInfo.phone')}
+              {renderCleanContactItem(MapPin, personalInfo.location, 'personalInfo.location')}
+              {includeSocialLinks && renderCleanContactItem(
+                Linkedin,
+                personalInfo.linkedin,
+                'personalInfo.linkedin',
+                personalInfo.linkedin ? (personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`) : undefined
+              )}
+            </div>
+          </div>
+        );
+
+      case 'photo-summary-contact-bar':
+        // Photo left, name/title/summary right, gray contact bar below - Theater Actor & CIO style
+        const pscbPhotoSize = header.photoSize || '100px';
+        const pscbAvatar = renderAvatar({
+          size: pscbPhotoSize,
+          borderColor: accent,
+          backgroundColor: `${accent}15`,
+          textColor: accent,
+          borderWidth: '3px',
+        });
+
+        const pscbContactBarBg = header.backgroundColor || '#f3f4f6';
+
+        const renderPscbContactItem = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          href?: string
+        ) => {
+          if (!editable && !value) return null;
+
+          const iconStyle = {
+            width: '16px',
+            height: '16px',
+            color: accent,
+            flexShrink: 0,
+          };
+
+          const textStyle: React.CSSProperties = {
+            fontSize: scaleFontSize(typography.contact.fontSize || '12px'),
+            color: typography.contact.color || '#374151',
+            fontFamily: baseFontFamily,
+          };
+
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Icon style={iconStyle} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={textStyle}
+                />
+              ) : href ? (
+                <a href={href} style={{ ...textStyle, textDecoration: 'none' }}>
+                  {value}
+                </a>
+              ) : (
+                <span style={textStyle}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="photo-summary-contact-bar"
+            style={{
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Main header area - Photo left, content right */}
+            <div style={{
+              display: 'flex',
+              gap: '24px',
+              alignItems: 'flex-start',
+              padding: header.padding || '24px',
+            }}>
+              {/* Photo */}
+              {showPhoto && pscbAvatar && (
+                <div style={{ flexShrink: 0 }}>
+                  {pscbAvatar}
+                </div>
+              )}
+
+              {/* Name, Title, Summary */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Name */}
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                  fontWeight: typography.name.fontWeight || 700,
+                  lineHeight: typography.name.lineHeight || 1.2,
+                  letterSpacing: typography.name.letterSpacing || '-0.01em',
+                  color: typography.name.color || accent,
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                        fontWeight: typography.name.fontWeight || 700,
+                        color: typography.name.color || accent,
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                {/* Title */}
+                {(editable || personalInfo.title) && (
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize || '16px'),
+                    fontWeight: typography.title.fontWeight || 400,
+                    lineHeight: typography.title.lineHeight || 1.4,
+                    color: accent,
+                    margin: '4px 0 0 0',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize || '16px'),
+                          fontWeight: typography.title.fontWeight || 400,
+                          color: accent,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                )}
+
+                {/* Summary */}
+                {(editable || personalInfo.summary) && (
+                  <div style={{
+                    marginTop: '12px',
+                    fontSize: scaleFontSize(typography.body.fontSize || '13px'),
+                    fontWeight: typography.body.fontWeight || 400,
+                    lineHeight: typography.body.lineHeight || 1.6,
+                    color: typography.body.color || '#374151',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.summary"
+                        value={personalInfo.summary || 'Write your professional summary here...'}
+                        style={{
+                          fontSize: scaleFontSize(typography.body.fontSize || '13px'),
+                          color: typography.body.color || '#374151',
+                          fontFamily: baseFontFamily,
+                          lineHeight: typography.body.lineHeight || 1.6,
+                        }}
+                        multiline
+                      />
+                    ) : (
+                      <p style={{ margin: 0 }}>{personalInfo.summary}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Gray contact bar */}
+            <div style={{
+              backgroundColor: pscbContactBarBg,
+              padding: '12px 28px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '24px',
+              alignItems: 'center',
+            }}>
+              {renderPscbContactItem(Mail, personalInfo.email, 'personalInfo.email', personalInfo.email ? `mailto:${personalInfo.email}` : undefined)}
+              {renderPscbContactItem(Phone, personalInfo.phone, 'personalInfo.phone')}
+              {renderPscbContactItem(MapPin, personalInfo.location, 'personalInfo.location')}
+              {includeSocialLinks && renderPscbContactItem(
+                Linkedin,
+                personalInfo.linkedin,
+                'personalInfo.linkedin',
+                personalInfo.linkedin ? (personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`) : undefined
+              )}
+              {includeSocialLinks && personalInfo.github && renderPscbContactItem(
+                Github,
+                personalInfo.github,
+                'personalInfo.github',
+                personalInfo.github ? (personalInfo.github.startsWith('http') ? personalInfo.github : `https://${personalInfo.github}`) : undefined
+              )}
+            </div>
+          </div>
+        );
+
+      case 'gradient-split-contact':
+        // Dark blue gradient banner with content left and contact icons right - HR Professional style
+        // Using dark blue colors like the reference image
+        const gscGradient = `linear-gradient(135deg, #1e3a5f 0%, #0f2744 100%)`;
+
+        const renderGscContactItem = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          href?: string
+        ) => {
+          if (!editable && !value) return null;
+
+          // Light teal icons - looks good on dark blue
+          const iconStyle = {
+            width: '16px',
+            height: '16px',
+            color: '#5eead4',
+            flexShrink: 0,
+          };
+
+          // White text for contact info
+          const textStyle: React.CSSProperties = {
+            fontSize: scaleFontSize(typography.contact.fontSize || '12px'),
+            color: '#ffffff',
+            fontFamily: baseFontFamily,
+          };
+
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
+              <span style={textStyle}>
+                {editable ? (
+                  <InlineEditableText
+                    path={path}
+                    value={value || 'Click to edit'}
+                    style={textStyle}
+                  />
+                ) : href ? (
+                  <a href={href} style={{ ...textStyle, textDecoration: 'none', color: '#ffffff' }}>
+                    {value}
+                  </a>
+                ) : (
+                  value
+                )}
+              </span>
+              <Icon style={iconStyle} />
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="gradient-split-contact"
+            style={{
+              fontFamily: baseFontFamily,
+              position: 'relative',
+              marginLeft: '-28px',
+              marginRight: '-28px',
+              marginTop: '-24px',
+            }}
+          >
+            {/* Dark blue gradient banner - full width */}
+            <div style={{
+              background: gscGradient,
+              padding: '32px 40px 40px 40px',
+              display: 'flex',
+              gap: '32px',
+              alignItems: 'flex-start',
+              position: 'relative',
+            }}>
+              {/* Left side - Name, Title, Summary */}
+              <div style={{ flex: 1, minWidth: 0, maxWidth: '65%' }}>
+                {/* Name */}
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize || '36px'),
+                  fontWeight: typography.name.fontWeight || 700,
+                  lineHeight: typography.name.lineHeight || 1.2,
+                  letterSpacing: typography.name.letterSpacing || '-0.01em',
+                  color: '#ffffff',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize || '36px'),
+                        fontWeight: typography.name.fontWeight || 700,
+                        color: '#ffffff',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                {/* Title - light teal, matches icons */}
+                {(editable || personalInfo.title) && (
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize || '16px'),
+                    fontWeight: typography.title.fontWeight || 500,
+                    lineHeight: typography.title.lineHeight || 1.4,
+                    color: '#5eead4',
+                    margin: '6px 0 0 0',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize || '16px'),
+                          fontWeight: typography.title.fontWeight || 500,
+                          color: '#5eead4',
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                )}
+
+                {/* Summary */}
+                {(editable || personalInfo.summary) && (
+                  <div style={{
+                    marginTop: '16px',
+                    fontSize: scaleFontSize(typography.body.fontSize || '13px'),
+                    fontWeight: typography.body.fontWeight || 400,
+                    lineHeight: typography.body.lineHeight || 1.7,
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontFamily: baseFontFamily,
+                    textAlign: 'justify',
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.summary"
+                        value={personalInfo.summary || 'Write your professional summary here...'}
+                        style={{
+                          fontSize: scaleFontSize(typography.body.fontSize || '13px'),
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          fontFamily: baseFontFamily,
+                          lineHeight: typography.body.lineHeight || 1.7,
+                        }}
+                        multiline
+                      />
+                    ) : (
+                      <p style={{ margin: 0 }}>{personalInfo.summary}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Right side - Contact info stacked */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                alignItems: 'flex-end',
+                minWidth: '200px',
+              }}>
+                {renderGscContactItem(Mail, personalInfo.email, 'personalInfo.email', personalInfo.email ? `mailto:${personalInfo.email}` : undefined)}
+                {renderGscContactItem(Phone, personalInfo.phone, 'personalInfo.phone')}
+                {renderGscContactItem(MapPin, personalInfo.location, 'personalInfo.location')}
+                {includeSocialLinks && renderGscContactItem(
+                  Linkedin,
+                  personalInfo.linkedin,
+                  'personalInfo.linkedin',
+                  personalInfo.linkedin ? (personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`) : undefined
+                )}
+              </div>
+            </div>
+
+          </div>
+        );
+
+      case 'photo-dark-contact-bar':
+        // CIO Executive style - Photo left, name/title/summary right, dark curved contact bar at bottom
+        // Pixel-perfect match to reference design
+        const pdcbPhotoSize = header.photoSize || '120px';
+
+        const renderPdcbContactItem = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          href?: string
+        ) => {
+          if (!editable && !value) return null;
+
+          const iconStyle = {
+            width: '16px',
+            height: '16px',
+            color: '#ffffff',
+            flexShrink: 0,
+          };
+
+          const textStyle: React.CSSProperties = {
+            fontSize: scaleFontSize('11px'),
+            color: '#ffffff',
+            fontFamily: baseFontFamily,
+          };
+
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Icon style={iconStyle} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={textStyle}
+                />
+              ) : href ? (
+                <a href={href} style={{ ...textStyle, textDecoration: 'none' }}>
+                  {value}
+                </a>
+              ) : (
+                <span style={textStyle}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        // Custom photo rendering with black border
+        const pdcbPhoto = showPhoto ? (
+          personalInfo.photo ? (
+            <img
+              src={personalInfo.photo}
+              alt={personalInfo.fullName || 'Profile'}
+              style={{
+                width: pdcbPhotoSize,
+                height: pdcbPhotoSize,
+                objectFit: 'cover',
+                borderRadius: '6px',
+                border: '2px solid #1f2937',
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: pdcbPhotoSize,
+                height: pdcbPhotoSize,
+                borderRadius: '6px',
+                border: '2px solid #1f2937',
+                backgroundColor: '#f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '32px',
+                fontWeight: 600,
+                color: '#374151',
+              }}
+            >
+              {getInitials(personalInfo.fullName || '')}
+            </div>
+          )
+        ) : null;
+
+        return (
+          <div
+            data-header="photo-dark-contact-bar"
+            style={{
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Main header area - Light gray background, Photo left, content right */}
+            <div style={{
+              display: 'flex',
+              gap: '24px',
+              alignItems: 'flex-start',
+              padding: '32px 28px 28px 28px',
+              backgroundColor: '#f8fafc',
+            }}>
+              {/* Photo with black border */}
+              {pdcbPhoto && (
+                <div style={{ flexShrink: 0 }}>
+                  {pdcbPhoto}
+                </div>
+              )}
+
+              {/* Name, Title, Summary */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Name - Dark color */}
+                <h1 style={{
+                  fontSize: scaleFontSize('32px'),
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                  letterSpacing: '-0.01em',
+                  color: '#1f2937',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize('32px'),
+                        fontWeight: 600,
+                        color: '#1f2937',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                {/* Title - Gray color */}
+                {(editable || personalInfo.title) && (
+                  <p style={{
+                    fontSize: scaleFontSize('14px'),
+                    fontWeight: 400,
+                    lineHeight: 1.4,
+                    color: '#6b7280',
+                    margin: '4px 0 0 0',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize('14px'),
+                          fontWeight: 400,
+                          color: '#6b7280',
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                )}
+
+                {/* Summary */}
+                {(editable || personalInfo.summary) && (
+                  <div style={{
+                    marginTop: '12px',
+                    fontSize: scaleFontSize('11px'),
+                    fontWeight: 400,
+                    lineHeight: 1.5,
+                    color: '#4b5563',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.summary"
+                        value={personalInfo.summary || 'Write your professional summary here...'}
+                        style={{
+                          fontSize: scaleFontSize('11px'),
+                          color: '#4b5563',
+                          fontFamily: baseFontFamily,
+                          lineHeight: 1.5,
+                        }}
+                        multiline
+                      />
+                    ) : (
+                      <p style={{ margin: 0 }}>{personalInfo.summary}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Dark contact bar */}
+            <div style={{
+              backgroundColor: '#1f2937',
+              padding: '14px 28px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '10px 40px',
+            }}>
+              {renderPdcbContactItem(Mail, personalInfo.email, 'personalInfo.email', personalInfo.email ? `mailto:${personalInfo.email}` : undefined)}
+              {renderPdcbContactItem(Phone, personalInfo.phone, 'personalInfo.phone')}
+              {renderPdcbContactItem(MapPin, personalInfo.location, 'personalInfo.location')}
+              {includeSocialLinks && renderPdcbContactItem(
+                Linkedin,
+                personalInfo.linkedin,
+                'personalInfo.linkedin',
+                personalInfo.linkedin ? (personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://${personalInfo.linkedin}`) : undefined
+              )}
             </div>
           </div>
         );

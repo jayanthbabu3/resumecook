@@ -352,13 +352,13 @@ export const SECTION_REGISTRY: Record<V2SectionType, SectionDefinition> = {
         showWhenConfig: 'skills.showRatings',
         showForVariants: ['bars', 'dots'],
       },
-      { 
-        key: 'category', 
-        label: 'Category', 
-        type: 'text', 
-        placeholder: 'e.g., Frontend', 
+      {
+        key: 'category',
+        label: 'Category',
+        type: 'text',
+        placeholder: 'e.g., Frontend',
         compact: true,
-        showForVariants: ['grouped'],
+        showForVariants: ['grouped', 'table', 'category-lines'],
       },
       { 
         key: 'yearsOfExperience', 
@@ -378,6 +378,8 @@ export const SECTION_REGISTRY: Record<V2SectionType, SectionDefinition> = {
       { id: 'dots', name: 'Dot Rating', description: 'Dot rating system' },
       { id: 'columns', name: 'Columns', description: 'Multi-column list' },
       { id: 'inline', name: 'Inline', description: 'Inline text with separator' },
+      { id: 'table', name: 'Table', description: 'Category-skill table format' },
+      { id: 'category-lines', name: 'Category Lines', description: 'Category headers with skills below' },
     ],
     defaultVariant: 'pills',
     allowMultiple: false, // Only one skills section allowed in scratch builder

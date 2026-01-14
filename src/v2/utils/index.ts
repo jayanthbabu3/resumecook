@@ -3,3 +3,4 @@
  */
 
 export * from "./dataConverter";
+export * from "./dateUtils";

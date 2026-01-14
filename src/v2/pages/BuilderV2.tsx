@@ -53,7 +53,7 @@ import { cn } from '@/lib/utils';
 import { ResumeForm } from '@/components/resume/ResumeForm';
 import { StyleOptionsPanelV2 } from '../components/StyleOptionsPanelV2';
 import SectionReorderDialog from '../components/SectionReorderDialog';
-import { AddSectionModal } from '../components/AddSectionModal';
+import { AddSectionModal, ADDABLE_SECTIONS } from '../components/AddSectionModal';
 import { FontSelector, RESUME_FONTS } from '../components/FontSelector';
 
 import { ResumeRenderer } from '../components/ResumeRenderer';
@@ -1639,6 +1639,18 @@ export const BuilderV2: React.FC = () => {
     return result;
   }, [config.sections, resumeData, enabledSections]);
 
+  // Build section variants map from ADDABLE_SECTIONS for use in form editor
+  // ADDABLE_SECTIONS includes CORE_SECTIONS (experience, education, skills) + all addable sections
+  const sectionVariantsMap = React.useMemo(() => {
+    const map: Record<string, { id: string; name: string; description: string }[]> = {};
+    ADDABLE_SECTIONS.forEach(section => {
+      if (section.variants && section.variants.length > 0) {
+        map[section.id] = section.variants;
+      }
+    });
+    return map;
+  }, []);
+
   // Section management panel
   const renderSectionManager = () => (
     <div className="space-y-3">
@@ -2286,6 +2298,9 @@ export const BuilderV2: React.FC = () => {
                       accentColor="#0891b2"
                       onOpenAddSection={() => setShowAddSectionModal(true)}
                       hideHeader={true}
+                      sectionOverrides={sectionOverrides}
+                      onChangeSectionVariant={handleChangeSectionVariant}
+                      sectionVariants={sectionVariantsMap}
                     />
                   ) : (
                     <div className="flex-1 overflow-hidden">

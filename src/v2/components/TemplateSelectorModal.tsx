@@ -2,14 +2,15 @@
  * Template Selector Modal
  *
  * Allows users to choose a template for their resume.
- * Shows previews of available templates with categories.
+ * Shows actual preview thumbnails of templates.
  */
 
 import React, { useState, useMemo } from 'react';
-import { X, Check, Layout, Briefcase, GraduationCap, Code, Sparkles } from 'lucide-react';
+import { X, Check, Layout, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { TEMPLATE_REGISTRY } from '../config/templates';
-import type { TemplateConfig } from '../types';
+import { Button } from '@/components/ui/button';
+import { TEMPLATE_REGISTRY, getAllTemplates } from '../config/templates';
+import { TemplatePreviewV2 } from './TemplatePreviewV2';
 
 interface TemplateSelectorModalProps {
   isOpen: boolean;
@@ -19,57 +20,37 @@ interface TemplateSelectorModalProps {
   themeColor?: string;
 }
 
-// Template categories with icons
-const CATEGORIES = [
-  { id: 'all', name: 'All Templates', icon: Layout },
-  { id: 'professional', name: 'Professional', icon: Briefcase },
-  { id: 'creative', name: 'Creative', icon: Sparkles },
-  { id: 'academic', name: 'Academic', icon: GraduationCap },
-  { id: 'technical', name: 'Technical', icon: Code },
-] as const;
-
-// Template preview colors (based on primary color)
-const getTemplatePreviewStyle = (config: TemplateConfig) => ({
-  borderColor: config.colors.primary,
-  accentColor: config.colors.primary,
-});
-
 export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({
   isOpen,
   onClose,
   onSelect,
   currentTemplateId,
-  themeColor = '#0891b2',
+  themeColor = '#3b82f6', // Default to blue (website theme color)
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
 
-  // Get templates grouped by category
+  // Get all templates
   const templates = useMemo(() => {
-    const all = Object.entries(TEMPLATE_REGISTRY).map(([id, config]) => ({
-      id,
-      config,
-    }));
+    return getAllTemplates().slice(0, 12); // Show first 12 templates
+  }, []);
 
-    if (selectedCategory === 'all') return all;
-    return all.filter(t => t.config.category === selectedCategory);
-  }, [selectedCategory]);
-
-  // Featured templates (first 4 for quick selection)
+  // Featured templates for horizontal scroll
   const featuredTemplates = useMemo(() => {
     return [
       'executive-split-v2',
       'minimal-v2',
-      'professional-blue-v2',
-      'elegant-ats-v2',
-    ].map(id => ({ id, config: TEMPLATE_REGISTRY[id] })).filter(t => t.config);
+      'bold-headline-v2',
+      'data-pro-v2',
+    ].map(id => {
+      const config = TEMPLATE_REGISTRY[id];
+      return config ? { id, config } : null;
+    }).filter(Boolean) as { id: string; config: typeof TEMPLATE_REGISTRY[string] }[];
   }, []);
 
   if (!isOpen) return null;
 
   const handleSelect = (templateId: string) => {
     onSelect(templateId);
-    onClose();
   };
 
   return (
@@ -81,7 +62,7 @@ export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 flex flex-col">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -104,76 +85,15 @@ export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({
           </button>
         </div>
 
-        {/* Category Tabs */}
-        <div className="px-6 py-3 border-b border-gray-100 flex-shrink-0">
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {CATEGORIES.map(cat => {
-              const Icon = cat.icon;
-              const isActive = selectedCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all",
-                    isActive
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  )}
-                >
-                  <Icon className="w-4 h-4" />
-                  {cat.name}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Templates Grid */}
+        {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
-          {/* Featured Quick Select (only on 'all' category) */}
-          {selectedCategory === 'all' && (
-            <div className="mb-6">
-              <h3 className="text-sm font-medium text-gray-500 mb-3">Popular Templates</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {featuredTemplates.map(({ id, config }) => (
-                  <button
-                    key={id}
-                    onClick={() => handleSelect(id)}
-                    className={cn(
-                      "relative p-3 rounded-xl border-2 transition-all text-left",
-                      currentTemplateId === id
-                        ? "border-gray-900 bg-gray-50"
-                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                    )}
-                  >
-                    {currentTemplateId === id && (
-                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-900 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
-                    )}
-                    <div
-                      className="w-full h-2 rounded-full mb-2"
-                      style={{ backgroundColor: config.colors.primary }}
-                    />
-                    <p className="text-sm font-medium text-gray-900 truncate">{config.name}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* All Templates */}
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 mb-3">
-              {selectedCategory === 'all' ? 'All Templates' : CATEGORIES.find(c => c.id === selectedCategory)?.name}
-              <span className="ml-2 text-gray-400">({templates.length})</span>
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {templates.map(({ id, config }) => {
+          {/* Featured Templates - Horizontal Scroll */}
+          <div className="mb-8">
+            <h3 className="text-sm font-semibold text-gray-700 mb-4">Popular Templates</h3>
+            <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
+              {featuredTemplates.map(({ id, config }) => {
                 const isSelected = currentTemplateId === id;
                 const isHovered = hoveredTemplate === id;
-                const previewStyle = getTemplatePreviewStyle(config);
 
                 return (
                   <button
@@ -182,111 +102,130 @@ export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({
                     onMouseEnter={() => setHoveredTemplate(id)}
                     onMouseLeave={() => setHoveredTemplate(null)}
                     className={cn(
-                      "relative group rounded-xl border-2 overflow-hidden transition-all",
-                      isSelected
-                        ? "border-gray-900 ring-2 ring-gray-900/20"
-                        : "border-gray-200 hover:border-gray-300 hover:shadow-lg"
+                      "flex-shrink-0 group relative",
+                      "transition-all duration-200"
                     )}
                   >
-                    {/* Template Preview */}
-                    <div className="aspect-[3/4] bg-white p-3 relative">
-                      {/* Mini Resume Preview */}
-                      <div className="w-full h-full bg-gray-50 rounded-lg p-2 flex flex-col gap-1.5 overflow-hidden">
-                        {/* Header mockup */}
-                        <div className="flex items-center gap-2">
-                          {config.header?.showPhoto && (
-                            <div
-                              className="w-6 h-6 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: `${config.colors.primary}30` }}
-                            />
-                          )}
-                          <div className="flex-1">
-                            <div className="h-2 bg-gray-300 rounded w-3/4 mb-1" />
-                            <div
-                              className="h-1.5 rounded w-1/2"
-                              style={{ backgroundColor: config.colors.primary }}
-                            />
-                          </div>
+                    {/* Preview Card */}
+                    <div
+                      className={cn(
+                        "w-[180px] sm:w-[200px] rounded-xl overflow-hidden border-2 transition-all duration-200",
+                        isSelected
+                          ? "border-blue-500 ring-2 ring-blue-500/20 shadow-lg"
+                          : "border-gray-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1"
+                      )}
+                    >
+                      {/* Template Preview */}
+                      <div className="aspect-[8.5/11] relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+                        <div className="absolute inset-2 rounded-lg overflow-hidden bg-white shadow-sm ring-1 ring-gray-100">
+                          <TemplatePreviewV2
+                            templateId={id}
+                            themeColor={config.colors.primary}
+                            className="h-full"
+                          />
                         </div>
 
-                        {/* Layout mockup based on type */}
-                        {config.layout.type === 'single-column' ? (
-                          <div className="flex-1 flex flex-col gap-1.5">
-                            {/* Section lines */}
-                            {[1, 2, 3].map(i => (
-                              <div key={i}>
-                                <div
-                                  className="h-1 rounded w-1/3 mb-1"
-                                  style={{ backgroundColor: config.colors.primary }}
-                                />
-                                <div className="h-1 bg-gray-200 rounded w-full" />
-                                <div className="h-1 bg-gray-200 rounded w-5/6 mt-0.5" />
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="flex-1 flex gap-1.5">
-                            {/* Main column */}
-                            <div className="flex-1 flex flex-col gap-1.5">
-                              {[1, 2].map(i => (
-                                <div key={i}>
-                                  <div
-                                    className="h-1 rounded w-1/2 mb-1"
-                                    style={{ backgroundColor: config.colors.primary }}
-                                  />
-                                  <div className="h-1 bg-gray-200 rounded w-full" />
-                                  <div className="h-1 bg-gray-200 rounded w-4/5 mt-0.5" />
-                                </div>
-                              ))}
-                            </div>
-                            {/* Sidebar */}
-                            <div
-                              className="w-1/3 rounded p-1"
-                              style={{ backgroundColor: config.colors.background.sidebar || '#f8fafc' }}
-                            >
-                              <div
-                                className="h-1 rounded w-3/4 mb-1"
-                                style={{ backgroundColor: config.colors.primary }}
-                              />
-                              <div className="flex flex-wrap gap-0.5">
-                                {[1, 2, 3, 4].map(i => (
-                                  <div
-                                    key={i}
-                                    className="h-1.5 rounded-full px-1"
-                                    style={{ backgroundColor: `${config.colors.primary}30` }}
-                                  />
-                                ))}
-                              </div>
-                            </div>
+                        {/* Selected Badge */}
+                        {isSelected && (
+                          <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center shadow-lg">
+                            <Check className="w-4 h-4 text-white" />
                           </div>
                         )}
-                      </div>
 
-                      {/* Selected indicator */}
-                      {isSelected && (
-                        <div className="absolute top-1 right-1 w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center shadow-lg">
-                          <Check className="w-4 h-4 text-white" />
-                        </div>
-                      )}
-
-                      {/* Hover overlay */}
-                      {isHovered && !isSelected && (
-                        <div className="absolute inset-0 bg-black/5 flex items-center justify-center">
+                        {/* Hover Overlay */}
+                        <div
+                          className={cn(
+                            "absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/30 to-transparent",
+                            "flex items-end justify-center pb-4",
+                            "opacity-0 group-hover:opacity-100 transition-all duration-200"
+                          )}
+                        >
                           <span
-                            className="px-3 py-1.5 rounded-lg text-sm font-medium text-white shadow-lg"
-                            style={{ backgroundColor: config.colors.primary }}
+                            className="px-4 py-2 rounded-lg text-sm font-semibold text-white shadow-lg"
+                            style={{ backgroundColor: themeColor }}
                           >
-                            Select
+                            Use Template
                           </span>
                         </div>
-                      )}
+                      </div>
                     </div>
 
-                    {/* Template Info */}
-                    <div className="p-3 bg-white border-t border-gray-100">
-                      <p className="text-sm font-medium text-gray-900 truncate">{config.name}</p>
-                      <p className="text-xs text-gray-500 capitalize">{config.category}</p>
+                    {/* Template Name */}
+                    <p className="mt-3 text-sm font-medium text-gray-900 text-center">
+                      {config.name.replace(' V2', '').replace('-v2', '')}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* All Templates Grid */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-4">
+              All Templates <span className="text-gray-400 font-normal">({templates.length})</span>
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {templates.map((template) => {
+                const isSelected = currentTemplateId === template.id;
+                const isHovered = hoveredTemplate === template.id;
+
+                return (
+                  <button
+                    key={template.id}
+                    onClick={() => handleSelect(template.id)}
+                    onMouseEnter={() => setHoveredTemplate(template.id)}
+                    onMouseLeave={() => setHoveredTemplate(null)}
+                    className="group text-left"
+                  >
+                    {/* Preview Card */}
+                    <div
+                      className={cn(
+                        "rounded-xl overflow-hidden border-2 transition-all duration-200",
+                        isSelected
+                          ? "border-blue-500 ring-2 ring-blue-500/20 shadow-lg"
+                          : "border-gray-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1"
+                      )}
+                    >
+                      {/* Template Preview */}
+                      <div className="aspect-[8.5/11] relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+                        <div className="absolute inset-1.5 sm:inset-2 rounded-lg overflow-hidden bg-white shadow-sm ring-1 ring-gray-100">
+                          <TemplatePreviewV2
+                            templateId={template.id}
+                            themeColor={template.colors?.primary || '#3b82f6'}
+                            className="h-full"
+                          />
+                        </div>
+
+                        {/* Selected Badge */}
+                        {isSelected && (
+                          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 flex items-center justify-center shadow-lg">
+                            <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                          </div>
+                        )}
+
+                        {/* Hover Overlay */}
+                        <div
+                          className={cn(
+                            "absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/30 to-transparent",
+                            "flex items-end justify-center pb-3 sm:pb-4",
+                            "opacity-0 group-hover:opacity-100 transition-all duration-200"
+                          )}
+                        >
+                          <span
+                            className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold text-white shadow-lg"
+                            style={{ backgroundColor: themeColor }}
+                          >
+                            Use Template
+                          </span>
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Template Name */}
+                    <p className="mt-2 text-xs sm:text-sm font-medium text-gray-900 truncate">
+                      {template.name.replace(' V2', '').replace('-v2', '')}
+                    </p>
                   </button>
                 );
               })}
@@ -298,17 +237,20 @@ export const TemplateSelectorModal: React.FC<TemplateSelectorModalProps> = ({
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between flex-shrink-0">
           <p className="text-sm text-gray-500">
             {currentTemplateId ? (
-              <>Current: <span className="font-medium text-gray-700">{TEMPLATE_REGISTRY[currentTemplateId]?.name}</span></>
+              <>Selected: <span className="font-medium text-gray-700">{TEMPLATE_REGISTRY[currentTemplateId]?.name.replace(' V2', '')}</span></>
             ) : (
-              'Select a template to continue'
+              'Click a template to continue'
             )}
           </p>
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            Cancel
-          </button>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              onClick={onClose}
+              className="text-gray-600"
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       </div>
     </div>

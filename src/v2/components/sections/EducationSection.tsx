@@ -37,6 +37,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   const mapVariantId = (variantId: string | undefined): EducationVariant => {
     if (!variantId) return education.variant;
     const variantMap: Record<string, EducationVariant> = {
+      // Legacy prefixed variant IDs (from old system)
       'education-classic': 'standard',
       'education-modern': 'card',
       'education-minimal': 'minimal',
@@ -47,6 +48,14 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
       'education-boxed': 'card',
       'education-two-column': 'standard',
       'education-achievement': 'detailed',
+      'education-sidebar-minimal': 'sidebar-minimal',
+      // Simple variant IDs (from CORE_SECTIONS)
+      'standard': 'standard',
+      'compact': 'compact',
+      'detailed': 'detailed',
+      'timeline': 'timeline',
+      'card': 'card',
+      'minimal': 'minimal',
     };
     return variantMap[variantId] || education.variant;
   };
@@ -59,9 +68,19 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   const formatDate = styleContext?.formatDate || ((date: string) => {
     // Fallback format if context not available
     if (!date) return '';
+    // Handle year-only format (e.g., "2024")
+    if (/^\d{4}$/.test(date)) {
+      return `Jan ${date}`;
+    }
+    // Handle YYYY-MM format
     const [year, month] = date.split('-');
+    if (!month) return date; // Return as-is if no month
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${monthNames[parseInt(month) - 1]} ${year}`;
+    const monthIndex = parseInt(month) - 1;
+    if (monthIndex >= 0 && monthIndex < 12) {
+      return `${monthNames[monthIndex]} ${year}`;
+    }
+    return date;
   });
   const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
@@ -631,6 +650,80 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
               )}
             </div>
           )}
+        </div>
+      );
+    }
+
+    // Sidebar-minimal variant - Clean, space-efficient for sidebars
+    // Line 1: Degree • Year
+    // Line 2: Institution (smaller)
+    if (variant === 'sidebar-minimal') {
+      // Extract just the year from dates
+      const getYear = (dateStr: string) => {
+        if (!dateStr) return '';
+        const [year] = dateStr.split('-');
+        return year;
+      };
+
+      const startYear = getYear(item.startDate);
+      const endYear = getYear(item.endDate);
+      const yearDisplay = startYear === endYear ? startYear : `${startYear} - ${endYear}`;
+
+      // Compact degree style
+      const compactDegreeStyle: React.CSSProperties = {
+        fontSize: scaleFontSize('12px'),
+        fontWeight: 600,
+        lineHeight: 1.3,
+        color: typography.itemTitle.color,
+        margin: 0,
+      };
+
+      // Compact school style (smaller, muted)
+      const compactSchoolStyle: React.CSSProperties = {
+        fontSize: scaleFontSize('11px'),
+        fontWeight: 400,
+        lineHeight: 1.3,
+        color: colors.text.muted,
+        margin: 0,
+      };
+
+      // Year style
+      const yearStyle: React.CSSProperties = {
+        fontSize: scaleFontSize('10px'),
+        fontWeight: 500,
+        color: colors.text.muted,
+        whiteSpace: 'nowrap',
+      };
+
+      return (
+        <div key={item.id} style={{ ...itemStyle, marginBottom: index < items.length - 1 ? '10px' : 0 }}>
+          {/* Line 1: Degree • Year */}
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '8px' }}>
+            {editable ? (
+              <InlineEditableText
+                path={`education.${index}.degree`}
+                value={item.degree || 'Degree'}
+                style={compactDegreeStyle}
+              />
+            ) : (
+              <span style={compactDegreeStyle}>{item.degree}</span>
+            )}
+            {education.showDates && (
+              <span style={yearStyle}>{yearDisplay}</span>
+            )}
+          </div>
+          {/* Line 2: Institution */}
+          <div style={{ marginTop: '2px' }}>
+            {editable ? (
+              <InlineEditableText
+                path={`education.${index}.school`}
+                value={item.school}
+                style={compactSchoolStyle}
+              />
+            ) : (
+              <span style={compactSchoolStyle}>{item.school}</span>
+            )}
+          </div>
         </div>
       );
     }

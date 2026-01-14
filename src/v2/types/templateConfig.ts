@@ -210,7 +210,11 @@ export type HeaderVariant =
   | 'modern-split'       // Modern split with name on left, contact grid on right
   | 'boxed-accent'       // Boxed header with accent border
   | 'summary-photo-right' // Name, title, summary with photo on right and contact separator line
-  | 'boxed-contact-icons'; // Serif name, title, contact in bordered boxes with icons, summary section below
+  | 'boxed-contact-icons' // Serif name, title, contact in bordered boxes with icons, summary section below
+  | 'clean-summary-contact' // Clean header with name, title, summary paragraph, and horizontal contact bar with icons
+  | 'photo-summary-contact-bar' // Photo left, name/title/summary right, gray contact bar below
+  | 'gradient-split-contact' // Blue gradient banner with content left and contact icons right
+  | 'photo-dark-contact-bar'; // Photo left, name/title/summary right, dark curved contact bar - CIO style
 
 export interface HeaderConfig {
   variant: HeaderVariant;
@@ -303,7 +307,8 @@ export type EducationVariant =
   | 'timeline'
   | 'card'
   | 'minimal'
-  | 'two-column-dates';
+  | 'two-column-dates'
+  | 'sidebar-minimal'; // Clean sidebar format: Degree • Year, Institution below
 
 export interface EducationConfig {
   variant: EducationVariant;

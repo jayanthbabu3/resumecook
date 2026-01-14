@@ -90,9 +90,9 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
     letterSpacing: '0.05em',
     color: colors.text.muted,
     border: getBorderStyle(),
-    borderBottom: `2px solid ${accentColor}`,
+    borderBottom: `1px solid ${borderColor}`,
     textAlign: 'left',
-    backgroundColor: `${accentColor}08`,
+    backgroundColor: `${accentColor}06`,
   };
 
   const categoryCellStyle: React.CSSProperties = {
@@ -197,14 +197,14 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
         </tbody>
       </table>
 
-      {editable && !items.length && (
+      {editable && (
         <button
-          onClick={() => handleAddSkill('Programming')}
+          onClick={() => handleAddSkill('New Category')}
           className="mt-3 flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded border border-dashed hover:bg-gray-50 transition-colors"
           style={{ color: accentColor, borderColor: accentColor }}
         >
           <Plus className="h-3 w-3" />
-          Add Skill Category
+          Add New Category Row
         </button>
       )}
     </div>
