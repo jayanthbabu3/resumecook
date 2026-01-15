@@ -83,6 +83,10 @@ import { Target } from 'lucide-react';
 import { ProFeatureModal } from '../components/ProFeatureModal';
 import { useSubscription } from '@/hooks/useSubscription';
 
+// ATS Score Panel
+import { ATSScorePanel } from '../components/ATSScorePanel';
+import { FileCheck } from 'lucide-react';
+
 // Chat With Resume - Conversational Resume Builder
 import { ChatWithResume } from '../components/ChatWithResume';
 import { ResumeAnimationProvider } from '../contexts/ResumeAnimationContext';
@@ -141,6 +145,8 @@ export const BuilderV2: React.FC = () => {
   // Pro Feature modal state
   const [showProModal, setShowProModal] = useState(false);
   const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
+  // ATS Score panel state
+  const [showATSPanel, setShowATSPanel] = useState(false);
 
   // Chat mode state - when true, shows chat panel instead of form
   const [isChatMode, setIsChatMode] = useState(false);
@@ -1329,6 +1335,17 @@ export const BuilderV2: React.FC = () => {
     toast.success('Section removed');
   }, []);
 
+  // Extract current section variants from sectionOverrides for chat context
+  const currentSectionVariants = React.useMemo(() => {
+    const variants: Record<string, string> = {};
+    for (const [sectionId, override] of Object.entries(sectionOverrides)) {
+      if (override?.variant) {
+        variants[sectionId] = override.variant;
+      }
+    }
+    return variants;
+  }, [sectionOverrides]);
+
   /**
    * Handle resume updates from the AI chat
    * Uses a robust approach to:
@@ -1339,10 +1356,11 @@ export const BuilderV2: React.FC = () => {
    * only the interests section is enabled - not all other sections.
    */
   const handleChatResumeUpdate = useCallback((payload: ChatResumeUpdatePayload) => {
-    const { data, updatedSections } = payload;
+    const { data, updatedSections, variantChanges } = payload;
 
     console.log('[Chat Update] Received payload:', {
       updatedSections,
+      variantChanges,
       hasCustomSections: !!data.customSections,
       customSectionsCount: data.customSections?.length || 0,
       customSections: data.customSections
@@ -1351,6 +1369,23 @@ export const BuilderV2: React.FC = () => {
     // Update the resume data
     setResumeData(data);
     setHasUnsavedChanges(true);
+
+    // Apply variant changes if any
+    if (variantChanges && variantChanges.length > 0) {
+      console.log('[Chat Update] Applying variant changes:', variantChanges);
+      setSectionOverrides(prev => {
+        const newOverrides = { ...prev };
+        for (const change of variantChanges) {
+          // Update the section override with new variant
+          newOverrides[change.section] = {
+            ...(prev[change.section] || {}),
+            variant: change.variant,
+          };
+          console.log(`[Chat Update] Changed ${change.section} variant to: ${change.variant}`);
+        }
+        return newOverrides;
+      });
+    }
 
     // Only process sections that were ACTUALLY updated by the AI
     if (!updatedSections || updatedSections.length === 0) {
@@ -1816,6 +1851,16 @@ export const BuilderV2: React.FC = () => {
                   <Target className="w-3 h-3" />
                   <span>Job</span>
                 </button>
+                <button
+                  onClick={() => setShowATSPanel(true)}
+                  className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  }}
+                >
+                  <FileCheck className="w-3 h-3" />
+                  <span>ATS</span>
+                </button>
               </div>
 
               {/* Right: Color + Download */}
@@ -2039,6 +2084,35 @@ export const BuilderV2: React.FC = () => {
                       </TooltipTrigger>
                       <TooltipContent side="bottom" className="bg-gray-900 text-white border-0">
                         <p>Optimize resume for a specific job</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    {/* ATS Score Button */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => {
+                            if (!user || !isPro) {
+                              setProModalFeature({
+                                name: 'ATS Score Checker',
+                                description: 'Analyze your resume for ATS compatibility and get improvement tips',
+                              });
+                              setShowProModal(true);
+                            } else {
+                              setShowATSPanel(true);
+                            }
+                          }}
+                          className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
+                          style={{
+                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                          }}
+                        >
+                          <FileCheck className="w-4 h-4" />
+                          <span>ATS Score</span>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="bg-gray-900 text-white border-0">
+                        <p>Check ATS compatibility score</p>
                       </TooltipContent>
                     </Tooltip>
 
@@ -2520,6 +2594,7 @@ export const BuilderV2: React.FC = () => {
                 <ResumeAnimationProvider>
                   <ChatWithResume
                     resumeData={resumeData}
+                    sectionVariants={currentSectionVariants}
                     onResumeUpdate={handleChatResumeUpdate}
                     onHighlightSections={(sections) => {
                       // Add a visual pulse to the resume preview when sections are updated
@@ -2547,6 +2622,7 @@ export const BuilderV2: React.FC = () => {
               <ResumeAnimationProvider>
                 <ChatWithResume
                   resumeData={resumeData}
+                  sectionVariants={currentSectionVariants}
                   onResumeUpdate={handleChatResumeUpdate}
                   onHighlightSections={(sections) => {
                     const previewElement = document.getElementById('resume-preview-v2-mobile');
@@ -2821,6 +2897,13 @@ export const BuilderV2: React.FC = () => {
         onClose={() => setShowProModal(false)}
         featureName={proModalFeature.name}
         featureDescription={proModalFeature.description}
+      />
+
+      {/* ATS Score Panel */}
+      <ATSScorePanel
+        resumeData={resumeData}
+        isOpen={showATSPanel}
+        onClose={() => setShowATSPanel(false)}
       />
 
       {/* Floating Chat Button - Opens chat panel on the right */}

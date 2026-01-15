@@ -6,16 +6,56 @@
  * Structured output mode guarantees valid JSON responses.
  */
 
+// Available variants for each section - used for UI style changes
+const SECTION_VARIANTS = {
+  experience: ['standard', 'compact', 'timeline', 'cards', 'minimal', 'modern', 'enhanced', 'timeline-pro', 'icon-accent', 'icon-clean', 'dots-timeline'],
+  education: ['standard', 'compact', 'detailed', 'timeline', 'cards', 'minimal', 'academic', 'modern'],
+  skills: ['pills', 'tags', 'list', 'grouped', 'bars', 'dots', 'columns', 'inline', 'table', 'category-lines', 'bordered-tags', 'pills-accent', 'inline-dots', 'boxed', 'compact', 'modern'],
+  projects: ['standard', 'cards', 'compact', 'grid', 'timeline', 'showcase', 'minimal', 'detailed'],
+  certifications: ['standard', 'list', 'cards', 'compact', 'badges', 'timeline', 'detailed', 'grouped'],
+  languages: ['standard', 'list', 'pills', 'bars', 'grid', 'inline', 'compact', 'flags'],
+  achievements: ['standard', 'list', 'bullets', 'cards', 'numbered', 'timeline', 'minimal', 'compact', 'badges', 'metrics', 'boxed'],
+  interests: ['pills', 'icons', 'grid', 'detailed', 'list', 'standard'],
+  awards: ['standard', 'trophies', 'cards', 'compact', 'timeline'],
+  publications: ['modern', 'academic', 'cards', 'compact'],
+  volunteer: ['standard', 'compact', 'timeline', 'cards'],
+  patents: ['standard', 'detailed', 'compact', 'cards'],
+  references: ['standard', 'compact', 'cards', 'available'],
+  courses: ['standard', 'detailed', 'compact', 'cards'],
+  strengths: ['cards', 'list', 'pills', 'grid', 'minimal', 'accent-border'],
+};
+
+// Popular/recommended variants per section for quick suggestions
+const POPULAR_VARIANTS = {
+  skills: ['pills', 'tags', 'bars', 'grouped', 'modern'],
+  experience: ['standard', 'timeline', 'cards', 'modern'],
+  education: ['standard', 'cards', 'timeline'],
+  projects: ['cards', 'grid', 'showcase'],
+  certifications: ['badges', 'cards', 'timeline'],
+  languages: ['pills', 'bars', 'flags'],
+  achievements: ['cards', 'badges', 'metrics'],
+  interests: ['pills', 'icons', 'grid'],
+};
+
 // Optimized system prompt - complete formats for ALL sections
-const SYSTEM_PROMPT = `You are a resume assistant helping users build their resume through conversation.
+const SYSTEM_PROMPT = `You are a proactive resume assistant. Take ACTION instead of asking questions.
 
 RESPOND with valid JSON:
 {
   "message": "Your response",
   "updates": { /* ONLY sections you're changing */ },
   "updatedSections": ["sectionName"],
-  "suggestedQuestions": ["Follow-up?"]
+  "suggestedQuestions": ["Follow-up?"],
+  "variantChanges": [{"section": "sectionName", "variant": "variantId"}]
 }
+
+BE PROACTIVE - TAKE ACTION:
+- "Add DevOps skills" → ADD common DevOps skills (Docker, Kubernetes, CI/CD, AWS, Terraform, Jenkins, Ansible)
+- "Add more skills related to X" → ADD 5-8 relevant skills immediately, don't ask which ones
+- "Add frontend skills" → ADD React, Vue, Angular, TypeScript, CSS, HTML, Webpack, etc.
+- "Add a DevOps category" → CREATE skills with category "DevOps" and add relevant skills
+- "Improve my summary" → REWRITE the summary to be better, don't ask how
+- Only ask questions when truly ambiguous (e.g., "which company?" for experience)
 
 CRITICAL RULES:
 1. ONLY include sections in "updates" that you are actually modifying
@@ -23,6 +63,13 @@ CRITICAL RULES:
 3. All data goes inside "updates" object, never at root level
 4. Generate IDs as "type-timestamp-random" (e.g., "int-1736789-abc")
 5. Use EXACT field names as specified below
+
+UI/STYLE CHANGE HANDLING:
+When users ask about UI, design, style, layout, or appearance:
+- For vague requests ("change skills UI"): Show options in a CONCISE format:
+  "Here are the available styles for skills: pills, tags, bars, grouped, cards. Which one would you like?"
+- For specific requests ("make it cards", "use timeline"): Apply directly with variantChanges
+- Keep style descriptions SHORT - just the name, user will see the preview
 
 SECTION FORMATS (all items need id):
 
@@ -48,7 +95,6 @@ volunteer: [{id, organization, role, location, startDate, endDate, current, desc
 references: [{id, name, title, company, email, phone, relationship}]
 
 customSections: [{id, title, items: [{id, content, date?, url?}]}]
-// Example: {"id": "cs-1", "title": "Military Service", "items": [{"id": "csi-1", "content": "US Army, 2010-2015"}]}
 
 For experience/education/projects: return COMPLETE array (preserve existing IDs)
 For other sections: return only NEW items to append
@@ -155,8 +201,29 @@ function normalizeResponse(response, updatedSections = []) {
     message: response.message || "I've updated your resume.",
     updates: response.updates || {},
     updatedSections: response.updatedSections || updatedSections,
-    suggestedQuestions: response.suggestedQuestions || []
+    suggestedQuestions: response.suggestedQuestions || [],
+    variantChanges: response.variantChanges || []
   };
+
+  // Validate and filter variantChanges to only include valid section/variant combinations
+  if (normalized.variantChanges.length > 0) {
+    normalized.variantChanges = normalized.variantChanges.filter(change => {
+      if (!change.section || !change.variant) return false;
+      const validVariants = SECTION_VARIANTS[change.section];
+      if (!validVariants) {
+        console.log(`[Normalize] Invalid section for variant change: ${change.section}`);
+        return false;
+      }
+      if (!validVariants.includes(change.variant)) {
+        console.log(`[Normalize] Invalid variant "${change.variant}" for section "${change.section}". Valid: ${validVariants.join(', ')}`);
+        return false;
+      }
+      return true;
+    });
+    if (normalized.variantChanges.length > 0) {
+      console.log(`[Normalize] Valid variant changes: ${JSON.stringify(normalized.variantChanges)}`);
+    }
+  }
 
   // Fix malformed combined section names and wrong field names
   const combinedSectionFixes = {
@@ -341,7 +408,7 @@ const handler = async (event) => {
 
   try {
     const requestData = JSON.parse(event.body || "{}");
-    const { message, conversationHistory, currentResumeData } = requestData;
+    const { message, conversationHistory, currentResumeData, currentSectionVariants } = requestData;
 
     if (!message) {
       return {
@@ -360,7 +427,7 @@ const handler = async (event) => {
     if (currentResumeData) {
       if (!isFirstMessage) {
         // Send compact summary to save tokens
-        const summary = createResumeSummary(currentResumeData);
+        const summary = createResumeSummary(currentResumeData, currentSectionVariants);
         if (summary) {
           conversationContext += `CURRENT RESUME STATE:\n${summary}\n\n`;
         }
@@ -739,11 +806,43 @@ function parseAIResponse(content) {
 /**
  * Create a compact text summary of the resume to minimize tokens
  * Includes ALL sections that have content
+ * @param {object} resumeData - The resume data
+ * @param {object} currentVariants - Current section variants (e.g., {skills: 'pills', experience: 'timeline'})
  */
-function createResumeSummary(resumeData) {
+function createResumeSummary(resumeData, currentVariants = {}) {
   if (!resumeData) return null;
 
   const parts = [];
+
+  // Add UI/Style context if user has sections with variants
+  const sectionsWithVariants = Object.keys(SECTION_VARIANTS);
+  const currentVariantEntries = Object.entries(currentVariants || {}).filter(([section]) =>
+    sectionsWithVariants.includes(section)
+  );
+
+  if (currentVariantEntries.length > 0 || Object.keys(resumeData).some(k => sectionsWithVariants.includes(k))) {
+    parts.push('SECTION UI STYLES (for style/layout change requests):');
+    parts.push('Current styles: ' + (currentVariantEntries.length > 0
+      ? currentVariantEntries.map(([s, v]) => `${s}=${v}`).join(', ')
+      : 'default for all sections'));
+
+    // Only include available variants for sections that exist in resume
+    const existingSections = sectionsWithVariants.filter(section => {
+      if (section === 'personalInfo') return false;
+      const data = resumeData[section];
+      return data && (Array.isArray(data) ? data.length > 0 : Object.keys(data).length > 0);
+    });
+
+    if (existingSections.length > 0) {
+      parts.push('Available styles (show POPULAR ones first when listing options):');
+      existingSections.forEach(section => {
+        const popular = POPULAR_VARIANTS[section] || SECTION_VARIANTS[section].slice(0, 5);
+        const others = SECTION_VARIANTS[section].filter(v => !popular.includes(v));
+        parts.push(`  ${section}: ${popular.join(', ')}${others.length > 0 ? ` (+ ${others.length} more)` : ''}`);
+      });
+    }
+    parts.push('');
+  }
 
   // Personal Info - one line
   const pi = resumeData.personalInfo;

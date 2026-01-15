@@ -50,6 +50,16 @@ export interface ResumeUpdates {
 }
 
 /**
+ * Variant change request from AI
+ */
+export interface VariantChange {
+  /** Section ID (e.g., 'skills', 'experience') */
+  section: string;
+  /** New variant ID to apply */
+  variant: string;
+}
+
+/**
  * Response from the chat API
  */
 export interface ChatAPIResponse {
@@ -62,6 +72,8 @@ export interface ChatAPIResponse {
   updatedSections: string[];
   /** Suggested follow-up questions */
   suggestedQuestions: string[];
+  /** Variant changes to apply (for UI/style changes) */
+  variantChanges?: VariantChange[];
   /** Error message if success is false */
   error?: string;
   details?: string;
@@ -138,6 +150,8 @@ export interface ChatResumeUpdatePayload {
   updatedSections: string[];
   /** The raw updates from the AI response */
   updates: ResumeUpdates;
+  /** Variant changes to apply (for UI/style changes) */
+  variantChanges?: VariantChange[];
 }
 
 /**

@@ -5,8 +5,11 @@
  * Production-ready with ID generation, validation, and retry logic.
  */
 
-import { ChatAPIResponse, ChatMessage, ResumeUpdates } from '../types/chat';
+import { ChatAPIResponse, ChatMessage, ResumeUpdates, VariantChange } from '../types/chat';
 import { V2ResumeData } from '../types/resumeData';
+
+/** Current section variants map (section ID -> variant ID) */
+export type SectionVariantsMap = Record<string, string>;
 
 const CHAT_API_ENDPOINT = '/.netlify/functions/chat-with-resume';
 const MAX_RETRIES = 2;
@@ -341,7 +344,8 @@ function validateAndSanitizeUpdates(
 export async function sendChatMessage(
   message: string,
   conversationHistory: ChatMessage[],
-  currentResumeData: V2ResumeData
+  currentResumeData: V2ResumeData,
+  currentSectionVariants?: SectionVariantsMap
 ): Promise<ChatAPIResponse> {
   let lastError: Error | null = null;
 
@@ -364,6 +368,7 @@ export async function sendChatMessage(
           message,
           conversationHistory: historyForAPI,
           currentResumeData,
+          currentSectionVariants,
         }),
       });
 
@@ -400,6 +405,16 @@ export async function sendChatMessage(
         }
       }
 
+      // Validate and extract variantChanges
+      const variantChanges: VariantChange[] = Array.isArray(data.variantChanges)
+        ? data.variantChanges.filter((change: any) =>
+            change &&
+            typeof change === 'object' &&
+            typeof change.section === 'string' &&
+            typeof change.variant === 'string'
+          )
+        : [];
+
       // Ensure we have valid response structure
       const validatedResponse: ChatAPIResponse = {
         success: true,
@@ -411,6 +426,7 @@ export async function sendChatMessage(
         suggestedQuestions: Array.isArray(data.suggestedQuestions)
           ? data.suggestedQuestions.filter((q: unknown) => typeof q === 'string' && q.trim()).slice(0, 3)
           : [],
+        variantChanges: variantChanges.length > 0 ? variantChanges : undefined,
       };
 
       return validatedResponse;

@@ -13,7 +13,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { V2ResumeData } from '../types/resumeData';
-import { ResumeUpdates, ChatResumeUpdatePayload } from '../types/chat';
+import { ResumeUpdates, ChatResumeUpdatePayload, VariantChange } from '../types/chat';
 
 interface StreamingState {
   isStreaming: boolean;
@@ -36,7 +36,7 @@ interface UseStreamingResumeUpdateReturn {
   /** Current streaming state */
   streamingState: StreamingState;
   /** Start streaming updates to the resume */
-  streamUpdates: (updates: ResumeUpdates, updatedSections: string[]) => Promise<void>;
+  streamUpdates: (updates: ResumeUpdates, updatedSections: string[], variantChanges?: VariantChange[]) => Promise<void>;
   /** Stop any ongoing streaming */
   stopStreaming: () => void;
   /** Whether currently streaming */
@@ -126,9 +126,10 @@ export function useStreamingResumeUpdate({
    * NEW items are APPENDED to existing arrays
    * @param updates - The resume updates from AI
    * @param updatedSections - List of section keys that were updated (passed through to callback)
+   * @param variantChanges - Optional variant changes to apply (for UI/style changes)
    */
   const streamUpdates = useCallback(
-    async (updates: ResumeUpdates, updatedSections: string[] = []) => {
+    async (updates: ResumeUpdates, updatedSections: string[] = [], variantChanges?: VariantChange[]) => {
       if (!updates || Object.keys(updates).length === 0) return;
 
       abortRef.current = false;
@@ -141,12 +142,13 @@ export function useStreamingResumeUpdate({
       // Start with current data - we will APPEND to it, not replace
       let currentData = { ...currentDataRef.current };
 
-      // Helper to call onUpdate with section info
+      // Helper to call onUpdate with section info and variant changes
       const emitUpdate = (data: V2ResumeData) => {
         onUpdate({
           data,
           updatedSections,
           updates,
+          variantChanges,
         });
       };
 

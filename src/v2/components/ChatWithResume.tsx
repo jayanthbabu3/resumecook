@@ -23,16 +23,23 @@ import {
   Bot,
   Zap,
   ArrowLeft,
+  Mic,
+  MicOff,
+  AlertCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ChatMessage, ChatResumeUpdatePayload, DEFAULT_QUICK_ACTIONS } from '../types/chat';
 import { V2ResumeData } from '../types/resumeData';
 import { useChatWithResume } from '../hooks/useChatWithResume';
-import { formatSectionName } from '../services/chatService';
+import { useVoiceInput } from '../hooks/useVoiceInput';
+import { formatSectionName, SectionVariantsMap } from '../services/chatService';
 
 interface ChatWithResumeProps {
   resumeData: V2ResumeData;
+  /** Current section variants for context (e.g., {skills: 'pills', experience: 'timeline'}) */
+  sectionVariants?: SectionVariantsMap;
   /** Callback when resume is updated - includes section info for selective enabling */
   onResumeUpdate: (payload: ChatResumeUpdatePayload) => void;
   onHighlightSections?: (sections: string[]) => void;
@@ -45,6 +52,7 @@ interface ChatWithResumeProps {
 
 export function ChatWithResume({
   resumeData,
+  sectionVariants,
   onResumeUpdate,
   onHighlightSections,
   className,
@@ -65,6 +73,7 @@ export function ChatWithResume({
     openChat,
   } = useChatWithResume({
     resumeData,
+    sectionVariants,
     onResumeUpdate,
     onHighlightSections,
   });
@@ -72,6 +81,45 @@ export function ChatWithResume({
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Voice input hook
+  const {
+    isSupported: voiceSupported,
+    isListening,
+    transcript,
+    interimTranscript,
+    error: voiceError,
+    startListening,
+    stopListening,
+    toggleListening,
+    clearTranscript,
+  } = useVoiceInput({
+    language: 'en-US',
+    autoSubmitDelay: 0, // Disabled - user will review and send manually
+    onResult: (finalText) => {
+      // When voice input is complete, set as input value for user to review
+      if (finalText.trim()) {
+        setInputValue(finalText.trim());
+      }
+    },
+    onInterimResult: (interim) => {
+      // Show interim results in real-time
+      if (interim) {
+        setInputValue(prev => {
+          // Replace only the interim part
+          const finalPart = transcript.replace(interimTranscript, '');
+          return finalPart + interim;
+        });
+      }
+    },
+  });
+
+  // Update input when transcript changes during voice input
+  useEffect(() => {
+    if (isListening && transcript) {
+      setInputValue(transcript);
+    }
+  }, [isListening, transcript]);
 
   // Auto-resize textarea based on content
   const adjustTextareaHeight = useCallback(() => {
@@ -177,6 +225,10 @@ export function ChatWithResume({
             onClear={clearChat}
             onClose={handleClose}
             onAdjustHeight={adjustTextareaHeight}
+            voiceSupported={voiceSupported}
+            isListening={isListening}
+            voiceError={voiceError}
+            onToggleVoice={toggleListening}
           />
         ) : (
           <ChatButton onClick={toggleChat} />
@@ -205,6 +257,10 @@ export function ChatWithResume({
       onClose={handleClose}
       onAdjustHeight={adjustTextareaHeight}
       className={className}
+      voiceSupported={voiceSupported}
+      isListening={isListening}
+      voiceError={voiceError}
+      onToggleVoice={toggleListening}
     />
   );
 }
@@ -259,6 +315,11 @@ interface SidePanelChatProps {
   onClose: () => void;
   onAdjustHeight: () => void;
   className?: string;
+  // Voice input props
+  voiceSupported: boolean;
+  isListening: boolean;
+  voiceError: string | null;
+  onToggleVoice: () => void;
 }
 
 function SidePanelChat({
@@ -279,6 +340,10 @@ function SidePanelChat({
   onClose,
   onAdjustHeight,
   className,
+  voiceSupported,
+  isListening,
+  voiceError,
+  onToggleVoice,
 }: SidePanelChatProps) {
   const showQuickActions = messages.length <= 1;
 
@@ -427,10 +492,25 @@ function SidePanelChat({
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Voice Error Toast */}
+      {voiceError && (
+        <div className="px-3 sm:px-4 py-2 bg-red-50 border-t border-red-100">
+          <div className="flex items-center gap-2 text-xs text-red-600">
+            <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>{voiceError}</span>
+          </div>
+        </div>
+      )}
+
       {/* Input */}
       <div className="p-3 sm:p-4 bg-white border-t border-gray-100">
         <form onSubmit={onSubmit}>
-          <div className="flex items-end gap-2 sm:gap-3 bg-gray-50 rounded-2xl border border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20 transition-all duration-200 p-1.5 sm:p-2">
+          <div className={cn(
+            "flex items-end gap-2 sm:gap-3 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5 sm:p-2",
+            isListening
+              ? "border-red-400 ring-2 ring-red-500/20 bg-red-50/30"
+              : "border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20"
+          )}>
             <textarea
               ref={inputRef}
               value={inputValue}
@@ -439,7 +519,7 @@ function SidePanelChat({
                 onAdjustHeight();
               }}
               onKeyDown={onKeyDown}
-              placeholder="Tell me about yourself..."
+              placeholder={isListening ? "Listening..." : "Tell me about yourself..."}
               rows={1}
               className={cn(
                 'flex-1 px-3 py-2.5 sm:py-3',
@@ -447,17 +527,50 @@ function SidePanelChat({
                 'text-sm text-gray-900 placeholder:text-gray-400',
                 'focus:outline-none',
                 'resize-none overflow-y-auto',
-                'transition-all duration-200'
+                'transition-all duration-200',
+                isListening && 'placeholder:text-red-400'
               )}
               style={{
                 minHeight: '44px',
                 maxHeight: '150px',
               }}
-              disabled={isLoading}
+              disabled={isLoading || isListening}
             />
+
+            {/* Voice Input Button */}
+            {voiceSupported && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      onClick={onToggleVoice}
+                      disabled={isLoading}
+                      className={cn(
+                        'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
+                        isListening
+                          ? 'bg-red-500 hover:bg-red-600 animate-pulse'
+                          : 'bg-gray-200 hover:bg-gray-300 text-gray-600',
+                        'transition-all duration-200'
+                      )}
+                    >
+                      {isListening ? (
+                        <MicOff className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                      ) : (
+                        <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>{isListening ? 'Stop recording' : 'Voice input'}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+
             <Button
               type="submit"
-              disabled={!inputValue.trim() || isLoading}
+              disabled={!inputValue.trim() || isLoading || isListening}
               className={cn(
                 'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
                 'bg-gradient-to-r from-violet-500 to-purple-600',
@@ -476,7 +589,11 @@ function SidePanelChat({
           </div>
         </form>
         <p className="text-[10px] text-gray-400 mt-2 text-center">
-          Press Enter to send, Shift+Enter for new line
+          {isListening ? (
+            <span className="text-red-500 font-medium">🎤 Recording... Click mic again to stop</span>
+          ) : (
+            <>Press Enter to send • {voiceSupported ? 'Click mic to speak' : 'Shift+Enter for new line'}</>
+          )}
         </p>
       </div>
     </div>
@@ -504,6 +621,11 @@ interface FloatingChatPanelProps {
   onClear: () => void;
   onClose: () => void;
   onAdjustHeight: () => void;
+  // Voice input props
+  voiceSupported: boolean;
+  isListening: boolean;
+  voiceError: string | null;
+  onToggleVoice: () => void;
 }
 
 function FloatingChatPanel({
@@ -523,6 +645,10 @@ function FloatingChatPanel({
   onClear,
   onClose,
   onAdjustHeight,
+  voiceSupported,
+  isListening,
+  voiceError,
+  onToggleVoice,
 }: FloatingChatPanelProps) {
   const showQuickActions = messages.length <= 1;
 
@@ -663,10 +789,25 @@ function FloatingChatPanel({
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Voice Error Toast */}
+      {voiceError && (
+        <div className="px-3 py-2 bg-red-50 border-t border-red-100">
+          <div className="flex items-center gap-2 text-xs text-red-600">
+            <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>{voiceError}</span>
+          </div>
+        </div>
+      )}
+
       {/* Input */}
       <div className="p-3 bg-white border-t border-gray-100">
         <form onSubmit={onSubmit}>
-          <div className="flex items-end gap-2 bg-gray-50 rounded-2xl border border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20 transition-all duration-200 p-1.5">
+          <div className={cn(
+            "flex items-end gap-2 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5",
+            isListening
+              ? "border-red-400 ring-2 ring-red-500/20 bg-red-50/30"
+              : "border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20"
+          )}>
             <textarea
               ref={inputRef}
               value={inputValue}
@@ -675,7 +816,7 @@ function FloatingChatPanel({
                 onAdjustHeight();
               }}
               onKeyDown={onKeyDown}
-              placeholder="Tell me about yourself..."
+              placeholder={isListening ? "Listening..." : "Tell me about yourself..."}
               rows={1}
               className={cn(
                 'flex-1 px-3 py-2.5',
@@ -683,17 +824,50 @@ function FloatingChatPanel({
                 'text-sm text-gray-900 placeholder:text-gray-400',
                 'focus:outline-none',
                 'resize-none overflow-y-auto',
-                'transition-all duration-200'
+                'transition-all duration-200',
+                isListening && 'placeholder:text-red-400'
               )}
               style={{
                 minHeight: '40px',
                 maxHeight: '120px',
               }}
-              disabled={isLoading}
+              disabled={isLoading || isListening}
             />
+
+            {/* Voice Input Button */}
+            {voiceSupported && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      onClick={onToggleVoice}
+                      disabled={isLoading}
+                      className={cn(
+                        'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
+                        isListening
+                          ? 'bg-red-500 hover:bg-red-600 animate-pulse'
+                          : 'bg-gray-200 hover:bg-gray-300 text-gray-600',
+                        'transition-all duration-200'
+                      )}
+                    >
+                      {isListening ? (
+                        <MicOff className="w-4 h-4 text-white" />
+                      ) : (
+                        <Mic className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>{isListening ? 'Stop recording' : 'Voice input'}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+
             <Button
               type="submit"
-              disabled={!inputValue.trim() || isLoading}
+              disabled={!inputValue.trim() || isLoading || isListening}
               className={cn(
                 'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
                 'bg-gradient-to-r from-violet-500 to-purple-600',
@@ -712,7 +886,11 @@ function FloatingChatPanel({
           </div>
         </form>
         <p className="text-[10px] text-gray-400 mt-2 text-center">
-          Press Enter to send, Shift+Enter for new line
+          {isListening ? (
+            <span className="text-red-500 font-medium">🎤 Recording... Click mic again to stop</span>
+          ) : (
+            <>Press Enter to send • {voiceSupported ? 'Click mic to speak' : 'Shift+Enter for new line'}</>
+          )}
         </p>
       </div>
     </div>

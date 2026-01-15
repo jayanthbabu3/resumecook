@@ -16,11 +16,14 @@ import { V2ResumeData } from '../types/resumeData';
 import {
   sendChatMessage,
   generateMessageId,
+  SectionVariantsMap,
 } from '../services/chatService';
 import { useStreamingResumeUpdate } from './useStreamingResumeUpdate';
 
 interface UseChatWithResumeOptions {
   resumeData: V2ResumeData;
+  /** Current section variants (e.g., {skills: 'pills', experience: 'timeline'}) */
+  sectionVariants?: SectionVariantsMap;
   /** Callback when resume is updated - includes section info for selective enabling */
   onResumeUpdate: (payload: ChatResumeUpdatePayload) => void;
   onHighlightSections?: (sections: string[]) => void;
@@ -40,6 +43,7 @@ interface UseChatWithResumeReturn extends ChatState {
 
 export function useChatWithResume({
   resumeData,
+  sectionVariants,
   onResumeUpdate,
   onHighlightSections,
 }: UseChatWithResumeOptions): UseChatWithResumeReturn {
@@ -50,11 +54,15 @@ export function useChatWithResume({
   const [isOpen, setIsOpen] = useState(false);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
 
-  // Keep track of current resume data for API calls
+  // Keep track of current resume data and variants for API calls
   const resumeDataRef = useRef(resumeData);
+  const sectionVariantsRef = useRef(sectionVariants);
   useEffect(() => {
     resumeDataRef.current = resumeData;
   }, [resumeData]);
+  useEffect(() => {
+    sectionVariantsRef.current = sectionVariants;
+  }, [sectionVariants]);
 
   // Streaming resume update hook
   const { streamUpdates, isStreaming: isStreamingResume, stopStreaming } = useStreamingResumeUpdate({
@@ -109,7 +117,8 @@ export function useChatWithResume({
         const response = await sendChatMessage(
           content.trim(),
           [...messages, userMessage],
-          resumeDataRef.current
+          resumeDataRef.current,
+          sectionVariantsRef.current
         );
 
         // Remove typing message and add actual response
@@ -134,8 +143,22 @@ export function useChatWithResume({
           }
 
           // Stream the updates with typewriter effect
-          // Pass updatedSections so the callback knows which sections were modified
-          await streamUpdates(response.updates, response.updatedSections || []);
+          // Pass updatedSections and variantChanges so the callback knows which sections were modified
+          await streamUpdates(response.updates, response.updatedSections || [], response.variantChanges);
+        } else if (response.variantChanges && response.variantChanges.length > 0) {
+          // Only variant changes, no data updates - still need to notify parent
+          // Highlight the sections that are getting variant changes
+          const sectionsWithVariantChanges = response.variantChanges.map(vc => vc.section);
+          setHighlightedSections(sectionsWithVariantChanges);
+          onHighlightSections?.(sectionsWithVariantChanges);
+
+          // Call onResumeUpdate with just the variant changes
+          onResumeUpdate({
+            data: resumeDataRef.current,
+            updatedSections: [],
+            updates: {},
+            variantChanges: response.variantChanges,
+          });
         }
 
         // Set suggested questions
