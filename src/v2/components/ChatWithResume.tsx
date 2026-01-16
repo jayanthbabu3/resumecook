@@ -26,6 +26,8 @@ import {
   Mic,
   MicOff,
   AlertCircle,
+  Undo2,
+  Redo2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -35,6 +37,7 @@ import { V2ResumeData } from '../types/resumeData';
 import { useChatWithResume } from '../hooks/useChatWithResume';
 import { useVoiceInput } from '../hooks/useVoiceInput';
 import { formatSectionName, SectionVariantsMap } from '../services/chatService';
+import { useResumeHistory } from '../hooks/useResumeHistory';
 
 interface ChatWithResumeProps {
   resumeData: V2ResumeData;
@@ -59,6 +62,60 @@ export function ChatWithResume({
   mode = 'floating',
   onClose,
 }: ChatWithResumeProps) {
+  // Resume history for undo/redo
+  const {
+    canUndo,
+    canRedo,
+    undoLabel,
+    redoLabel,
+    undo,
+    redo,
+    pushState,
+    clearHistory,
+  } = useResumeHistory({
+    initialData: resumeData,
+    maxHistory: 50,
+  });
+
+  // Wrap onResumeUpdate to track history
+  const handleResumeUpdate = useCallback(
+    (payload: ChatResumeUpdatePayload) => {
+      // Only track if there are actual updates
+      if (payload.updatedSections && payload.updatedSections.length > 0) {
+        const label = payload.updatedSections.length === 1
+          ? `Update ${formatSectionName(payload.updatedSections[0])}`
+          : `Update ${payload.updatedSections.length} sections`;
+        pushState(payload.data, label);
+      }
+      onResumeUpdate(payload);
+    },
+    [onResumeUpdate, pushState]
+  );
+
+  // Handle undo action
+  const handleUndo = useCallback(() => {
+    const previousData = undo();
+    if (previousData) {
+      onResumeUpdate({
+        data: previousData,
+        updatedSections: [],
+        updates: {},
+      });
+    }
+  }, [undo, onResumeUpdate]);
+
+  // Handle redo action
+  const handleRedo = useCallback(() => {
+    const restoredData = redo();
+    if (restoredData) {
+      onResumeUpdate({
+        data: restoredData,
+        updatedSections: [],
+        updates: {},
+      });
+    }
+  }, [redo, onResumeUpdate]);
+
   const {
     messages,
     isLoading,
@@ -67,16 +124,22 @@ export function ChatWithResume({
     highlightedSections,
     isStreamingResume,
     sendMessage,
-    clearChat,
+    clearChat: clearChatMessages,
     toggleChat,
     closeChat,
     openChat,
   } = useChatWithResume({
     resumeData,
     sectionVariants,
-    onResumeUpdate,
+    onResumeUpdate: handleResumeUpdate,
     onHighlightSections,
   });
+
+  // Clear chat and history together
+  const clearChat = useCallback(() => {
+    clearChatMessages();
+    clearHistory();
+  }, [clearChatMessages, clearHistory]);
 
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -229,6 +292,12 @@ export function ChatWithResume({
             isListening={isListening}
             voiceError={voiceError}
             onToggleVoice={toggleListening}
+            canUndo={canUndo}
+            canRedo={canRedo}
+            undoLabel={undoLabel}
+            redoLabel={redoLabel}
+            onUndo={handleUndo}
+            onRedo={handleRedo}
           />
         ) : (
           <ChatButton onClick={toggleChat} />
@@ -261,6 +330,12 @@ export function ChatWithResume({
       isListening={isListening}
       voiceError={voiceError}
       onToggleVoice={toggleListening}
+      canUndo={canUndo}
+      canRedo={canRedo}
+      undoLabel={undoLabel}
+      redoLabel={redoLabel}
+      onUndo={handleUndo}
+      onRedo={handleRedo}
     />
   );
 }
@@ -320,6 +395,13 @@ interface SidePanelChatProps {
   isListening: boolean;
   voiceError: string | null;
   onToggleVoice: () => void;
+  // Undo/Redo props
+  canUndo: boolean;
+  canRedo: boolean;
+  undoLabel: string | null;
+  redoLabel: string | null;
+  onUndo: () => void;
+  onRedo: () => void;
 }
 
 function SidePanelChat({
@@ -344,6 +426,12 @@ function SidePanelChat({
   isListening,
   voiceError,
   onToggleVoice,
+  canUndo,
+  canRedo,
+  undoLabel,
+  redoLabel,
+  onUndo,
+  onRedo,
 }: SidePanelChatProps) {
   const showQuickActions = messages.length <= 1;
 
@@ -376,15 +464,54 @@ function SidePanelChat({
             </div>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onClear}
-          className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20"
-          title="Clear chat"
-        >
-          <Trash2 className="w-4 h-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          {/* Undo/Redo buttons */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onUndo}
+                  disabled={!canUndo}
+                  className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <Undo2 className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>{canUndo ? `Undo: ${undoLabel}` : 'Nothing to undo'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onRedo}
+                  disabled={!canRedo}
+                  className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <Redo2 className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>{canRedo ? `Redo: ${redoLabel}` : 'Nothing to redo'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClear}
+            className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20"
+            title="Clear chat"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Messages */}
@@ -626,6 +753,13 @@ interface FloatingChatPanelProps {
   isListening: boolean;
   voiceError: string | null;
   onToggleVoice: () => void;
+  // Undo/Redo props
+  canUndo: boolean;
+  canRedo: boolean;
+  undoLabel: string | null;
+  redoLabel: string | null;
+  onUndo: () => void;
+  onRedo: () => void;
 }
 
 function FloatingChatPanel({
@@ -649,6 +783,12 @@ function FloatingChatPanel({
   isListening,
   voiceError,
   onToggleVoice,
+  canUndo,
+  canRedo,
+  undoLabel,
+  redoLabel,
+  onUndo,
+  onRedo,
 }: FloatingChatPanelProps) {
   const showQuickActions = messages.length <= 1;
 
@@ -675,6 +815,43 @@ function FloatingChatPanel({
           </div>
         </div>
         <div className="flex items-center gap-1">
+          {/* Undo/Redo buttons */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onUndo}
+                  disabled={!canUndo}
+                  className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <Undo2 className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>{canUndo ? `Undo: ${undoLabel}` : 'Nothing to undo'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onRedo}
+                  disabled={!canRedo}
+                  className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <Redo2 className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>{canRedo ? `Redo: ${redoLabel}` : 'Nothing to redo'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <Button
             variant="ghost"
             size="icon"
