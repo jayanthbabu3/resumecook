@@ -154,14 +154,14 @@ const HeaderComponent: React.FC = () => {
                         <AvatarFallback className={cn(
                           "text-white text-sm font-semibold",
                           isPro
-                            ? "bg-gradient-to-br from-primary to-violet-600"
+                            ? "bg-gradient-to-br from-primary to-blue-600"
                             : "bg-gradient-to-br from-primary to-primary/80"
                         )}>
                           {userInfo.initials}
                         </AvatarFallback>
                       </Avatar>
                       {isPro && (
-                        <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center ring-2 ring-white">
+                        <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center ring-2 ring-white">
                           <Crown className="h-2.5 w-2.5 text-white" />
                         </div>
                       )}
@@ -175,7 +175,7 @@ const HeaderComponent: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <p className="font-semibold text-sm text-gray-900">{userInfo.displayName}</p>
                       {isPro && (
-                        <Badge className="bg-gradient-to-r from-primary to-violet-600 text-white text-[10px] px-1.5 py-0 h-4 border-0">
+                        <Badge className="bg-gradient-to-r from-primary to-blue-600 text-white text-[10px] px-1.5 py-0 h-4 border-0">
                           <Sparkles className="h-2.5 w-2.5 mr-0.5" />
                           PRO
                         </Badge>
@@ -242,14 +242,14 @@ const HeaderComponent: React.FC = () => {
                     <AvatarFallback className={cn(
                       "text-white text-sm font-semibold",
                       isPro
-                        ? "bg-gradient-to-br from-primary to-violet-600"
+                        ? "bg-gradient-to-br from-primary to-blue-600"
                         : "bg-gradient-to-br from-primary to-primary/80"
                     )}>
                       {userInfo.initials}
                     </AvatarFallback>
                   </Avatar>
                   {isPro && (
-                    <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center ring-2 ring-white">
+                    <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center ring-2 ring-white">
                       <Crown className="h-2.5 w-2.5 text-white" />
                     </div>
                   )}
@@ -318,7 +318,7 @@ const HeaderComponent: React.FC = () => {
                           className={cn(
                             "flex flex-row items-center gap-3 px-3 py-3 mb-3 rounded-xl border",
                             isPro
-                              ? "bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/30"
+                              ? "bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/30"
                               : "bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20"
                           )}
                           style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
@@ -332,14 +332,14 @@ const HeaderComponent: React.FC = () => {
                               <AvatarFallback className={cn(
                                 "text-white text-sm font-bold",
                                 isPro
-                                  ? "bg-gradient-to-br from-primary to-violet-600"
+                                  ? "bg-gradient-to-br from-primary to-blue-600"
                                   : "bg-gradient-to-br from-primary to-primary/80"
                               )}>
                                 {userInfo.initials}
                               </AvatarFallback>
                             </Avatar>
                             {isPro && (
-                              <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center ring-2 ring-white">
+                              <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center ring-2 ring-white">
                                 <Crown className="h-2.5 w-2.5 text-white" />
                               </div>
                             )}
@@ -348,7 +348,7 @@ const HeaderComponent: React.FC = () => {
                             <div className="flex items-center gap-2">
                               <p className="font-semibold text-sm text-gray-900 truncate">{userInfo.displayName}</p>
                               {isPro && (
-                                <Badge className="bg-gradient-to-r from-primary to-violet-600 text-white text-[10px] px-1.5 py-0 h-4 border-0">
+                                <Badge className="bg-gradient-to-r from-primary to-blue-600 text-white text-[10px] px-1.5 py-0 h-4 border-0">
                                   <Sparkles className="h-2.5 w-2.5 mr-0.5" />
                                   PRO
                                 </Badge>

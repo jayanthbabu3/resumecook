@@ -119,7 +119,7 @@ const Pricing = () => {
             </Badge>
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
               Simple,{" "}
-              <span className="bg-gradient-to-r from-primary to-violet-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
                 transparent pricing
               </span>
             </h1>
@@ -192,12 +192,12 @@ const Pricing = () => {
 
             {/* Pro Plan */}
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-violet-500/20 rounded-2xl transform group-hover:scale-[1.02] transition-transform duration-300 blur-sm" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-2xl transform group-hover:scale-[1.02] transition-transform duration-300 blur-sm" />
               <div className="relative rounded-2xl border-2 border-primary bg-white p-6 shadow-xl">
 
                 {/* Popular Badge */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge className="bg-gradient-to-r from-primary to-violet-600 text-white px-3 py-0.5 text-xs font-semibold shadow-lg">
+                  <Badge className="bg-gradient-to-r from-primary to-blue-600 text-white px-3 py-0.5 text-xs font-semibold shadow-lg">
                     <Crown className="h-3 w-3 mr-1" />
                     Popular
                   </Badge>
@@ -212,7 +212,7 @@ const Pricing = () => {
                     </h3>
                     <p className="text-xs text-muted-foreground">AI-powered features</p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-violet-500/10 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-blue-500/10 flex items-center justify-center">
                     <Zap className="h-5 w-5 text-primary" />
                   </div>
                 </div>
@@ -227,7 +227,7 @@ const Pricing = () => {
 
                 {/* CTA */}
                 <Button
-                  className="w-full h-10 text-sm font-semibold bg-gradient-to-r from-primary to-violet-600 hover:from-primary/90 hover:to-violet-600/90 shadow-lg shadow-primary/20 mb-5"
+                  className="w-full h-10 text-sm font-semibold bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/20 mb-5"
                   onClick={handleUpgrade}
                   disabled={isLoading}
                 >
@@ -322,7 +322,7 @@ const Pricing = () => {
                 Start Free
               </Button>
               <Button
-                className="h-10 px-6 text-sm bg-gradient-to-r from-primary to-violet-600"
+                className="h-10 px-6 text-sm bg-gradient-to-r from-primary to-blue-600"
                 onClick={handleUpgrade}
                 disabled={isLoading}
               >

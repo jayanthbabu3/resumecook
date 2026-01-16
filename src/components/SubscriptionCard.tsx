@@ -121,13 +121,13 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
       <div className={cn(
         'px-6 py-4 border-b',
         isPro
-          ? 'bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/20'
+          ? 'bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20'
           : 'bg-gray-50 border-gray-200'
       )}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {isPro ? (
-              <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-violet-600 shadow-lg">
+              <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-blue-600 shadow-lg">
                 <Crown className="h-5 w-5 text-white" />
               </div>
             ) : (
@@ -148,7 +148,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
             className={cn(
               'font-semibold',
               isPro
-                ? 'bg-gradient-to-r from-primary to-violet-600 text-white border-0'
+                ? 'bg-gradient-to-r from-primary to-blue-600 text-white border-0'
                 : 'bg-gray-100 text-gray-600 border-gray-200'
             )}
           >
@@ -254,7 +254,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
 
               {/* Upgrade Button */}
               <Button
-                className="w-full bg-gradient-to-r from-primary to-violet-600 hover:from-primary/90 hover:to-violet-600/90 shadow-lg shadow-primary/20"
+                className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/20"
                 onClick={handleUpgrade}
                 disabled={isProcessing}
               >

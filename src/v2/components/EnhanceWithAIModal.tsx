@@ -363,7 +363,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                     icon: <Zap className="w-4 h-4" />,
                     label: 'Experience',
                     desc: 'Skill-matched bullets',
-                    gradient: 'from-violet-500 to-purple-500'
+                    gradient: 'from-primary to-blue-500'
                   },
                   {
                     icon: <Target className="w-4 h-4" />,

@@ -1633,7 +1633,7 @@ const ProfilePageV2: React.FC = () => {
             onAdd={() => openEditModal('education')}
             isEmpty={!profile?.education || profile.education.length === 0}
             emptyMessage="Add your education history"
-            accentColor="purple"
+            accentColor="blue"
             badge={profile?.education?.length ? `${profile.education.length} degrees` : undefined}
           >
             <DndContext

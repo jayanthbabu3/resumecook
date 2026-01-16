@@ -243,7 +243,7 @@ const MyResumes = () => {
               <Card className="p-12 text-center border-dashed border-2">
                 <div className="flex flex-col items-center gap-6">
                   <div className="relative">
-                    <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center">
                       <FileText className="h-12 w-12 text-primary" />
                     </div>
                     <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center">

@@ -260,7 +260,7 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({
                   <span className="text-[10px] sm:text-xs text-gray-500">Experience</span>
                 </div>
                 <div className="flex flex-col items-center p-2 sm:p-3 bg-gray-50 rounded-lg">
-                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500 mb-1" />
+                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-primary mb-1" />
                   <span className="text-base sm:text-lg font-semibold text-gray-900">{existingProfile.educationCount}</span>
                   <span className="text-[10px] sm:text-xs text-gray-500">Education</span>
                 </div>
@@ -431,7 +431,7 @@ export const LinkedInImportModal: React.FC<LinkedInImportModalProps> = ({
                     <span className="text-[9px] sm:text-xs text-gray-500">Exp</span>
                   </div>
                   <div className="flex flex-col items-center p-1.5 sm:p-3 bg-gray-50 rounded-lg">
-                    <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500 mb-0.5 sm:mb-1" />
+                    <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-primary mb-0.5 sm:mb-1" />
                     <span className="text-sm sm:text-lg font-semibold text-gray-900">{summary.education}</span>
                     <span className="text-[9px] sm:text-xs text-gray-500">Edu</span>
                   </div>

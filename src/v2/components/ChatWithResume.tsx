@@ -279,9 +279,9 @@ function ChatButton({ onClick }: ChatButtonProps) {
       onClick={onClick}
       className={cn(
         'flex items-center gap-2 px-4 py-3 rounded-full',
-        'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600',
-        'text-white font-medium shadow-lg shadow-purple-500/30',
-        'hover:shadow-xl hover:shadow-purple-500/40',
+        'bg-gradient-to-r from-primary via-blue-600 to-indigo-600',
+        'text-white font-medium shadow-lg shadow-primary/30',
+        'hover:shadow-xl hover:shadow-primary/40',
         'active:scale-95',
         'transition-all duration-200'
       )}
@@ -357,7 +357,7 @@ function SidePanelChat({
       )}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white">
+      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary via-blue-600 to-indigo-600 text-white">
         <div className="flex items-center gap-3">
           <button
             onClick={onClose}
@@ -393,8 +393,8 @@ function SidePanelChat({
         {showQuickActions && (
           <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
             <div className="text-center py-4">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-violet-100 to-purple-100 mb-3">
-                <Sparkles className="w-6 h-6 text-purple-600" />
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary/10 to-blue-100 mb-3">
+                <Sparkles className="w-6 h-6 text-primary" />
               </div>
               <h4 className="text-sm font-medium text-gray-900 mb-1">
                 Let's build your resume together
@@ -412,8 +412,8 @@ function SidePanelChat({
                   className={cn(
                     'px-3 py-2 text-xs font-medium rounded-lg',
                     'bg-white border border-gray-200',
-                    'text-gray-700 hover:text-purple-700',
-                    'hover:border-purple-300 hover:bg-purple-50',
+                    'text-gray-700 hover:text-primary',
+                    'hover:border-primary/30 hover:bg-primary/5',
                     'transition-all duration-200',
                     'shadow-sm hover:shadow'
                   )}
@@ -437,9 +437,9 @@ function SidePanelChat({
         {/* Streaming indicator */}
         {isStreamingResume && (
           <div className="flex items-center justify-center gap-2 py-2 animate-in fade-in duration-300">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-full">
-              <Loader2 className="w-3 h-3 text-purple-600 animate-spin" />
-              <span className="text-xs font-medium text-purple-700">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 border border-primary/20 rounded-full">
+              <Loader2 className="w-3 h-3 text-primary animate-spin" />
+              <span className="text-xs font-medium text-primary">
                 Updating resume...
               </span>
             </div>
@@ -475,13 +475,13 @@ function SidePanelChat({
                   className={cn(
                     'w-full px-3 py-2 text-xs text-left rounded-lg',
                     'bg-white border border-gray-200',
-                    'text-gray-600 hover:text-purple-700',
-                    'hover:border-purple-300 hover:bg-purple-50',
+                    'text-gray-600 hover:text-primary',
+                    'hover:border-primary/30 hover:bg-primary/5',
                     'transition-all duration-200',
                     'flex items-center gap-2'
                   )}
                 >
-                  <Zap className="w-3 h-3 text-purple-500 flex-shrink-0" />
+                  <Zap className="w-3 h-3 text-primary flex-shrink-0" />
                   <span className="line-clamp-2">{question}</span>
                 </button>
               ))}
@@ -509,7 +509,7 @@ function SidePanelChat({
             "flex items-end gap-2 sm:gap-3 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5 sm:p-2",
             isListening
               ? "border-red-400 ring-2 ring-red-500/20 bg-red-50/30"
-              : "border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20"
+              : "border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
           )}>
             <textarea
               ref={inputRef}
@@ -573,8 +573,8 @@ function SidePanelChat({
               disabled={!inputValue.trim() || isLoading || isListening}
               className={cn(
                 'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
-                'bg-gradient-to-r from-violet-500 to-purple-600',
-                'hover:from-violet-600 hover:to-purple-700',
+                'bg-gradient-to-r from-primary to-blue-600',
+                'hover:from-primary/90 hover:to-blue-700',
                 'disabled:opacity-40 disabled:cursor-not-allowed',
                 'shadow-md hover:shadow-lg',
                 'transition-all duration-200'
@@ -664,7 +664,7 @@ function FloatingChatPanel({
       )}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white">
+      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary via-blue-600 to-indigo-600 text-white">
         <div className="flex items-center gap-2">
           <div className="p-1.5 bg-white/20 rounded-lg">
             <Sparkles className="w-4 h-4" />
@@ -709,8 +709,8 @@ function FloatingChatPanel({
                   className={cn(
                     'px-3 py-1.5 text-xs font-medium rounded-full',
                     'bg-white border border-gray-200',
-                    'text-gray-700 hover:text-purple-700',
-                    'hover:border-purple-300 hover:bg-purple-50',
+                    'text-gray-700 hover:text-primary',
+                    'hover:border-primary/30 hover:bg-primary/5',
                     'transition-all duration-200',
                     'shadow-sm hover:shadow'
                   )}
@@ -734,9 +734,9 @@ function FloatingChatPanel({
         {/* Streaming indicator */}
         {isStreamingResume && (
           <div className="flex items-center justify-center gap-2 py-2 animate-in fade-in duration-300">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-full">
-              <Loader2 className="w-3 h-3 text-purple-600 animate-spin" />
-              <span className="text-xs font-medium text-purple-700">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 border border-primary/20 rounded-full">
+              <Loader2 className="w-3 h-3 text-primary animate-spin" />
+              <span className="text-xs font-medium text-primary">
                 Updating resume...
               </span>
             </div>
@@ -772,13 +772,13 @@ function FloatingChatPanel({
                   className={cn(
                     'w-full px-3 py-2 text-xs text-left rounded-lg',
                     'bg-white border border-gray-200',
-                    'text-gray-600 hover:text-purple-700',
-                    'hover:border-purple-300 hover:bg-purple-50',
+                    'text-gray-600 hover:text-primary',
+                    'hover:border-primary/30 hover:bg-primary/5',
                     'transition-all duration-200',
                     'flex items-center gap-2'
                   )}
                 >
-                  <Zap className="w-3 h-3 text-purple-500 flex-shrink-0" />
+                  <Zap className="w-3 h-3 text-primary flex-shrink-0" />
                   <span className="line-clamp-2">{question}</span>
                 </button>
               ))}
@@ -806,7 +806,7 @@ function FloatingChatPanel({
             "flex items-end gap-2 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5",
             isListening
               ? "border-red-400 ring-2 ring-red-500/20 bg-red-50/30"
-              : "border-gray-200 focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-500/20"
+              : "border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
           )}>
             <textarea
               ref={inputRef}
@@ -870,8 +870,8 @@ function FloatingChatPanel({
               disabled={!inputValue.trim() || isLoading || isListening}
               className={cn(
                 'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
-                'bg-gradient-to-r from-violet-500 to-purple-600',
-                'hover:from-violet-600 hover:to-purple-700',
+                'bg-gradient-to-r from-primary to-blue-600',
+                'hover:from-primary/90 hover:to-blue-700',
                 'disabled:opacity-40 disabled:cursor-not-allowed',
                 'shadow-md hover:shadow-lg',
                 'transition-all duration-200'
@@ -923,7 +923,7 @@ function MessageBubble({ message, isLast }: MessageBubbleProps) {
           'flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center',
           isUser
             ? 'bg-gray-200 text-gray-600'
-            : 'bg-gradient-to-br from-violet-500 to-purple-600 text-white'
+            : 'bg-gradient-to-br from-primary to-blue-600 text-white'
         )}
       >
         {isUser ? (
@@ -938,7 +938,7 @@ function MessageBubble({ message, isLast }: MessageBubbleProps) {
         className={cn(
           'max-w-[80%] px-4 py-2.5 rounded-2xl',
           isUser
-            ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-br-md'
+            ? 'bg-gradient-to-r from-primary to-blue-600 text-white rounded-br-md'
             : 'bg-white text-gray-800 border border-gray-200 rounded-bl-md shadow-sm'
         )}
       >
@@ -975,9 +975,9 @@ function MessageBubble({ message, isLast }: MessageBubbleProps) {
 function TypingIndicator() {
   return (
     <div className="flex items-center gap-1 py-1">
-      <span className="w-2 h-2 bg-purple-400 rounded-full animate-typing-dot" />
-      <span className="w-2 h-2 bg-purple-400 rounded-full animate-typing-dot" style={{ animationDelay: '0.2s' }} />
-      <span className="w-2 h-2 bg-purple-400 rounded-full animate-typing-dot" style={{ animationDelay: '0.4s' }} />
+      <span className="w-2 h-2 bg-primary rounded-full animate-typing-dot" />
+      <span className="w-2 h-2 bg-primary rounded-full animate-typing-dot" style={{ animationDelay: '0.2s' }} />
+      <span className="w-2 h-2 bg-primary rounded-full animate-typing-dot" style={{ animationDelay: '0.4s' }} />
     </div>
   );
 }

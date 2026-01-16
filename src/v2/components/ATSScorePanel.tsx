@@ -132,7 +132,7 @@ export function ATSScorePanel({
         'animate-in zoom-in-95 slide-in-from-bottom-4 duration-300'
       )}>
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white">
+        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-gradient-to-r from-primary via-blue-600 to-indigo-600 text-white">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/20 rounded-xl">
               <Target className="w-5 h-5" />
@@ -158,7 +158,7 @@ export function ATSScorePanel({
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                <Briefcase className="w-4 h-4 text-purple-500" />
+                <Briefcase className="w-4 h-4 text-primary" />
                 Job Description (Optional)
               </label>
               {hasJobDescription && (
@@ -171,7 +171,7 @@ export function ATSScorePanel({
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job description here for a more accurate keyword analysis..."
-              className="min-h-[100px] resize-none border-gray-200 focus:border-purple-400 focus:ring-purple-400/20"
+              className="min-h-[100px] resize-none border-gray-200 focus:border-primary focus:ring-primary/20"
             />
             <p className="text-xs text-gray-500">
               Adding a job description enables keyword matching analysis (40% of score)
@@ -184,9 +184,9 @@ export function ATSScorePanel({
             disabled={isAnalyzing}
             className={cn(
               'w-full h-12 text-base font-medium',
-              'bg-gradient-to-r from-violet-500 to-purple-600',
-              'hover:from-violet-600 hover:to-purple-700',
-              'shadow-lg shadow-purple-500/25',
+              'bg-gradient-to-r from-primary to-blue-600',
+              'hover:from-primary/90 hover:to-blue-700',
+              'shadow-lg shadow-primary/25',
               'transition-all duration-200'
             )}
           >
@@ -294,12 +294,12 @@ export function ATSScorePanel({
                     </p>
                     <div className="flex gap-4 text-sm text-gray-500 pt-2">
                       <div className="flex items-center gap-1">
-                        <FileCheck className="w-4 h-4 text-purple-500" />
+                        <FileCheck className="w-4 h-4 text-primary" />
                         Format: {result.format.score}%
                       </div>
                       {result.keywords && (
                         <div className="flex items-center gap-1">
-                          <Target className="w-4 h-4 text-purple-500" />
+                          <Target className="w-4 h-4 text-primary" />
                           Keywords: {result.keywords.totalFound}/{result.keywords.totalInJob}
                         </div>
                       )}
@@ -314,7 +314,7 @@ export function ATSScorePanel({
                   <CollapsibleTrigger asChild>
                     <button className="flex items-center justify-between w-full p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors">
                       <div className="flex items-center gap-2">
-                        <Target className="w-5 h-5 text-purple-500" />
+                        <Target className="w-5 h-5 text-primary" />
                         <span className="font-medium text-gray-900">Keyword Analysis</span>
                         <span className="text-sm text-gray-500">
                           ({result.keywords.totalFound} of {result.keywords.totalInJob} found)
@@ -472,7 +472,7 @@ export function ATSScorePanel({
                     {result.tips.map((tip, idx) => (
                       <div
                         key={idx}
-                        className="p-4 rounded-xl border bg-white border-gray-200 hover:border-purple-300 transition-colors"
+                        className="p-4 rounded-xl border bg-white border-gray-200 hover:border-primary/30 transition-colors"
                       >
                         <div className="flex items-start gap-3">
                           <div className={cn(
@@ -505,7 +505,7 @@ export function ATSScorePanel({
               {/* Section Completeness */}
               <div className="p-4 bg-gray-50 rounded-xl">
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
-                  <FileCheck className="w-5 h-5 text-purple-500" />
+                  <FileCheck className="w-5 h-5 text-primary" />
                   Section Completeness
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
@@ -536,8 +536,8 @@ export function ATSScorePanel({
           {isAnalyzing && (
             <div className="flex flex-col items-center justify-center py-12 space-y-4">
               <div className="relative">
-                <div className="w-20 h-20 border-4 border-purple-200 rounded-full animate-pulse" />
-                <Loader2 className="absolute inset-0 m-auto w-10 h-10 text-purple-600 animate-spin" />
+                <div className="w-20 h-20 border-4 border-primary/20 rounded-full animate-pulse" />
+                <Loader2 className="absolute inset-0 m-auto w-10 h-10 text-primary animate-spin" />
               </div>
               <p className="text-gray-600 font-medium">Analyzing your resume...</p>
               <p className="text-sm text-gray-500">Checking ATS compatibility and keywords</p>

@@ -2921,9 +2921,9 @@ export const BuilderV2: React.FC = () => {
             'lg:px-5 lg:py-3.5',
             // Mobile: compact icon-only or smaller
             'px-4 py-3',
-            'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600',
-            'text-white font-medium shadow-lg shadow-purple-500/30',
-            'hover:shadow-xl hover:shadow-purple-500/40',
+            'bg-gradient-to-r from-primary via-blue-600 to-indigo-600',
+            'text-white font-medium shadow-lg shadow-primary/30',
+            'hover:shadow-xl hover:shadow-primary/40',
             'active:scale-95',
             'transition-all duration-200'
           )}

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin, Check, X, Crown, Wand2, Upload, Linkedin, Infinity } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin, Check, X, Crown, Wand2, Upload, Linkedin, Infinity, MessageSquare, FileSearch, BrainCircuit, Mic, Send, Bot, ClipboardCheck, FileUp, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -495,8 +495,8 @@ const Hero = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero Section - Inspired by Stripe, Linear, Vercel */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+      {/* Hero Section - Inspired by Stripe, Linear, Vercel - Responsive */}
+      <section className="relative min-h-screen lg:min-h-[90vh] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0">
         {/* Subtle gradient mesh background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_60%,rgba(59,130,246,0.08),rgba(255,255,255,0))]" />
@@ -511,63 +511,70 @@ const Hero = () => {
 
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-8 items-center">
               
-              {/* Left Side - Content (7 columns) */}
-              <div className="lg:col-span-6 space-y-8 text-center lg:text-left">
-                
-                {/* Minimal Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/10 text-xs font-medium text-primary/80 backdrop-blur-sm">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                  </span>
-                  <span>Professional Resume Builder</span>
+              {/* Left Side - Content (6 columns on desktop) */}
+              <div className="lg:col-span-6 space-y-5 sm:space-y-6 lg:space-y-8 text-center lg:text-left order-2 lg:order-1">
+
+                {/* Minimal Badge - Responsive */}
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-blue-500/10 border border-primary/30 text-[10px] sm:text-xs font-medium text-primary backdrop-blur-sm">
+                  <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                  <span>AI-Powered Resume Builder</span>
                 </div>
 
-                {/* Headline - Clean, impactful */}
-                <div className="space-y-4">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight text-foreground leading-[1.1]">
+                {/* Headline - Clean, impactful - Responsive */}
+                <div className="space-y-3 sm:space-y-4">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
                     Build resumes that
-                    <span className="block bg-gradient-to-r from-primary via-blue-600 to-violet-600 bg-clip-text text-transparent">
+                    <span className="block bg-gradient-to-r from-primary via-blue-600 to-blue-500 bg-clip-text text-transparent">
                       get you hired
                     </span>
                   </h1>
-                  
-                  {/* Subheadline - Concise */}
-                  <p className="text-lg sm:text-xl text-muted-foreground/80 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
-                    Professional templates. ATS-optimized formatting. Easy customization.
-                    Create your perfect resume in minutes.
+
+                  {/* Subheadline - Concise - Responsive */}
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground/80 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
+                    AI-powered tools to enhance, tailor, and optimize your resume.
+                    50+ professional templates. ATS-friendly formatting.
                   </p>
                 </div>
 
-                {/* CTA Button - Single prominent button */}
-                <div className="flex flex-col sm:flex-row gap-4 pt-4 items-center justify-center lg:justify-start">
+                {/* CTA Buttons - Responsive */}
+                <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-2 sm:pt-4 items-center justify-center lg:justify-start">
                   <Button
-                    className="h-12 px-8 text-base font-semibold bg-primary text-white hover:bg-primary/90 rounded-full shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 group"
+                    className="h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-semibold bg-primary text-white hover:bg-primary/90 rounded-full shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 group w-full sm:w-auto"
                     onClick={() => navigate("/templates")}
                   >
-                    <span>View templates</span>
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                    <span>Get Started Free</span>
+                    <ArrowRight className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-10 sm:h-12 px-5 sm:px-6 text-sm sm:text-base font-medium rounded-full border-primary/30 text-primary hover:bg-primary/5 transition-all duration-300 group w-full sm:w-auto"
+                    onClick={() => {
+                      document.getElementById('ai-features')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <Sparkles className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span>See AI Features</span>
                   </Button>
                 </div>
 
-                {/* Social Proof - Real stats with animation */}
-                <div className="flex items-center justify-center lg:justify-start pt-8 border-t border-border/40">
-                  <div className="flex items-center gap-6">
+                {/* Social Proof - Real stats with animation - Responsive */}
+                <div className="flex items-center justify-center lg:justify-start pt-5 sm:pt-6 lg:pt-8 border-t border-border/40">
+                  <div className="flex items-center gap-4 sm:gap-6">
                     {/* Users count */}
-                    <div className="flex items-center gap-3">
-                      <div className="flex -space-x-2">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="flex -space-x-1.5 sm:-space-x-2">
                         {[1, 2, 3, 4].map((i) => (
                           <div
                             key={i}
-                            className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-2 border-background flex items-center justify-center text-[10px] font-medium text-gray-600"
+                            className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-2 border-background flex items-center justify-center text-[8px] sm:text-[10px] font-medium text-gray-600"
                           >
                             {['JD', 'AK', 'MR', 'SL'][i-1]}
                           </div>
                         ))}
                       </div>
-                      <div className="text-sm">
+                      <div className="text-xs sm:text-sm">
                         <span className="font-semibold text-foreground">
                           {statsLoading ? "..." : (
                             <AnimatedCounter
@@ -582,14 +589,14 @@ const Hero = () => {
                     </div>
 
                     {/* Divider */}
-                    <div className="h-8 w-px bg-border/60" />
+                    <div className="h-6 sm:h-8 w-px bg-border/60" />
 
                     {/* Downloads count */}
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center">
-                        <Download className="w-4 h-4 text-primary" />
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center">
+                        <Download className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
                       </div>
-                      <div className="text-sm">
+                      <div className="text-xs sm:text-sm">
                         <span className="font-semibold text-foreground">
                           {statsLoading ? "..." : (
                             <AnimatedCounter
@@ -606,10 +613,10 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Right Side - Stacked Resume Previews (6 columns) */}
-              <div className="lg:col-span-6 relative hidden lg:flex justify-center items-center py-4">
-                {/* Background decorative elements */}
-                <div className="absolute inset-0 overflow-hidden">
+              {/* Right Side - Stacked Resume Previews (6 columns) - Shows first on mobile */}
+              <div className="lg:col-span-6 relative flex justify-center items-center py-2 sm:py-4 order-1 lg:order-2">
+                {/* Background decorative elements - hidden on mobile for cleaner look */}
+                <div className="absolute inset-0 overflow-hidden hidden lg:block">
                   <div className="absolute top-10 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
                   <div className="absolute bottom-10 left-10 w-56 h-56 bg-blue-100/50 rounded-full blur-2xl" />
                   {/* Dot pattern */}
@@ -625,39 +632,40 @@ const Hero = () => {
                   </div>
                 </div>
 
-                {/* Stacked Resume Cards */}
-                <div className="relative w-full max-w-[480px] h-[600px]">
+                {/* Stacked Resume Cards - Responsive */}
+                <div className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[480px] h-[380px] sm:h-[450px] lg:h-[600px]">
 
                   {/* Shadow/Back card - slight angle offset to the right */}
                   <div
-                    className="absolute bg-[#c7d2de] rounded-xl"
+                    className="absolute bg-[#c7d2de] rounded-lg lg:rounded-xl"
                     style={{
-                      width: '360px',
-                      height: '500px',
-                      top: '55px',
-                      left: '75px',
-                      transform: 'rotate(3deg)',
+                      width: 'calc(100% - 40px)',
+                      maxWidth: '360px',
+                      height: 'calc(100% - 100px)',
+                      top: '35px',
+                      left: '50%',
+                      transform: 'translateX(-50%) translateX(15px) rotate(3deg)',
                     }}
                   />
 
-                  {/* Main Resume Card */}
+                  {/* Main Resume Card - Responsive sizing */}
                   <div
-                    className="absolute bg-white rounded-xl overflow-hidden"
+                    className="absolute bg-white rounded-lg lg:rounded-xl overflow-hidden left-1/2 -translate-x-1/2"
                     style={{
-                      width: '360px',
-                      height: '500px',
-                      top: '30px',
-                      left: '50px',
+                      width: 'calc(100% - 40px)',
+                      maxWidth: '360px',
+                      height: 'calc(100% - 100px)',
+                      top: '15px',
                       boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
                     }}
                   >
                     {/* Two-column layout */}
                     <div className="flex h-full">
-                      {/* Left Sidebar - Dark blue */}
-                      <div className="w-[36%] bg-[#1e3a5f] text-white p-4 space-y-3">
-                        {/* Profile Photo */}
-                        <div className="flex justify-center pt-1">
-                          <div className="w-16 h-16 rounded-full border-3 border-white/40 overflow-hidden shadow-lg">
+                      {/* Left Sidebar - Dark blue - Responsive padding */}
+                      <div className="w-[36%] bg-[#1e3a5f] text-white p-2 sm:p-3 lg:p-4 space-y-2 sm:space-y-3">
+                        {/* Profile Photo - Responsive size */}
+                        <div className="flex justify-center pt-0.5 sm:pt-1">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full border-2 lg:border-3 border-white/40 overflow-hidden shadow-lg">
                             <img
                               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
                               alt="Profile"
@@ -666,38 +674,38 @@ const Hero = () => {
                           </div>
                         </div>
 
-                        {/* Contact Section */}
-                        <div className="space-y-1.5">
-                          <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-1">Contact</h4>
-                          <div className="space-y-1.5 text-[7px] text-white/85">
-                            <div className="flex items-center gap-1.5">
-                              <Phone className="w-2.5 h-2.5 text-white/60" />
-                              <span>+61 0412 345 678</span>
+                        {/* Contact Section - Responsive text */}
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <h4 className="text-[6px] sm:text-[7px] lg:text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-0.5 sm:pb-1">Contact</h4>
+                          <div className="space-y-0.5 sm:space-y-1 lg:space-y-1.5 text-[5px] sm:text-[6px] lg:text-[7px] text-white/85">
+                            <div className="flex items-center gap-1 sm:gap-1.5">
+                              <Phone className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white/60 flex-shrink-0" />
+                              <span className="truncate">+61 0412 345 678</span>
                             </div>
-                            <div className="flex items-center gap-1.5">
-                              <Mail className="w-2.5 h-2.5 text-white/60" />
-                              <span>sarah@email.com</span>
+                            <div className="flex items-center gap-1 sm:gap-1.5">
+                              <Mail className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white/60 flex-shrink-0" />
+                              <span className="truncate">sarah@email.com</span>
                             </div>
-                            <div className="flex items-center gap-1.5">
-                              <Globe className="w-2.5 h-2.5 text-white/60" />
-                              <span>sarahdesigns.com</span>
+                            <div className="flex items-center gap-1 sm:gap-1.5">
+                              <Globe className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white/60 flex-shrink-0" />
+                              <span className="truncate">sarahdesigns.com</span>
                             </div>
-                            <div className="flex items-center gap-1.5">
-                              <MapPin className="w-2.5 h-2.5 text-white/60" />
-                              <span>Sydney, Australia</span>
+                            <div className="flex items-center gap-1 sm:gap-1.5">
+                              <MapPin className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-white/60 flex-shrink-0" />
+                              <span className="truncate">Sydney, Australia</span>
                             </div>
                           </div>
                         </div>
 
-                        {/* Skills */}
-                        <div className="space-y-1.5">
-                          <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-1">Skills</h4>
-                          <div className="space-y-1 text-[7px] text-white/85">
+                        {/* Skills - Responsive */}
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <h4 className="text-[6px] sm:text-[7px] lg:text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-0.5 sm:pb-1">Skills</h4>
+                          <div className="space-y-0.5 sm:space-y-1 text-[5px] sm:text-[6px] lg:text-[7px] text-white/85">
                             <div className="flex items-center justify-between">
                               <span>React.js</span>
                               <div className="flex gap-0.5">
                                 {[1,2,3,4,5].map(i => (
-                                  <div key={i} className={`w-1 h-1 rounded-full ${i <= 5 ? 'bg-white/80' : 'bg-white/30'}`} />
+                                  <div key={i} className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full ${i <= 5 ? 'bg-white/80' : 'bg-white/30'}`} />
                                 ))}
                               </div>
                             </div>
@@ -705,7 +713,7 @@ const Hero = () => {
                               <span>Node.js</span>
                               <div className="flex gap-0.5">
                                 {[1,2,3,4,5].map(i => (
-                                  <div key={i} className={`w-1 h-1 rounded-full ${i <= 4 ? 'bg-white/80' : 'bg-white/30'}`} />
+                                  <div key={i} className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full ${i <= 4 ? 'bg-white/80' : 'bg-white/30'}`} />
                                 ))}
                               </div>
                             </div>
@@ -713,7 +721,7 @@ const Hero = () => {
                               <span>TypeScript</span>
                               <div className="flex gap-0.5">
                                 {[1,2,3,4,5].map(i => (
-                                  <div key={i} className={`w-1 h-1 rounded-full ${i <= 4 ? 'bg-white/80' : 'bg-white/30'}`} />
+                                  <div key={i} className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full ${i <= 4 ? 'bg-white/80' : 'bg-white/30'}`} />
                                 ))}
                               </div>
                             </div>
@@ -721,101 +729,101 @@ const Hero = () => {
                               <span>AWS</span>
                               <div className="flex gap-0.5">
                                 {[1,2,3,4,5].map(i => (
-                                  <div key={i} className={`w-1 h-1 rounded-full ${i <= 3 ? 'bg-white/80' : 'bg-white/30'}`} />
+                                  <div key={i} className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full ${i <= 3 ? 'bg-white/80' : 'bg-white/30'}`} />
                                 ))}
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Languages */}
-                        <div className="space-y-1.5">
-                          <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-1">Languages</h4>
-                          <div className="space-y-1 text-[7px]">
+                        {/* Languages - Responsive */}
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <h4 className="text-[6px] sm:text-[7px] lg:text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-0.5 sm:pb-1">Languages</h4>
+                          <div className="space-y-0.5 sm:space-y-1 text-[5px] sm:text-[6px] lg:text-[7px]">
                             <div className="flex justify-between">
                               <span className="text-white/85">English</span>
-                              <span className="text-white/50 text-[6px]">Native</span>
+                              <span className="text-white/50 text-[4px] sm:text-[5px] lg:text-[6px]">Native</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-white/85">Spanish</span>
-                              <span className="text-white/50 text-[6px]">Fluent</span>
+                              <span className="text-white/50 text-[4px] sm:text-[5px] lg:text-[6px]">Fluent</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-white/85">French</span>
-                              <span className="text-white/50 text-[6px]">Basic</span>
+                              <span className="text-white/50 text-[4px] sm:text-[5px] lg:text-[6px]">Basic</span>
                             </div>
                           </div>
                         </div>
 
-                        {/* Certifications */}
-                        <div className="space-y-1.5">
-                          <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-1">Certifications</h4>
-                          <div className="space-y-1 text-[6px] text-white/80">
+                        {/* Certifications - Responsive */}
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <h4 className="text-[6px] sm:text-[7px] lg:text-[9px] font-bold uppercase tracking-wider text-white/60 border-b border-white/20 pb-0.5 sm:pb-1">Certifications</h4>
+                          <div className="space-y-0.5 sm:space-y-1 text-[4px] sm:text-[5px] lg:text-[6px] text-white/80">
                             <div>AWS Solutions Architect</div>
                             <div>Google Cloud Professional</div>
                           </div>
                         </div>
                       </div>
 
-                      {/* Right Content - White */}
-                      <div className="flex-1 p-4 space-y-2.5 bg-white">
+                      {/* Right Content - White - Responsive */}
+                      <div className="flex-1 p-2 sm:p-3 lg:p-4 space-y-1.5 sm:space-y-2 lg:space-y-2.5 bg-white">
                         {/* Name & Title */}
-                        <div className="border-b border-gray-100 pb-2">
-                          <h2 className="text-base font-bold text-[#1e3a5f] leading-tight">Sarah Anderson</h2>
-                          <p className="text-[9px] text-[#1e3a5f]/70 font-medium">Senior Full Stack Developer</p>
+                        <div className="border-b border-gray-100 pb-1 sm:pb-1.5 lg:pb-2">
+                          <h2 className="text-[10px] sm:text-xs lg:text-base font-bold text-[#1e3a5f] leading-tight">Sarah Anderson</h2>
+                          <p className="text-[6px] sm:text-[7px] lg:text-[9px] text-[#1e3a5f]/70 font-medium">Senior Full Stack Developer</p>
                         </div>
 
                         {/* Summary */}
-                        <div className="space-y-1">
-                          <h4 className="text-[8px] font-bold uppercase tracking-wider text-[#1e3a5f]">Professional Summary</h4>
-                          <p className="text-[7px] text-gray-600 leading-relaxed">
+                        <div className="space-y-0.5 sm:space-y-1">
+                          <h4 className="text-[5px] sm:text-[6px] lg:text-[8px] font-bold uppercase tracking-wider text-[#1e3a5f]">Professional Summary</h4>
+                          <p className="text-[4px] sm:text-[5px] lg:text-[7px] text-gray-600 leading-relaxed line-clamp-3 sm:line-clamp-none">
                             Innovative Full Stack Developer with 6+ years of experience building high-performance web applications. Specialized in React, Node.js, and cloud architecture. Proven track record of leading teams and delivering scalable solutions.
                           </p>
                         </div>
 
-                        {/* Experience */}
-                        <div className="space-y-1.5">
-                          <h4 className="text-[8px] font-bold uppercase tracking-wider text-[#1e3a5f]">Work Experience</h4>
-                          <div className="space-y-2">
+                        {/* Experience - Responsive */}
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <h4 className="text-[5px] sm:text-[6px] lg:text-[8px] font-bold uppercase tracking-wider text-[#1e3a5f]">Work Experience</h4>
+                          <div className="space-y-1 sm:space-y-1.5 lg:space-y-2">
                             <div>
                               <div className="flex justify-between items-baseline">
-                                <p className="text-[8px] font-semibold text-gray-900">Senior Software Engineer</p>
-                                <span className="text-[6px] text-gray-400">2021 - Present</span>
+                                <p className="text-[5px] sm:text-[6px] lg:text-[8px] font-semibold text-gray-900">Senior Software Engineer</p>
+                                <span className="text-[4px] sm:text-[5px] lg:text-[6px] text-gray-400">2021 - Present</span>
                               </div>
-                              <p className="text-[7px] text-[#1e3a5f] font-medium">ServiceNow • Hyderabad</p>
-                              <ul className="mt-0.5 space-y-0.5 text-[6px] text-gray-600">
-                                <li className="flex items-start gap-1">
+                              <p className="text-[4px] sm:text-[5px] lg:text-[7px] text-[#1e3a5f] font-medium">ServiceNow • Hyderabad</p>
+                              <ul className="mt-0.5 space-y-0.5 text-[4px] sm:text-[5px] lg:text-[6px] text-gray-600 hidden sm:block">
+                                <li className="flex items-start gap-0.5 sm:gap-1">
                                   <span className="text-[#1e3a5f] mt-0.5">•</span>
                                   <span>Led development of enterprise SaaS platform serving 10K+ users</span>
                                 </li>
-                                <li className="flex items-start gap-1">
+                                <li className="flex items-start gap-0.5 sm:gap-1">
                                   <span className="text-[#1e3a5f] mt-0.5">•</span>
                                   <span>Managed and mentored team of 5 junior developers</span>
                                 </li>
-                                <li className="flex items-start gap-1">
+                                <li className="flex items-start gap-0.5 sm:gap-1">
                                   <span className="text-[#1e3a5f] mt-0.5">•</span>
                                   <span>Reduced API response time by 40% through optimization</span>
                                 </li>
                               </ul>
                             </div>
-                            <div>
+                            <div className="hidden sm:block">
                               <div className="flex justify-between items-baseline">
-                                <p className="text-[8px] font-semibold text-gray-900">Software Developer</p>
-                                <span className="text-[6px] text-gray-400">2019 - 2021</span>
+                                <p className="text-[5px] sm:text-[6px] lg:text-[8px] font-semibold text-gray-900">Software Developer</p>
+                                <span className="text-[4px] sm:text-[5px] lg:text-[6px] text-gray-400">2019 - 2021</span>
                               </div>
-                              <p className="text-[7px] text-gray-500">Innova Labs • Bangalore</p>
-                              <ul className="mt-0.5 space-y-0.5 text-[6px] text-gray-600">
-                                <li className="flex items-start gap-1">
+                              <p className="text-[4px] sm:text-[5px] lg:text-[7px] text-gray-500">Innova Labs • Bangalore</p>
+                              <ul className="mt-0.5 space-y-0.5 text-[4px] sm:text-[5px] lg:text-[6px] text-gray-600">
+                                <li className="flex items-start gap-0.5 sm:gap-1">
                                   <span className="text-[#1e3a5f] mt-0.5">•</span>
                                   <span>Built RESTful APIs and microservices architecture</span>
                                 </li>
-                                <li className="flex items-start gap-1">
+                                <li className="flex items-start gap-0.5 sm:gap-1 hidden lg:flex">
                                   <span className="text-[#1e3a5f] mt-0.5">•</span>
                                   <span>Implemented CI/CD pipelines reducing deployment time by 60%</span>
                                 </li>
                               </ul>
                             </div>
-                            <div>
+                            <div className="hidden lg:block">
                               <div className="flex justify-between items-baseline">
                                 <p className="text-[8px] font-semibold text-gray-900">Junior Developer</p>
                                 <span className="text-[6px] text-gray-400">2017 - 2019</span>
@@ -825,49 +833,501 @@ const Hero = () => {
                           </div>
                         </div>
 
-                        {/* Education */}
-                        <div className="space-y-1">
-                          <h4 className="text-[8px] font-bold uppercase tracking-wider text-[#1e3a5f]">Education</h4>
+                        {/* Education - Responsive */}
+                        <div className="space-y-0.5 sm:space-y-1">
+                          <h4 className="text-[5px] sm:text-[6px] lg:text-[8px] font-bold uppercase tracking-wider text-[#1e3a5f]">Education</h4>
                           <div className="flex justify-between items-baseline">
                             <div>
-                              <p className="text-[8px] font-semibold text-gray-900">B.Tech in Computer Science</p>
-                              <p className="text-[6px] text-gray-500">Indian Institute of Technology, Delhi</p>
+                              <p className="text-[5px] sm:text-[6px] lg:text-[8px] font-semibold text-gray-900">B.Tech in Computer Science</p>
+                              <p className="text-[4px] sm:text-[5px] lg:text-[6px] text-gray-500">Indian Institute of Technology, Delhi</p>
                             </div>
-                            <span className="text-[6px] text-gray-400">2013 - 2017</span>
+                            <span className="text-[4px] sm:text-[5px] lg:text-[6px] text-gray-400">2013 - 2017</span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Floating Badge - ATS Optimized */}
-                  <div className="absolute -top-2 left-4 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-2.5 animate-float z-10">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  {/* Floating Badge - ATS Optimized - Responsive */}
+                  <div className="absolute -top-1 sm:-top-2 left-0 sm:left-4 bg-white rounded-lg sm:rounded-xl shadow-lg border border-gray-100 px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 animate-float z-10">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-md sm:rounded-lg bg-emerald-100 flex items-center justify-center">
+                        <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-emerald-600" />
                       </div>
-                      <span className="text-sm font-medium text-gray-700">ATS-Optimized</span>
+                      <span className="text-[10px] sm:text-xs lg:text-sm font-medium text-gray-700">ATS-Optimized</span>
                     </div>
                   </div>
 
-                  {/* Floating Badge - Templates Count */}
-                  <div className="absolute bottom-16 -right-4 bg-[#1e3a5f] rounded-xl shadow-lg px-4 py-2.5 animate-float z-10" style={{ animationDelay: '0.5s' }}>
-                    <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-white" />
-                      <span className="text-sm font-medium text-white">10+ Templates</span>
+                  {/* Floating Badge - Templates Count - Responsive */}
+                  <div className="absolute bottom-12 sm:bottom-14 lg:bottom-16 -right-1 sm:-right-2 lg:-right-4 bg-[#1e3a5f] rounded-lg sm:rounded-xl shadow-lg px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 animate-float z-10" style={{ animationDelay: '0.5s' }}>
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 text-white" />
+                      <span className="text-[10px] sm:text-xs lg:text-sm font-medium text-white">50+ Templates</span>
                     </div>
                   </div>
 
-                  {/* Floating Badge - PDF Ready */}
-                  <div className="absolute -bottom-2 left-12 bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-2.5 animate-float z-10" style={{ animationDelay: '1s' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-amber-100 flex items-center justify-center">
-                        <Download className="w-3.5 h-3.5 text-amber-600" />
+                  {/* Floating Badge - AI Powered - Responsive */}
+                  <div className="absolute -bottom-1 sm:-bottom-2 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-8 lg:left-12 bg-gradient-to-r from-primary to-blue-600 rounded-lg sm:rounded-xl shadow-lg shadow-primary/30 px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 animate-float z-10" style={{ animationDelay: '1s' }}>
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-md sm:rounded-lg bg-white/20 flex items-center justify-center">
+                        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-white" />
                       </div>
-                      <span className="text-sm font-medium text-gray-700">PDF Ready</span>
+                      <span className="text-[10px] sm:text-xs lg:text-sm font-medium text-white">AI-Powered</span>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AI-Powered Features Showcase Section */}
+      <section id="ai-features" className="py-16 md:py-24 relative overflow-hidden">
+        {/* Gradient background - Blue themed */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-sky-50/50 to-indigo-50" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(59,130,246,0.15),rgba(255,255,255,0))]" />
+
+        {/* Floating orbs - Blue themed */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-sky-400/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 left-1/4 w-72 h-72 bg-gradient-to-r from-primary/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        </div>
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-7xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center space-y-4 mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-blue-100 border border-primary/30 text-sm font-medium text-primary backdrop-blur-sm">
+                <BrainCircuit className="h-4 w-4" />
+                <span>AI-Powered Features</span>
+                <Badge className="ml-1 bg-primary text-white text-[10px] px-1.5">PRO</Badge>
+              </div>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
+                Supercharge Your Resume with{" "}
+                <span className="bg-gradient-to-r from-primary via-blue-600 to-blue-500 bg-clip-text text-transparent">
+                  AI Intelligence
+                </span>
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+                Our AI-powered tools help you create, optimize, and tailor your resume for maximum impact.
+                See exactly how each feature works before you upgrade.
+              </p>
+            </div>
+
+            {/* Feature Cards Grid */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-16">
+
+              {/* Feature 1: LinkedIn Import */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <Linkedin className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">LinkedIn Import</h3>
+                        <p className="text-sm text-muted-foreground">Import your profile in seconds</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-blue-200 text-blue-600 bg-blue-50">PRO</Badge>
+                  </div>
+
+                  {/* Visual Demo */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div className="h-8 w-8 rounded bg-blue-100 flex items-center justify-center">
+                          <Linkedin className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-xs font-medium text-gray-700">linkedin.com/in/yourprofile</div>
+                          <div className="text-[10px] text-gray-400">Paste your LinkedIn URL</div>
+                        </div>
+                      </div>
+
+                      {/* Arrow indicator */}
+                      <div className="flex justify-center">
+                        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center animate-bounce">
+                          <ArrowRight className="h-4 w-4 text-white rotate-90" />
+                        </div>
+                      </div>
+
+                      {/* Result preview */}
+                      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          <span className="text-xs font-medium text-green-600">Profile imported!</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-[10px] text-gray-600">
+                          <div className="flex items-center gap-1"><Check className="h-3 w-3 text-green-500" /> Work Experience</div>
+                          <div className="flex items-center gap-1"><Check className="h-3 w-3 text-green-500" /> Education</div>
+                          <div className="flex items-center gap-1"><Check className="h-3 w-3 text-green-500" /> Skills</div>
+                          <div className="flex items-center gap-1"><Check className="h-3 w-3 text-green-500" /> Summary</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Automatically import your work history, education, skills, and more from LinkedIn. No manual typing required.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 2: Resume Import */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <FileUp className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">Resume Upload & Parse</h3>
+                        <p className="text-sm text-muted-foreground">Import existing resume files</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-emerald-200 text-emerald-600 bg-emerald-50">PRO</Badge>
+                  </div>
+
+                  {/* Visual Demo */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="space-y-3">
+                      {/* Upload area */}
+                      <div className="border-2 border-dashed border-emerald-300 rounded-lg p-4 bg-emerald-50/50 text-center">
+                        <div className="h-10 w-10 mx-auto mb-2 rounded-full bg-emerald-100 flex items-center justify-center">
+                          <Upload className="h-5 w-5 text-emerald-600" />
+                        </div>
+                        <div className="text-xs font-medium text-emerald-700">Drop PDF, DOCX, or TXT</div>
+                        <div className="text-[10px] text-emerald-500">AI extracts all your data</div>
+                      </div>
+
+                      {/* Processing animation */}
+                      <div className="flex items-center justify-center gap-2 py-2">
+                        <div className="flex gap-1">
+                          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        </div>
+                        <span className="text-xs text-emerald-600 font-medium">Parsing with AI...</span>
+                      </div>
+
+                      {/* Extracted sections */}
+                      <div className="grid grid-cols-3 gap-2">
+                        {['Experience', 'Skills', 'Education'].map((item) => (
+                          <div key={item} className="bg-white rounded-lg p-2 border border-gray-200 text-center shadow-sm">
+                            <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto mb-1" />
+                            <span className="text-[10px] font-medium text-gray-700">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Upload your existing resume and our AI will intelligently extract and organize all your information.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 3: AI Resume Enhancement */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-blue-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/30">
+                        <Sparkles className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">AI Enhancement</h3>
+                        <p className="text-sm text-muted-foreground">Make your content shine</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-primary/30 text-primary bg-primary/5">PRO</Badge>
+                  </div>
+
+                  {/* Visual Demo */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="space-y-3">
+                      {/* Before */}
+                      <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                        <div className="text-[10px] text-gray-400 mb-1 uppercase font-medium">Before</div>
+                        <p className="text-xs text-gray-600 line-through opacity-60">
+                          "Worked on software projects and helped the team"
+                        </p>
+                      </div>
+
+                      {/* AI Processing */}
+                      <div className="flex justify-center">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
+                          <Sparkles className="h-3 w-3 text-primary animate-pulse" />
+                          <span className="text-[10px] font-medium text-primary">AI Enhancing...</span>
+                        </div>
+                      </div>
+
+                      {/* After */}
+                      <div className="bg-white rounded-lg p-3 border-2 border-primary/30 shadow-sm relative">
+                        <div className="absolute -top-2 left-3 px-2 py-0.5 bg-primary text-white text-[8px] font-bold rounded uppercase">Enhanced</div>
+                        <div className="text-[10px] text-gray-400 mb-1 uppercase font-medium mt-1">After</div>
+                        <p className="text-xs text-gray-800 font-medium">
+                          "Led development of 5 software projects, improving team velocity by 30% and reducing bug rate by 45%"
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Transform basic descriptions into powerful, achievement-focused bullet points with quantifiable metrics.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 4: Job Tailoring */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                        <Target className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">Job Description Tailoring</h3>
+                        <p className="text-sm text-muted-foreground">Match any job posting</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-amber-200 text-amber-600 bg-amber-50">PRO</Badge>
+                  </div>
+
+                  {/* Visual Demo */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Job Description Input */}
+                      <div className="space-y-2">
+                        <div className="text-[10px] font-medium text-gray-500 uppercase">Job Description</div>
+                        <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm h-24 overflow-hidden">
+                          <div className="text-[9px] text-gray-600 leading-relaxed">
+                            <span className="bg-amber-100 px-0.5 rounded">Senior Software Engineer</span><br/>
+                            Requirements:<br/>
+                            • <span className="bg-amber-100 px-0.5 rounded">React</span> / <span className="bg-amber-100 px-0.5 rounded">TypeScript</span><br/>
+                            • <span className="bg-amber-100 px-0.5 rounded">AWS</span> experience<br/>
+                            • Team leadership
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Tailored Resume */}
+                      <div className="space-y-2">
+                        <div className="text-[10px] font-medium text-gray-500 uppercase">Tailored Resume</div>
+                        <div className="bg-white rounded-lg p-2 border-2 border-amber-300 shadow-sm h-24 overflow-hidden relative">
+                          <div className="absolute top-1 right-1">
+                            <div className="h-4 w-4 rounded-full bg-green-500 flex items-center justify-center">
+                              <Check className="h-2.5 w-2.5 text-white" />
+                            </div>
+                          </div>
+                          <div className="text-[9px] text-gray-600 leading-relaxed">
+                            <span className="text-amber-600 font-semibold">Keywords matched:</span><br/>
+                            ✓ React, TypeScript<br/>
+                            ✓ AWS architecture<br/>
+                            ✓ Led team of 5 devs<br/>
+                            <span className="text-green-600 font-semibold">95% match!</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Paste any job description and our AI will optimize your resume to match keywords and requirements.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 5: ATS Score Checker */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30">
+                        <ClipboardCheck className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">ATS Score Checker</h3>
+                        <p className="text-sm text-muted-foreground">Beat the bots, reach recruiters</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-green-200 text-green-600 bg-green-50">PRO</Badge>
+                  </div>
+
+                  {/* Visual Demo */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="flex items-start gap-4">
+                      {/* Score Circle */}
+                      <div className="relative">
+                        <svg className="w-20 h-20 transform -rotate-90">
+                          <circle
+                            cx="40"
+                            cy="40"
+                            r="32"
+                            fill="none"
+                            stroke="#e5e7eb"
+                            strokeWidth="6"
+                          />
+                          <circle
+                            cx="40"
+                            cy="40"
+                            r="32"
+                            fill="none"
+                            stroke="url(#scoreGradient)"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeDasharray={`${85 * 2.01} ${100 * 2.01}`}
+                          />
+                          <defs>
+                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#22c55e" />
+                              <stop offset="100%" stopColor="#10b981" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <span className="text-xl font-bold text-green-600">85</span>
+                          <span className="text-[8px] text-gray-500">ATS Score</span>
+                        </div>
+                      </div>
+
+                      {/* Score breakdown */}
+                      <div className="flex-1 space-y-2">
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="text-gray-600">Keywords</span>
+                          <span className="font-medium text-green-600">92%</span>
+                        </div>
+                        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <div className="h-full w-[92%] bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" />
+                        </div>
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="text-gray-600">Format</span>
+                          <span className="font-medium text-green-600">88%</span>
+                        </div>
+                        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <div className="h-full w-[88%] bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" />
+                        </div>
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="text-gray-600">Structure</span>
+                          <span className="font-medium text-amber-600">75%</span>
+                        </div>
+                        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <div className="h-full w-[75%] bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tips preview */}
+                    <div className="mt-3 p-2 bg-amber-50 rounded-lg border border-amber-200">
+                      <div className="flex items-start gap-2">
+                        <div className="h-4 w-4 rounded-full bg-amber-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-[8px] font-bold">!</span>
+                        </div>
+                        <span className="text-[10px] text-amber-700">Add more action verbs to your experience section for higher scores</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Get instant feedback on ATS compatibility with detailed scoring and actionable improvement tips.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 6: Chat with Resume (AI Assistant) */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-sky-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-sky-500 flex items-center justify-center shadow-lg shadow-primary/30">
+                        <MessageSquare className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">Chat with AI Assistant</h3>
+                        <p className="text-sm text-muted-foreground">Talk to build your resume</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-primary/30 text-primary bg-primary/5">PRO</Badge>
+                  </div>
+
+                  {/* Visual Demo - Chat Interface */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="space-y-3 max-h-36 overflow-hidden">
+                      {/* User message */}
+                      <div className="flex justify-end">
+                        <div className="bg-primary text-white rounded-2xl rounded-br-md px-3 py-2 max-w-[80%]">
+                          <p className="text-[10px]">I worked at Google for 3 years as a senior engineer</p>
+                        </div>
+                      </div>
+
+                      {/* AI response */}
+                      <div className="flex items-start gap-2">
+                        <div className="h-6 w-6 rounded-full bg-gradient-to-br from-primary to-sky-500 flex items-center justify-center flex-shrink-0">
+                          <Bot className="h-3 w-3 text-white" />
+                        </div>
+                        <div className="bg-white rounded-2xl rounded-bl-md px-3 py-2 border border-gray-200 shadow-sm max-w-[80%]">
+                          <p className="text-[10px] text-gray-700">Added to your experience! What were your key achievements at Google?</p>
+                        </div>
+                      </div>
+
+                      {/* User message with voice */}
+                      <div className="flex justify-end items-center gap-2">
+                        <div className="h-5 w-5 rounded-full bg-red-500 flex items-center justify-center animate-pulse">
+                          <Mic className="h-2.5 w-2.5 text-white" />
+                        </div>
+                        <div className="bg-primary text-white rounded-2xl rounded-br-md px-3 py-2 max-w-[70%]">
+                          <p className="text-[10px]">I led a team of 8 engineers and launched...</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Input area */}
+                    <div className="mt-3 flex items-center gap-2 bg-white rounded-full border border-gray-200 p-1 pl-3">
+                      <span className="text-[10px] text-gray-400 flex-1">Type or speak to add info...</span>
+                      <div className="flex gap-1">
+                        <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                          <Mic className="h-3 w-3 text-gray-500" />
+                        </div>
+                        <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
+                          <Send className="h-3 w-3 text-white" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Build your resume through natural conversation. Type or use voice input - our AI understands and updates your resume in real-time.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="text-center">
+              <div className="inline-flex flex-col sm:flex-row items-center gap-4">
+                <Button
+                  className="h-12 px-8 text-base font-semibold bg-gradient-to-r from-primary to-blue-600 text-white hover:from-primary/90 hover:to-blue-700 rounded-full shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 group"
+                  onClick={() => navigate("/pricing")}
+                >
+                  <Crown className="mr-2 h-5 w-5" />
+                  <span>Unlock All AI Features</span>
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                </Button>
+                <p className="text-sm text-muted-foreground">
+                  Starting at just <span className="font-semibold text-foreground">$9/month</span>
+                </p>
               </div>
             </div>
           </div>
@@ -887,11 +1347,11 @@ const Hero = () => {
                 <span>Quick & Easy Process</span>
               </div>
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
-                Create Your Resume in 
+                Create Your Resume in
                 <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent"> 3 Simple Steps</span>
               </h2>
               <p className="text-xs md:text-sm text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                From template selection to professional resume in minutes. Our guided process makes resume creation effortless and enjoyable.
+                From template selection to professional resume in minutes. Use our intuitive editor or let AI do the heavy lifting.
               </p>
             </div>
 
@@ -954,9 +1414,9 @@ const Hero = () => {
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <h3 className="text-lg font-semibold text-foreground">Fill Your Information</h3>
+                      <h3 className="text-lg font-semibold text-foreground">Add Your Content</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Add your experience, skills, and achievements with our intelligent guided prompts. Get real-time suggestions and optimization tips.
+                        Type, import from LinkedIn, or chat with AI to fill your details. Let AI enhance your bullet points automatically.
                       </p>
                     </div>
                   </div>
@@ -991,14 +1451,14 @@ const Hero = () => {
                         <span className="text-lg font-bold text-blue-600">3</span>
                       </div>
                       {/* Animated Success Checkmark */}
-                      <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-purple-500 flex items-center justify-center shadow-lg animate-pulse">
+                      <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-primary flex items-center justify-center shadow-lg animate-pulse">
                         <CheckCircle2 className="h-4 w-4 text-white" />
                       </div>
                     </div>
                     <div className="space-y-3">
                       <h3 className="text-lg font-semibold text-foreground">Download & Apply</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Export your professionally formatted resume in multiple formats. Start applying to your dream jobs with confidence.
+                        Check your ATS score, tailor for specific jobs, then export your ATS-optimized resume and start applying.
                       </p>
                     </div>
                   </div>
@@ -1046,9 +1506,9 @@ const Hero = () => {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-foreground">Fill Your Information</h3>
+                    <h3 className="text-lg font-semibold text-foreground">Add Your Content</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
-                      Add your experience and skills with intelligent guided prompts and real-time optimization suggestions.
+                      Type, import from LinkedIn, or chat with AI. Let AI enhance your content automatically.
                     </p>
                   </div>
                 </div>
@@ -1069,14 +1529,14 @@ const Hero = () => {
                     <div className="h-14 w-14 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center shadow-lg border border-blue-200">
                       <span className="text-lg font-bold text-blue-600">3</span>
                     </div>
-                    <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-purple-500 flex items-center justify-center shadow-lg">
+                    <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-primary flex items-center justify-center shadow-lg">
                       <CheckCircle2 className="h-4 w-4 text-white" />
                     </div>
                   </div>
                   <div className="space-y-3">
                     <h3 className="text-lg font-semibold text-foreground">Download & Apply</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
-                      Export your professionally formatted resume and start applying to your dream jobs with confidence.
+                      Check your ATS score, tailor for jobs, and export your optimized resume.
                     </p>
                   </div>
                 </div>
@@ -1087,16 +1547,16 @@ const Hero = () => {
             <div className="mt-12 md:mt-16 text-center">
               <div className="inline-flex flex-wrap justify-center items-center gap-4 md:gap-6 text-xs md:text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-emerald-600" />
-                  <span>5 Minutes Setup</span>
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <span>AI-Powered</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Shield className="h-4 w-4 text-blue-600" />
                   <span>100% ATS Compatible</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Award className="h-4 w-4 text-yellow-600" />
-                  <span>Professional Quality</span>
+                  <Clock className="h-4 w-4 text-emerald-600" />
+                  <span>5 Minutes Setup</span>
                 </div>
               </div>
             </div>
@@ -1106,35 +1566,35 @@ const Hero = () => {
 
       {/* Template Preview Section */}
       <section className="py-12 md:py-16 relative overflow-hidden">
-        {/* Multi-layer gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50"></div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-100/30 via-transparent to-pink-100/30"></div>
-        <div className="absolute inset-0 bg-gradient-to-bl from-emerald-100/20 via-transparent to-orange-100/20"></div>
-        
-        {/* Animated background decorations */}
+        {/* Multi-layer gradient background - Blue themed */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-sky-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-blue-100/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-bl from-sky-100/20 via-transparent to-blue-50/20"></div>
+
+        {/* Animated background decorations - Blue themed */}
         <div className="absolute inset-0 opacity-40">
           {/* Large floating orbs */}
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-gradient-to-r from-blue-400/25 to-cyan-400/25 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-emerald-400/15 to-teal-400/15 rounded-full blur-3xl animate-pulse delay-2000"></div>
-          
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-blue-400/20 to-sky-400/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-gradient-to-r from-primary/20 to-blue-400/25 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-sky-400/15 to-blue-400/15 rounded-full blur-3xl animate-pulse delay-2000"></div>
+
           {/* Medium floating orbs */}
-          <div className="absolute top-1/6 right-1/3 w-32 h-32 bg-gradient-to-r from-orange-400/20 to-red-400/20 rounded-full blur-2xl animate-pulse delay-500"></div>
-          <div className="absolute bottom-1/4 left-1/6 w-40 h-40 bg-gradient-to-r from-indigo-400/20 to-purple-400/20 rounded-full blur-2xl animate-pulse delay-1500"></div>
-          <div className="absolute top-3/4 right-1/6 w-36 h-36 bg-gradient-to-r from-rose-400/20 to-pink-400/20 rounded-full blur-2xl animate-pulse delay-3000"></div>
-          
+          <div className="absolute top-1/6 right-1/3 w-32 h-32 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 rounded-full blur-2xl animate-pulse delay-500"></div>
+          <div className="absolute bottom-1/4 left-1/6 w-40 h-40 bg-gradient-to-r from-sky-400/20 to-blue-400/20 rounded-full blur-2xl animate-pulse delay-1500"></div>
+          <div className="absolute top-3/4 right-1/6 w-36 h-36 bg-gradient-to-r from-primary/15 to-blue-400/20 rounded-full blur-2xl animate-pulse delay-3000"></div>
+
           {/* Small accent dots */}
-          <div className="absolute top-1/3 right-1/2 w-16 h-16 bg-gradient-to-r from-yellow-400/30 to-orange-400/30 rounded-full blur-xl animate-pulse delay-700"></div>
-          <div className="absolute bottom-1/2 left-1/3 w-20 h-20 bg-gradient-to-r from-green-400/25 to-emerald-400/25 rounded-full blur-xl animate-pulse delay-1200"></div>
-          <div className="absolute top-2/3 left-2/3 w-24 h-24 bg-gradient-to-r from-violet-400/25 to-purple-400/25 rounded-full blur-xl animate-pulse delay-2500"></div>
+          <div className="absolute top-1/3 right-1/2 w-16 h-16 bg-gradient-to-r from-sky-400/30 to-blue-400/30 rounded-full blur-xl animate-pulse delay-700"></div>
+          <div className="absolute bottom-1/2 left-1/3 w-20 h-20 bg-gradient-to-r from-blue-400/25 to-indigo-400/25 rounded-full blur-xl animate-pulse delay-1200"></div>
+          <div className="absolute top-2/3 left-2/3 w-24 h-24 bg-gradient-to-r from-primary/20 to-blue-400/25 rounded-full blur-xl animate-pulse delay-2500"></div>
         </div>
 
-        {/* Subtle pattern overlay */}
+        {/* Subtle pattern overlay - Blue themed */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, #7c3aed 2px, transparent 2px),
+            backgroundImage: `radial-gradient(circle at 25% 25%, #3b82f6 2px, transparent 2px),
                             radial-gradient(circle at 75% 75%, #2563eb 2px, transparent 2px),
-                            radial-gradient(circle at 50% 50%, #059669 1px, transparent 1px)`,
+                            radial-gradient(circle at 50% 50%, #0ea5e9 1px, transparent 1px)`,
             backgroundSize: '60px 60px, 80px 80px, 40px 40px'
           }}></div>
         </div>
@@ -1142,15 +1602,15 @@ const Hero = () => {
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-3 md:space-y-4 mb-8 md:mb-12">
-              <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs md:text-sm font-medium text-primary">
-                <Palette className="h-4 w-4" />
-                <span>Premium Templates</span>
+              <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-gradient-to-r from-primary/10 to-blue-500/10 backdrop-blur-sm border border-primary/30 text-xs md:text-sm font-medium text-primary">
+                <Sparkles className="h-4 w-4" />
+                <span>AI-Ready Templates</span>
               </div>
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
                 Choose from <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Professional Templates</span>
               </h2>
               <p className="text-xs md:text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Browse our collection of beautifully designed, ATS-optimized resume templates. Each template is crafted for specific industries and experience levels.
+                Browse our collection of beautifully designed, ATS-optimized resume templates. Each template works seamlessly with our AI features to help you create the perfect resume.
               </p>
             </div>
 
@@ -1262,16 +1722,16 @@ const Hero = () => {
 
       {/* How Our Resume Editor Works */}
       <section className="py-12 md:py-20 relative overflow-hidden">
-        {/* Beautiful light gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-indigo-50/30 to-purple-50/40"></div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-cyan-50/30 via-transparent to-pink-50/30"></div>
-        <div className="absolute inset-0 bg-gradient-to-bl from-emerald-50/20 via-transparent to-orange-50/20"></div>
-        
-        {/* Animated background elements */}
+        {/* Beautiful light gradient background - Blue themed */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-sky-50/30 to-indigo-50/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-blue-50/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-bl from-sky-50/20 via-transparent to-blue-50/20"></div>
+
+        {/* Animated background elements - Blue themed */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-gradient-to-r from-purple-400/15 to-pink-400/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-to-r from-blue-400/10 to-sky-400/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-gradient-to-r from-primary/15 to-blue-400/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-sky-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -1459,7 +1919,7 @@ const Hero = () => {
 
               <p className="text-xs md:text-sm text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 Click anywhere on the resume below to edit directly. No forms, no switching between views.
-                Edit content inline with instant visual feedback - the most intuitive way to build your resume.
+                Edit content inline with instant visual feedback, and let AI enhance your content in real-time.
               </p>
 
               {/* Interactive Instruction Badge */}
@@ -1631,80 +2091,148 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section - Platform Highlights */}
       <section className="relative py-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-primary/5 to-muted/30" />
         <div className="absolute top-0 left-1/2 h-40 w-[120%] -translate-x-1/2 bg-gradient-to-r from-primary/10 via-transparent to-emerald-100/20 blur-3xl" />
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-3 mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary backdrop-blur-sm">
+                <Award className="h-4 w-4" />
+                <span>Why Choose Us</span>
+              </div>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Why Choose Our Platform?
+                Everything You Need to{" "}
+                <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">Land Your Dream Job</span>
               </h2>
               <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-                Built with modern technology and user experience in mind
+                Professional templates, powerful AI tools, and an intuitive editor - all in one platform
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="group p-6 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <FileText className="h-6 w-6 text-primary" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {/* Feature 1 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <FileText className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-base font-semibold mb-2 text-foreground">ATS-Optimized</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  All templates are designed to pass Applicant Tracking Systems and get your resume noticed by recruiters.
-                </p>
-              </div>
-              
-              <div className="group p-6 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Zap className="h-6 w-6 text-emerald-600" />
-                </div>
-                <h3 className="text-base font-semibold mb-2 text-foreground">Real-Time Preview</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  See your changes instantly as you build. No more guessing how your resume will look.
-                </p>
-              </div>
-              
-              <div className="group p-6 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <CheckCircle2 className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-base font-semibold mb-2 text-foreground">Easy Customization</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Add, remove, and rearrange sections with simple clicks. No design skills required.
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground">ATS-Optimized Templates</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  All 50+ templates pass ATS scans and get your resume to recruiters.
                 </p>
               </div>
 
-              <div className="group p-6 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Target className="h-6 w-6 text-purple-600" />
+              {/* Feature 2 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Zap className="h-5 w-5 text-emerald-600" />
                 </div>
-                <h3 className="text-base font-semibold mb-2 text-foreground">Industry-Specific</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Templates tailored for different professions and career stages.
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground">Real-Time Live Preview</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  See changes instantly as you type. Click to edit directly on resume.
                 </p>
               </div>
 
-              <div className="group p-6 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Shield className="h-6 w-6 text-orange-600" />
+              {/* Feature 3 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Linkedin className="h-5 w-5 text-blue-600" />
                 </div>
-                <h3 className="text-base font-semibold mb-2 text-foreground">Secure & Private</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Your data is encrypted and secure. We never share your personal information.
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
+                  LinkedIn Import
+                  <Badge className="text-[8px] px-1 py-0 bg-primary/10 text-primary border-0">PRO</Badge>
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Import your entire LinkedIn profile in seconds with one click.
                 </p>
               </div>
 
-              <div className="group p-6 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-100 to-pink-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <TrendingUp className="h-6 w-6 text-pink-600" />
+              {/* Feature 4 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Sparkles className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-base font-semibold mb-2 text-foreground">Career Growth</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Tools and tips to help you advance in your career and land better opportunities.
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
+                  AI Enhancement
+                  <Badge className="text-[8px] px-1 py-0 bg-primary/10 text-primary border-0">PRO</Badge>
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Transform basic text into powerful, metrics-driven bullet points.
                 </p>
+              </div>
+
+              {/* Feature 5 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Target className="h-5 w-5 text-amber-600" />
+                </div>
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
+                  Job Tailoring
+                  <Badge className="text-[8px] px-1 py-0 bg-primary/10 text-primary border-0">PRO</Badge>
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Optimize your resume for any job description with AI keyword matching.
+                </p>
+              </div>
+
+              {/* Feature 6 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <ClipboardCheck className="h-5 w-5 text-green-600" />
+                </div>
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
+                  ATS Score Check
+                  <Badge className="text-[8px] px-1 py-0 bg-primary/10 text-primary border-0">PRO</Badge>
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Get instant ATS compatibility scores and improvement tips.
+                </p>
+              </div>
+
+              {/* Feature 7 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <MessageSquare className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
+                  AI Chat Assistant
+                  <Badge className="text-[8px] px-1 py-0 bg-primary/10 text-primary border-0">PRO</Badge>
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Build your resume through natural conversation with voice support.
+                </p>
+              </div>
+
+              {/* Feature 8 */}
+              <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Shield className="h-5 w-5 text-orange-600" />
+                </div>
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground">Secure & Private</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Your data is encrypted and secure. We never share your information.
+                </p>
+              </div>
+            </div>
+
+            {/* Stats Row */}
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">50+</div>
+                <div className="text-xs text-muted-foreground">Premium Templates</div>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
+                <div className="text-2xl md:text-3xl font-bold text-emerald-600 mb-1">6</div>
+                <div className="text-xs text-muted-foreground">AI-Powered Features</div>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">100%</div>
+                <div className="text-xs text-muted-foreground">ATS Compatible</div>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
+                <div className="text-2xl md:text-3xl font-bold text-amber-600 mb-1">5 min</div>
+                <div className="text-xs text-muted-foreground">To Create Resume</div>
               </div>
             </div>
           </div>
@@ -1714,7 +2242,7 @@ const Hero = () => {
       {/* Pricing Section */}
       <section id="pricing" className="py-16 md:py-20 relative overflow-hidden">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-violet-50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-sky-50" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(59,130,246,0.1),transparent)]" />
 
         <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -1727,7 +2255,7 @@ const Hero = () => {
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 Free to start,{" "}
-                <span className="bg-gradient-to-r from-primary via-blue-600 to-violet-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary via-blue-600 to-blue-500 bg-clip-text text-transparent">
                   Pro to grow
                 </span>
               </h2>
@@ -1763,10 +2291,10 @@ const Hero = () => {
                   <ul className="space-y-1.5 pt-3 border-t border-border/60">
                     {[
                       "Resume Builder",
-                      "All Templates",
+                      "50+ Premium Templates",
                       "Style Customization",
                       "PDF Download",
-                      "Manual Editing",
+                      "Live Preview Editor",
                     ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-2 text-xs">
                         <Check className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" />
@@ -1776,7 +2304,8 @@ const Hero = () => {
                     {[
                       "LinkedIn Import",
                       "AI Enhancement",
-                      "Job Tailoring",
+                      "ATS Score Checker",
+                      "AI Chat Assistant",
                     ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-2 text-xs">
                         <X className="h-3.5 w-3.5 text-gray-300 flex-shrink-0" />
@@ -1823,10 +2352,13 @@ const Hero = () => {
                   <ul className="space-y-1.5 pt-3 border-t border-border/60">
                     <li className="text-[10px] text-muted-foreground">Everything in Free, plus:</li>
                     {[
-                      "LinkedIn Import",
+                      "LinkedIn Profile Import",
                       "Resume Upload & Parse",
                       "AI Resume Enhancement",
-                      "Job Tailoring",
+                      "Job Description Tailoring",
+                      "ATS Score Checker",
+                      "AI Chat Assistant",
+                      "Voice Input Support",
                       "Generate from Job Description",
                       "Multiple Resumes",
                     ].map((feature, index) => (
@@ -1862,10 +2394,10 @@ const Hero = () => {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <div className="space-y-3">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Ready to Build Your Resume?
+                Ready to Build Your <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">AI-Powered</span> Resume?
               </h2>
               <p className="text-base text-muted-foreground">
-                Choose from professional templates and create your resume in minutes
+                Choose from professional templates and let AI help you create the perfect resume in minutes
               </p>
             </div>
 

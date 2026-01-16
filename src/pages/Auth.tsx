@@ -192,7 +192,7 @@ const Auth = () => {
 
         {/* Floating elements */}
         <div className="absolute top-[15%] left-[10%] w-64 h-64 rounded-full bg-blue-500/10 blur-[100px] animate-pulse" />
-        <div className="absolute bottom-[20%] right-[15%] w-72 h-72 rounded-full bg-violet-500/10 blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-[20%] right-[15%] w-72 h-72 rounded-full bg-blue-500/10 blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
 
         {/* Content container */}
         <div className="relative z-10 flex flex-col justify-between w-full p-10 xl:p-14">
@@ -219,7 +219,7 @@ const Auth = () => {
               <h1 className="text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-tight">
                 Create your
                 <span className="relative mx-3">
-                  <span className="relative z-10 bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
+                  <span className="relative z-10 bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400 bg-clip-text text-transparent">
                     perfect
                   </span>
                 </span>

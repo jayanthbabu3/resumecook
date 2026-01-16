@@ -231,7 +231,7 @@ const DashboardV2 = () => {
         <div className="mb-6 sm:mb-10">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
             <h2 className="text-lg font-semibold text-gray-900">AI-Powered Features</h2>
-            <span className="text-xs font-bold text-white bg-gradient-to-r from-violet-500 to-purple-600 px-2.5 py-0.5 rounded-full shadow-sm">
+            <span className="text-xs font-bold text-white bg-gradient-to-r from-primary to-blue-600 px-2.5 py-0.5 rounded-full shadow-sm">
               PRO
             </span>
           </div>
@@ -240,17 +240,17 @@ const DashboardV2 = () => {
             {/* Chat with Resume - Featured */}
             <button
               onClick={handleChatWithResumeClick}
-              className="group relative bg-gradient-to-br from-violet-50 via-white to-purple-50/50 rounded-xl border border-violet-100 p-4 sm:p-5 hover:shadow-lg hover:shadow-violet-100/50 hover:border-violet-200 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
+              className="group relative bg-gradient-to-br from-primary/5 via-white to-blue-50/50 rounded-xl border border-primary/20 p-4 sm:p-5 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300 text-left overflow-hidden"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-violet-100/40 to-transparent rounded-bl-full" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
               <div className="absolute top-0 right-0 z-20">
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-gradient-to-r from-violet-500 to-purple-600 px-2 py-1 rounded-bl-lg rounded-tr-xl shadow-sm">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-gradient-to-r from-primary to-blue-600 px-2 py-1 rounded-bl-lg rounded-tr-xl shadow-sm">
                   <Sparkles className="w-2.5 h-2.5" />
                   NEW
                 </span>
               </div>
               <div className="relative flex items-start gap-3 sm:gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-violet-200">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-primary/20">
                   <MessageSquareText className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -259,7 +259,7 @@ const DashboardV2 = () => {
                     Build your resume through natural conversation with AI
                   </p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-violet-300 group-hover:text-violet-600 group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
+                <ChevronRight className="w-5 h-5 text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0 mt-0.5" />
               </div>
             </button>
 
