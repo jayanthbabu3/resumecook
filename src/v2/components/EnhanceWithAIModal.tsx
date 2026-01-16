@@ -25,6 +25,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import type { V2ResumeData } from '../types';
+import { API_ENDPOINTS, apiFetch } from '../../config/api';
 import { WEBSITE_PRIMARY_COLOR } from '../constants/theme';
 import { ResumeRenderer } from './ResumeRenderer';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
@@ -201,9 +202,8 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
     setProgressMessage(PROGRESS_MESSAGES[0]);
 
     try {
-      const response = await fetch('/.netlify/functions/enhance-resume', {
+      const response = await apiFetch(API_ENDPOINTS.enhanceResume, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resumeData }),
       });
 

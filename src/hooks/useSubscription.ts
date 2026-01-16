@@ -107,11 +107,9 @@ export const useSubscription = (): UseSubscriptionReturn => {
     setError(null);
 
     try {
-      const response = await fetch('/.netlify/functions/create-checkout-session', {
+      const { API_ENDPOINTS, apiFetch } = await import('../config/api');
+      const response = await apiFetch(API_ENDPOINTS.createCheckoutSession, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           userId: user.uid,
           userEmail: user.email,
@@ -151,11 +149,9 @@ export const useSubscription = (): UseSubscriptionReturn => {
     setError(null);
 
     try {
-      const response = await fetch('/.netlify/functions/customer-portal', {
+      const { API_ENDPOINTS, apiFetch } = await import('../config/api');
+      const response = await apiFetch(API_ENDPOINTS.customerPortal, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           stripeCustomerId: subscription.stripeCustomerId,
           returnUrl: `${window.location.origin}/profile`,
@@ -190,11 +186,9 @@ export const useSubscription = (): UseSubscriptionReturn => {
     setError(null);
 
     try {
-      const response = await fetch('/.netlify/functions/verify-subscription', {
+      const { API_ENDPOINTS, apiFetch } = await import('../config/api');
+      const response = await apiFetch(API_ENDPOINTS.verifySubscription, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           userId: user.uid,
           userEmail: user.email,

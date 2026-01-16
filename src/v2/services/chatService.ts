@@ -7,11 +7,12 @@
 
 import { ChatAPIResponse, ChatMessage, ResumeUpdates, VariantChange } from '../types/chat';
 import { V2ResumeData } from '../types/resumeData';
+import { API_ENDPOINTS, apiFetch } from '../../config/api';
 
 /** Current section variants map (section ID -> variant ID) */
 export type SectionVariantsMap = Record<string, string>;
 
-const CHAT_API_ENDPOINT = '/.netlify/functions/chat-with-resume';
+const CHAT_API_ENDPOINT = API_ENDPOINTS.chatWithResume;
 const MAX_RETRIES = 2;
 const RETRY_DELAY = 1000;
 
@@ -359,11 +360,8 @@ export async function sendChatMessage(
           content: msg.content,
         }));
 
-      const response = await fetch(CHAT_API_ENDPOINT, {
+      const response = await apiFetch(CHAT_API_ENDPOINT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           message,
           conversationHistory: historyForAPI,

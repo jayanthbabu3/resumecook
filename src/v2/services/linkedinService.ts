@@ -1,4 +1,5 @@
 import { V2ResumeData } from '../types/resumeData';
+import { API_ENDPOINTS, apiFetch } from '../../config/api';
 
 export interface LinkedInImportResponse {
   success: boolean;
@@ -27,14 +28,11 @@ export async function importLinkedInProfile(linkedinUrl: string): Promise<Linked
     throw new Error('Invalid LinkedIn URL format. Expected: https://www.linkedin.com/in/username');
   }
 
-  const functionUrl = '/.netlify/functions/linkedin-import';
+  const functionUrl = API_ENDPOINTS.linkedinImport;
 
   try {
-    const response = await fetch(functionUrl, {
+    const response = await apiFetch(functionUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({ linkedinUrl }),
     });
 

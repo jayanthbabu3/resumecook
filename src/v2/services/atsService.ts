@@ -6,8 +6,9 @@
 
 import type { V2ResumeData } from '../types/resumeData';
 import type { ATSScoreResponse } from '../types/ats';
+import { API_ENDPOINTS, apiFetch } from '../../config/api';
 
-const ATS_API_ENDPOINT = '/.netlify/functions/ats-score';
+const ATS_API_ENDPOINT = API_ENDPOINTS.atsScore;
 
 export interface AnalyzeATSOptions {
   resumeData: V2ResumeData;
@@ -21,11 +22,8 @@ export async function analyzeATSScore(options: AnalyzeATSOptions): Promise<ATSSc
   const { resumeData, jobDescription } = options;
 
   try {
-    const response = await fetch(ATS_API_ENDPOINT, {
+    const response = await apiFetch(ATS_API_ENDPOINT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         resumeData,
         jobDescription,

@@ -19,6 +19,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import type { V2ResumeData } from '../types';
+import { API_ENDPOINTS, apiFetch } from '../../config/api';
 
 interface ResumeUploadModalProps {
   isOpen: boolean;
@@ -102,12 +103,9 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
 
       setStatus('parsing');
 
-      // Call the parse-resume Netlify function
-      const response = await fetch('/.netlify/functions/parse-resume', {
+      // Call the parse-resume API
+      const response = await apiFetch(API_ENDPOINTS.parseResume, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           fileData: base64Data,
           fileName: file.name,

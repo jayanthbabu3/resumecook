@@ -34,6 +34,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import type { V2ResumeData } from '../types';
+import { API_ENDPOINTS, apiFetch } from '../../config/api';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { profileService } from '@/v2/services/profileService';
 import { WEBSITE_PRIMARY_COLOR } from '../constants/theme';
@@ -308,9 +309,8 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
       });
 
       // Parse the resume
-      const response = await fetch('/.netlify/functions/parse-resume', {
+      const response = await apiFetch(API_ENDPOINTS.parseResume, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fileData: base64Data,
           fileName: file.name,
@@ -373,9 +373,8 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
     setError(null);
 
     try {
-      const response = await fetch('/.netlify/functions/generate-resume-from-job', {
+      const response = await apiFetch(API_ENDPOINTS.generateResumeFromJob, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           jobDescription,
           jobTitle: jobTitle || undefined,
@@ -446,9 +445,8 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
 
       let response: Response;
       try {
-        response = await fetch('/.netlify/functions/tailor-resume-for-job', {
+        response = await apiFetch(API_ENDPOINTS.tailorResumeForJob, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           signal: controller.signal,
           body: JSON.stringify({
             resumeData,

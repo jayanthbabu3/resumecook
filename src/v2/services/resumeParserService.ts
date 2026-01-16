@@ -6,6 +6,7 @@
  */
 
 import type { V2ResumeData } from '../types';
+import { API_ENDPOINTS, apiFetch } from '../../config/api';
 
 export interface ParseResumeResult {
   success: boolean;
@@ -49,12 +50,9 @@ export async function parseResumeFile(file: File): Promise<ParseResumeResult> {
     // Convert file to base64
     const base64Data = await fileToBase64(file);
 
-    // Call the parse-resume Netlify function
-    const response = await fetch('/.netlify/functions/parse-resume', {
+    // Call the parse-resume API
+    const response = await apiFetch(API_ENDPOINTS.parseResume, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         fileData: base64Data,
         fileName: file.name,

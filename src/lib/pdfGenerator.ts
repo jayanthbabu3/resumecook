@@ -1054,12 +1054,12 @@ export async function generatePDFFromPreview(
     ? captureV2ResumeHTMLWithStyles(resumeContent, config, options.themeColor)
     : captureResumeHTMLWithStyles(resumeContent, config, options.themeColor);
   
-  // Send to Netlify function
-  const response = await fetch('/.netlify/functions/generate-pdf', {
+  // Import API endpoint dynamically to avoid circular deps
+  const { API_ENDPOINTS, apiFetch } = await import('../config/api');
+
+  // Send to API
+  const response = await apiFetch(API_ENDPOINTS.generatePdf, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({ html, filename }),
   });
   
@@ -1100,11 +1100,9 @@ export async function generatePDFFromHTML(
   html: string,
   filename: string = 'resume.pdf'
 ): Promise<Blob> {
-  const response = await fetch('/.netlify/functions/generate-pdf', {
+  const { API_ENDPOINTS, apiFetch } = await import('../config/api');
+  const response = await apiFetch(API_ENDPOINTS.generatePdf, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({ html, filename }),
   });
   
