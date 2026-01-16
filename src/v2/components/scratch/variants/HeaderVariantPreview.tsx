@@ -39,6 +39,8 @@ export const HeaderVariantPreview: React.FC<HeaderVariantPreviewProps> = ({ vari
       return <GradientBannerHeaderPreview data={previewData} />;
     case 'banner-with-summary':
       return <BannerWithSummaryHeaderPreview data={previewData} />;
+    case 'wave-accent':
+      return <WaveAccentHeaderPreview data={previewData} />;
     default:
       return <DefaultHeaderPreview data={previewData} />;
   }
@@ -199,6 +201,55 @@ const BannerWithSummaryHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
       <span>john@example.com</span>
       <span>•</span>
       <span>+1 (555) 123-4567</span>
+    </div>
+  </div>
+);
+
+// Wave Accent Header - Elegant minimal with large photo and contact bar
+const WaveAccentHeaderPreview: React.FC<{ data: any }> = ({ data }) => (
+  <div className="w-full relative overflow-hidden rounded" style={{ backgroundColor: '#ffffff' }}>
+    {/* Soft tinted background - top section */}
+    <div
+      className="absolute top-0 left-0 right-0"
+      style={{ height: '75%', backgroundColor: 'rgba(14,165,233,0.06)' }}
+    />
+
+    {/* Main content */}
+    <div className="relative px-2 py-2.5">
+      <div className="flex items-start gap-2">
+        {/* Large circular photo */}
+        <div
+          className="rounded-full bg-gray-300 flex-shrink-0 flex items-center justify-center overflow-hidden"
+          style={{ width: '36px', height: '36px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+        >
+          <span className="text-[10px] font-bold text-gray-600">JD</span>
+        </div>
+
+        {/* Name and title */}
+        <div className="flex-1 pt-0.5">
+          <div
+            className="text-[11px] text-gray-800"
+            style={{ fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase' }}
+          >
+            JOHN DOE
+          </div>
+          <div
+            className="text-[7px] text-gray-500 mt-0.5"
+            style={{ letterSpacing: '0.1em', textTransform: 'uppercase' }}
+          >
+            Software Engineer
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Contact bar at bottom */}
+    <div className="bg-primary py-1.5 px-2">
+      <div className="flex items-center justify-center gap-3 text-[6px] text-white">
+        <span>m. : +1 555</span>
+        <span>e. : john@email.com</span>
+        <span>a. : New York</span>
+      </div>
     </div>
   </div>
 );

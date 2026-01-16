@@ -208,6 +208,25 @@ export const HEADER_VARIANTS: SectionVariant[] = [
       includesSummary: true,
     }
   },
+  {
+    id: 'wave-accent',
+    name: 'Wave Accent',
+    description: 'Modern header with gradient top border, decorative circles, and clean layout. Contemporary and eye-catching.',
+    type: 'header',
+    previewData: {
+      title: 'Wave Accent',
+      layout: 'wave-accent',
+      backgroundColor: '#f8fafc',
+      padding: '28px 32px 24px',
+      fullWidth: true,
+      showPhoto: true,
+      photoSize: '90px',
+      nameSize: '32px',
+      titleSize: '15px',
+      contactSize: '11px',
+      includesSummary: true,
+    }
+  },
 ];
 
 // ==================== SUMMARY VARIANTS (10) ====================

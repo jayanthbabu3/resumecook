@@ -30,6 +30,7 @@ import { systemArchitectConfig } from './system-architect';
 import { productEngineerConfig } from './product-engineer';
 import { mobileCraftConfig } from './mobile-craft';
 import { apiLedgerConfig } from './api-ledger';
+import { modernWaveConfig } from './modern-wave';
 
 // Fresher Templates
 import { fresherStarterConfig } from './fresher-starter';
@@ -79,6 +80,7 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'product-engineer-v2': productEngineerConfig,
   'mobile-craft-v2': mobileCraftConfig,
   'api-ledger-v2': apiLedgerConfig,
+  'modern-wave-v2': modernWaveConfig,
   // Fresher Templates
   'fresher-starter-v2': fresherStarterConfig,
   'fresher-elegant-v2': fresherElegantConfig,
@@ -142,6 +144,7 @@ export {
   productEngineerConfig,
   mobileCraftConfig,
   apiLedgerConfig,
+  modernWaveConfig,
   // Fresher Templates
   fresherStarterConfig,
   fresherElegantConfig,

@@ -2801,6 +2801,186 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'wave-accent':
+        // Elegant minimal header inspired by professional creative resumes
+        // Large photo on left, name/title right, contact bar at bottom
+        const wavePhotoPos = header.photoPosition || 'right';
+        const darkerPrimary = adjustColor(colors.primary, -40);
+        const lighterPrimary = adjustColor(colors.primary, 40);
+
+        // Create a soft tinted background color from primary
+        const softBgColor = `${colors.primary}08`;
+
+        return (
+          <div className="relative overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+            {/* Soft tinted background area - top section only */}
+            <div
+              className="absolute top-0 left-0 right-0"
+              style={{
+                height: '85%',
+                backgroundColor: softBgColor,
+              }}
+            />
+
+            {/* Main content */}
+            <div className="relative" style={{ padding: '40px 32px 0 32px' }}>
+              <div className="flex items-start gap-8">
+                {/* Large circular photo */}
+                {showPhoto && (
+                  <div className="relative flex-shrink-0">
+                    <div
+                      className="rounded-full overflow-hidden"
+                      style={{
+                        width: '140px',
+                        height: '140px',
+                        boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+                      }}
+                    >
+                      {editable ? (
+                        <InlineEditablePhoto
+                          value={personalInfo.photo}
+                          path="personalInfo.photo"
+                          photoShape="circle"
+                          showInitials={!personalInfo.photo}
+                          initials={personalInfo.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                        />
+                      ) : personalInfo.photo ? (
+                        <img
+                          src={personalInfo.photo}
+                          alt={personalInfo.fullName}
+                          className="w-full h-full object-cover"
+                          style={{ filter: 'grayscale(100%)' }}
+                        />
+                      ) : (
+                        <div
+                          className="w-full h-full flex items-center justify-center text-white font-bold"
+                          style={{
+                            backgroundColor: colors.primary,
+                            fontSize: '48px',
+                          }}
+                        >
+                          {personalInfo.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Name and Title - right side */}
+                <div className="flex-1 pt-4">
+                  {/* Name - large, elegant typography */}
+                  <h1
+                    style={{
+                      fontSize: scaleFontSize('38px'),
+                      fontWeight: 300,
+                      lineHeight: 1.1,
+                      letterSpacing: '0.08em',
+                      color: '#1a1a1a',
+                      fontFamily: baseFontFamily,
+                      textTransform: 'uppercase',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    {editable ? (
+                      <InlineEditableText
+                        value={personalInfo.fullName}
+                        path="personalInfo.fullName"
+                        style={{ color: '#1a1a1a' }}
+                      />
+                    ) : (
+                      personalInfo.fullName
+                    )}
+                  </h1>
+
+                  {/* Title - subtle, refined */}
+                  <div
+                    style={{
+                      fontSize: scaleFontSize('14px'),
+                      fontWeight: 400,
+                      letterSpacing: '0.15em',
+                      color: '#666666',
+                      fontFamily: baseFontFamily,
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {editable ? (
+                      <InlineEditableText
+                        value={personalInfo.title}
+                        path="personalInfo.title"
+                        style={{ color: '#666666' }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact info bar - full width at bottom */}
+            <div
+              className="relative mt-6"
+              style={{
+                backgroundColor: colors.primary,
+                padding: '12px 32px',
+              }}
+            >
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+                {personalInfo.phone && (
+                  <div className="flex items-center gap-2">
+                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', fontFamily: baseFontFamily, letterSpacing: '0.05em' }}>
+                      m. :
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#ffffff', fontFamily: baseFontFamily }}>
+                      {personalInfo.phone}
+                    </span>
+                  </div>
+                )}
+                {personalInfo.email && (
+                  <div className="flex items-center gap-2">
+                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', fontFamily: baseFontFamily, letterSpacing: '0.05em' }}>
+                      e. :
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#ffffff', fontFamily: baseFontFamily }}>
+                      {personalInfo.email}
+                    </span>
+                  </div>
+                )}
+                {personalInfo.website && (
+                  <div className="flex items-center gap-2">
+                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', fontFamily: baseFontFamily, letterSpacing: '0.05em' }}>
+                      w. :
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#ffffff', fontFamily: baseFontFamily }}>
+                      {personalInfo.website.replace(/^https?:\/\/(www\.)?/, '')}
+                    </span>
+                  </div>
+                )}
+                {personalInfo.location && (
+                  <div className="flex items-center gap-2">
+                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', fontFamily: baseFontFamily, letterSpacing: '0.05em' }}>
+                      a. :
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#ffffff', fontFamily: baseFontFamily }}>
+                      {personalInfo.location}
+                    </span>
+                  </div>
+                )}
+                {includeSocialLinks && personalInfo.linkedin && (
+                  <div className="flex items-center gap-2">
+                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', fontFamily: baseFontFamily, letterSpacing: '0.05em' }}>
+                      in :
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#ffffff', fontFamily: baseFontFamily }}>
+                      {personalInfo.linkedin.replace(/^https?:\/\/(www\.)?/, '')}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         const photoPosition = header.photoPosition || 'left';
@@ -2823,7 +3003,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   };
 
   // Determine header margin-bottom from config or use sensible defaults
-  const isBannerHeader = ['banner', 'gradient-banner', 'elegant-banner', 'banner-with-summary'].includes(variant);
+  const isBannerHeader = ['banner', 'gradient-banner', 'elegant-banner', 'banner-with-summary', 'wave-accent'].includes(variant);
   const defaultMargin = isBannerHeader ? '0' : '12px';
   const headerMarginBottom = header.marginBottom ?? defaultMargin;
 
