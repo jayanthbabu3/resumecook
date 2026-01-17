@@ -69,6 +69,8 @@ import { inkBlotTemplate } from './ink-blot';
 import { paperFoldTemplate } from './paper-fold';
 import { dotGridTemplate } from './dot-grid';
 import { accentStripeTemplate } from './accent-stripe';
+import { auroraCreativeTemplate } from './aurora-creative';
+import { geometricBoldTemplate } from './geometric-bold';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -134,6 +136,8 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'paper-fold-v2': paperFoldTemplate,
   'dot-grid-v2': dotGridTemplate,
   'accent-stripe-v2': accentStripeTemplate,
+  'aurora-creative-v2': auroraCreativeTemplate,
+  'geometric-bold-v2': geometricBoldTemplate,
 };
 
 // ============================================================================
@@ -258,3 +262,5 @@ export { inkBlotTemplate } from './ink-blot';
 export { paperFoldTemplate } from './paper-fold';
 export { dotGridTemplate } from './dot-grid';
 export { accentStripeTemplate } from './accent-stripe';
+export { auroraCreativeTemplate } from './aurora-creative';
+export { geometricBoldTemplate } from './geometric-bold';

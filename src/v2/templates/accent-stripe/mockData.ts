@@ -1,12 +1,11 @@
 /**
  * Accent Stripe Template Mock Data
  *
- * Uses Jayanth's real resume data for authentic preview.
+ * Uses HR Manager data from centralized profession mock data
  */
 
-import { JAYANTH_RESUME_DATA } from '../../data/mockData';
-import type { V2ResumeData } from '../../types/resumeData';
+import { HR_MANAGER_DATA } from '../../data/professionMockData';
 
-export const mockData: V2ResumeData = JAYANTH_RESUME_DATA;
+export const mockData = HR_MANAGER_DATA;
 
 export default mockData;

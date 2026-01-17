@@ -68,6 +68,8 @@ import { inkBlotConfig } from './ink-blot';
 import { paperFoldConfig } from './paper-fold';
 import { dotGridConfig } from './dot-grid';
 import { accentStripeConfig } from './accent-stripe';
+import { auroraCreativeConfig } from './aurora-creative';
+import { geometricBoldConfig } from './geometric-bold';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -131,6 +133,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'paper-fold-v2': paperFoldConfig,
   'dot-grid-v2': dotGridConfig,
   'accent-stripe-v2': accentStripeConfig,
+  'aurora-creative-v2': auroraCreativeConfig,
+  'geometric-bold-v2': geometricBoldConfig,
 };
 
 // Get template by ID
@@ -210,4 +214,6 @@ export {
   paperFoldConfig,
   dotGridConfig,
   accentStripeConfig,
+  auroraCreativeConfig,
+  geometricBoldConfig,
 };

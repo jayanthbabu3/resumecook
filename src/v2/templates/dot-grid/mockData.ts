@@ -1,12 +1,11 @@
 /**
  * Dot Grid Template Mock Data
  *
- * Uses Jayanth's real resume data for authentic preview.
+ * Uses Content Writer data from centralized profession mock data
  */
 
-import { JAYANTH_RESUME_DATA } from '../../data/mockData';
-import type { V2ResumeData } from '../../types/resumeData';
+import { CONTENT_WRITER_DATA } from '../../data/professionMockData';
 
-export const mockData: V2ResumeData = JAYANTH_RESUME_DATA;
+export const mockData = CONTENT_WRITER_DATA;
 
 export default mockData;

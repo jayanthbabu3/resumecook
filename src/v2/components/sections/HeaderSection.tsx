@@ -5513,6 +5513,484 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'aurora-glass':
+        // Aurora Glass header with glass morphism effect and aurora borealis gradient
+        // Features: Multi-color aurora gradient, frosted glass effect, elegant typography
+        const auroraGlassPhotoSize = header.photoSize || '85px';
+        const auroraGlassAvatar = renderAvatar({
+          size: auroraGlassPhotoSize,
+          borderColor: 'rgba(255,255,255,0.6)',
+          backgroundColor: 'rgba(255,255,255,0.15)',
+          textColor: '#ffffff',
+          borderWidth: '3px',
+        });
+
+        // Aurora colors - teal to purple to pink
+        const auroraGradient = `linear-gradient(135deg,
+          ${accent} 0%,
+          #06b6d4 25%,
+          #8b5cf6 50%,
+          #ec4899 75%,
+          ${colors.secondary || '#f43f5e'} 100%)`;
+
+        const renderAuroraGlassContact = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string
+        ) => {
+          if (!editable && !value) return null;
+
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px 12px',
+              background: 'rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(8px)',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.2)',
+            }}>
+              <Icon style={{ width: '12px', height: '12px', color: 'rgba(255,255,255,0.9)', flexShrink: 0 }} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{
+                    fontSize: scaleFontSize('10px'),
+                    color: 'rgba(255,255,255,0.95)',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                <span style={{
+                  fontSize: scaleFontSize('10px'),
+                  color: 'rgba(255,255,255,0.95)',
+                  fontFamily: baseFontFamily,
+                }}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="aurora-glass"
+            style={{
+              position: 'relative',
+              background: auroraGradient,
+              borderRadius: '0',
+              padding: '36px 32px 32px 32px',
+              marginLeft: `-${spacing.pagePadding.left}`,
+              marginRight: `-${spacing.pagePadding.right}`,
+              marginTop: `-${spacing.pagePadding.top}`,
+              marginBottom: header.marginBottom || '28px',
+              overflow: 'hidden',
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Aurora wave effects */}
+            <div style={{
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              right: '0',
+              bottom: '0',
+              background: `radial-gradient(ellipse at 20% 80%, rgba(6, 182, 212, 0.4) 0%, transparent 50%),
+                          radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.4) 0%, transparent 50%),
+                          radial-gradient(ellipse at 60% 60%, rgba(236, 72, 153, 0.3) 0%, transparent 40%)`,
+              pointerEvents: 'none',
+            }} />
+
+            {/* Floating orbs */}
+            <div style={{
+              position: 'absolute',
+              top: '15%',
+              right: '10%',
+              width: '100px',
+              height: '100px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+              filter: 'blur(20px)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              position: 'absolute',
+              bottom: '20%',
+              left: '5%',
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.06)',
+              filter: 'blur(15px)',
+              pointerEvents: 'none',
+            }} />
+
+            {/* Glass card container */}
+            <div style={{
+              position: 'relative',
+              zIndex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '24px',
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '20px',
+              padding: '24px',
+              border: '1px solid rgba(255,255,255,0.2)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+            }}>
+              {/* Photo */}
+              {showPhoto && (
+                <div style={{ flexShrink: 0 }}>
+                  {auroraGlassAvatar}
+                </div>
+              )}
+
+              {/* Text content */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Name */}
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                  color: '#ffffff',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                  textShadow: '0 2px 10px rgba(0,0,0,0.15)',
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                        fontWeight: 700,
+                        color: '#ffffff',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                {/* Title with glass pill */}
+                <div style={{
+                  display: 'inline-block',
+                  background: 'rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(4px)',
+                  borderRadius: '20px',
+                  padding: '6px 16px',
+                  marginTop: '10px',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                }}>
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize || '12px'),
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,0.95)',
+                    margin: 0,
+                    fontFamily: baseFontFamily,
+                    letterSpacing: '0.03em',
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize || '12px'),
+                          fontWeight: 500,
+                          color: 'rgba(255,255,255,0.95)',
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                </div>
+
+                {/* Contact row */}
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                  marginTop: '16px',
+                }}>
+                  {renderAuroraGlassContact(Mail, personalInfo.email, 'personalInfo.email')}
+                  {renderAuroraGlassContact(Phone, personalInfo.phone, 'personalInfo.phone')}
+                  {renderAuroraGlassContact(MapPin, personalInfo.location, 'personalInfo.location')}
+                  {personalInfo.linkedin && renderAuroraGlassContact(Linkedin, personalInfo.linkedin, 'personalInfo.linkedin')}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'geometric-bold':
+        // Bold geometric header with angular shapes and striking visual hierarchy
+        // Features: Large geometric shapes, bold typography, high contrast
+        const geometricBoldPhotoSize = header.photoSize || '80px';
+        const geometricBoldAvatar = renderAvatar({
+          size: geometricBoldPhotoSize,
+          borderColor: accent,
+          backgroundColor: `${accent}20`,
+          textColor: accent,
+          borderWidth: '4px',
+        });
+
+        const geometricBg = accent;
+        const geometricSecondary = colors.secondary || adjustColor(accent, -30);
+
+        const renderGeometricContact = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string
+        ) => {
+          if (!editable && !value) return null;
+
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}>
+              <div style={{
+                width: '28px',
+                height: '28px',
+                backgroundColor: accent,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transform: 'rotate(45deg)',
+              }}>
+                <Icon style={{
+                  width: '14px',
+                  height: '14px',
+                  color: '#ffffff',
+                  transform: 'rotate(-45deg)',
+                }} />
+              </div>
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{
+                    fontSize: scaleFontSize('10px'),
+                    color: typography.contact.color || '#4b5563',
+                    fontFamily: baseFontFamily,
+                    fontWeight: 500,
+                  }}
+                />
+              ) : (
+                <span style={{
+                  fontSize: scaleFontSize('10px'),
+                  color: typography.contact.color || '#4b5563',
+                  fontFamily: baseFontFamily,
+                  fontWeight: 500,
+                }}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="geometric-bold"
+            style={{
+              position: 'relative',
+              marginBottom: header.marginBottom || '28px',
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Large geometric background shape */}
+            <div style={{
+              position: 'absolute',
+              top: '-20px',
+              right: '-40px',
+              width: '200px',
+              height: '200px',
+              backgroundColor: `${accent}10`,
+              transform: 'rotate(45deg)',
+              zIndex: 0,
+            }} />
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              right: '60px',
+              width: '80px',
+              height: '80px',
+              backgroundColor: `${geometricSecondary}15`,
+              transform: 'rotate(45deg)',
+              zIndex: 0,
+            }} />
+            <div style={{
+              position: 'absolute',
+              bottom: '-30px',
+              left: '20%',
+              width: '60px',
+              height: '60px',
+              backgroundColor: `${accent}08`,
+              transform: 'rotate(45deg)',
+              zIndex: 0,
+            }} />
+
+            {/* Content */}
+            <div style={{
+              position: 'relative',
+              zIndex: 1,
+              display: 'flex',
+              gap: '24px',
+              padding: header.padding || '0',
+            }}>
+              {/* Left column - Photo with geometric frame */}
+              {showPhoto && (
+                <div style={{
+                  position: 'relative',
+                  flexShrink: 0,
+                }}>
+                  {/* Decorative corner brackets */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '-8px',
+                    left: '-8px',
+                    width: '20px',
+                    height: '20px',
+                    borderTop: `3px solid ${accent}`,
+                    borderLeft: `3px solid ${accent}`,
+                  }} />
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '-8px',
+                    right: '-8px',
+                    width: '20px',
+                    height: '20px',
+                    borderBottom: `3px solid ${accent}`,
+                    borderRight: `3px solid ${accent}`,
+                  }} />
+                  {geometricBoldAvatar}
+                </div>
+              )}
+
+              {/* Right column - Name, Title, Contact */}
+              <div style={{ flex: 1 }}>
+                {/* Name with bold accent bar */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <div style={{
+                    width: '6px',
+                    height: '40px',
+                    backgroundColor: accent,
+                  }} />
+                  <div>
+                    <h1 style={{
+                      fontSize: scaleFontSize(typography.name.fontSize || '30px'),
+                      fontWeight: 800,
+                      lineHeight: 1.0,
+                      letterSpacing: '-0.03em',
+                      textTransform: 'uppercase',
+                      color: typography.name.color || '#0f172a',
+                      margin: 0,
+                      fontFamily: baseFontFamily,
+                    }}>
+                      {editable ? (
+                        <InlineEditableText
+                          path="personalInfo.fullName"
+                          value={personalInfo.fullName || 'Your Name'}
+                          style={{
+                            fontSize: scaleFontSize(typography.name.fontSize || '30px'),
+                            fontWeight: 800,
+                            letterSpacing: '-0.03em',
+                            textTransform: 'uppercase',
+                            color: typography.name.color || '#0f172a',
+                            fontFamily: baseFontFamily,
+                          }}
+                        />
+                      ) : (
+                        personalInfo.fullName || 'Your Name'
+                      )}
+                    </h1>
+
+                    {/* Title with geometric accent */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '6px' }}>
+                      <div style={{
+                        width: '12px',
+                        height: '12px',
+                        backgroundColor: accent,
+                        transform: 'rotate(45deg)',
+                      }} />
+                      <p style={{
+                        fontSize: scaleFontSize(typography.title.fontSize || '13px'),
+                        fontWeight: 600,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        color: accent,
+                        margin: 0,
+                        fontFamily: baseFontFamily,
+                      }}>
+                        {editable ? (
+                          <InlineEditableText
+                            path="personalInfo.title"
+                            value={personalInfo.title || 'Professional Title'}
+                            style={{
+                              fontSize: scaleFontSize(typography.title.fontSize || '13px'),
+                              fontWeight: 600,
+                              letterSpacing: '0.08em',
+                              textTransform: 'uppercase',
+                              color: accent,
+                              fontFamily: baseFontFamily,
+                            }}
+                          />
+                        ) : (
+                          personalInfo.title
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Divider line with geometric ends */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  margin: '16px 0',
+                  gap: '8px',
+                }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    backgroundColor: accent,
+                    transform: 'rotate(45deg)',
+                  }} />
+                  <div style={{
+                    flex: 1,
+                    height: '2px',
+                    backgroundColor: `${accent}30`,
+                  }} />
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    backgroundColor: accent,
+                    transform: 'rotate(45deg)',
+                  }} />
+                </div>
+
+                {/* Contact grid with diamond icons */}
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '16px',
+                }}>
+                  {renderGeometricContact(Mail, personalInfo.email, 'personalInfo.email')}
+                  {renderGeometricContact(Phone, personalInfo.phone, 'personalInfo.phone')}
+                  {renderGeometricContact(MapPin, personalInfo.location, 'personalInfo.location')}
+                  {personalInfo.linkedin && renderGeometricContact(Linkedin, personalInfo.linkedin, 'personalInfo.linkedin')}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         const photoPosition = header.photoPosition || 'left';
