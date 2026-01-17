@@ -2,7 +2,8 @@
  * LinkedIn Import Route
  *
  * Imports resume data from LinkedIn profile.
- * Uses Apify for scraping (requires APIFY_API_KEY).
+ * Uses Apify HarvestAPI LinkedIn Profile Scraper.
+ * Requires APIFY_API_KEY (or APIFY_API_TOKEN).
  */
 
 import { Router } from 'express';
@@ -17,13 +18,18 @@ linkedinRouter.post('/', async (req, res) => {
       return res.status(400).json({ error: 'LinkedIn URL is required' });
     }
 
-    // Validate LinkedIn URL
-    if (!linkedinUrl.includes('linkedin.com/in/')) {
-      return res.status(400).json({ error: 'Invalid LinkedIn URL format' });
+    // Validate LinkedIn URL format
+    const linkedinUrlPattern = /^https?:\/\/(www\.)?linkedin\.com\/in\/[\w-]+\/?$/i;
+    if (!linkedinUrlPattern.test(linkedinUrl)) {
+      return res.status(400).json({
+        error: 'Invalid LinkedIn URL format. Expected: https://www.linkedin.com/in/username'
+      });
     }
 
-    const apifyKey = process.env.APIFY_API_KEY;
-    if (!apifyKey) {
+    // Support both env var names for compatibility
+    const apifyToken = process.env.APIFY_API_TOKEN || process.env.APIFY_API_KEY;
+    if (!apifyToken) {
+      console.error('APIFY_API_TOKEN/APIFY_API_KEY not configured');
       return res.status(500).json({
         error: 'LinkedIn import not configured. Please set APIFY_API_KEY.',
       });
@@ -31,71 +37,56 @@ linkedinRouter.post('/', async (req, res) => {
 
     console.log(`Importing LinkedIn profile: ${linkedinUrl}`);
 
-    // Call Apify LinkedIn scraper
-    const response = await fetch(
-      `https://api.apify.com/v2/acts/apify~linkedin-profile-scraper/runs?token=${apifyKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          startUrls: [{ url: linkedinUrl }],
-          proxy: { useApifyProxy: true },
-        }),
-      }
-    );
+    // Call Apify HarvestAPI LinkedIn Profile Scraper (synchronous API)
+    const apifyEndpoint = 'https://api.apify.com/v2/acts/harvestapi~linkedin-profile-scraper/run-sync-get-dataset-items';
+
+    const response = await fetch(`${apifyEndpoint}?token=${apifyToken}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        profileScraperMode: 'Profile details no email ($4 per 1k)',
+        queries: [linkedinUrl],
+      }),
+    });
 
     if (!response.ok) {
-      throw new Error(`Apify API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error('Apify API error:', response.status, errorText);
+      return res.status(502).json({
+        error: 'Failed to fetch LinkedIn profile. Please try again later.',
+        details: response.status === 402 ? 'API quota exceeded' : `Status: ${response.status}`,
+      });
     }
 
-    const runData = await response.json();
-    const runId = runData.data?.id;
+    const apifyData = await response.json();
 
-    if (!runId) {
-      throw new Error('Failed to start LinkedIn import');
+    // Debug: Log response structure
+    console.log('Apify response - Is Array:', Array.isArray(apifyData));
+    console.log('Apify response - Length:', apifyData?.length);
+
+    if (!apifyData || apifyData.length === 0) {
+      return res.status(404).json({
+        error: 'Could not find LinkedIn profile. Please check the URL and try again.'
+      });
     }
 
-    // Wait for completion (with timeout)
-    let attempts = 0;
-    const maxAttempts = 30; // 30 * 2s = 60s max wait
-    let profileData = null;
-
-    while (attempts < maxAttempts) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      const statusResponse = await fetch(
-        `https://api.apify.com/v2/acts/apify~linkedin-profile-scraper/runs/${runId}?token=${apifyKey}`
-      );
-      const statusData = await statusResponse.json();
-
-      if (statusData.data?.status === 'SUCCEEDED') {
-        // Get results
-        const datasetId = statusData.data?.defaultDatasetId;
-        const resultsResponse = await fetch(
-          `https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyKey}`
-        );
-        const results = await resultsResponse.json();
-        profileData = results[0];
-        break;
-      } else if (statusData.data?.status === 'FAILED') {
-        throw new Error('LinkedIn import failed');
-      }
-
-      attempts++;
-    }
-
-    if (!profileData) {
-      throw new Error('LinkedIn import timed out');
-    }
+    const profileData = apifyData[0];
 
     // Transform to resume format
     const resumeData = transformLinkedInToResume(profileData);
 
     console.log(`LinkedIn import successful: ${resumeData.personalInfo?.fullName}`);
+    console.log(`Experience count: ${resumeData.experience.length}`);
+    console.log(`Education count: ${resumeData.education.length}`);
 
     res.json({
       success: true,
       data: resumeData,
+      linkedinProfile: {
+        name: resumeData.personalInfo?.fullName,
+        photoUrl: profileData.photo || profileData.profilePicture?.url || '',
+        linkedInUrl: profileData.linkedinUrl || linkedinUrl,
+      },
     });
   } catch (error) {
     console.error('LinkedIn import error:', error);
@@ -107,86 +98,187 @@ linkedinRouter.post('/', async (req, res) => {
 });
 
 function transformLinkedInToResume(profile) {
-  const createId = (prefix, idx) => `${prefix}-${idx}`;
+  const createId = (prefix) =>
+    `${prefix}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+  // Extract bullet points from description
+  const extractBulletPoints = (description) => {
+    if (!description) return [];
+    const lines = description.split(/[\n\r]+/);
+    return lines
+      .map(line => line.trim().replace(/^[•\-\*]\s*/, '')) // Remove leading bullet chars
+      .filter(line => line.length > 0 && line.length < 500);
+  };
+
+  // Parse date from "Issued Apr 2021" format
+  const parseIssuedDate = (issuedAt) => {
+    if (!issuedAt) return '';
+    const match = issuedAt.match(/Issued\s+(\w+\s+\d{4})/);
+    return match ? match[1] : '';
+  };
+
+  // Parse expiry date from "Issued Apr 2021 · Expired Nov 2022"
+  const parseExpiryDate = (issuedAt) => {
+    if (!issuedAt) return '';
+    const match = issuedAt.match(/Expired\s+(\w+\s+\d{4})/);
+    return match ? match[1] : '';
+  };
+
+  // Parse published date from "Analytics Vidhya · Mar 10, 2020"
+  const parsePublishedDate = (publishedAt) => {
+    if (!publishedAt) return '';
+    const parts = publishedAt.split('·');
+    return parts.length > 1 ? parts[1].trim() : '';
+  };
+
+  // Parse publisher from "Analytics Vidhya · Mar 10, 2020"
+  const parsePublisher = (publishedAt) => {
+    if (!publishedAt) return '';
+    const parts = publishedAt.split('·');
+    return parts.length > 0 ? parts[0].trim() : '';
+  };
+
+  // Build location string from HarvestAPI format
+  const locationString = profile.location?.linkedinText ||
+    profile.location?.parsed?.text ||
+    [profile.location?.parsed?.city, profile.location?.parsed?.country].filter(Boolean).join(', ') ||
+    (typeof profile.location === 'string' ? profile.location : '') || '';
+
+  // Get photo URL
+  const photoUrl = profile.photo || profile.profilePicture?.url || '';
+
+  // Get website from websites array
+  const website = profile.websites?.[0] || '';
 
   return {
     version: '2.0',
     personalInfo: {
-      fullName: profile.fullName || '',
+      fullName: `${profile.firstName || ''} ${profile.lastName || ''}`.trim(),
       email: '',
       phone: '',
-      location: profile.location || '',
+      location: locationString,
       title: profile.headline || '',
-      summary: profile.summary || '',
-      linkedin: profile.linkedInUrl || '',
+      summary: profile.about || '',
+      photo: photoUrl,
+      linkedin: profile.linkedinUrl || '',
       github: '',
-      portfolio: '',
-      website: '',
+      portfolio: website,
+      twitter: '',
+      website: website,
     },
-    experience: (profile.experiences || []).map((exp, idx) => ({
-      id: createId('exp', idx),
+    // Map experience - HarvestAPI uses 'experience' array with 'position' for job title
+    experience: (profile.experience || []).map((exp) => ({
+      id: createId('exp'),
       company: exp.companyName || '',
-      position: exp.title || '',
+      position: exp.position || '',
       location: exp.location || '',
-      startDate: exp.startDate || '',
-      endDate: exp.endDate || '',
-      current: !exp.endDate,
+      startDate: exp.startDate?.text || '',
+      endDate: exp.endDate?.text || 'Present',
+      current: exp.endDate?.text === 'Present' || !exp.endDate?.text,
       description: exp.description || '',
-      bulletPoints: [],
+      bulletPoints: exp.description ? extractBulletPoints(exp.description) : [],
+      companyUrl: exp.companyLinkedinUrl || '',
+      employmentType: exp.employmentType || undefined,
+      remote: exp.workplaceType === 'Remote',
     })),
-    education: (profile.education || []).map((edu, idx) => ({
-      id: createId('edu', idx),
+    // Map education - HarvestAPI uses 'education' array
+    education: (profile.education || []).map((edu) => ({
+      id: createId('edu'),
       school: edu.schoolName || '',
-      degree: edu.degreeName || '',
+      degree: edu.degree || '',
       field: edu.fieldOfStudy || '',
       location: '',
-      startDate: edu.startDate || '',
-      endDate: edu.endDate || '',
-      gpa: '',
+      startDate: edu.startDate?.text || (edu.startDate?.year ? `${edu.startDate.year}` : ''),
+      endDate: edu.endDate?.text || (edu.endDate?.year ? `${edu.endDate.year}` : ''),
+      current: false,
+      gpa: edu.insights?.replace('Grade: ', '') || '',
+      honors: [],
+      coursework: [],
+      activities: [],
+      description: '',
     })),
-    skills: (profile.skills || []).map((skill, idx) => ({
-      id: createId('skill', idx),
-      name: typeof skill === 'string' ? skill : skill.name || '',
+    // Map skills
+    skills: (profile.skills || []).map((skill) => ({
+      id: createId('skill'),
+      name: skill.name || (typeof skill === 'string' ? skill : ''),
+      level: undefined,
       category: 'Technical',
     })),
-    certifications: (profile.certifications || []).map((cert, idx) => ({
-      id: createId('cert', idx),
-      name: cert.name || '',
-      issuer: cert.authority || '',
-      date: cert.date || '',
-      credentialId: cert.credentialId || '',
-      url: cert.url || '',
+    // Map languages
+    languages: (profile.languages || []).map((lang) => ({
+      id: createId('lang'),
+      language: lang.name || (typeof lang === 'string' ? lang : ''),
+      proficiency: 'Intermediate',
     })),
-    languages: (profile.languages || []).map((lang, idx) => ({
-      id: createId('lang', idx),
-      language: lang.name || lang,
-      proficiency: lang.proficiency || 'Professional',
+    // Map certifications - HarvestAPI uses 'title', 'issuedBy', 'issuedAt'
+    certifications: (profile.certifications || []).map((cert) => ({
+      id: createId('cert'),
+      name: cert.title || cert.name || '',
+      issuer: cert.issuedBy || cert.authority || '',
+      date: parseIssuedDate(cert.issuedAt) || cert.date || '',
+      expiryDate: parseExpiryDate(cert.issuedAt) || '',
+      credentialId: '',
+      url: '',
     })),
-    projects: [],
-    awards: [],
-    achievements: [],
-    strengths: [],
-    volunteer: (profile.volunteer || []).map((vol, idx) => ({
-      id: createId('vol', idx),
-      organization: vol.company || '',
-      role: vol.role || '',
-      location: '',
-      startDate: vol.startDate || '',
-      endDate: vol.endDate || '',
-      current: !vol.endDate,
+    // Map publications
+    publications: (profile.publications || []).map((pub) => ({
+      id: createId('pub'),
+      title: pub.title || '',
+      publisher: parsePublisher(pub.publishedAt),
+      date: parsePublishedDate(pub.publishedAt),
+      url: pub.link || '',
+      description: pub.description || '',
+    })),
+    // Map volunteer work - HarvestAPI uses 'volunteering'
+    volunteer: (profile.volunteering || profile.volunteer || []).map((vol) => ({
+      id: createId('vol'),
+      organization: vol.organization || vol.companyName || '',
+      role: vol.role || vol.position || '',
+      startDate: vol.startDate?.text || '',
+      endDate: vol.endDate?.text || '',
+      current: false,
       description: vol.description || '',
       highlights: [],
     })),
-    publications: [],
+    // Map honors/awards - HarvestAPI uses 'honorsAndAwards'
+    awards: (profile.honorsAndAwards || profile.awards || []).map((honor) => ({
+      id: createId('award'),
+      title: honor.title || '',
+      issuer: honor.issuer || '',
+      date: honor.issuedAt || '',
+      description: honor.description || '',
+    })),
+    // Map projects
+    projects: (profile.projects || []).map((proj) => ({
+      id: createId('proj'),
+      name: proj.title || proj.name || '',
+      description: proj.description || '',
+      startDate: proj.startDate?.text || '',
+      endDate: proj.endDate?.text || '',
+      url: proj.link || proj.url || '',
+      technologies: [],
+      techStack: [],
+      highlights: [],
+    })),
+    // Map courses
+    courses: (profile.courses || []).map((course) => ({
+      id: createId('course'),
+      name: course.name || course.title || '',
+      provider: course.provider || '',
+      date: '',
+      certificate: false,
+      description: '',
+    })),
+    achievements: [],
+    strengths: [],
     speaking: [],
     patents: [],
     interests: [],
     references: [],
-    courses: [],
     customSections: [],
     settings: {
       includeSocialLinks: true,
-      includePhoto: false,
+      includePhoto: !!photoUrl,
       dateFormat: 'MMM YYYY',
     },
   };
