@@ -63,6 +63,8 @@ import { refinedSerifTemplate } from './refined-serif';
 import { swissMinimalTemplate } from './swiss-minimal';
 import { monoElegantTemplate } from './mono-elegant';
 import { lineAccentTemplate } from './line-accent';
+import { gradientFlowTemplate } from './gradient-flow';
+import { minimalEdgeTemplate } from './minimal-edge';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -122,6 +124,8 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'swiss-minimal-v2': swissMinimalTemplate,
   'mono-elegant-v2': monoElegantTemplate,
   'line-accent-v2': lineAccentTemplate,
+  'gradient-flow-v2': gradientFlowTemplate,
+  'minimal-edge-v2': minimalEdgeTemplate,
 };
 
 // ============================================================================

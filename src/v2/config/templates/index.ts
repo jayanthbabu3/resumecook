@@ -62,6 +62,8 @@ import { refinedSerifConfig } from './refined-serif';
 import { swissMinimalConfig } from './swiss-minimal';
 import { monoElegantConfig } from './mono-elegant';
 import { lineAccentConfig } from './line-accent';
+import { gradientFlowConfig } from './gradient-flow';
+import { minimalEdgeConfig } from './minimal-edge';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -119,6 +121,8 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'swiss-minimal-v2': swissMinimalConfig,
   'mono-elegant-v2': monoElegantConfig,
   'line-accent-v2': lineAccentConfig,
+  'gradient-flow-v2': gradientFlowConfig,
+  'minimal-edge-v2': minimalEdgeConfig,
 };
 
 // Get template by ID
@@ -192,4 +196,6 @@ export {
   swissMinimalConfig,
   monoElegantConfig,
   lineAccentConfig,
+  gradientFlowConfig,
+  minimalEdgeConfig,
 };

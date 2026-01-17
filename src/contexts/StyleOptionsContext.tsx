@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useCallback, ReactNode } fr
 
 // Style options types
 export type HeaderCase = 'uppercase' | 'capitalize' | 'lowercase';
-export type BulletStyle = '•' | '◦' | '▪' | '–' | '▸' | 'none';
+export type BulletStyle = '•' | '◦' | '▪' | '–' | '▸' | 'none' | 'numbered';
 export type DividerStyle = 'line' | 'dotted' | 'double' | 'thin' | 'none';
 export type FontSizeScale = 'compact' | 'normal' | 'large';
 export type DateFormat = 'short' | 'medium' | 'long'; // Jan 2024, January 2024, 01/2024

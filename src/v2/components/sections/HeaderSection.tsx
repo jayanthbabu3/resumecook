@@ -4554,6 +4554,349 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'gradient-flow':
+        // Modern asymmetric design with diagonal gradient accent
+        // Features: Gradient top bar, bold name, elegant contact grid
+        const gradientFlowContacts = [
+          { icon: Mail, value: personalInfo.email, path: 'personalInfo.email' },
+          { icon: Phone, value: personalInfo.phone, path: 'personalInfo.phone' },
+          { icon: MapPin, value: personalInfo.location, path: 'personalInfo.location' },
+          { icon: Linkedin, value: personalInfo.linkedin, path: 'personalInfo.linkedin' },
+          { icon: Globe, value: personalInfo.website, path: 'personalInfo.website' },
+        ].filter(item => editable || (item.value && item.value.trim()));
+
+        const renderGradientFlowContact = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string
+        ) => {
+          if (!editable && !value) return null;
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}>
+              <div style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '6px',
+                backgroundColor: `${accent}12`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <Icon style={{ width: '14px', height: '14px', color: accent }} />
+              </div>
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{
+                    fontSize: scaleFontSize(typography.contact.fontSize),
+                    color: typography.contact.color || '#475569',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                <span style={{
+                  fontSize: scaleFontSize(typography.contact.fontSize),
+                  color: typography.contact.color || '#475569',
+                  fontFamily: baseFontFamily,
+                }}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="gradient-flow"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '24px',
+            }}
+          >
+            {/* Gradient accent bar - diagonal gradient */}
+            <div style={{
+              height: '6px',
+              background: `linear-gradient(90deg, ${accent} 0%, ${colors.secondary || adjustColor(accent, 40)} 50%, ${accent} 100%)`,
+              marginBottom: '24px',
+              borderRadius: '0 0 3px 3px',
+            }} />
+
+            {/* Main content - asymmetric layout */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: '40px',
+            }}>
+              {/* Left side - Name and title */}
+              <div style={{ flex: 1 }}>
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize),
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.025em',
+                  color: typography.name.color || '#0f172a',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize),
+                        fontWeight: 700,
+                        color: typography.name.color || '#0f172a',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  marginTop: '10px',
+                }}>
+                  <div style={{
+                    width: '40px',
+                    height: '3px',
+                    backgroundColor: accent,
+                    borderRadius: '2px',
+                  }} />
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: 500,
+                    lineHeight: 1.4,
+                    color: accent,
+                    margin: 0,
+                    fontFamily: baseFontFamily,
+                    letterSpacing: '0.02em',
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize),
+                          fontWeight: 500,
+                          color: accent,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right side - Contact grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, auto)',
+                gap: '10px 24px',
+                alignItems: 'start',
+              }}>
+                {gradientFlowContacts.map((item) => (
+                  <React.Fragment key={item.path}>
+                    {renderGradientFlowContact(item.icon, item.value, item.path)}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom separator line */}
+            <div style={{
+              height: '1px',
+              backgroundColor: colors.border || '#e2e8f0',
+              marginTop: '20px',
+            }} />
+          </div>
+        );
+
+      case 'minimal-edge':
+        // Ultra-clean with sharp geometric accents and split contact
+        // Features: Clean typography, corner accent, vertical contact separator
+        const minimalEdgeContacts = [
+          { icon: Mail, value: personalInfo.email, path: 'personalInfo.email', label: 'Email' },
+          { icon: Phone, value: personalInfo.phone, path: 'personalInfo.phone', label: 'Phone' },
+          { icon: MapPin, value: personalInfo.location, path: 'personalInfo.location', label: 'Location' },
+          { icon: Linkedin, value: personalInfo.linkedin, path: 'personalInfo.linkedin', label: 'LinkedIn' },
+          { icon: Globe, value: personalInfo.website, path: 'personalInfo.website', label: 'Website' },
+        ].filter(item => editable || (item.value && item.value.trim()));
+
+        const renderMinimalEdgeContact = (
+          value: string | undefined,
+          path: string,
+          label: string,
+          isLast: boolean
+        ) => {
+          if (!editable && !value) return null;
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+            }}>
+              <div>
+                <div style={{
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: colors.text.muted || '#94a3b8',
+                  marginBottom: '2px',
+                  fontFamily: baseFontFamily,
+                }}>{label}</div>
+                {editable ? (
+                  <InlineEditableText
+                    path={path}
+                    value={value || 'Click to edit'}
+                    style={{
+                      fontSize: scaleFontSize(typography.contact.fontSize),
+                      color: typography.contact.color || '#334155',
+                      fontFamily: baseFontFamily,
+                      fontWeight: 400,
+                    }}
+                  />
+                ) : (
+                  <span style={{
+                    fontSize: scaleFontSize(typography.contact.fontSize),
+                    color: typography.contact.color || '#334155',
+                    fontFamily: baseFontFamily,
+                  }}>{value}</span>
+                )}
+              </div>
+              {!isLast && (
+                <div style={{
+                  width: '1px',
+                  height: '28px',
+                  backgroundColor: colors.border || '#e2e8f0',
+                }} />
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="minimal-edge"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '24px',
+              position: 'relative',
+            }}
+          >
+            {/* Corner geometric accent */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '60px',
+              height: '60px',
+              overflow: 'hidden',
+              pointerEvents: 'none',
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-30px',
+                left: '-30px',
+                width: '60px',
+                height: '60px',
+                backgroundColor: accent,
+                transform: 'rotate(45deg)',
+              }} />
+            </div>
+
+            {/* Name and title section */}
+            <div style={{
+              paddingLeft: '72px',
+              marginBottom: '20px',
+            }}>
+              <h1 style={{
+                fontSize: scaleFontSize(typography.name.fontSize),
+                fontWeight: 600,
+                lineHeight: 1.15,
+                letterSpacing: '-0.02em',
+                color: typography.name.color || '#0f172a',
+                margin: 0,
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={personalInfo.fullName || 'Your Name'}
+                    style={{
+                      fontSize: scaleFontSize(typography.name.fontSize),
+                      fontWeight: 600,
+                      color: typography.name.color || '#0f172a',
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  personalInfo.fullName || 'Your Name'
+                )}
+              </h1>
+
+              <p style={{
+                fontSize: scaleFontSize(typography.title.fontSize),
+                fontWeight: 400,
+                lineHeight: 1.4,
+                color: accent,
+                margin: '8px 0 0 0',
+                fontFamily: baseFontFamily,
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.title"
+                    value={personalInfo.title || 'Professional Title'}
+                    style={{
+                      fontSize: scaleFontSize(typography.title.fontSize),
+                      fontWeight: 400,
+                      color: accent,
+                      fontFamily: baseFontFamily,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  />
+                ) : (
+                  personalInfo.title
+                )}
+              </p>
+            </div>
+
+            {/* Contact row with vertical separators */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0',
+              paddingTop: '16px',
+              borderTop: `2px solid ${accent}`,
+            }}>
+              {minimalEdgeContacts.map((item, index) => (
+                <React.Fragment key={item.path}>
+                  {renderMinimalEdgeContact(
+                    item.value,
+                    item.path,
+                    item.label,
+                    index === minimalEdgeContacts.length - 1
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         const photoPosition = header.photoPosition || 'left';

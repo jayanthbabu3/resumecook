@@ -223,7 +223,9 @@ export type HeaderVariant =
   | 'refined-serif'          // Elegant serif typography with thin line separators
   | 'swiss-minimal'          // Swiss design with bold typography and geometric accents
   | 'mono-elegant'           // Monospace typography with elegant spacing
-  | 'line-accent';           // Clean design with full-width accent lines
+  | 'line-accent'            // Clean design with full-width accent lines
+  | 'gradient-flow'          // Diagonal gradient accent with asymmetric modern layout
+  | 'minimal-edge';          // Sharp geometric accents with split contact layout
 
 export interface HeaderConfig {
   variant: HeaderVariant;
@@ -285,26 +287,37 @@ export interface SkillsConfig {
 
 // Experience variants
 export type ExperienceVariant =
-  | 'standard'
-  | 'compact'
-  | 'timeline'
-  | 'card'
-  | 'minimal'
-  | 'two-column-dates'
-  | 'accent-card'
-  | 'accent-side'
+  | 'standard'         // Classic corporate layout
+  | 'compact'          // Space-efficient single line
+  | 'detailed'         // Full details with descriptions
+  | 'timeline'         // Visual timeline with dots/line
+  | 'card'             // Card-based layout (singular)
+  | 'cards'            // Card-based layout (plural alias)
+  | 'minimal'          // Ultra-minimal text only
+  | 'modern'           // Modern with accent borders
+  | 'left-border'      // Left colored border accent
+  | 'dates-left'       // Dates on left column
+  | 'dates-right'      // Dates on right side
+  | 'two-column-dates' // Two column with dates
+  | 'accent-card'      // Accent card style
+  | 'accent-side'      // Accent on side
+  | 'academic'         // Academic/research focused
+  | 'creative'         // Creative industry style
   | 'dots-timeline'    // Connected dots timeline
   | 'timeline-pro'     // Professional timeline with dates on left
   | 'enhanced'         // EnhanceCV-style variant
   | 'premium'          // Premium with numbered bullets
-  | 'icon-accent';     // Creative card with icon badge
+  | 'icon-accent'      // Creative card with company icon badge
+  | 'icon-clean'       // Clean layout with circular icon
+  | 'elegant-timeline' // Modern elegant timeline with subtle dots
+  | 'clean-stacked';   // Clean minimal stacked with pipe separator
 
 export interface ExperienceConfig {
   variant: ExperienceVariant;
   showLogo?: boolean;
   datePosition?: 'right' | 'below' | 'inline' | 'left';
   showLocation?: boolean;
-  bulletStyle?: '•' | '◦' | '▪' | '–' | '▸' | 'none';
+  bulletStyle?: '•' | '◦' | '▪' | '–' | '▸' | 'none' | 'numbered';
   showDescription?: boolean;
 }
 
