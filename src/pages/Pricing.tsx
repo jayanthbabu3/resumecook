@@ -2,17 +2,17 @@
  * Pricing Page
  *
  * Displays pricing plans with free vs pro tier comparison.
- * Supports regional pricing (India vs US).
+ * Uses Razorpay for payments (INR only).
  */
 
-import React, { useState, useEffect } from "react";
-// Note: Region detection removed - using INR only (Stripe India regulations)
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useTrial } from "@/hooks/useTrial";
 import { toast } from "sonner";
 import {
   Check,
@@ -22,11 +22,12 @@ import {
   ArrowRight,
   Crown,
   Gift,
-  Loader2
+  Loader2,
+  Clock,
+  Users
 } from "lucide-react";
 
-// Pricing configuration
-// Note: Using INR only due to Stripe India regulations
+// Pricing configuration (INR only - Razorpay)
 const PRICING = {
   currency: "₹",
   amount: 149,
@@ -55,16 +56,32 @@ const Pricing = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useFirebaseAuth();
-  const { isPro, createCheckoutSession, loading: subscriptionLoading } = useSubscription();
-  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
+  const { isPro, isTrial, trialDaysRemaining, initiateSubscription, loading: subscriptionLoading, error: subscriptionError } = useSubscription();
+  const { trialStatus } = useTrial();
 
   // Handle subscription callback messages
   useEffect(() => {
     const subscriptionStatus = searchParams.get("subscription");
     if (subscriptionStatus === "cancelled") {
       toast.info("Checkout was cancelled. You can upgrade anytime.");
+    } else if (subscriptionStatus === "success") {
+      toast.success("Welcome to Pro! Your subscription is now active.");
     }
   }, [searchParams]);
+
+  // Show error toast when subscription error occurs
+  useEffect(() => {
+    if (subscriptionError) {
+      toast.error(subscriptionError);
+    }
+  }, [subscriptionError]);
+
+  // Calculate urgency level for countdown display
+  const getUrgencyColor = (remaining: number) => {
+    if (remaining < 100) return "from-red-500 to-orange-500";
+    if (remaining < 300) return "from-orange-500 to-yellow-500";
+    return "from-primary to-blue-600";
+  };
 
   const handleGetStarted = () => {
     navigate("/templates");
@@ -77,35 +94,63 @@ const Pricing = () => {
       return;
     }
 
-    if (isPro) {
+    if (isPro && !isTrial) {
       toast.info("You already have a Pro subscription!");
       navigate("/profile");
       return;
     }
 
-    setIsCheckoutLoading(true);
-    try {
-      // Using "india" for INR pricing (Stripe India account limitation)
-      const checkoutUrl = await createCheckoutSession("india");
-      if (checkoutUrl) {
-        // Redirect to Stripe Checkout
-        window.location.href = checkoutUrl;
-      } else {
-        toast.error("Failed to start checkout. Please try again.");
-      }
-    } catch (error) {
-      console.error("Checkout error:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setIsCheckoutLoading(false);
-    }
+    // Initiate Razorpay checkout (opens modal)
+    await initiateSubscription();
   };
 
-  const isLoading = subscriptionLoading || isCheckoutLoading;
+  const isLoading = subscriptionLoading;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-blue-50/30 to-background">
       <Header />
+
+      {/* Trial Countdown Banner - Show only if trials are available and user doesn't have one */}
+      {trialStatus?.trialsAvailable && !isPro && !isTrial && (
+        <div className={`bg-gradient-to-r ${getUrgencyColor(trialStatus.trialsRemaining)} text-white py-3 px-4`}>
+          <div className="container mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center sm:text-left">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 animate-pulse" />
+              <span className="font-semibold text-sm">Limited Time Offer!</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span className="text-sm">
+                <strong>{trialStatus.trialsRemaining}</strong> of {trialStatus.maxTrials} free 7-day Pro trials remaining!
+              </span>
+            </div>
+            {!user && (
+              <Button
+                size="sm"
+                variant="secondary"
+                className="bg-white/20 hover:bg-white/30 text-white border-white/30 text-xs h-7"
+                onClick={() => navigate("/auth")}
+              >
+                Sign up to claim yours
+                <ArrowRight className="ml-1 h-3 w-3" />
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Active Trial Banner */}
+      {isTrial && trialDaysRemaining !== null && (
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 px-4">
+          <div className="container mx-auto max-w-5xl flex items-center justify-center gap-3 text-center">
+            <Sparkles className="h-4 w-4" />
+            <span className="text-sm">
+              <strong>Your free trial is active!</strong> {trialDaysRemaining} {trialDaysRemaining === 1 ? 'day' : 'days'} remaining.
+              {trialDaysRemaining <= 2 && " Subscribe now to keep your Pro features!"}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <section className="pt-8 pb-16 px-4 md:px-6">
@@ -124,7 +169,9 @@ const Pricing = () => {
               </span>
             </h1>
             <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto">
-              Start free, upgrade when you need AI superpowers
+              {trialStatus?.trialsAvailable && !isPro && !isTrial
+                ? "Start with a 7-day free Pro trial, upgrade anytime"
+                : "Start free, upgrade when you need AI superpowers"}
             </p>
           </div>
 
@@ -302,7 +349,7 @@ const Pricing = () => {
               {[
                 { q: "Is the free plan really free?", a: "Yes! Create unlimited resumes, use all templates, and download PDFs - forever free." },
                 { q: "Can I cancel anytime?", a: "Absolutely. Cancel your Pro subscription anytime, no questions asked." },
-                { q: "What payment methods?", a: "We accept all major cards and UPI (India) through Stripe." },
+                { q: "What payment methods?", a: "We accept all major cards, UPI, and netbanking through Razorpay." },
               ].map((faq, index) => (
                 <div key={index} className="p-4 rounded-lg bg-white border border-border/60">
                   <h3 className="font-semibold text-sm text-foreground">{faq.q}</h3>

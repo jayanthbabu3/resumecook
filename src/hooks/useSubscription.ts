@@ -3,8 +3,9 @@
  *
  * Manages user subscription state and provides methods for:
  * - Checking subscription status
- * - Creating checkout sessions
- * - Managing subscription via customer portal
+ * - Creating Razorpay subscriptions
+ * - Verifying payments
+ * - Cancelling subscriptions
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -12,17 +13,59 @@ import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useFirebaseAuth } from './useFirebaseAuth';
 
-export type SubscriptionStatus = 'free' | 'active' | 'past_due' | 'cancelled';
+export type SubscriptionStatus = 'free' | 'active' | 'past_due' | 'cancelled' | 'expired';
 
 export interface SubscriptionData {
   status: SubscriptionStatus;
   plan: 'free' | 'pro';
-  stripeCustomerId?: string;
-  stripeSubscriptionId?: string;
+  razorpayCustomerId?: string;
+  razorpaySubscriptionId?: string;
   currentPeriodStart?: Date;
   currentPeriodEnd?: Date;
   cancelAtPeriodEnd?: boolean;
   updatedAt?: Date;
+  // Trial-specific fields
+  isTrial?: boolean;
+  trialStartDate?: Date;
+  trialEndDate?: Date;
+}
+
+// Razorpay checkout options type
+interface RazorpayOptions {
+  key: string;
+  subscription_id: string;
+  name: string;
+  description: string;
+  prefill: {
+    name: string;
+    email: string;
+  };
+  theme: {
+    color: string;
+  };
+  notes: {
+    firebaseUserId: string;
+  };
+  handler: (response: RazorpayResponse) => void;
+  modal?: {
+    ondismiss?: () => void;
+  };
+}
+
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+  razorpay_subscription_id: string;
+  razorpay_signature: string;
+}
+
+// Declare Razorpay global
+declare global {
+  interface Window {
+    Razorpay: new (options: RazorpayOptions) => {
+      open: () => void;
+      on: (event: string, handler: () => void) => void;
+    };
+  }
 }
 
 interface UseSubscriptionReturn {
@@ -31,8 +74,10 @@ interface UseSubscriptionReturn {
   error: string | null;
   isPro: boolean;
   isActive: boolean;
-  createCheckoutSession: (region: 'india' | 'us') => Promise<string | null>;
-  openCustomerPortal: () => Promise<string | null>;
+  isTrial: boolean;
+  trialDaysRemaining: number | null;
+  initiateSubscription: () => Promise<void>;
+  cancelSubscription: (immediately?: boolean) => Promise<boolean>;
   verifySubscription: () => Promise<boolean>;
   refreshSubscription: () => void;
 }
@@ -42,8 +87,24 @@ const DEFAULT_SUBSCRIPTION: SubscriptionData = {
   plan: 'free',
 };
 
+// Load Razorpay script
+const loadRazorpayScript = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 export const useSubscription = (): UseSubscriptionReturn => {
-  const { user } = useFirebaseAuth();
+  const { user, userProfile } = useFirebaseAuth();
   const [subscription, setSubscription] = useState<SubscriptionData>(DEFAULT_SUBSCRIPTION);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,12 +131,16 @@ export const useSubscription = (): UseSubscriptionReturn => {
             setSubscription({
               status: subData.status || 'free',
               plan: subData.plan || 'free',
-              stripeCustomerId: subData.stripeCustomerId,
-              stripeSubscriptionId: subData.stripeSubscriptionId,
+              razorpayCustomerId: subData.razorpayCustomerId,
+              razorpaySubscriptionId: subData.razorpaySubscriptionId,
               currentPeriodStart: subData.currentPeriodStart?.toDate?.(),
               currentPeriodEnd: subData.currentPeriodEnd?.toDate?.(),
               cancelAtPeriodEnd: subData.cancelAtPeriodEnd,
               updatedAt: subData.updatedAt?.toDate?.(),
+              // Trial fields
+              isTrial: subData.isTrial || false,
+              trialStartDate: subData.trialStartDate?.toDate?.(),
+              trialEndDate: subData.trialEndDate?.toDate?.(),
             });
           } else {
             setSubscription(DEFAULT_SUBSCRIPTION);
@@ -96,53 +161,104 @@ export const useSubscription = (): UseSubscriptionReturn => {
     return () => unsubscribe();
   }, [user?.uid]);
 
-  // Create Stripe Checkout session for upgrading to Pro
-  const createCheckoutSession = useCallback(async (region: 'india' | 'us'): Promise<string | null> => {
+  // Initiate Razorpay subscription checkout
+  const initiateSubscription = useCallback(async (): Promise<void> => {
     if (!user?.uid || !user?.email) {
       setError('Please sign in to upgrade');
-      return null;
+      return;
     }
 
     setLoading(true);
     setError(null);
 
     try {
+      // Load Razorpay script
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        throw new Error('Failed to load payment gateway. Please try again.');
+      }
+
+      // Create subscription on backend
       const { API_ENDPOINTS, apiFetch } = await import('../config/api');
-      const response = await apiFetch(API_ENDPOINTS.createCheckoutSession, {
+      const response = await apiFetch(API_ENDPOINTS.createSubscription, {
         method: 'POST',
         body: JSON.stringify({
           userId: user.uid,
           userEmail: user.email,
-          region,
-          successUrl: `${window.location.origin}/profile?subscription=success`,
-          cancelUrl: `${window.location.origin}/pricing?subscription=cancelled`,
+          userName: userProfile?.fullName || user.displayName || '',
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create checkout session');
+        throw new Error(data.error || 'Failed to create subscription');
       }
 
-      // Return the Stripe Checkout URL
-      return data.url || null;
+      // Open Razorpay Checkout
+      const options: RazorpayOptions = {
+        ...data.razorpay,
+        handler: async (razorpayResponse: RazorpayResponse) => {
+          // Verify payment on backend
+          try {
+            setLoading(true);
+            const verifyResponse = await apiFetch(API_ENDPOINTS.verifyPayment, {
+              method: 'POST',
+              body: JSON.stringify({
+                razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+                razorpay_subscription_id: razorpayResponse.razorpay_subscription_id,
+                razorpay_signature: razorpayResponse.razorpay_signature,
+                userId: user.uid,
+              }),
+            });
+
+            const verifyData = await verifyResponse.json();
+
+            if (!verifyResponse.ok) {
+              throw new Error(verifyData.error || 'Payment verification failed');
+            }
+
+            // Success! Firebase listener will update subscription state
+            console.log('Payment verified successfully');
+
+            // Navigate to success page or show success message
+            window.location.href = '/profile?subscription=success';
+          } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Payment verification failed';
+            console.error('Payment verification error:', errorMessage);
+            setError(errorMessage);
+            setLoading(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            console.log('Checkout cancelled by user');
+            setLoading(false);
+          },
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
 
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create checkout session';
-      console.error('Checkout error:', errorMessage);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to initiate subscription';
+      console.error('Subscription error:', errorMessage);
       setError(errorMessage);
-      return null;
-    } finally {
       setLoading(false);
     }
-  }, [user?.uid, user?.email]);
+  }, [user?.uid, user?.email, user?.displayName, userProfile?.fullName]);
 
-  // Open Stripe Customer Portal for managing subscription
-  const openCustomerPortal = useCallback(async (): Promise<string | null> => {
-    if (!subscription.stripeCustomerId) {
-      setError('No active subscription to manage');
-      return null;
+  // Cancel subscription
+  const cancelSubscription = useCallback(async (immediately: boolean = false): Promise<boolean> => {
+    if (!user?.uid) {
+      setError('Please sign in to cancel subscription');
+      return false;
+    }
+
+    if (!subscription.razorpaySubscriptionId) {
+      setError('No active subscription to cancel');
+      return false;
     }
 
     setLoading(true);
@@ -150,35 +266,36 @@ export const useSubscription = (): UseSubscriptionReturn => {
 
     try {
       const { API_ENDPOINTS, apiFetch } = await import('../config/api');
-      const response = await apiFetch(API_ENDPOINTS.customerPortal, {
+      const response = await apiFetch(API_ENDPOINTS.cancelSubscription, {
         method: 'POST',
         body: JSON.stringify({
-          stripeCustomerId: subscription.stripeCustomerId,
-          returnUrl: `${window.location.origin}/profile`,
+          userId: user.uid,
+          cancelAtPeriodEnd: !immediately,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to open customer portal');
+        throw new Error(data.error || 'Failed to cancel subscription');
       }
 
-      return data.url || null;
+      console.log('Subscription cancelled:', data.message);
+      return true;
 
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to open customer portal';
-      console.error('Portal error:', errorMessage);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to cancel subscription';
+      console.error('Cancel subscription error:', errorMessage);
       setError(errorMessage);
-      return null;
+      return false;
     } finally {
       setLoading(false);
     }
-  }, [subscription.stripeCustomerId]);
+  }, [user?.uid, subscription.razorpaySubscriptionId]);
 
-  // Verify subscription with Stripe and sync to Firebase
+  // Verify subscription status with backend
   const verifySubscription = useCallback(async (): Promise<boolean> => {
-    if (!user?.uid || !user?.email) {
+    if (!user?.uid) {
       return false;
     }
 
@@ -191,7 +308,6 @@ export const useSubscription = (): UseSubscriptionReturn => {
         method: 'POST',
         body: JSON.stringify({
           userId: user.uid,
-          userEmail: user.email,
         }),
       });
 
@@ -201,30 +317,8 @@ export const useSubscription = (): UseSubscriptionReturn => {
         throw new Error(data.error || 'Failed to verify subscription');
       }
 
-      // If the server returned subscription data, update Firestore from client
-      // This works as a fallback when Firebase Admin isn't configured on the server
-      if (data.subscription) {
-        const subData = data.subscription;
-
-        // Update Firestore directly from client (user has write permission to their own doc)
-        await setDoc(doc(db, 'users', user.uid), {
-          subscription: {
-            status: subData.status || 'free',
-            plan: subData.plan || 'free',
-            stripeCustomerId: subData.stripeCustomerId,
-            stripeSubscriptionId: subData.stripeSubscriptionId,
-            currentPeriodStart: subData.currentPeriodStart ? new Date(subData.currentPeriodStart) : null,
-            currentPeriodEnd: subData.currentPeriodEnd ? new Date(subData.currentPeriodEnd) : null,
-            cancelAtPeriodEnd: subData.cancelAtPeriodEnd || false,
-            updatedAt: serverTimestamp(),
-          },
-        }, { merge: true });
-
-        console.log('Subscription synced to Firestore:', subData.status);
-      }
-
-      // The Firestore listener will pick up the update automatically
-      return data.subscription?.status === 'active';
+      // The Firestore listener will pick up any updates
+      return data.hasActiveSubscription || false;
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to verify subscription';
@@ -234,7 +328,7 @@ export const useSubscription = (): UseSubscriptionReturn => {
     } finally {
       setLoading(false);
     }
-  }, [user?.uid, user?.email]);
+  }, [user?.uid]);
 
   // Manual refresh (triggers re-subscription to Firestore)
   const refreshSubscription = useCallback(() => {
@@ -246,6 +340,17 @@ export const useSubscription = (): UseSubscriptionReturn => {
   // Computed properties
   const isPro = subscription.plan === 'pro' && subscription.status === 'active';
   const isActive = subscription.status === 'active';
+  const isTrial = subscription.isTrial || false;
+
+  // Calculate trial days remaining
+  const trialDaysRemaining = (() => {
+    if (!subscription.isTrial || !subscription.trialEndDate) return null;
+    const now = new Date();
+    const endDate = subscription.trialEndDate;
+    const diffTime = endDate.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return Math.max(0, diffDays);
+  })();
 
   return {
     subscription,
@@ -253,8 +358,10 @@ export const useSubscription = (): UseSubscriptionReturn => {
     error,
     isPro,
     isActive,
-    createCheckoutSession,
-    openCustomerPortal,
+    isTrial,
+    trialDaysRemaining,
+    initiateSubscription,
+    cancelSubscription,
     verifySubscription,
     refreshSubscription,
   };

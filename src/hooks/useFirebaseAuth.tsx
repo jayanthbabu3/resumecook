@@ -16,6 +16,33 @@ import {
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { incrementUsersCount } from '@/lib/firestore/statsService';
+import { API_ENDPOINTS, apiFetch } from '@/config/api';
+
+// Helper function to claim free trial for new users
+const claimTrialForUser = async (userId: string, userEmail: string): Promise<boolean> => {
+  try {
+    const response = await apiFetch(API_ENDPOINTS.claimTrial, {
+      method: 'POST',
+      body: JSON.stringify({
+        userId,
+        userEmail,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      console.log('Free trial claimed successfully:', data);
+      return true;
+    } else {
+      console.log('Trial claim response:', data);
+      return false;
+    }
+  } catch (error) {
+    console.error('Error claiming trial:', error);
+    return false;
+  }
+};
 
 interface UserProfile {
   fullName: string;
@@ -120,9 +147,16 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
           emailVerified: true,
         }, { merge: true });
 
-        // Increment users count only on first verified login
+        // Increment users count and claim trial only on first verified login
         if (!wasVerified) {
           await incrementUsersCount();
+          // Claim free trial for newly verified user
+          const trialClaimed = await claimTrialForUser(result.user.uid, result.user.email || '');
+          if (trialClaimed) {
+            toast.success('Email verified! Your 7-day free Pro trial has started!');
+            navigate('/templates');
+            return;
+          }
         }
       } catch (error) {
         console.error('Error updating last sign-in:', error);
@@ -187,7 +221,13 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
           console.error('Error incrementing users count:', error);
         }
 
-        toast.success('Welcome! Your account has been created with Google.');
+        // Claim free trial for new user
+        const trialClaimed = await claimTrialForUser(result.user.uid, result.user.email || '');
+        if (trialClaimed) {
+          toast.success('Welcome! Your account has been created with a 7-day free Pro trial!');
+        } else {
+          toast.success('Welcome! Your account has been created with Google.');
+        }
       } else {
         // Update existing profile with latest Google data
         const existingProfile = userDoc.data() as UserProfile;

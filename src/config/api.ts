@@ -33,10 +33,16 @@ export const API_ENDPOINTS = {
   // ATS Score
   atsScore: `${API_BASE_URL}/api/ats-score`,
 
-  // Stripe Payment endpoints
-  createCheckoutSession: `${API_BASE_URL}/api/stripe/create-checkout-session`,
-  customerPortal: `${API_BASE_URL}/api/stripe/customer-portal`,
-  verifySubscription: `${API_BASE_URL}/api/stripe/verify-subscription`,
+  // Razorpay Payment endpoints
+  createSubscription: `${API_BASE_URL}/api/razorpay/create-subscription`,
+  verifyPayment: `${API_BASE_URL}/api/razorpay/verify-payment`,
+  verifySubscription: `${API_BASE_URL}/api/razorpay/verify-subscription`,
+  cancelSubscription: `${API_BASE_URL}/api/razorpay/cancel-subscription`,
+
+  // Trial endpoints
+  trialStatus: `${API_BASE_URL}/api/razorpay/trial-status`,
+  claimTrial: `${API_BASE_URL}/api/razorpay/claim-trial`,
+  checkTrialExpiry: `${API_BASE_URL}/api/razorpay/check-trial-expiry`,
 
   // LinkedIn Import
   linkedinImport: `${API_BASE_URL}/api/linkedin-import`,

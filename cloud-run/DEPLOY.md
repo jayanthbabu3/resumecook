@@ -76,9 +76,10 @@ NODE_ENV=production
 GEMINI_API_KEY=xxx
 GROQ_API_KEY=xxx
 OPENAI_API_KEY=xxx
-STRIPE_SECRET_KEY=xxx
-STRIPE_WEBHOOK_SECRET=xxx
-STRIPE_PRICE_ID_INR=xxx
+RAZORPAY_KEY_ID=xxx
+RAZORPAY_KEY_SECRET=xxx
+RAZORPAY_WEBHOOK_SECRET=xxx
+RAZORPAY_PLAN_ID=xxx
 VITE_FIREBASE_PROJECT_ID=xxx
 API_KEYS=xxx  # Comma-separated list of valid API keys
 ```
@@ -194,5 +195,5 @@ gcloud run services update resumecook-api --region us-central1 --min-instances 1
 | `/api/chat-with-resume` | POST | AI chat |
 | `/api/generate-pdf` | POST | PDF generation |
 | `/api/ats-score` | POST | ATS analysis |
-| `/api/stripe/*` | POST | Payment endpoints |
+| `/api/razorpay/*` | POST | Payment endpoints |
 | `/api/linkedin-import` | POST | LinkedIn import |

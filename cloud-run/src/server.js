@@ -8,9 +8,10 @@
  * - Express.js for routing and middleware
  * - Native Puppeteer for PDF generation (no @sparticuz/chromium hack)
  * - Multi-provider AI fallback (Gemini > Groq > Claude > OpenAI)
- * - Stripe integration for payments
+ * - Razorpay integration for payments (India-focused)
  */
 
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -28,7 +29,7 @@ import { tailorResumeRouter } from './routes/tailor-resume-for-job.js';
 import { chatRouter } from './routes/chat-with-resume.js';
 import { generatePdfRouter } from './routes/generate-pdf.js';
 import { atsScoreRouter } from './routes/ats-score.js';
-import { stripeRouter } from './routes/stripe.js';
+import { razorpayRouter } from './routes/razorpay.js';
 import { linkedinRouter } from './routes/linkedin-import.js';
 
 const app = express();
@@ -76,7 +77,7 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'stripe-signature', 'X-API-Key'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-razorpay-signature', 'X-API-Key'],
 }));
 
 // =============================================================================
@@ -129,8 +130,8 @@ app.use('/api/generate-pdf', pdfLimiter, generatePdfRouter);
 // ATS Score Analysis (uses AI)
 app.use('/api/ats-score', aiLimiter, atsScoreRouter);
 
-// Stripe Payment routes
-app.use('/api/stripe', stripeRouter);
+// Razorpay Payment routes
+app.use('/api/razorpay', razorpayRouter);
 
 // LinkedIn Import
 app.use('/api/linkedin-import', linkedinRouter);
@@ -147,10 +148,6 @@ app.use('/.netlify/functions/tailor-resume-for-job', tailorResumeRouter);
 app.use('/.netlify/functions/chat-with-resume', chatRouter);
 app.use('/.netlify/functions/generate-pdf', generatePdfRouter);
 app.use('/.netlify/functions/ats-score', atsScoreRouter);
-app.use('/.netlify/functions/create-checkout-session', stripeRouter);
-app.use('/.netlify/functions/customer-portal', stripeRouter);
-app.use('/.netlify/functions/verify-subscription', stripeRouter);
-app.use('/.netlify/functions/stripe-webhook', stripeRouter);
 app.use('/.netlify/functions/linkedin-import', linkedinRouter);
 
 // =============================================================================
@@ -197,7 +194,7 @@ app.listen(PORT, () => {
 ║  • POST /api/chat-with-resume    - AI chat assistant           ║
 ║  • POST /api/generate-pdf        - PDF generation              ║
 ║  • POST /api/ats-score           - ATS compatibility score     ║
-║  • POST /api/stripe/*            - Payment endpoints           ║
+║  • POST /api/razorpay/*          - Payment endpoints           ║
 ║  • POST /api/linkedin-import     - LinkedIn import             ║
 ║  • GET  /health                  - Health check                ║
 ╚═══════════════════════════════════════════════════════════════╝
