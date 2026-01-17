@@ -4897,6 +4897,622 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      // ========================================================================
+      // INK BLOT - Circular accent blob behind name with clean minimal design
+      // ========================================================================
+      case 'ink-blot':
+        const inkBlotContacts = [
+          personalInfo.email && { value: personalInfo.email, path: 'personalInfo.email' },
+          personalInfo.phone && { value: personalInfo.phone, path: 'personalInfo.phone' },
+          personalInfo.location && { value: personalInfo.location, path: 'personalInfo.location' },
+          personalInfo.linkedin && { value: personalInfo.linkedin, path: 'personalInfo.linkedin' },
+          personalInfo.website && { value: personalInfo.website, path: 'personalInfo.website' },
+        ].filter(Boolean) as { value: string; path: string }[];
+
+        return (
+          <div
+            data-header="ink-blot"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '28px',
+              padding: header.padding || '0',
+              position: 'relative',
+            }}
+          >
+            {/* Name with circular blob behind */}
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              {/* Ink blot circle */}
+              <div style={{
+                position: 'absolute',
+                top: '-8px',
+                left: '-16px',
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                backgroundColor: accent,
+                opacity: 0.12,
+                zIndex: 0,
+              }} />
+              <h1 style={{
+                position: 'relative',
+                zIndex: 1,
+                fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                color: typography.name.color || '#0f172a',
+                margin: 0,
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={personalInfo.fullName || 'Your Name'}
+                    style={{
+                      fontSize: scaleFontSize(typography.name.fontSize || '32px'),
+                      fontWeight: 700,
+                      letterSpacing: '-0.02em',
+                      color: typography.name.color || '#0f172a',
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  personalInfo.fullName
+                )}
+              </h1>
+            </div>
+
+            {/* Title with accent dot */}
+            {personalInfo.title && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginTop: '8px',
+              }}>
+                <span style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: accent,
+                  display: 'inline-block',
+                  flexShrink: 0,
+                }} />
+                <p style={{
+                  fontSize: scaleFontSize(typography.title.fontSize || '13px'),
+                  fontWeight: 500,
+                  letterSpacing: '0.02em',
+                  color: typography.title.color || '#475569',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.title"
+                      value={personalInfo.title}
+                      style={{
+                        fontSize: scaleFontSize(typography.title.fontSize || '13px'),
+                        fontWeight: 500,
+                        color: typography.title.color || '#475569',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.title
+                  )}
+                </p>
+              </div>
+            )}
+
+            {/* Thin separator line */}
+            <div style={{
+              width: '100%',
+              height: '1px',
+              backgroundColor: '#e2e8f0',
+              marginTop: '16px',
+              marginBottom: '12px',
+            }} />
+
+            {/* Contact row - inline with pipe separators */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: '0',
+              fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+              color: typography.contact.color || '#64748b',
+            }}>
+              {inkBlotContacts.map((item, index) => (
+                <React.Fragment key={item.path}>
+                  <span style={{ padding: '0 10px 0 0' }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path={item.path}
+                        value={item.value}
+                        style={{
+                          fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+                          color: typography.contact.color || '#64748b',
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      item.value
+                    )}
+                  </span>
+                  {index < inkBlotContacts.length - 1 && (
+                    <span style={{
+                      color: accent,
+                      padding: '0 10px 0 0',
+                      fontWeight: 300,
+                    }}>|</span>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        );
+
+      // ========================================================================
+      // PAPER FOLD - Diagonal corner fold effect with asymmetric elegant layout
+      // ========================================================================
+      case 'paper-fold':
+        const paperFoldContacts = [
+          personalInfo.email && { value: personalInfo.email, path: 'personalInfo.email', icon: Mail },
+          personalInfo.phone && { value: personalInfo.phone, path: 'personalInfo.phone', icon: Phone },
+          personalInfo.location && { value: personalInfo.location, path: 'personalInfo.location', icon: MapPin },
+          personalInfo.linkedin && { value: personalInfo.linkedin, path: 'personalInfo.linkedin', icon: Linkedin },
+          personalInfo.website && { value: personalInfo.website, path: 'personalInfo.website', icon: Globe },
+        ].filter(Boolean) as { value: string; path: string; icon: typeof Mail }[];
+
+        return (
+          <div
+            data-header="paper-fold"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '24px',
+              padding: header.padding || '0',
+              position: 'relative',
+            }}
+          >
+            {/* Corner fold decoration */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '48px',
+              height: '48px',
+              overflow: 'hidden',
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-24px',
+                right: '-24px',
+                width: '48px',
+                height: '48px',
+                backgroundColor: accent,
+                opacity: 0.15,
+                transform: 'rotate(45deg)',
+              }} />
+              <div style={{
+                position: 'absolute',
+                top: '0',
+                right: '0',
+                width: '24px',
+                height: '24px',
+                borderLeft: '1px solid #e2e8f0',
+                borderBottom: '1px solid #e2e8f0',
+                background: 'linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.02) 50%)',
+              }} />
+            </div>
+
+            {/* Two column layout: Name/Title left, Contact right */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: '32px',
+            }}>
+              {/* Left: Name and Title */}
+              <div style={{ flex: '1' }}>
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize || '28px'),
+                  fontWeight: 600,
+                  lineHeight: 1.15,
+                  letterSpacing: '-0.01em',
+                  color: typography.name.color || '#1e293b',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize || '28px'),
+                        fontWeight: 600,
+                        letterSpacing: '-0.01em',
+                        color: typography.name.color || '#1e293b',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName
+                  )}
+                </h1>
+
+                {personalInfo.title && (
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize || '12px'),
+                    fontWeight: 500,
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                    color: accent,
+                    margin: '6px 0 0 0',
+                    fontFamily: baseFontFamily,
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize || '12px'),
+                          fontWeight: 500,
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                          color: accent,
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                )}
+
+                {/* Accent underline */}
+                <div style={{
+                  width: '48px',
+                  height: '3px',
+                  backgroundColor: accent,
+                  marginTop: '12px',
+                  borderRadius: '2px',
+                }} />
+              </div>
+
+              {/* Right: Contact info stacked */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px',
+                paddingTop: '4px',
+                textAlign: 'right',
+              }}>
+                {paperFoldContacts.map((item) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <div
+                      key={item.path}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        gap: '6px',
+                        fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+                        color: typography.contact.color || '#64748b',
+                      }}
+                    >
+                      {editable ? (
+                        <InlineEditableText
+                          path={item.path}
+                          value={item.value}
+                          style={{
+                            fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+                            color: typography.contact.color || '#64748b',
+                            fontFamily: baseFontFamily,
+                          }}
+                        />
+                      ) : (
+                        <span>{item.value}</span>
+                      )}
+                      <IconComponent style={{
+                        width: '11px',
+                        height: '11px',
+                        color: accent,
+                        flexShrink: 0,
+                      }} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
+      // ========================================================================
+      // DOT GRID - Subtle dot grid pattern accent with clean modern typography
+      // ========================================================================
+      case 'dot-grid':
+        const dotGridContacts = [
+          personalInfo.email && { value: personalInfo.email, path: 'personalInfo.email', icon: Mail },
+          personalInfo.phone && { value: personalInfo.phone, path: 'personalInfo.phone', icon: Phone },
+          personalInfo.location && { value: personalInfo.location, path: 'personalInfo.location', icon: MapPin },
+          personalInfo.linkedin && { value: personalInfo.linkedin, path: 'personalInfo.linkedin', icon: Linkedin },
+          personalInfo.website && { value: personalInfo.website, path: 'personalInfo.website', icon: Globe },
+        ].filter(Boolean) as { value: string; path: string; icon: typeof Mail }[];
+
+        return (
+          <div
+            data-header="dot-grid"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '26px',
+              padding: header.padding || '0',
+              position: 'relative',
+            }}
+          >
+            {/* Dot grid pattern background */}
+            <div style={{
+              position: 'absolute',
+              top: '-4px',
+              right: '0',
+              width: '80px',
+              height: '80px',
+              backgroundImage: `radial-gradient(${accent}25 1.5px, transparent 1.5px)`,
+              backgroundSize: '10px 10px',
+              opacity: 0.8,
+              zIndex: 0,
+            }} />
+
+            {/* Name */}
+            <h1 style={{
+              position: 'relative',
+              zIndex: 1,
+              fontSize: scaleFontSize(typography.name.fontSize || '30px'),
+              fontWeight: 700,
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              color: typography.name.color || '#111827',
+              margin: 0,
+              fontFamily: baseFontFamily,
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.fullName"
+                  value={personalInfo.fullName || 'Your Name'}
+                  style={{
+                    fontSize: scaleFontSize(typography.name.fontSize || '30px'),
+                    fontWeight: 700,
+                    letterSpacing: '-0.02em',
+                    color: typography.name.color || '#111827',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                personalInfo.fullName
+              )}
+            </h1>
+
+            {/* Title with accent color */}
+            {personalInfo.title && (
+              <p style={{
+                fontSize: scaleFontSize(typography.title.fontSize || '13px'),
+                fontWeight: 600,
+                letterSpacing: '0.01em',
+                color: accent,
+                margin: '6px 0 0 0',
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.title"
+                    value={personalInfo.title}
+                    style={{
+                      fontSize: scaleFontSize(typography.title.fontSize || '13px'),
+                      fontWeight: 600,
+                      color: accent,
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  personalInfo.title
+                )}
+              </p>
+            )}
+
+            {/* Separator with dot accent */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginTop: '14px',
+              marginBottom: '12px',
+            }}>
+              <div style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: accent,
+              }} />
+              <div style={{
+                flex: 1,
+                height: '1px',
+                backgroundColor: '#e5e7eb',
+              }} />
+            </div>
+
+            {/* Contact row with icons */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '12px 20px',
+              fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+              color: typography.contact.color || '#6b7280',
+            }}>
+              {dotGridContacts.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <div
+                    key={item.path}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                    }}
+                  >
+                    <IconComponent style={{
+                      width: '12px',
+                      height: '12px',
+                      color: accent,
+                      flexShrink: 0,
+                    }} />
+                    {editable ? (
+                      <InlineEditableText
+                        path={item.path}
+                        value={item.value}
+                        style={{
+                          fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+                          color: typography.contact.color || '#6b7280',
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      <span>{item.value}</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+
+      // ========================================================================
+      // ACCENT STRIPE - Vertical accent stripe on left with bold name
+      // ========================================================================
+      case 'accent-stripe':
+        const accentStripeContacts = [
+          personalInfo.email && { value: personalInfo.email, path: 'personalInfo.email' },
+          personalInfo.phone && { value: personalInfo.phone, path: 'personalInfo.phone' },
+          personalInfo.location && { value: personalInfo.location, path: 'personalInfo.location' },
+          personalInfo.linkedin && { value: personalInfo.linkedin, path: 'personalInfo.linkedin' },
+          personalInfo.website && { value: personalInfo.website, path: 'personalInfo.website' },
+        ].filter(Boolean) as { value: string; path: string }[];
+
+        return (
+          <div
+            data-header="accent-stripe"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '24px',
+              padding: header.padding || '0',
+              display: 'flex',
+              gap: '16px',
+            }}
+          >
+            {/* Vertical accent stripe */}
+            <div style={{
+              width: '4px',
+              backgroundColor: accent,
+              borderRadius: '2px',
+              flexShrink: 0,
+            }} />
+
+            {/* Content */}
+            <div style={{ flex: 1 }}>
+              {/* Name - large and bold */}
+              <h1 style={{
+                fontSize: scaleFontSize(typography.name.fontSize || '28px'),
+                fontWeight: 800,
+                lineHeight: 1.1,
+                letterSpacing: '-0.03em',
+                color: typography.name.color || '#0f172a',
+                margin: 0,
+                fontFamily: baseFontFamily,
+              }}>
+                {editable ? (
+                  <InlineEditableText
+                    path="personalInfo.fullName"
+                    value={personalInfo.fullName || 'Your Name'}
+                    style={{
+                      fontSize: scaleFontSize(typography.name.fontSize || '28px'),
+                      fontWeight: 800,
+                      letterSpacing: '-0.03em',
+                      color: typography.name.color || '#0f172a',
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  personalInfo.fullName
+                )}
+              </h1>
+
+              {/* Title */}
+              {personalInfo.title && (
+                <p style={{
+                  fontSize: scaleFontSize(typography.title.fontSize || '12px'),
+                  fontWeight: 500,
+                  letterSpacing: '0.02em',
+                  color: typography.title.color || '#475569',
+                  margin: '4px 0 0 0',
+                  fontFamily: baseFontFamily,
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.title"
+                      value={personalInfo.title}
+                      style={{
+                        fontSize: scaleFontSize(typography.title.fontSize || '12px'),
+                        fontWeight: 500,
+                        color: typography.title.color || '#475569',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.title
+                  )}
+                </p>
+              )}
+
+              {/* Contact row - inline with bullets */}
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: '0',
+                marginTop: '12px',
+                fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+                color: typography.contact.color || '#64748b',
+              }}>
+                {accentStripeContacts.map((item, index) => (
+                  <React.Fragment key={item.path}>
+                    <span>
+                      {editable ? (
+                        <InlineEditableText
+                          path={item.path}
+                          value={item.value}
+                          style={{
+                            fontSize: scaleFontSize(typography.contact.fontSize || '10px'),
+                            color: typography.contact.color || '#64748b',
+                            fontFamily: baseFontFamily,
+                          }}
+                        />
+                      ) : (
+                        item.value
+                      )}
+                    </span>
+                    {index < accentStripeContacts.length - 1 && (
+                      <span style={{
+                        margin: '0 10px',
+                        color: accent,
+                        fontSize: '8px',
+                      }}>●</span>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
       case 'left-aligned':
       default:
         const photoPosition = header.photoPosition || 'left';

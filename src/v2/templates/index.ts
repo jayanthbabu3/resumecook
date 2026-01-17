@@ -65,6 +65,10 @@ import { monoElegantTemplate } from './mono-elegant';
 import { lineAccentTemplate } from './line-accent';
 import { gradientFlowTemplate } from './gradient-flow';
 import { minimalEdgeTemplate } from './minimal-edge';
+import { inkBlotTemplate } from './ink-blot';
+import { paperFoldTemplate } from './paper-fold';
+import { dotGridTemplate } from './dot-grid';
+import { accentStripeTemplate } from './accent-stripe';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -126,6 +130,10 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'line-accent-v2': lineAccentTemplate,
   'gradient-flow-v2': gradientFlowTemplate,
   'minimal-edge-v2': minimalEdgeTemplate,
+  'ink-blot-v2': inkBlotTemplate,
+  'paper-fold-v2': paperFoldTemplate,
+  'dot-grid-v2': dotGridTemplate,
+  'accent-stripe-v2': accentStripeTemplate,
 };
 
 // ============================================================================
@@ -246,3 +254,7 @@ export { hrProfessionalTemplate } from './hr-professional';
 export { professionalCompactTemplate } from './professional-compact';
 export { elegantPortfolioTemplate } from './elegant-portfolio';
 export { cleanMinimalTemplate } from './clean-minimal';
+export { inkBlotTemplate } from './ink-blot';
+export { paperFoldTemplate } from './paper-fold';
+export { dotGridTemplate } from './dot-grid';
+export { accentStripeTemplate } from './accent-stripe';

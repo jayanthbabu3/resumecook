@@ -225,7 +225,11 @@ export type HeaderVariant =
   | 'mono-elegant'           // Monospace typography with elegant spacing
   | 'line-accent'            // Clean design with full-width accent lines
   | 'gradient-flow'          // Diagonal gradient accent with asymmetric modern layout
-  | 'minimal-edge';          // Sharp geometric accents with split contact layout
+  | 'minimal-edge'           // Sharp geometric accents with split contact layout
+  | 'ink-blot'               // Circular accent blob behind name with clean minimal typography
+  | 'paper-fold'             // Diagonal corner fold effect with asymmetric elegant layout
+  | 'dot-grid'               // Subtle dot grid pattern accent with clean modern typography
+  | 'accent-stripe';         // Vertical accent stripe on left with bold name and stacked contact
 
 export interface HeaderConfig {
   variant: HeaderVariant;

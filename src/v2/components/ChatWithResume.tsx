@@ -24,7 +24,6 @@ import {
   Zap,
   ArrowLeft,
   Mic,
-  MicOff,
   AlertCircle,
   Undo2,
   Redo2,
@@ -38,6 +37,7 @@ import { useChatWithResume } from '../hooks/useChatWithResume';
 import { useVoiceInput } from '../hooks/useVoiceInput';
 import { formatSectionName, SectionVariantsMap } from '../services/chatService';
 import { useResumeHistory } from '../hooks/useResumeHistory';
+import { VoiceInputBar } from './VoiceInputBar';
 
 interface ChatWithResumeProps {
   resumeData: V2ResumeData;
@@ -266,6 +266,22 @@ export function ChatWithResume({
     }
   }, [mode, onClose, closeChat]);
 
+  // Handle voice cancel - stop recording and clear input
+  const handleVoiceCancel = useCallback(() => {
+    stopListening();
+    setInputValue('');
+    clearTranscript();
+  }, [stopListening, clearTranscript]);
+
+  // Handle voice confirm - stop recording and submit the message
+  const handleVoiceConfirm = useCallback(() => {
+    stopListening();
+    // Submit if there's content
+    if (inputValue.trim()) {
+      handleSubmit();
+    }
+  }, [stopListening, inputValue, handleSubmit]);
+
   // Floating mode - show button when closed, popup when open
   if (mode === 'floating') {
     return (
@@ -292,6 +308,8 @@ export function ChatWithResume({
             isListening={isListening}
             voiceError={voiceError}
             onToggleVoice={toggleListening}
+            onVoiceCancel={handleVoiceCancel}
+            onVoiceConfirm={handleVoiceConfirm}
             canUndo={canUndo}
             canRedo={canRedo}
             undoLabel={undoLabel}
@@ -330,6 +348,8 @@ export function ChatWithResume({
       isListening={isListening}
       voiceError={voiceError}
       onToggleVoice={toggleListening}
+      onVoiceCancel={handleVoiceCancel}
+      onVoiceConfirm={handleVoiceConfirm}
       canUndo={canUndo}
       canRedo={canRedo}
       undoLabel={undoLabel}
@@ -395,6 +415,8 @@ interface SidePanelChatProps {
   isListening: boolean;
   voiceError: string | null;
   onToggleVoice: () => void;
+  onVoiceCancel: () => void;
+  onVoiceConfirm: () => void;
   // Undo/Redo props
   canUndo: boolean;
   canRedo: boolean;
@@ -426,6 +448,8 @@ function SidePanelChat({
   isListening,
   voiceError,
   onToggleVoice,
+  onVoiceCancel,
+  onVoiceConfirm,
   canUndo,
   canRedo,
   undoLabel,
@@ -631,93 +655,94 @@ function SidePanelChat({
 
       {/* Input */}
       <div className="p-3 sm:p-4 bg-white border-t border-gray-100">
-        <form onSubmit={onSubmit}>
-          <div className={cn(
-            "flex items-end gap-2 sm:gap-3 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5 sm:p-2",
-            isListening
-              ? "border-red-400 ring-2 ring-red-500/20 bg-red-50/30"
-              : "border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
-          )}>
-            <textarea
-              ref={inputRef}
-              value={inputValue}
-              onChange={(e) => {
-                onInputChange(e.target.value);
-                onAdjustHeight();
-              }}
-              onKeyDown={onKeyDown}
-              placeholder={isListening ? "Listening..." : "Tell me about yourself..."}
-              rows={1}
-              className={cn(
-                'flex-1 px-3 py-2.5 sm:py-3',
-                'bg-transparent border-none',
-                'text-sm text-gray-900 placeholder:text-gray-400',
-                'focus:outline-none',
-                'resize-none overflow-y-auto',
-                'transition-all duration-200',
-                isListening && 'placeholder:text-red-400'
-              )}
-              style={{
-                minHeight: '44px',
-                maxHeight: '150px',
-              }}
-              disabled={isLoading || isListening}
-            />
+        {/* Voice Recording Bar - ChatGPT style */}
+        {isListening ? (
+          <VoiceInputBar
+            isRecording={isListening}
+            transcript={inputValue}
+            onCancel={onVoiceCancel}
+            onConfirm={onVoiceConfirm}
+          />
+        ) : (
+          <form onSubmit={onSubmit}>
+            <div className={cn(
+              "flex items-end gap-2 sm:gap-3 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5 sm:p-2",
+              "border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
+            )}>
+              <textarea
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => {
+                  onInputChange(e.target.value);
+                  onAdjustHeight();
+                }}
+                onKeyDown={onKeyDown}
+                placeholder="Tell me about yourself..."
+                rows={1}
+                className={cn(
+                  'flex-1 px-3 py-2.5 sm:py-3',
+                  'bg-transparent border-none',
+                  'text-sm text-gray-900 placeholder:text-gray-400',
+                  'focus:outline-none',
+                  'resize-none overflow-y-auto',
+                  'transition-all duration-200'
+                )}
+                style={{
+                  minHeight: '44px',
+                  maxHeight: '150px',
+                }}
+                disabled={isLoading}
+              />
 
-            {/* Voice Input Button */}
-            {voiceSupported && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      onClick={onToggleVoice}
-                      disabled={isLoading}
-                      className={cn(
-                        'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
-                        isListening
-                          ? 'bg-red-500 hover:bg-red-600 animate-pulse'
-                          : 'bg-gray-200 hover:bg-gray-300 text-gray-600',
-                        'transition-all duration-200'
-                      )}
-                    >
-                      {isListening ? (
-                        <MicOff className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                      ) : (
+              {/* Voice Input Button */}
+              {voiceSupported && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        onClick={onToggleVoice}
+                        disabled={isLoading}
+                        className={cn(
+                          'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
+                          'bg-gray-200 hover:bg-gray-300 text-gray-600',
+                          'transition-all duration-200'
+                        )}
+                      >
                         <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>{isListening ? 'Stop recording' : 'Voice input'}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <p>Voice input</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
 
-            <Button
-              type="submit"
-              disabled={!inputValue.trim() || isLoading || isListening}
-              className={cn(
-                'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
-                'bg-gradient-to-r from-primary to-blue-600',
-                'hover:from-primary/90 hover:to-blue-700',
-                'disabled:opacity-40 disabled:cursor-not-allowed',
-                'shadow-md hover:shadow-lg',
-                'transition-all duration-200'
-              )}
-            >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-              )}
-            </Button>
-          </div>
-        </form>
+              <Button
+                type="submit"
+                disabled={!inputValue.trim() || isLoading}
+                className={cn(
+                  'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
+                  'bg-gradient-to-r from-primary to-blue-600',
+                  'hover:from-primary/90 hover:to-blue-700',
+                  'disabled:opacity-40 disabled:cursor-not-allowed',
+                  'shadow-md hover:shadow-lg',
+                  'transition-all duration-200'
+                )}
+              >
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                )}
+              </Button>
+            </div>
+          </form>
+        )}
         <p className="text-[10px] text-gray-400 mt-2 text-center">
           {isListening ? (
-            <span className="text-red-500 font-medium">🎤 Recording... Click mic again to stop</span>
+            <span className="text-gray-500 font-medium">Speak now... Press ✓ to send or ✕ to cancel</span>
           ) : (
             <>Press Enter to send • {voiceSupported ? 'Click mic to speak' : 'Shift+Enter for new line'}</>
           )}
@@ -753,6 +778,8 @@ interface FloatingChatPanelProps {
   isListening: boolean;
   voiceError: string | null;
   onToggleVoice: () => void;
+  onVoiceCancel: () => void;
+  onVoiceConfirm: () => void;
   // Undo/Redo props
   canUndo: boolean;
   canRedo: boolean;
@@ -783,6 +810,8 @@ function FloatingChatPanel({
   isListening,
   voiceError,
   onToggleVoice,
+  onVoiceCancel,
+  onVoiceConfirm,
   canUndo,
   canRedo,
   undoLabel,
@@ -978,93 +1007,94 @@ function FloatingChatPanel({
 
       {/* Input */}
       <div className="p-3 bg-white border-t border-gray-100">
-        <form onSubmit={onSubmit}>
-          <div className={cn(
-            "flex items-end gap-2 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5",
-            isListening
-              ? "border-red-400 ring-2 ring-red-500/20 bg-red-50/30"
-              : "border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
-          )}>
-            <textarea
-              ref={inputRef}
-              value={inputValue}
-              onChange={(e) => {
-                onInputChange(e.target.value);
-                onAdjustHeight();
-              }}
-              onKeyDown={onKeyDown}
-              placeholder={isListening ? "Listening..." : "Tell me about yourself..."}
-              rows={1}
-              className={cn(
-                'flex-1 px-3 py-2.5',
-                'bg-transparent border-none',
-                'text-sm text-gray-900 placeholder:text-gray-400',
-                'focus:outline-none',
-                'resize-none overflow-y-auto',
-                'transition-all duration-200',
-                isListening && 'placeholder:text-red-400'
-              )}
-              style={{
-                minHeight: '40px',
-                maxHeight: '120px',
-              }}
-              disabled={isLoading || isListening}
-            />
+        {/* Voice Recording Bar - ChatGPT style */}
+        {isListening ? (
+          <VoiceInputBar
+            isRecording={isListening}
+            transcript={inputValue}
+            onCancel={onVoiceCancel}
+            onConfirm={onVoiceConfirm}
+          />
+        ) : (
+          <form onSubmit={onSubmit}>
+            <div className={cn(
+              "flex items-end gap-2 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5",
+              "border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
+            )}>
+              <textarea
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => {
+                  onInputChange(e.target.value);
+                  onAdjustHeight();
+                }}
+                onKeyDown={onKeyDown}
+                placeholder="Tell me about yourself..."
+                rows={1}
+                className={cn(
+                  'flex-1 px-3 py-2.5',
+                  'bg-transparent border-none',
+                  'text-sm text-gray-900 placeholder:text-gray-400',
+                  'focus:outline-none',
+                  'resize-none overflow-y-auto',
+                  'transition-all duration-200'
+                )}
+                style={{
+                  minHeight: '40px',
+                  maxHeight: '120px',
+                }}
+                disabled={isLoading}
+              />
 
-            {/* Voice Input Button */}
-            {voiceSupported && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      onClick={onToggleVoice}
-                      disabled={isLoading}
-                      className={cn(
-                        'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
-                        isListening
-                          ? 'bg-red-500 hover:bg-red-600 animate-pulse'
-                          : 'bg-gray-200 hover:bg-gray-300 text-gray-600',
-                        'transition-all duration-200'
-                      )}
-                    >
-                      {isListening ? (
-                        <MicOff className="w-4 h-4 text-white" />
-                      ) : (
+              {/* Voice Input Button */}
+              {voiceSupported && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        onClick={onToggleVoice}
+                        disabled={isLoading}
+                        className={cn(
+                          'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
+                          'bg-gray-200 hover:bg-gray-300 text-gray-600',
+                          'transition-all duration-200'
+                        )}
+                      >
                         <Mic className="w-4 h-4" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>{isListening ? 'Stop recording' : 'Voice input'}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <p>Voice input</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
 
-            <Button
-              type="submit"
-              disabled={!inputValue.trim() || isLoading || isListening}
-              className={cn(
-                'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
-                'bg-gradient-to-r from-primary to-blue-600',
-                'hover:from-primary/90 hover:to-blue-700',
-                'disabled:opacity-40 disabled:cursor-not-allowed',
-                'shadow-md hover:shadow-lg',
-                'transition-all duration-200'
-              )}
-            >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4" />
-              )}
-            </Button>
-          </div>
-        </form>
+              <Button
+                type="submit"
+                disabled={!inputValue.trim() || isLoading}
+                className={cn(
+                  'h-10 w-10 rounded-xl flex-shrink-0 self-end mb-0.5',
+                  'bg-gradient-to-r from-primary to-blue-600',
+                  'hover:from-primary/90 hover:to-blue-700',
+                  'disabled:opacity-40 disabled:cursor-not-allowed',
+                  'shadow-md hover:shadow-lg',
+                  'transition-all duration-200'
+                )}
+              >
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+          </form>
+        )}
         <p className="text-[10px] text-gray-400 mt-2 text-center">
           {isListening ? (
-            <span className="text-red-500 font-medium">🎤 Recording... Click mic again to stop</span>
+            <span className="text-gray-500 font-medium">Speak now... Press ✓ to send or ✕ to cancel</span>
           ) : (
             <>Press Enter to send • {voiceSupported ? 'Click mic to speak' : 'Shift+Enter for new line'}</>
           )}

@@ -64,6 +64,10 @@ import { monoElegantConfig } from './mono-elegant';
 import { lineAccentConfig } from './line-accent';
 import { gradientFlowConfig } from './gradient-flow';
 import { minimalEdgeConfig } from './minimal-edge';
+import { inkBlotConfig } from './ink-blot';
+import { paperFoldConfig } from './paper-fold';
+import { dotGridConfig } from './dot-grid';
+import { accentStripeConfig } from './accent-stripe';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -123,6 +127,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'line-accent-v2': lineAccentConfig,
   'gradient-flow-v2': gradientFlowConfig,
   'minimal-edge-v2': minimalEdgeConfig,
+  'ink-blot-v2': inkBlotConfig,
+  'paper-fold-v2': paperFoldConfig,
+  'dot-grid-v2': dotGridConfig,
+  'accent-stripe-v2': accentStripeConfig,
 };
 
 // Get template by ID
@@ -198,4 +206,8 @@ export {
   lineAccentConfig,
   gradientFlowConfig,
   minimalEdgeConfig,
+  inkBlotConfig,
+  paperFoldConfig,
+  dotGridConfig,
+  accentStripeConfig,
 };

@@ -531,8 +531,12 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     const pageBreakBefore = (section as any).pageBreakBefore;
 
     const wrap = (type: string, node: React.ReactNode) => {
+      // Determine if this is a "small" section that should avoid breaking
+      // Experience and education can break between entries, but small sections should stay together
+      const smallSectionTypes = ['summary', 'skills', 'languages', 'strengths', 'interests', 'references', 'certifications', 'awards'];
+      const isSmallSection = smallSectionTypes.includes(type);
+
       const style: React.CSSProperties = {
-        // Don't prevent section from breaking - let individual items handle page breaks
         position: 'relative',
         // First section needs top margin for spacing from header
         // Other sections: NO marginTop - sections already have marginBottom for spacing
@@ -540,12 +544,18 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         maxWidth: '100%',
         overflowWrap: 'break-word',
         wordBreak: 'break-word',
+        // Small sections should avoid page breaks inside them
+        // Large sections (experience, education, projects) can break between items
+        ...(isSmallSection ? {
+          pageBreakInside: 'avoid',
+          breakInside: 'avoid',
+        } : {}),
       };
       if (pageBreakBefore) {
         style.pageBreakBefore = 'always';
         style.breakBefore = 'page';
       }
-      
+
       // Get variants for this section type
       const sectionInfo = ADDABLE_SECTIONS.find(s => s.id === section.type);
       const variants = sectionInfo?.variants || [];
@@ -569,7 +579,14 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       return (
         <>
           {pageBreakBefore && <div style={{ height: '24px' }} />}
-          <div data-section={type} className="group" style={style}>
+          <div
+            data-section={type}
+            data-section-id={section.id}
+            data-section-type={type}
+            data-small-section={isSmallSection ? 'true' : 'false'}
+            className="group pdf-section"
+            style={style}
+          >
             {sectionOptionsMenu}
             {node}
           </div>

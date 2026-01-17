@@ -55,8 +55,16 @@ RUN apt-get update && apt-get install -y \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
+# Disable Chrome crash reporting
+ENV CHROME_CRASHPAD_PIPE_NAME=disabled
+ENV BREAKPAD_DUMP_LOCATION=/tmp
+
 # Create non-root user for security
 RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Create necessary directories for Chromium with proper permissions
+RUN mkdir -p /tmp/.chromium /tmp/chromium-crashes \
+    && chmod 777 /tmp/.chromium /tmp/chromium-crashes
 
 WORKDIR /app
 

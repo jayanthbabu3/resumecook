@@ -1,0 +1,1743 @@
+/**
+ * Profession-Specific Mock Data
+ *
+ * Realistic resume data for different professions,
+ * all using Jayanth Babu Somineni's name for consistency.
+ * Each profession has unique experience, skills, and achievements.
+ * Content is realistic without quantifiable metrics.
+ */
+
+import type { V2ResumeData } from '../types/resumeData';
+
+// ============================================================================
+// SOFTWARE ARCHITECT - For ink-blot template
+// ============================================================================
+export const SOFTWARE_ARCHITECT_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Software Architect',
+    email: 'jayanth.architect@email.com',
+    phone: '+91 8074325415',
+    location: 'Hyderabad, Telangana, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    portfolio: 'jayantharchitect.dev',
+    summary:
+      'Experienced Software Architect specializing in designing and implementing large-scale distributed systems. Skilled in microservices architecture, cloud-native solutions, and enterprise application design. Focused on building scalable, maintainable systems that align with business objectives while ensuring technical excellence across engineering teams.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Principal Software Architect',
+      company: 'TechGlobal Solutions',
+      location: 'Hyderabad, India',
+      startDate: '2021-06',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Designed microservices architecture for a multi-region platform, defining service boundaries, communication patterns, and data ownership across twelve core services',
+        'Led cloud migration initiative moving legacy monolithic applications to AWS using containerization with Docker and Kubernetes orchestration',
+        'Established architecture review board and governance framework to ensure consistency, quality standards, and best practices across engineering teams',
+        'Implemented event-driven architecture using Apache Kafka for asynchronous inter-service communication, enabling loose coupling and better scalability',
+        'Mentored senior engineers on system design principles, architectural decision-making, and trade-off analysis for complex distributed systems',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Senior Software Architect',
+      company: 'FinTech Innovations',
+      location: 'Bangalore, India',
+      startDate: '2018-03',
+      endDate: '2021-05',
+      current: false,
+      bulletPoints: [
+        'Architected real-time payment processing system with focus on reliability, fault tolerance, and compliance with financial regulations',
+        'Designed distributed system with circuit breakers, retry mechanisms, and graceful degradation patterns to ensure high availability during failures',
+        'Led API gateway implementation serving multiple microservices with centralized authentication, rate limiting, and request routing capabilities',
+        'Introduced domain-driven design principles to align technical architecture with business domains, improving team autonomy and code maintainability',
+        'Collaborated with security team to implement end-to-end encryption and secure data handling practices across all payment services',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Technical Lead',
+      company: 'Enterprise Systems Inc',
+      location: 'Chennai, India',
+      startDate: '2014-08',
+      endDate: '2018-02',
+      current: false,
+      bulletPoints: [
+        'Led technical design and implementation of enterprise resource planning modules including inventory management, order processing, and reporting',
+        'Designed data pipeline architecture for processing and transforming large datasets from multiple source systems into unified data warehouse',
+        'Established coding standards, architectural guidelines, and code review practices for development teams across multiple projects',
+        'Coordinated with product managers and business stakeholders to translate requirements into technical specifications and implementation plans',
+        'Implemented caching strategies and database optimization techniques to improve application performance and response times',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'Indian Institute of Technology',
+      degree: 'Master of Technology',
+      field: 'Computer Science',
+      startDate: '2012',
+      endDate: '2014',
+      location: 'Hyderabad, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'JNTU College of Engineering',
+      degree: 'Bachelor of Technology',
+      field: 'Computer Science',
+      startDate: '2008',
+      endDate: '2012',
+      location: 'Hyderabad, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'System Design' },
+    { id: 'skill-2', name: 'Microservices' },
+    { id: 'skill-3', name: 'AWS' },
+    { id: 'skill-4', name: 'Kubernetes' },
+    { id: 'skill-5', name: 'Kafka' },
+    { id: 'skill-6', name: 'Java' },
+    { id: 'skill-7', name: 'Python' },
+    { id: 'skill-8', name: 'Docker' },
+    { id: 'skill-9', name: 'Redis' },
+    { id: 'skill-10', name: 'PostgreSQL' },
+    { id: 'skill-11', name: 'GraphQL' },
+    { id: 'skill-12', name: 'Terraform' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'AWS Solutions Architect Professional',
+      issuer: 'Amazon Web Services',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'Google Cloud Professional Architect',
+      issuer: 'Google Cloud',
+      date: '2022',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Distributed Transaction Framework',
+      description: 'Built an open-source framework for managing distributed transactions across microservices using the saga pattern',
+      technologies: ['Java', 'Spring Boot', 'Kafka', 'PostgreSQL'],
+      highlights: [
+        'Implemented saga orchestration and choreography patterns',
+        'Added support for compensating transactions and rollback mechanisms',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'API Gateway Solution',
+      description: 'Developed a custom API gateway solution with rate limiting, authentication, and request routing capabilities',
+      technologies: ['Go', 'Redis', 'Docker', 'Kubernetes'],
+      highlights: [
+        'Built plugin system for custom middleware extensions',
+        'Implemented distributed rate limiting using Redis',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Architecture Excellence Award',
+      description: 'Recognized for designing scalable architecture that supported business growth',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Technical Leadership Recognition',
+      description: 'Awarded for mentoring engineers and driving technical excellence across teams',
+      date: '2022',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Strategic Technical Vision', description: 'Ability to align technical architecture with long-term business goals' },
+    { id: 'str-2', name: 'Cross-functional Collaboration', description: 'Effective communication between technical and business stakeholders' },
+    { id: 'str-3', name: 'Technical Mentorship', description: 'Guiding engineering teams on architectural best practices' },
+  ],
+};
+
+// ============================================================================
+// MARKETING DIRECTOR - For paper-fold template
+// ============================================================================
+export const MARKETING_DIRECTOR_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Marketing Director',
+    email: 'jayanth.marketing@email.com',
+    phone: '+91 8074325415',
+    location: 'Mumbai, Maharashtra, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    portfolio: 'jayanthmarketing.com',
+    summary:
+      'Marketing Director with extensive experience leading high-performing teams and driving brand growth across APAC markets. Skilled in digital marketing strategy, brand development, and customer acquisition. Focused on building data-driven marketing programs that deliver measurable business impact and strengthen market positioning.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Marketing Director',
+      company: 'GlobalBrands India',
+      location: 'Mumbai, India',
+      startDate: '2020-04',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Lead marketing team of twenty-five professionals across digital, content, brand, and performance marketing functions, driving strategic initiatives',
+        'Developed integrated omnichannel marketing campaigns spanning digital, social media, influencer partnerships, and traditional media channels',
+        'Built and executed customer acquisition strategy focusing on targeted audience segments through personalized messaging and journey optimization',
+        'Launched influencer marketing program partnering with content creators across Instagram, YouTube, and LinkedIn to expand brand reach',
+        'Managed annual marketing budget allocating resources across channels with focus on ROI optimization and continuous performance improvement',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Senior Marketing Manager',
+      company: 'TechStart Solutions',
+      location: 'Bangalore, India',
+      startDate: '2016-08',
+      endDate: '2020-03',
+      current: false,
+      bulletPoints: [
+        'Built and scaled content marketing program with focus on SEO, thought leadership articles, and educational webinars for lead generation',
+        'Implemented marketing automation workflows using HubSpot for lead nurturing, scoring, and handoff to sales teams',
+        'Developed strategic partnerships with complementary brands for co-marketing initiatives including joint webinars and content collaboration',
+        'Led complete rebranding initiative including visual identity refresh, messaging framework, and brand guidelines documentation',
+        'Established marketing analytics practice using Google Analytics and custom dashboards to track campaign performance and attribution',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Digital Marketing Specialist',
+      company: 'MediaFirst Agency',
+      location: 'Hyderabad, India',
+      startDate: '2012-06',
+      endDate: '2016-07',
+      current: false,
+      bulletPoints: [
+        'Executed digital campaigns for enterprise clients across technology, healthcare, and financial services industry verticals',
+        'Managed paid advertising campaigns on Google Ads and Meta platforms, handling budget allocation and bid optimization strategies',
+        'Conducted A/B testing on landing pages, ad creatives, and email campaigns to continuously improve conversion rates',
+        'Created detailed campaign reports and client presentations showcasing performance insights and strategic recommendations',
+        'Collaborated with creative team to develop compelling ad copy, visual assets, and video content for campaign execution',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'Indian School of Business',
+      degree: 'MBA',
+      field: 'Marketing & Strategy',
+      startDate: '2010',
+      endDate: '2012',
+      location: 'Hyderabad, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'Osmania University',
+      degree: 'Bachelor of Commerce',
+      field: 'Business Administration',
+      startDate: '2006',
+      endDate: '2010',
+      location: 'Hyderabad, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'Brand Strategy' },
+    { id: 'skill-2', name: 'Digital Marketing' },
+    { id: 'skill-3', name: 'Marketing Automation' },
+    { id: 'skill-4', name: 'Data Analytics' },
+    { id: 'skill-5', name: 'Team Leadership' },
+    { id: 'skill-6', name: 'Budget Management' },
+    { id: 'skill-7', name: 'Content Strategy' },
+    { id: 'skill-8', name: 'SEO/SEM' },
+    { id: 'skill-9', name: 'HubSpot' },
+    { id: 'skill-10', name: 'Google Analytics' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Google Analytics Certified',
+      issuer: 'Google',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'HubSpot Marketing Software',
+      issuer: 'HubSpot',
+      date: '2022',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Brand Repositioning Campaign',
+      description: 'Led comprehensive brand repositioning initiative including market research, messaging development, and multi-channel launch',
+      technologies: ['Brand Strategy', 'Market Research', 'Creative Direction'],
+      highlights: [
+        'Conducted competitive analysis and customer perception studies',
+        'Developed new brand positioning and messaging framework',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Marketing Leadership Award',
+      description: 'Recognized for building and leading high-performing marketing team',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Campaign Excellence Recognition',
+      description: 'Awarded for innovative integrated marketing campaign execution',
+      date: '2021',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Strategic Marketing Planning', description: 'Developing comprehensive marketing strategies aligned with business objectives' },
+    { id: 'str-2', name: 'Team Development', description: 'Building and mentoring high-performing marketing teams' },
+    { id: 'str-3', name: 'Data-Driven Decision Making', description: 'Using analytics to optimize marketing performance and ROI' },
+  ],
+};
+
+// ============================================================================
+// DATA SCIENTIST - For minimal-edge template
+// ============================================================================
+export const DATA_SCIENTIST_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Senior Data Scientist',
+    email: 'jayanth.datascience@email.com',
+    phone: '+91 8074325415',
+    location: 'Bangalore, Karnataka, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    portfolio: 'jayanthdatascience.com',
+    github: 'github.com/jayanthds',
+    summary:
+      'Senior Data Scientist with expertise in machine learning, statistical analysis, and big data technologies. Experienced in building predictive models that drive business decisions and solve complex problems. Published researcher with focus on deep learning, natural language processing, and computer vision applications.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior Data Scientist',
+      company: 'AI Analytics Corp',
+      location: 'Bangalore, India',
+      startDate: '2020-08',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Developed predictive models for customer behavior analysis and churn prediction, working closely with product teams to integrate insights into features',
+        'Built real-time fraud detection system using ensemble machine learning techniques including random forests, gradient boosting, and neural networks',
+        'Led team of data scientists in implementing MLOps pipeline for model deployment, monitoring, and automated retraining using Kubeflow and MLflow',
+        'Published research papers in peer-reviewed journals on deep learning applications for natural language processing and computer vision problems',
+        'Designed recommendation engine using collaborative filtering and content-based approaches, serving personalized suggestions to platform users',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Data Scientist',
+      company: 'FinTech Analytics',
+      location: 'Mumbai, India',
+      startDate: '2017-03',
+      endDate: '2020-07',
+      current: false,
+      bulletPoints: [
+        'Created credit risk models using gradient boosting and neural network techniques, enabling more accurate loan approval decisions and risk assessment',
+        'Implemented NLP models for sentiment analysis and document classification, processing customer feedback and financial documents at scale',
+        'Optimized data processing pipelines using Apache Spark for large-scale datasets, handling millions of transaction records efficiently',
+        'Built time series forecasting models for financial data prediction using ARIMA, Prophet, and LSTM neural networks for trend analysis',
+        'Collaborated with engineering team to deploy models into production using containerized microservices and REST API endpoints',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Junior Data Scientist',
+      company: 'Research Labs India',
+      location: 'Hyderabad, India',
+      startDate: '2015-06',
+      endDate: '2017-02',
+      current: false,
+      bulletPoints: [
+        'Developed computer vision models for image classification and object detection using convolutional neural networks and transfer learning techniques',
+        'Created ETL pipelines for data extraction, transformation, and loading from multiple source systems into centralized data warehouse',
+        'Assisted in research projects focused on neural network optimization, exploring different architectures and hyperparameter tuning strategies',
+        'Built data visualization dashboards using Python libraries to communicate model results and insights to stakeholders',
+        'Participated in weekly paper reading groups and implemented algorithms from recent machine learning research publications',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'Indian Statistical Institute',
+      degree: 'Master of Statistics',
+      field: 'Machine Learning',
+      startDate: '2013',
+      endDate: '2015',
+      location: 'Kolkata, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'University of Hyderabad',
+      degree: 'Bachelor of Science',
+      field: 'Mathematics & Statistics',
+      startDate: '2009',
+      endDate: '2013',
+      location: 'Hyderabad, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'Python' },
+    { id: 'skill-2', name: 'TensorFlow' },
+    { id: 'skill-3', name: 'PyTorch' },
+    { id: 'skill-4', name: 'Scikit-learn' },
+    { id: 'skill-5', name: 'SQL' },
+    { id: 'skill-6', name: 'Spark' },
+    { id: 'skill-7', name: 'AWS SageMaker' },
+    { id: 'skill-8', name: 'Deep Learning' },
+    { id: 'skill-9', name: 'NLP' },
+    { id: 'skill-10', name: 'Statistical Modeling' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'TensorFlow Developer Certificate',
+      issuer: 'Google',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'AWS Machine Learning Specialty',
+      issuer: 'Amazon Web Services',
+      date: '2022',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Customer Segmentation Framework',
+      description: 'Built unsupervised learning framework for customer segmentation using clustering algorithms',
+      technologies: ['Python', 'Scikit-learn', 'K-means', 'DBSCAN'],
+      highlights: [
+        'Implemented multiple clustering algorithms with automated hyperparameter tuning',
+        'Created visualization dashboard for segment analysis and profiling',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'Text Classification Pipeline',
+      description: 'Developed end-to-end NLP pipeline for multi-label text classification',
+      technologies: ['Python', 'BERT', 'Transformers', 'FastAPI'],
+      highlights: [
+        'Fine-tuned transformer models for domain-specific text classification',
+        'Built REST API for real-time inference and batch processing',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Research Publication',
+      description: 'Published paper on deep learning techniques in IEEE conference proceedings',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Innovation Award',
+      description: 'Recognized for developing novel approach to fraud detection',
+      date: '2022',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Statistical Analysis', description: 'Strong foundation in statistical methods and experimental design' },
+    { id: 'str-2', name: 'Machine Learning', description: 'Expertise in building and deploying ML models at scale' },
+    { id: 'str-3', name: 'Research Skills', description: 'Ability to translate research into practical applications' },
+  ],
+};
+
+// ============================================================================
+// PRODUCT MANAGER - For line-accent template
+// ============================================================================
+export const PRODUCT_MANAGER_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Senior Product Manager',
+    email: 'jayanth.product@email.com',
+    phone: '+91 8074325415',
+    location: 'Bangalore, Karnataka, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    portfolio: 'jayanthproduct.com',
+    summary:
+      'Senior Product Manager with experience building and scaling B2B SaaS products from concept to launch. Skilled in product strategy, user research, and agile methodologies. Focused on solving complex customer problems through data-driven product decisions and cross-functional collaboration with engineering, design, and business teams.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior Product Manager',
+      company: 'SaaS Innovations',
+      location: 'Bangalore, India',
+      startDate: '2021-02',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Lead product strategy for enterprise collaboration platform serving global customers across North America, Europe, and Asia-Pacific regions',
+        'Drove product adoption through user-centric feature development, iterative improvements, and continuous feedback loops with customers',
+        'Defined and executed product roadmap aligned with company objectives and market opportunities, prioritizing features based on impact and effort',
+        'Conducted user interviews and usability testing sessions to identify pain points, validate solutions, and gather insights for product improvements',
+        'Collaborated with engineering teams across multiple squads to deliver product features on schedule while maintaining quality standards',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Product Manager',
+      company: 'TechPlatform Inc',
+      location: 'Hyderabad, India',
+      startDate: '2017-06',
+      endDate: '2021-01',
+      current: false,
+      bulletPoints: [
+        'Launched new product features that addressed key customer needs and market gaps, working with cross-functional teams from ideation to release',
+        'Improved user retention through enhanced onboarding flows, in-app guidance, and proactive customer success touchpoints throughout the user journey',
+        'Built analytics dashboard for product metrics tracking and decision making, enabling data-driven prioritization of feature development',
+        'Managed product backlog and sprint planning for agile development teams, ensuring clear requirements and acceptance criteria for all stories',
+        'Partnered with sales and customer success teams to understand enterprise customer requirements and translate them into product features',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Associate Product Manager',
+      company: 'Digital Products Co',
+      location: 'Chennai, India',
+      startDate: '2015-08',
+      endDate: '2017-05',
+      current: false,
+      bulletPoints: [
+        'Assisted in launching mobile app from concept through app store release, coordinating with design, engineering, and marketing teams',
+        'Conducted competitive analysis and market research to inform product decisions, analyzing features and positioning of key competitors',
+        'Created product specifications and user stories for development teams, ensuring clear documentation of requirements and edge cases',
+        'Organized and facilitated customer feedback sessions to gather insights for product improvements and new feature ideation',
+        'Supported product launches by coordinating with marketing on go-to-market messaging, documentation, and customer communication',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'Indian Institute of Management',
+      degree: 'MBA',
+      field: 'Product Management',
+      startDate: '2013',
+      endDate: '2015',
+      location: 'Bangalore, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'BITS Pilani',
+      degree: 'Bachelor of Engineering',
+      field: 'Computer Science',
+      startDate: '2009',
+      endDate: '2013',
+      location: 'Pilani, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'Product Strategy' },
+    { id: 'skill-2', name: 'User Research' },
+    { id: 'skill-3', name: 'Agile/Scrum' },
+    { id: 'skill-4', name: 'Data Analysis' },
+    { id: 'skill-5', name: 'A/B Testing' },
+    { id: 'skill-6', name: 'Roadmapping' },
+    { id: 'skill-7', name: 'Jira' },
+    { id: 'skill-8', name: 'Figma' },
+    { id: 'skill-9', name: 'SQL' },
+    { id: 'skill-10', name: 'Amplitude' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Certified Scrum Product Owner',
+      issuer: 'Scrum Alliance',
+      date: '2022',
+    },
+    {
+      id: 'cert-2',
+      name: 'Product Management Certificate',
+      issuer: 'Product School',
+      date: '2021',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Enterprise Dashboard Redesign',
+      description: 'Led complete redesign of analytics dashboard based on user feedback and usage patterns',
+      technologies: ['User Research', 'Figma', 'A/B Testing', 'Analytics'],
+      highlights: [
+        'Conducted user interviews to understand workflow and pain points',
+        'Collaborated with design team on new information architecture',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Product Leadership Award',
+      description: 'Recognized for successfully launching key product features that drove customer adoption',
+      date: '2023',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Customer Empathy', description: 'Deep understanding of customer needs through research and engagement' },
+    { id: 'str-2', name: 'Strategic Thinking', description: 'Ability to connect product decisions to business outcomes' },
+    { id: 'str-3', name: 'Cross-functional Leadership', description: 'Effective collaboration across engineering, design, and business teams' },
+  ],
+};
+
+// ============================================================================
+// UX DESIGNER - For mono-elegant template
+// ============================================================================
+export const UX_DESIGNER_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Senior UX Designer',
+    email: 'jayanth.design@email.com',
+    phone: '+91 8074325415',
+    location: 'Bangalore, Karnataka, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    portfolio: 'jayanthdesign.com',
+    summary:
+      'Senior UX Designer with experience creating user-centered digital experiences across web and mobile platforms. Skilled in design systems, user research, and interaction design. Focused on accessibility and inclusive design that solves real human problems while delivering business value.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior UX Designer',
+      company: 'DesignFirst Studios',
+      location: 'Bangalore, India',
+      startDate: '2020-05',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Lead UX design for enterprise SaaS platform serving global enterprise clients, overseeing design decisions from concept to implementation',
+        'Built comprehensive design system with reusable components, design tokens, and documentation adopted across multiple product teams',
+        'Improved user experience through iterative design based on usability testing insights, reducing user friction and improving task completion',
+        'Conducted usability tests and synthesized findings into actionable design recommendations, presenting insights to product and engineering leadership',
+        'Mentored junior designers on UX research methodologies, interaction design principles, and design system contribution workflows',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'UX Designer',
+      company: 'Digital Experience Agency',
+      location: 'Hyderabad, India',
+      startDate: '2016-08',
+      endDate: '2020-04',
+      current: false,
+      bulletPoints: [
+        'Designed mobile apps with focus on intuitive navigation and delightful interactions, ensuring consistency across iOS and Android platforms',
+        'Created wireframes, prototypes, and high-fidelity designs for client projects across e-commerce, fintech, and healthcare industries',
+        'Improved e-commerce user flows through checkout process redesign, simplifying steps and reducing form fields for better completion',
+        'Established user research practice and created research methodology playbook, standardizing how the team conducts interviews and testing',
+        'Collaborated with development teams on design handoff, creating detailed specifications and answering implementation questions promptly',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'UI Designer',
+      company: 'Creative Tech Solutions',
+      location: 'Chennai, India',
+      startDate: '2014-06',
+      endDate: '2016-07',
+      current: false,
+      bulletPoints: [
+        'Designed responsive web interfaces for B2B and B2C client projects, ensuring visual consistency and usability across devices',
+        'Created brand identity and visual design guidelines for new products, including color palettes, typography, and iconography standards',
+        'Collaborated with developers to ensure design implementation quality, reviewing builds and providing feedback on visual details',
+        'Developed marketing materials including landing pages, email templates, and social media graphics for client campaigns',
+        'Participated in client presentations to showcase design concepts and gather feedback for iterative improvements',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'National Institute of Design',
+      degree: 'Master of Design',
+      field: 'Interaction Design',
+      startDate: '2012',
+      endDate: '2014',
+      location: 'Ahmedabad, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'JNTU College of Fine Arts',
+      degree: 'Bachelor of Fine Arts',
+      field: 'Visual Communication',
+      startDate: '2008',
+      endDate: '2012',
+      location: 'Hyderabad, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'Figma' },
+    { id: 'skill-2', name: 'Sketch' },
+    { id: 'skill-3', name: 'Adobe XD' },
+    { id: 'skill-4', name: 'User Research' },
+    { id: 'skill-5', name: 'Prototyping' },
+    { id: 'skill-6', name: 'Design Systems' },
+    { id: 'skill-7', name: 'Wireframing' },
+    { id: 'skill-8', name: 'Usability Testing' },
+    { id: 'skill-9', name: 'Information Architecture' },
+    { id: 'skill-10', name: 'Accessibility' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Google UX Design Certificate',
+      issuer: 'Google',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'Interaction Design Foundation',
+      issuer: 'IDF',
+      date: '2021',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Design System Creation',
+      description: 'Led creation of comprehensive design system with component library and design tokens',
+      technologies: ['Figma', 'Design Tokens', 'Component Library', 'Documentation'],
+      highlights: [
+        'Built scalable component library with variants and states',
+        'Created documentation and usage guidelines for design and development teams',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'Mobile App Redesign',
+      description: 'Redesigned mobile banking app focusing on accessibility and ease of use',
+      technologies: ['Figma', 'Prototyping', 'User Testing', 'Accessibility'],
+      highlights: [
+        'Conducted user research to understand pain points in existing app',
+        'Designed new navigation structure and visual hierarchy',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Design Excellence Award',
+      description: 'Recognized for outstanding contribution to design system development',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Best Mobile Design',
+      description: 'Award for mobile app design at regional design competition',
+      date: '2021',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'User-Centered Design', description: 'Putting user needs at the center of design decisions' },
+    { id: 'str-2', name: 'Visual Design', description: 'Creating aesthetically pleasing and functional interfaces' },
+    { id: 'str-3', name: 'Design Leadership', description: 'Guiding design direction and mentoring team members' },
+  ],
+};
+
+// ============================================================================
+// DEVOPS ENGINEER - For swiss-minimal template
+// ============================================================================
+export const DEVOPS_ENGINEER_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Senior DevOps Engineer',
+    email: 'jayanth.devops@email.com',
+    phone: '+91 8074325415',
+    location: 'Hyderabad, Telangana, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    github: 'github.com/jayanthdevops',
+    summary:
+      'Senior DevOps Engineer with experience designing and implementing scalable infrastructure solutions. Skilled in cloud architecture, containerization, and automation. Focused on building reliable systems with strong DevOps culture and site reliability engineering practices.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior DevOps Engineer',
+      company: 'CloudScale Solutions',
+      location: 'Hyderabad, India',
+      startDate: '2020-03',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Designed and implemented Kubernetes clusters for container orchestration across development, staging, and production environments with proper resource isolation',
+        'Built CI/CD pipelines using GitLab CI and ArgoCD for automated testing, building, and deployment with GitOps workflows for configuration management',
+        'Automated infrastructure provisioning using Terraform and Ansible across AWS and GCP, maintaining infrastructure as code in version-controlled repositories',
+        'Implemented monitoring and alerting infrastructure using Prometheus and Grafana, creating dashboards for service health and performance visibility',
+        'Optimized infrastructure costs through resource rightsizing, spot instance strategies, and implementing auto-scaling policies based on workload patterns',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'DevOps Engineer',
+      company: 'TechPlatform Services',
+      location: 'Bangalore, India',
+      startDate: '2016-09',
+      endDate: '2020-02',
+      current: false,
+      bulletPoints: [
+        'Migrated applications from monolithic architecture to containerized microservices, working with development teams on application refactoring',
+        'Implemented infrastructure as code practices across AWS and GCP environments, enabling consistent and repeatable deployments',
+        'Established DevOps best practices and SRE principles for development teams, including incident management and post-mortem processes',
+        'Improved deployment reliability through automated testing and rollback mechanisms, implementing blue-green and canary deployment strategies',
+        'Created comprehensive runbooks and documentation for operational procedures, enabling team members to handle incidents independently',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Systems Administrator',
+      company: 'IT Solutions India',
+      location: 'Chennai, India',
+      startDate: '2014-06',
+      endDate: '2016-08',
+      current: false,
+      bulletPoints: [
+        'Managed Linux infrastructure and server configurations across multiple data centers, ensuring high availability and security compliance',
+        'Automated deployment processes using shell scripts and configuration management tools, reducing manual intervention in releases',
+        'Provided on-call support and incident response for production systems, maintaining service reliability and quick resolution times',
+        'Implemented backup and disaster recovery procedures for critical systems, conducting regular recovery tests and documentation',
+        'Collaborated with development teams to troubleshoot application issues and optimize server performance for web applications',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'JNTU College of Engineering',
+      degree: 'Bachelor of Technology',
+      field: 'Information Technology',
+      startDate: '2010',
+      endDate: '2014',
+      location: 'Hyderabad, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'Sri Chaitanya Junior College',
+      degree: 'Higher Secondary Certificate',
+      field: 'Mathematics, Physics, Chemistry',
+      startDate: '2008',
+      endDate: '2010',
+      location: 'Hyderabad, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'AWS' },
+    { id: 'skill-2', name: 'Kubernetes' },
+    { id: 'skill-3', name: 'Docker' },
+    { id: 'skill-4', name: 'Terraform' },
+    { id: 'skill-5', name: 'Ansible' },
+    { id: 'skill-6', name: 'Jenkins' },
+    { id: 'skill-7', name: 'GitLab CI' },
+    { id: 'skill-8', name: 'Prometheus' },
+    { id: 'skill-9', name: 'Grafana' },
+    { id: 'skill-10', name: 'Linux' },
+    { id: 'skill-11', name: 'Python' },
+    { id: 'skill-12', name: 'Bash' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Certified Kubernetes Administrator',
+      issuer: 'CNCF',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'AWS DevOps Engineer Professional',
+      issuer: 'Amazon Web Services',
+      date: '2022',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Kubernetes Platform Setup',
+      description: 'Built production-ready Kubernetes platform with automated cluster provisioning and management',
+      technologies: ['Kubernetes', 'Terraform', 'Helm', 'ArgoCD'],
+      highlights: [
+        'Implemented GitOps workflow for application deployments',
+        'Set up cluster autoscaling and resource management policies',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'Monitoring Infrastructure',
+      description: 'Designed and implemented comprehensive monitoring solution for microservices',
+      technologies: ['Prometheus', 'Grafana', 'Alertmanager', 'Loki'],
+      highlights: [
+        'Created dashboards for service health and performance monitoring',
+        'Set up alerting rules and on-call rotation integration',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Infrastructure Excellence Award',
+      description: 'Recognized for building reliable and scalable infrastructure platform',
+      date: '2023',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Infrastructure Automation', description: 'Building automated, repeatable infrastructure deployments' },
+    { id: 'str-2', name: 'Reliability Engineering', description: 'Ensuring system reliability through monitoring and incident response' },
+    { id: 'str-3', name: 'Cloud Architecture', description: 'Designing scalable cloud-native infrastructure solutions' },
+  ],
+};
+
+// ============================================================================
+// FINANCIAL ANALYST - For refined-serif template
+// ============================================================================
+export const FINANCIAL_ANALYST_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Senior Financial Analyst',
+    email: 'jayanth.finance@email.com',
+    phone: '+91 8074325415',
+    location: 'Mumbai, Maharashtra, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    summary:
+      'Senior Financial Analyst with experience in financial modeling, valuation, and strategic analysis. Skilled in M&A due diligence, equity research, and corporate finance. CFA Charterholder with strong analytical capabilities and experience advising on significant transactions.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior Financial Analyst',
+      company: 'Global Investment Bank',
+      location: 'Mumbai, India',
+      startDate: '2019-08',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Lead financial analysis for M&A transactions in technology and healthcare sectors, supporting deal teams through transaction lifecycle',
+        'Built complex financial models for valuation, forecasting, and scenario analysis, incorporating sensitivity analysis for key assumptions',
+        'Prepared investment presentations for C-suite executives and board members, synthesizing complex analysis into clear recommendations',
+        'Managed due diligence processes including financial review, risk assessment, and synergy analysis for acquisition targets',
+        'Mentored team of junior analysts on financial modeling techniques, presentation skills, and best practices in investment banking',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Financial Analyst',
+      company: 'Corporate Finance Advisory',
+      location: 'Bangalore, India',
+      startDate: '2015-06',
+      endDate: '2019-07',
+      current: false,
+      bulletPoints: [
+        'Conducted equity research covering companies in IT services sector, publishing research reports with investment recommendations',
+        'Developed DCF, comparable company, and precedent transaction analyses for valuation assignments and strategic advisory projects',
+        'Created quarterly earnings models and investment recommendations, tracking financial performance against analyst estimates',
+        'Assisted in IPO preparation and investor relations activities, preparing prospectus materials and management presentation decks',
+        'Maintained financial databases and industry analysis tools, ensuring data accuracy and timely updates for research coverage',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Junior Analyst',
+      company: 'Big Four Consulting',
+      location: 'Hyderabad, India',
+      startDate: '2012-07',
+      endDate: '2015-05',
+      current: false,
+      bulletPoints: [
+        'Performed financial statement analysis and industry research, supporting senior consultants on client advisory engagements',
+        'Supported senior analysts in valuation and modeling projects, building spreadsheet models and maintaining data accuracy',
+        'Prepared client presentations and management reports, creating charts and visualizations to communicate financial insights',
+        'Conducted market research and competitive analysis for clients across banking, insurance, and asset management sectors',
+        'Assisted in financial due diligence reviews for private equity transactions, analyzing historical financial performance',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'Indian School of Business',
+      degree: 'MBA',
+      field: 'Finance',
+      startDate: '2010',
+      endDate: '2012',
+      location: 'Hyderabad, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'Loyola College',
+      degree: 'Bachelor of Commerce',
+      field: 'Accounting & Finance',
+      startDate: '2006',
+      endDate: '2010',
+      location: 'Chennai, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'Financial Modeling' },
+    { id: 'skill-2', name: 'Valuation' },
+    { id: 'skill-3', name: 'M&A Analysis' },
+    { id: 'skill-4', name: 'Excel' },
+    { id: 'skill-5', name: 'Bloomberg Terminal' },
+    { id: 'skill-6', name: 'SQL' },
+    { id: 'skill-7', name: 'Python' },
+    { id: 'skill-8', name: 'PowerPoint' },
+    { id: 'skill-9', name: 'Due Diligence' },
+    { id: 'skill-10', name: 'Equity Research' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'CFA Charterholder',
+      issuer: 'CFA Institute',
+      date: '2018',
+    },
+    {
+      id: 'cert-2',
+      name: 'Financial Modeling & Valuation Analyst',
+      issuer: 'CFI',
+      date: '2020',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'M&A Transaction Support',
+      description: 'Led financial due diligence and valuation for cross-border acquisition',
+      technologies: ['Financial Modeling', 'DCF', 'Due Diligence', 'Excel'],
+      highlights: [
+        'Developed comprehensive financial model with multiple scenarios',
+        'Identified key risks and valuation considerations for deal team',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Deal Excellence Award',
+      description: 'Recognized for outstanding contribution to major M&A transaction',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Analyst of the Year',
+      description: 'Awarded for consistent high-quality financial analysis and client service',
+      date: '2021',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Financial Analysis', description: 'Deep expertise in financial statement analysis and modeling' },
+    { id: 'str-2', name: 'Strategic Thinking', description: 'Connecting financial insights to business strategy' },
+    { id: 'str-3', name: 'Client Communication', description: 'Presenting complex analysis clearly to senior stakeholders' },
+  ],
+};
+
+// ============================================================================
+// BACKEND DEVELOPER - For clean-minimal template
+// ============================================================================
+export const BACKEND_DEVELOPER_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Senior Backend Developer',
+    email: 'jayanth.backend@email.com',
+    phone: '+91 8074325415',
+    location: 'Bangalore, Karnataka, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    github: 'github.com/jayanthbackend',
+    summary:
+      'Senior Backend Developer with experience building scalable, high-performance server-side applications. Skilled in Java, Python, and distributed systems design. Focused on clean architecture, test-driven development, and building APIs that power great user experiences.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior Backend Developer',
+      company: 'TechScale Systems',
+      location: 'Bangalore, India',
+      startDate: '2020-06',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Architected backend services for payment processing platform with high availability requirements, handling transaction processing and settlement workflows',
+        'Designed and implemented RESTful APIs following best practices for consistency, documentation, and versioning to support mobile and web clients',
+        'Optimized database queries and implemented caching strategies using Redis for improved response times and reduced database load',
+        'Led migration from monolithic architecture to microservices using domain-driven design principles, defining bounded contexts and service boundaries',
+        'Mentored junior developers on backend development patterns, code review practices, and writing maintainable and testable code',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Backend Developer',
+      company: 'E-commerce Platform',
+      location: 'Hyderabad, India',
+      startDate: '2016-08',
+      endDate: '2020-05',
+      current: false,
+      bulletPoints: [
+        'Built inventory management system handling product catalog, stock updates, and multi-warehouse inventory synchronization',
+        'Implemented caching layer using Redis for frequently accessed data including product details, session management, and rate limiting',
+        'Developed event-driven architecture using Kafka for asynchronous processing of order events, notifications, and data synchronization',
+        'Created comprehensive API documentation and integration guides for partners, enabling third-party developers to build on our platform',
+        'Implemented background job processing for tasks including email notifications, report generation, and scheduled data cleanup',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Software Developer',
+      company: 'IT Services Company',
+      location: 'Chennai, India',
+      startDate: '2014-07',
+      endDate: '2016-07',
+      current: false,
+      bulletPoints: [
+        'Developed backend services using Java and Spring Boot framework for enterprise clients in banking and insurance sectors',
+        'Implemented unit and integration tests for code quality assurance, maintaining test coverage and preventing regression issues',
+        'Participated in code reviews and agile development ceremonies, contributing to sprint planning and retrospective discussions',
+        'Built database schemas and wrote stored procedures for complex business logic and reporting requirements',
+        'Collaborated with frontend developers to design and implement API contracts for web application features',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'VIT University',
+      degree: 'Bachelor of Technology',
+      field: 'Computer Science',
+      startDate: '2010',
+      endDate: '2014',
+      location: 'Vellore, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'Narayana Junior College',
+      degree: 'Higher Secondary Certificate',
+      field: 'Mathematics, Physics, Chemistry',
+      startDate: '2008',
+      endDate: '2010',
+      location: 'Hyderabad, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'Java' },
+    { id: 'skill-2', name: 'Python' },
+    { id: 'skill-3', name: 'Spring Boot' },
+    { id: 'skill-4', name: 'PostgreSQL' },
+    { id: 'skill-5', name: 'MongoDB' },
+    { id: 'skill-6', name: 'Redis' },
+    { id: 'skill-7', name: 'Kafka' },
+    { id: 'skill-8', name: 'REST APIs' },
+    { id: 'skill-9', name: 'Microservices' },
+    { id: 'skill-10', name: 'Docker' },
+    { id: 'skill-11', name: 'Git' },
+    { id: 'skill-12', name: 'JUnit' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Oracle Certified Professional Java Developer',
+      issuer: 'Oracle',
+      date: '2022',
+    },
+    {
+      id: 'cert-2',
+      name: 'AWS Developer Associate',
+      issuer: 'Amazon Web Services',
+      date: '2021',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'API Gateway Implementation',
+      description: 'Built custom API gateway for routing, authentication, and rate limiting',
+      technologies: ['Java', 'Spring Cloud Gateway', 'Redis', 'OAuth2'],
+      highlights: [
+        'Implemented centralized authentication and authorization',
+        'Added request routing and load balancing capabilities',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'Message Queue System',
+      description: 'Designed message queue system for asynchronous processing',
+      technologies: ['Kafka', 'Spring Boot', 'PostgreSQL', 'Docker'],
+      highlights: [
+        'Built producer-consumer architecture for background job processing',
+        'Implemented dead letter queue for failed message handling',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Technical Excellence Award',
+      description: 'Recognized for building reliable and maintainable backend systems',
+      date: '2023',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'System Design', description: 'Designing scalable and maintainable backend architectures' },
+    { id: 'str-2', name: 'Code Quality', description: 'Writing clean, tested, and documented code' },
+    { id: 'str-3', name: 'Performance Optimization', description: 'Identifying and resolving performance bottlenecks' },
+  ],
+};
+
+// ============================================================================
+// FRESH GRADUATE - For fresher-minimal template
+// ============================================================================
+export const FRESH_GRADUATE_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Software Engineer',
+    email: 'jayanth.fresher@email.com',
+    phone: '+91 8074325415',
+    location: 'Hyderabad, Telangana, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    github: 'github.com/jayanthfresher',
+    summary:
+      'Recent Computer Science graduate with strong foundation in software development and problem-solving. Completed internships gaining hands-on experience in full-stack development. Built multiple projects using modern web technologies. Eager to contribute to innovative teams and grow as a software engineer.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Software Engineering Intern',
+      company: 'Tech Startup',
+      location: 'Hyderabad, India',
+      startDate: '2023-06',
+      endDate: '2023-12',
+      current: false,
+      bulletPoints: [
+        'Developed React components for customer-facing dashboard with responsive design, implementing state management using React hooks',
+        'Built REST APIs using Node.js and Express for data retrieval and updates, connecting to MongoDB database for persistence',
+        'Wrote unit tests using Jest to ensure code quality and prevent regressions, achieving good test coverage on new features',
+        'Participated in agile sprints, daily standups, and code review sessions, learning best practices from senior developers',
+        'Implemented user authentication flow with JWT tokens, handling login, registration, and password reset functionality',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Web Development Intern',
+      company: 'Digital Agency',
+      location: 'Bangalore, India',
+      startDate: '2023-01',
+      endDate: '2023-05',
+      current: false,
+      bulletPoints: [
+        'Created responsive websites using HTML, CSS, and JavaScript frameworks, ensuring compatibility across browsers and devices',
+        'Implemented interactive features and animations using React library, creating engaging user experiences for client projects',
+        'Collaborated with design team to translate mockups into functional interfaces, maintaining pixel-perfect accuracy',
+        'Learned version control using Git and collaborated with team members on shared repositories using feature branches',
+        'Participated in client meetings to understand requirements and presented completed work for feedback and approval',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Campus Ambassador',
+      company: 'Tech Conference',
+      location: 'Hyderabad, India',
+      startDate: '2022-06',
+      endDate: '2022-12',
+      current: false,
+      bulletPoints: [
+        'Organized coding workshops and tech talks for fellow students, coordinating with speakers and managing event logistics',
+        'Promoted tech events and coordinated campus participation, using social media and student networks to increase attendance',
+        'Led a team of student volunteers to support event organization, delegating tasks and ensuring smooth event execution',
+        'Managed event communications including email announcements, social media posts, and campus notice board promotions',
+        'Collected feedback from attendees and provided suggestions to organizers for improving future events',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'QIS College of Engineering',
+      degree: 'Bachelor of Technology',
+      field: 'Computer Science',
+      startDate: '2020',
+      endDate: '2024',
+      location: 'Ongole, India',
+      gpa: '8.5/10',
+    },
+    {
+      id: 'edu-2',
+      school: 'Sri Chaitanya Junior College',
+      degree: 'Higher Secondary Certificate',
+      field: 'Mathematics, Physics, Chemistry',
+      startDate: '2018',
+      endDate: '2020',
+      location: 'Ongole, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'JavaScript' },
+    { id: 'skill-2', name: 'React' },
+    { id: 'skill-3', name: 'Node.js' },
+    { id: 'skill-4', name: 'Python' },
+    { id: 'skill-5', name: 'Java' },
+    { id: 'skill-6', name: 'HTML/CSS' },
+    { id: 'skill-7', name: 'SQL' },
+    { id: 'skill-8', name: 'Git' },
+    { id: 'skill-9', name: 'MongoDB' },
+    { id: 'skill-10', name: 'Data Structures' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Meta Frontend Developer Certificate',
+      issuer: 'Meta',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'AWS Cloud Practitioner',
+      issuer: 'Amazon Web Services',
+      date: '2023',
+    },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'E-Commerce Platform',
+      description: 'Built full-stack e-commerce website with product catalog, shopping cart, and checkout functionality',
+      technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+      highlights: [
+        'Implemented user authentication and session management',
+        'Integrated payment gateway for secure transactions',
+        'Deployed application on AWS with CI/CD pipeline',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'Task Management App',
+      description: 'Created collaborative task management application with real-time updates',
+      technologies: ['React', 'Firebase', 'Material-UI'],
+      highlights: [
+        'Built real-time collaboration features using Firebase',
+        'Designed intuitive drag-and-drop interface for task organization',
+      ],
+    },
+    {
+      id: 'proj-3',
+      name: 'Weather Dashboard',
+      description: 'Developed weather forecast application with location-based data',
+      technologies: ['JavaScript', 'HTML/CSS', 'OpenWeather API'],
+      highlights: [
+        'Integrated third-party weather API for real-time data',
+        'Implemented geolocation for automatic location detection',
+      ],
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Hackathon Finalist',
+      description: 'Reached finals in university hackathon with e-commerce project',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Academic Excellence',
+      description: 'Consistent top performer in computer science coursework',
+      date: '2024',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Quick Learner', description: 'Ability to rapidly learn new technologies and frameworks' },
+    { id: 'str-2', name: 'Problem Solving', description: 'Strong analytical skills from competitive programming' },
+    { id: 'str-3', name: 'Team Collaboration', description: 'Effective communication in group projects and internships' },
+  ],
+};
+
+// ============================================================================
+// MOBILE DEVELOPER - For mobile-craft template
+// ============================================================================
+export const MOBILE_DEVELOPER_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Senior Mobile Developer',
+    email: 'jayanth.mobile@email.com',
+    phone: '+91 8074325415',
+    location: 'Hyderabad, Telangana, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    github: 'github.com/jayanthmobile',
+    summary:
+      'Senior Mobile Developer with experience building native and cross-platform mobile applications. Skilled in React Native, Swift, and Kotlin development. Published multiple apps on App Store and Play Store. Passionate about creating delightful mobile experiences with smooth performance and intuitive interfaces.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior Mobile Developer',
+      company: 'MobileFirst Technologies',
+      location: 'Hyderabad, India',
+      startDate: '2020-04',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Lead mobile development for flagship application serving users across iOS and Android platforms, managing releases and app store submissions',
+        'Architected React Native codebase with shared business logic and platform-specific UI components, ensuring code reusability across platforms',
+        'Improved app stability through comprehensive error handling and crash reporting integration using Sentry for monitoring and debugging',
+        'Optimized app performance focusing on startup time, memory usage, and smooth animations, profiling with platform-specific tools',
+        'Mentored team of mobile developers on React Native best practices, native module development, and effective debugging techniques',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Mobile Developer',
+      company: 'AppCraft Studios',
+      location: 'Bangalore, India',
+      startDate: '2016-08',
+      endDate: '2020-03',
+      current: false,
+      bulletPoints: [
+        'Built mobile apps from scratch focusing on user experience and performance, delivering apps across e-commerce and lifestyle categories',
+        'Implemented offline-first architecture with local data persistence and sync capabilities using SQLite and background synchronization',
+        'Integrated native modules for camera, location services, and push notifications, bridging JavaScript code with native functionality',
+        'Established CI/CD pipeline for automated builds and app store deployments using Fastlane and GitHub Actions',
+        'Collaborated with product and design teams to implement features that aligned with business goals and user feedback',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Junior Mobile Developer',
+      company: 'Digital Solutions',
+      location: 'Chennai, India',
+      startDate: '2014-06',
+      endDate: '2016-07',
+      current: false,
+      bulletPoints: [
+        'Developed Android applications using Java and Kotlin programming languages, following Material Design guidelines for UI',
+        'Created custom UI components and smooth animations for enhanced user experience, using Android animation framework',
+        'Collaborated with backend team on API integration and data synchronization, handling REST API calls and JSON parsing',
+        'Implemented local data storage using Room database and SharedPreferences for user settings and cached content',
+        'Participated in code reviews and team discussions to improve code quality and share knowledge with peers',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'JNTU College of Engineering',
+      degree: 'Bachelor of Technology',
+      field: 'Computer Science',
+      startDate: '2010',
+      endDate: '2014',
+      location: 'Hyderabad, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'Sri Gayatri Junior College',
+      degree: 'Higher Secondary Certificate',
+      field: 'Mathematics, Physics, Chemistry',
+      startDate: '2008',
+      endDate: '2010',
+      location: 'Hyderabad, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'React Native' },
+    { id: 'skill-2', name: 'Swift' },
+    { id: 'skill-3', name: 'Kotlin' },
+    { id: 'skill-4', name: 'TypeScript' },
+    { id: 'skill-5', name: 'iOS Development' },
+    { id: 'skill-6', name: 'Android Development' },
+    { id: 'skill-7', name: 'Redux' },
+    { id: 'skill-8', name: 'Firebase' },
+    { id: 'skill-9', name: 'App Store Connect' },
+    { id: 'skill-10', name: 'Play Console' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'Google Associate Android Developer',
+      issuer: 'Google',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'Meta React Native Specialist',
+      issuer: 'Meta',
+      date: '2022',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Fitness Tracking App',
+      description: 'Built cross-platform fitness app with workout tracking and progress visualization',
+      technologies: ['React Native', 'Redux', 'Firebase', 'HealthKit'],
+      highlights: [
+        'Integrated with device health APIs for step counting and workout data',
+        'Implemented offline-first architecture with background sync',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'Food Delivery App',
+      description: 'Developed mobile app for food ordering with real-time order tracking',
+      technologies: ['React Native', 'Maps SDK', 'Push Notifications', 'Stripe'],
+      highlights: [
+        'Built real-time order tracking with map integration',
+        'Implemented push notifications for order status updates',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'App Store Featured',
+      description: 'App featured in App Store "Apps We Love" section',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Mobile Excellence Award',
+      description: 'Internal recognition for delivering high-quality mobile experiences',
+      date: '2022',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'Cross-Platform Development', description: 'Building apps that work seamlessly on iOS and Android' },
+    { id: 'str-2', name: 'Performance Optimization', description: 'Ensuring smooth animations and fast app startup' },
+    { id: 'str-3', name: 'Native Integration', description: 'Bridging React Native with platform-specific features' },
+  ],
+};
+
+// ============================================================================
+// FULL STACK DEVELOPER - For minimal template
+// ============================================================================
+export const FULLSTACK_DEVELOPER_DATA: V2ResumeData = {
+  version: '2.0',
+  personalInfo: {
+    fullName: 'Jayanth Babu Somineni',
+    title: 'Full Stack Developer',
+    email: 'jayanth.fullstack@email.com',
+    phone: '+91 8074325415',
+    location: 'Hyderabad, Telangana, India',
+    linkedin: 'linkedin.com/in/jayanth-babu-somineni',
+    portfolio: 'jayanthfullstack.dev',
+    github: 'github.com/jayanthfullstack',
+    summary:
+      'Full Stack Developer with experience building end-to-end web applications from frontend to backend. Skilled in React, Node.js, and cloud technologies. Delivered production applications serving users across various domains. Passionate about clean code, scalable architecture, and creating exceptional user experiences.',
+  },
+  experience: [
+    {
+      id: 'exp-1',
+      position: 'Senior Full Stack Developer',
+      company: 'TechScale Solutions',
+      location: 'Hyderabad, India',
+      startDate: '2020-05',
+      endDate: '',
+      current: true,
+      bulletPoints: [
+        'Lead development of enterprise SaaS platform handling frontend and backend features, coordinating with product managers on requirements',
+        'Architected microservices backend using Node.js and GraphQL for flexible data querying, implementing schema federation across services',
+        'Built real-time collaboration features using WebSocket for live updates, enabling multiple users to work simultaneously on shared documents',
+        'Optimized frontend performance through code splitting, lazy loading, and caching strategies, improving initial page load significantly',
+        'Mentored developers on full stack development patterns, best practices, and code review guidelines to maintain code quality',
+      ],
+    },
+    {
+      id: 'exp-2',
+      position: 'Full Stack Developer',
+      company: 'Digital Innovations',
+      location: 'Bangalore, India',
+      startDate: '2017-06',
+      endDate: '2020-04',
+      current: false,
+      bulletPoints: [
+        'Built full-stack applications using React, Node.js, and PostgreSQL, delivering features from database design through user interface',
+        'Implemented CI/CD pipelines for automated testing and deployment using GitHub Actions and AWS CodePipeline',
+        'Developed RESTful APIs with comprehensive documentation and versioning, supporting both web and mobile client applications',
+        'Created test suites using Jest and React Testing Library for code quality, implementing unit, integration, and end-to-end tests',
+        'Participated in architecture discussions and technical decision-making, contributing to technology selection and design patterns',
+      ],
+    },
+    {
+      id: 'exp-3',
+      position: 'Web Developer',
+      company: 'StartupHub',
+      location: 'Chennai, India',
+      startDate: '2015-08',
+      endDate: '2017-05',
+      current: false,
+      bulletPoints: [
+        'Developed responsive web applications using React and TypeScript, building reusable component libraries for team use',
+        'Collaborated with UX team to implement designs with attention to detail, ensuring visual consistency and usability standards',
+        'Optimized frontend performance and ensured accessibility compliance, meeting WCAG guidelines for inclusive design',
+        'Integrated third-party APIs and services for payment processing, email notifications, and analytics tracking',
+        'Contributed to technical documentation and knowledge sharing sessions, helping onboard new team members effectively',
+      ],
+    },
+  ],
+  education: [
+    {
+      id: 'edu-1',
+      school: 'QIS College of Engineering',
+      degree: 'Bachelor of Technology',
+      field: 'Computer Science',
+      startDate: '2011',
+      endDate: '2015',
+      location: 'Ongole, India',
+    },
+    {
+      id: 'edu-2',
+      school: 'Narayana Junior College',
+      degree: 'Higher Secondary Certificate',
+      field: 'Mathematics, Physics, Chemistry',
+      startDate: '2009',
+      endDate: '2011',
+      location: 'Ongole, India',
+    },
+  ],
+  skills: [
+    { id: 'skill-1', name: 'React' },
+    { id: 'skill-2', name: 'TypeScript' },
+    { id: 'skill-3', name: 'Node.js' },
+    { id: 'skill-4', name: 'GraphQL' },
+    { id: 'skill-5', name: 'PostgreSQL' },
+    { id: 'skill-6', name: 'MongoDB' },
+    { id: 'skill-7', name: 'AWS' },
+    { id: 'skill-8', name: 'Docker' },
+    { id: 'skill-9', name: 'Next.js' },
+    { id: 'skill-10', name: 'Redis' },
+    { id: 'skill-11', name: 'Git' },
+    { id: 'skill-12', name: 'Jest' },
+  ],
+  certifications: [
+    {
+      id: 'cert-1',
+      name: 'AWS Solutions Architect Associate',
+      issuer: 'Amazon Web Services',
+      date: '2023',
+    },
+    {
+      id: 'cert-2',
+      name: 'MongoDB Developer Certification',
+      issuer: 'MongoDB',
+      date: '2022',
+    },
+  ],
+  languages: [
+    { id: 'lang-1', language: 'English', proficiency: 'Professional' as const },
+    { id: 'lang-2', language: 'Telugu', proficiency: 'Native' as const },
+    { id: 'lang-3', language: 'Hindi', proficiency: 'Fluent' as const },
+  ],
+  projects: [
+    {
+      id: 'proj-1',
+      name: 'Project Management Platform',
+      description: 'Built full-stack project management tool with task tracking and team collaboration',
+      technologies: ['React', 'Node.js', 'GraphQL', 'PostgreSQL'],
+      highlights: [
+        'Implemented real-time updates using GraphQL subscriptions',
+        'Built drag-and-drop kanban board for task management',
+      ],
+    },
+    {
+      id: 'proj-2',
+      name: 'Analytics Dashboard',
+      description: 'Created data visualization dashboard for business metrics',
+      technologies: ['Next.js', 'D3.js', 'Node.js', 'MongoDB'],
+      highlights: [
+        'Built interactive charts and graphs for data visualization',
+        'Implemented data export and reporting features',
+      ],
+    },
+  ],
+  achievements: [
+    {
+      id: 'ach-1',
+      title: 'Technical Leadership Award',
+      description: 'Recognized for leading successful delivery of key platform features',
+      date: '2023',
+    },
+    {
+      id: 'ach-2',
+      title: 'Innovation Recognition',
+      description: 'Awarded for introducing new development practices that improved team productivity',
+      date: '2022',
+    },
+  ],
+  strengths: [
+    { id: 'str-1', name: 'End-to-End Development', description: 'Building complete features from database to user interface' },
+    { id: 'str-2', name: 'Technical Problem Solving', description: 'Finding elegant solutions to complex technical challenges' },
+    { id: 'str-3', name: 'Team Collaboration', description: 'Working effectively with designers, product managers, and other developers' },
+  ],
+};

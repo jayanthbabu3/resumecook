@@ -832,7 +832,12 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 
       <div style={{ marginTop: spacing.headingToContent }}>
         {items.map((item, index) => (
-          <div key={item.id} className="group relative">
+          <div
+            key={item.id}
+            className="group relative pdf-experience-entry"
+            data-experience-entry="true"
+            data-entry-index={index}
+          >
             {renderItem(item, index)}
             {editable && onRemoveExperience && (
               <button
@@ -840,7 +845,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 className="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full"
                 title="Remove experience"
               >
-                <X className="w-3 h-3 text-red-600" />
+                <X className="w-3 h-3" style={{ color: '#dc2626' }} />
               </button>
             )}
           </div>

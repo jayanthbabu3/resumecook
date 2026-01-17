@@ -972,6 +972,125 @@ function captureV2ResumeHTMLWithStyles(
             padding-top: 20px !important;
           }
 
+          /* ============================================================ */
+          /* PDF PAGE BREAK LOGIC - Intelligent section handling          */
+          /* ============================================================ */
+
+          /* Small sections should NEVER break across pages */
+          /* These sections are typically short and should stay together */
+          .resume-v2 [data-small-section="true"],
+          .resume-v2 [data-section="summary"],
+          .resume-v2 [data-section="skills"],
+          .resume-v2 [data-section="languages"],
+          .resume-v2 [data-section="strengths"],
+          .resume-v2 [data-section="interests"],
+          .resume-v2 [data-section="references"],
+          .resume-v2 [data-section="certifications"],
+          .resume-v2 [data-section="awards"] {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+
+          /* Section headings should NEVER be orphaned at bottom of page */
+          /* Keep heading with at least some content following it */
+          .resume-v2 [data-section] h2,
+          .resume-v2 [data-section] h3:first-child,
+          .resume-v2 .pdf-section h2,
+          .resume-v2 .pdf-section h3:first-child {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
+
+          /* Experience/Education entries - each entry should stay together */
+          /* But page breaks CAN occur BETWEEN entries */
+          .resume-v2 [data-experience-entry="true"],
+          .resume-v2 .pdf-experience-entry,
+          .resume-v2 [data-section="experience"] > div > div[class*="group"],
+          .resume-v2 [data-section="education"] > div > div[class*="group"],
+          .resume-v2 [data-section="projects"] > div > div[class*="group"],
+          .resume-v2 [data-section="volunteer"] > div > div[class*="group"],
+          .resume-v2 [data-section="publications"] > div > div[class*="group"] {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+
+          /* For experience entries, keep entry header with first bullet */
+          .resume-v2 [data-experience-entry] h3,
+          .resume-v2 [data-experience-entry] > div:first-child {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
+
+          /* Prevent orphaned first bullets */
+          .resume-v2 [data-experience-entry] ul li:first-child {
+            page-break-before: avoid !important;
+            break-before: avoid !important;
+          }
+
+          /* Prevent widows/orphans in text content */
+          .resume-v2 p,
+          .resume-v2 li {
+            orphans: 3;
+            widows: 3;
+          }
+
+          /* ============================================================ */
+          /* CONTINUATION PAGE TOP PADDING                                */
+          /* Add spacing at top of pages after the first page             */
+          /* ============================================================ */
+
+          /* Use margin-box for @page to add top margin on continuation pages */
+          @page {
+            size: A4;
+            margin: 0;
+          }
+
+          /* Add spacing when content naturally flows to second page */
+          /* This creates visual breathing room at top of continuation pages */
+          @page :left {
+            margin-top: 20px;
+          }
+
+          @page :right {
+            margin-top: 20px;
+          }
+
+          /* First page should have no extra top margin (header handles it) */
+          @page :first {
+            margin-top: 0;
+          }
+
+          /* When a section starts a new page (after page-break-before), add top padding */
+          .resume-v2 [style*="page-break-before: always"],
+          .resume-v2 [style*="break-before: page"] {
+            padding-top: 24px !important;
+          }
+
+          /* ============================================================ */
+          /* TWO-COLUMN LAYOUT PAGE BREAK HANDLING                        */
+          /* ============================================================ */
+
+          /* For two-column layouts, handle columns separately */
+          /* Main column can flow across pages, sidebar sections should stay together */
+          .resume-v2 > div[style*="display: flex"][style*="flex-direction: row"] {
+            /* Allow the flex container to break across pages */
+            page-break-inside: auto !important;
+            break-inside: auto !important;
+          }
+
+          /* Sidebar column - try to keep sections together when possible */
+          .resume-v2 > div[style*="display: flex"] > div:last-child [data-section] {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+
+          /* Main column sections - allow breaking between entries */
+          .resume-v2 > div[style*="display: flex"] > div:first-child [data-section="experience"],
+          .resume-v2 > div[style*="display: flex"] > div:first-child [data-section="education"] {
+            page-break-inside: auto !important;
+            break-inside: auto !important;
+          }
+
           /* Ensure gradient backgrounds and decorations render in PDF */
           .resume-v2 > div[style*="background: linear-gradient"],
           .resume-v2 > div[style*="background:linear-gradient"],

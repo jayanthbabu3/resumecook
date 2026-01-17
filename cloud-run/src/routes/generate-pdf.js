@@ -35,9 +35,29 @@ generatePdfRouter.post('/', async (req, res) => {
         '--no-zygote',
         '--disable-gpu',
         '--single-process', // Required for Cloud Run
+        '--disable-breakpad', // Disable crash reporting
+        '--disable-crash-reporter', // Disable crash reporter
+        '--disable-crashpad-for-testing', // Disable crashpad
+        '--disable-extensions',
+        '--disable-default-apps',
+        '--disable-background-networking',
+        '--disable-sync',
+        '--disable-translate',
+        '--hide-scrollbars',
+        '--mute-audio',
+        '--disable-software-rasterizer',
+        '--font-render-hinting=none',
+        '--user-data-dir=/tmp/.chromium',
+        '--crash-dumps-dir=/tmp/chromium-crashes',
       ],
       // Use system Chromium (set via PUPPETEER_EXECUTABLE_PATH in Dockerfile)
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
+      // Set user data directory to writable location
+      userDataDir: '/tmp/.chromium',
+      // Disable error dialogs on crash
+      handleSIGINT: false,
+      handleSIGTERM: false,
+      handleSIGHUP: false,
     });
 
     const page = await browser.newPage();
