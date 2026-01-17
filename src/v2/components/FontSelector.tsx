@@ -24,6 +24,7 @@ export interface FontOption {
 }
 
 export const RESUME_FONTS: FontOption[] = [
+  // Sans-serif fonts - Most popular for modern resumes
   {
     id: 'inter',
     name: 'Inter',
@@ -53,6 +54,13 @@ export const RESUME_FONTS: FontOption[] = [
     description: 'Humanist, professional, very readable',
   },
   {
+    id: 'source-sans-pro',
+    name: 'Source Sans Pro',
+    family: "'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Adobe classic, excellent for documents',
+  },
+  {
     id: 'montserrat',
     name: 'Montserrat',
     family: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -74,6 +82,13 @@ export const RESUME_FONTS: FontOption[] = [
     description: 'Rounded, friendly yet professional',
   },
   {
+    id: 'nunito-sans',
+    name: 'Nunito Sans',
+    family: "'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Clean sans version of Nunito',
+  },
+  {
     id: 'work-sans',
     name: 'Work Sans',
     family: "'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -88,11 +103,124 @@ export const RESUME_FONTS: FontOption[] = [
     description: 'Geometric, modern, unique',
   },
   {
+    id: 'dm-sans',
+    name: 'DM Sans',
+    family: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Low-contrast geometric, very clean',
+  },
+  {
+    id: 'plus-jakarta-sans',
+    name: 'Plus Jakarta Sans',
+    family: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Fresh, contemporary, elegant',
+  },
+  {
+    id: 'manrope',
+    name: 'Manrope',
+    family: "'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Modern semi-rounded, distinctive',
+  },
+  {
+    id: 'outfit',
+    name: 'Outfit',
+    family: "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Geometric, versatile, modern',
+  },
+  {
+    id: 'rubik',
+    name: 'Rubik',
+    family: "'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Slightly rounded, friendly',
+  },
+  {
+    id: 'ibm-plex-sans',
+    name: 'IBM Plex Sans',
+    family: "'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Corporate, neutral, versatile',
+  },
+  {
+    id: 'karla',
+    name: 'Karla',
+    family: "'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Grotesque, characterful, readable',
+  },
+  {
+    id: 'cabin',
+    name: 'Cabin',
+    family: "'Cabin', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Humanist, modern, warm',
+  },
+  {
+    id: 'libre-franklin',
+    name: 'Libre Franklin',
+    family: "'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    category: 'sans-serif',
+    description: 'Franklin Gothic inspired, classic',
+  },
+  // Serif fonts - Traditional and elegant
+  {
     id: 'merriweather',
     name: 'Merriweather',
     family: "'Merriweather', Georgia, 'Times New Roman', serif",
     category: 'serif',
     description: 'Traditional, professional serif',
+  },
+  {
+    id: 'georgia',
+    name: 'Georgia',
+    family: "Georgia, 'Times New Roman', serif",
+    category: 'serif',
+    description: 'Classic, widely supported',
+  },
+  {
+    id: 'playfair-display',
+    name: 'Playfair Display',
+    family: "'Playfair Display', Georgia, 'Times New Roman', serif",
+    category: 'serif',
+    description: 'Elegant, high contrast, stylish',
+  },
+  {
+    id: 'lora',
+    name: 'Lora',
+    family: "'Lora', Georgia, 'Times New Roman', serif",
+    category: 'serif',
+    description: 'Contemporary, well-balanced',
+  },
+  {
+    id: 'source-serif-pro',
+    name: 'Source Serif Pro',
+    family: "'Source Serif Pro', Georgia, 'Times New Roman', serif",
+    category: 'serif',
+    description: 'Adobe classic serif, readable',
+  },
+  {
+    id: 'crimson-pro',
+    name: 'Crimson Pro',
+    family: "'Crimson Pro', Georgia, 'Times New Roman', serif",
+    category: 'serif',
+    description: 'Refined, book-style serif',
+  },
+  {
+    id: 'libre-baskerville',
+    name: 'Libre Baskerville',
+    family: "'Libre Baskerville', Georgia, 'Times New Roman', serif",
+    category: 'serif',
+    description: 'Classic Baskerville, elegant',
+  },
+  {
+    id: 'eb-garamond',
+    name: 'EB Garamond',
+    family: "'EB Garamond', Georgia, 'Times New Roman', serif",
+    category: 'serif',
+    description: 'Classic Garamond, timeless',
   },
 ];
 

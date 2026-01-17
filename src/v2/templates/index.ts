@@ -59,6 +59,10 @@ import { creativeStarterTemplate } from './creative-starter';
 import { professionalCompactTemplate } from './professional-compact';
 import { elegantPortfolioTemplate } from './elegant-portfolio';
 import { cleanMinimalTemplate } from './clean-minimal';
+import { refinedSerifTemplate } from './refined-serif';
+import { swissMinimalTemplate } from './swiss-minimal';
+import { monoElegantTemplate } from './mono-elegant';
+import { lineAccentTemplate } from './line-accent';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -114,6 +118,10 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'professional-compact-v2': professionalCompactTemplate,
   'elegant-portfolio-v2': elegantPortfolioTemplate,
   'clean-minimal-v2': cleanMinimalTemplate,
+  'refined-serif-v2': refinedSerifTemplate,
+  'swiss-minimal-v2': swissMinimalTemplate,
+  'mono-elegant-v2': monoElegantTemplate,
+  'line-accent-v2': lineAccentTemplate,
 };
 
 // ============================================================================

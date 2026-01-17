@@ -219,7 +219,11 @@ export type HeaderVariant =
   | 'gradient-creative'      // Creative gradient header with decorative shapes and photo support
   | 'summary-banner'         // Professional header with integrated summary, name/title at top, accent contact bar
   | 'elegant-photo-card'     // Centered photo with shadow, name below, contact in pills
-  | 'modern-minimal';        // Ultra-clean minimal with thin accent underline, contact with dots
+  | 'modern-minimal'         // Ultra-clean minimal with thin accent underline, contact with dots
+  | 'refined-serif'          // Elegant serif typography with thin line separators
+  | 'swiss-minimal'          // Swiss design with bold typography and geometric accents
+  | 'mono-elegant'           // Monospace typography with elegant spacing
+  | 'line-accent';           // Clean design with full-width accent lines
 
 export interface HeaderConfig {
   variant: HeaderVariant;

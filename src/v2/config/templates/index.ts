@@ -58,6 +58,10 @@ import { creativeStarterConfig } from './creative-starter';
 import { professionalCompactConfig } from './professional-compact';
 import { elegantPortfolioConfig } from './elegant-portfolio';
 import { cleanMinimalConfig } from './clean-minimal';
+import { refinedSerifConfig } from './refined-serif';
+import { swissMinimalConfig } from './swiss-minimal';
+import { monoElegantConfig } from './mono-elegant';
+import { lineAccentConfig } from './line-accent';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -111,6 +115,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'professional-compact-v2': professionalCompactConfig,
   'elegant-portfolio-v2': elegantPortfolioConfig,
   'clean-minimal-v2': cleanMinimalConfig,
+  'refined-serif-v2': refinedSerifConfig,
+  'swiss-minimal-v2': swissMinimalConfig,
+  'mono-elegant-v2': monoElegantConfig,
+  'line-accent-v2': lineAccentConfig,
 };
 
 // Get template by ID
@@ -180,4 +188,8 @@ export {
   professionalCompactConfig,
   elegantPortfolioConfig,
   cleanMinimalConfig,
+  refinedSerifConfig,
+  swissMinimalConfig,
+  monoElegantConfig,
+  lineAccentConfig,
 };
