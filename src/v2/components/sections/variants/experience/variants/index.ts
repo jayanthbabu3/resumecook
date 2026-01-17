@@ -15,4 +15,6 @@ export { ExperienceTimelinePro } from './ExperienceTimelinePro';
 export { ExperiencePremium } from './ExperiencePremium';
 export { ExperienceIconAccent } from './ExperienceIconAccent';
 export { ExperienceIconClean } from './ExperienceIconClean';
+export { ExperienceElegantTimeline } from './ExperienceElegantTimeline';
 export { ExperienceDotsTimeline } from './ExperienceDotsTimeline';
+export { ExperienceCleanStacked } from './ExperienceCleanStacked';

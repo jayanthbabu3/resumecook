@@ -259,8 +259,24 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     return section.title;
   };
 
+  // Header variants that have summary integrated (no separate summary section needed)
+  const headerVariantsWithIntegratedSummary = [
+    'summary-banner',
+    'banner-with-summary',
+    'clean-summary-contact',
+    'photo-summary-contact-bar',
+    'gradient-split-contact',
+    'photo-dark-contact-bar',
+    'summary-photo-right',
+  ];
+
   // Check if section is enabled (considers both enabledSections and styleOptions)
   const isSectionEnabled = (sectionId: string): boolean => {
+    // If header has integrated summary, always hide the separate summary section
+    if (sectionId === 'summary' && headerVariantsWithIntegratedSummary.includes(config.header?.variant || '')) {
+      return false;
+    }
+
     // Check styleOptions visibility toggles first
     if (styleOptionsContext?.styleOptions) {
       const {

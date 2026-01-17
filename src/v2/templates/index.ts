@@ -54,6 +54,11 @@ import { retailManagerProTemplate } from './retail-manager-pro';
 import { theaterActorProTemplate } from './theater-actor-pro';
 import { cioExecutiveTemplate } from './cio-executive';
 import { hrProfessionalTemplate } from './hr-professional';
+import { modernEleganceTemplate } from './modern-elegance';
+import { creativeStarterTemplate } from './creative-starter';
+import { professionalCompactTemplate } from './professional-compact';
+import { elegantPortfolioTemplate } from './elegant-portfolio';
+import { cleanMinimalTemplate } from './clean-minimal';
 
 // ============================================================================
 // TEMPLATE REGISTRY
@@ -104,6 +109,11 @@ export const V2_TEMPLATE_REGISTRY: TemplateRegistry = {
   'theater-actor-pro-v2': theaterActorProTemplate,
   'cio-executive-v2': cioExecutiveTemplate,
   'hr-professional-v2': hrProfessionalTemplate,
+  'modern-elegance-v2': modernEleganceTemplate,
+  'creative-starter-v2': creativeStarterTemplate,
+  'professional-compact-v2': professionalCompactTemplate,
+  'elegant-portfolio-v2': elegantPortfolioTemplate,
+  'clean-minimal-v2': cleanMinimalTemplate,
 };
 
 // ============================================================================
@@ -221,3 +231,6 @@ export { retailManagerProTemplate } from './retail-manager-pro';
 export { theaterActorProTemplate } from './theater-actor-pro';
 export { cioExecutiveTemplate } from './cio-executive';
 export { hrProfessionalTemplate } from './hr-professional';
+export { professionalCompactTemplate } from './professional-compact';
+export { elegantPortfolioTemplate } from './elegant-portfolio';
+export { cleanMinimalTemplate } from './clean-minimal';

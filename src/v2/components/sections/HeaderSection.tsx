@@ -1938,6 +1938,593 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           </div>
         );
 
+      case 'modern-elegant':
+        // Modern elegant header with bold name, accent underline, and refined contact layout
+        // Features: Large bold name, subtle accent underline, title with letter spacing,
+        // contact items in a clean horizontal row with dot separators
+        const modernElegantContactIconStyle = {
+          width: '13px',
+          height: '13px',
+          color: accent,
+          flexShrink: 0,
+        };
+
+        const renderModernElegantContactItem = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string,
+          isLast: boolean = false
+        ) => {
+          if (!editable && !value) return null;
+
+          return (
+            <React.Fragment>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}>
+                <Icon style={modernElegantContactIconStyle} />
+                {editable ? (
+                  <InlineEditableText
+                    path={path}
+                    value={value || 'Click to edit'}
+                    style={{
+                      fontSize: scaleFontSize(typography.contact.fontSize),
+                      color: typography.contact.color,
+                      fontFamily: baseFontFamily,
+                    }}
+                  />
+                ) : (
+                  <span style={{
+                    fontSize: scaleFontSize(typography.contact.fontSize),
+                    color: typography.contact.color,
+                    fontFamily: baseFontFamily,
+                  }}>{value}</span>
+                )}
+              </div>
+              {!isLast && (
+                <span style={{
+                  width: '4px',
+                  height: '4px',
+                  backgroundColor: colors.border || '#d1d5db',
+                  borderRadius: '50%',
+                  margin: '0 12px',
+                }} />
+              )}
+            </React.Fragment>
+          );
+        };
+
+        // Collect contact items for display
+        const modernElegantContacts = [
+          { icon: Phone, value: personalInfo.phone, path: 'personalInfo.phone' },
+          { icon: Mail, value: personalInfo.email, path: 'personalInfo.email' },
+          { icon: MapPin, value: personalInfo.location, path: 'personalInfo.location' },
+          { icon: Linkedin, value: personalInfo.linkedin, path: 'personalInfo.linkedin' },
+          { icon: Globe, value: personalInfo.website, path: 'personalInfo.website' },
+        ].filter(item => editable || (item.value && item.value.trim()));
+
+        return (
+          <div
+            data-header="modern-elegant"
+            style={{
+              padding: header.padding || '0',
+              fontFamily: baseFontFamily,
+              textAlign: 'center',
+            }}
+          >
+            {/* Name - Large, bold, with accent underline */}
+            <h1 style={{
+              fontSize: scaleFontSize(typography.name.fontSize),
+              fontWeight: typography.name.fontWeight || 700,
+              lineHeight: typography.name.lineHeight,
+              letterSpacing: typography.name.letterSpacing || '-0.02em',
+              color: typography.name.color || '#1a1a1a',
+              margin: 0,
+              fontFamily: baseFontFamily,
+              display: 'inline-block',
+              position: 'relative',
+              paddingBottom: '12px',
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.fullName"
+                  value={personalInfo.fullName || 'Your Name'}
+                  style={{
+                    fontSize: scaleFontSize(typography.name.fontSize),
+                    fontWeight: typography.name.fontWeight || 700,
+                    color: typography.name.color || '#1a1a1a',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                personalInfo.fullName || 'Your Name'
+              )}
+              {/* Accent underline */}
+              <span style={{
+                position: 'absolute',
+                bottom: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '60px',
+                height: '3px',
+                backgroundColor: accent,
+                borderRadius: '2px',
+              }} />
+            </h1>
+
+            {/* Title - Elegant with letter spacing */}
+            <p style={{
+              fontSize: scaleFontSize(typography.title.fontSize),
+              fontWeight: typography.title.fontWeight || 500,
+              lineHeight: typography.title.lineHeight,
+              color: typography.title.color || '#4b5563',
+              margin: '16px 0 0 0',
+              fontFamily: baseFontFamily,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.title"
+                  value={personalInfo.title || 'Professional Title'}
+                  style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: typography.title.fontWeight || 500,
+                    color: typography.title.color || '#4b5563',
+                    fontFamily: baseFontFamily,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                  }}
+                />
+              ) : (
+                personalInfo.title
+              )}
+            </p>
+
+            {/* Contact row with dot separators */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              marginTop: '20px',
+              gap: '4px',
+            }}>
+              {modernElegantContacts.map((item, index) => (
+                <React.Fragment key={item.path}>
+                  {renderModernElegantContactItem(
+                    item.icon,
+                    item.value,
+                    item.path,
+                    index === modernElegantContacts.length - 1
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'gradient-creative':
+        // Creative header with gradient background, decorative shapes, and photo
+        // Features: Vibrant gradient, geometric shapes, circular photo, modern contact layout
+        const gradientCreativePhotoSize = header.photoSize || '100px';
+        const gradientCreativeAvatar = renderAvatar({
+          size: gradientCreativePhotoSize,
+          borderColor: '#ffffff',
+          backgroundColor: 'rgba(255,255,255,0.2)',
+          textColor: '#ffffff',
+          borderWidth: '4px',
+        });
+
+        // Gradient colors - use primary and secondary from config
+        const gradientStart = accent;
+        const gradientEnd = colors.secondary || '#6366f1';
+
+        const gradientCreativeContactIconStyle = {
+          width: '14px',
+          height: '14px',
+          color: 'rgba(255,255,255,0.9)',
+          flexShrink: 0,
+        };
+
+        const renderGradientCreativeContact = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string
+        ) => {
+          if (!editable && !value) return null;
+
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}>
+              <Icon style={gradientCreativeContactIconStyle} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{
+                    fontSize: scaleFontSize(typography.contact.fontSize),
+                    color: 'rgba(255,255,255,0.95)',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                <span style={{
+                  fontSize: scaleFontSize(typography.contact.fontSize),
+                  color: 'rgba(255,255,255,0.95)',
+                  fontFamily: baseFontFamily,
+                }}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="gradient-creative"
+            style={{
+              position: 'relative',
+              background: `linear-gradient(135deg, ${gradientStart} 0%, ${gradientEnd} 100%)`,
+              borderRadius: '0',
+              padding: '32px 28px 28px 28px',
+              marginLeft: `-${spacing.pagePadding.left}`,
+              marginRight: `-${spacing.pagePadding.right}`,
+              marginTop: `-${spacing.pagePadding.top}`,
+              marginBottom: header.marginBottom || '24px',
+              overflow: 'hidden',
+              fontFamily: baseFontFamily,
+            }}
+          >
+            {/* Decorative shapes */}
+            <div style={{
+              position: 'absolute',
+              top: '-30px',
+              right: '-30px',
+              width: '120px',
+              height: '120px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              position: 'absolute',
+              top: '60px',
+              right: '80px',
+              width: '60px',
+              height: '60px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              position: 'absolute',
+              bottom: '-20px',
+              left: '10%',
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.06)',
+              pointerEvents: 'none',
+            }} />
+            {/* Small decorative dots */}
+            <div style={{
+              position: 'absolute',
+              top: '40px',
+              left: '15%',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.3)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              position: 'absolute',
+              bottom: '50px',
+              right: '25%',
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.25)',
+              pointerEvents: 'none',
+            }} />
+
+            {/* Content */}
+            <div style={{
+              position: 'relative',
+              zIndex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '24px',
+            }}>
+              {/* Photo */}
+              {showPhoto && (
+                <div style={{ flexShrink: 0 }}>
+                  {gradientCreativeAvatar}
+                </div>
+              )}
+
+              {/* Text content */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Name */}
+                <h1 style={{
+                  fontSize: scaleFontSize(typography.name.fontSize),
+                  fontWeight: typography.name.fontWeight || 700,
+                  lineHeight: typography.name.lineHeight,
+                  letterSpacing: typography.name.letterSpacing || '-0.02em',
+                  color: '#ffffff',
+                  margin: 0,
+                  fontFamily: baseFontFamily,
+                  textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.fullName"
+                      value={personalInfo.fullName || 'Your Name'}
+                      style={{
+                        fontSize: scaleFontSize(typography.name.fontSize),
+                        fontWeight: typography.name.fontWeight || 700,
+                        color: '#ffffff',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.fullName || 'Your Name'
+                  )}
+                </h1>
+
+                {/* Title */}
+                <p style={{
+                  fontSize: scaleFontSize(typography.title.fontSize),
+                  fontWeight: typography.title.fontWeight || 500,
+                  lineHeight: typography.title.lineHeight,
+                  color: 'rgba(255,255,255,0.9)',
+                  margin: '8px 0 0 0',
+                  fontFamily: baseFontFamily,
+                  letterSpacing: '0.02em',
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.title"
+                      value={personalInfo.title || 'Professional Title'}
+                      style={{
+                        fontSize: scaleFontSize(typography.title.fontSize),
+                        fontWeight: typography.title.fontWeight || 500,
+                        color: 'rgba(255,255,255,0.9)',
+                        fontFamily: baseFontFamily,
+                      }}
+                    />
+                  ) : (
+                    personalInfo.title
+                  )}
+                </p>
+
+                {/* Contact row */}
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '16px',
+                  marginTop: '16px',
+                }}>
+                  {renderGradientCreativeContact(Mail, personalInfo.email, 'personalInfo.email')}
+                  {renderGradientCreativeContact(Phone, personalInfo.phone, 'personalInfo.phone')}
+                  {renderGradientCreativeContact(MapPin, personalInfo.location, 'personalInfo.location')}
+                  {renderGradientCreativeContact(Linkedin, personalInfo.linkedin, 'personalInfo.linkedin')}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'summary-banner':
+        // Elegant Split Header with Accent Sidebar Stripe
+        // Features: Left accent stripe, name/title with decorative line, contact column, integrated summary
+        const summaryBannerIconStyle = {
+          width: '13px',
+          height: '13px',
+          color: accent,
+          flexShrink: 0,
+        };
+
+        const renderSummaryBannerContact = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string
+        ) => {
+          if (!editable && !value) return null;
+
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}>
+              <Icon style={summaryBannerIconStyle} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{
+                    fontSize: scaleFontSize(typography.contact.fontSize),
+                    color: typography.contact.color || '#4b5563',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                <span style={{
+                  fontSize: scaleFontSize(typography.contact.fontSize),
+                  color: typography.contact.color || '#4b5563',
+                  fontFamily: baseFontFamily,
+                }}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="summary-banner"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '24px',
+              display: 'flex',
+              gap: '0',
+              marginLeft: `-${spacing.pagePadding.left}`,
+              marginRight: `-${spacing.pagePadding.right}`,
+              marginTop: `-${spacing.pagePadding.top}`,
+            }}
+          >
+            {/* Left Accent Stripe */}
+            <div style={{
+              width: '6px',
+              background: `linear-gradient(180deg, ${accent} 0%, ${colors.secondary || accent}90 100%)`,
+              flexShrink: 0,
+            }} />
+
+            {/* Main Content */}
+            <div style={{
+              flex: 1,
+              padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 20px ${spacing.pagePadding.left}`,
+            }}>
+              {/* Top Row: Name/Title and Contact */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                gap: '24px',
+                marginBottom: '16px',
+              }}>
+                {/* Left: Name and Title */}
+                <div style={{ flex: 1 }}>
+                  {/* Name with decorative underline */}
+                  <h1 style={{
+                    fontSize: scaleFontSize(typography.name.fontSize),
+                    fontWeight: typography.name.fontWeight || 700,
+                    lineHeight: typography.name.lineHeight,
+                    letterSpacing: typography.name.letterSpacing || '-0.01em',
+                    color: typography.name.color || '#1f2937',
+                    margin: 0,
+                    fontFamily: baseFontFamily,
+                    position: 'relative',
+                    paddingBottom: '10px',
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.fullName"
+                        value={personalInfo.fullName || 'Your Name'}
+                        style={{
+                          fontSize: scaleFontSize(typography.name.fontSize),
+                          fontWeight: typography.name.fontWeight || 700,
+                          color: typography.name.color || '#1f2937',
+                          fontFamily: baseFontFamily,
+                        }}
+                      />
+                    ) : (
+                      personalInfo.fullName || 'Your Name'
+                    )}
+                    {/* Decorative accent line under name */}
+                    <span style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '60px',
+                      height: '3px',
+                      background: accent,
+                      borderRadius: '2px',
+                    }} />
+                  </h1>
+
+                  {/* Title */}
+                  <p style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: typography.title.fontWeight || 500,
+                    lineHeight: typography.title.lineHeight,
+                    color: typography.title.color || accent,
+                    margin: '8px 0 0 0',
+                    fontFamily: baseFontFamily,
+                    letterSpacing: '0.03em',
+                    textTransform: 'uppercase',
+                  }}>
+                    {editable ? (
+                      <InlineEditableText
+                        path="personalInfo.title"
+                        value={personalInfo.title || 'Professional Title'}
+                        style={{
+                          fontSize: scaleFontSize(typography.title.fontSize),
+                          fontWeight: typography.title.fontWeight || 500,
+                          color: typography.title.color || accent,
+                          fontFamily: baseFontFamily,
+                          textTransform: 'uppercase',
+                        }}
+                      />
+                    ) : (
+                      personalInfo.title
+                    )}
+                  </p>
+                </div>
+
+                {/* Right: Contact Info Column */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '6px',
+                  padding: '12px 16px',
+                  background: `${accent}08`,
+                  borderRadius: '6px',
+                  borderLeft: `3px solid ${accent}`,
+                }}>
+                  {renderSummaryBannerContact(Mail, personalInfo.email, 'personalInfo.email')}
+                  {renderSummaryBannerContact(Phone, personalInfo.phone, 'personalInfo.phone')}
+                  {renderSummaryBannerContact(MapPin, personalInfo.location, 'personalInfo.location')}
+                  {renderSummaryBannerContact(Linkedin, personalInfo.linkedin, 'personalInfo.linkedin')}
+                  {personalInfo.website && renderSummaryBannerContact(Globe, personalInfo.website, 'personalInfo.website')}
+                </div>
+              </div>
+
+              {/* Summary with subtle left border */}
+              {(editable || personalInfo.summary) && (
+                <div style={{
+                  paddingLeft: '14px',
+                  borderLeft: `2px solid ${accent}30`,
+                  marginTop: '4px',
+                }}>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.summary"
+                      value={personalInfo.summary || 'Write your professional summary here...'}
+                      as="p"
+                      style={{
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                        fontWeight: typography.body.fontWeight,
+                        lineHeight: typography.body.lineHeight,
+                        color: typography.body.color,
+                        margin: 0,
+                        fontFamily: baseFontFamily,
+                      }}
+                      multiline
+                    />
+                  ) : (
+                    <p style={{
+                      fontSize: scaleFontSize(typography.body.fontSize),
+                      fontWeight: typography.body.fontWeight,
+                      lineHeight: typography.body.lineHeight,
+                      color: typography.body.color,
+                      margin: 0,
+                      fontFamily: baseFontFamily,
+                    }}>
+                      {personalInfo.summary}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
       case 'boxed-contact-icons':
         // Professional header with serif name, title, contact in bordered boxes with icons
         // Used in Project Manager Pro template - matches Jane Rutherford design
@@ -2977,6 +3564,330 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        );
+
+      case 'elegant-photo-card':
+        // Elegant header with photo in rounded card, centered layout
+        // Features: Photo with shadow, name below, contact in pills
+        const elegantPhotoCardIconStyle = {
+          width: '12px',
+          height: '12px',
+          color: accent,
+          flexShrink: 0,
+        };
+
+        const renderElegantPhotoCardContact = (
+          Icon: React.ElementType,
+          value: string | undefined,
+          path: string
+        ) => {
+          if (!editable && !value) return null;
+
+          return (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              background: `${accent}08`,
+              borderRadius: '20px',
+            }}>
+              <Icon style={elegantPhotoCardIconStyle} />
+              {editable ? (
+                <InlineEditableText
+                  path={path}
+                  value={value || 'Click to edit'}
+                  style={{
+                    fontSize: scaleFontSize('10px'),
+                    color: typography.contact.color || '#4b5563',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                <span style={{
+                  fontSize: scaleFontSize('10px'),
+                  color: typography.contact.color || '#4b5563',
+                  fontFamily: baseFontFamily,
+                }}>{value}</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div
+            data-header="elegant-photo-card"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '24px',
+              textAlign: 'center',
+            }}
+          >
+            {/* Photo with elegant shadow */}
+            {(showPhoto || editable) && (
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: '16px',
+              }}>
+                <div style={{
+                  width: header.photoSize || '100px',
+                  height: header.photoSize || '100px',
+                  borderRadius: header.photoShape === 'square' ? '8px' : '50%',
+                  overflow: 'hidden',
+                  boxShadow: `0 8px 24px ${accent}25`,
+                  border: `3px solid ${accent}20`,
+                }}>
+                  {editable ? (
+                    <InlineEditablePhoto
+                      path="personalInfo.photo"
+                      value={personalInfo.photo}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  ) : personalInfo.photo ? (
+                    <img
+                      src={personalInfo.photo}
+                      alt={personalInfo.fullName}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: '100%',
+                      height: '100%',
+                      background: `linear-gradient(135deg, ${accent}30, ${accent}10)`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '32px',
+                      color: accent,
+                      fontWeight: 600,
+                    }}>
+                      {personalInfo.fullName?.charAt(0) || '?'}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Name */}
+            <h1 style={{
+              fontSize: scaleFontSize(typography.name.fontSize),
+              fontWeight: typography.name.fontWeight || 700,
+              lineHeight: typography.name.lineHeight,
+              letterSpacing: typography.name.letterSpacing || '-0.02em',
+              color: typography.name.color || '#1f2937',
+              margin: 0,
+              fontFamily: baseFontFamily,
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.fullName"
+                  value={personalInfo.fullName || 'Your Name'}
+                  style={{
+                    fontSize: scaleFontSize(typography.name.fontSize),
+                    fontWeight: typography.name.fontWeight || 700,
+                    color: typography.name.color || '#1f2937',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                personalInfo.fullName || 'Your Name'
+              )}
+            </h1>
+
+            {/* Title with accent color */}
+            <p style={{
+              fontSize: scaleFontSize(typography.title.fontSize),
+              fontWeight: typography.title.fontWeight || 500,
+              lineHeight: typography.title.lineHeight,
+              color: accent,
+              margin: '6px 0 0 0',
+              fontFamily: baseFontFamily,
+              letterSpacing: '0.02em',
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.title"
+                  value={personalInfo.title || 'Professional Title'}
+                  style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: typography.title.fontWeight || 500,
+                    color: accent,
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                personalInfo.title
+              )}
+            </p>
+
+            {/* Contact pills */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '8px',
+              marginTop: '14px',
+            }}>
+              {renderElegantPhotoCardContact(Mail, personalInfo.email, 'personalInfo.email')}
+              {renderElegantPhotoCardContact(Phone, personalInfo.phone, 'personalInfo.phone')}
+              {renderElegantPhotoCardContact(MapPin, personalInfo.location, 'personalInfo.location')}
+              {renderElegantPhotoCardContact(Linkedin, personalInfo.linkedin, 'personalInfo.linkedin')}
+              {personalInfo.website && renderElegantPhotoCardContact(Globe, personalInfo.website, 'personalInfo.website')}
+            </div>
+          </div>
+        );
+
+      case 'modern-minimal':
+        // Ultra-clean minimal header with thin accent line
+        // Features: Name with thin underline, contact in single line with dots
+        return (
+          <div
+            data-header="modern-minimal"
+            style={{
+              fontFamily: baseFontFamily,
+              marginBottom: header.marginBottom || '20px',
+            }}
+          >
+            {/* Name with thin accent underline */}
+            <h1 style={{
+              fontSize: scaleFontSize(typography.name.fontSize),
+              fontWeight: typography.name.fontWeight || 600,
+              lineHeight: typography.name.lineHeight,
+              letterSpacing: typography.name.letterSpacing || '0',
+              color: typography.name.color || '#1f2937',
+              margin: 0,
+              fontFamily: baseFontFamily,
+              paddingBottom: '8px',
+              borderBottom: `1px solid ${accent}`,
+              display: 'inline-block',
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.fullName"
+                  value={personalInfo.fullName || 'Your Name'}
+                  style={{
+                    fontSize: scaleFontSize(typography.name.fontSize),
+                    fontWeight: typography.name.fontWeight || 600,
+                    color: typography.name.color || '#1f2937',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                personalInfo.fullName || 'Your Name'
+              )}
+            </h1>
+
+            {/* Title */}
+            <p style={{
+              fontSize: scaleFontSize(typography.title.fontSize),
+              fontWeight: typography.title.fontWeight || 400,
+              lineHeight: typography.title.lineHeight,
+              color: typography.title.color || '#6b7280',
+              margin: '8px 0 0 0',
+              fontFamily: baseFontFamily,
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path="personalInfo.title"
+                  value={personalInfo.title || 'Professional Title'}
+                  style={{
+                    fontSize: scaleFontSize(typography.title.fontSize),
+                    fontWeight: typography.title.fontWeight || 400,
+                    color: typography.title.color || '#6b7280',
+                    fontFamily: baseFontFamily,
+                  }}
+                />
+              ) : (
+                personalInfo.title
+              )}
+            </p>
+
+            {/* Contact in single line with dot separators */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: '6px',
+              marginTop: '10px',
+              fontSize: scaleFontSize(typography.contact.fontSize),
+              color: typography.contact.color || '#6b7280',
+            }}>
+              {personalInfo.email && (
+                <>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.email"
+                      value={personalInfo.email}
+                      style={{ fontSize: scaleFontSize(typography.contact.fontSize), color: typography.contact.color || '#6b7280' }}
+                    />
+                  ) : (
+                    <span>{personalInfo.email}</span>
+                  )}
+                </>
+              )}
+              {personalInfo.phone && (
+                <>
+                  <span style={{ color: accent }}>•</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.phone"
+                      value={personalInfo.phone}
+                      style={{ fontSize: scaleFontSize(typography.contact.fontSize), color: typography.contact.color || '#6b7280' }}
+                    />
+                  ) : (
+                    <span>{personalInfo.phone}</span>
+                  )}
+                </>
+              )}
+              {personalInfo.location && (
+                <>
+                  <span style={{ color: accent }}>•</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.location"
+                      value={personalInfo.location}
+                      style={{ fontSize: scaleFontSize(typography.contact.fontSize), color: typography.contact.color || '#6b7280' }}
+                    />
+                  ) : (
+                    <span>{personalInfo.location}</span>
+                  )}
+                </>
+              )}
+              {personalInfo.linkedin && (
+                <>
+                  <span style={{ color: accent }}>•</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.linkedin"
+                      value={personalInfo.linkedin}
+                      style={{ fontSize: scaleFontSize(typography.contact.fontSize), color: typography.contact.color || '#6b7280' }}
+                    />
+                  ) : (
+                    <span>{personalInfo.linkedin}</span>
+                  )}
+                </>
+              )}
+              {personalInfo.website && (
+                <>
+                  <span style={{ color: accent }}>•</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path="personalInfo.website"
+                      value={personalInfo.website}
+                      style={{ fontSize: scaleFontSize(typography.contact.fontSize), color: typography.contact.color || '#6b7280' }}
+                    />
+                  ) : (
+                    <span>{personalInfo.website}</span>
+                  )}
+                </>
+              )}
             </div>
           </div>
         );

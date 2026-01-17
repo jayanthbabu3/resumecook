@@ -42,4 +42,7 @@ export type ExperienceVariant =
   | 'timeline-pro'    // Professional timeline with dates on left
   | 'icon-accent'     // Creative card with company icon badge
   | 'icon-clean'      // Clean layout with circular icon, position in accent color
-  | 'dots-timeline';  // Simple connected dots timeline
+  | 'elegant-timeline' // Modern elegant timeline with subtle dots and diamond bullets
+  | 'dots-timeline'   // Simple connected dots timeline
+  | 'clean-stacked'   // Clean minimal stacked with pipe separator and subtle dividers
+  | 'premium';        // Premium variant with numbered bullets

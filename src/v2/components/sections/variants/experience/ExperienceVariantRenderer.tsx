@@ -19,7 +19,9 @@ import {
   ExperiencePremium,
   ExperienceIconAccent,
   ExperienceIconClean,
+  ExperienceElegantTimeline,
   ExperienceDotsTimeline,
+  ExperienceCleanStacked,
 } from './variants';
 
 // Re-export types for external use
@@ -95,9 +97,15 @@ export const ExperienceVariantRenderer: React.FC<ExperienceVariantRendererProps>
     case 'icon-clean':
       // Clean layout with circular icon, position in accent color
       return <ExperienceIconClean {...props} />;
+    case 'elegant-timeline':
+      // Modern elegant timeline with subtle dots and diamond bullets
+      return <ExperienceElegantTimeline {...props} />;
     case 'dots-timeline':
       // Simple connected dots timeline
       return <ExperienceDotsTimeline {...props} />;
+    case 'clean-stacked':
+      // Clean minimal stacked with pipe separator
+      return <ExperienceCleanStacked {...props} />;
     case 'academic':
     case 'creative':
     default:

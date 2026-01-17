@@ -53,6 +53,11 @@ import { retailManagerProConfig } from './retail-manager-pro';
 import { theaterActorProConfig } from './theater-actor-pro';
 import { cioExecutiveConfig } from './cio-executive';
 import { hrProfessionalConfig } from './hr-professional';
+import { modernEleganceConfig } from './modern-elegance';
+import { creativeStarterConfig } from './creative-starter';
+import { professionalCompactConfig } from './professional-compact';
+import { elegantPortfolioConfig } from './elegant-portfolio';
+import { cleanMinimalConfig } from './clean-minimal';
 
 // Registry of all available templates
 export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
@@ -101,6 +106,11 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateConfig> = {
   'theater-actor-pro-v2': theaterActorProConfig,
   'cio-executive-v2': cioExecutiveConfig,
   'hr-professional-v2': hrProfessionalConfig,
+  'modern-elegance-v2': modernEleganceConfig,
+  'creative-starter-v2': creativeStarterConfig,
+  'professional-compact-v2': professionalCompactConfig,
+  'elegant-portfolio-v2': elegantPortfolioConfig,
+  'clean-minimal-v2': cleanMinimalConfig,
 };
 
 // Get template by ID
@@ -165,4 +175,9 @@ export {
   theaterActorProConfig,
   cioExecutiveConfig,
   hrProfessionalConfig,
+  modernEleganceConfig,
+  creativeStarterConfig,
+  professionalCompactConfig,
+  elegantPortfolioConfig,
+  cleanMinimalConfig,
 };

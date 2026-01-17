@@ -211,10 +211,15 @@ export type HeaderVariant =
   | 'boxed-accent'       // Boxed header with accent border
   | 'summary-photo-right' // Name, title, summary with photo on right and contact separator line
   | 'boxed-contact-icons' // Serif name, title, contact in bordered boxes with icons, summary section below
+  | 'modern-elegant'      // Bold name with accent underline, uppercase title, contact with dot separators
   | 'clean-summary-contact' // Clean header with name, title, summary paragraph, and horizontal contact bar with icons
   | 'photo-summary-contact-bar' // Photo left, name/title/summary right, gray contact bar below
   | 'gradient-split-contact' // Blue gradient banner with content left and contact icons right
-  | 'photo-dark-contact-bar'; // Photo left, name/title/summary right, dark curved contact bar - CIO style
+  | 'photo-dark-contact-bar' // Photo left, name/title/summary right, dark curved contact bar - CIO style
+  | 'gradient-creative'      // Creative gradient header with decorative shapes and photo support
+  | 'summary-banner'         // Professional header with integrated summary, name/title at top, accent contact bar
+  | 'elegant-photo-card'     // Centered photo with shadow, name below, contact in pills
+  | 'modern-minimal';        // Ultra-clean minimal with thin accent underline, contact with dots
 
 export interface HeaderConfig {
   variant: HeaderVariant;
