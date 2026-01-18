@@ -39,7 +39,10 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   const bannerTextColor = '#ffffff';
   const bannerMetaTextColor = 'rgba(255, 255, 255, 0.85)';
   const styleOptions = useStyleOptions();
-  const showPhoto = styleOptions?.styleOptions?.showPhoto ?? true;
+  // Photo visibility: check both settings.includePhoto and styleOptions.showPhoto
+  const showPhotoFromSettings = settings?.includePhoto ?? true;
+  const showPhotoFromContext = styleOptions?.styleOptions?.showPhoto ?? true;
+  const showPhoto = showPhotoFromSettings && showPhotoFromContext;
   const scaleFontSize = styleOptions?.scaleFontSize || ((s: string) => s);
   
   // Base font family from config
@@ -3427,8 +3430,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                         <InlineEditablePhoto
                           value={personalInfo.photo}
                           path="personalInfo.photo"
-                          photoShape="circle"
-                          showInitials={!personalInfo.photo}
+                          shape="circle"
                           initials={personalInfo.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
                         />
                       ) : personalInfo.photo ? (

@@ -42,7 +42,7 @@ import { generatePDFFromPreview } from '@/lib/pdfGenerator';
 import { incrementDownloadsCount } from '@/lib/firestore/statsService';
 import { PDF_STYLES } from '@/lib/pdfStyles';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
-import { StyleOptionsProvider } from '@/contexts/StyleOptionsContext';
+import { StyleOptionsProvider, updateStyleOptionExternal } from '@/contexts/StyleOptionsContext';
 import { StyleOptionsWrapper } from '@/components/resume/StyleOptionsWrapper';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -1334,13 +1334,170 @@ export const BuilderV2: React.FC = () => {
    * only the interests section is enabled - not all other sections.
    */
   const handleChatResumeUpdate = useCallback((payload: ChatResumeUpdatePayload) => {
-    const { data, updatedSections, variantChanges } = payload;
+    const { data, updatedSections, updates, variantChanges } = payload;
 
     // Update the resume data
     setResumeData(data);
     setHasUnsavedChanges(true);
 
-    // Apply variant changes if any
+    // Handle settings.includePhoto changes (hide/show photo via settings path)
+    if (updates?.settings && typeof updates.settings.includePhoto === 'boolean') {
+      updateStyleOptionExternal('showPhoto', updates.settings.includePhoto);
+    }
+
+    // Handle config updates (section visibility, ordering, variants, etc.)
+    if (updates?.config) {
+      const configUpdates = updates.config;
+
+      // Handle section visibility/ordering from config.sections
+      if (configUpdates.sections && Array.isArray(configUpdates.sections)) {
+        // Build a map of section type to enabled state
+        const sectionEnabledMap = new Map<string, boolean>();
+        for (const section of configUpdates.sections) {
+          if (section.type && typeof section.enabled === 'boolean') {
+            sectionEnabledMap.set(section.type, section.enabled);
+          }
+        }
+
+        // Apply enabled/disabled state to sections
+        // The AI returns a full config with ALL sections, but we only want to process CHANGES:
+        // - For sections being disabled (enabled: false), remove them
+        // - For sections being enabled (enabled: true) that are currently disabled, add them
+        //   ONLY if there's evidence the user explicitly asked to show that section
+        //
+        // To detect explicit "show" requests, we check if the section was previously disabled
+        // and is now enabled. We need to be conservative to avoid enabling all sections.
+        if (sectionEnabledMap.size > 0) {
+          setEnabledSections(prev => {
+            let newSections = [...prev];
+
+            // Count how many sections are being disabled vs enabled
+            let disabledCount = 0;
+            let enabledNotCurrentlyCount = 0;
+            for (const [sectionType, enabled] of sectionEnabledMap) {
+              if (!enabled) disabledCount++;
+              else if (!prev.includes(sectionType)) enabledNotCurrentlyCount++;
+            }
+
+            // If we're only disabling sections (hide request), process only those
+            // If we're enabling sections AND the count is small (1-2), it's likely explicit
+            const isLikelyHideRequest = disabledCount > 0 && enabledNotCurrentlyCount > 3;
+            const isLikelyShowRequest = enabledNotCurrentlyCount > 0 && enabledNotCurrentlyCount <= 3 && disabledCount === 0;
+
+            for (const [sectionType, enabled] of sectionEnabledMap) {
+              const isCurrentlyEnabled = prev.includes(sectionType);
+
+              if (!enabled && isCurrentlyEnabled) {
+                // Section should be disabled - always process this
+                newSections = newSections.filter(s => s !== sectionType);
+              } else if (enabled && !isCurrentlyEnabled) {
+                // Section should be enabled but isn't
+                // Only enable if this is likely an explicit "show" request (few sections)
+                if (isLikelyShowRequest || enabledNotCurrentlyCount <= 2) {
+                  newSections.push(sectionType);
+                }
+                // Otherwise skip - this is likely AI returning full config
+              }
+            }
+
+            return newSections;
+          });
+        }
+      }
+
+      // Handle section ordering from config.sections
+      // Apply order changes to sectionOverrides
+      if (configUpdates.sections && Array.isArray(configUpdates.sections)) {
+        setSectionOverrides(prev => {
+          const newOverrides = { ...prev };
+
+          for (const section of configUpdates.sections!) {
+            const sectionId = section.type; // Use type as the section ID
+            if (!sectionId) continue;
+
+            // Initialize override if not exists
+            if (!newOverrides[sectionId]) {
+              newOverrides[sectionId] = {};
+            }
+
+            // Apply order if provided
+            if (typeof section.order === 'number') {
+              newOverrides[sectionId] = {
+                ...newOverrides[sectionId],
+                order: section.order,
+              };
+            }
+
+            // Apply column if provided
+            if (section.column === 'main' || section.column === 'sidebar') {
+              newOverrides[sectionId] = {
+                ...newOverrides[sectionId],
+                column: section.column,
+              };
+            }
+
+            // Apply variant if provided
+            if (section.variant) {
+              newOverrides[sectionId] = {
+                ...newOverrides[sectionId],
+                variant: section.variant,
+              };
+            }
+          }
+
+          return newOverrides;
+        });
+      }
+
+      // Handle color changes
+      if (configUpdates.colors) {
+        setThemeColors(prev => ({
+          ...prev,
+          ...(configUpdates.colors!.primary && { primary: configUpdates.colors!.primary }),
+          ...(configUpdates.colors!.secondary && { secondary: configUpdates.colors!.secondary }),
+        }));
+      }
+
+      // Handle header showPhoto changes (hide/show profile picture)
+      if (configUpdates.header && typeof configUpdates.header.showPhoto === 'boolean') {
+        updateStyleOptionExternal('showPhoto', configUpdates.header.showPhoto);
+      }
+
+      // Handle component-level config changes (header, skills, experience variants, etc.)
+      if (configUpdates.header || configUpdates.skills || configUpdates.experience ||
+          configUpdates.education || configUpdates.layout) {
+        setSectionOverrides(prev => {
+          const newOverrides = { ...prev };
+
+          // Apply header config
+          if (configUpdates.header?.variant) {
+            newOverrides['header'] = { ...(prev['header'] || {}), variant: configUpdates.header.variant };
+          }
+          // Apply skills config
+          if (configUpdates.skills?.variant) {
+            newOverrides['skills'] = { ...(prev['skills'] || {}), variant: configUpdates.skills.variant };
+          }
+          // Apply experience config
+          if (configUpdates.experience?.variant) {
+            newOverrides['experience'] = { ...(prev['experience'] || {}), variant: configUpdates.experience.variant };
+          }
+          // Apply education config
+          if (configUpdates.education?.variant) {
+            newOverrides['education'] = { ...(prev['education'] || {}), variant: configUpdates.education.variant };
+          }
+
+          return newOverrides;
+        });
+      }
+
+      // Config was handled, we can return if no other sections were updated
+      if (!updatedSections || updatedSections.length === 0 ||
+          (updatedSections.length === 1 && updatedSections[0] === 'config')) {
+        return;
+      }
+    }
+
+    // Apply variant changes if any (legacy support)
     if (variantChanges && variantChanges.length > 0) {
       setSectionOverrides(prev => {
         const newOverrides = { ...prev };

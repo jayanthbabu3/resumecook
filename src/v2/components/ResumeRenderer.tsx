@@ -269,7 +269,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     // Check styleOptions visibility toggles first
     if (styleOptionsContext?.styleOptions) {
       const {
-        showPhoto,
+        // NOTE: showPhoto is NOT destructured here - it's handled inside HeaderSection component
         showSummary,
         showExperience,
         showEducation,
@@ -280,7 +280,6 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       } = styleOptionsContext.styleOptions;
 
       // Check section visibility based on type/id
-      if (sectionId === 'header' && showPhoto === false) return false;
       if (sectionId === 'summary' && showSummary === false) return false;
       if (sectionId === 'experience' && showExperience === false) return false;
       if (sectionId === 'education' && showEducation === false) return false;

@@ -30,7 +30,7 @@ function generateUniqueId(prefix: string): string {
 
 /**
  * Ensure all items in an array have unique, valid IDs
- * Regenerates IDs client-side to prevent conflicts
+ * PRESERVES existing IDs - only generates new IDs for items without one
  */
 function ensureUniqueIds<T extends { id?: string }>(
   items: T[] | undefined,
@@ -40,7 +40,13 @@ function ensureUniqueIds<T extends { id?: string }>(
   if (!items || !Array.isArray(items)) return [];
 
   return items.map(item => {
-    // Always generate a new unique ID to prevent conflicts
+    // PRESERVE existing ID if present and valid
+    if (item.id && typeof item.id === 'string' && item.id.trim()) {
+      existingIds.add(item.id);
+      return item as T & { id: string };
+    }
+
+    // Only generate new ID for items without one
     let newId = generateUniqueId(prefix);
     while (existingIds.has(newId)) {
       newId = generateUniqueId(prefix);
@@ -335,6 +341,78 @@ function validateAndSanitizeUpdates(
     }
   }
 
+  // Pass through settings (resume-level preferences)
+  if (normalizedUpdates.settings && typeof normalizedUpdates.settings === 'object') {
+    sanitized.settings = {};
+    const settings = normalizedUpdates.settings;
+
+    if (typeof settings.includeSocialLinks === 'boolean') {
+      sanitized.settings.includeSocialLinks = settings.includeSocialLinks;
+    }
+    if (typeof settings.includePhoto === 'boolean') {
+      sanitized.settings.includePhoto = settings.includePhoto;
+    }
+    if (typeof settings.dateFormat === 'string' && settings.dateFormat.trim()) {
+      sanitized.settings.dateFormat = settings.dateFormat.trim();
+    }
+
+    // Remove if empty
+    if (Object.keys(sanitized.settings).length === 0) {
+      delete sanitized.settings;
+    }
+  }
+
+  // Pass through config (template & display settings)
+  if (normalizedUpdates.config && typeof normalizedUpdates.config === 'object') {
+    const config = normalizedUpdates.config;
+    sanitized.config = {};
+
+    // Sanitize sections array
+    if (Array.isArray(config.sections)) {
+      sanitized.config.sections = config.sections
+        .filter((s: any) => s && typeof s === 'object' && typeof s.type === 'string')
+        .map((s: any) => ({
+          type: String(s.type).trim(),
+          id: s.id ? String(s.id).trim() : String(s.type).trim(),
+          title: s.title ? String(s.title).trim() : undefined,
+          enabled: typeof s.enabled === 'boolean' ? s.enabled : true,
+          order: typeof s.order === 'number' ? s.order : undefined,
+          column: s.column === 'main' || s.column === 'sidebar' ? s.column : undefined,
+          variant: s.variant ? String(s.variant).trim() : undefined,
+        }));
+    }
+
+    // Pass through component configs
+    if (config.header && typeof config.header === 'object') {
+      sanitized.config.header = { ...config.header };
+    }
+    if (config.skills && typeof config.skills === 'object') {
+      sanitized.config.skills = { ...config.skills };
+    }
+    if (config.experience && typeof config.experience === 'object') {
+      sanitized.config.experience = { ...config.experience };
+    }
+    if (config.education && typeof config.education === 'object') {
+      sanitized.config.education = { ...config.education };
+    }
+    if (config.layout && typeof config.layout === 'object') {
+      sanitized.config.layout = { ...config.layout };
+    }
+    if (config.colors && typeof config.colors === 'object') {
+      sanitized.config.colors = { ...config.colors };
+    }
+    if (config.sectionHeading && typeof config.sectionHeading === 'object') {
+      sanitized.config.sectionHeading = { ...config.sectionHeading };
+    }
+
+    // Remove if empty
+    if (Object.keys(sanitized.config).length === 0) {
+      delete sanitized.config;
+    } else {
+      console.log('[Chat Service] Sanitized config:', sanitized.config);
+    }
+  }
+
   return sanitized;
 }
 
@@ -446,7 +524,10 @@ export async function sendChatMessage(
 
 /**
  * Merge resume updates into existing data
- * This intelligently merges new data without overwriting unrelated sections
+ *
+ * IMPORTANT: AI returns COMPLETE arrays for all sections.
+ * This function uses REPLACE strategy - the AI's array becomes the new state.
+ * This ensures deletions, reordering, and modifications all work correctly.
  */
 export function mergeResumeUpdates(
   currentData: V2ResumeData,
@@ -454,7 +535,7 @@ export function mergeResumeUpdates(
 ): V2ResumeData {
   const merged = { ...currentData };
 
-  // Merge personal info (partial update)
+  // Merge personal info (partial update - AI only sends changed fields)
   if (updates.personalInfo) {
     merged.personalInfo = {
       ...currentData.personalInfo,
@@ -462,191 +543,120 @@ export function mergeResumeUpdates(
     };
   }
 
-  // For array sections, we need to be smart about merging
-  // If the update contains items, we either add new ones or replace existing ones by ID
-
-  // Experience
-  if (updates.experience && updates.experience.length > 0) {
-    merged.experience = mergeArrayById(currentData.experience || [], updates.experience);
+  // Merge settings (partial update)
+  if (updates.settings) {
+    merged.settings = {
+      ...currentData.settings,
+      ...updates.settings,
+    };
   }
 
-  // Education
-  if (updates.education && updates.education.length > 0) {
-    merged.education = mergeArrayById(currentData.education || [], updates.education);
+  // For ALL array sections: AI returns COMPLETE arrays, so REPLACE entirely
+  // This ensures deletions, reordering, and modifications work correctly
+
+  if (updates.experience !== undefined) {
+    merged.experience = updates.experience;
   }
 
-  // Skills
-  if (updates.skills && updates.skills.length > 0) {
-    merged.skills = mergeSkills(currentData.skills || [], updates.skills);
+  if (updates.education !== undefined) {
+    merged.education = updates.education;
   }
 
-  // Languages
-  if (updates.languages && updates.languages.length > 0) {
-    merged.languages = mergeArrayByField(
-      currentData.languages || [],
-      updates.languages,
-      'language'
-    );
+  if (updates.skills !== undefined) {
+    merged.skills = updates.skills;
   }
 
-  // Certifications
-  if (updates.certifications && updates.certifications.length > 0) {
-    merged.certifications = mergeArrayById(
-      currentData.certifications || [],
-      updates.certifications
-    );
+  if (updates.languages !== undefined) {
+    merged.languages = updates.languages;
   }
 
-  // Projects
-  if (updates.projects && updates.projects.length > 0) {
-    merged.projects = mergeArrayById(currentData.projects || [], updates.projects);
+  if (updates.certifications !== undefined) {
+    merged.certifications = updates.certifications;
   }
 
-  // Achievements
-  if (updates.achievements && updates.achievements.length > 0) {
-    merged.achievements = mergeArrayById(
-      currentData.achievements || [],
-      updates.achievements
-    );
+  if (updates.projects !== undefined) {
+    merged.projects = updates.projects;
   }
 
-  // Strengths
-  if (updates.strengths && updates.strengths.length > 0) {
-    merged.strengths = mergeArrayById(currentData.strengths || [], updates.strengths);
+  if (updates.achievements !== undefined) {
+    merged.achievements = updates.achievements;
   }
 
-  // Awards
-  if (updates.awards && updates.awards.length > 0) {
-    merged.awards = mergeArrayById(currentData.awards || [], updates.awards);
+  if (updates.strengths !== undefined) {
+    merged.strengths = updates.strengths;
   }
 
-  // Publications
-  if (updates.publications && updates.publications.length > 0) {
-    merged.publications = mergeArrayById(
-      currentData.publications || [],
-      updates.publications
-    );
+  if (updates.awards !== undefined) {
+    merged.awards = updates.awards;
   }
 
-  // Volunteer
-  if (updates.volunteer && updates.volunteer.length > 0) {
-    merged.volunteer = mergeArrayById(currentData.volunteer || [], updates.volunteer);
+  if (updates.publications !== undefined) {
+    merged.publications = updates.publications;
   }
 
-  // Speaking
-  if (updates.speaking && updates.speaking.length > 0) {
-    merged.speaking = mergeArrayById(currentData.speaking || [], updates.speaking);
+  if (updates.volunteer !== undefined) {
+    merged.volunteer = updates.volunteer;
   }
 
-  // Patents
-  if (updates.patents && updates.patents.length > 0) {
-    merged.patents = mergeArrayById(currentData.patents || [], updates.patents);
+  if (updates.speaking !== undefined) {
+    merged.speaking = updates.speaking;
   }
 
-  // Interests
-  if (updates.interests && updates.interests.length > 0) {
-    merged.interests = mergeArrayById(currentData.interests || [], updates.interests);
+  if (updates.patents !== undefined) {
+    merged.patents = updates.patents;
   }
 
-  // References
-  if (updates.references && updates.references.length > 0) {
-    merged.references = mergeArrayById(currentData.references || [], updates.references);
+  if (updates.interests !== undefined) {
+    merged.interests = updates.interests;
   }
 
-  // Courses
-  if (updates.courses && updates.courses.length > 0) {
-    merged.courses = mergeArrayById(currentData.courses || [], updates.courses);
+  if (updates.references !== undefined) {
+    merged.references = updates.references;
   }
 
-  // Custom Sections - merge by ID, add new ones
-  if (updates.customSections && updates.customSections.length > 0) {
-    const existingCustomSections = [...(currentData.customSections || [])];
+  if (updates.courses !== undefined) {
+    merged.courses = updates.courses;
+  }
 
-    for (const newSection of updates.customSections) {
-      const existingIndex = existingCustomSections.findIndex(s => s.id === newSection.id);
-      if (existingIndex >= 0) {
-        // Update existing section
-        existingCustomSections[existingIndex] = newSection;
-      } else {
-        // Add new section
-        existingCustomSections.push(newSection);
-      }
-    }
-
-    merged.customSections = existingCustomSections;
+  if (updates.customSections !== undefined) {
+    merged.customSections = updates.customSections;
   }
 
   return merged;
 }
 
 /**
- * Merge arrays by ID - update existing items or add new ones
+ * Merge config updates into existing config
+ * Returns the config changes to be applied to the template
  */
-function mergeArrayById<T extends { id: string }>(
-  existing: T[],
-  updates: T[]
-): T[] {
-  const result = [...existing];
-  const existingIds = new Set(existing.map(item => item.id));
+export function mergeConfigUpdates(
+  currentConfig: any,
+  configUpdates: ResumeUpdates['config']
+): any {
+  if (!configUpdates) return currentConfig;
 
-  for (const update of updates) {
-    const existingIndex = result.findIndex(item => item.id === update.id);
-    if (existingIndex >= 0) {
-      // Update existing item
-      result[existingIndex] = { ...result[existingIndex], ...update };
-    } else {
-      // Add new item
-      result.push(update);
+  const merged = { ...currentConfig };
+
+  // Merge sections array - REPLACE with AI's version if provided
+  if (configUpdates.sections) {
+    merged.sections = configUpdates.sections;
+  }
+
+  // Merge component-level configs (header, skills, experience, etc.)
+  const componentConfigs = ['header', 'skills', 'experience', 'education', 'layout', 'colors', 'sectionHeading'] as const;
+
+  for (const component of componentConfigs) {
+    if (configUpdates[component]) {
+      merged[component] = {
+        ...currentConfig[component],
+        ...configUpdates[component],
+      };
     }
   }
 
-  return result;
+  return merged;
 }
 
-/**
- * Merge arrays by a specific field (for items without unique IDs like languages)
- */
-function mergeArrayByField<T extends { id: string }>(
-  existing: T[],
-  updates: T[],
-  field: keyof T
-): T[] {
-  const result = [...existing];
-  const existingValues = new Set(existing.map(item => item[field]));
-
-  for (const update of updates) {
-    const existingIndex = result.findIndex(item => item[field] === update[field]);
-    if (existingIndex >= 0) {
-      // Update existing item
-      result[existingIndex] = { ...result[existingIndex], ...update };
-    } else {
-      // Add new item
-      result.push(update);
-    }
-  }
-
-  return result;
-}
-
-/**
- * Merge skills - avoid duplicates by name (case-insensitive)
- */
-function mergeSkills<T extends { id: string; name: string }>(
-  existing: T[],
-  updates: T[]
-): T[] {
-  const result = [...existing];
-  const existingNames = new Set(existing.map(item => item.name.toLowerCase()));
-
-  for (const update of updates) {
-    if (!existingNames.has(update.name.toLowerCase())) {
-      result.push(update);
-      existingNames.add(update.name.toLowerCase());
-    }
-  }
-
-  return result;
-}
 
 /**
  * Generate a unique message ID

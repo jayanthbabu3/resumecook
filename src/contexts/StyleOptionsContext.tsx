@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react';
 
 // Style options types
 export type HeaderCase = 'uppercase' | 'capitalize' | 'lowercase';
@@ -58,12 +58,33 @@ interface StyleOptionsContextType {
 
 const StyleOptionsContext = createContext<StyleOptionsContextType | undefined>(undefined);
 
+// Global ref for external updates (used by chat to update showPhoto from outside the provider)
+let globalStyleOptionsUpdater: (<K extends keyof StyleOptions>(key: K, value: StyleOptions[K]) => void) | null = null;
+
+/**
+ * Update a style option from outside the StyleOptionsProvider.
+ * This is used by the chat feature to update showPhoto when the AI requests it.
+ */
+export const updateStyleOptionExternal = <K extends keyof StyleOptions>(key: K, value: StyleOptions[K]): void => {
+  if (globalStyleOptionsUpdater) {
+    globalStyleOptionsUpdater(key, value);
+  }
+};
+
 export const StyleOptionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [styleOptions, setStyleOptions] = useState<StyleOptions>(defaultStyleOptions);
 
   const updateStyleOption = useCallback(<K extends keyof StyleOptions>(key: K, value: StyleOptions[K]) => {
     setStyleOptions(prev => ({ ...prev, [key]: value }));
   }, []);
+
+  // Register the updater globally so it can be called from outside the provider
+  useEffect(() => {
+    globalStyleOptionsUpdater = updateStyleOption;
+    return () => {
+      globalStyleOptionsUpdater = null;
+    };
+  }, [updateStyleOption]);
 
   const resetStyleOptions = useCallback(() => {
     setStyleOptions(defaultStyleOptions);

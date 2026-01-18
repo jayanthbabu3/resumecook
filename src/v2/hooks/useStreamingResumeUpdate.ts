@@ -4,11 +4,11 @@
  * Creates a ChatGPT-like typing/streaming effect when resume data is updated.
  * Text fields are revealed character by character, creating a smooth typing animation.
  *
- * IMPORTANT UPDATE (2025):
- * - For EXPERIENCE, EDUCATION, PROJECTS: The AI now returns COMPLETE arrays.
- *   The hook will REPLACE the entire array with the AI's response (already chronologically sorted).
- * - For other sections (skills, certifications, etc.): The AI returns only NEW items,
- *   which are APPENDED to existing arrays.
+ * IMPORTANT (Production Ready):
+ * - AI returns COMPLETE arrays for ALL sections (not partial/new items only)
+ * - This hook uses REPLACE strategy for all arrays
+ * - This ensures deletions, reordering, and modifications all work correctly
+ * - Streaming animation is for visual effect only; final state = AI's complete array
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
@@ -195,6 +195,18 @@ export function useStreamingResumeUpdate({
             }
           }
           if (linkFields.some(f => updates.personalInfo?.[f])) {
+            emitUpdate(currentData);
+          }
+
+          // Handle photo field (can be null to remove, or string to set)
+          if ('photo' in updates.personalInfo) {
+            currentData = {
+              ...currentData,
+              personalInfo: {
+                ...currentData.personalInfo,
+                photo: updates.personalInfo.photo || '',
+              },
+            };
             emitUpdate(currentData);
           }
         }
@@ -406,66 +418,20 @@ export function useStreamingResumeUpdate({
           emitUpdate(currentData);
         }
 
-        // Stream skills - APPEND new skills (skip duplicates)
+        // Stream skills - AI returns COMPLETE array, REPLACE entirely
         if (updates.skills && updates.skills.length > 0) {
-          const existingSkillNames = new Set(
-            (currentData.skills || []).map((s) => s.name.toLowerCase())
-          );
-
-          for (const skill of updates.skills) {
-            if (abortRef.current) break;
-            if (existingSkillNames.has(skill.name.toLowerCase())) continue;
-
-            await streamTextField(
-              skill.name,
-              (partial) => {
-                const tempSkills = [
-                  ...(currentData.skills || []),
-                  { ...skill, name: partial },
-                ];
-                emitUpdate({ ...currentData, skills: tempSkills });
-              },
-              `skills.${skill.name}`
-            );
-
-            currentData = {
-              ...currentData,
-              skills: [...(currentData.skills || []), skill],
-            };
-            existingSkillNames.add(skill.name.toLowerCase());
-            await sleep(fieldDelay * 0.5);
-          }
+          // REPLACE with AI's complete array
+          currentData = { ...currentData, skills: updates.skills };
+          emitUpdate(currentData);
+          await sleep(fieldDelay);
         }
 
-        // Stream languages - APPEND new languages (skip duplicates)
+        // Stream languages - AI returns COMPLETE array, REPLACE entirely
         if (updates.languages && updates.languages.length > 0) {
-          const existingLangs = new Set(
-            (currentData.languages || []).map((l) => l.language.toLowerCase())
-          );
-
-          for (const lang of updates.languages) {
-            if (abortRef.current) break;
-            if (existingLangs.has(lang.language.toLowerCase())) continue;
-
-            await streamTextField(
-              lang.language,
-              (partial) => {
-                const tempLangs = [
-                  ...(currentData.languages || []),
-                  { ...lang, language: partial },
-                ];
-                emitUpdate({ ...currentData, languages: tempLangs });
-              },
-              `languages.${lang.language}`
-            );
-
-            currentData = {
-              ...currentData,
-              languages: [...(currentData.languages || []), lang],
-            };
-            existingLangs.add(lang.language.toLowerCase());
-            await sleep(fieldDelay);
-          }
+          // REPLACE with AI's complete array
+          currentData = { ...currentData, languages: updates.languages };
+          emitUpdate(currentData);
+          await sleep(fieldDelay);
         }
 
         // Handle projects - AI returns COMPLETE array, REPLACE entirely
@@ -498,52 +464,52 @@ export function useStreamingResumeUpdate({
           emitUpdate(currentData);
         }
 
-        // Handle other sections (NOT experience/education/projects) - APPEND with brief animation
-        const appendSections: (keyof ResumeUpdates)[] = [
+        // Handle other sections - AI returns COMPLETE arrays, REPLACE entirely
+        const replaceSections: (keyof ResumeUpdates)[] = [
           'certifications', 'achievements', 'awards',
           'publications', 'volunteer', 'speaking', 'patents',
           'interests', 'references', 'courses', 'strengths'
         ];
 
-        for (const section of appendSections) {
+        for (const section of replaceSections) {
           const items = updates[section] as any[] | undefined;
           if (!items || items.length === 0) continue;
 
-          for (const item of items) {
-            if (abortRef.current) break;
-
-            // APPEND to existing array
-            currentData = {
-              ...currentData,
-              [section]: [...((currentData as any)[section] || []), item],
-            };
-            emitUpdate(currentData);
-            await sleep(fieldDelay);
-          }
+          // REPLACE with AI's complete array
+          currentData = {
+            ...currentData,
+            [section]: items,
+          };
+          emitUpdate(currentData);
+          await sleep(fieldDelay);
         }
 
-        // Handle customSections - REPLACE or APPEND based on ID
+        // Handle customSections - AI returns COMPLETE array, REPLACE entirely
         if (updates.customSections && updates.customSections.length > 0) {
-          const existingCustomSections = [...(currentData.customSections || [])];
+          currentData = { ...currentData, customSections: updates.customSections };
+          emitUpdate(currentData);
+          await sleep(fieldDelay);
+        }
 
-          for (const newSection of updates.customSections) {
-            if (abortRef.current) break;
+        // Handle settings updates (if any)
+        if (updates.settings) {
+          currentData = {
+            ...currentData,
+            settings: {
+              ...currentData.settings,
+              ...updates.settings,
+            },
+          };
+          emitUpdate(currentData);
+        }
 
-            // Check if section with same ID exists
-            const existingIdx = existingCustomSections.findIndex(s => s.id === newSection.id);
-
-            if (existingIdx !== -1) {
-              // Replace existing section
-              existingCustomSections[existingIdx] = newSection;
-            } else {
-              // Append new section
-              existingCustomSections.push(newSection);
-            }
-
-            currentData = { ...currentData, customSections: [...existingCustomSections] };
-            emitUpdate(currentData);
-            await sleep(fieldDelay);
-          }
+        // Handle config updates (section visibility, variants, etc.)
+        // Config is handled by the parent component (BuilderV2), but we need to emit
+        // an update so the parent receives the config changes via the updates object
+        if (updates.config) {
+          // We don't modify currentData for config (it's not part of resume data)
+          // But we need to emit an update so the parent can handle config changes
+          emitUpdate(currentData);
         }
 
         // NOTE: No frontend sorting needed - AI returns arrays already in correct chronological order

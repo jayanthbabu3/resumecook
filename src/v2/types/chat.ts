@@ -27,8 +27,10 @@ export interface ChatMessage {
 
 /**
  * Partial updates to resume data from AI
+ * Includes content sections, settings, and configuration
  */
 export interface ResumeUpdates {
+  // Content sections
   personalInfo?: Partial<V2ResumeData['personalInfo']>;
   experience?: V2ResumeData['experience'];
   education?: V2ResumeData['education'];
@@ -47,6 +49,65 @@ export interface ResumeUpdates {
   references?: V2ResumeData['references'];
   courses?: V2ResumeData['courses'];
   customSections?: V2ResumeData['customSections'];
+
+  // Settings (resume-level preferences)
+  settings?: Partial<V2ResumeData['settings']>;
+
+  // Configuration (template & display settings)
+  // This is a partial config object - AI only returns what it's changing
+  config?: {
+    sections?: Array<{
+      type: string;
+      id: string;
+      title?: string;
+      enabled?: boolean;
+      order?: number;
+      column?: 'main' | 'sidebar';
+      variant?: string;
+    }>;
+    header?: {
+      variant?: string;
+      showPhoto?: boolean;
+      photoSize?: string;
+      photoShape?: 'circle' | 'square' | 'rounded';
+      photoPosition?: 'left' | 'right';
+      showSocialLinks?: boolean;
+    };
+    skills?: {
+      variant?: string;
+      columns?: number;
+      showRatings?: boolean;
+    };
+    experience?: {
+      variant?: string;
+      showLogo?: boolean;
+      datePosition?: 'right' | 'below' | 'inline' | 'left';
+      showLocation?: boolean;
+      bulletStyle?: string;
+      showDescription?: boolean;
+    };
+    education?: {
+      variant?: string;
+      showGPA?: boolean;
+      showField?: boolean;
+      showDates?: boolean;
+      showHonors?: boolean;
+      datePosition?: 'right' | 'below' | 'inline' | 'left';
+    };
+    layout?: {
+      type?: 'single-column' | 'two-column-left' | 'two-column-right';
+      mainWidth?: string;
+      sidebarWidth?: string;
+      columnGap?: string;
+    };
+    colors?: {
+      primary?: string;
+      secondary?: string;
+    };
+    sectionHeading?: {
+      style?: string;
+    };
+  };
 }
 
 /**

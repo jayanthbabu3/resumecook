@@ -25,6 +25,7 @@ import { AuthModal } from '@/components/AuthModal';
 import { ProFeatureModal } from '@/v2/components/ProFeatureModal';
 import { ChatWithResumeIntroModal } from '@/v2/components/ChatWithResumeIntroModal';
 import { DashboardTour } from '@/v2/components/DashboardTour';
+import { TrialBanner } from '@/components/TrialBanner';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import type { V2ResumeData } from '../types';
@@ -184,6 +185,9 @@ const DashboardV2 = () => {
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        {/* Trial Banner */}
+        <TrialBanner className="mb-8" />
+
         {/* Hero Section */}
         <div className="text-center mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
