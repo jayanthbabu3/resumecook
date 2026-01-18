@@ -8,15 +8,16 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { 
-  Plus, 
-  Trash2, 
+import {
+  Plus,
+  Trash2,
   ChevronDown,
   Briefcase,
   GraduationCap,
@@ -33,6 +34,9 @@ import {
   BookOpen,
   Heart,
   Star,
+  X,
+  Pencil,
+  Check,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DynamicFormField } from './DynamicFormField';
@@ -64,6 +68,12 @@ const SECTION_ICONS: Record<string, React.ElementType> = {
   header: FileText,
   summary: FileText,
 };
+
+// Variants that require rating input - these show proficiency levels
+const RATING_VARIANTS = ['bars', 'dots', 'detailed'];
+
+// Section types that can use simple chips UI (when not using rating variants)
+const SIMPLE_SECTION_TYPES = ['skills', 'interests'];
 
 // ============================================================================
 // TYPES
@@ -108,6 +118,13 @@ export const DynamicSectionForm: React.FC<DynamicSectionFormProps> = ({
   const [expandedItems, setExpandedItems] = useState<string[]>(
     defaultExpanded ? ['section'] : []
   );
+  const [newItemValue, setNewItemValue] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  // Determine if we should use simple chips UI
+  const isSimpleSectionType = SIMPLE_SECTION_TYPES.includes(sectionType);
+  const needsRating = currentVariant ? RATING_VARIANTS.includes(currentVariant) : false;
+  const useSimpleUI = isSimpleSectionType && !needsRating;
 
   // Helper to get nested config value (e.g., 'skills.showRatings')
   // Returns true only if the config value is explicitly true
@@ -193,6 +210,39 @@ export const DynamicSectionForm: React.FC<DynamicSectionFormProps> = ({
       // For single-item sections, data is the item itself
       onChange({ ...data, [fieldKey]: value });
     }
+  };
+
+  // Quick add for simple items (skills, interests)
+  const handleQuickAdd = () => {
+    const trimmed = newItemValue.trim();
+    if (!trimmed || !isMultiItem) return;
+
+    // Get the primary field (first required field or first field)
+    const primaryField = fields.find(f => f.required) || fields[0];
+    if (!primaryField) return;
+
+    const newItem: Record<string, any> = {
+      id: `${sectionType}-${Date.now()}`,
+    };
+
+    // Initialize with default values
+    fields.forEach(field => {
+      if (field.defaultValue !== undefined) {
+        newItem[field.key] = field.defaultValue;
+      } else if (field.type === 'array') {
+        newItem[field.key] = [];
+      } else if (field.type === 'checkbox') {
+        newItem[field.key] = false;
+      } else {
+        newItem[field.key] = '';
+      }
+    });
+
+    // Set the primary field value
+    newItem[primaryField.key] = trimmed;
+
+    onChange([...(data || []), newItem]);
+    setNewItemValue('');
   };
 
   // Render form fields for an item
@@ -348,6 +398,117 @@ export const DynamicSectionForm: React.FC<DynamicSectionFormProps> = ({
     return renderFields(data || {});
   };
 
+  // Render simple chips UI for skills/interests (non-rating variants)
+  const renderSimpleChipsSection = () => {
+    const items = Array.isArray(data) ? data : [];
+    const primaryField = fields.find(f => f.required) || fields[0];
+    const primaryKey = primaryField?.key || 'name';
+
+    return (
+      <div className="space-y-3">
+        {/* Quick add input */}
+        <div className="flex items-center gap-2">
+          <Input
+            value={newItemValue}
+            onChange={(e) => setNewItemValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleQuickAdd();
+              }
+            }}
+            placeholder={`Add ${sectionDef.itemName || 'item'}...`}
+            disabled={disabled}
+            className="h-9 flex-1 text-sm"
+          />
+          <Button
+            type="button"
+            size="sm"
+            onClick={handleQuickAdd}
+            disabled={disabled || !newItemValue.trim()}
+            className="h-9 px-3"
+          >
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
+
+        {/* Items as chips */}
+        {items.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {items.map((item: any, index: number) => {
+              const isEditing = editingId === item.id;
+              const displayValue = item[primaryKey] || '';
+
+              if (isEditing) {
+                return (
+                  <div
+                    key={item.id}
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 border border-primary/30"
+                  >
+                    <Input
+                      value={displayValue}
+                      onChange={(e) => handleUpdateItem(item.id, primaryKey, e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          setEditingId(null);
+                        }
+                        if (e.key === 'Escape') {
+                          setEditingId(null);
+                        }
+                      }}
+                      onBlur={() => setEditingId(null)}
+                      autoFocus
+                      className="h-6 w-24 px-1 text-xs border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setEditingId(null)}
+                      className="p-0.5 rounded-full hover:bg-primary/20 text-primary"
+                    >
+                      <Check className="w-3 h-3" />
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <div
+                  key={item.id}
+                  className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium cursor-pointer hover:bg-primary/15 transition-colors"
+                >
+                  <span
+                    onClick={() => setEditingId(item.id)}
+                    className="cursor-text"
+                  >
+                    {displayValue || 'Click to edit'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveItem(item.id);
+                    }}
+                    className="p-0.5 rounded-full opacity-0 group-hover:opacity-100 hover:bg-red-100 text-red-500 transition-opacity"
+                    disabled={disabled}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {items.length === 0 && (
+          <p className="text-sm text-muted-foreground text-center py-2">
+            No {sectionDef.itemNamePlural || 'items'} yet. Type above to add one.
+          </p>
+        )}
+      </div>
+    );
+  };
+
   return (
     <AccordionItem
       value={sectionType}
@@ -367,7 +528,11 @@ export const DynamicSectionForm: React.FC<DynamicSectionFormProps> = ({
         </span>
       </AccordionTrigger>
       <AccordionContent className="px-4 pb-6 pt-2 sm:px-5">
-        {isMultiItem ? renderMultiItemSection() : renderSingleItemSection()}
+        {useSimpleUI
+          ? renderSimpleChipsSection()
+          : isMultiItem
+            ? renderMultiItemSection()
+            : renderSingleItemSection()}
       </AccordionContent>
     </AccordionItem>
   );

@@ -62,8 +62,9 @@ export const InterestsIcons: React.FC<InterestsVariantProps> = ({
   if (!items.length && !editable) return null;
 
   // Responsive sizing based on container width
-  const isNarrow = containerWidth < 280;
-  const isVeryNarrow = containerWidth < 180;
+  // Default to wide when containerWidth is 0 (e.g., in PDF generation)
+  const isNarrow = containerWidth > 0 && containerWidth < 280;
+  const isVeryNarrow = containerWidth > 0 && containerWidth < 180;
 
   // In very narrow spaces, use a simpler horizontal layout
   if (isVeryNarrow) {

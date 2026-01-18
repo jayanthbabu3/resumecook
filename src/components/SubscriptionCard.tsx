@@ -38,20 +38,20 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
     loading,
     error,
     isPro,
-    createCheckoutSession,
-    openCustomerPortal,
+    initiateSubscription,
+    cancelSubscription,
     verifySubscription,
   } = useSubscription();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Handle success redirect from Stripe - verify and sync subscription
+  // Handle success redirect from Razorpay - verify and sync subscription
   useEffect(() => {
     const subscriptionStatus = searchParams.get('subscription');
     if (subscriptionStatus === 'success') {
       // Clear the query param first
       window.history.replaceState({}, '', window.location.pathname);
 
-      // Verify subscription with Stripe and sync to Firebase
+      // Verify subscription with backend and sync to Firebase
       verifySubscription().then((isActive) => {
         if (isActive) {
           toast.success('Welcome to Pro! Your subscription is now active.');
@@ -65,13 +65,8 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
   const handleUpgrade = async () => {
     setIsProcessing(true);
     try {
-      // Using "india" for INR pricing (Stripe India account limitation)
-      const url = await createCheckoutSession('india');
-      if (url) {
-        window.location.href = url;
-      } else {
-        toast.error('Failed to start checkout. Please try again.');
-      }
+      // Initiate Razorpay subscription checkout (opens modal)
+      await initiateSubscription();
     } catch (err) {
       toast.error('Something went wrong. Please try again.');
     } finally {
@@ -79,14 +74,24 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
     }
   };
 
-  const handleManageSubscription = async () => {
+  const handleManageSubscription = () => {
+    // Navigate to pricing page for subscription management
+    // Razorpay doesn't have a customer portal like Stripe
+    navigate('/pricing');
+  };
+
+  const handleCancelSubscription = async () => {
+    if (!confirm('Are you sure you want to cancel your subscription? You will lose access to Pro features at the end of your billing period.')) {
+      return;
+    }
+
     setIsProcessing(true);
     try {
-      const url = await openCustomerPortal();
-      if (url) {
-        window.location.href = url;
+      const success = await cancelSubscription(false); // Cancel at period end
+      if (success) {
+        toast.success('Subscription cancelled. You will retain access until the end of your billing period.');
       } else {
-        toast.error('Failed to open subscription portal.');
+        toast.error('Failed to cancel subscription. Please try again.');
       }
     } catch (err) {
       toast.error('Something went wrong. Please try again.');
@@ -248,7 +253,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
 
               {/* Price */}
               <div className="flex items-baseline gap-1 py-2">
-                <span className="text-2xl font-bold text-gray-900">₹149</span>
+                <span className="text-2xl font-bold text-gray-900">₹169</span>
                 <span className="text-gray-500">/month</span>
               </div>
 

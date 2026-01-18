@@ -1326,7 +1326,7 @@ const Hero = () => {
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
                 <p className="text-sm text-muted-foreground">
-                  Starting at just <span className="font-semibold text-foreground">$9/month</span>
+                  Starting at just <span className="font-semibold text-foreground">₹169/month</span>
                 </p>
               </div>
             </div>
@@ -2336,9 +2336,8 @@ const Hero = () => {
                   </div>
 
                   <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-bold text-foreground">$9</span>
+                    <span className="text-2xl font-bold text-foreground">₹169</span>
                     <span className="text-sm text-muted-foreground">/mo</span>
-                    <span className="ml-1.5 text-[10px] text-muted-foreground">(₹149 India)</span>
                   </div>
 
                   <Button

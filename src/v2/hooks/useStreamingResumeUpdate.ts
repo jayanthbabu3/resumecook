@@ -219,7 +219,6 @@ export function useStreamingResumeUpdate({
               finalExperiences.push(exp);
               currentData = { ...currentData, experience: [...finalExperiences] };
               emitUpdate(currentData);
-              console.log(`[Streaming] Preserved existing experience: ${exp.company}`);
             } else {
               // NEW experience - stream with animation
               let expData = {
@@ -319,8 +318,6 @@ export function useStreamingResumeUpdate({
               finalExperiences[finalExperiences.length - 1] = exp;
               currentData = { ...currentData, experience: [...finalExperiences] };
               emitUpdate(currentData);
-
-              console.log(`[Streaming] Added new experience: ${exp.company}`);
             }
           }
 
@@ -347,7 +344,6 @@ export function useStreamingResumeUpdate({
               finalEducation.push(edu);
               currentData = { ...currentData, education: [...finalEducation] };
               emitUpdate(currentData);
-              console.log(`[Streaming] Preserved existing education: ${edu.school}`);
             } else {
               // NEW education - stream with animation
               let eduData = { ...edu, school: '', degree: '', field: '' };
@@ -402,7 +398,6 @@ export function useStreamingResumeUpdate({
               finalEducation[finalEducation.length - 1] = edu;
               currentData = { ...currentData, education: [...finalEducation] };
               emitUpdate(currentData);
-              console.log(`[Streaming] Added new education: ${edu.school}`);
             }
           }
 
@@ -490,14 +485,12 @@ export function useStreamingResumeUpdate({
               finalProjects.push(proj);
               currentData = { ...currentData, projects: [...finalProjects] };
               emitUpdate(currentData);
-              console.log(`[Streaming] Preserved existing project: ${proj.name}`);
             } else {
               // NEW project - add with brief animation
               finalProjects.push(proj);
               currentData = { ...currentData, projects: [...finalProjects] };
               emitUpdate(currentData);
               await sleep(fieldDelay);
-              console.log(`[Streaming] Added new project: ${proj.name}`);
             }
           }
 
@@ -531,7 +524,6 @@ export function useStreamingResumeUpdate({
 
         // Handle customSections - REPLACE or APPEND based on ID
         if (updates.customSections && updates.customSections.length > 0) {
-          console.log('[Streaming] Processing customSections:', updates.customSections);
           const existingCustomSections = [...(currentData.customSections || [])];
 
           for (const newSection of updates.customSections) {
@@ -543,15 +535,12 @@ export function useStreamingResumeUpdate({
             if (existingIdx !== -1) {
               // Replace existing section
               existingCustomSections[existingIdx] = newSection;
-              console.log(`[Streaming] Replaced existing customSection: ${newSection.id}`);
             } else {
               // Append new section
               existingCustomSections.push(newSection);
-              console.log(`[Streaming] Added new customSection: ${newSection.id}, title: ${newSection.title}`);
             }
 
             currentData = { ...currentData, customSections: [...existingCustomSections] };
-            console.log('[Streaming] Updated currentData.customSections:', currentData.customSections);
             emitUpdate(currentData);
             await sleep(fieldDelay);
           }

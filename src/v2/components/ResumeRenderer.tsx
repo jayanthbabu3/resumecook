@@ -224,7 +224,6 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   // Override font family if provided (for font selector)
   const config = React.useMemo(() => {
     if (fontFamilyOverride) {
-      console.log('ResumeRenderer - Applying fontFamily override:', fontFamilyOverride);
       return {
         ...baseConfig,
         fontFamily: {
@@ -237,16 +236,6 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
   }, [baseConfig, fontFamilyOverride]);
 
   const { layout, spacing, colors, fontFamily } = config;
-
-  // Debug: Log fontFamily to verify it's being passed correctly
-  React.useEffect(() => {
-    console.log('ResumeRenderer fontFamily:', fontFamily);
-  }, [fontFamily]);
-
-  // Debug: Log customSections changes
-  React.useEffect(() => {
-    console.log('[ResumeRenderer] customSections changed:', resumeData.customSections);
-  }, [resumeData.customSections]);
 
   // Get style options for section visibility
   const styleOptionsContext = useStyleOptions();
@@ -461,20 +450,15 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     const blockedTitles = new Set(['my life philosophy']);
 
     const dynamicSections: SectionConfig[] = [];
-    console.log('[ResumeRenderer] Processing customSections:', resumeData.customSections);
     (resumeData.customSections || []).forEach((s, idx) => {
       const titleLower = (s.title || s.id || '').toLowerCase();
-      console.log(`[ResumeRenderer] Checking customSection: id=${s.id}, title=${s.title}`);
       if (blockedTitles.has(titleLower)) {
-        console.log(`[ResumeRenderer] Skipping blocked title: ${titleLower}`);
         return;
       }
       if (configIds.has(s.id)) {
-        console.log(`[ResumeRenderer] Skipping - configIds has: ${s.id}`);
         return;
       }
       if (configTitles.has(titleLower)) {
-        console.log(`[ResumeRenderer] Skipping - configTitles has: ${titleLower}`);
         return;
       }
       // Heuristic: send strengths/achievements to sidebar by default
@@ -495,14 +479,11 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         order: orderStart + idx + 1, // append after existing sections in that column
         column: dynamicColumn,
       };
-      console.log(`[ResumeRenderer] Adding dynamic customSection:`, newDynamicSection);
       dynamicSections.push(newDynamicSection as SectionConfig);
     });
 
-    console.log('[ResumeRenderer] Final dynamicSections:', dynamicSections);
     if (dynamicSections.length) {
       sections = [...sections, ...dynamicSections];
-      console.log('[ResumeRenderer] Total sections after adding dynamic:', sections.length);
     }
 
     // Remove banned/legacy sections
@@ -756,18 +737,14 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
       case 'custom':
         // Find the custom section data - match by id, partial id, or title
         const customSections = resumeData.customSections || [];
-        console.log(`[ResumeRenderer] Rendering custom section: looking for id=${section.id}, title=${section.title}`);
-        console.log(`[ResumeRenderer] Available customSections:`, customSections);
         const customSection = customSections.find(
           s => s.id === section.id ||
                s.id === `section-${section.id}` ||
                s.id.includes(section.id) ||
                s.title.toLowerCase() === section.title.toLowerCase()
         );
-        console.log(`[ResumeRenderer] Found customSection:`, customSection);
 
         if (!customSection && !editable) {
-          console.log(`[ResumeRenderer] No customSection found and not editable - returning null`);
           return null;
         }
 
@@ -969,9 +946,6 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     '--resume-item-size': config.typography.itemTitle.fontSize,
     '--resume-body-size': config.typography.body.fontSize,
   } as React.CSSProperties;
-
-  // Debug: Log container style fontFamily
-  console.log('ResumeRenderer - containerStyle fontFamily:', containerStyle.fontFamily);
 
   // Force font inheritance on all content
   const fontInheritClass = 'resume-font-inherit';

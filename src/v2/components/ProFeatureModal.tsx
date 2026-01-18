@@ -42,7 +42,7 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
 }) => {
   const navigate = useNavigate();
   const { user, signInWithGoogle } = useFirebaseAuth();
-  const { createCheckoutSession } = useSubscription();
+  const { initiateSubscription } = useSubscription();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignIn = async () => {
@@ -61,12 +61,9 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
   const handleUpgrade = async () => {
     setIsLoading(true);
     try {
-      const url = await createCheckoutSession('india');
-      if (url) {
-        window.location.href = url;
-      } else {
-        toast.error('Failed to start checkout. Please try again.');
-      }
+      // Initiate Razorpay subscription checkout (opens modal)
+      await initiateSubscription();
+      onClose();
     } catch (error) {
       toast.error('Something went wrong. Please try again.');
     } finally {
@@ -142,7 +139,7 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
           {user && (
             <div className="text-center mb-6">
               <div className="flex items-baseline justify-center gap-1">
-                <span className="text-4xl font-bold text-gray-900">₹149</span>
+                <span className="text-4xl font-bold text-gray-900">₹169</span>
                 <span className="text-gray-500 text-lg">/month</span>
               </div>
               <p className="text-xs text-gray-500 mt-1">Cancel anytime, no questions asked</p>

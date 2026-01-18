@@ -461,6 +461,7 @@ export const ElegantForm: React.FC<ElegantFormProps> = ({
                 sectionType={sectionConfig.type}
                 accentColor={accentColor}
                 itemName={sectionDef.itemName || 'item'}
+                currentVariant={currentVariant}
               />
             ) : (
               <ComplexItemsEditor
@@ -696,7 +697,11 @@ interface SimpleItemsEditorProps {
   sectionType: string;
   accentColor: string;
   itemName: string;
+  currentVariant?: string;
 }
+
+// Variants that require rating input - these show proficiency levels
+const RATING_VARIANTS = ['bars', 'dots', 'detailed'];
 
 const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
   items,
@@ -705,9 +710,19 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
   sectionType,
   accentColor,
   itemName,
+  currentVariant,
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [newItemValue, setNewItemValue] = useState('');
   const primaryField = fields.find(f => f.required) || fields[0];
+
+  // Determine if current variant needs rating
+  const needsRating = currentVariant ? RATING_VARIANTS.includes(currentVariant) : false;
+
+  // Filter fields based on variant - only show rating for rating variants
+  const visibleFields = needsRating
+    ? fields
+    : fields.filter(f => f.type !== 'rating');
 
   const handleAdd = () => {
     const newItem: Record<string, any> = { id: `${sectionType}-${Date.now()}` };
@@ -716,6 +731,20 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
     });
     onChange([...items, newItem]);
     setEditingId(newItem.id);
+  };
+
+  // Quick add for simple variants (just name/title)
+  const handleQuickAdd = () => {
+    const trimmed = newItemValue.trim();
+    if (!trimmed || !primaryField) return;
+
+    const newItem: Record<string, any> = { id: `${sectionType}-${Date.now()}` };
+    fields.forEach(f => {
+      newItem[f.key] = f.defaultValue ?? (f.type === 'array' ? [] : '');
+    });
+    newItem[primaryField.key] = trimmed;
+    onChange([...items, newItem]);
+    setNewItemValue('');
   };
 
   const handleUpdate = (id: string, field: string, value: any) => {
@@ -729,6 +758,35 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
 
   return (
     <div className="space-y-3">
+      {/* Quick add input for non-rating variants */}
+      {!needsRating && (
+        <div className="flex items-center gap-2">
+          <Input
+            value={newItemValue}
+            onChange={(e) => setNewItemValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleQuickAdd();
+              }
+            }}
+            placeholder={`Add ${itemName}...`}
+            className={`h-8 flex-1 ${FIELD_INPUT_CLASS}`}
+          />
+          <button
+            onClick={handleQuickAdd}
+            disabled={!newItemValue.trim()}
+            className="h-8 px-3 rounded-md text-xs font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              backgroundColor: newItemValue.trim() ? accentColor : `${accentColor}20`,
+              color: newItemValue.trim() ? 'white' : accentColor
+            }}
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       {/* Items grid */}
       <div className="flex flex-wrap items-start gap-2">
         {items.map((item) => {
@@ -737,7 +795,7 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
 
           if (isEditing) {
             return (
-              <div 
+              <div
                 key={item.id}
                 className="w-full rounded-lg border border-gray-200 bg-white p-3 shadow-sm"
               >
@@ -763,7 +821,7 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  {fields.map(field => (
+                  {visibleFields.map(field => (
                     <div key={field.key} className="grid grid-cols-[64px_1fr] items-center gap-2">
                       <span className="text-[10px] text-gray-400 uppercase tracking-wide">
                         {field.label}
@@ -820,31 +878,45 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
             );
           }
 
+          // Rating display for rating variants
+          const ratingField = fields.find(f => f.type === 'rating');
+          const ratingValue = ratingField ? item[ratingField.key] : null;
+
           return (
             <div
               key={item.id}
-              onClick={() => setEditingId(item.id)}
               className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all hover:shadow-sm"
               style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
             >
-              <span>{primaryValue || 'Click to edit'}</span>
-              {fields.length > 1 && item[fields[1]?.key] && (
-                <span className="text-[10px] opacity-60">• {item[fields[1].key]}</span>
+              <span onClick={() => setEditingId(item.id)}>{primaryValue || 'Click to edit'}</span>
+              {needsRating && ratingValue && (
+                <span className="text-[10px] opacity-60">• {ratingValue}/5</span>
               )}
-              <Pencil className="w-3 h-3 opacity-0 group-hover:opacity-60 transition-opacity" />
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemove(item.id);
+                }}
+                className="w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100"
+                title="Remove"
+              >
+                <X className="w-3 h-3 text-red-500" />
+              </button>
             </div>
           );
         })}
-        
-        {/* Add button */}
-        <button
-          onClick={handleAdd}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium rounded-full border border-dashed transition-all leading-none self-start hover:bg-transparent"
-          style={{ color: accentColor, borderColor: `${accentColor}66` }}
-        >
-          <Plus className="w-3 h-3" />
-          Add {itemName}
-        </button>
+
+        {/* Add button for rating variants (need full form) */}
+        {needsRating && (
+          <button
+            onClick={handleAdd}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium rounded-full border border-dashed transition-all leading-none self-start hover:bg-transparent"
+            style={{ color: accentColor, borderColor: `${accentColor}66` }}
+          >
+            <Plus className="w-3 h-3" />
+            Add {itemName}
+          </button>
+        )}
       </div>
     </div>
   );

@@ -107,7 +107,8 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
 
   // Determine layout based on container width
   // Sidebar is typically ~180-220px, main content is 400px+
-  const isNarrow = containerWidth < 280;
+  // Default to wide (multi-column) when containerWidth is 0 (e.g., in PDF generation)
+  const isNarrow = containerWidth > 0 && containerWidth < 280;
 
   const renderDots = (level: number, index: number) => {
     return (

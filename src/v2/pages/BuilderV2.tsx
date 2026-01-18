@@ -151,11 +151,6 @@ export const BuilderV2: React.FC = () => {
   // Chat mode state - when true, shows chat panel instead of form
   const [isChatMode, setIsChatMode] = useState(false);
 
-  // Debug: Log when font changes
-  React.useEffect(() => {
-    console.log('Selected font changed to:', selectedFont);
-  }, [selectedFont]);
-
   const previewRef = useRef<HTMLDivElement>(null);
   const mobileContainerRef = useRef<HTMLDivElement>(null);
   const mobileResumeRef = useRef<HTMLDivElement>(null);
@@ -170,17 +165,9 @@ export const BuilderV2: React.FC = () => {
     const linkedInData = sessionStorage.getItem('linkedin-import-data');
     const source = searchParams.get('source');
 
-    console.log('LinkedIn import check:', { hasData: !!linkedInData, source });
-
     if (linkedInData && source === 'linkedin') {
       try {
         const parsedData = JSON.parse(linkedInData);
-        console.log('LinkedIn data parsed:', {
-          name: parsedData.personalInfo?.fullName,
-          experienceCount: parsedData.experience?.length,
-          educationCount: parsedData.education?.length,
-          skillsCount: parsedData.skills?.length,
-        });
         externalDataImportedRef.current = true;
         setResumeData(parsedData);
 
@@ -247,7 +234,6 @@ export const BuilderV2: React.FC = () => {
           });
         }
 
-        console.log('Enabling sections from parsed resume:', sectionsToEnable);
         setEnabledSections(sectionsToEnable);
 
         // Clear the sessionStorage to prevent re-loading on refresh
@@ -300,7 +286,6 @@ export const BuilderV2: React.FC = () => {
           });
         }
 
-        console.log('Enabling sections from tailored resume:', sectionsToEnable);
         setEnabledSections(sectionsToEnable);
 
         // Clear the sessionStorage to prevent re-loading on refresh
@@ -332,7 +317,6 @@ export const BuilderV2: React.FC = () => {
       try {
         const profile = await profileService.getProfile();
         if (profile && profile.personalInfo?.fullName) {
-          console.log('Loading profile data for new resume:', profile.personalInfo.fullName);
           const profileResumeData = profileService.profileToResumeData(profile);
           externalDataImportedRef.current = true; // Prevent template effect from overwriting
           setResumeData(profileResumeData);
@@ -364,7 +348,6 @@ export const BuilderV2: React.FC = () => {
             });
           }
 
-          console.log('Enabling sections from profile:', sectionsToEnable);
           setEnabledSections(sectionsToEnable);
 
           toast.success('Profile data loaded! Customize your resume.');
@@ -630,8 +613,6 @@ export const BuilderV2: React.FC = () => {
         primary: selectedFont,
       }
     };
-    console.log('BuilderV2 - Applying font to config:', selectedFont);
-    console.log('BuilderV2 - New config fontFamily:', newConfig.fontFamily);
     return newConfig;
   }, [templateConfig, selectedFont]);
 
@@ -687,19 +668,16 @@ export const BuilderV2: React.FC = () => {
 
     // Don't reset to mock data if we're importing from LinkedIn
     if (source === 'linkedin' && hasLinkedInData) {
-      console.log('Skipping template mock data - LinkedIn import pending');
       return;
     }
 
     // Don't reset to mock data if we're importing from uploaded resume
     if (source === 'upload' && hasUploadedResumeData) {
-      console.log('Skipping template mock data - Resume upload pending');
       return;
     }
 
     // Don't reset to mock data if we're importing from job tailor
     if (source === 'job-tailor' && hasJobTailorData) {
-      console.log('Skipping template mock data - Job tailor pending');
       return;
     }
 
@@ -1358,21 +1336,12 @@ export const BuilderV2: React.FC = () => {
   const handleChatResumeUpdate = useCallback((payload: ChatResumeUpdatePayload) => {
     const { data, updatedSections, variantChanges } = payload;
 
-    console.log('[Chat Update] Received payload:', {
-      updatedSections,
-      variantChanges,
-      hasCustomSections: !!data.customSections,
-      customSectionsCount: data.customSections?.length || 0,
-      customSections: data.customSections
-    });
-
     // Update the resume data
     setResumeData(data);
     setHasUnsavedChanges(true);
 
     // Apply variant changes if any
     if (variantChanges && variantChanges.length > 0) {
-      console.log('[Chat Update] Applying variant changes:', variantChanges);
       setSectionOverrides(prev => {
         const newOverrides = { ...prev };
         for (const change of variantChanges) {
@@ -1381,7 +1350,6 @@ export const BuilderV2: React.FC = () => {
             ...(prev[change.section] || {}),
             variant: change.variant,
           };
-          console.log(`[Chat Update] Changed ${change.section} variant to: ${change.variant}`);
         }
         return newOverrides;
       });
@@ -1465,18 +1433,15 @@ export const BuilderV2: React.FC = () => {
         // Custom sections - enable each by their individual ID
         case 'customSections':
           // Custom sections have dynamic IDs, enable each one
-          console.log('[Chat Update] Processing customSections case, data.customSections:', data.customSections);
           if (data.customSections && data.customSections.length > 0) {
             data.customSections.forEach((customSection: { id: string; title?: string }) => {
-              console.log(`[Chat Update] Adding customSection to enable: ${customSection.id} (${customSection.title})`);
               sectionsToEnable.push(customSection.id);
             });
           }
           break;
 
         default:
-          // Unknown section - log for debugging but don't break
-          console.warn(`[Chat Update] Unknown section: ${section}`);
+          // Unknown section - skip
           break;
       }
     }
@@ -1486,7 +1451,6 @@ export const BuilderV2: React.FC = () => {
       setEnabledSections(prev => {
         const newSections = sectionsToEnable.filter(s => !prev.includes(s));
         if (newSections.length > 0) {
-          console.log(`[Chat Update] Enabling sections: ${newSections.join(', ')}`);
           return [...prev, ...newSections];
         }
         return prev;
@@ -1542,28 +1506,40 @@ export const BuilderV2: React.FC = () => {
   };
 
   // Get all sections for reorder dialog (config sections + dynamic sections from resumeData)
+  // Only returns enabled sections with correct order and column from sectionOverrides
   const getAllSectionsForReorder = useCallback(() => {
-    const configSections = [...config.sections];
+    // Apply enabled state and sectionOverrides to config sections
+    const configSections = config.sections.map(s => {
+      const override = sectionOverrides[s.id];
+      return {
+        ...s,
+        enabled: enabledSections.includes(s.id),
+        order: override?.order ?? s.order,
+        column: override?.column ?? s.column,
+        pageBreakBefore: override?.pageBreakBefore ?? false,
+      };
+    });
+
     const configIds = new Set(configSections.map(s => s.id));
     const configTitles = new Set(configSections.map(s => (s.title || s.id).toLowerCase()));
-    
+
     // Add dynamic sections from resumeData that aren't in config
     const dynamicSections: typeof configSections = [];
     (resumeData.customSections || []).forEach((s, idx) => {
       const titleLower = (s.title || s.id || '').toLowerCase();
       if (configIds.has(s.id)) return;
       if (configTitles.has(titleLower)) return;
-      
+
       // Infer column based on title
       const inferredColumn: 'main' | 'sidebar' =
         (titleLower.includes('strength') || titleLower.includes('achievement'))
           ? 'sidebar'
           : 'main';
-      
+
       // Get order from overrides or append after existing
       const existingOrder = sectionOverrides[s.id]?.order;
       const maxOrder = Math.max(...configSections.map(cs => cs.order ?? 0), 0);
-      
+
       dynamicSections.push({
         type: 'custom',
         id: s.id,
@@ -1572,10 +1548,14 @@ export const BuilderV2: React.FC = () => {
         enabled: enabledSections.includes(s.id),
         order: existingOrder ?? maxOrder + idx + 1,
         column: sectionOverrides[s.id]?.column || inferredColumn,
+        pageBreakBefore: sectionOverrides[s.id]?.pageBreakBefore ?? false,
       });
     });
-    
-    return [...configSections, ...dynamicSections];
+
+    // Return only enabled sections, sorted by order
+    return [...configSections, ...dynamicSections]
+      .filter(s => s.enabled)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }, [config.sections, resumeData.customSections, sectionOverrides, enabledSections]);
 
   // Get all sections for the form - includes both config sections AND dynamic sections from resumeData
@@ -1616,32 +1596,22 @@ export const BuilderV2: React.FC = () => {
     const dynamicSections: typeof baseSections = [];
     const maxOrder = Math.max(...baseSections.map(s => s.order ?? 0), 0);
 
-    // Debug logging
-    console.log('sectionsForForm - existingIds:', Array.from(existingIds));
-    console.log('sectionsForForm - existingTypes:', Array.from(existingTypes));
-    console.log('sectionsForForm - enabledSections:', enabledSections);
-    console.log('sectionsForForm - resumeData.projects:', resumeData.projects?.length || 0);
-
     standardSectionTypes.forEach((sectionDef, idx) => {
       // Skip if already in config (either by id or type)
       if (existingIds.has(sectionDef.id) || existingTypes.has(sectionDef.type as SectionType)) {
-        console.log(`sectionsForForm - ${sectionDef.id} skipped: already in config`);
         return;
       }
 
       // Skip if no data
       if (!sectionDef.hasData()) {
-        console.log(`sectionsForForm - ${sectionDef.id} skipped: no data`);
         return;
       }
 
       // Skip if not in enabledSections
       if (!enabledSections.includes(sectionDef.id)) {
-        console.log(`sectionsForForm - ${sectionDef.id} skipped: not in enabledSections`);
         return;
       }
 
-      console.log(`sectionsForForm - Adding dynamic section: ${sectionDef.id}`);
       dynamicSections.push({
         type: sectionDef.type as any,
         id: sectionDef.id,
@@ -1670,7 +1640,6 @@ export const BuilderV2: React.FC = () => {
     });
 
     const result = [...baseSections, ...dynamicSections];
-    console.log('sectionsForForm - final result:', result.map(s => ({ id: s.id, type: s.type, enabled: s.enabled })));
     return result;
   }, [config.sections, resumeData, enabledSections]);
 

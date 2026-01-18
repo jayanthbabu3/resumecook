@@ -34,8 +34,23 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
   const variant: StrengthsVariant = (variantOverride as StrengthsVariant) || config.strengths?.variant || 'cards';
   const showIcons = config.strengths?.showIcons ?? true;
 
-  if (!items || items.length === 0) {
-    if (!editable) return null;
+  // Filter out empty items for display (items without title)
+  // Support both 'title' and legacy 'name' field for backward compatibility
+  const validItems = (items || []).filter(item => (item.title || (item as any).name)?.trim());
+
+  // Normalize items to always have title (convert from name if needed)
+  const normalizedItems = (items || []).map(item => ({
+    ...item,
+    title: item.title || (item as any).name || '',
+  }));
+
+  // Use normalized validItems for non-editable mode, full normalized items for editable mode
+  const displayItems = editable
+    ? normalizedItems
+    : normalizedItems.filter(item => item.title?.trim());
+
+  if (displayItems.length === 0 && !editable) {
+    return null;
   }
 
   const renderAddButton = () => {
@@ -93,7 +108,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
   // Variant: Cards with icon and description
   const renderCardsVariant = () => (
     <div style={{ marginTop: spacing.headingToContent }}>
-      {(items || []).map((item, index) => (
+      {displayItems.map((item, index) => (
         <div
           key={item.id}
           style={{
@@ -149,7 +164,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
   // Variant: Simple bulleted list
   const renderListVariant = () => (
     <div style={{ marginTop: spacing.headingToContent }}>
-      {(items || []).map((item, index) => (
+      {displayItems.map((item, index) => (
         <div
           key={item.id}
           style={{
@@ -192,7 +207,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
   const renderPillsVariant = () => (
     <div style={{ marginTop: spacing.headingToContent }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-        {(items || []).map((item, index) => (
+        {displayItems.map((item, index) => (
           <div
             key={item.id}
             style={{
@@ -228,7 +243,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
         gridTemplateColumns: 'repeat(2, 1fr)',
         gap: '10px',
       }}>
-        {(items || []).map((item, index) => (
+        {displayItems.map((item, index) => (
           <div
             key={item.id}
             style={{
@@ -284,7 +299,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
             gap: '12px',
           }}
         >
-          {(items || []).map((item, index) => (
+          {displayItems.map((item, index) => (
             <div
               key={item.id}
               style={{
@@ -373,7 +388,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
         lineHeight: typography.body.lineHeight,
         color: typography.body.color,
       }}>
-        {(items || []).map((item, index) => (
+        {displayItems.map((item, index) => (
           <span key={item.id}>
             <span style={{ fontWeight: 600 }}>
               {editable ? (
@@ -382,7 +397,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
                 item.title
               )}
             </span>
-            {index < items.length - 1 && <span style={{ margin: '0 8px', color: colors.text.muted }}>|</span>}
+            {index < displayItems.length - 1 && <span style={{ margin: '0 8px', color: colors.text.muted }}>|</span>}
           </span>
         ))}
       </div>
@@ -393,7 +408,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
   // Variant: Left accent border cards
   const renderAccentBorderVariant = () => (
     <div style={{ marginTop: spacing.headingToContent }}>
-      {(items || []).map((item, index) => (
+      {displayItems.map((item, index) => (
         <div
           key={item.id}
           style={{

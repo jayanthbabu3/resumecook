@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +13,7 @@ import { Header } from '@/components/Header';
 import { SubscriptionCard } from '@/components/SubscriptionCard';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { Crown, Sparkles, Zap, Check, Loader2 } from 'lucide-react';
 
 interface ProfileData {
   fullName: string;
@@ -28,9 +30,11 @@ interface ProfileData {
 
 const Profile = () => {
   const { user, userProfile, updateUserProfile } = useFirebaseAuth();
+  const { isPro, initiateSubscription, loading: subscriptionLoading } = useSubscription();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isUpgrading, setIsUpgrading] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
     fullName: '',
     email: '',
@@ -147,6 +151,17 @@ const Profile = () => {
     return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
   };
 
+  const handleUpgradeToPro = async () => {
+    setIsUpgrading(true);
+    try {
+      await initiateSubscription();
+    } catch (err) {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsUpgrading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
@@ -165,7 +180,70 @@ const Profile = () => {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
       <Header />
       <div className="max-w-3xl mx-auto py-8 p-4 space-y-6">
-        {/* Subscription Card */}
+        {/* Prominent Pro Banner for Non-Pro Users */}
+        {!isPro && !subscriptionLoading && (
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary/90 to-blue-600 p-6 shadow-xl shadow-primary/20">
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 opacity-20">
+              <Crown className="h-48 w-48 text-white" />
+            </div>
+            <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 opacity-10">
+              <Sparkles className="h-32 w-32 text-white" />
+            </div>
+
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm">
+                    <Crown className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Upgrade to Pro</h3>
+                </div>
+                <p className="text-white/90 max-w-md">
+                  Unlock AI-powered resume enhancement, LinkedIn import, job tailoring, and more.
+                </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {['AI Enhancement', 'LinkedIn Import', 'Job Tailoring'].map((feature) => (
+                    <span
+                      key={feature}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/20 text-white text-xs font-medium rounded-full backdrop-blur-sm"
+                    >
+                      <Check className="h-3 w-3" />
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col items-start md:items-end gap-2">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold text-white">₹169</span>
+                  <span className="text-white/80">/month</span>
+                </div>
+                <Button
+                  size="lg"
+                  className="bg-white text-primary hover:bg-white/90 font-semibold shadow-lg min-w-[160px]"
+                  onClick={handleUpgradeToPro}
+                  disabled={isUpgrading}
+                >
+                  {isUpgrading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="mr-2 h-4 w-4" />
+                      Get Pro Now
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Subscription Card - Shows detailed status */}
         <SubscriptionCard />
 
         <Card>

@@ -88,8 +88,9 @@ export const LanguagesStandard: React.FC<LanguagesVariantProps> = ({
   if (!items.length && !editable) return null;
 
   // Responsive: 1 column for narrow (sidebar), 2-3 columns for wider (main content)
-  const isNarrow = containerWidth < 280;
-  const isMedium = containerWidth >= 280 && containerWidth < 450;
+  // Default to wide (3 columns) when containerWidth is 0 (e.g., in PDF generation)
+  const isNarrow = containerWidth > 0 && containerWidth < 280;
+  const isMedium = containerWidth > 0 && containerWidth >= 280 && containerWidth < 450;
   const columns = isNarrow ? 1 : isMedium ? 2 : 3;
 
   return (

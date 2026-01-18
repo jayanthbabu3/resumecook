@@ -46,7 +46,8 @@ export const InterestsGrid: React.FC<InterestsVariantProps> = ({
   if (!items.length && !editable) return null;
 
   // Responsive: 1 column for narrow (sidebar <280px), 2 columns for wider
-  const isNarrow = containerWidth < 280;
+  // Default to wide (2 columns) when containerWidth is 0 (e.g., in PDF generation)
+  const isNarrow = containerWidth > 0 && containerWidth < 280;
 
   return (
     <div

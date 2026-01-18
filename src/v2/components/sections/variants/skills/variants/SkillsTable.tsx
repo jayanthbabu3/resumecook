@@ -36,7 +36,7 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
   const { typography, colors } = config;
   const { addArrayItem, removeArrayItem } = useInlineEdit();
 
-  // Group skills by category maintaining insertion order
+  // Group skills by category maintaining insertion order - use 'General' as default to match form editor
   const grouped = React.useMemo(() => {
     const order: string[] = [];
     const groups: Record<string, SkillItem[]> = {};
@@ -148,37 +148,39 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
                 </td>
                 <td style={skillsCellStyle}>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center' }}>
-                    {grouped.groups[category].map((skill, skillIndex) => {
-                      const index = items.findIndex((s) => s.id === skill.id);
-                      const isLast = skillIndex === grouped.groups[category].length - 1;
+                    {grouped.groups[category]
+                      .filter((skill) => skill.name?.trim()) // Filter out empty skills
+                      .map((skill, skillIndex, filteredArray) => {
+                        const index = items.findIndex((s) => s.id === skill.id);
+                        const isLast = skillIndex === filteredArray.length - 1;
 
-                      return (
-                        <span key={skill.id} className="group relative inline-flex items-center">
-                          {editable ? (
-                            <InlineEditableText
-                              path={`skills.${index}.name`}
-                              value={skill.name}
-                              style={{ color: typography.body.color }}
-                              placeholder="Skill"
-                            />
-                          ) : (
-                            <span>{skill.name}</span>
-                          )}
-                          {!isLast && (
-                            <span style={{ color: colors.text.muted, marginLeft: '2px' }}>,</span>
-                          )}
+                        return (
+                          <span key={skill.id} className="group relative inline-flex items-center">
+                            {editable ? (
+                              <InlineEditableText
+                                path={`skills.${index}.name`}
+                                value={skill.name}
+                                style={{ color: typography.body.color }}
+                                placeholder="Skill"
+                              />
+                            ) : (
+                              <span>{skill.name}</span>
+                            )}
+                            {!isLast && (
+                              <span style={{ color: colors.text.muted, marginLeft: '2px' }}>,</span>
+                            )}
 
-                          {editable && (
-                            <button
-                              onClick={() => handleRemoveSkill(skill.id)}
-                              className="absolute -right-4 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
-                            >
-                              <X className="w-3 h-3 text-red-500" />
-                            </button>
-                          )}
-                        </span>
-                      );
-                    })}
+                            {editable && (
+                              <button
+                                onClick={() => handleRemoveSkill(skill.id)}
+                                className="absolute -right-4 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
+                              >
+                                <X className="w-3 h-3 text-red-500" />
+                              </button>
+                            )}
+                          </span>
+                        );
+                      })}
 
                     {editable && (
                       <button

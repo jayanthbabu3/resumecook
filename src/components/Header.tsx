@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home } from "lucide-react";
+import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home, Zap } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
@@ -79,6 +79,7 @@ const HeaderComponent: React.FC = () => {
   const handleNavigateTemplates = useCallback(() => navigate("/templates"), [navigate]);
   const handleNavigateMyResumes = useCallback(() => navigate("/my-resumes"), [navigate]);
   const handleNavigateProfile = useCallback(() => navigate("/profile"), [navigate]);
+  const handleNavigatePricing = useCallback(() => navigate("/pricing"), [navigate]);
   const handleSignOut = useCallback(() => signOut(), [signOut]);
 
   return (
@@ -128,6 +129,18 @@ const HeaderComponent: React.FC = () => {
 
           {/* Right Section */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Upgrade Button - Logged in but not Pro */}
+            {user && !isPro && (
+              <Button
+                onClick={handleNavigatePricing}
+                size="sm"
+                className="hidden sm:inline-flex h-9 px-4 rounded-lg font-semibold bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25 text-white"
+              >
+                <Zap className="mr-1.5 h-4 w-4" />
+                Upgrade
+              </Button>
+            )}
+
             {/* Sign In Button - Not logged in */}
             {!user && (
               <Button
@@ -183,6 +196,23 @@ const HeaderComponent: React.FC = () => {
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5">{userInfo.email}</p>
                   </div>
+
+                  {/* Upgrade CTA in dropdown - for non-Pro users */}
+                  {!isPro && (
+                    <div className="p-2">
+                      <DropdownMenuItem
+                        onClick={handleNavigatePricing}
+                        className="px-3 py-2.5 cursor-pointer rounded-lg bg-gradient-to-r from-primary/10 to-blue-500/10 hover:from-primary/20 hover:to-blue-500/20 border border-primary/20"
+                      >
+                        <Zap className="mr-2.5 h-4 w-4 text-primary" />
+                        <div className="flex-1">
+                          <span className="font-semibold text-primary">Upgrade to Pro</span>
+                          <span className="text-xs text-gray-500 block">₹169/month</span>
+                        </div>
+                        <Crown className="h-4 w-4 text-primary/60" />
+                      </DropdownMenuItem>
+                    </div>
+                  )}
 
                   <div className="py-1">
                     <DropdownMenuItem
@@ -357,6 +387,26 @@ const HeaderComponent: React.FC = () => {
                             <p className="text-xs text-gray-500 truncate">{userInfo.email}</p>
                           </div>
                         </div>
+
+                        {/* Upgrade Button - Mobile */}
+                        {!isPro && (
+                          <SheetClose asChild>
+                            <button
+                              onClick={handleNavigatePricing}
+                              className="flex flex-row items-center gap-3 w-full px-3 py-3 mb-3 rounded-xl bg-gradient-to-r from-primary to-blue-600 text-white hover:from-primary/90 hover:to-blue-600/90 transition-colors shadow-lg shadow-primary/20"
+                              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                                <Zap className="h-[18px] w-[18px] text-white" />
+                              </div>
+                              <div className="flex-1 text-left">
+                                <span className="text-sm font-semibold block">Upgrade to Pro</span>
+                                <span className="text-xs text-white/80">₹169/month</span>
+                              </div>
+                              <Crown className="h-5 w-5 text-white/80" />
+                            </button>
+                          </SheetClose>
+                        )}
 
                         {/* Account Actions */}
                         <div className="space-y-1.5">

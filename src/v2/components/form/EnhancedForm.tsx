@@ -541,6 +541,551 @@ const PhotoSection: React.FC<{
   );
 };
 
+// Variants that require rating input (these show proficiency levels)
+const RATING_VARIANTS = ['bars', 'dots', 'detailed'];
+// Variants that need category/grouping support
+const CATEGORY_VARIANTS = ['table', 'grouped'];
+// Variants that need description field (for strengths)
+const DESCRIPTION_VARIANTS = ['cards', 'grid', 'accent-border'];
+// Section types that can use simple chips UI
+const SIMPLE_SECTION_TYPES = ['skills', 'interests', 'strengths'];
+
+// Skill Chip component with optional inline rating
+const SkillChip: React.FC<{
+  item: any;
+  index: number;
+  showRating: boolean;
+  onUpdateRating: (rating: number) => void;
+  onRemove: () => void;
+  accentColor: string;
+}> = ({ item, index, showRating, onUpdateRating, onRemove, accentColor }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [showRatingPicker, setShowRatingPicker] = useState(false);
+  const currentRating = item.level || 3;
+
+  // Render dots for rating display
+  const renderRatingDots = () => {
+    return (
+      <div className="flex items-center gap-0.5 ml-1">
+        {[1, 2, 3, 4, 5].map((level) => (
+          <div
+            key={level}
+            className="w-1.5 h-1.5 rounded-full transition-colors"
+            style={{
+              backgroundColor: level <= currentRating ? accentColor : `${accentColor}30`
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  // Render rating picker popup
+  const renderRatingPicker = () => {
+    if (!showRatingPicker) return null;
+
+    return (
+      <div
+        className="absolute top-full left-0 mt-1 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-2 flex items-center gap-1"
+        onMouseLeave={() => setShowRatingPicker(false)}
+      >
+        {[1, 2, 3, 4, 5].map((level) => (
+          <button
+            key={level}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onUpdateRating(level);
+              setShowRatingPicker(false);
+            }}
+            className={cn(
+              "w-7 h-7 rounded-md flex items-center justify-center text-xs font-medium transition-all",
+              level <= currentRating
+                ? "text-white"
+                : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+            )}
+            style={{
+              backgroundColor: level <= currentRating ? accentColor : undefined
+            }}
+          >
+            {level}
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div
+      className="relative inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all group"
+      style={{
+        backgroundColor: `${accentColor}15`,
+        color: accentColor
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (!showRatingPicker) setShowRatingPicker(false);
+      }}
+    >
+      <span>{item.name || item.title || `Item ${index + 1}`}</span>
+
+      {/* Rating dots - clickable when showRating is true */}
+      {showRating && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowRatingPicker(!showRatingPicker);
+          }}
+          className="flex items-center hover:opacity-80 transition-opacity cursor-pointer"
+          title="Click to change rating"
+        >
+          {renderRatingDots()}
+        </button>
+      )}
+
+      {/* Remove button */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove();
+        }}
+        className={cn(
+          "w-4 h-4 rounded-full flex items-center justify-center transition-all",
+          isHovered ? "opacity-100" : "opacity-0",
+          "hover:bg-red-100 hover:text-red-500"
+        )}
+      >
+        <X className="w-3 h-3" />
+      </button>
+
+      {/* Rating picker popup */}
+      {showRating && renderRatingPicker()}
+    </div>
+  );
+};
+
+// Skills with Categories Editor (for Table/Grouped variants)
+const SkillsWithCategoriesEditor: React.FC<{
+  items: any[];
+  onChange: (items: any[]) => void;
+  itemName: string;
+  itemNamePlural: string;
+  accentColor: string;
+}> = ({ items, onChange, itemName, itemNamePlural, accentColor }) => {
+  // Track input per category to avoid shared state issues
+  const [skillInputs, setSkillInputs] = useState<Record<string, string>>({});
+  const [newCategory, setNewCategory] = useState('');
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+
+  // Group items by category
+  const grouped = React.useMemo(() => {
+    const order: string[] = [];
+    const groups: Record<string, any[]> = {};
+
+    items.forEach((item) => {
+      const category = item.category || 'General';
+      if (!groups[category]) {
+        groups[category] = [];
+        order.push(category);
+      }
+      groups[category].push(item);
+    });
+
+    return { order, groups };
+  }, [items]);
+
+  const getSkillInput = (category: string) => skillInputs[category] || '';
+
+  const setSkillInput = (category: string, value: string) => {
+    setSkillInputs(prev => ({ ...prev, [category]: value }));
+  };
+
+  const handleAddSkill = (category: string) => {
+    const skillName = getSkillInput(category);
+    if (!skillName.trim()) return;
+    const newItem = {
+      id: crypto.randomUUID(),
+      name: skillName.trim(),
+      category: category,
+      level: 3
+    };
+    onChange([...items, newItem]);
+    setSkillInput(category, '');
+  };
+
+  const handleAddCategory = () => {
+    if (!newCategory.trim()) return;
+    // Just create the category - user will add skills via the input
+    // We need at least one item to show the category, so add a placeholder
+    // but filter it out in display
+    const newItem = {
+      id: crypto.randomUUID(),
+      name: '', // Empty - will be filtered in display and preview
+      category: newCategory.trim(),
+      level: 3
+    };
+    onChange([...items, newItem]);
+    setNewCategory('');
+  };
+
+  const handleRemoveSkill = (skillId: string) => {
+    onChange(items.filter(item => item.id !== skillId));
+  };
+
+  const handleUpdateCategory = (oldCategory: string, newCategoryName: string) => {
+    if (!newCategoryName.trim()) return;
+    onChange(items.map(item =>
+      item.category === oldCategory
+        ? { ...item, category: newCategoryName.trim() }
+        : item
+    ));
+    setEditingCategoryId(null);
+  };
+
+  const handleRemoveCategory = (category: string) => {
+    onChange(items.filter(item => item.category !== category));
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Category rows */}
+      {grouped.order.map((category) => (
+        <div
+          key={category}
+          className="rounded-xl border border-gray-200 bg-white overflow-hidden"
+        >
+          {/* Category header */}
+          <div
+            className="flex items-center justify-between px-4 py-3 border-b border-gray-100"
+            style={{ backgroundColor: `${accentColor}08` }}
+          >
+            {editingCategoryId === category ? (
+              <Input
+                defaultValue={category}
+                autoFocus
+                className="h-8 w-48 text-sm font-semibold"
+                onBlur={(e) => handleUpdateCategory(category, e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleUpdateCategory(category, e.currentTarget.value);
+                  }
+                  if (e.key === 'Escape') {
+                    setEditingCategoryId(null);
+                  }
+                }}
+              />
+            ) : (
+              <button
+                onClick={() => setEditingCategoryId(category)}
+                className="text-sm font-semibold hover:opacity-70 transition-opacity"
+                style={{ color: accentColor }}
+                title="Click to rename category"
+              >
+                {category}
+              </button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleRemoveCategory(category)}
+              className="h-7 w-7 p-0 text-gray-400 hover:text-red-500 hover:bg-red-50"
+              title="Remove category"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </Button>
+          </div>
+
+          {/* Skills in this category */}
+          <div className="p-3">
+            <div className="flex flex-wrap gap-2 mb-3">
+              {grouped.groups[category].filter(s => s.name).map((skill) => (
+                <div
+                  key={skill.id}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium group"
+                  style={{
+                    backgroundColor: `${accentColor}12`,
+                    color: accentColor
+                  }}
+                >
+                  <span>{skill.name}</span>
+                  <button
+                    onClick={() => handleRemoveSkill(skill.id)}
+                    className="w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-red-100 hover:text-red-500 transition-all"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Add skill to this category */}
+            <div className="flex gap-2">
+              <Input
+                value={getSkillInput(category)}
+                onChange={(e) => setSkillInput(category, e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && getSkillInput(category).trim()) {
+                    e.preventDefault();
+                    handleAddSkill(category);
+                  }
+                }}
+                placeholder={`Add ${itemName} to ${category}...`}
+                className="h-9 text-sm flex-1"
+              />
+              <Button
+                size="sm"
+                onClick={() => handleAddSkill(category)}
+                disabled={!getSkillInput(category).trim()}
+                className="h-9 px-3"
+                style={{ backgroundColor: getSkillInput(category).trim() ? accentColor : undefined }}
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {/* Add new category */}
+      <div className="flex gap-3">
+        <Input
+          value={newCategory}
+          onChange={(e) => setNewCategory(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && newCategory.trim()) {
+              e.preventDefault();
+              handleAddCategory();
+            }
+          }}
+          placeholder="Add new category (e.g., Frontend, Backend, DevOps)..."
+          className="h-11 text-base flex-1"
+        />
+        <Button
+          onClick={handleAddCategory}
+          disabled={!newCategory.trim()}
+          className="h-11 px-5"
+          style={{ backgroundColor: newCategory.trim() ? accentColor : undefined }}
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          Add Category
+        </Button>
+      </div>
+
+      {items.length === 0 && (
+        <p className="text-sm text-gray-400 text-center py-4">
+          Add categories to organize your {itemNamePlural}
+        </p>
+      )}
+    </div>
+  );
+};
+
+// Strengths with Description Editor (for cards, grid, accent-border variants)
+const StrengthsWithDescriptionEditor: React.FC<{
+  items: any[];
+  onChange: (items: any[]) => void;
+  accentColor: string;
+}> = ({ items, onChange, accentColor }) => {
+  const [newTitle, setNewTitle] = useState('');
+  const [newDescription, setNewDescription] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+
+  const handleAdd = () => {
+    if (!newTitle.trim()) return;
+    const newItem = {
+      id: crypto.randomUUID(),
+      title: newTitle.trim(),
+      description: newDescription.trim() || '',
+    };
+    onChange([...items, newItem]);
+    setNewTitle('');
+    setNewDescription('');
+  };
+
+  const handleRemove = (id: string) => {
+    onChange(items.filter(item => item.id !== id));
+  };
+
+  const handleStartEdit = (item: any) => {
+    setEditingId(item.id);
+    setEditTitle(item.title || '');
+    setEditDescription(item.description || '');
+  };
+
+  const handleSaveEdit = (id: string) => {
+    onChange(items.map(item =>
+      item.id === id
+        ? { ...item, title: editTitle.trim(), description: editDescription.trim() }
+        : item
+    ));
+    setEditingId(null);
+    setEditTitle('');
+    setEditDescription('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditTitle('');
+    setEditDescription('');
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Existing items */}
+      {items.length > 0 && (
+        <div className="space-y-3">
+          {items.map((item) => {
+            const isEditing = editingId === item.id;
+
+            if (isEditing) {
+              return (
+                <div
+                  key={item.id}
+                  className="p-4 rounded-xl border-2 border-blue-300 bg-blue-50/30"
+                >
+                  <div className="space-y-3">
+                    <Input
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      placeholder="Strength title"
+                      className="h-10 text-base font-medium"
+                      autoFocus
+                    />
+                    <Input
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      placeholder="Brief description (optional)"
+                      className="h-10 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleSaveEdit(item.id);
+                        }
+                        if (e.key === 'Escape') {
+                          handleCancelEdit();
+                        }
+                      }}
+                    />
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleCancelEdit}
+                        className="h-8"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => handleSaveEdit(item.id)}
+                        disabled={!editTitle.trim()}
+                        className="h-8"
+                        style={{ backgroundColor: WEBSITE_THEME_COLOR }}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={item.id}
+                className="group flex items-start gap-3 p-3 rounded-xl border border-gray-200 bg-white hover:border-gray-300 transition-colors cursor-pointer"
+                onClick={() => handleStartEdit(item)}
+              >
+                <div
+                  className="w-2 h-full min-h-[40px] rounded-full flex-shrink-0"
+                  style={{ backgroundColor: accentColor }}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-gray-900 truncate">
+                    {item.title || 'Untitled'}
+                  </p>
+                  {item.description && (
+                    <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">
+                      {item.description}
+                    </p>
+                  )}
+                  {!item.description && (
+                    <p className="text-sm text-gray-400 mt-0.5 italic">
+                      Click to add description
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemove(item.id);
+                  }}
+                  className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all flex-shrink-0"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Add new strength */}
+      <div className="p-4 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50">
+        <div className="space-y-3">
+          <Input
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && newTitle.trim()) {
+                e.preventDefault();
+                // Focus description field instead of adding
+                const descInput = document.getElementById('new-strength-desc');
+                if (descInput) descInput.focus();
+              }
+            }}
+            placeholder="Strength title (e.g., Leadership, Problem Solving)"
+            className="h-11 text-base"
+          />
+          <Input
+            id="new-strength-desc"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && newTitle.trim()) {
+                e.preventDefault();
+                handleAdd();
+              }
+            }}
+            placeholder="Brief description (optional)"
+            className="h-10 text-sm"
+          />
+          <Button
+            onClick={handleAdd}
+            disabled={!newTitle.trim()}
+            className="w-full h-10"
+            style={{ backgroundColor: newTitle.trim() ? accentColor : undefined }}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Strength
+          </Button>
+        </div>
+      </div>
+
+      {items.length === 0 && (
+        <p className="text-sm text-gray-400 text-center py-2">
+          Add your key strengths and competencies
+        </p>
+      )}
+    </div>
+  );
+};
+
 // Generic list section for experience, education, etc.
 const ListSection: React.FC<{
   sectionType: V2SectionType;
@@ -560,8 +1105,21 @@ const ListSection: React.FC<{
     return new Set(items.length > 0 ? [items.length - 1] : []);
   });
   const [showVariantDropdown, setShowVariantDropdown] = useState(false);
+  const [newSkillName, setNewSkillName] = useState('');
+
+  // Determine if we should use simple chips UI
+  const isSimpleSectionType = SIMPLE_SECTION_TYPES.includes(sectionType);
+  const needsRating = currentVariant ? RATING_VARIANTS.includes(currentVariant) : false;
+  const needsCategory = currentVariant ? CATEGORY_VARIANTS.includes(currentVariant) : false;
+  const needsDescription = currentVariant ? DESCRIPTION_VARIANTS.includes(currentVariant) : false;
+  // For strengths with description variants, use special editor; otherwise use simple chips
+  const isStrengthsWithDescription = sectionType === 'strengths' && needsDescription;
+  const useSimpleChipsUI = isSimpleSectionType && !needsRating && !isStrengthsWithDescription;
 
   if (!definition) return null;
+
+  // Get the primary field key for simple sections (e.g., 'name' for skills, 'title' for strengths)
+  const primaryFieldKey = definition.formFields?.[0]?.key || 'name';
 
   const icon = SECTION_ICONS[sectionType] || FileText;
   const items = data || [];
@@ -931,61 +1489,148 @@ const ListSection: React.FC<{
         </div>
       )}
 
-      <div className="space-y-4">
-        {items.map((item, index) => (
-          <ItemCard
-            key={item.id || index}
-            onDelete={() => removeItem(index)}
-            index={index}
-            icon={icon}
-            title={item[titleKey] || undefined}
-            subtitle={subtitleKey ? item[subtitleKey] || undefined : undefined}
-            isExpanded={expandedItems.has(index)}
-            onToggle={() => toggleItem(index)}
-          >
-            <div className="space-y-5">
-              {/* Two-column grid for compact fields */}
-              <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+      {/* Skills/Interests/Strengths UI - adapts based on variant */}
+      {isSimpleSectionType ? (
+        needsCategory ? (
+          /* Table/Grouped variant - needs category support */
+          <SkillsWithCategoriesEditor
+            items={items}
+            onChange={onChange}
+            itemName={definition.itemName}
+            itemNamePlural={definition.itemNamePlural}
+            accentColor={WEBSITE_THEME_COLOR}
+          />
+        ) : isStrengthsWithDescription ? (
+          /* Strengths with description - cards, grid, accent-border variants */
+          <StrengthsWithDescriptionEditor
+            items={items}
+            onChange={onChange}
+            accentColor={WEBSITE_THEME_COLOR}
+          />
+        ) : (
+          /* Simple chips UI for other variants */
+          <div className="space-y-4">
+            {/* Quick Add Input */}
+            <div className="flex gap-3">
+              <Input
+                value={newSkillName}
+                onChange={(e) => setNewSkillName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && newSkillName.trim()) {
+                    e.preventDefault();
+                    const newItem: any = {
+                      id: crypto.randomUUID(),
+                      [primaryFieldKey]: newSkillName.trim(),
+                      level: 3
+                    };
+                    onChange([...items, newItem]);
+                    setNewSkillName('');
+                  }
+                }}
+                placeholder={`Add ${definition.itemName}...`}
+                className="h-11 text-base flex-1"
+              />
+              <Button
+                onClick={() => {
+                  if (newSkillName.trim()) {
+                    const newItem: any = {
+                      id: crypto.randomUUID(),
+                      [primaryFieldKey]: newSkillName.trim(),
+                      level: 3
+                    };
+                    onChange([...items, newItem]);
+                    setNewSkillName('');
+                  }
+                }}
+                disabled={!newSkillName.trim()}
+                className="h-11 px-5"
+                style={{ backgroundColor: newSkillName.trim() ? WEBSITE_THEME_COLOR : undefined }}
+              >
+                <Plus className="w-4 h-4 mr-1" />
+                Add
+              </Button>
+            </div>
+
+            {/* Chips Display */}
+            <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-gray-50/80 border border-gray-100 min-h-[80px]">
+              {items.length === 0 ? (
+                <p className="text-sm text-gray-400 w-full text-center py-4">
+                  Type above and press Enter to add {definition.itemNamePlural}
+                </p>
+              ) : (
+                items.map((item, index) => (
+                  <SkillChip
+                    key={item.id || index}
+                    item={item}
+                    index={index}
+                    showRating={needsRating}
+                    onUpdateRating={(rating) => updateItem(index, 'level', rating)}
+                    onRemove={() => removeItem(index)}
+                    accentColor={WEBSITE_THEME_COLOR}
+                  />
+                ))
+              )}
+            </div>
+          </div>
+        )
+      ) : (
+        /* Standard Accordion UI for other sections */
+        <div className="space-y-4">
+          {items.map((item, index) => (
+            <ItemCard
+              key={item.id || index}
+              onDelete={() => removeItem(index)}
+              index={index}
+              icon={icon}
+              title={item[titleKey] || undefined}
+              subtitle={subtitleKey ? item[subtitleKey] || undefined : undefined}
+              isExpanded={expandedItems.has(index)}
+              onToggle={() => toggleItem(index)}
+            >
+              <div className="space-y-5">
+                {/* Two-column grid for compact fields */}
+                <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+                  {definition.formFields
+                    .filter(shouldShowField)
+                    .filter(f => !isFullWidth(f))
+                    .map((field) => (
+                      <div key={field.key}>
+                        {renderField(field, item, index)}
+                      </div>
+                    ))}
+                </div>
+
+                {/* Full-width fields (textarea, array/bullets) */}
                 {definition.formFields
                   .filter(shouldShowField)
-                  .filter(f => !isFullWidth(f))
+                  .filter(f => isFullWidth(f))
                   .map((field) => (
                     <div key={field.key}>
                       {renderField(field, item, index)}
                     </div>
                   ))}
               </div>
+            </ItemCard>
+          ))}
 
-              {/* Full-width fields (textarea, array/bullets) */}
-              {definition.formFields
-                .filter(shouldShowField)
-                .filter(f => isFullWidth(f))
-                .map((field) => (
-                  <div key={field.key}>
-                    {renderField(field, item, index)}
-                  </div>
-                ))}
-            </div>
-          </ItemCard>
-        ))}
-
-        {/* Add New Item Button */}
-        <button
-          type="button"
-          onClick={addItem}
-          className="w-full h-14 flex items-center justify-center gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-blue-50/50 hover:border-blue-300 transition-all duration-200 group"
-        >
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors group-hover:bg-blue-100"
-            style={{ backgroundColor: `${WEBSITE_THEME_COLOR}10` }}
+          {/* Add New Item Button */}
+          <button
+            type="button"
+            onClick={addItem}
+            className="w-full h-14 flex items-center justify-center gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-blue-50/50 hover:border-blue-300 transition-all duration-200 group"
           >
-            <Plus className="w-5 h-5" style={{ color: WEBSITE_THEME_COLOR }} />
-          </div>
-          <span className="text-base font-medium" style={{ color: WEBSITE_THEME_COLOR }}>
-            Add {definition.itemName}
-          </span>
-        </button>
-      </div>
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors group-hover:bg-blue-100"
+              style={{ backgroundColor: `${WEBSITE_THEME_COLOR}10` }}
+            >
+              <Plus className="w-5 h-5" style={{ color: WEBSITE_THEME_COLOR }} />
+            </div>
+            <span className="text-base font-medium" style={{ color: WEBSITE_THEME_COLOR }}>
+              Add {definition.itemName}
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

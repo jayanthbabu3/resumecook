@@ -97,11 +97,3 @@ export async function apiFetch(
   });
 }
 
-// Log configuration in development
-if (import.meta.env.DEV) {
-  console.log('[API Config]', {
-    baseUrl: API_BASE_URL || '(NOT SET!)',
-    hasApiKey: !!API_KEY,
-    sampleEndpoint: API_ENDPOINTS.enhanceResume,
-  });
-}

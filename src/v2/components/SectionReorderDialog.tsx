@@ -86,34 +86,34 @@ export const SectionReorderDialog: React.FC<SectionReorderDialogProps> = ({
     useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } })
   );
 
-  // Separate into columns
-  const initial = useMemo(() => {
-    const main = sections
-      .filter((s) => (s.column || 'main') === 'main' && s.enabled !== false)
-      .sort((a, b) => a.order - b.order)
-      .map((s) => s.id);
-    const sidebar = sections
-      .filter((s) => (s.column || 'main') === 'sidebar' && s.enabled !== false)
-      .sort((a, b) => a.order - b.order)
-      .map((s) => s.id);
-    return { main, sidebar };
-  }, [sections]);
-
   const [mainIds, setMainIds] = useState<string[]>([]);
   const [sidebarIds, setSidebarIds] = useState<string[]>([]);
   const [pageBreaks, setPageBreaks] = useState<Record<string, boolean>>({});
 
+  // Initialize state when dialog opens
   useEffect(() => {
     if (open) {
-      setMainIds(initial.main);
-      setSidebarIds(initial.sidebar);
+      // Separate sections into columns based on their current column setting
+      const main = sections
+        .filter((s) => (s.column || 'main') === 'main' && s.enabled !== false)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        .map((s) => s.id);
+      const sidebar = sections
+        .filter((s) => (s.column || 'main') === 'sidebar' && s.enabled !== false)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        .map((s) => s.id);
+
+      setMainIds(main);
+      setSidebarIds(sidebar);
+
+      // Initialize page breaks from section config
       const breaks: Record<string, boolean> = {};
       sections.forEach((s) => {
         breaks[s.id] = (s as any).pageBreakBefore ?? false;
       });
       setPageBreaks(breaks);
     }
-  }, [open, initial]);
+  }, [open, sections]);
 
   const sectionMap = useMemo(() => {
     const map: Record<string, SectionConfig> = {};
