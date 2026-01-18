@@ -32,6 +32,7 @@ import LayoutSelectionScreen from "./v2/pages/LayoutSelectionScreen";
 import ScratchBuilderV2 from "./v2/pages/ScratchBuilderV2";
 import GridCanvasBuilder from "./v2/pages/GridCanvasBuilder";
 import GridLayoutSelectionScreen from "./v2/pages/GridLayoutSelectionScreen";
+import AccountSettings from "./v2/pages/AccountSettings";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,7 @@ const App = () => (
             <Route path="/v2/builder" element={<RedirectEditor />} />
             
             <Route path="/profile" element={<ProfilePageV2 />} />
+            <Route path="/account" element={<AccountSettings />} />
             <Route path="/my-resumes" element={<MyResumes />} />
             <Route path="/builder/scratch" element={<ScratchBuilder />} />
 

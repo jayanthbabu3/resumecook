@@ -439,6 +439,7 @@ razorpayRouter.post('/verify-subscription', async (req, res) => {
 
 /**
  * Cancel subscription
+ * Handles both paid subscriptions (via Razorpay) and trial subscriptions
  */
 razorpayRouter.post('/cancel-subscription', async (req, res) => {
   try {
@@ -458,8 +459,55 @@ razorpayRouter.post('/cancel-subscription', async (req, res) => {
     const userData = userDoc.data();
     const subscription = userData.subscription;
 
-    if (!subscription?.razorpaySubscriptionId) {
+    // Check if user has any active subscription (trial or paid)
+    if (!subscription || subscription.status !== 'active') {
       return res.status(400).json({ error: 'No active subscription to cancel' });
+    }
+
+    // Handle trial cancellation
+    if (subscription.isTrial) {
+      // For trials, we can either cancel immediately or let it expire naturally
+      if (cancelAtPeriodEnd) {
+        // Mark trial as cancelled but let it continue until expiry
+        await db.collection('users').doc(userId).set({
+          subscription: {
+            cancelAtPeriodEnd: true,
+            cancelRequestedAt: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+        }, { merge: true });
+
+        res.json({
+          success: true,
+          message: 'Trial will end at the scheduled date and will not convert to a paid subscription.',
+          cancelAtPeriodEnd: true,
+          isTrial: true,
+        });
+      } else {
+        // Cancel trial immediately
+        await db.collection('users').doc(userId).set({
+          subscription: {
+            status: 'cancelled',
+            plan: 'free',
+            isTrial: false,
+            cancelledAt: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+        }, { merge: true });
+
+        res.json({
+          success: true,
+          message: 'Trial cancelled immediately.',
+          cancelAtPeriodEnd: false,
+          isTrial: true,
+        });
+      }
+      return;
+    }
+
+    // Handle paid subscription cancellation
+    if (!subscription.razorpaySubscriptionId) {
+      return res.status(400).json({ error: 'No Razorpay subscription found to cancel' });
     }
 
     const razorpay = getRazorpay();

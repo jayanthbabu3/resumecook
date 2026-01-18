@@ -249,14 +249,15 @@ export const useSubscription = (): UseSubscriptionReturn => {
     }
   }, [user?.uid, user?.email, user?.displayName, userProfile?.fullName]);
 
-  // Cancel subscription
+  // Cancel subscription (works for both paid subscriptions and trials)
   const cancelSubscription = useCallback(async (immediately: boolean = false): Promise<boolean> => {
     if (!user?.uid) {
       setError('Please sign in to cancel subscription');
       return false;
     }
 
-    if (!subscription.razorpaySubscriptionId) {
+    // Check if there's an active subscription (paid or trial)
+    if (subscription.status !== 'active') {
       setError('No active subscription to cancel');
       return false;
     }
@@ -291,7 +292,7 @@ export const useSubscription = (): UseSubscriptionReturn => {
     } finally {
       setLoading(false);
     }
-  }, [user?.uid, subscription.razorpaySubscriptionId]);
+  }, [user?.uid, subscription.status]);
 
   // Verify subscription status with backend
   const verifySubscription = useCallback(async (): Promise<boolean> => {

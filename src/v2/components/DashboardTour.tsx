@@ -1,19 +1,19 @@
 /**
- * Onboarding Tour Component
+ * Dashboard Tour Component
  *
- * A modern guided tour using Driver.js that highlights actual UI elements.
- * Shows first-time users all the key features of the resume builder.
+ * A guided tour using Driver.js that highlights the dashboard features.
+ * Shows first-time users the Free and Pro features available.
  */
 
 import { useEffect, useCallback, useRef } from 'react';
 import { driver, type DriveStep, type Driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 
-const TOUR_STORAGE_KEY = 'resume-builder-tour-completed-v2';
+const DASHBOARD_TOUR_STORAGE_KEY = 'dashboard-tour-completed-v1';
 
 // Custom styles for driver.js with mobile responsiveness
 const injectCustomStyles = () => {
-  const styleId = 'driver-custom-styles';
+  const styleId = 'dashboard-tour-custom-styles';
   if (document.getElementById(styleId)) return;
 
   const style = document.createElement('style');
@@ -25,7 +25,7 @@ const injectCustomStyles = () => {
       border-radius: 16px !important;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
       max-width: calc(100vw - 32px) !important;
-      width: 360px !important;
+      width: 380px !important;
       padding: 0 !important;
       overflow: hidden !important;
       margin: 0 auto !important;
@@ -144,90 +144,22 @@ const injectCustomStyles = () => {
       border-bottom-color: white !important;
     }
 
-    /* Overlay styling - lighter semi-transparent background */
     .driver-overlay {
-      background: rgba(0, 0, 0, 0.4) !important;
+      background: rgba(0, 0, 0, 0.5) !important;
     }
 
-    /* Highlighted element styling - make it stand out */
     .driver-active-element {
-      border-radius: 8px !important;
+      border-radius: 12px !important;
       z-index: 10001 !important;
-      background: white !important;
     }
 
-    /* Stage (cutout area) - visible with accent border */
     #driver-highlighted-element-stage,
     .driver-highlighted-element-stage {
       background: transparent !important;
-      border-radius: 10px !important;
+      border-radius: 14px !important;
       box-shadow:
         0 0 0 3px rgba(59, 130, 246, 0.6),
-        0 0 15px 3px rgba(59, 130, 246, 0.3) !important;
-    }
-
-    /* Custom icon styling for step badges */
-    .tour-step-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      margin-right: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      color: white;
-      vertical-align: middle;
-    }
-
-    /* Progress dots */
-    .tour-progress {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 12px 20px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .tour-progress-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #e2e8f0;
-      transition: all 0.3s ease;
-    }
-
-    .tour-progress-dot.active {
-      width: 24px;
-      border-radius: 4px;
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    }
-
-    .tour-progress-dot.completed {
-      background: #3b82f6;
-    }
-
-    /* Keyboard hint */
-    .tour-keyboard-hint {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 20px;
-      font-size: 11px;
-      color: #94a3b8;
-      border-top: 1px solid #f1f5f9;
-    }
-
-    .tour-kbd {
-      display: inline-block;
-      padding: 2px 6px;
-      background: #f1f5f9;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 10px;
-      color: #64748b;
+        0 0 20px 5px rgba(59, 130, 246, 0.2) !important;
     }
 
     /* Mobile responsive styles */
@@ -286,28 +218,10 @@ const injectCustomStyles = () => {
 
       #driver-highlighted-element-stage,
       .driver-highlighted-element-stage {
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         box-shadow:
           0 0 0 2px rgba(59, 130, 246, 0.6),
           0 0 12px 3px rgba(59, 130, 246, 0.2) !important;
-      }
-
-      .tour-progress {
-        padding: 10px 16px;
-        gap: 4px;
-      }
-
-      .tour-progress-dot {
-        width: 6px;
-        height: 6px;
-      }
-
-      .tour-progress-dot.active {
-        width: 18px;
-      }
-
-      .tour-keyboard-hint {
-        display: none !important;
       }
     }
 
@@ -337,12 +251,12 @@ const injectCustomStyles = () => {
   document.head.appendChild(style);
 };
 
-interface OnboardingTourProps {
+interface DashboardTourProps {
   forceShow?: boolean;
   onComplete?: () => void;
 }
 
-export const OnboardingTour: React.FC<OnboardingTourProps> = ({
+export const DashboardTour: React.FC<DashboardTourProps> = ({
   forceShow = false,
   onComplete,
 }) => {
@@ -355,107 +269,87 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
     injectCustomStyles();
 
-    // Check if mobile - use lg breakpoint to match Tailwind
-    const isMobile = window.innerWidth < 1024;
+    // Check if mobile
+    const isMobile = window.innerWidth < 640;
 
-    // Mobile steps - simplified tour targeting mobile-visible elements
-    const mobileSteps: DriveStep[] = [
+    // Define tour steps targeting dashboard elements
+    const steps: DriveStep[] = [
       {
         popover: {
-          title: '👋 Welcome!',
-          description: 'Let me show you the key features to create your perfect resume.',
+          title: '👋 Welcome to Resume Builder!',
+          description: 'Let me show you all the powerful features available to create your perfect resume. We have both <strong>Free</strong> and <strong>Pro</strong> features to help you succeed!',
           side: 'over',
           align: 'center',
         },
       },
       {
-        element: '[data-tour="mobile-form-tab"]',
+        element: '[data-tour="free-section"]',
+        popover: {
+          title: '🆓 Free Features',
+          description: 'Everything in this section is completely free - no credit card required! Access all templates, both editors, and unlimited exports.',
+          side: 'bottom',
+          align: 'start',
+        },
+      },
+      {
+        element: '[data-tour="all-templates"]',
+        popover: {
+          title: '📄 All Templates',
+          description: 'Browse our entire collection of professional and fresher templates. Pick any design you like - they\'re all free to use!',
+          side: 'bottom',
+          align: 'center',
+        },
+      },
+      {
+        element: '[data-tour="live-editor"]',
+        popover: {
+          title: '✏️ Live Editor',
+          description: 'Edit your resume in real-time! Click directly on any text to modify it and see changes instantly. Perfect for quick edits.',
+          side: 'bottom',
+          align: 'center',
+        },
+      },
+      {
+        element: '[data-tour="form-editor"]',
         popover: {
           title: '📝 Form Editor',
-          description: 'Fill in your details section by section using a structured form.',
+          description: 'Prefer a structured approach? Use the Form Editor to build your resume section by section with guided input fields.',
           side: 'bottom',
           align: 'center',
         },
       },
       {
-        element: '[data-tour="mobile-live-tab"]',
+        element: '[data-tour="export-customize"]',
         popover: {
-          title: '✏️ Live Edit',
-          description: 'Edit directly on your resume - tap any text to modify it instantly.',
+          title: '📥 Export & Customize',
+          description: 'Download your resume as PDF anytime. Customize colors, fonts, and spacing to match your personal style - all for free!',
           side: 'bottom',
           align: 'center',
         },
       },
       {
-        element: '[data-tour="mobile-preview-tab"]',
+        element: '[data-tour="pro-section"]',
         popover: {
-          title: '👁️ Preview',
-          description: 'See how your resume looks. Pinch to zoom for details!',
+          title: '⭐ Pro Features',
+          description: 'Unlock AI-powered features to supercharge your resume building experience. Let AI do the heavy lifting!',
+          side: 'bottom',
+          align: 'start',
+        },
+      },
+      {
+        element: '[data-tour="chat-resume"]',
+        popover: {
+          title: '💬 Chat with Resume',
+          description: 'Our newest feature! Just have a conversation with AI - tell it about your experience and watch your resume build itself. No forms needed!',
           side: 'bottom',
           align: 'center',
         },
       },
       {
-        element: '[data-tour="mobile-ai-btn"]',
+        element: '[data-tour="upload-resume"]',
         popover: {
-          title: '✨ AI Features (Pro)',
-          description: 'Use AI to enhance your resume content and make it stand out.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="mobile-download-btn"]',
-        popover: {
-          title: '📥 Download PDF',
-          description: 'Download your resume as a professional PDF - completely free!',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        popover: {
-          title: '🚀 You\'re Ready!',
-          description: 'Start building your resume. Good luck with your job search!',
-          side: 'over',
-          align: 'center',
-        },
-      },
-    ];
-
-    // Desktop steps - full tour with all features
-    const desktopSteps: DriveStep[] = [
-      {
-        popover: {
-          title: '👋 Welcome to the Resume Builder!',
-          description: 'Let me show you all the powerful features available to create your perfect resume. You have both <strong>Free</strong> and <strong>Pro</strong> tools at your fingertips!',
-          side: 'over',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="form-mode"]',
-        popover: {
-          title: '📝 Form Editor (Free)',
-          description: 'Use the structured Form view to fill in your details section by section. Perfect for building your resume content in an organized way.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="live-mode"]',
-        popover: {
-          title: '✏️ Live Editor (Free)',
-          description: 'Switch to Live mode to edit directly on your resume! Click any text to modify it and see changes instantly in real-time.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="enhance-ai"]',
-        popover: {
-          title: '✨ Enhance with AI (Pro)',
-          description: 'Let AI improve your resume content! Get professional suggestions to make your experience and skills stand out to recruiters.',
+          title: '📤 Upload Resume',
+          description: 'Have an existing resume? Upload it and AI will extract all information automatically. Then enhance it with our templates!',
           side: 'bottom',
           align: 'center',
         },
@@ -463,80 +357,17 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
       {
         element: '[data-tour="tailor-job"]',
         popover: {
-          title: '🎯 Tailor for Job (Pro)',
-          description: 'Paste any job description and AI will optimize your resume with the right keywords to pass ATS systems and impress hiring managers.',
+          title: '🎯 Tailor for Job',
+          description: 'Paste any job description and AI will optimize your resume with the right keywords to pass ATS systems and impress recruiters.',
           side: 'bottom',
           align: 'center',
         },
       },
       {
-        element: '[data-tour="ats-score"]',
+        element: '[data-tour="linkedin-import"]',
         popover: {
-          title: '📊 ATS Score (Pro)',
-          description: 'Check how well your resume will perform with Applicant Tracking Systems. Get a compatibility score and improvement tips.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="font-selector"]',
-        popover: {
-          title: '🔤 Font Selection (Free)',
-          description: 'Choose from a variety of professional fonts. Each font is optimized for readability and gives your resume a polished look.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="color-picker"]',
-        popover: {
-          title: '🎨 Color Themes (Free)',
-          description: 'Personalize your resume with accent colors. Choose from presets or use any custom color to match your personal brand.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="template-btn"]',
-        popover: {
-          title: '📄 Change Template (Free)',
-          description: 'Browse and switch between all available templates anytime. Find the design that best represents your professional style.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="sections-menu"]',
-        popover: {
-          title: '📑 Manage Sections (Free)',
-          description: 'Add new sections like Skills, Projects, or Certifications. Rearrange section order and customize your resume structure.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="styling-menu"]',
-        popover: {
-          title: '⚙️ Styling Options (Free)',
-          description: 'Fine-tune your resume appearance! Adjust spacing, margins, font sizes, and layout options for the perfect visual balance.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="save-btn"]',
-        popover: {
-          title: '💾 Save Your Work',
-          description: 'Sign in to save your resume to your account. Access it anytime, from any device, and never lose your progress.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
-        element: '[data-tour="download-btn"]',
-        popover: {
-          title: '📥 Download PDF (Free)',
-          description: 'Download your resume as a professionally formatted PDF anytime - completely free, no watermarks!',
+          title: '💼 Import from LinkedIn',
+          description: 'Connect your LinkedIn profile and import your entire work history, skills, and education in seconds. One click, instant resume!',
           side: 'bottom',
           align: 'center',
         },
@@ -544,15 +375,12 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
       {
         popover: {
           title: '🚀 You\'re Ready!',
-          description: 'Start with the free features - they\'re powerful enough for most needs. When you want AI superpowers, try the Pro features. Good luck with your job search!',
+          description: 'Start with our free features - they\'re powerful enough for most needs. When you want AI superpowers, upgrade to Pro anytime. Good luck with your job search!',
           side: 'over',
           align: 'center',
         },
       },
     ];
-
-    // Use appropriate steps based on screen size
-    const steps = isMobile ? mobileSteps : desktopSteps;
 
     // Create driver instance with mobile-aware settings
     const driverObj = driver({
@@ -561,22 +389,22 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
       animate: true,
       allowClose: true,
       overlayColor: 'black',
-      overlayOpacity: isMobile ? 0.5 : 0.4,
-      stagePadding: isMobile ? 6 : 10,
-      stageRadius: isMobile ? 8 : 10,
-      popoverOffset: isMobile ? 8 : 15,
+      overlayOpacity: isMobile ? 0.6 : 0.5,
+      stagePadding: isMobile ? 8 : 12,
+      stageRadius: isMobile ? 10 : 14,
+      popoverOffset: isMobile ? 10 : 15,
       showButtons: ['next', 'previous', 'close'],
       nextBtnText: isMobile ? 'Next' : 'Next →',
       prevBtnText: isMobile ? 'Back' : '← Back',
       doneBtnText: isMobile ? 'Start!' : 'Get Started! 🚀',
       progressText: '{{current}} of {{total}}',
       onDestroyed: () => {
-        localStorage.setItem(TOUR_STORAGE_KEY, 'true');
+        localStorage.setItem(DASHBOARD_TOUR_STORAGE_KEY, 'true');
         onComplete?.();
         hasStartedRef.current = false;
       },
       onCloseClick: () => {
-        localStorage.setItem(TOUR_STORAGE_KEY, 'true');
+        localStorage.setItem(DASHBOARD_TOUR_STORAGE_KEY, 'true');
         driverObj.destroy();
       },
     });
@@ -589,15 +417,13 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
   useEffect(() => {
     if (forceShow) {
-      // Small delay to ensure DOM is ready
       const timer = setTimeout(startTour, 500);
       return () => clearTimeout(timer);
     }
 
-    const tourCompleted = localStorage.getItem(TOUR_STORAGE_KEY);
+    const tourCompleted = localStorage.getItem(DASHBOARD_TOUR_STORAGE_KEY);
     if (!tourCompleted) {
-      // Wait for page to fully load and elements to be in DOM
-      const timer = setTimeout(startTour, 1200);
+      const timer = setTimeout(startTour, 1000);
       return () => clearTimeout(timer);
     }
   }, [forceShow, startTour]);
@@ -611,27 +437,25 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
     };
   }, []);
 
-  // This component doesn't render anything - driver.js handles the UI
   return null;
 };
 
 // Hook to control the tour programmatically
-export const useOnboardingTour = () => {
+export const useDashboardTour = () => {
   const resetTour = () => {
-    localStorage.removeItem(TOUR_STORAGE_KEY);
+    localStorage.removeItem(DASHBOARD_TOUR_STORAGE_KEY);
   };
 
   const hasCompletedTour = () => {
-    return localStorage.getItem(TOUR_STORAGE_KEY) === 'true';
+    return localStorage.getItem(DASHBOARD_TOUR_STORAGE_KEY) === 'true';
   };
 
   const startTour = () => {
-    localStorage.removeItem(TOUR_STORAGE_KEY);
-    // Reload to trigger tour
+    localStorage.removeItem(DASHBOARD_TOUR_STORAGE_KEY);
     window.location.reload();
   };
 
   return { resetTour, hasCompletedTour, startTour };
 };
 
-export default OnboardingTour;
+export default DashboardTour;

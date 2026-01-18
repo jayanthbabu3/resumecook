@@ -1801,6 +1801,7 @@ export const BuilderV2: React.FC = () => {
               {/* Center: AI Buttons */}
               <div className="flex items-center gap-1.5">
                 <button
+                  data-tour="mobile-ai-btn"
                   onClick={() => setShowEnhanceModal(true)}
                   className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
                   style={{
@@ -1870,6 +1871,7 @@ export const BuilderV2: React.FC = () => {
                   </PopoverContent>
                 </Popover>
                 <Button
+                  data-tour="mobile-download-btn"
                   onClick={handleDownload}
                   disabled={isDownloading}
                   size="icon"
@@ -1883,6 +1885,7 @@ export const BuilderV2: React.FC = () => {
             {/* Bottom row: Tabs */}
             <div className="flex items-center px-2 py-1.5 gap-1 bg-gray-50">
               <button
+                data-tour="mobile-form-tab"
                 onClick={() => setMobileView('form')}
                 className={cn(
                   "flex-1 h-8 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
@@ -1895,6 +1898,7 @@ export const BuilderV2: React.FC = () => {
                 Form
               </button>
               <button
+                data-tour="mobile-live-tab"
                 onClick={() => setMobileView('live')}
                 className={cn(
                   "flex-1 h-8 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
@@ -1907,6 +1911,7 @@ export const BuilderV2: React.FC = () => {
                 Live Edit
               </button>
               <button
+                data-tour="mobile-preview-tab"
                 onClick={() => setMobileView('preview')}
                 className={cn(
                   "flex-1 h-8 flex items-center justify-center gap-1.5 rounded-lg text-xs font-medium transition-all duration-200",
@@ -2002,6 +2007,7 @@ export const BuilderV2: React.FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
+                          data-tour="enhance-ai"
                           onClick={() => {
                             if (!user || !isPro) {
                               setProModalFeature({
@@ -2031,6 +2037,7 @@ export const BuilderV2: React.FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
+                          data-tour="tailor-job"
                           onClick={() => {
                             if (!user || !isPro) {
                               setProModalFeature({
@@ -2060,6 +2067,7 @@ export const BuilderV2: React.FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
+                          data-tour="ats-score"
                           onClick={() => {
                             if (!user || !isPro) {
                               setProModalFeature({
@@ -2166,6 +2174,7 @@ export const BuilderV2: React.FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
+                          data-tour="template-btn"
                           onClick={() => setShowTemplateSelector(true)}
                           className="h-9 w-9 flex items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
                         >

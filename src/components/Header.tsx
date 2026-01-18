@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home, Zap } from "lucide-react";
+import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home, Zap, Settings } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
@@ -79,6 +79,7 @@ const HeaderComponent: React.FC = () => {
   const handleNavigateTemplates = useCallback(() => navigate("/templates"), [navigate]);
   const handleNavigateMyResumes = useCallback(() => navigate("/my-resumes"), [navigate]);
   const handleNavigateProfile = useCallback(() => navigate("/profile"), [navigate]);
+  const handleNavigateAccount = useCallback(() => navigate("/account"), [navigate]);
   const handleNavigatePricing = useCallback(() => navigate("/pricing"), [navigate]);
   const handleSignOut = useCallback(() => signOut(), [signOut]);
 
@@ -242,6 +243,13 @@ const HeaderComponent: React.FC = () => {
                     >
                       <User className="mr-2.5 h-4 w-4 text-gray-500" />
                       <span>Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleNavigateAccount}
+                      className="px-3 py-2 cursor-pointer rounded-lg mx-1"
+                    >
+                      <Settings className="mr-2.5 h-4 w-4 text-gray-500" />
+                      <span>Account Settings</span>
                     </DropdownMenuItem>
                   </div>
 
@@ -419,7 +427,19 @@ const HeaderComponent: React.FC = () => {
                               <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center flex-shrink-0">
                                 <User className="h-[18px] w-[18px]" />
                               </div>
-                              <span className="text-sm font-medium">Profile Settings</span>
+                              <span className="text-sm font-medium">Profile</span>
+                            </button>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <button
+                              onClick={handleNavigateAccount}
+                              className="flex flex-row items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors"
+                              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center flex-shrink-0">
+                                <Settings className="h-[18px] w-[18px]" />
+                              </div>
+                              <span className="text-sm font-medium">Account Settings</span>
                             </button>
                           </SheetClose>
                           <SheetClose asChild>
