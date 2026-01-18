@@ -37,7 +37,7 @@ const TRIAL_CONFIG = {
 const RAZORPAY_CONFIG = {
   planId: process.env.RAZORPAY_PLAN_ID, // Monthly Pro plan ID
   currency: 'INR',
-  amount: 14900, // ₹149 in paise
+  amount: 16900, // ₹169 in paise
 };
 
 // Initialize Razorpay

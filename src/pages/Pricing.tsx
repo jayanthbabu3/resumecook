@@ -30,7 +30,7 @@ import {
 // Pricing configuration (INR only - Razorpay)
 const PRICING = {
   currency: "₹",
-  amount: 149,
+  amount: 169,
   period: "mo",
 };
 
