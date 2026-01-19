@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, FileText, Loader2 } from "lucide-react";
+import { Heart, FileText, Loader2, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useFavoriteTemplates } from "@/hooks/useFavoriteTemplates";
 import { TemplatePreviewV2 } from "@/v2/components/TemplatePreviewV2";
@@ -14,7 +14,7 @@ const DEFAULT_THEME_COLOR = "#2563eb";
 
 export const FavoriteTemplates: React.FC = () => {
   const navigate = useNavigate();
-  const { favorites, loading } = useFavoriteTemplates();
+  const { favorites, loading, canAddFavorite, favoritesLimit } = useFavoriteTemplates();
 
   if (loading) {
     return (
@@ -68,7 +68,17 @@ export const FavoriteTemplates: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
+    <div>
+      {/* Limit Warning Banner */}
+      {!canAddFavorite && (
+        <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-3">
+          <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0" />
+          <p className="text-sm text-amber-800">
+            You've reached the maximum of {favoritesLimit} favorites. Remove a favorite to add a new one.
+          </p>
+        </div>
+      )}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
         {favoriteTemplates.map((template, index) => {
           if (!template) return null;
 
@@ -132,6 +142,7 @@ export const FavoriteTemplates: React.FC = () => {
             </Card>
           );
         })}
+      </div>
     </div>
   );
 };

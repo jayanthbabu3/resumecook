@@ -470,15 +470,6 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
         },
       },
       {
-        element: '[data-tour="ats-score"]',
-        popover: {
-          title: '📊 ATS Score (Pro)',
-          description: 'Check how well your resume will perform with Applicant Tracking Systems. Get a compatibility score and improvement tips.',
-          side: 'bottom',
-          align: 'center',
-        },
-      },
-      {
         element: '[data-tour="font-selector"]',
         popover: {
           title: '🔤 Font Selection (Free)',

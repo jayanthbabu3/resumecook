@@ -340,7 +340,7 @@ export const DashboardTour: React.FC<DashboardTourProps> = ({
         element: '[data-tour="chat-resume"]',
         popover: {
           title: '💬 Chat with Resume',
-          description: 'Our newest feature! Just have a conversation with AI - tell it about your experience and watch your resume build itself. No forms needed!',
+          description: 'Just talk to AI about yourself - your job, experience, skills - and watch your resume build in real-time. No forms, just conversation!',
           side: 'bottom',
           align: 'center',
         },
@@ -349,7 +349,7 @@ export const DashboardTour: React.FC<DashboardTourProps> = ({
         element: '[data-tour="upload-resume"]',
         popover: {
           title: '📤 Upload Resume',
-          description: 'Have an existing resume? Upload it and AI will extract all information automatically. Then enhance it with our templates!',
+          description: 'Already have a resume? Upload your PDF or DOCX and AI will import everything automatically. Then pick a beautiful template!',
           side: 'bottom',
           align: 'center',
         },
@@ -357,8 +357,8 @@ export const DashboardTour: React.FC<DashboardTourProps> = ({
       {
         element: '[data-tour="tailor-job"]',
         popover: {
-          title: '🎯 Tailor for Job',
-          description: 'Paste any job description and AI will optimize your resume with the right keywords to pass ATS systems and impress recruiters.',
+          title: '🎯 Match to Job',
+          description: 'Found a job you love? Paste the job post and AI will rewrite your resume to match it perfectly - summary, experience, and skills all optimized!',
           side: 'bottom',
           align: 'center',
         },
@@ -367,7 +367,7 @@ export const DashboardTour: React.FC<DashboardTourProps> = ({
         element: '[data-tour="linkedin-import"]',
         popover: {
           title: '💼 Import from LinkedIn',
-          description: 'Connect your LinkedIn profile and import your entire work history, skills, and education in seconds. One click, instant resume!',
+          description: 'Already on LinkedIn? Connect your profile and get a complete resume in seconds - all your jobs, skills, and education imported automatically!',
           side: 'bottom',
           align: 'center',
         },

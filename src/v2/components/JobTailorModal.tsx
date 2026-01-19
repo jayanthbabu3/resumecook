@@ -75,13 +75,14 @@ const ACCEPTED_EXTENSIONS = ['.pdf', '.docx', '.txt'];
 // Progress messages during tailoring
 const PROGRESS_MESSAGES = [
   "Analyzing job requirements...",
-  "Extracting key skills and keywords...",
-  "Matching your experience...",
-  "Enhancing your summary...",
-  "Tailoring bullet points...",
-  "Optimizing for ATS...",
-  "Calculating match score...",
-  "Finalizing enhancements...",
+  "Extracting required skills & keywords...",
+  "Rewriting your professional summary...",
+  "Matching your experience to the role...",
+  "Enhancing bullet points with keywords...",
+  "Adding missing skills from job description...",
+  "Optimizing for ATS systems...",
+  "Calculating job match score...",
+  "Finalizing your optimized resume...",
 ];
 
 // Progress messages during generation (for Start Fresh)
@@ -610,23 +611,23 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
                 step === 'comparing' ? "text-sm sm:text-base" : "text-base sm:text-lg"
               )}>
                 {step === 'auth' && 'Sign In Required'}
-                {step === 'input' && 'Tailor Resume for Job'}
+                {step === 'input' && 'Match Resume to Job'}
                 {step === 'source' && 'Choose Your Resume'}
                 {step === 'userInfo' && 'Your Information'}
                 {step === 'uploading' && 'Processing Resume...'}
-                {step === 'tailoring' && 'Tailoring Your Resume'}
+                {step === 'tailoring' && 'Optimizing Your Resume'}
                 {step === 'generating' && 'Generating Your Resume'}
-                {step === 'comparing' && 'Review Tailored Resume'}
+                {step === 'comparing' && 'Review Optimized Resume'}
                 {step === 'error' && 'Something Went Wrong'}
               </h2>
               {step !== 'comparing' && (
                 <p className="text-xs sm:text-sm text-gray-500 mt-0.5 truncate">
                   {step === 'auth' && 'This is a premium feature'}
-                  {step === 'input' && 'Paste the job description to get started'}
+                  {step === 'input' && 'Paste the job description to optimize your resume'}
                   {step === 'source' && 'Upload or use your existing profile'}
                   {step === 'userInfo' && 'Enter your basic details'}
                   {step === 'uploading' && 'Please wait...'}
-                  {step === 'tailoring' && 'AI is optimizing your resume'}
+                  {step === 'tailoring' && 'AI is matching your resume to the job'}
                   {step === 'generating' && 'AI is creating your resume'}
                   {step === 'error' && 'Please try again'}
                 </p>
@@ -787,11 +788,12 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
                   </div>
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-800">
-                      AI-Powered Job Matching
+                      AI-Powered Resume Optimization
                     </p>
                     <p className="text-[11px] sm:text-xs text-gray-600 mt-0.5 sm:mt-1 leading-relaxed">
-                      Our AI will analyze the job requirements and tailor your resume to highlight
-                      relevant skills, add missing keywords, and optimize for ATS systems.
+                      Our AI will rewrite your <strong>professional summary</strong> to match the role,
+                      enhance your <strong>experience bullet points</strong> with relevant keywords,
+                      and add <strong>missing skills</strong> from the job description.
                     </p>
                   </div>
                 </div>
@@ -1067,7 +1069,7 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
               </div>
 
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                Tailoring Your Resume
+                Optimizing Your Resume
               </h3>
 
               <div className="h-6 sm:h-8 flex items-center justify-center mb-4 sm:mb-6">

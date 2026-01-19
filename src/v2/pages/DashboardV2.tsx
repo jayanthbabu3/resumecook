@@ -26,6 +26,7 @@ import { ProFeatureModal } from '@/v2/components/ProFeatureModal';
 import { ChatWithResumeIntroModal } from '@/v2/components/ChatWithResumeIntroModal';
 import { DashboardTour } from '@/v2/components/DashboardTour';
 import { TrialBanner } from '@/components/TrialBanner';
+// import { ATSCheckerModal } from '@/v2/components/ATSCheckerModal'; // Hidden for refinement
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import type { V2ResumeData } from '../types';
@@ -59,6 +60,8 @@ const DashboardV2 = () => {
   // Editor mode template selector state
   const [editorTemplateSelectorOpen, setEditorTemplateSelectorOpen] = useState(false);
   const [pendingEditorMode, setPendingEditorMode] = useState<'live' | 'form' | null>(null);
+  // ATS Checker Modal state - Hidden for refinement
+  // const [atsCheckerOpen, setAtsCheckerOpen] = useState(false);
 
   const v2Templates = getAllTemplates();
   const totalTemplates = v2Templates.length;
@@ -90,8 +93,8 @@ const DashboardV2 = () => {
   const handleJobTailorClick = () => {
     if (!user || !isPro) {
       setProModalFeature({
-        name: 'Job Tailoring',
-        description: 'Match any job description automatically with AI',
+        name: 'Match to Job',
+        description: 'Optimize your resume to match any job description with AI',
       });
       setProModalOpen(true);
     } else {
@@ -103,7 +106,7 @@ const DashboardV2 = () => {
     if (!user || !isPro) {
       setProModalFeature({
         name: 'Chat with Resume',
-        description: 'Build your resume through natural conversation with AI',
+        description: 'Just tell AI about yourself and watch your resume build in real-time',
       });
       setProModalOpen(true);
     } else {
@@ -111,6 +114,19 @@ const DashboardV2 = () => {
       setChatIntroModalOpen(true);
     }
   };
+
+  // ATS Checker handler - Hidden for refinement
+  // const handleATSCheckerClick = () => {
+  //   if (!user || !isPro) {
+  //     setProModalFeature({
+  //       name: 'ATS Resume Checker',
+  //       description: 'Test your resume against real ATS systems and get optimization tips',
+  //     });
+  //     setProModalOpen(true);
+  //   } else {
+  //     setAtsCheckerOpen(true);
+  //   }
+  // };
 
   // Handle template selection from chat intro modal
   const handleChatTemplateSelect = (templateId: string) => {
@@ -185,11 +201,11 @@ const DashboardV2 = () => {
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        {/* Trial Banner */}
-        <TrialBanner className="mb-8" />
+        {/* Trial Banner - Compact inline version */}
+        <TrialBanner variant="compact" className="mb-6 rounded-lg" />
 
         {/* Hero Section */}
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center mb-10 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
             Create Your Perfect Resume
           </h1>
@@ -199,8 +215,8 @@ const DashboardV2 = () => {
         </div>
 
         {/* FREE SECTION */}
-        <div className="mb-14 sm:mb-20" data-tour="free-section">
-          <div className="flex items-center gap-3 mb-6">
+        <div className="mb-10 sm:mb-14" data-tour="free-section">
+          <div className="flex items-center gap-3 mb-4">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Free Features</h2>
             <span className="text-xs font-semibold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
               No Credit Card Required
@@ -311,8 +327,8 @@ const DashboardV2 = () => {
         </div>
 
         {/* PRO SECTION */}
-        <div className="mb-12 sm:mb-16" data-tour="pro-section">
-          <div className="flex items-center gap-3 mb-6">
+        <div className="mb-10 sm:mb-12" data-tour="pro-section">
+          <div className="flex items-center gap-3 mb-4">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Pro Features</h2>
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-gradient-to-r from-amber-100 to-orange-100 px-3 py-1 rounded-full">
               <Crown className="w-3.5 h-3.5" />
@@ -320,7 +336,7 @@ const DashboardV2 = () => {
             </span>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             {/* Chat with Resume */}
             <button
               onClick={handleChatWithResumeClick}
@@ -340,7 +356,7 @@ const DashboardV2 = () => {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Chat with Resume</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
-                  Build your resume through natural conversation with AI
+                  Tell AI about yourself, watch your resume build live
                 </p>
                 <div className="flex items-center gap-1 text-primary font-medium text-sm">
                   <span>Start Chatting</span>
@@ -365,7 +381,7 @@ const DashboardV2 = () => {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Upload Resume</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
-                  AI extracts info from your PDF or DOCX instantly
+                  Import your existing resume, AI fills in everything
                 </p>
                 <div className="flex items-center gap-1 text-sky-600 font-medium text-sm">
                   <span>Upload Now</span>
@@ -388,12 +404,12 @@ const DashboardV2 = () => {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-4">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-1.5">Tailor for Job</h3>
+                <h3 className="font-semibold text-gray-900 mb-1.5">Match to Job</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
-                  AI optimizes your resume for any job description
+                  Paste a job post, AI tailors your resume to fit perfectly
                 </p>
                 <div className="flex items-center gap-1 text-amber-600 font-medium text-sm">
-                  <span>Optimize Now</span>
+                  <span>Match Now</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
@@ -415,7 +431,7 @@ const DashboardV2 = () => {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Import from LinkedIn</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
-                  Import your work experience and skills in one click
+                  Connect LinkedIn, get a ready resume in seconds
                 </p>
                 <div className="flex items-center gap-1 text-[#0077B5] font-medium text-sm">
                   <span>Import Now</span>
@@ -423,6 +439,33 @@ const DashboardV2 = () => {
                 </div>
               </div>
             </button>
+
+{/* ATS Resume Checker - Hidden for refinement */}
+            {/* TODO: Re-enable when ATS checker is refined
+            <button
+              onClick={handleATSCheckerClick}
+              className="group relative bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 text-left"
+              data-tour="ats-checker"
+            >
+              <div className="absolute top-4 right-4">
+                <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">PRO</span>
+              </div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-teal-50 to-transparent rounded-bl-full opacity-60" />
+              <div className="relative">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center mb-4">
+                  <ScanSearch className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-1.5">ATS Resume Checker</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-3">
+                  Test your resume against ATS systems, get keyword analysis
+                </p>
+                <div className="flex items-center gap-1 text-teal-600 font-medium text-sm">
+                  <span>Check Now</span>
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+            </button>
+            */}
           </div>
         </div>
 
@@ -517,6 +560,14 @@ const DashboardV2 = () => {
 
       {/* Dashboard Tour */}
       <DashboardTour />
+
+{/* ATS Checker Modal - Hidden for refinement */}
+      {/* TODO: Re-enable when ATS checker is refined
+      <ATSCheckerModal
+        isOpen={atsCheckerOpen}
+        onClose={() => setAtsCheckerOpen(false)}
+      />
+      */}
     </div>
   );
 };

@@ -27,6 +27,7 @@ import { formatCount, incrementDownloadsCount } from "@/lib/firestore/statsServi
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { Users } from "lucide-react";
 import type { ResumeData } from "@/types/resume";
+import { TrialBanner } from "@/components/TrialBanner";
 
 
 const Hero = () => {
@@ -494,6 +495,9 @@ const Hero = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+
+      {/* Trial Banner - Shows for non-Pro users when trials available */}
+      <TrialBanner variant="compact" onClaimClick={() => navigate('/pricing?trial=true')} />
 
       {/* Hero Section - Inspired by Stripe, Linear, Vercel - Responsive */}
       <section className="relative min-h-screen lg:min-h-[90vh] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0">

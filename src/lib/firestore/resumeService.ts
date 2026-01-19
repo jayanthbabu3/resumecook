@@ -14,6 +14,7 @@ import {
   Timestamp,
   increment,
   writeBatch,
+  getCountFromServer,
 } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
 import type {
@@ -26,6 +27,7 @@ import type {
   PublicResume,
 } from '@/types/resume';
 import { toast } from 'sonner';
+import { USER_LIMITS, LIMIT_ERRORS } from '@/config/limits';
 
 /**
  * Firestore Resume Service with Hybrid Architecture
@@ -55,6 +57,30 @@ class ResumeService {
    */
   private getResumeVersionsRef(resumeId: string) {
     return collection(db, 'resumeVersions', resumeId, 'versions');
+  }
+
+  /**
+   * Get the count of user's resumes
+   */
+  async getResumeCount(): Promise<number> {
+    const user = auth.currentUser;
+    if (!user) return 0;
+
+    const resumesRef = this.getUserResumesRef(user.uid);
+    const snapshot = await getCountFromServer(resumesRef);
+    return snapshot.data().count;
+  }
+
+  /**
+   * Check if user can create more resumes
+   */
+  async canCreateResume(): Promise<{ allowed: boolean; count: number; limit: number }> {
+    const count = await this.getResumeCount();
+    return {
+      allowed: count < USER_LIMITS.MAX_RESUMES,
+      count,
+      limit: USER_LIMITS.MAX_RESUMES,
+    };
   }
 
   /**
@@ -104,6 +130,13 @@ class ResumeService {
   ): Promise<string> {
     const user = auth.currentUser;
     if (!user) throw new Error('User not authenticated');
+
+    // Check resume limit before creating
+    const { allowed, count } = await this.canCreateResume();
+    if (!allowed) {
+      toast.error(LIMIT_ERRORS.RESUMES_LIMIT_REACHED);
+      throw new Error(LIMIT_ERRORS.RESUMES_LIMIT_REACHED);
+    }
 
     const resumesRef = this.getUserResumesRef(user.uid);
     const resumeId = doc(resumesRef).id;
@@ -579,6 +612,18 @@ class ResumeService {
   }
 
   /**
+   * Check if user can add more favorites
+   */
+  async canAddFavorite(): Promise<{ allowed: boolean; count: number; limit: number }> {
+    const favorites = await this.getFavoriteTemplates();
+    return {
+      allowed: favorites.length < USER_LIMITS.MAX_FAVORITES,
+      count: favorites.length,
+      limit: USER_LIMITS.MAX_FAVORITES,
+    };
+  }
+
+  /**
    * Add template to favorites
    */
   async addFavoriteTemplate(templateId: string): Promise<void> {
@@ -597,18 +642,29 @@ class ResumeService {
         favorites = Array.isArray(data.templateIds) ? data.templateIds : [];
       }
 
-      // Add if not already in favorites
-      if (!favorites.includes(templateId)) {
-        favorites.push(templateId);
-        await setDoc(docRef, {
-          templateIds: favorites,
-          updatedAt: serverTimestamp(),
-        }, { merge: true });
-        toast.success('Template added to favorites');
+      // Check if already in favorites
+      if (favorites.includes(templateId)) {
+        return; // Already favorited, no need to add
       }
+
+      // Check favorites limit before adding
+      if (favorites.length >= USER_LIMITS.MAX_FAVORITES) {
+        toast.error(LIMIT_ERRORS.FAVORITES_LIMIT_REACHED);
+        throw new Error(LIMIT_ERRORS.FAVORITES_LIMIT_REACHED);
+      }
+
+      // Add to favorites
+      favorites.push(templateId);
+      await setDoc(docRef, {
+        templateIds: favorites,
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
+      toast.success('Template added to favorites');
     } catch (error) {
       console.error('Error adding favorite template:', error);
-      toast.error('Failed to add to favorites');
+      if (!(error instanceof Error && error.message === LIMIT_ERRORS.FAVORITES_LIMIT_REACHED)) {
+        toast.error('Failed to add to favorites');
+      }
       throw error;
     }
   }

@@ -101,9 +101,10 @@ const Pricing = () => {
     loading: subscriptionLoading,
     error: subscriptionError
   } = useSubscription();
-  const { trialStatus } = useTrial();
+  const { trialStatus, claimTrial, loading: trialLoading } = useTrial();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [pendingTrialClaim, setPendingTrialClaim] = useState(false);
 
   // Handle subscription callback messages
   useEffect(() => {
@@ -114,6 +115,35 @@ const Pricing = () => {
       toast.success("Welcome to Pro! Your subscription is now active.");
     }
   }, [searchParams]);
+
+  // Check if user came from trial banner (trial=true param) - only run once on mount
+  useEffect(() => {
+    const wantsTrial = searchParams.get("trial") === "true";
+    if (wantsTrial && !user) {
+      // User came from trial banner but not logged in - show login modal
+      setShowLoginModal(true);
+      setPendingTrialClaim(true);
+      // Clear the trial param from URL to prevent reopening on close
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount
+
+  // Auto-claim trial after login if user came from trial banner
+  useEffect(() => {
+    const handleTrialClaim = async () => {
+      if (pendingTrialClaim && user && !isPro && !isTrial && trialStatus?.trialsAvailable) {
+        setPendingTrialClaim(false);
+        const success = await claimTrial();
+        if (success) {
+          toast.success("Welcome! Your 7-day Pro trial is now active.");
+          navigate("/dashboard");
+        }
+      }
+    };
+    handleTrialClaim();
+  }, [pendingTrialClaim, user, isPro, isTrial, trialStatus?.trialsAvailable, claimTrial, navigate]);
 
   // Show error toast when subscription error occurs
   useEffect(() => {
@@ -131,9 +161,13 @@ const Pricing = () => {
     try {
       await signInWithGoogle();
       setShowLoginModal(false);
-      toast.success("Signed in successfully! You can now upgrade to Pro.");
+      // If pending trial claim, don't show generic success - the trial claim effect will handle it
+      if (!pendingTrialClaim) {
+        toast.success("Signed in successfully! You can now upgrade to Pro.");
+      }
     } catch (error) {
       toast.error("Failed to sign in. Please try again.");
+      setPendingTrialClaim(false);
     } finally {
       setIsSigningIn(false);
     }
@@ -152,6 +186,25 @@ const Pricing = () => {
     }
 
     await initiateSubscription();
+  };
+
+  const handleClaimTrial = async () => {
+    if (!user) {
+      setPendingTrialClaim(true);
+      setShowLoginModal(true);
+      return;
+    }
+
+    if (isPro) {
+      toast.info("You already have Pro access!");
+      return;
+    }
+
+    const success = await claimTrial();
+    if (success) {
+      toast.success("Welcome! Your 7-day Pro trial is now active.");
+      navigate("/dashboard");
+    }
   };
 
   const isLoading = subscriptionLoading;
@@ -174,7 +227,10 @@ const Pricing = () => {
               <Button
                 size="sm"
                 className="bg-white text-purple-700 hover:bg-white/90 text-xs h-7 font-semibold"
-                onClick={() => setShowLoginModal(true)}
+                onClick={() => {
+                  setPendingTrialClaim(true);
+                  setShowLoginModal(true);
+                }}
               >
                 Claim Yours
                 <ArrowRight className="ml-1 h-3 w-3" />
@@ -302,8 +358,33 @@ const Pricing = () => {
                 )}
               </Button>
 
+              {/* Trial Option - Show when trials available and user not on Pro */}
+              {FEATURE_FLAGS.TRIAL_SYSTEM_ENABLED && trialStatus?.trialsAvailable && !isPro && !isTrial && (
+                <Button
+                  variant="outline"
+                  className="w-full h-10 mt-3 font-medium rounded-xl border-violet-200 text-violet-700 hover:bg-violet-50"
+                  onClick={handleClaimTrial}
+                  disabled={trialLoading}
+                >
+                  {trialLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Claiming...
+                    </>
+                  ) : (
+                    <>
+                      <Gift className="mr-2 h-4 w-4" />
+                      Try Free for 7 Days
+                    </>
+                  )}
+                </Button>
+              )}
+
               <p className="text-xs text-center text-gray-500 mt-3 mb-6">
-                Cancel anytime • 7-day money-back guarantee
+                {FEATURE_FLAGS.TRIAL_SYSTEM_ENABLED && trialStatus?.trialsAvailable && !isPro && !isTrial
+                  ? `No credit card required • ${trialStatus.trialsRemaining} trials left`
+                  : "Cancel anytime • 7-day money-back guarantee"
+                }
               </p>
 
               <div className="space-y-3">
@@ -462,77 +543,203 @@ const Pricing = () => {
         </div>
       </footer>
 
-      {/* Login Modal */}
-      <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
-        <DialogContent className="sm:max-w-[400px] p-0 gap-0 overflow-hidden border-0 shadow-xl rounded-2xl">
-          {/* Close Button */}
+      {/* Login Modal - Different design for trial vs upgrade */}
+      <Dialog
+        open={showLoginModal}
+        onOpenChange={(open) => {
+          setShowLoginModal(open);
+          if (!open) setPendingTrialClaim(false);
+        }}
+        modal={true}
+      >
+        <DialogContent
+          className="sm:max-w-[400px] p-0 gap-0 overflow-hidden border-0 shadow-xl rounded-2xl [&>button:last-child]:hidden"
+          onInteractOutside={() => {
+            setShowLoginModal(false);
+            setPendingTrialClaim(false);
+          }}
+          onEscapeKeyDown={() => {
+            setShowLoginModal(false);
+            setPendingTrialClaim(false);
+          }}
+        >
+          {/* Close Button - Custom styled for visibility on colored headers */}
           <button
-            onClick={() => setShowLoginModal(false)}
-            className="absolute right-3 top-3 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-colors"
+            type="button"
+            onClick={() => { setShowLoginModal(false); setPendingTrialClaim(false); }}
+            className={cn(
+              "absolute right-3 top-3 z-50 p-2 rounded-full transition-colors",
+              pendingTrialClaim
+                ? "bg-white/30 hover:bg-white/50 text-white"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700"
+            )}
+            aria-label="Close"
           >
             <X className="h-4 w-4" />
           </button>
 
-          {/* Header */}
-          <div className="bg-gradient-to-br from-primary/10 to-blue-50 px-6 pt-10 pb-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-4 p-4 rounded-2xl bg-white shadow-md">
-                <Crown className="h-8 w-8 text-primary" />
+          {pendingTrialClaim ? (
+            /* Trial Claim Modal - Using website's blue theme */
+            <>
+              {/* Header - Blue gradient matching website theme */}
+              <div className="bg-gradient-to-br from-primary to-blue-600 px-6 pt-10 pb-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-4 p-4 rounded-2xl bg-white/20 backdrop-blur-sm">
+                    <Gift className="h-8 w-8 text-white" />
+                  </div>
+                  <h2 className="text-xl font-bold text-white mb-1">
+                    Start Your Free Trial
+                  </h2>
+                  <p className="text-white/90 text-sm">
+                    7 days of Pro features, completely free
+                  </p>
+                </div>
               </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">
-                Upgrade to Pro
-              </h2>
-              <p className="text-gray-600 text-sm">
-                Sign in to unlock AI-powered features
-              </p>
-            </div>
-          </div>
 
-          {/* Content */}
-          <div className="px-6 py-6">
-            {/* Price */}
-            <div className="text-center mb-5 p-3 bg-gray-50 rounded-xl">
-              <div className="flex items-baseline justify-center gap-1">
-                <span className="text-3xl font-bold text-gray-900">{PRICING.currency}{PRICING.amount}</span>
-                <span className="text-gray-500">/{PRICING.period}</span>
+              {/* Content */}
+              <div className="px-6 py-6">
+                {/* Price comparison */}
+                <div className="text-center mb-5 p-4 bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10">
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <span className="text-xl text-gray-400 line-through">{PRICING.currency}{PRICING.amount}/mo</span>
+                    <ArrowRight className="h-4 w-4 text-primary" />
+                    <span className="text-3xl font-bold text-primary">{PRICING.currency}0</span>
+                  </div>
+                  <p className="text-sm text-primary font-medium">
+                    Free for 7 days • No credit card required
+                  </p>
+                </div>
+
+                {/* What's included */}
+                <div className="mb-5 space-y-2">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">What you'll get</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Check className="h-4 w-4 text-primary" />
+                      <span>LinkedIn Import</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Check className="h-4 w-4 text-primary" />
+                      <span>AI Enhancement</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Check className="h-4 w-4 text-primary" />
+                      <span>Job Tailoring</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Check className="h-4 w-4 text-primary" />
+                      <span>AI Chat</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Google Sign In - White button with colored Google logo */}
+                <Button
+                  className="w-full h-12 font-semibold bg-white border-2 border-gray-200 text-gray-800 hover:bg-gray-50 hover:border-gray-300 rounded-xl shadow-sm"
+                  onClick={handleGoogleSignIn}
+                  disabled={isSigningIn}
+                >
+                  {isSigningIn ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Starting your trial...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                      </svg>
+                      Continue with Google
+                    </>
+                  )}
+                </Button>
+
+                {trialStatus && (
+                  <p className="text-xs text-center text-primary mt-3 font-medium">
+                    {trialStatus.trialsRemaining} of 1,000 free trials remaining
+                  </p>
+                )}
+
+                <p className="text-xs text-center text-gray-500 mt-3">
+                  By continuing, you agree to our{' '}
+                  <button onClick={() => { setShowLoginModal(false); navigate('/terms'); }} className="text-primary hover:underline">
+                    Terms
+                  </button>
+                  {' '}and{' '}
+                  <button onClick={() => { setShowLoginModal(false); navigate('/privacy'); }} className="text-primary hover:underline">
+                    Privacy Policy
+                  </button>
+                </p>
               </div>
-            </div>
+            </>
+          ) : (
+            /* Regular Upgrade Modal */
+            <>
+              {/* Header */}
+              <div className="bg-gradient-to-br from-primary/10 to-blue-50 px-6 pt-10 pb-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-4 p-4 rounded-2xl bg-white shadow-md">
+                    <Crown className="h-8 w-8 text-primary" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900 mb-1">
+                    Upgrade to Pro
+                  </h2>
+                  <p className="text-gray-600 text-sm">
+                    Sign in to unlock AI-powered features
+                  </p>
+                </div>
+              </div>
 
-            {/* Google Sign In */}
-            <Button
-              className="w-full h-12 font-semibold bg-white border-2 border-gray-200 text-gray-800 hover:bg-gray-50 hover:border-gray-300 rounded-xl"
-              onClick={handleGoogleSignIn}
-              disabled={isSigningIn}
-            >
-              {isSigningIn ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                <>
-                  <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-                  </svg>
-                  Continue with Google
-                </>
-              )}
-            </Button>
+              {/* Content */}
+              <div className="px-6 py-6">
+                {/* Price */}
+                <div className="text-center mb-5 p-3 bg-gray-50 rounded-xl">
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-3xl font-bold text-gray-900">{PRICING.currency}{PRICING.amount}</span>
+                    <span className="text-gray-500">/{PRICING.period}</span>
+                  </div>
+                </div>
 
-            <p className="text-xs text-center text-gray-500 mt-4">
-              By continuing, you agree to our{' '}
-              <button onClick={() => { setShowLoginModal(false); navigate('/terms'); }} className="text-primary hover:underline">
-                Terms
-              </button>
-              {' '}and{' '}
-              <button onClick={() => { setShowLoginModal(false); navigate('/privacy'); }} className="text-primary hover:underline">
-                Privacy Policy
-              </button>
-            </p>
-          </div>
+                {/* Google Sign In */}
+                <Button
+                  className="w-full h-12 font-semibold bg-white border-2 border-gray-200 text-gray-800 hover:bg-gray-50 hover:border-gray-300 rounded-xl"
+                  onClick={handleGoogleSignIn}
+                  disabled={isSigningIn}
+                >
+                  {isSigningIn ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                      </svg>
+                      Continue with Google
+                    </>
+                  )}
+                </Button>
+
+                <p className="text-xs text-center text-gray-500 mt-4">
+                  By continuing, you agree to our{' '}
+                  <button onClick={() => { setShowLoginModal(false); navigate('/terms'); }} className="text-primary hover:underline">
+                    Terms
+                  </button>
+                  {' '}and{' '}
+                  <button onClick={() => { setShowLoginModal(false); navigate('/privacy'); }} className="text-primary hover:underline">
+                    Privacy Policy
+                  </button>
+                </p>
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { resumeService } from '@/lib/firestore/resumeService';
 import { useFirebaseAuth } from './useFirebaseAuth';
 import { toast } from 'sonner';
+import { USER_LIMITS } from '@/config/limits';
 
 /**
  * Custom hook for managing favorite templates
@@ -72,6 +73,13 @@ export const useFavoriteTemplates = () => {
         const wasFavorited = favorites.includes(templateId);
         console.log('[Favorites] Current favorite status:', wasFavorited ? 'favorited' : 'not favorited');
 
+        // Check limit before adding
+        if (!wasFavorited && favorites.length >= USER_LIMITS.MAX_FAVORITES) {
+          toast.error(`You can only have up to ${USER_LIMITS.MAX_FAVORITES} favorite templates. Please remove a favorite to add a new one.`);
+          setToggling(prev => ({ ...prev, [templateId]: false }));
+          return;
+        }
+
         // Optimistically update UI
         if (wasFavorited) {
           setFavorites(prev => prev.filter(id => id !== templateId));
@@ -115,6 +123,12 @@ export const useFavoriteTemplates = () => {
       }
 
       if (favorites.includes(templateId)) {
+        return;
+      }
+
+      // Check limit before adding
+      if (favorites.length >= USER_LIMITS.MAX_FAVORITES) {
+        toast.error(`You can only have up to ${USER_LIMITS.MAX_FAVORITES} favorite templates. Please remove a favorite to add a new one.`);
         return;
       }
 
@@ -186,6 +200,11 @@ export const useFavoriteTemplates = () => {
     }
   }, [user]);
 
+  // Check if user can add more favorites
+  const canAddFavorite = favorites.length < USER_LIMITS.MAX_FAVORITES;
+  const favoritesLimit = USER_LIMITS.MAX_FAVORITES;
+  const favoritesCount = favorites.length;
+
   return {
     favorites,
     loading,
@@ -195,5 +214,9 @@ export const useFavoriteTemplates = () => {
     addFavorite,
     removeFavorite,
     refreshFavorites,
+    // Limit info
+    canAddFavorite,
+    favoritesLimit,
+    favoritesCount,
   };
 };

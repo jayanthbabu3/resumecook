@@ -12,6 +12,7 @@ import {
   Copy,
   Star,
   Clock,
+  AlertCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -25,6 +26,7 @@ import { FavoriteTemplates } from "@/components/FavoriteTemplates";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TemplatePreviewV2 } from "@/v2/components/TemplatePreviewV2";
 import { useFavoriteTemplates } from "@/hooks/useFavoriteTemplates";
+import { USER_LIMITS } from "@/config/limits";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,11 +49,15 @@ const MyResumes = () => {
   const navigate = useNavigate();
   const { user } = useFirebaseAuth();
   const { toast } = useToast();
-  const { favorites } = useFavoriteTemplates();
+  const { favorites, favoritesLimit, favoritesCount, canAddFavorite } = useFavoriteTemplates();
   const [resumes, setResumes] = useState<ResumeMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resumeToDelete, setResumeToDelete] = useState<string | null>(null);
+
+  // Check if user can create more resumes
+  const canCreateResume = resumes.length < USER_LIMITS.MAX_RESUMES;
+  const resumesLimit = USER_LIMITS.MAX_RESUMES;
 
   useEffect(() => {
     loadResumes();
@@ -98,6 +104,16 @@ const MyResumes = () => {
   };
 
   const handleDuplicate = async (resumeId: string) => {
+    // Check limit before duplicating
+    if (!canCreateResume) {
+      toast({
+        title: "Resume limit reached",
+        description: `You can only save up to ${resumesLimit} resumes. Please delete an existing resume to duplicate.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       await resumeService.duplicateResume(resumeId);
       await loadResumes();
@@ -207,35 +223,56 @@ const MyResumes = () => {
                 <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">My Resumes</span>
                 <span className="sm:hidden">Resumes</span>
-                {resumes.length > 0 && (
-                  <Badge variant="secondary" className="ml-0.5 sm:ml-1 h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] data-[state=active]:bg-white/20 data-[state=active]:text-white">
-                    {resumes.length}
-                  </Badge>
-                )}
+                <Badge variant="secondary" className={`ml-0.5 sm:ml-1 h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] data-[state=active]:bg-white/20 data-[state=active]:text-white ${!canCreateResume ? 'bg-amber-100 text-amber-700' : ''}`}>
+                  {resumes.length}/{resumesLimit}
+                </Badge>
               </TabsTrigger>
               <TabsTrigger value="favorites" className="gap-1.5 sm:gap-2 px-2.5 sm:px-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-white">
                 <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">Favorites</span>
                 <span className="sm:hidden">Favs</span>
-                {favorites.length > 0 && (
-                  <Badge variant="secondary" className="ml-0.5 sm:ml-1 h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] data-[state=active]:bg-white/20 data-[state=active]:text-white">
-                    {favorites.length}
-                  </Badge>
-                )}
+                <Badge variant="secondary" className={`ml-0.5 sm:ml-1 h-4 sm:h-5 px-1 sm:px-1.5 text-[9px] sm:text-[10px] data-[state=active]:bg-white/20 data-[state=active]:text-white ${!canAddFavorite ? 'bg-amber-100 text-amber-700' : ''}`}>
+                  {favoritesCount}/{favoritesLimit}
+                </Badge>
               </TabsTrigger>
             </TabsList>
 
             {/* Create New Resume Button */}
             <Button
               size="sm"
-              onClick={() => navigate("/templates")}
-              className="gap-1.5 sm:gap-2 h-9 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all"
+              onClick={() => {
+                if (!canCreateResume) {
+                  toast({
+                    title: "Resume limit reached",
+                    description: `You can only save up to ${resumesLimit} resumes. Please delete an existing resume to create a new one.`,
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                navigate("/templates");
+              }}
+              className={`gap-1.5 sm:gap-2 h-9 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm transition-all ${
+                canCreateResume
+                  ? "shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30"
+                  : "opacity-60 cursor-not-allowed"
+              }`}
+              disabled={!canCreateResume}
             >
               <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span className="sm:hidden">New</span>
               <span className="hidden sm:inline">Create New Resume</span>
             </Button>
           </div>
+
+          {/* Limit Warning Banner */}
+          {!canCreateResume && (
+            <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0" />
+              <p className="text-sm text-amber-800">
+                You've reached the maximum of {resumesLimit} resumes. Delete an existing resume to create a new one.
+              </p>
+            </div>
+          )}
 
           {/* My Resumes Tab */}
           <TabsContent value="resumes" className="mt-0">
@@ -284,12 +321,17 @@ const MyResumes = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={(e) => {
-                            e.stopPropagation();
-                            handleDuplicate(resume.id!);
-                          }}>
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDuplicate(resume.id!);
+                            }}
+                            disabled={!canCreateResume}
+                            className={!canCreateResume ? "opacity-50 cursor-not-allowed" : ""}
+                          >
                             <Copy className="h-4 w-4 mr-2" />
                             Duplicate
+                            {!canCreateResume && <span className="ml-1 text-xs text-muted-foreground">(limit)</span>}
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem

@@ -83,8 +83,8 @@ import { Target } from 'lucide-react';
 import { ProFeatureModal } from '../components/ProFeatureModal';
 import { useSubscription } from '@/hooks/useSubscription';
 
-// ATS Score Panel
-import { ATSScorePanel } from '../components/ATSScorePanel';
+// ATS Score Panel - Hidden for refinement
+// import { ATSScorePanel } from '../components/ATSScorePanel';
 import { FileCheck } from 'lucide-react';
 
 // Chat With Resume - Conversational Resume Builder
@@ -145,8 +145,8 @@ export const BuilderV2: React.FC = () => {
   // Pro Feature modal state
   const [showProModal, setShowProModal] = useState(false);
   const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
-  // ATS Score panel state
-  const [showATSPanel, setShowATSPanel] = useState(false);
+  // ATS Score panel state - Hidden for refinement
+  // const [showATSPanel, setShowATSPanel] = useState(false);
 
   // Chat mode state - when true, shows chat panel instead of form
   const [isChatMode, setIsChatMode] = useState(false);
@@ -1978,6 +1978,8 @@ export const BuilderV2: React.FC = () => {
                   <Target className="w-3 h-3" />
                   <span>Job</span>
                 </button>
+{/* ATS Button - Hidden for refinement */}
+                {/* TODO: Re-enable when ATS checker is refined
                 <button
                   onClick={() => setShowATSPanel(true)}
                   className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
@@ -1988,6 +1990,7 @@ export const BuilderV2: React.FC = () => {
                   <FileCheck className="w-3 h-3" />
                   <span>ATS</span>
                 </button>
+                */}
               </div>
 
               {/* Right: Color + Download */}
@@ -2220,7 +2223,8 @@ export const BuilderV2: React.FC = () => {
                       </TooltipContent>
                     </Tooltip>
 
-                    {/* ATS Score Button */}
+{/* ATS Score Button - Hidden for refinement */}
+                    {/* TODO: Re-enable when ATS checker is refined
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
@@ -2249,6 +2253,7 @@ export const BuilderV2: React.FC = () => {
                         <p>Check ATS compatibility score</p>
                       </TooltipContent>
                     </Tooltip>
+                    */}
 
                   </div>
 
@@ -3034,12 +3039,14 @@ export const BuilderV2: React.FC = () => {
         featureDescription={proModalFeature.description}
       />
 
-      {/* ATS Score Panel */}
+{/* ATS Score Panel - Hidden for refinement */}
+      {/* TODO: Re-enable when ATS checker is refined
       <ATSScorePanel
         resumeData={resumeData}
         isOpen={showATSPanel}
         onClose={() => setShowATSPanel(false)}
       />
+      */}
 
       {/* Floating Chat Button - Opens chat panel on the right */}
       {!isChatMode && (

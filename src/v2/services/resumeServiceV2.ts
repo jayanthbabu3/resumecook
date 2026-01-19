@@ -19,10 +19,12 @@ import {
   serverTimestamp,
   Timestamp,
   increment,
+  getCountFromServer,
 } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
 import { toast } from 'sonner';
 import type { V2ResumeData } from '../types/resumeData';
+import { USER_LIMITS, LIMIT_ERRORS } from '@/config/limits';
 
 /**
  * V2 Resume Metadata - stored in Firestore
@@ -100,6 +102,30 @@ class ResumeServiceV2 {
    */
   private getUserResumesRef(userId: string) {
     return collection(db, 'users', userId, 'resumes');
+  }
+
+  /**
+   * Get the count of user's resumes
+   */
+  async getResumeCount(): Promise<number> {
+    const user = auth.currentUser;
+    if (!user) return 0;
+
+    const resumesRef = this.getUserResumesRef(user.uid);
+    const snapshot = await getCountFromServer(resumesRef);
+    return snapshot.data().count;
+  }
+
+  /**
+   * Check if user can create a new resume
+   */
+  async canCreateResume(): Promise<{ allowed: boolean; count: number; limit: number }> {
+    const count = await this.getResumeCount();
+    return {
+      allowed: count < USER_LIMITS.MAX_RESUMES,
+      count,
+      limit: USER_LIMITS.MAX_RESUMES,
+    };
   }
 
   /**
@@ -211,6 +237,13 @@ class ResumeServiceV2 {
   ): Promise<string> {
     const user = auth.currentUser;
     if (!user) throw new Error('User not authenticated');
+
+    // Check resume limit
+    const { allowed, count } = await this.canCreateResume();
+    if (!allowed) {
+      toast.error(LIMIT_ERRORS.RESUMES_LIMIT_REACHED);
+      throw new Error(LIMIT_ERRORS.RESUMES_LIMIT_REACHED);
+    }
 
     const resumesRef = this.getUserResumesRef(user.uid);
     const resumeId = doc(resumesRef).id;
