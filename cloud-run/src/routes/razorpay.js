@@ -32,12 +32,36 @@ const TRIAL_CONFIG = {
 };
 
 // Razorpay Plan configuration
-// Note: Create the plan first via Razorpay Dashboard or API
-// Plan ID will be set via environment variable
-const RAZORPAY_CONFIG = {
-  planId: process.env.RAZORPAY_PLAN_ID, // Monthly Pro plan ID
-  currency: 'INR',
-  amount: 16900, // ₹169 in paise
+// Note: Create plans first via Razorpay Dashboard
+// INR plan for India, USD plan for international users
+const RAZORPAY_PLANS = {
+  INR: {
+    planId: process.env.RAZORPAY_PLAN_ID, // Monthly Pro plan in INR
+    currency: 'INR',
+    amount: 16900, // ₹169 in paise
+    displayAmount: 169,
+    symbol: '₹',
+  },
+  USD: {
+    planId: process.env.RAZORPAY_PLAN_ID_USD, // Monthly Pro plan in USD
+    currency: 'USD',
+    amount: 900, // $9 in cents
+    displayAmount: 9,
+    symbol: '$',
+  },
+};
+
+// Default currency for backward compatibility
+const DEFAULT_CURRENCY = 'INR';
+
+/**
+ * Get the appropriate plan based on currency/country
+ * @param {string} currency - 'INR' or 'USD'
+ * @returns {object} Plan configuration
+ */
+const getPlanByCurrency = (currency) => {
+  const normalizedCurrency = currency?.toUpperCase() || DEFAULT_CURRENCY;
+  return RAZORPAY_PLANS[normalizedCurrency] || RAZORPAY_PLANS[DEFAULT_CURRENCY];
 };
 
 // Initialize Razorpay
@@ -149,26 +173,81 @@ razorpayRouter.post('/create-plan', async (req, res) => {
 });
 
 // ============================================================================
+// PRICING INFO
+// ============================================================================
+
+/**
+ * Get pricing information based on currency
+ * Frontend uses this to display the correct price
+ */
+razorpayRouter.get('/pricing', async (req, res) => {
+  try {
+    const { currency = 'INR' } = req.query;
+    const plan = getPlanByCurrency(currency);
+
+    res.json({
+      success: true,
+      pricing: {
+        currency: plan.currency,
+        symbol: plan.symbol,
+        amount: plan.displayAmount,
+        period: 'month',
+        planAvailable: !!plan.planId,
+      },
+      // Also return all available pricing for frontend to cache
+      allPricing: {
+        INR: {
+          currency: 'INR',
+          symbol: RAZORPAY_PLANS.INR.symbol,
+          amount: RAZORPAY_PLANS.INR.displayAmount,
+          period: 'month',
+          planAvailable: !!RAZORPAY_PLANS.INR.planId,
+        },
+        USD: {
+          currency: 'USD',
+          symbol: RAZORPAY_PLANS.USD.symbol,
+          amount: RAZORPAY_PLANS.USD.displayAmount,
+          period: 'month',
+          planAvailable: !!RAZORPAY_PLANS.USD.planId,
+        },
+      },
+    });
+  } catch (error) {
+    console.error('Get pricing error:', error);
+    res.status(500).json({
+      error: 'Failed to get pricing',
+      details: error.message,
+    });
+  }
+});
+
+// ============================================================================
 // SUBSCRIPTION CREATION
 // ============================================================================
 
 /**
  * Create a new subscription for a user
  * Returns subscription details for Razorpay Checkout
+ *
+ * Supports dual-currency: INR for India, USD for international users
+ * Currency is determined by the `currency` parameter from frontend
  */
 razorpayRouter.post('/create-subscription', async (req, res) => {
   try {
     const razorpay = getRazorpay();
-    const { userId, userEmail, userName } = req.body;
+    const { userId, userEmail, userName, currency = 'INR' } = req.body;
 
     if (!userId || !userEmail) {
       return res.status(400).json({ error: 'User ID and email are required' });
     }
 
-    const planId = RAZORPAY_CONFIG.planId;
+    // Get the appropriate plan based on currency
+    const plan = getPlanByCurrency(currency);
+    const planId = plan.planId;
+
     if (!planId) {
       return res.status(500).json({
-        error: 'Subscription plan not configured. Please set RAZORPAY_PLAN_ID.',
+        error: `Subscription plan not configured for ${plan.currency}. Please set ${plan.currency === 'USD' ? 'RAZORPAY_PLAN_ID_USD' : 'RAZORPAY_PLAN_ID'}.`,
       });
     }
 
@@ -186,7 +265,7 @@ razorpayRouter.post('/create-subscription', async (req, res) => {
       }
     }
 
-    // Create subscription
+    // Create subscription with the selected plan
     const subscription = await razorpay.subscriptions.create({
       plan_id: planId,
       total_count: 12, // 12 billing cycles (1 year max)
@@ -196,29 +275,32 @@ razorpayRouter.post('/create-subscription', async (req, res) => {
         firebaseUserId: userId,
         userEmail: userEmail,
         userName: userName || '',
+        currency: plan.currency, // Store currency for reference
       },
     });
 
-    // Store pending subscription in Firebase
+    // Store pending subscription in Firebase with currency info
     await db.collection('users').doc(userId).set({
       pendingSubscription: {
         razorpaySubscriptionId: subscription.id,
         status: 'created',
+        currency: plan.currency,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       },
     }, { merge: true });
 
-    console.log(`Subscription created for user ${userId}: ${subscription.id}`);
+    console.log(`Subscription created for user ${userId}: ${subscription.id} (${plan.currency})`);
 
     res.json({
       success: true,
       subscriptionId: subscription.id,
+      currency: plan.currency,
       // Data needed for Razorpay Checkout
       razorpay: {
         key: process.env.RAZORPAY_KEY_ID,
         subscription_id: subscription.id,
         name: 'ResumeCook',
-        description: 'Pro Monthly Subscription',
+        description: `Pro Monthly Subscription (${plan.symbol}${plan.displayAmount}/${plan.currency === 'INR' ? 'mo' : 'month'})`,
         prefill: {
           name: userName || '',
           email: userEmail,
@@ -228,6 +310,7 @@ razorpayRouter.post('/create-subscription', async (req, res) => {
         },
         notes: {
           firebaseUserId: userId,
+          currency: plan.currency,
         },
       },
     });
@@ -293,6 +376,11 @@ razorpayRouter.post('/verify-payment', async (req, res) => {
       ? new Date(subscription.current_end * 1000)
       : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // Default 30 days
 
+    // Get the currency from subscription notes or pending subscription
+    const userDoc = await db.collection('users').doc(userId).get();
+    const pendingCurrency = userDoc.exists ? userDoc.data()?.pendingSubscription?.currency : null;
+    const subscriptionCurrency = subscription.notes?.currency || pendingCurrency || 'INR';
+
     await db.collection('users').doc(userId).set({
       subscription: {
         status: 'active',
@@ -304,6 +392,7 @@ razorpayRouter.post('/verify-payment', async (req, res) => {
         currentPeriodEnd: currentPeriodEnd,
         cancelAtPeriodEnd: false,
         isTrial: false, // Paid subscription, not trial
+        currency: subscriptionCurrency, // Store the currency used for subscription
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       },
       // Clear pending subscription

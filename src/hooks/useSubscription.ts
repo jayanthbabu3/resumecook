@@ -12,6 +12,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useFirebaseAuth } from './useFirebaseAuth';
+import { getCachedCurrency, type Currency } from './useCountry';
 
 export type SubscriptionStatus = 'free' | 'active' | 'past_due' | 'cancelled' | 'expired';
 
@@ -76,7 +77,7 @@ interface UseSubscriptionReturn {
   isActive: boolean;
   isTrial: boolean;
   trialDaysRemaining: number | null;
-  initiateSubscription: () => Promise<void>;
+  initiateSubscription: (currency?: Currency) => Promise<void>;
   cancelSubscription: (immediately?: boolean) => Promise<boolean>;
   verifySubscription: () => Promise<boolean>;
   refreshSubscription: () => void;
@@ -162,7 +163,8 @@ export const useSubscription = (): UseSubscriptionReturn => {
   }, [user?.uid]);
 
   // Initiate Razorpay subscription checkout
-  const initiateSubscription = useCallback(async (): Promise<void> => {
+  // Supports dual-currency: pass 'INR' for India, 'USD' for international
+  const initiateSubscription = useCallback(async (currency?: Currency): Promise<void> => {
     if (!user?.uid || !user?.email) {
       setError('Please sign in to upgrade');
       return;
@@ -172,13 +174,16 @@ export const useSubscription = (): UseSubscriptionReturn => {
     setError(null);
 
     try {
+      // Determine currency - use provided value or detect from cache
+      const selectedCurrency = currency || getCachedCurrency();
+
       // Load Razorpay script
       const scriptLoaded = await loadRazorpayScript();
       if (!scriptLoaded) {
         throw new Error('Failed to load payment gateway. Please try again.');
       }
 
-      // Create subscription on backend
+      // Create subscription on backend with currency
       const { API_ENDPOINTS, apiFetch } = await import('../config/api');
       const response = await apiFetch(API_ENDPOINTS.createSubscription, {
         method: 'POST',
@@ -186,6 +191,7 @@ export const useSubscription = (): UseSubscriptionReturn => {
           userId: user.uid,
           userEmail: user.email,
           userName: userProfile?.fullName || user.displayName || '',
+          currency: selectedCurrency, // Pass currency to backend
         }),
       });
 

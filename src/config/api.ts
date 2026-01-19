@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
   verifyPayment: `${API_BASE_URL}/api/razorpay/verify-payment`,
   verifySubscription: `${API_BASE_URL}/api/razorpay/verify-subscription`,
   cancelSubscription: `${API_BASE_URL}/api/razorpay/cancel-subscription`,
+  getPricing: `${API_BASE_URL}/api/razorpay/pricing`,
 
   // Trial endpoints
   trialStatus: `${API_BASE_URL}/api/razorpay/trial-status`,

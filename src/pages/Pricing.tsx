@@ -16,6 +16,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useTrial } from "@/hooks/useTrial";
+import { useCountry, type Currency } from "@/hooks/useCountry";
 import { FEATURES as FEATURE_FLAGS } from "@/config/features";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -47,11 +48,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-// Pricing configuration
-const PRICING = {
-  currency: "₹",
-  amount: 169,
-  period: "month",
+// Pricing configuration by currency
+const PRICING_CONFIG = {
+  INR: {
+    currency: "INR",
+    symbol: "₹",
+    amount: 169,
+    period: "month",
+  },
+  USD: {
+    currency: "USD",
+    symbol: "$",
+    amount: 9,
+    period: "month",
+  },
 };
 
 // Feature comparison data
@@ -102,9 +112,13 @@ const Pricing = () => {
     error: subscriptionError
   } = useSubscription();
   const { trialStatus, claimTrial, loading: trialLoading } = useTrial();
+  const { currency, isIndia, loading: countryLoading } = useCountry();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [pendingTrialClaim, setPendingTrialClaim] = useState(false);
+
+  // Get pricing based on detected country
+  const PRICING = PRICING_CONFIG[currency] || PRICING_CONFIG.INR;
 
   // Handle subscription callback messages
   useEffect(() => {
@@ -185,7 +199,8 @@ const Pricing = () => {
       return;
     }
 
-    await initiateSubscription();
+    // Pass the detected currency to initiate subscription with correct plan
+    await initiateSubscription(currency);
   };
 
   const handleClaimTrial = async () => {
@@ -283,7 +298,7 @@ const Pricing = () => {
             </div>
 
             <div className="flex items-baseline gap-1 mb-6">
-              <span className="text-4xl font-bold text-gray-900">{PRICING.currency}0</span>
+              <span className="text-4xl font-bold text-gray-900">{PRICING.symbol}0</span>
               <span className="text-gray-500">/{PRICING.period}</span>
             </div>
 
@@ -327,7 +342,7 @@ const Pricing = () => {
               </div>
 
               <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-4xl font-bold text-gray-900">{PRICING.currency}{PRICING.amount}</span>
+                <span className="text-4xl font-bold text-gray-900">{PRICING.symbol}{PRICING.amount}</span>
                 <span className="text-gray-500">/{PRICING.period}</span>
               </div>
 
@@ -601,9 +616,9 @@ const Pricing = () => {
                 {/* Price comparison */}
                 <div className="text-center mb-5 p-4 bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10">
                   <div className="flex items-center justify-center gap-3 mb-2">
-                    <span className="text-xl text-gray-400 line-through">{PRICING.currency}{PRICING.amount}/mo</span>
+                    <span className="text-xl text-gray-400 line-through">{PRICING.symbol}{PRICING.amount}/mo</span>
                     <ArrowRight className="h-4 w-4 text-primary" />
-                    <span className="text-3xl font-bold text-primary">{PRICING.currency}0</span>
+                    <span className="text-3xl font-bold text-primary">{PRICING.symbol}0</span>
                   </div>
                   <p className="text-sm text-primary font-medium">
                     Free for 7 days • No credit card required
@@ -698,7 +713,7 @@ const Pricing = () => {
                 {/* Price */}
                 <div className="text-center mb-5 p-3 bg-gray-50 rounded-xl">
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-3xl font-bold text-gray-900">{PRICING.currency}{PRICING.amount}</span>
+                    <span className="text-3xl font-bold text-gray-900">{PRICING.symbol}{PRICING.amount}</span>
                     <span className="text-gray-500">/{PRICING.period}</span>
                   </div>
                 </div>
