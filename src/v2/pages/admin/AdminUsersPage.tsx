@@ -42,11 +42,13 @@ const UserRow: React.FC<{
   user: UserWithSubscription;
 }> = ({ user }) => {
   const getSubscriptionBadge = () => {
+    // Check for active subscription
     if (user.subscriptionStatus === 'active') {
+      // Distinguish between paid Pro and Trial
+      if (user.isTrial) {
+        return <Badge className="text-[10px] bg-amber-100 text-amber-700">Trial</Badge>;
+      }
       return <Badge className="text-[10px] bg-primary text-white border-0">Pro</Badge>;
-    }
-    if (user.subscriptionStatus === 'trialing') {
-      return <Badge className="text-[10px] bg-amber-100 text-amber-700">Trial</Badge>;
     }
     return <Badge className="text-[10px] bg-gray-100 text-gray-600">Free</Badge>;
   };
@@ -169,28 +171,40 @@ export const AdminUsersPage: React.FC = () => {
     loadUsers();
   }, []);
 
-  // Calculate counts
+  // Calculate counts - distinguish Pro (paid) from Trial
   const counts = users.reduce(
     (acc, user) => {
       acc.all++;
-      if (user.subscriptionStatus === 'active') acc.pro++;
-      else if (user.subscriptionStatus === 'trialing') acc.trial++;
-      else acc.free++;
+      if (user.subscriptionStatus === 'active') {
+        // Distinguish between paid Pro and Trial
+        if (user.isTrial) {
+          acc.trial++;
+        } else {
+          acc.pro++;
+        }
+      } else {
+        acc.free++;
+      }
       return acc;
     },
     { all: 0, pro: 0, trial: 0, free: 0 } as Record<string, number>
   );
 
-  // Filter users
+  // Filter users - distinguish Pro (paid) from Trial
   const filteredUsers = users.filter((user) => {
-    // Subscription filter
-    if (subscriptionFilter === 'pro' && user.subscriptionStatus !== 'active') return false;
-    if (subscriptionFilter === 'trial' && user.subscriptionStatus !== 'trialing') return false;
-    if (
-      subscriptionFilter === 'free' &&
-      (user.subscriptionStatus === 'active' || user.subscriptionStatus === 'trialing')
-    )
-      return false;
+    // Subscription filter - use isTrial to distinguish Pro from Trial
+    if (subscriptionFilter === 'pro') {
+      // Pro = active subscription that is NOT a trial
+      if (user.subscriptionStatus !== 'active' || user.isTrial) return false;
+    }
+    if (subscriptionFilter === 'trial') {
+      // Trial = active subscription that IS a trial
+      if (user.subscriptionStatus !== 'active' || !user.isTrial) return false;
+    }
+    if (subscriptionFilter === 'free') {
+      // Free = no active subscription
+      if (user.subscriptionStatus === 'active') return false;
+    }
 
     // Search query
     if (searchQuery) {

@@ -29,11 +29,13 @@ export interface UserWithSubscription {
   createdAt: Date;
   lastSignIn?: Date;
 
-  // Subscription info
+  // Subscription info (from nested subscription object in Firestore)
   subscriptionStatus?: string;
   subscriptionPlan?: string;
+  isTrial?: boolean;
   trialEndDate?: Date;
   currentPeriodEnd?: Date;
+  razorpaySubscriptionId?: string;
 }
 
 /**
@@ -51,9 +53,13 @@ const timestampToDate = (timestamp: any): Date => {
 
 /**
  * Convert user document to UserWithSubscription
+ * Note: Razorpay stores subscription data in a nested 'subscription' object
  */
 const docToUser = (docSnapshot: any): UserWithSubscription => {
   const data = docSnapshot.data();
+  // Get subscription data from nested object (how Razorpay stores it)
+  const subscription = data.subscription || {};
+
   return {
     id: docSnapshot.id,
     fullName: data.fullName || 'Unknown',
@@ -63,10 +69,13 @@ const docToUser = (docSnapshot: any): UserWithSubscription => {
     role: data.role || 'user',
     createdAt: timestampToDate(data.createdAt),
     lastSignIn: data.lastSignIn ? timestampToDate(data.lastSignIn) : undefined,
-    subscriptionStatus: data.subscriptionStatus,
-    subscriptionPlan: data.subscriptionPlan,
-    trialEndDate: data.trialEndDate ? timestampToDate(data.trialEndDate) : undefined,
-    currentPeriodEnd: data.currentPeriodEnd ? timestampToDate(data.currentPeriodEnd) : undefined,
+    // Read from nested subscription object
+    subscriptionStatus: subscription.status,
+    subscriptionPlan: subscription.plan,
+    isTrial: subscription.isTrial || false,
+    trialEndDate: subscription.trialEndDate ? timestampToDate(subscription.trialEndDate) : undefined,
+    currentPeriodEnd: subscription.currentPeriodEnd ? timestampToDate(subscription.currentPeriodEnd) : undefined,
+    razorpaySubscriptionId: subscription.razorpaySubscriptionId,
   };
 };
 
@@ -188,12 +197,18 @@ export const getTotalUserCount = async (): Promise<number> => {
 };
 
 /**
- * Get pro users count (active subscription)
+ * Get pro users count (active paid subscription, NOT trial)
+ * Note: Queries nested subscription.status and subscription.isTrial fields
  */
 export const getProUserCount = async (): Promise<number> => {
   try {
     const usersRef = collection(db, USERS_COLLECTION);
-    const q = query(usersRef, where('subscriptionStatus', '==', 'active'));
+    // Query for active subscriptions that are NOT trials
+    const q = query(
+      usersRef,
+      where('subscription.status', '==', 'active'),
+      where('subscription.isTrial', '==', false)
+    );
     const querySnapshot = await getDocs(q);
     return querySnapshot.size;
   } catch (error) {
@@ -203,12 +218,18 @@ export const getProUserCount = async (): Promise<number> => {
 };
 
 /**
- * Get trial users count
+ * Get trial users count (active trial subscriptions)
+ * Note: Queries nested subscription.isTrial field
  */
 export const getTrialUserCount = async (): Promise<number> => {
   try {
     const usersRef = collection(db, USERS_COLLECTION);
-    const q = query(usersRef, where('subscriptionStatus', '==', 'trialing'));
+    // Query for active subscriptions that ARE trials
+    const q = query(
+      usersRef,
+      where('subscription.status', '==', 'active'),
+      where('subscription.isTrial', '==', true)
+    );
     const querySnapshot = await getDocs(q);
     return querySnapshot.size;
   } catch (error) {
@@ -219,6 +240,7 @@ export const getTrialUserCount = async (): Promise<number> => {
 
 /**
  * Get users by subscription status
+ * Note: Queries nested subscription.status field
  */
 export const getUsersBySubscriptionStatus = async (
   status: string
@@ -227,7 +249,7 @@ export const getUsersBySubscriptionStatus = async (
     const usersRef = collection(db, USERS_COLLECTION);
     const q = query(
       usersRef,
-      where('subscriptionStatus', '==', status),
+      where('subscription.status', '==', status),
       orderBy('createdAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
