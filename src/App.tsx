@@ -34,6 +34,15 @@ import GridCanvasBuilder from "./v2/pages/GridCanvasBuilder";
 import GridLayoutSelectionScreen from "./v2/pages/GridLayoutSelectionScreen";
 import AccountSettings from "./v2/pages/AccountSettings";
 
+// Feedback Pages
+import FeedbackPage from "./v2/pages/FeedbackPage";
+import MyFeedbackPage from "./v2/pages/MyFeedbackPage";
+import FeedbackDetailPage from "./v2/pages/FeedbackDetailPage";
+
+// Admin Pages
+import { AdminRoute } from "./components/AdminRoute";
+import { AdminDashboard, AdminFeedbackPage, AdminFeedbackDetailPage, AdminUsersPage } from "./v2/pages/admin";
+
 const queryClient = new QueryClient();
 
 // Redirect components for legacy routes
@@ -99,6 +108,17 @@ const App = () => (
             {/* Grid Canvas Builder Routes (new feature, separate from scratch-v2) */}
             <Route path="/builder/grid-canvas/select-layout" element={<GridLayoutSelectionScreen />} />
             <Route path="/builder/grid-canvas" element={<GridCanvasBuilder />} />
+
+            {/* Feedback Routes */}
+            <Route path="/feedback" element={<FeedbackPage />} />
+            <Route path="/my-feedback" element={<MyFeedbackPage />} />
+            <Route path="/feedback/:id" element={<FeedbackDetailPage />} />
+
+            {/* Admin Routes (Protected) */}
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+            <Route path="/admin/feedback" element={<AdminRoute><AdminFeedbackPage /></AdminRoute>} />
+            <Route path="/admin/feedback/:id" element={<AdminRoute><AdminFeedbackDetailPage /></AdminRoute>} />
+            <Route path="/admin/users" element={<AdminRoute><AdminUsersPage /></AdminRoute>} />
 
             {/* Original protected routes (commented out for development):
             <Route

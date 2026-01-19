@@ -62,11 +62,14 @@ interface UserProfile {
   lastSignIn?: Date;
   createdAt: Date;
   updatedAt: Date;
+  // Role field for admin access
+  role?: 'user' | 'admin';
 }
 
 interface AuthContextType {
   user: User | null;
   userProfile: UserProfile | null;
+  isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signUp: (email: string, password: string, userData: {
@@ -407,10 +410,14 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
     }
   };
 
+  // Compute isAdmin from userProfile
+  const isAdmin = userProfile?.role === 'admin';
+
   return (
     <AuthContext.Provider value={{
       user,
       userProfile,
+      isAdmin,
       signIn,
       signInWithGoogle,
       signUp,

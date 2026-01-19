@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home, Zap, Settings } from "lucide-react";
+import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home, Zap, Settings, MessageSquarePlus, Shield } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
@@ -23,7 +23,7 @@ import {
 
 const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
-  const { user, signOut } = useFirebaseAuth();
+  const { user, signOut, isAdmin } = useFirebaseAuth();
   const { isPro } = useSubscription();
 
   // Memoize user-related values to prevent recalculation
@@ -81,6 +81,8 @@ const HeaderComponent: React.FC = () => {
   const handleNavigateProfile = useCallback(() => navigate("/profile"), [navigate]);
   const handleNavigateAccount = useCallback(() => navigate("/account"), [navigate]);
   const handleNavigatePricing = useCallback(() => navigate("/pricing"), [navigate]);
+  const handleNavigateFeedback = useCallback(() => navigate("/feedback"), [navigate]);
+  const handleNavigateAdmin = useCallback(() => navigate("/admin"), [navigate]);
   const handleSignOut = useCallback(() => signOut(), [signOut]);
 
   return (
@@ -251,7 +253,30 @@ const HeaderComponent: React.FC = () => {
                       <Settings className="mr-2.5 h-4 w-4 text-gray-500" />
                       <span>Account Settings</span>
                     </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleNavigateFeedback}
+                      className="px-3 py-2 cursor-pointer rounded-lg mx-1"
+                    >
+                      <MessageSquarePlus className="mr-2.5 h-4 w-4 text-gray-500" />
+                      <span>Send Feedback</span>
+                    </DropdownMenuItem>
                   </div>
+
+                  {/* Admin Link - only show for admins */}
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator className="bg-gray-100" />
+                      <div className="py-1">
+                        <DropdownMenuItem
+                          onClick={handleNavigateAdmin}
+                          className="px-3 py-2 cursor-pointer rounded-lg mx-1 bg-gradient-to-r from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100"
+                        >
+                          <Shield className="mr-2.5 h-4 w-4 text-purple-600" />
+                          <span className="text-purple-700 font-medium">Admin Dashboard</span>
+                        </DropdownMenuItem>
+                      </div>
+                    </>
+                  )}
 
                   <DropdownMenuSeparator className="bg-gray-100" />
 
@@ -442,6 +467,33 @@ const HeaderComponent: React.FC = () => {
                               <span className="text-sm font-medium">Account Settings</span>
                             </button>
                           </SheetClose>
+                          <SheetClose asChild>
+                            <button
+                              onClick={handleNavigateFeedback}
+                              className="flex flex-row items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors"
+                              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                            >
+                              <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center flex-shrink-0">
+                                <MessageSquarePlus className="h-[18px] w-[18px]" />
+                              </div>
+                              <span className="text-sm font-medium">Send Feedback</span>
+                            </button>
+                          </SheetClose>
+                          {/* Admin Link for Mobile */}
+                          {isAdmin && (
+                            <SheetClose asChild>
+                              <button
+                                onClick={handleNavigateAdmin}
+                                className="flex flex-row items-center gap-3 w-full px-3 py-3 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 text-purple-700 hover:from-purple-100 hover:to-indigo-100 transition-colors"
+                                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                              >
+                                <div className="w-9 h-9 rounded-lg bg-white shadow-sm border border-purple-200 flex items-center justify-center flex-shrink-0">
+                                  <Shield className="h-[18px] w-[18px] text-purple-600" />
+                                </div>
+                                <span className="text-sm font-medium">Admin Dashboard</span>
+                              </button>
+                            </SheetClose>
+                          )}
                           <SheetClose asChild>
                             <button
                               onClick={handleSignOut}

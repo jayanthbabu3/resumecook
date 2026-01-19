@@ -12,6 +12,12 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
+    // Helper function to check if user is an admin
+    function isAdmin() {
+      return isAuthenticated() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     // ========== APP STATS ==========
     // Public stats for displaying on homepage
     match /app_stats/{docId} {
@@ -92,6 +98,53 @@ service cloud.firestore {
       allow update, delete: if isAuthenticated()
                             && exists(/databases/$(database)/documents/users/$(request.auth.uid)/resumes/$(resumeId))
                             && resource.data.createdBy == request.auth.uid;
+    }
+
+    // ========== FEEDBACK SYSTEM ==========
+    match /feedback/{feedbackId} {
+      // Users can read their own feedback
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+
+      // Users can create feedback (must be their own)
+      allow create: if isAuthenticated() &&
+        request.resource.data.userId == request.auth.uid;
+
+      // Users can update their own feedback (limited fields - mark as read)
+      allow update: if isAuthenticated() &&
+        resource.data.userId == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['hasUnreadAdminReply', 'updatedAt']);
+
+      // Admins can read all feedback
+      allow read: if isAdmin();
+
+      // Admins can update any feedback
+      allow update: if isAdmin();
+
+      // Admins can delete feedback
+      allow delete: if isAdmin();
+
+      // Replies subcollection
+      match /replies/{replyId} {
+        // Users can read replies on their own feedback
+        allow read: if isAuthenticated() &&
+          get(/databases/$(database)/documents/feedback/$(feedbackId)).data.userId == request.auth.uid;
+
+        // Users can create replies on their own feedback
+        allow create: if isAuthenticated() &&
+          get(/databases/$(database)/documents/feedback/$(feedbackId)).data.userId == request.auth.uid &&
+          request.resource.data.authorId == request.auth.uid;
+
+        // Admins can read all replies
+        allow read: if isAdmin();
+
+        // Admins can create replies
+        allow create: if isAdmin() &&
+          request.resource.data.authorId == request.auth.uid;
+
+        // Admins can update/delete replies
+        allow update, delete: if isAdmin();
+      }
     }
 
     // ========== DEFAULT DENY ==========
