@@ -8,6 +8,7 @@ import { FirebaseAuthProvider } from "@/hooks/useFirebaseAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MigrationHandler } from "@/components/MigrationHandler";
 import { ResumeDataProvider } from "@/contexts/ResumeDataContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Hero from "./pages/Hero";
 import Dashboard from "./pages/Dashboard";
 import ProfessionTemplates from "./pages/ProfessionTemplates";
@@ -65,14 +66,15 @@ const RedirectLiveEditor = () => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <FirebaseAuthProvider>
-          <ResumeDataProvider>
-            <Routes>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <FirebaseAuthProvider>
+            <ResumeDataProvider>
+              <Routes>
               <Route path="/" element={<Hero />} />
             <Route path="/ats-guidelines" element={<ATSGuidelines />} />
             <Route path="/pricing" element={<Pricing />} />
@@ -170,14 +172,15 @@ const App = () => (
               }
             />
             */}
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          </ResumeDataProvider>
-        </FirebaseAuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            </ResumeDataProvider>
+          </FirebaseAuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;
