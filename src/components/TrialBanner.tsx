@@ -132,7 +132,7 @@ export const TrialBanner = ({
           {/* Content */}
           <div className="flex-1 min-w-0">
             <h3 className="text-base font-semibold text-gray-900 mb-0.5">
-              Try Pro Free for 7 Days
+              Try Pro Free for 21 Days
             </h3>
             <p className="text-sm text-gray-600">
               {isLimited ? (

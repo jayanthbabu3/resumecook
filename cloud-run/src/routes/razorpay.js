@@ -6,7 +6,7 @@
  * - Verify payment signature
  * - Manage subscription (cancel, pause, resume)
  * - Webhook handler for subscription events
- * - Trial management (7-day free trial for first 1000 users)
+ * - Trial management (21-day free trial for first 1000 users)
  *
  * Razorpay Subscription Flow:
  * 1. Create a Plan (one-time, done via dashboard or API)
@@ -26,7 +26,7 @@ export const razorpayRouter = Router();
 // Trial configuration
 const TRIAL_CONFIG = {
   maxTrialUsers: 1000,
-  trialDurationDays: 7,
+  trialDurationDays: 21, // 21 days - enough time to build the habit
   trialCollectionName: 'app_config',
   trialDocId: 'trial_stats',
 };
@@ -942,7 +942,7 @@ razorpayRouter.post('/claim-trial', async (req, res) => {
         return { success: false, reason: 'no_trials_available' };
       }
 
-      // Calculate trial end date (7 days from now)
+      // Calculate trial end date (21 days from now)
       const trialStartDate = new Date();
       const trialEndDate = new Date();
       trialEndDate.setDate(trialEndDate.getDate() + TRIAL_CONFIG.trialDurationDays);

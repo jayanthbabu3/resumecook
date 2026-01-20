@@ -218,7 +218,7 @@ const DashboardV2 = () => {
         <div className="mb-10 sm:mb-14" data-tour="free-section">
           <div className="flex items-center gap-3 mb-4">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Free Features</h2>
-            <span className="text-xs font-semibold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">
               No Credit Card Required
             </span>
           </div>
@@ -231,7 +231,7 @@ const DashboardV2 = () => {
               data-tour="all-templates"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">FREE</span>
+                <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">FREE</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-emerald-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -242,7 +242,7 @@ const DashboardV2 = () => {
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
                   Access every professional and fresher template for free
                 </p>
-                <div className="flex items-center gap-1 text-emerald-600 font-medium text-sm">
+                <div className="flex items-center gap-1 text-primary font-medium text-sm">
                   <span>Browse Templates</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -256,7 +256,7 @@ const DashboardV2 = () => {
               data-tour="live-editor"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">FREE</span>
+                <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">FREE</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -281,7 +281,7 @@ const DashboardV2 = () => {
               data-tour="form-editor"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">FREE</span>
+                <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">FREE</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-violet-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -306,7 +306,7 @@ const DashboardV2 = () => {
               data-tour="export-customize"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">FREE</span>
+                <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">FREE</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-rose-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -330,13 +330,13 @@ const DashboardV2 = () => {
         <div className="mb-10 sm:mb-12" data-tour="pro-section">
           <div className="flex items-center gap-3 mb-4">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Pro Features</h2>
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-gradient-to-r from-amber-100 to-orange-100 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-gradient-to-r from-slate-100 to-gray-100 px-3 py-1 rounded-full">
               <Crown className="w-3.5 h-3.5" />
               AI-Powered
             </span>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {/* Chat with Resume */}
             <button
               onClick={handleChatWithResumeClick}
@@ -344,7 +344,7 @@ const DashboardV2 = () => {
               data-tour="chat-resume"
             >
               <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
                   <Sparkles className="w-2.5 h-2.5" />
                   NEW
                 </span>
@@ -372,7 +372,7 @@ const DashboardV2 = () => {
               data-tour="upload-resume"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">PRO</span>
+                <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">PRO</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-sky-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -397,7 +397,7 @@ const DashboardV2 = () => {
               data-tour="tailor-job"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">PRO</span>
+                <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">PRO</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -408,7 +408,7 @@ const DashboardV2 = () => {
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
                   Paste a job post, AI tailors your resume to fit perfectly
                 </p>
-                <div className="flex items-center gap-1 text-amber-600 font-medium text-sm">
+                <div className="flex items-center gap-1 text-orange-600 font-medium text-sm">
                   <span>Match Now</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -422,7 +422,7 @@ const DashboardV2 = () => {
               data-tour="linkedin-import"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">PRO</span>
+                <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">PRO</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -448,7 +448,7 @@ const DashboardV2 = () => {
               data-tour="ats-checker"
             >
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">PRO</span>
+                <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">PRO</span>
               </div>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-teal-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
@@ -485,7 +485,7 @@ const DashboardV2 = () => {
             className="gap-2 px-8 h-12 text-base font-semibold rounded-xl border-2"
             onClick={() => navigate("/pricing")}
           >
-            <Crown className="w-5 h-5 text-amber-500" />
+            <Crown className="w-5 h-5 text-slate-500" />
             View Pro Plans
           </Button>
         </div>

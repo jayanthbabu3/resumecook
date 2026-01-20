@@ -151,7 +151,7 @@ const Pricing = () => {
         setPendingTrialClaim(false);
         const success = await claimTrial();
         if (success) {
-          toast.success("Welcome! Your 7-day Pro trial is now active.");
+          toast.success("Welcome! Your 21-day Pro trial is now active.");
           navigate("/dashboard");
         }
       }
@@ -217,7 +217,7 @@ const Pricing = () => {
 
     const success = await claimTrial();
     if (success) {
-      toast.success("Welcome! Your 7-day Pro trial is now active.");
+      toast.success("Welcome! Your 21-day Pro trial is now active.");
       navigate("/dashboard");
     }
   };
@@ -235,7 +235,7 @@ const Pricing = () => {
             <div className="flex items-center gap-2">
               <Gift className="h-4 w-4" />
               <span className="font-medium text-sm">
-                <strong>{trialStatus.trialsRemaining}</strong> free 7-day Pro trials remaining
+                <strong>{trialStatus.trialsRemaining}</strong> free 21-day Pro trials remaining
               </span>
             </div>
             {!user && (
@@ -389,7 +389,7 @@ const Pricing = () => {
                   ) : (
                     <>
                       <Gift className="mr-2 h-4 w-4" />
-                      Try Free for 7 Days
+                      Try Free for 21 Days
                     </>
                   )}
                 </Button>
@@ -398,7 +398,7 @@ const Pricing = () => {
               <p className="text-xs text-center text-gray-500 mt-3 mb-6">
                 {FEATURE_FLAGS.TRIAL_SYSTEM_ENABLED && trialStatus?.trialsAvailable && !isPro && !isTrial
                   ? `No credit card required • ${trialStatus.trialsRemaining} trials left`
-                  : "Cancel anytime • 7-day money-back guarantee"
+                  : "Cancel anytime • 21-day money-back guarantee"
                 }
               </p>
 
@@ -606,7 +606,7 @@ const Pricing = () => {
                     Start Your Free Trial
                   </h2>
                   <p className="text-white/90 text-sm">
-                    7 days of Pro features, completely free
+                    21 days of Pro features, completely free
                   </p>
                 </div>
               </div>
@@ -621,7 +621,7 @@ const Pricing = () => {
                     <span className="text-3xl font-bold text-primary">{PRICING.symbol}0</span>
                   </div>
                   <p className="text-sm text-primary font-medium">
-                    Free for 7 days • No credit card required
+                    Free for 21 days • No credit card required
                   </p>
                 </div>
 

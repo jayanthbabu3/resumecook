@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin, Check, X, Crown, Wand2, Upload, Linkedin, Infinity, MessageSquare, FileSearch, BrainCircuit, Mic, Send, Bot, ClipboardCheck, FileUp, ArrowUpRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin, Check, X, Crown, Wand2, Upload, Linkedin, Infinity, MessageSquare, FileSearch, BrainCircuit, Mic, Send, Bot, FileUp, ArrowUpRight, Layers, RefreshCw, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -499,14 +499,14 @@ const Hero = () => {
       {/* Trial Banner - Shows for non-Pro users when trials available */}
       <TrialBanner variant="compact" onClaimClick={() => navigate('/pricing?trial=true')} />
 
-      {/* Hero Section - Inspired by Stripe, Linear, Vercel - Responsive */}
-      <section className="relative min-h-screen lg:min-h-[90vh] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0">
+      {/* Hero Section - Mobile fills viewport, Desktop side-by-side */}
+      <section className="relative min-h-[calc(100vh-60px)] sm:min-h-[90vh] flex items-center overflow-hidden">
         {/* Subtle gradient mesh background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_60%,rgba(59,130,246,0.08),rgba(255,255,255,0))]" />
-        
+
         {/* Subtle grid pattern overlay */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.015]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(0 0 0)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e")`,
@@ -515,66 +515,66 @@ const Hero = () => {
 
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-8 items-center">
-              
-              {/* Left Side - Content (6 columns on desktop) */}
-              <div className="lg:col-span-6 space-y-5 sm:space-y-6 lg:space-y-8 text-center lg:text-left order-2 lg:order-1">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
 
-                {/* Minimal Badge - Responsive */}
-                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-blue-500/10 border border-primary/30 text-[10px] sm:text-xs font-medium text-primary backdrop-blur-sm">
-                  <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+              {/* Left Side - Content (full width on mobile, 6 columns on desktop) */}
+              <div className="lg:col-span-6 space-y-6 sm:space-y-6 lg:space-y-8 text-center lg:text-left">
+
+                {/* Minimal Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-blue-500/10 border border-primary/30 text-xs font-medium text-primary backdrop-blur-sm">
+                  <Sparkles className="h-3 w-3" />
                   <span>AI-Powered Resume Builder</span>
                 </div>
 
-                {/* Headline - Clean, impactful - Responsive */}
-                <div className="space-y-3 sm:space-y-4">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+                {/* Headline - Clean, impactful */}
+                <div className="space-y-4">
+                  <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
                     Build resumes that
                     <span className="block bg-gradient-to-r from-primary via-blue-600 to-blue-500 bg-clip-text text-transparent">
                       get you hired
                     </span>
                   </h1>
 
-                  {/* Subheadline - Concise - Responsive */}
-                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground/80 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
+                  {/* Subheadline - Concise */}
+                  <p className="text-base sm:text-lg md:text-lg lg:text-xl text-muted-foreground/80 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
                     AI-powered tools to enhance, tailor, and optimize your resume.
-                    50+ professional templates. ATS-friendly formatting.
+                    60+ professional templates. PDF export in seconds.
                   </p>
                 </div>
 
-                {/* CTA Buttons - Responsive */}
-                <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-2 sm:pt-4 items-center justify-center lg:justify-start">
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4 items-center justify-center lg:justify-start">
                   <Button
-                    className="h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-semibold bg-primary text-white hover:bg-primary/90 rounded-full shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 group w-full sm:w-auto"
+                    className="h-12 px-8 text-base font-semibold bg-primary text-white hover:bg-primary/90 rounded-full shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 group w-full sm:w-auto"
                     onClick={() => navigate("/templates")}
                   >
                     <span>Get Started Free</span>
-                    <ArrowRight className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-10 sm:h-12 px-5 sm:px-6 text-sm sm:text-base font-medium rounded-full border-primary/30 text-primary hover:bg-primary/5 transition-all duration-300 group w-full sm:w-auto"
+                    className="h-12 px-6 text-base font-medium rounded-full border-primary/30 text-primary hover:bg-primary/5 transition-all duration-300 group w-full sm:w-auto"
                     onClick={() => {
                       document.getElementById('ai-features')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                   >
-                    <Sparkles className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <Sparkles className="mr-2 h-4 w-4" />
                     <span>See AI Features</span>
                   </Button>
                 </div>
 
-                {/* Social Proof - Real stats with animation - Responsive */}
-                <div className="flex items-center justify-center lg:justify-start pt-5 sm:pt-6 lg:pt-8 border-t border-border/40">
+                {/* Social Proof - Real stats with animation */}
+                <div className="flex items-center justify-center lg:justify-start pt-6 lg:pt-8 border-t border-border/40">
                   <div className="flex items-center gap-4 sm:gap-6">
                     {/* Users count */}
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="flex -space-x-1.5 sm:-space-x-2">
-                        {[1, 2, 3, 4].map((i) => (
+                        {[1, 2, 3].map((i) => (
                           <div
                             key={i}
                             className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-2 border-background flex items-center justify-center text-[8px] sm:text-[10px] font-medium text-gray-600"
                           >
-                            {['JD', 'AK', 'MR', 'SL'][i-1]}
+                            {['JD', 'AK', 'MR'][i-1]}
                           </div>
                         ))}
                       </div>
@@ -615,29 +615,36 @@ const Hero = () => {
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Right Side - Stacked Resume Previews (6 columns) - Shows first on mobile */}
-              <div className="lg:col-span-6 relative flex justify-center items-center py-2 sm:py-4 order-1 lg:order-2">
-                {/* Background decorative elements - hidden on mobile for cleaner look */}
-                <div className="absolute inset-0 overflow-hidden hidden lg:block">
-                  <div className="absolute top-10 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-                  <div className="absolute bottom-10 left-10 w-56 h-56 bg-blue-100/50 rounded-full blur-2xl" />
-                  {/* Dot pattern */}
-                  <div className="absolute top-20 left-8 grid grid-cols-4 gap-2 opacity-20">
-                    {[...Array(16)].map((_, i) => (
-                      <div key={i} className="w-1.5 h-1.5 bg-primary/40 rounded-full" />
-                    ))}
-                  </div>
-                  <div className="absolute bottom-32 right-4 grid grid-cols-3 gap-2 opacity-20">
-                    {[...Array(9)].map((_, i) => (
-                      <div key={i} className="w-1.5 h-1.5 bg-[#1e3a5f]/40 rounded-full" />
-                    ))}
+                {/* Mobile: Scroll indicator */}
+                <div className="sm:hidden flex flex-col items-center pt-8">
+                  <div className="flex items-center gap-1.5 text-muted-foreground/60 animate-bounce">
+                    <ArrowRight className="h-4 w-4 rotate-90" />
                   </div>
                 </div>
+              </div>
 
-                {/* Stacked Resume Cards - Responsive */}
-                <div className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[480px] h-[380px] sm:h-[450px] lg:h-[600px]">
+              {/* Right Side - Resume Preview (Hidden on mobile, visible on tablet/desktop) */}
+              <div className="hidden sm:flex lg:col-span-6 relative justify-center items-center py-4">
+                  {/* Background decorative elements - hidden on mobile for cleaner look */}
+                  <div className="absolute inset-0 overflow-hidden hidden lg:block">
+                    <div className="absolute top-10 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+                    <div className="absolute bottom-10 left-10 w-56 h-56 bg-blue-100/50 rounded-full blur-2xl" />
+                    {/* Dot pattern */}
+                    <div className="absolute top-20 left-8 grid grid-cols-4 gap-2 opacity-20">
+                      {[...Array(16)].map((_, i) => (
+                        <div key={i} className="w-1.5 h-1.5 bg-primary/40 rounded-full" />
+                      ))}
+                    </div>
+                    <div className="absolute bottom-32 right-4 grid grid-cols-3 gap-2 opacity-20">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={i} className="w-1.5 h-1.5 bg-[#1e3a5f]/40 rounded-full" />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Stacked Resume Cards */}
+                  <div className="relative w-full max-w-[340px] lg:max-w-[480px] h-[450px] lg:h-[600px] mx-auto">
 
                   {/* Shadow/Back card - slight angle offset to the right */}
                   <div
@@ -852,31 +859,31 @@ const Hero = () => {
                     </div>
                   </div>
 
-                  {/* Floating Badge - ATS Optimized - Responsive */}
-                  <div className="absolute -top-1 sm:-top-2 left-0 sm:left-4 bg-white rounded-lg sm:rounded-xl shadow-lg border border-gray-100 px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 animate-float z-10">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-md sm:rounded-lg bg-emerald-100 flex items-center justify-center">
-                        <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-emerald-600" />
+                  {/* Floating Badge - Live Preview */}
+                  <div className="absolute -top-2 left-4 bg-white rounded-xl shadow-lg border border-gray-100 px-3 lg:px-4 py-2 lg:py-2.5 animate-float z-10">
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 lg:w-6 lg:h-6 rounded-lg bg-emerald-100 flex items-center justify-center">
+                        <Eye className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-emerald-600" />
                       </div>
-                      <span className="text-[10px] sm:text-xs lg:text-sm font-medium text-gray-700">ATS-Optimized</span>
+                      <span className="text-xs lg:text-sm font-medium text-gray-700">Live Preview</span>
                     </div>
                   </div>
 
-                  {/* Floating Badge - Templates Count - Responsive */}
-                  <div className="absolute bottom-12 sm:bottom-14 lg:bottom-16 -right-1 sm:-right-2 lg:-right-4 bg-[#1e3a5f] rounded-lg sm:rounded-xl shadow-lg px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 animate-float z-10" style={{ animationDelay: '0.5s' }}>
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 text-white" />
-                      <span className="text-[10px] sm:text-xs lg:text-sm font-medium text-white">50+ Templates</span>
+                  {/* Floating Badge - Templates Count */}
+                  <div className="absolute bottom-14 lg:bottom-16 -right-2 lg:-right-4 bg-[#1e3a5f] rounded-xl shadow-lg px-3 lg:px-4 py-2 lg:py-2.5 animate-float z-10" style={{ animationDelay: '0.5s' }}>
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white" />
+                      <span className="text-xs lg:text-sm font-medium text-white">60+ Templates</span>
                     </div>
                   </div>
 
-                  {/* Floating Badge - AI Powered - Responsive */}
-                  <div className="absolute -bottom-1 sm:-bottom-2 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-8 lg:left-12 bg-gradient-to-r from-primary to-blue-600 rounded-lg sm:rounded-xl shadow-lg shadow-primary/30 px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 animate-float z-10" style={{ animationDelay: '1s' }}>
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-md sm:rounded-lg bg-white/20 flex items-center justify-center">
-                        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-white" />
+                  {/* Floating Badge - AI Powered */}
+                  <div className="absolute -bottom-2 left-8 lg:left-12 bg-gradient-to-r from-primary to-blue-600 rounded-xl shadow-lg shadow-primary/30 px-3 lg:px-4 py-2 lg:py-2.5 animate-float z-10" style={{ animationDelay: '1s' }}>
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 lg:w-6 lg:h-6 rounded-lg bg-white/20 flex items-center justify-center">
+                        <Sparkles className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-white" />
                       </div>
-                      <span className="text-[10px] sm:text-xs lg:text-sm font-medium text-white">AI-Powered</span>
+                      <span className="text-xs lg:text-sm font-medium text-white">AI-Powered</span>
                     </div>
                   </div>
                 </div>
@@ -978,6 +985,15 @@ const Hero = () => {
                   <p className="text-sm text-muted-foreground mt-4">
                     Automatically import your work history, education, skills, and more from LinkedIn. No manual typing required.
                   </p>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-all group"
+                    onClick={() => navigate("/dashboard?feature=linkedin")}
+                  >
+                    <span>Try LinkedIn Import</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
                 </div>
               </div>
 
@@ -1035,6 +1051,15 @@ const Hero = () => {
                   <p className="text-sm text-muted-foreground mt-4">
                     Upload your existing resume and our AI will intelligently extract and organize all your information.
                   </p>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700 transition-all group"
+                    onClick={() => navigate("/dashboard?feature=upload")}
+                  >
+                    <span>Try Resume Upload</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
                 </div>
               </div>
 
@@ -1088,6 +1113,15 @@ const Hero = () => {
                   <p className="text-sm text-muted-foreground mt-4">
                     Transform basic descriptions into powerful, achievement-focused bullet points with quantifiable metrics.
                   </p>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50 hover:text-primary transition-all group"
+                    onClick={() => navigate("/dashboard?feature=enhance")}
+                  >
+                    <span>Try AI Enhancement</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
                 </div>
               </div>
 
@@ -1149,107 +1183,19 @@ const Hero = () => {
                   <p className="text-sm text-muted-foreground mt-4">
                     Paste any job description and our AI will optimize your resume to match keywords and requirements.
                   </p>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-amber-200 text-amber-600 hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all group"
+                    onClick={() => navigate("/dashboard?feature=tailor")}
+                  >
+                    <span>Try Job Tailoring</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
                 </div>
               </div>
 
-              {/* Feature 5: ATS Score Checker */}
-              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-500" />
-                <div className="p-6 md:p-8">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30">
-                        <ClipboardCheck className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-foreground">ATS Score Checker</h3>
-                        <p className="text-sm text-muted-foreground">Beat the bots, reach recruiters</p>
-                      </div>
-                    </div>
-                    <Badge variant="outline" className="border-green-200 text-green-600 bg-green-50">PRO</Badge>
-                  </div>
-
-                  {/* Visual Demo */}
-                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
-                    <div className="flex items-start gap-4">
-                      {/* Score Circle */}
-                      <div className="relative">
-                        <svg className="w-20 h-20 transform -rotate-90">
-                          <circle
-                            cx="40"
-                            cy="40"
-                            r="32"
-                            fill="none"
-                            stroke="#e5e7eb"
-                            strokeWidth="6"
-                          />
-                          <circle
-                            cx="40"
-                            cy="40"
-                            r="32"
-                            fill="none"
-                            stroke="url(#scoreGradient)"
-                            strokeWidth="6"
-                            strokeLinecap="round"
-                            strokeDasharray={`${85 * 2.01} ${100 * 2.01}`}
-                          />
-                          <defs>
-                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                              <stop offset="0%" stopColor="#22c55e" />
-                              <stop offset="100%" stopColor="#10b981" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                          <span className="text-xl font-bold text-green-600">85</span>
-                          <span className="text-[8px] text-gray-500">ATS Score</span>
-                        </div>
-                      </div>
-
-                      {/* Score breakdown */}
-                      <div className="flex-1 space-y-2">
-                        <div className="flex items-center justify-between text-[10px]">
-                          <span className="text-gray-600">Keywords</span>
-                          <span className="font-medium text-green-600">92%</span>
-                        </div>
-                        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full w-[92%] bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" />
-                        </div>
-                        <div className="flex items-center justify-between text-[10px]">
-                          <span className="text-gray-600">Format</span>
-                          <span className="font-medium text-green-600">88%</span>
-                        </div>
-                        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full w-[88%] bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" />
-                        </div>
-                        <div className="flex items-center justify-between text-[10px]">
-                          <span className="text-gray-600">Structure</span>
-                          <span className="font-medium text-amber-600">75%</span>
-                        </div>
-                        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full w-[75%] bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tips preview */}
-                    <div className="mt-3 p-2 bg-amber-50 rounded-lg border border-amber-200">
-                      <div className="flex items-start gap-2">
-                        <div className="h-4 w-4 rounded-full bg-amber-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-white text-[8px] font-bold">!</span>
-                        </div>
-                        <span className="text-[10px] text-amber-700">Add more action verbs to your experience section for higher scores</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-sm text-muted-foreground mt-4">
-                    Get instant feedback on ATS compatibility with detailed scoring and actionable improvement tips.
-                  </p>
-                </div>
-              </div>
-
-              {/* Feature 6: Chat with Resume (AI Assistant) */}
+              {/* Feature 5: Chat with Resume (AI Assistant) */}
               <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-sky-500" />
                 <div className="p-6 md:p-8">
@@ -1314,6 +1260,15 @@ const Hero = () => {
                   <p className="text-sm text-muted-foreground mt-4">
                     Build your resume through natural conversation. Type or use voice input - our AI understands and updates your resume in real-time.
                   </p>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50 hover:text-primary transition-all group"
+                    onClick={() => navigate("/dashboard?feature=chat")}
+                  >
+                    <span>Try AI Chat</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
                 </div>
               </div>
             </div>
@@ -1378,7 +1333,7 @@ const Hero = () => {
                     <div className="space-y-3">
                       <h3 className="text-lg font-semibold text-foreground">Choose Your Template</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Browse our collection of professionally designed, ATS-optimized templates tailored for different industries and career levels.
+                        Browse our collection of 60+ professionally designed templates tailored for different industries and career levels.
                       </p>
                     </div>
                   </div>
@@ -1462,7 +1417,7 @@ const Hero = () => {
                     <div className="space-y-3">
                       <h3 className="text-lg font-semibold text-foreground">Download & Apply</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Check your ATS score, tailor for specific jobs, then export your ATS-optimized resume and start applying.
+                        Tailor for specific jobs with AI, export as PDF, and start applying to your dream roles.
                       </p>
                     </div>
                   </div>
@@ -1484,7 +1439,7 @@ const Hero = () => {
                   <div className="space-y-3">
                     <h3 className="text-lg font-semibold text-foreground">Choose Your Template</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
-                      Browse our collection of professionally designed, ATS-optimized templates tailored for different industries.
+                      Browse our collection of 60+ professionally designed templates tailored for different industries.
                     </p>
                   </div>
                 </div>
@@ -1540,7 +1495,7 @@ const Hero = () => {
                   <div className="space-y-3">
                     <h3 className="text-lg font-semibold text-foreground">Download & Apply</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
-                      Check your ATS score, tailor for jobs, and export your optimized resume.
+                      Tailor for jobs with AI, export as PDF, and start applying.
                     </p>
                   </div>
                 </div>
@@ -1555,8 +1510,8 @@ const Hero = () => {
                   <span>AI-Powered</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-blue-600" />
-                  <span>100% ATS Compatible</span>
+                  <Download className="h-4 w-4 text-blue-600" />
+                  <span>PDF Export</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-emerald-600" />
@@ -1614,7 +1569,7 @@ const Hero = () => {
                 Choose from <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Professional Templates</span>
               </h2>
               <p className="text-xs md:text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Browse our collection of beautifully designed, ATS-optimized resume templates. Each template works seamlessly with our AI features to help you create the perfect resume.
+                Browse our collection of 60+ beautifully designed resume templates. Each template works seamlessly with our AI features to help you create the perfect resume.
               </p>
             </div>
 
@@ -1720,6 +1675,373 @@ const Hero = () => {
               </Button>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* One Profile, All Templates Section */}
+      <section className="py-16 md:py-24 relative overflow-hidden">
+        {/* Gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,rgba(59,130,246,0.08),rgba(255,255,255,0))]" />
+
+        {/* Floating orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/3 left-1/4 w-80 h-80 bg-gradient-to-r from-primary/10 to-blue-400/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gradient-to-r from-emerald-400/10 to-primary/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        </div>
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center space-y-4 mb-12 md:mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-emerald-100 border border-primary/30 text-sm font-medium text-primary backdrop-blur-sm">
+                <Layers className="h-4 w-4" />
+                <span>One Profile, Unlimited Templates</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
+                Fill Your Profile Once,{" "}
+                <span className="bg-gradient-to-r from-primary via-blue-600 to-emerald-500 bg-clip-text text-transparent">
+                  Use Any Template
+                </span>
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+                Your information syncs across all 60+ templates instantly. Switch designs with one click -
+                no copy-pasting, no re-entering data.
+              </p>
+            </div>
+
+            {/* Main Visualization - Real Templates */}
+            <div className="relative">
+              {/* Desktop Layout - Centered Grid */}
+              <div className="hidden lg:block">
+                <div className="grid grid-cols-12 gap-6 items-center">
+
+                  {/* Left Side - Profile Form Card (4 cols) */}
+                  <div className="col-span-4">
+                    <div className="relative">
+                      {/* Glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-400/20 rounded-2xl blur-2xl scale-105" />
+
+                      {/* Profile Card */}
+                      <div className="relative bg-white rounded-2xl border border-gray-200/60 shadow-xl overflow-hidden">
+                        {/* Card Header */}
+                        <div className="bg-gradient-to-r from-primary to-blue-600 p-4">
+                          <div className="flex items-center gap-3">
+                            <div className="h-11 w-11 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                              <User className="h-5 w-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-white font-bold">Your Profile</h3>
+                              <p className="text-white/80 text-xs">Fill once, use everywhere</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Profile Fields */}
+                        <div className="p-4 space-y-3">
+                          {/* Personal Info */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-1.5 text-[10px] font-semibold text-primary uppercase tracking-wider">
+                              <User className="h-3 w-3" />
+                              <span>Personal Info</span>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-2.5 space-y-1.5 border border-gray-100">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] text-gray-500">Name</span>
+                                <span className="text-xs font-medium text-gray-800">{formEditorData.personalInfo.fullName}</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] text-gray-500">Title</span>
+                                <span className="text-xs font-medium text-gray-800">{formEditorData.personalInfo.title}</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] text-gray-500">Location</span>
+                                <span className="text-xs font-medium text-gray-800">{formEditorData.personalInfo.location}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Experience */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-1.5 text-[10px] font-semibold text-emerald-600 uppercase tracking-wider">
+                              <Target className="h-3 w-3" />
+                              <span>Experience</span>
+                            </div>
+                            <div className="bg-emerald-50/50 rounded-lg p-2.5 space-y-1 border border-emerald-100">
+                              {formEditorData.experience.slice(0, 2).map((exp, idx) => (
+                                <div key={idx} className="flex items-center justify-between gap-2">
+                                  <span className="text-[10px] text-gray-600 truncate flex-1">{exp.position}</span>
+                                  <span className="text-[10px] font-medium text-emerald-700 flex-shrink-0">{exp.company}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Skills */}
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-1.5 text-[10px] font-semibold text-blue-600 uppercase tracking-wider">
+                              <Sparkles className="h-3 w-3" />
+                              <span>Skills</span>
+                            </div>
+                            <div className="bg-blue-50/50 rounded-lg p-2.5 border border-blue-100">
+                              <div className="flex flex-wrap gap-1">
+                                {formEditorData.skills.slice(0, 5).map((skill, idx) => (
+                                  <span key={idx} className="px-1.5 py-0.5 bg-white rounded text-[10px] font-medium text-blue-700 border border-blue-200">
+                                    {skill.name}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Sync indicator */}
+                          <div className="flex items-center justify-center gap-2 py-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
+                            <div className="h-2 w-2 bg-emerald-500 rounded-full animate-pulse" />
+                            <span className="text-xs font-medium text-emerald-700">Synced to all templates</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Middle - Sync Animation (1 col) */}
+                  <div className="col-span-1 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-3">
+                      {/* Arrow flow */}
+                      <div className="flex items-center">
+                        <div className="w-6 h-0.5 bg-gradient-to-r from-primary to-primary/50 rounded-full" />
+                        <ArrowRight className="h-4 w-4 text-primary -ml-1" />
+                      </div>
+
+                      {/* Sync icon */}
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/30">
+                        <RefreshCw className="h-4 w-4 text-white animate-spin" style={{ animationDuration: '3s' }} />
+                      </div>
+
+                      {/* Arrow flow */}
+                      <div className="flex items-center">
+                        <div className="w-6 h-0.5 bg-gradient-to-r from-emerald-500/50 to-emerald-500 rounded-full" />
+                        <ArrowRight className="h-4 w-4 text-emerald-500 -ml-1" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Side - Real Template Previews (7 cols) */}
+                  <div className="col-span-7">
+                    <div className="grid grid-cols-3 gap-4">
+                      {/* Template 1 - Professional Blue */}
+                      <div className="group relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="relative bg-white rounded-xl border-2 border-primary/20 shadow-lg overflow-hidden group-hover:-translate-y-1 group-hover:border-primary/40 transition-all">
+                          <div className="aspect-[8.5/11] overflow-hidden">
+                            <TemplatePreviewV2
+                              templateId="professional-blue-v2"
+                              themeColor="#2563eb"
+                              sampleData={formEditorData as unknown as ResumeData}
+                              className="h-full"
+                            />
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/95 via-primary/80 to-transparent p-3 pt-8">
+                            <div className="text-center">
+                              <span className="text-sm font-semibold text-white">Professional</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Template 2 - Modern Green */}
+                      <div className="group relative mt-8">
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="relative bg-white rounded-xl border-2 border-emerald-200 shadow-lg overflow-hidden group-hover:-translate-y-1 group-hover:border-emerald-400 transition-all">
+                          <div className="aspect-[8.5/11] overflow-hidden">
+                            <TemplatePreviewV2
+                              templateId="modern-sidebar-v2"
+                              themeColor="#059669"
+                              sampleData={formEditorData as unknown as ResumeData}
+                              className="h-full"
+                            />
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-600/95 via-emerald-600/80 to-transparent p-3 pt-8">
+                            <div className="text-center">
+                              <span className="text-sm font-semibold text-white">Modern</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Template 3 - Elegant */}
+                      <div className="group relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-violet-400/20 to-purple-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="relative bg-white rounded-xl border-2 border-violet-200 shadow-lg overflow-hidden group-hover:-translate-y-1 group-hover:border-violet-400 transition-all">
+                          <div className="aspect-[8.5/11] overflow-hidden">
+                            <TemplatePreviewV2
+                              templateId="elegant-minimal-v2"
+                              themeColor="#7c3aed"
+                              sampleData={formEditorData as unknown as ResumeData}
+                              className="h-full"
+                            />
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-violet-600/95 via-violet-600/80 to-transparent p-3 pt-8">
+                            <div className="text-center">
+                              <span className="text-sm font-semibold text-white">Elegant</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* "60+ More" indicator */}
+                    <div className="flex justify-center mt-8">
+                      <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-blue-600 rounded-full shadow-lg shadow-primary/25 hover:shadow-xl hover:scale-105 transition-all cursor-pointer" onClick={() => navigate("/templates")}>
+                        <Infinity className="h-4 w-4 text-white" />
+                        <span className="text-white text-sm font-semibold">Same data works with 60+ templates</span>
+                        <ArrowRight className="h-4 w-4 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Layout */}
+              <div className="lg:hidden space-y-8">
+                {/* Profile Summary Card - Mobile */}
+                <div className="relative mx-4">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/15 to-blue-400/15 rounded-2xl blur-2xl scale-110" />
+                  <div className="relative bg-white rounded-2xl border border-gray-200/80 shadow-xl overflow-hidden">
+                    {/* Card Header */}
+                    <div className="bg-gradient-to-r from-primary to-blue-600 p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                          <User className="h-6 w-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-white font-bold text-lg">{formEditorData.personalInfo.fullName}</h3>
+                          <p className="text-white/80 text-sm">{formEditorData.personalInfo.title}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card Body */}
+                    <div className="p-4 space-y-3">
+                      {/* Skills */}
+                      <div className="flex flex-wrap gap-2">
+                        {formEditorData.skills.slice(0, 4).map((skill, idx) => (
+                          <span key={idx} className="px-3 py-1.5 bg-blue-50 rounded-lg text-sm font-medium text-blue-700 border border-blue-100">
+                            {skill.name}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Sync indicator */}
+                      <div className="flex items-center justify-center gap-2 py-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                        <div className="h-2.5 w-2.5 bg-emerald-500 rounded-full animate-pulse" />
+                        <span className="text-sm font-medium text-emerald-700">Auto-synced</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sync Arrow - Mobile */}
+                <div className="flex justify-center py-2">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/30">
+                    <ArrowRight className="h-5 w-5 text-white rotate-90" />
+                  </div>
+                </div>
+
+                {/* Real Templates - Horizontal Scroll */}
+                <div className="relative">
+                  <div className="flex gap-4 overflow-x-auto pb-4 px-4 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    {[
+                      { id: 'professional-blue-v2', color: '#2563eb', name: 'Professional', borderColor: 'border-primary/30' },
+                      { id: 'modern-sidebar-v2', color: '#059669', name: 'Modern', borderColor: 'border-emerald-300' },
+                      { id: 'elegant-minimal-v2', color: '#7c3aed', name: 'Elegant', borderColor: 'border-violet-300' }
+                    ].map((template, index) => (
+                      <div
+                        key={template.id}
+                        className="flex-shrink-0 snap-center w-[45vw] max-w-[180px]"
+                      >
+                        <div className={`relative bg-white rounded-xl border-2 ${template.borderColor} shadow-lg overflow-hidden`}>
+                          <div className="aspect-[8.5/11] overflow-hidden">
+                            <TemplatePreviewV2
+                              templateId={template.id}
+                              themeColor={template.color}
+                              sampleData={formEditorData as unknown as ResumeData}
+                              className="h-full"
+                            />
+                          </div>
+                          <div
+                            className="absolute bottom-0 left-0 right-0 p-2.5 pt-6"
+                            style={{ background: `linear-gradient(to top, ${template.color}f0, ${template.color}cc, transparent)` }}
+                          >
+                            <div className="text-center">
+                              <span className="text-xs font-semibold text-white">{template.name}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Scroll hint gradient */}
+                  <div className="absolute right-0 top-0 bottom-4 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+                </div>
+
+                {/* CTA Button */}
+                <div className="text-center px-4">
+                  <div
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-blue-600 rounded-full shadow-lg shadow-primary/25 cursor-pointer active:scale-95 transition-transform"
+                    onClick={() => navigate("/templates")}
+                  >
+                    <Infinity className="h-5 w-5 text-white" />
+                    <span className="text-white font-semibold">60+ Templates</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits Row */}
+            <div className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm">
+                <div className="h-10 w-10 mx-auto mb-3 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Clock className="h-5 w-5 text-primary" />
+                </div>
+                <h4 className="font-semibold text-gray-900 text-sm">Save Hours</h4>
+                <p className="text-xs text-gray-500 mt-1">No re-entering data</p>
+              </div>
+              <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm">
+                <div className="h-10 w-10 mx-auto mb-3 rounded-xl bg-emerald-100 flex items-center justify-center">
+                  <RefreshCw className="h-5 w-5 text-emerald-600" />
+                </div>
+                <h4 className="font-semibold text-gray-900 text-sm">Instant Switch</h4>
+                <p className="text-xs text-gray-500 mt-1">Change templates in 1 click</p>
+              </div>
+              <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm">
+                <div className="h-10 w-10 mx-auto mb-3 rounded-xl bg-blue-100 flex items-center justify-center">
+                  <Layers className="h-5 w-5 text-blue-600" />
+                </div>
+                <h4 className="font-semibold text-gray-900 text-sm">60+ Templates</h4>
+                <p className="text-xs text-gray-500 mt-1">All included</p>
+              </div>
+              <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm">
+                <div className="h-10 w-10 mx-auto mb-3 rounded-xl bg-violet-100 flex items-center justify-center">
+                  <Target className="h-5 w-5 text-violet-600" />
+                </div>
+                <h4 className="font-semibold text-gray-900 text-sm">Job-Targeted</h4>
+                <p className="text-xs text-gray-500 mt-1">Different style per job</p>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-10 text-center">
+              <Button
+                className={cn(primaryButtonClass, "group")}
+                onClick={() => navigate("/templates")}
+              >
+                <span>Try It Now - It's Free</span>
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -2121,9 +2443,9 @@ const Hero = () => {
                 <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                   <FileText className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-sm font-semibold mb-1.5 text-foreground">ATS-Optimized Templates</h3>
+                <h3 className="text-sm font-semibold mb-1.5 text-foreground">60+ Professional Templates</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  All 50+ templates pass ATS scans and get your resume to recruiters.
+                  Choose from beautifully designed templates for every industry and role.
                 </p>
               </div>
 
@@ -2183,14 +2505,14 @@ const Hero = () => {
               {/* Feature 6 */}
               <div className="group p-5 rounded-xl bg-card border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <ClipboardCheck className="h-5 w-5 text-green-600" />
+                  <FileUp className="h-5 w-5 text-green-600" />
                 </div>
                 <h3 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
-                  ATS Score Check
+                  Resume Upload
                   <Badge className="text-[8px] px-1 py-0 bg-primary/10 text-primary border-0">PRO</Badge>
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Get instant ATS compatibility scores and improvement tips.
+                  Upload your existing resume and we'll parse it automatically.
                 </p>
               </div>
 
@@ -2223,7 +2545,7 @@ const Hero = () => {
             {/* Stats Row */}
             <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
-                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">50+</div>
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">60+</div>
                 <div className="text-xs text-muted-foreground">Premium Templates</div>
               </div>
               <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
@@ -2231,8 +2553,8 @@ const Hero = () => {
                 <div className="text-xs text-muted-foreground">AI-Powered Features</div>
               </div>
               <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
-                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">100%</div>
-                <div className="text-xs text-muted-foreground">ATS Compatible</div>
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">PDF</div>
+                <div className="text-xs text-muted-foreground">Export Ready</div>
               </div>
               <div className="text-center p-4 rounded-xl bg-white/50 border border-gray-200/50">
                 <div className="text-2xl md:text-3xl font-bold text-amber-600 mb-1">5 min</div>
@@ -2295,7 +2617,7 @@ const Hero = () => {
                   <ul className="space-y-1.5 pt-3 border-t border-border/60">
                     {[
                       "Resume Builder",
-                      "50+ Premium Templates",
+                      "60+ Premium Templates",
                       "Style Customization",
                       "PDF Download",
                       "Live Preview Editor",
@@ -2308,7 +2630,7 @@ const Hero = () => {
                     {[
                       "LinkedIn Import",
                       "AI Enhancement",
-                      "ATS Score Checker",
+                      "Job Tailoring",
                       "AI Chat Assistant",
                     ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-2 text-xs">
@@ -2359,7 +2681,6 @@ const Hero = () => {
                       "Resume Upload & Parse",
                       "AI Resume Enhancement",
                       "Job Description Tailoring",
-                      "ATS Score Checker",
                       "AI Chat Assistant",
                       "Voice Input Support",
                       "Generate from Job Description",

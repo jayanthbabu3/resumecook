@@ -156,7 +156,7 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
           // Claim free trial for newly verified user
           const trialClaimed = await claimTrialForUser(result.user.uid, result.user.email || '');
           if (trialClaimed) {
-            toast.success('Email verified! Your 7-day free Pro trial has started!');
+            toast.success('Email verified! Your 21-day free Pro trial has started!');
             navigate('/templates');
             return;
           }
@@ -227,7 +227,7 @@ export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }
         // Claim free trial for new user
         const trialClaimed = await claimTrialForUser(result.user.uid, result.user.email || '');
         if (trialClaimed) {
-          toast.success('Welcome! Your account has been created with a 7-day free Pro trial!');
+          toast.success('Welcome! Your account has been created with a 21-day free Pro trial!');
         } else {
           toast.success('Welcome! Your account has been created with Google.');
         }

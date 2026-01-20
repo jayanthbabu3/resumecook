@@ -7,7 +7,7 @@
 
 export const FEATURES = {
   /**
-   * Trial System - First 1000 users get 7 days free Pro
+   * Trial System - First 1000 users get 21 days free Pro
    * Set to false after reaching 1000 users to disable all trial UI
    */
   TRIAL_SYSTEM_ENABLED: true,
