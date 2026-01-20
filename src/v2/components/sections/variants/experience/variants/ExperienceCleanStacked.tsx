@@ -161,6 +161,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                     fontSize: typography.body.fontSize,
                     lineHeight: typography.body.lineHeight,
                     color: typography.body.color,
+                    textAlign: 'justify',
                     marginBottom: '4px',
                     paddingLeft: '8px',
                     position: 'relative',

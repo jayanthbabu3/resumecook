@@ -147,7 +147,8 @@ export function useVoiceInput({
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = language;
-    recognition.maxAlternatives = 1;
+    // Use more alternatives for better accuracy (browser picks the best match)
+    recognition.maxAlternatives = 3;
 
     recognition.onstart = () => {
       setIsListening(true);
@@ -317,14 +318,19 @@ export function useVoiceInput({
     clearAutoSubmitTimer();
     isManualStopRef.current = true;
 
+    // Set listening to false immediately
+    setIsListening(false);
+
     if (recognitionRef.current) {
       try {
-        recognitionRef.current.stop();
+        // Use abort() for immediate stop instead of stop()
+        // abort() immediately terminates recognition without waiting for final results
+        recognitionRef.current.abort();
       } catch (e) {
         // Ignore errors when stopping
       }
+      recognitionRef.current = null;
     }
-    setIsListening(false);
   }, [clearAutoSubmitTimer]);
 
   // Toggle listening

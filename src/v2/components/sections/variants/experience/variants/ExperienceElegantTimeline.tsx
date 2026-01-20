@@ -201,6 +201,7 @@ export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
                       fontSize: typography.body.fontSize,
                       color: typography.body.color,
                       lineHeight: typography.body.lineHeight,
+                      textAlign: 'justify',
                       marginBottom: '6px',
                       display: 'flex',
                       alignItems: 'flex-start',

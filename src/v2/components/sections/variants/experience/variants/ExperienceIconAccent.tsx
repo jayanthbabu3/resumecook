@@ -204,6 +204,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                 color: typography.body.color,
                 marginBottom: '8px',
                 lineHeight: typography.body.lineHeight,
+                textAlign: 'justify',
               }}>
                 {editable ? (
                   <InlineEditableText
@@ -229,6 +230,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                       fontSize: typography.body.fontSize,
                       color: typography.body.color,
                       lineHeight: typography.body.lineHeight,
+                      textAlign: 'justify',
                       marginBottom: '5px',
                       display: 'flex',
                       alignItems: 'flex-start',

@@ -2475,7 +2475,7 @@ export const BuilderV2: React.FC = () => {
               ? "w-full px-4 lg:px-6"
               : "container mx-auto px-3 sm:px-4 lg:px-4",
             "pt-2 pb-2 lg:pt-3 lg:pb-4", // Padding top/bottom
-            "mt-[146px] lg:mt-[60px]", // Space for fixed elements (mobile: 56px header + 82px toolbar + 8px gap = 146px, desktop: 60px toolbar)
+            "mt-[136px] lg:mt-[56px]", // Space for fixed elements (mobile: 56px header + 80px toolbar = 136px, desktop: 56px for toolbar - parent handles header)
             editorMode === 'form'
               ? "flex lg:gap-4 items-start"
               : "flex justify-center",

@@ -152,13 +152,14 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
               listStyleType: 'none',
             }}>
               {exp.bulletPoints?.slice(0, 3).map((bullet, bulletIndex) => (
-                <li 
+                <li
                   key={bulletIndex}
                   className="group/bullet"
-                  style={{ 
+                  style={{
                     fontSize: '13px',
                     color: typography.body.color,
                     lineHeight: 1.5,
+                    textAlign: 'justify',
                     marginBottom: '6px',
                     position: 'relative',
                     paddingLeft: '12px',

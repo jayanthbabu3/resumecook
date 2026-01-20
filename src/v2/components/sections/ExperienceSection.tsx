@@ -115,6 +115,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
       fontWeight: typography.body.fontWeight,
       lineHeight: typography.body.lineHeight,
       color: typography.body.color,
+      textAlign: 'justify',
     };
 
     // Map bullet character to list-style-type

@@ -165,6 +165,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
                         fontSize: typography.body.fontSize,
                         color: typography.body.color,
                         lineHeight: typography.body.lineHeight,
+                        textAlign: 'justify',
                         marginBottom: spacing.bulletGap,
                         display: 'flex',
                         alignItems: 'flex-start',

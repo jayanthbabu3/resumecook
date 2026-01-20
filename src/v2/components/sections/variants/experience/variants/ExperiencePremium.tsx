@@ -180,6 +180,7 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
               fontSize: typography.body.fontSize,
               color: typography.body.color || '#4b5563',
               lineHeight: '1.6',
+              textAlign: 'justify',
               margin: '0 0 10px 0',
             }}>
               {editable ? (
@@ -214,6 +215,7 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
                     fontSize: typography.body.fontSize,
                     color: typography.body.color || '#374151',
                     lineHeight: '1.65',
+                    textAlign: 'justify',
                     counterIncrement: 'bullet-counter',
                   }}
                 >

@@ -172,11 +172,12 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
           
           {/* Description */}
           {(exp.description || editable) && (
-            <div style={{ 
-              fontSize: typography.body.fontSize, 
+            <div style={{
+              fontSize: typography.body.fontSize,
               color: '#4b5563',
               marginBottom: '10px',
               lineHeight: 1.6,
+              textAlign: 'justify',
             }}>
               {editable ? (
                 <InlineEditableText
@@ -205,6 +206,7 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
                     fontSize: typography.body.fontSize,
                     color: typography.body.color,
                     lineHeight: 1.6,
+                    textAlign: 'justify',
                     marginBottom: '6px',
                     display: 'flex',
                     alignItems: 'flex-start',

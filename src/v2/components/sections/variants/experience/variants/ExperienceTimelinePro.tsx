@@ -209,6 +209,7 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                       fontSize: typography.body.fontSize,
                       color: '#374151',
                       lineHeight: '1.55',
+                      textAlign: 'justify',
                     }}
                   >
                     <span style={{

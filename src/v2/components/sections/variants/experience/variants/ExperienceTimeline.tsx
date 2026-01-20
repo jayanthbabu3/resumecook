@@ -158,13 +158,14 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
                   listStyleType: 'none',
                 }}>
                   {exp.bulletPoints?.map((bullet, bulletIndex) => (
-                    <li 
+                    <li
                       key={bulletIndex}
                       className="group/bullet"
-                      style={{ 
+                      style={{
                         fontSize: typography.body.fontSize,
                         color: typography.body.color,
                         lineHeight: typography.body.lineHeight,
+                        textAlign: 'justify',
                         marginBottom: '6px',
                         position: 'relative',
                         paddingLeft: '12px',

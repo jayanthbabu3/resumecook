@@ -181,6 +181,7 @@ export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
                     fontSize: typography.body.fontSize,
                     color: '#374151',
                     lineHeight: '1.6',
+                    textAlign: 'justify',
                   }}
                 >
                   <span style={{

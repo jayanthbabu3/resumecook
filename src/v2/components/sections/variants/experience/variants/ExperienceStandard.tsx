@@ -145,11 +145,12 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
           
           {/* Description */}
           {(exp.description || editable) && (
-            <div style={{ 
-              fontSize: typography.body.fontSize, 
+            <div style={{
+              fontSize: typography.body.fontSize,
               color: typography.body.color,
               margin: '8px 0',
               lineHeight: typography.body.lineHeight,
+              textAlign: 'justify',
             }}>
               {editable ? (
                 <InlineEditableText
@@ -172,14 +173,15 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
               listStyleType: experience?.bulletStyle || 'disc',
             }}>
               {exp.bulletPoints?.map((bullet, bulletIndex) => (
-                <li 
-                  key={bulletIndex} 
+                <li
+                  key={bulletIndex}
                   className="group/bullet relative"
-                  style={{ 
+                  style={{
                     fontSize: typography.body.fontSize,
                     color: typography.body.color,
                     lineHeight: typography.body.lineHeight,
                     marginBottom: spacing.bulletGap || '4px',
+                    textAlign: 'justify',
                   }}
                 >
                   {editable ? (

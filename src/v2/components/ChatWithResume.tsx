@@ -178,6 +178,7 @@ export function ChatWithResume({
   });
 
   // Update input when transcript changes during voice input
+  // Only update if we're actively listening and have a transcript
   useEffect(() => {
     if (isListening && transcript) {
       setInputValue(transcript);
@@ -190,8 +191,8 @@ export function ChatWithResume({
     if (textarea) {
       // Reset height to auto to get the correct scrollHeight
       textarea.style.height = 'auto';
-      // Set height to scrollHeight, capped at max height
-      const maxHeight = 150; // Max 150px height
+      // Set height to scrollHeight, capped at max height (200px for longer voice input)
+      const maxHeight = 200;
       const newHeight = Math.min(textarea.scrollHeight, maxHeight);
       textarea.style.height = `${newHeight}px`;
     }
@@ -204,7 +205,13 @@ export function ChatWithResume({
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      // Find the scrollable parent container and scroll within it only
+      const scrollContainer = messagesEndRef.current.closest('.overflow-y-auto');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
+    }
   }, [messages]);
 
   // Focus input when chat opens or in panel mode
@@ -269,18 +276,31 @@ export function ChatWithResume({
   // Handle voice cancel - stop recording and clear input
   const handleVoiceCancel = useCallback(() => {
     stopListening();
-    setInputValue('');
     clearTranscript();
+    setInputValue('');
   }, [stopListening, clearTranscript]);
 
-  // Handle voice confirm - stop recording and submit the message
+  // Handle voice confirm - stop recording and place text in input (don't auto-send)
   const handleVoiceConfirm = useCallback(() => {
+    // Get the current transcript before stopping
+    const currentText = inputValue.trim();
+
+    // Stop listening immediately
     stopListening();
-    // Submit if there's content
-    if (inputValue.trim()) {
-      handleSubmit();
-    }
-  }, [stopListening, inputValue, handleSubmit]);
+
+    // Clear the transcript in the hook
+    clearTranscript();
+
+    // Keep the text in input for user to review and send manually
+    // Use setTimeout to ensure state updates have settled
+    setTimeout(() => {
+      if (currentText) {
+        setInputValue(currentText);
+      }
+      // Focus the input so user can edit or send
+      inputRef.current?.focus();
+    }, 50);
+  }, [stopListening, clearTranscript, inputValue]);
 
   // Floating mode - show button when closed, popup when open
   if (mode === 'floating') {
@@ -689,7 +709,7 @@ function SidePanelChat({
                 )}
                 style={{
                   minHeight: '44px',
-                  maxHeight: '150px',
+                  maxHeight: '200px',
                 }}
                 disabled={isLoading}
               />
@@ -1041,7 +1061,7 @@ function FloatingChatPanel({
                 )}
                 style={{
                   minHeight: '40px',
-                  maxHeight: '120px',
+                  maxHeight: '200px',
                 }}
                 disabled={isLoading}
               />
