@@ -62,6 +62,7 @@ import { getTemplateConfig } from '../config/templates';
 import { MOCK_RESUME_DATA } from '../data/mockData';
 import type { V2ResumeData, SectionType } from '../types';
 import { getTemplate } from '../templates';
+import { getSectionsWithData } from '../utils/dataConverter';
 
 // V2 Dynamic Form (config-driven)
 import { DynamicForm, ElegantForm, EnhancedForm } from '../components/form';
@@ -91,6 +92,9 @@ import { FileCheck } from 'lucide-react';
 import { ChatWithResume } from '../components/ChatWithResume';
 import { ResumeAnimationProvider } from '../contexts/ResumeAnimationContext';
 import type { ChatResumeUpdatePayload } from '../types/chat';
+
+// Save Options Dialog
+import { SaveOptionsDialog } from '../components/SaveOptionsDialog';
 
 export const BuilderV2: React.FC = () => {
   const navigate = useNavigate();
@@ -145,6 +149,8 @@ export const BuilderV2: React.FC = () => {
   // Pro Feature modal state
   const [showProModal, setShowProModal] = useState(false);
   const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
+  // Save Options dialog state
+  const [showSaveOptions, setShowSaveOptions] = useState(false);
   // ATS Score panel state - Hidden for refinement
   // const [showATSPanel, setShowATSPanel] = useState(false);
 
@@ -442,14 +448,17 @@ export const BuilderV2: React.FC = () => {
     }
   }, [resumeData, loadedResume]);
 
-  // Save resume handler
-  const handleSaveResume = useCallback(async () => {
+  // Open save options dialog
+  const handleSaveClick = useCallback(() => {
     if (!user) {
       toast.error('Please sign in to save your resume');
       return;
     }
+    setShowSaveOptions(true);
+  }, [user]);
 
-    setIsSaving(true);
+  // Core save function (without profile sync)
+  const saveResumeCore = useCallback(async (): Promise<boolean> => {
     try {
       if (currentResumeId) {
         // Update existing resume
@@ -481,21 +490,51 @@ export const BuilderV2: React.FC = () => {
         newUrl.searchParams.set('resumeId', newResumeId);
         window.history.replaceState({}, '', newUrl.toString());
       }
-
-      // Sync resume data back to user profile (master data)
-      try {
-        await profileService.syncFromResumeData(resumeData);
-      } catch (syncError) {
-        console.error('Error syncing to profile:', syncError);
-        // Don't show error - resume was saved successfully
-      }
+      return true;
     } catch (error) {
       console.error('Error saving resume:', error);
       toast.error('Failed to save resume');
+      return false;
+    }
+  }, [currentResumeId, resumeData, templateId, themeColor, themeColors, sectionOverrides, enabledSections, sectionLabels]);
+
+  // Save resume only (without updating profile)
+  const handleSaveResumeOnly = useCallback(async () => {
+    setIsSaving(true);
+    try {
+      const success = await saveResumeCore();
+      if (success) {
+        toast.success('Resume saved successfully');
+        setShowSaveOptions(false);
+      }
     } finally {
       setIsSaving(false);
     }
-  }, [user, currentResumeId, resumeData, templateId, themeColor, themeColors, sectionOverrides, enabledSections, sectionLabels]);
+  }, [saveResumeCore]);
+
+  // Save resume and update profile
+  const handleSaveAndUpdateProfile = useCallback(async () => {
+    setIsSaving(true);
+    try {
+      const success = await saveResumeCore();
+      if (success) {
+        // Sync resume data back to user profile (master data)
+        try {
+          await profileService.syncFromResumeData(resumeData);
+          toast.success('Resume saved and profile updated');
+        } catch (syncError) {
+          console.error('Error syncing to profile:', syncError);
+          toast.success('Resume saved (profile sync failed)');
+        }
+        setShowSaveOptions(false);
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  }, [saveResumeCore, resumeData]);
+
+  // Legacy handler for backward compatibility (used by auto-save etc.)
+  const handleSaveResume = handleSaveAndUpdateProfile;
 
   // Smart header hide on scroll down, show on scroll up (desktop only)
   useEffect(() => {
@@ -2428,7 +2467,7 @@ export const BuilderV2: React.FC = () => {
                               });
                               setShowProModal(true);
                             } else {
-                              handleSaveResume();
+                              handleSaveClick();
                             }
                           }}
                           disabled={isSaving}
@@ -2884,7 +2923,7 @@ export const BuilderV2: React.FC = () => {
                     });
                     setShowProModal(true);
                   } else {
-                    handleSaveResume();
+                    handleSaveClick();
                   }
                 }}
                 disabled={isSaving}
@@ -2997,6 +3036,14 @@ export const BuilderV2: React.FC = () => {
             }
           }
           setResumeData(enhancedData);
+
+          // Auto-enable all sections that have data in the enhanced resume
+          const sectionsWithData = getSectionsWithData(enhancedData);
+          setEnabledSections(prev => {
+            const merged = [...new Set([...prev, 'header', ...sectionsWithData])];
+            return merged;
+          });
+
           setHasUnsavedChanges(true);
           toast.success('AI enhancements applied successfully!', {
             description: 'Your resume has been transformed with powerful improvements.',
@@ -3023,6 +3070,14 @@ export const BuilderV2: React.FC = () => {
             }, 1500);
           }
           setResumeData(tailoredData);
+
+          // Auto-enable all sections that have data in the tailored resume
+          const sectionsWithData = getSectionsWithData(tailoredData);
+          setEnabledSections(prev => {
+            const merged = [...new Set([...prev, 'header', ...sectionsWithData])];
+            return merged;
+          });
+
           setHasUnsavedChanges(true);
           toast.success('Resume tailored successfully!', {
             description: `Match score: ${analysis.matchScore}% - Your resume is now optimized for this job.`,
@@ -3037,6 +3092,16 @@ export const BuilderV2: React.FC = () => {
         onClose={() => setShowProModal(false)}
         featureName={proModalFeature.name}
         featureDescription={proModalFeature.description}
+      />
+
+      {/* Save Options Dialog */}
+      <SaveOptionsDialog
+        open={showSaveOptions}
+        onOpenChange={setShowSaveOptions}
+        onSaveResumeOnly={handleSaveResumeOnly}
+        onSaveAndUpdateProfile={handleSaveAndUpdateProfile}
+        isSaving={isSaving}
+        isNewResume={!currentResumeId}
       />
 
 {/* ATS Score Panel - Hidden for refinement */}

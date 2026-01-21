@@ -19,8 +19,8 @@ export const getApiKeys = () => ({
 export async function callGemini(apiKey, prompt, options = {}) {
   const {
     temperature = 0.5,
-    maxOutputTokens = 8192,
-    timeout = 90000, // 90 seconds - Cloud Run can handle this!
+    maxOutputTokens = 8000,
+    timeout = 60000, // 60 seconds
   } = options;
 
   const controller = new AbortController();
@@ -76,7 +76,7 @@ export async function callGroq(apiKey, prompt, options = {}) {
   const {
     temperature = 0.5,
     maxTokens = 8000,
-    timeout = 60000,
+    timeout = 45000, // 45 seconds - Groq is fast
     systemPrompt = 'You are a helpful assistant.',
   } = options;
 
@@ -188,7 +188,7 @@ export async function callOpenAI(apiKey, prompt, options = {}) {
   const {
     temperature = 0.5,
     maxTokens = 8000,
-    timeout = 60000,
+    timeout = 60000, // 60 seconds
     systemPrompt = 'You are a helpful assistant.',
   } = options;
 
@@ -241,11 +241,11 @@ export async function callOpenAI(apiKey, prompt, options = {}) {
 
 /**
  * Try all AI providers in priority order
- * Default: Groq first (fastest, free tier), then OpenAI as fallback
+ * Default: OpenAI first (best quality), then Groq as fallback
  */
 export async function callAIWithFallback(prompt, options = {}) {
   const {
-    priority = ['groq', 'openai', 'claude', 'gemini'],
+    priority = ['openai', 'groq', 'claude', 'gemini'],
     ...aiOptions
   } = options;
 
@@ -278,7 +278,8 @@ export async function callAIWithFallback(prompt, options = {}) {
 }
 
 /**
- * Extract JSON from AI response (handles markdown code blocks)
+ * Extract and repair JSON from AI response
+ * Handles: markdown code blocks, truncated responses, common formatting issues
  */
 export function extractJson(content) {
   let jsonStr = content.trim();
@@ -295,5 +296,87 @@ export function extractJson(content) {
     jsonStr = objectMatch[0];
   }
 
-  return JSON.parse(jsonStr);
+  // Try parsing as-is first
+  try {
+    return JSON.parse(jsonStr);
+  } catch (e) {
+    console.log('Initial JSON parse failed, attempting repair...');
+  }
+
+  // Attempt to repair common JSON issues
+  jsonStr = repairJson(jsonStr);
+
+  try {
+    return JSON.parse(jsonStr);
+  } catch (e) {
+    console.error('JSON repair failed:', e.message);
+    console.error('JSON preview:', jsonStr.substring(0, 500) + '...');
+    throw new Error(`Failed to parse AI response as JSON: ${e.message}`);
+  }
+}
+
+/**
+ * Attempt to repair malformed JSON
+ */
+function repairJson(jsonStr) {
+  let str = jsonStr;
+
+  // Remove trailing commas before ] or }
+  str = str.replace(/,\s*([}\]])/g, '$1');
+
+  // Fix truncated arrays - close any unclosed brackets
+  let openBrackets = 0;
+  let openBraces = 0;
+  let inString = false;
+  let escapeNext = false;
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+
+    if (escapeNext) {
+      escapeNext = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escapeNext = true;
+      continue;
+    }
+
+    if (char === '"' && !escapeNext) {
+      inString = !inString;
+      continue;
+    }
+
+    if (!inString) {
+      if (char === '[') openBrackets++;
+      if (char === ']') openBrackets--;
+      if (char === '{') openBraces++;
+      if (char === '}') openBraces--;
+    }
+  }
+
+  // If we're inside a string, try to close it
+  if (inString) {
+    str += '"';
+  }
+
+  // Remove any trailing incomplete key-value pairs
+  // Pattern: "key": (without value) or "key": " (unclosed string)
+  str = str.replace(/,?\s*"[^"]*":\s*"?[^",}\]]*$/g, '');
+
+  // Close any unclosed brackets/braces
+  while (openBrackets > 0) {
+    str += ']';
+    openBrackets--;
+  }
+  while (openBraces > 0) {
+    str += '}';
+    openBraces--;
+  }
+
+  // Final cleanup - remove trailing commas again after repairs
+  str = str.replace(/,\s*([}\]])/g, '$1');
+
+  return str;
 }

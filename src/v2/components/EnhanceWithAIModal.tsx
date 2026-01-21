@@ -146,6 +146,9 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
   const [additionalContext, setAdditionalContext] = useState('');
   const [selectedFocusAreas, setSelectedFocusAreas] = useState<Set<string>>(new Set());
 
+  // Mobile tab state for comparing view
+  const [mobileCompareTab, setMobileCompareTab] = useState<'original' | 'enhanced'>('enhanced');
+
   // Refs for synchronized scrolling
   const originalScrollRef = useRef<HTMLDivElement>(null);
   const enhancedScrollRef = useRef<HTMLDivElement>(null);
@@ -181,6 +184,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
       setShowAdvancedOptions(false);
       setAdditionalContext('');
       setSelectedFocusAreas(new Set());
+      setMobileCompareTab('enhanced');
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
@@ -290,38 +294,49 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
         onClick={status === 'applying' ? undefined : onClose}
       />
 
-      {/* Modal - Full screen for comparison, smaller for other states */}
+      {/* Modal - Full screen for comparison (mobile: 100%), smaller for other states */}
       <div className={cn(
-        "relative bg-white rounded-3xl shadow-2xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 flex flex-col",
+        "relative bg-white shadow-2xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 flex flex-col",
         status === 'comparing' || status === 'applying'
-          ? "w-[95vw] h-[95vh] max-w-[1800px]"
-          : "w-full max-w-2xl"
+          ? "w-full h-full sm:w-[95vw] sm:h-[95vh] sm:max-w-[1800px] rounded-none sm:rounded-3xl"
+          : "w-full max-w-2xl rounded-2xl sm:rounded-3xl max-h-[90vh]"
       )}>
-        {/* Header - Compact for comparing state */}
+        {/* Header - Compact for comparing state, responsive for mobile */}
         <div
           className={cn(
             "flex items-center justify-between border-b flex-shrink-0",
-            status === 'comparing' || status === 'applying' ? "px-4 py-2" : "px-8 py-5"
+            status === 'comparing' || status === 'applying'
+              ? "px-3 py-2 sm:px-4"
+              : "px-4 py-4 sm:px-8 sm:py-5"
           )}
           style={{
             background: `linear-gradient(135deg, ${themeColor}06 0%, ${themeColor}12 100%)`,
             borderColor: `${themeColor}15`
           }}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <div
               className={cn(
-                "rounded-xl flex items-center justify-center shadow-lg",
-                status === 'comparing' || status === 'applying' ? "w-10 h-10" : "w-14 h-14"
+                "rounded-xl flex items-center justify-center shadow-lg flex-shrink-0",
+                status === 'comparing' || status === 'applying'
+                  ? "w-8 h-8 sm:w-10 sm:h-10"
+                  : "w-10 h-10 sm:w-14 sm:h-14"
               )}
               style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
             >
-              <Sparkles className={status === 'comparing' || status === 'applying' ? "w-5 h-5 text-white" : "w-6 h-6 text-white"} />
+              <Sparkles className={cn(
+                "text-white",
+                status === 'comparing' || status === 'applying'
+                  ? "w-4 h-4 sm:w-5 sm:h-5"
+                  : "w-5 h-5 sm:w-6 sm:h-6"
+              )} />
             </div>
-            <div>
+            <div className="min-w-0">
               <h2 className={cn(
-                "font-bold text-gray-900",
-                status === 'comparing' || status === 'applying' ? "text-base" : "text-xl"
+                "font-bold text-gray-900 truncate",
+                status === 'comparing' || status === 'applying'
+                  ? "text-sm sm:text-base"
+                  : "text-lg sm:text-xl"
               )}>
                 {status === 'idle' && 'Enhance with AI'}
                 {status === 'enhancing' && 'AI Enhancement in Progress'}
@@ -330,7 +345,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                 {status === 'error' && 'Enhancement Failed'}
               </h2>
               {(status !== 'comparing' && status !== 'applying') && (
-                <p className="text-sm text-gray-500 mt-0.5">
+                <p className="text-xs sm:text-sm text-gray-500 mt-0.5 truncate">
                   {status === 'idle' && 'Transform your resume with AI-powered improvements'}
                   {status === 'enhancing' && 'Please wait while we optimize your resume'}
                   {status === 'error' && 'Something went wrong'}
@@ -341,7 +356,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
           {status !== 'applying' && (
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/80 text-gray-400 hover:text-gray-600 transition-colors border border-transparent hover:border-gray-200"
+              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/80 text-gray-400 hover:text-gray-600 transition-colors border border-transparent hover:border-gray-200 flex-shrink-0"
             >
               <X className="w-4 h-4" />
             </button>
@@ -350,9 +365,9 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
-          {/* Idle State - Compact Elegant Design */}
+          {/* Idle State - Compact Elegant Design, responsive */}
           {status === 'idle' && (
-            <div className="px-6 py-6">
+            <div className="px-4 py-4 sm:px-6 sm:py-6">
               {/* Hero Section */}
               <div className="text-center mb-6">
                 {/* Icon */}
@@ -374,8 +389,8 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                 </p>
               </div>
 
-              {/* Features Grid - Compact Cards */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              {/* Features Grid - Compact Cards, responsive */}
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-3 mb-6">
                 {[
                   {
                     icon: <FileText className="w-4 h-4" />,
@@ -505,7 +520,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
               <div className="text-center">
                 <Button
                   onClick={handleEnhance}
-                  className="group relative px-8 py-5 gap-2 text-sm font-semibold rounded-xl overflow-hidden transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  className="group relative px-6 sm:px-8 py-4 sm:py-5 gap-2 text-sm font-semibold rounded-xl overflow-hidden transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                   style={{
                     background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)`,
                     boxShadow: `0 4px 16px ${themeColor}30`
@@ -517,7 +532,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                   <span className="relative">Enhance My Resume</span>
                 </Button>
 
-                <p className="text-xs text-gray-400 mt-3 flex items-center justify-center gap-4">
+                <p className="text-[10px] sm:text-xs text-gray-400 mt-3 flex items-center justify-center gap-3 sm:gap-4">
                   <span className="flex items-center gap-1">
                     <Eye className="w-3 h-3" />
                     Preview first
@@ -533,43 +548,43 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
 
           {/* Enhancing State */}
           {status === 'enhancing' && (
-            <div className="text-center py-12">
-              <div className="relative w-28 h-28 mx-auto mb-8">
+            <div className="text-center py-8 sm:py-12 px-4">
+              <div className="relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-6 sm:mb-8">
                 {/* Animated gradient rings */}
                 <div
                   className="absolute inset-0 rounded-full animate-ping opacity-15"
                   style={{ backgroundColor: themeColor }}
                 />
                 <div
-                  className="absolute inset-3 rounded-full animate-pulse opacity-20"
+                  className="absolute inset-2 sm:inset-3 rounded-full animate-pulse opacity-20"
                   style={{ backgroundColor: themeColor }}
                 />
                 <div
-                  className="absolute inset-6 rounded-full animate-pulse opacity-30"
+                  className="absolute inset-4 sm:inset-6 rounded-full animate-pulse opacity-30"
                   style={{ backgroundColor: themeColor }}
                 />
                 <div
                   className="absolute inset-0 rounded-full flex items-center justify-center shadow-xl"
                   style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
                 >
-                  <Sparkles className="w-10 h-10 text-white animate-pulse" />
+                  <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-white animate-pulse" />
                 </div>
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
                 Enhancing Your Resume
               </h3>
 
-              <div className="h-8 flex items-center justify-center mb-6">
+              <div className="h-6 sm:h-8 flex items-center justify-center mb-4 sm:mb-6">
                 <TypewriterText
                   text={progressMessage}
                   speed={40}
-                  className="text-gray-600"
+                  className="text-gray-600 text-sm sm:text-base"
                 />
               </div>
 
               {/* Progress bar */}
-              <div className="w-72 mx-auto h-2.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+              <div className="w-full max-w-[288px] mx-auto h-2 sm:h-2.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
                 <div
                   className="h-full rounded-full transition-all duration-1000 ease-out"
                   style={{
@@ -579,37 +594,75 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                 />
               </div>
 
-              <p className="text-sm text-gray-400 mt-5">
+              <p className="text-xs sm:text-sm text-gray-400 mt-4 sm:mt-5">
                 This usually takes 10-15 seconds
               </p>
             </div>
           )}
 
-          {/* Comparing State - Full Resume Preview Side-by-Side */}
+          {/* Comparing State - Full Resume Preview Side-by-Side (Desktop) / Tabbed (Mobile) */}
           {(status === 'comparing' || status === 'applying') && enhancementResult && (
             <div className="flex flex-col h-full min-h-0">
-              {/* Side-by-Side Resume Previews - MAXIMUM SPACE */}
+              {/* Mobile Tab Switcher - Only visible on mobile */}
+              <div className="md:hidden flex-shrink-0 px-2 pt-2 pb-1">
+                <div className="flex bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => setMobileCompareTab('original')}
+                    className={cn(
+                      "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium transition-all",
+                      mobileCompareTab === 'original'
+                        ? "bg-white text-gray-700 shadow-sm"
+                        : "text-gray-500 hover:text-gray-600"
+                    )}
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    Original
+                  </button>
+                  <button
+                    onClick={() => setMobileCompareTab('enhanced')}
+                    className={cn(
+                      "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium transition-all",
+                      mobileCompareTab === 'enhanced'
+                        ? "text-white shadow-sm"
+                        : "text-gray-500 hover:text-gray-600"
+                    )}
+                    style={mobileCompareTab === 'enhanced' ? {
+                      background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)`
+                    } : {}}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Enhanced
+                  </button>
+                </div>
+              </div>
+
+              {/* Resume Previews Container */}
               <div className="flex-1 flex gap-2 p-2 min-h-0">
-                {/* Original Resume */}
-                <div className="flex-1 flex flex-col min-w-0 min-h-0">
-                  {/* Header - Minimal */}
-                  <div className="flex items-center justify-between mb-1.5 px-1">
+                {/* Original Resume - Hidden on mobile when Enhanced tab is active */}
+                <div className={cn(
+                  "flex-1 flex flex-col min-w-0 min-h-0",
+                  "md:flex",
+                  mobileCompareTab === 'original' ? "flex" : "hidden"
+                )}>
+                  {/* Header - Minimal, hidden on mobile (tab already shows which view) */}
+                  <div className="hidden md:flex items-center justify-between mb-1.5 px-1">
                     <div className="flex items-center gap-1.5">
                       <FileText className="w-4 h-4 text-gray-400" />
                       <span className="font-medium text-gray-500 text-sm">Original</span>
                     </div>
                   </div>
-                  {/* Resume Container - Full height */}
+                  {/* Resume Container - Full height, scaled on mobile */}
                   <div className="flex-1 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-0 relative">
                     <div
                       ref={originalScrollRef}
                       onScroll={() => handleScroll('original')}
                       className="absolute inset-0 overflow-y-auto"
                     >
-                      <div className="p-1 min-h-full flex justify-center">
+                      {/* Mobile: scaled preview (0.45x), Desktop: full size */}
+                      <div className="p-2 min-h-full flex justify-center md:p-1">
                         <div
-                          className="bg-white shadow-sm flex-shrink-0 opacity-70"
-                          style={{ width: '100%' }}
+                          className="bg-white shadow-sm flex-shrink-0 opacity-70 origin-top scale-[0.45] md:scale-100"
+                          style={{ width: 794 }}
                         >
                           <StyleOptionsProvider>
                             <StyleOptionsWrapper>
@@ -629,8 +682,8 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                   </div>
                 </div>
 
-                {/* Center Divider - Minimal */}
-                <div className="flex flex-col items-center justify-center">
+                {/* Center Divider - Hidden on mobile */}
+                <div className="hidden md:flex flex-col items-center justify-center">
                   <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
                   <div
                     className="w-8 h-8 rounded-full flex items-center justify-center shadow-md my-1"
@@ -641,10 +694,14 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                   <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
                 </div>
 
-                {/* Enhanced Resume */}
-                <div className="flex-1 flex flex-col min-w-0 min-h-0">
-                  {/* Header - Minimal with badge */}
-                  <div className="flex items-center justify-between mb-1.5 px-1">
+                {/* Enhanced Resume - Hidden on mobile when Original tab is active */}
+                <div className={cn(
+                  "flex-1 flex flex-col min-w-0 min-h-0",
+                  "md:flex",
+                  mobileCompareTab === 'enhanced' ? "flex" : "hidden"
+                )}>
+                  {/* Header - Minimal with badge, hidden on mobile */}
+                  <div className="hidden md:flex items-center justify-between mb-1.5 px-1">
                     <div className="flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4" style={{ color: themeColor }} />
                       <span className="font-semibold text-sm" style={{ color: themeColor }}>Enhanced</span>
@@ -657,7 +714,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                       AI
                     </span>
                   </div>
-                  {/* Resume Container - Highlighted, Full height */}
+                  {/* Resume Container - Highlighted, Full height, scaled on mobile */}
                   <div
                     className="flex-1 rounded-lg overflow-hidden min-h-0 relative"
                     style={{
@@ -671,11 +728,12 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                       onScroll={() => handleScroll('enhanced')}
                       className="absolute inset-0 overflow-y-auto"
                     >
-                      <div className="p-1 min-h-full flex justify-center">
+                      {/* Mobile: scaled preview (0.45x), Desktop: full size */}
+                      <div className="p-2 min-h-full flex justify-center md:p-1">
                         <div
-                          className="bg-white shadow-lg flex-shrink-0"
+                          className="bg-white shadow-lg flex-shrink-0 origin-top scale-[0.45] md:scale-100"
                           style={{
-                            width: '100%',
+                            width: 794,
                             boxShadow: `0 0 0 2px ${themeColor}20, 0 10px 30px -5px rgba(0,0,0,0.12)`
                           }}
                         >
@@ -698,12 +756,12 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                 </div>
               </div>
 
-              {/* Suggested Skills - Single line at bottom, only if present */}
+              {/* Suggested Skills - Scrollable on mobile, only if present */}
               {enhancementResult.suggestedSkills && enhancementResult.suggestedSkills.length > 0 && (
-                <div className="px-3 py-1.5 border-t border-gray-100 flex items-center gap-2 flex-shrink-0 bg-gray-50/50">
-                  <Lightbulb className="w-3.5 h-3.5 flex-shrink-0" style={{ color: themeColor }} />
-                  <span className="text-xs text-gray-500 flex-shrink-0">Skills:</span>
-                  <div className="flex gap-1 flex-1 min-w-0 overflow-x-auto">
+                <div className="px-2 sm:px-3 py-1.5 border-t border-gray-100 flex items-center gap-1.5 sm:gap-2 flex-shrink-0 bg-gray-50/50">
+                  <Lightbulb className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" style={{ color: themeColor }} />
+                  <span className="text-[10px] sm:text-xs text-gray-500 flex-shrink-0 hidden sm:inline">Skills:</span>
+                  <div className="flex gap-1 flex-1 min-w-0 overflow-x-auto scrollbar-hide">
                     {enhancementResult.suggestedSkills.map(skill => (
                       <button
                         key={skill.id}
@@ -721,7 +779,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                         }}
                         disabled={status === 'applying'}
                         className={cn(
-                          "inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium transition-all whitespace-nowrap",
+                          "inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium transition-all whitespace-nowrap",
                           acceptSuggestedSkills.has(skill.id)
                             ? ""
                             : "bg-white border border-gray-200 hover:border-gray-300 text-gray-600"
@@ -734,9 +792,9 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                         title={skill.reason}
                       >
                         {acceptSuggestedSkills.has(skill.id) ? (
-                          <Check className="w-2.5 h-2.5" />
+                          <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5" />
                         ) : (
-                          <div className="w-2.5 h-2.5 rounded-sm border border-gray-300" />
+                          <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-sm border border-gray-300" />
                         )}
                         {skill.name}
                       </button>
@@ -749,19 +807,19 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
 
           {/* Error State */}
           {status === 'error' && (
-            <div className="text-center py-12">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-50 flex items-center justify-center border border-red-100">
-                <AlertCircle className="w-10 h-10 text-red-500" />
+            <div className="text-center py-8 sm:py-12 px-4">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl bg-red-50 flex items-center justify-center border border-red-100">
+                <AlertCircle className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
                 Enhancement Failed
               </h3>
-              <p className="text-sm text-red-600 mb-6 max-w-sm mx-auto">
+              <p className="text-xs sm:text-sm text-red-600 mb-4 sm:mb-6 max-w-sm mx-auto">
                 {error}
               </p>
               <Button
                 onClick={handleEnhance}
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto"
                 style={{
                   background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)`,
                 }}
@@ -773,16 +831,17 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
           )}
         </div>
 
-        {/* Footer - Compact Action Buttons */}
+        {/* Footer - Compact Action Buttons, Responsive */}
         {(status === 'comparing') && (
           <div
-            className="px-4 py-2 border-t flex items-center justify-between flex-shrink-0"
+            className="px-3 py-2 sm:px-4 border-t flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0 flex-shrink-0"
             style={{
               background: `linear-gradient(135deg, ${themeColor}04, white)`,
               borderColor: `${themeColor}12`
             }}
           >
-            <div className="text-sm text-gray-500">
+            {/* Skills badge - hidden on mobile if no skills selected */}
+            <div className="hidden sm:block text-sm text-gray-500">
               {acceptSuggestedSkills.size > 0 && (
                 <span
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium"
@@ -796,20 +855,25 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={onClose} className="px-4 py-2 rounded-lg text-sm h-9">
+            {/* Action Buttons - Stack on mobile */}
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={onClose}
+                className="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-sm h-9"
+              >
                 Cancel
               </Button>
               <Button
                 onClick={handleApply}
-                className="gap-1.5 px-5 py-2 shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg text-sm h-9"
+                className="flex-1 sm:flex-none gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg text-sm h-9"
                 style={{
                   background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)`,
                 }}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                Apply Enhancements
-                <ChevronRight className="w-3.5 h-3.5" />
+                <span className="truncate">Apply Enhancements</span>
+                <ChevronRight className="w-3.5 h-3.5 hidden sm:block" />
               </Button>
             </div>
           </div>
@@ -818,15 +882,15 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
         {/* Applying Footer */}
         {status === 'applying' && (
           <div
-            className="px-8 py-5 border-t flex items-center justify-center gap-3"
+            className="px-4 py-3 sm:px-8 sm:py-5 border-t flex items-center justify-center gap-2 sm:gap-3"
             style={{
               background: `linear-gradient(135deg, ${themeColor}06, ${themeColor}02)`,
               borderColor: `${themeColor}15`
             }}
           >
-            <Loader2 className="w-5 h-5 animate-spin" style={{ color: themeColor }} />
-            <span className="font-medium" style={{ color: themeColor }}>
-              Applying enhancements to your resume...
+            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" style={{ color: themeColor }} />
+            <span className="font-medium text-sm sm:text-base" style={{ color: themeColor }}>
+              Applying enhancements...
             </span>
           </div>
         )}

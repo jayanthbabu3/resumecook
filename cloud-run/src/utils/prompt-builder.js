@@ -1,133 +1,215 @@
 /**
- * Dynamic Prompt Builder for Resume Enhancement
+ * Optimized Prompt Builder for Resume Enhancement
  *
- * SIMPLIFIED VERSION: Relies on AI's inherent knowledge of resume best practices.
- * We only provide essential rules and context - the AI knows the rest.
+ * Goals:
+ * - Exactly 4 bullet points per experience (15+ words each)
+ * - Consolidate many points into 4 comprehensive ones
+ * - Professional resume summary (not narrative style)
+ * - Preserve all skills, deduplicated
  */
 
 /**
- * Build an enhancement prompt
- *
- * @param {object} resumeData - The resume data to enhance
- * @param {object} analysis - Analysis results from resume-analyzer
- * @param {object} userOptions - Optional user customization
+ * Build enhancement prompt
  */
 export function buildEnhancementPrompt(resumeData, analysis, userOptions = {}) {
   const role = userOptions.targetRole || analysis.detectedRole;
   const years = analysis.yearsOfExperience;
 
-  // Extract metrics from original summary to ensure preservation
-  const originalMetrics = extractMetricsFromSummary(resumeData.summary);
+  // Get original metrics to preserve
+  const metrics = extractAllMetrics(resumeData);
 
-  const prompt = `# Resume Enhancement Task
+  // Prepare data
+  const minimalData = prepareMinimalData(resumeData);
+  const expCount = minimalData.experience.length;
 
-You are enhancing a resume for a **${role}** with approximately **${years} years** of experience.
+  const prompt = `Enhance resume for ${role} (${years}yr). Return valid JSON only.
 
-${userOptions.additionalContext ? `## User Context:\n${userOptions.additionalContext}\n` : ''}
-${userOptions.focusAreas?.length ? `## Focus Areas: ${userOptions.focusAreas.join(', ')}\n` : ''}
+RULES:
+1. NAME: Remove all emojis. Keep only the clean name (e.g., "Akshay Saini" not "Akshay Saini 🚀").
 
-## Core Rules (MUST FOLLOW)
+2. TITLE: Make ATS-friendly. Use standard job titles.
+   - Good: "Software Engineer | Full Stack Developer"
+   - Good: "Content Creator | Technical Educator"
+   - Bad: "YouTuber (2.1M+)" - not ATS-friendly
+   - Include subscriber count in summary, not title
 
-1. **NEVER fabricate** - Don't invent metrics, percentages, or achievements
-2. **Preserve ALL original metrics** - If summary says "300K users" or "8+ years", keep them exactly
-3. **Keep it authentic** - Improve language, not facts
-4. **Don't over-optimize** - If something is already well-written, leave it alone
+3. SUMMARY: Professional style, 4 sentences, 50-70 words total.
+   Format: "[Role] with [X]+ years in [area]. [Key achievement with metrics]. [What you do/specialize in]. [Core expertise/technologies]."
+   Example: "Software Engineer with 8+ years in full-stack development. Built products serving 1M+ users at top tech companies. Specializes in creating scalable web applications and mentoring development teams. Expert in React, Node.js, TypeScript, and cloud architecture."
 
-${originalMetrics.length > 0 ? `## ⚠️ PRESERVE THESE METRICS FROM ORIGINAL SUMMARY:
-${originalMetrics.map(m => `- "${m}" - MUST appear in enhanced summary`).join('\n')}
-` : ''}
+4. EXPERIENCE: CRITICAL - EVERY SINGLE ONE of ALL ${expCount} experiences MUST have EXACTLY 4 bullets. NO EXCEPTIONS.
+   - Each bullet: MINIMUM 15 words, maximum 25 words. Count words carefully. Start with strong action verb.
+   - NEVER copy original bullets. You MUST rewrite and expand EVERY bullet to 15+ words.
+   - If original bullet is short like "Worked on SEO", expand it to: "Implemented comprehensive SEO strategies and optimizations, significantly improving search rankings and organic traffic across the platform."
+   - CONSOLIDATE: If original has 5+ points, merge ALL info into exactly 4 comprehensive bullets
+   - EXPAND: If original has 1-3 points, create relevant professional bullets based on role context to reach exactly 4
+   - Example good bullet (18 words): "Developed and deployed multiple finance engineering products using GoLang and React, improving operational efficiency across teams."
+   - Example bad bullet (8 words): "Built finance products using GoLang and React." - THIS IS UNACCEPTABLE, TOO SHORT
+   - VERIFY: Before returning, count words in EACH bullet. If any bullet has fewer than 15 words, expand it.
+${metrics.length > 0 ? `   - Preserve these metrics: ${metrics.slice(0, 8).join(', ')}` : ''}
 
-## What to Improve
-- Weak verbs (worked on → Led, helped → Delivered)
-- Vague descriptions → More specific (using existing info only)
-- Passive voice → Active voice
-- **Job titles that aren't ATS-friendly** - Make them more standard/searchable (e.g., "Tech Lead" → "Senior Software Engineer", "Code Ninja" → "Software Developer")
+5. SKILLS: Return ALL skills from input (already deduplicated). Do not return empty array.
 
-## What NOT to Do
-- Don't add technologies not mentioned
-- Don't stuff keywords that don't fit the actual work
-- Don't make things longer for no reason
-- Don't change content that's already good
+6. PROJECTS: Enhance description to 20-40 words.
 
-## Output Format
-- Return ONLY valid JSON matching the input structure
-- Use "bulletPoints" array for experience items (not "highlights")
-- Include "suggestedSkills" array: [{ "id": "suggested-1", "name": "...", "category": "...", "reason": "..." }]
-- Preserve all IDs, names, dates, emails, company names exactly
-- You CAN enhance personalInfo.title to be more ATS-friendly if needed
+7. NO fake metrics. Only use numbers from original data.
 
-## Resume Data
+${userOptions.additionalContext ? `CONTEXT: ${userOptions.additionalContext}\n` : ''}
+INPUT:
+${JSON.stringify(minimalData, null, 0)}
 
-\`\`\`json
-${JSON.stringify(cleanResumeData(resumeData), null, 2)}
-\`\`\``;
+OUTPUT: JSON with personalInfo (fullName without emojis, ATS-friendly title, 4-sentence summary), experience (exactly 4 bulletPoints each), education, skills (from input), projects, suggestedSkills[3].`;
 
   return prompt;
 }
 
 /**
- * Extract metrics from summary for preservation checking
+ * Prepare minimal data
  */
-function extractMetricsFromSummary(summary) {
-  if (!summary) return [];
+function prepareMinimalData(resumeData) {
+  return {
+    personalInfo: resumeData.personalInfo ? {
+      fullName: resumeData.personalInfo.fullName,
+      title: resumeData.personalInfo.title,
+      summary: resumeData.personalInfo.summary,
+      email: resumeData.personalInfo.email,
+      phone: resumeData.personalInfo.phone,
+      location: resumeData.personalInfo.location,
+      linkedin: resumeData.personalInfo.linkedin,
+      github: resumeData.personalInfo.github,
+      portfolio: resumeData.personalInfo.portfolio,
+      website: resumeData.personalInfo.website,
+    } : {},
+    experience: (resumeData.experience || []).map(exp => ({
+      id: exp.id,
+      company: exp.company,
+      position: exp.position,
+      startDate: exp.startDate,
+      endDate: exp.endDate,
+      current: exp.current,
+      location: exp.location,
+      description: exp.description,
+      bulletPoints: exp.bulletPoints || [],
+    })),
+    education: (resumeData.education || []).map(edu => ({
+      id: edu.id,
+      school: edu.school,
+      degree: edu.degree,
+      field: edu.field,
+      startDate: edu.startDate,
+      endDate: edu.endDate,
+      gpa: edu.gpa,
+    })),
+    skills: deduplicateSkills((resumeData.skills || []).slice(0, 30)),
+    projects: (resumeData.projects || []).slice(0, 5).map(p => ({
+      id: p.id,
+      name: p.name,
+      description: p.description?.substring(0, 200),
+    })),
+  };
+}
 
-  const metrics = [];
-
-  // Years patterns
-  const yearsMatch = summary.match(/(\d+\+?\s*years?)/gi);
-  if (yearsMatch) metrics.push(...yearsMatch);
-
-  // Number patterns (300K, 1M, 50+, etc.)
-  const numberPatterns = [
-    /\d+K\+?\s*\w*/gi,           // 300K users
-    /\d+M\+?\s*\w*/gi,           // 1M downloads
-    /\$[\d,]+[KMB]?\+?/gi,       // $1M, $500K
-    /\d+\+\s*\w+/gi,             // 50+ clients
-    /\d+%/gi,                     // 95%
+/**
+ * Deduplicate skills before sending
+ */
+function deduplicateSkills(skills) {
+  const seen = new Map();
+  const duplicatePatterns = [
+    ['seo', 'search engine optimization', 'search engine optimization (seo)'],
+    ['css', 'cascading style sheets', 'cascading style sheets (css)'],
+    ['html', 'hypertext markup language', 'html5'],
+    ['js', 'javascript'],
+    ['c++', 'c/ c++', 'c/c++'],
+    ['ui', 'user interface'],
+    ['ux', 'user experience', 'user experience (ux)'],
+    ['aws', 'amazon web services', 'amazon web services (aws)'],
+    ['redux', 'redux.js'],
+    ['react', 'react.js', 'reactjs'],
+    ['vue', 'vue.js', 'vuejs'],
+    ['angular', 'angularjs'],
+    ['jquery', 'j query'],
+    ['web design', 'web designing'],
+    ['front-end', 'frontend', 'front-end coding'],
   ];
 
-  for (const pattern of numberPatterns) {
-    const matches = summary.match(pattern);
-    if (matches) metrics.push(...matches);
-  }
+  const normalized = new Map();
+  duplicatePatterns.forEach(group => {
+    const primary = group[0];
+    group.forEach(variant => normalized.set(variant.toLowerCase(), primary));
+  });
 
-  return [...new Set(metrics)]; // Remove duplicates
+  return skills.filter(skill => {
+    if (!skill || !skill.name) return false;
+    const nameLower = skill.name.toLowerCase().trim();
+    const normalizedName = normalized.get(nameLower) || nameLower;
+
+    if (seen.has(normalizedName)) {
+      return false;
+    }
+    seen.set(normalizedName, true);
+    return true;
+  }).map(s => ({ id: s.id, name: s.name, category: s.category || 'Technical' }));
 }
 
 /**
- * Clean resume data before including in prompt
+ * Extract metrics to preserve
  */
-function cleanResumeData(resumeData) {
-  const cleanData = { ...resumeData };
-  delete cleanData._parsedSections;
-  delete cleanData._enhancements;
-  delete cleanData.suggestedSkills;
-  return cleanData;
-}
+function extractAllMetrics(resumeData) {
+  const metrics = new Set();
 
-/**
- * Build the system prompt for the AI
- */
-export function buildSystemPrompt(analysis) {
-  return `You are an expert resume writer. Enhance resumes by improving language and clarity while preserving all original facts.
-
-CRITICAL: Never fabricate metrics or achievements. Return ONLY valid JSON.`;
-}
-
-/**
- * Get enhancement temperature based on resume state
- */
-export function getEnhancementTemperature(analysis) {
-  if (analysis.completenessScore < 50) return 0.7;
-  if (analysis.completenessScore >= 70) return 0.5;
-  return 0.6;
-}
-
-// Keep this export for backward compatibility, but it's no longer needed
-export function getRoleKeywords() {
-  return {
-    keywords: [],
-    actionVerbs: [],
-    metricsTemplates: []
+  const extract = (text) => {
+    if (!text) return;
+    const patterns = [
+      /\d+\.?\d*[KMB]\+?\s*(?:subscribers?|users?|downloads?|views?)?/gi,
+      /\d+\+?\s*years?/gi,
+      /\d+\.?\d*%/gi,
+      /\$[\d,]+[KMB]?/gi,
+      /\d+\+?\s*(?:team|engineers?|projects?|people|niche)/gi,
+    ];
+    patterns.forEach(p => {
+      const matches = text.match(p);
+      if (matches) matches.forEach(m => metrics.add(m.trim()));
+    });
   };
+
+  extract(resumeData.personalInfo?.summary);
+  (resumeData.experience || []).forEach(exp => {
+    extract(exp.description);
+    (exp.bulletPoints || []).forEach(extract);
+  });
+  (resumeData.projects || []).forEach(p => extract(p.description));
+
+  return [...metrics];
+}
+
+/**
+ * Build system prompt
+ */
+export function buildSystemPrompt() {
+  return `Expert ATS-optimized resume writer. Return valid JSON only.
+
+CRITICAL RULES:
+- Name: Remove all emojis
+- Title: ATS-friendly only (no subscriber counts in title)
+- Summary: 4 sentences, 50-70 words
+- Experience: EXACTLY 4 bullets per job, EACH bullet 15-25 words - THIS IS MANDATORY
+  * NEVER copy original text. Rewrite and expand EVERY bullet professionally.
+  * If bullet is under 15 words, add context, impact, or details until it reaches 15+ words.
+  * If 8 original bullets → consolidate into 4 comprehensive bullets (15-25 words each)
+  * If 3 original bullets → expand to 4 bullets (15-25 words each)
+  * NEVER return bullets shorter than 15 words
+- Skills: Return all input skills (don't omit any)
+- No fake metrics`;
+}
+
+/**
+ * Get temperature
+ */
+export function getEnhancementTemperature() {
+  return 0.4; // Lower temperature for more consistent rule-following
+}
+
+// Backward compatibility
+export function getRoleKeywords() {
+  return { keywords: [], actionVerbs: [], metricsTemplates: [] };
 }

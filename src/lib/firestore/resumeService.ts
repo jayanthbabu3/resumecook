@@ -203,9 +203,9 @@ class ResumeService {
   }
 
   /**
-   * Get all user's resumes (metadata only)
+   * Get all user's resumes (including data for previews)
    */
-  async getUserResumes(): Promise<ResumeMetadata[]> {
+  async getUserResumes(): Promise<Resume[]> {
     const user = auth.currentUser;
     if (!user) throw new Error('User not authenticated');
 
@@ -215,10 +215,20 @@ class ResumeService {
     );
 
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...this.convertTimestamps(doc.data()),
-    })) as ResumeMetadata[];
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      const resume = {
+        id: doc.id,
+        ...this.convertTimestamps(data),
+      } as Resume;
+
+      // Normalize the resume data to ensure all arrays are properly initialized
+      if (resume.data) {
+        resume.data = this.normalizeResumeData(resume.data);
+      }
+
+      return resume;
+    });
   }
 
   /**

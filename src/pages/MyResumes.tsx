@@ -17,7 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { resumeService } from "@/lib/firestore/resumeService";
-import type { ResumeMetadata } from "@/types/resume";
+import type { Resume } from "@/types/resume";
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 import { templateMetaMap } from "@/constants/templateMeta";
 import { useToast } from "@/hooks/use-toast";
@@ -50,7 +50,7 @@ const MyResumes = () => {
   const { user } = useFirebaseAuth();
   const { toast } = useToast();
   const { favorites, favoritesLimit, favoritesCount, canAddFavorite } = useFavoriteTemplates();
-  const [resumes, setResumes] = useState<ResumeMetadata[]>([]);
+  const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resumeToDelete, setResumeToDelete] = useState<string | null>(null);
@@ -365,7 +365,8 @@ const MyResumes = () => {
                       <div className="absolute inset-2 rounded-lg overflow-hidden shadow-inner bg-white border border-border/20 group-hover:border-primary/30 transition-all duration-300">
                         <TemplatePreviewV2
                           templateId={resume.templateId}
-                          themeColor="#2563eb"
+                          themeColor={resume.themeColor || "#2563eb"}
+                          sampleData={resume.data}
                           className="h-full"
                         />
                       </div>

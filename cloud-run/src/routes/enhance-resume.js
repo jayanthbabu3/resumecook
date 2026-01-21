@@ -67,21 +67,26 @@ enhanceResumeRouter.post('/', async (req, res) => {
       });
     }
 
-    // Step 2: Build intelligent, context-aware prompt with user options
-    console.log('\n🔧 Step 2: Building context-aware prompt...');
+    // Step 2: Build optimized prompt
+    console.log('\n🔧 Step 2: Building optimized prompt...');
     const prompt = buildEnhancementPrompt(resumeData, analysis, userOptions);
-    const systemPrompt = buildSystemPrompt(analysis);
-    const temperature = getEnhancementTemperature(analysis);
+    const systemPrompt = buildSystemPrompt();
+    const temperature = getEnhancementTemperature();
 
-    console.log(`   Temperature: ${temperature} (${analysis.completenessScore < 50 ? 'higher for sparse resume' : 'standard'})`);
+    console.log(`   Temperature: ${temperature}`);
+    console.log(`   Prompt size: ~${Math.round(prompt.length / 4)} tokens`);
 
-    // Step 3: Call AI with the intelligent prompt
+    // Step 3: Call AI with optimized settings
     console.log('\n🤖 Step 3: Calling AI for enhancement...');
+    const startTime = Date.now();
     const { data: enhancedData, provider } = await callAIWithFallback(prompt, {
       temperature,
-      timeout: 90000,
+      timeout: 60000, // 60 seconds should be enough with optimized prompt
+      maxTokens: 8000,
+      maxOutputTokens: 8000,
       systemPrompt,
     });
+    console.log(`   AI response time: ${((Date.now() - startTime) / 1000).toFixed(1)}s`);
 
     // Step 4: Validate and merge the enhanced data
     console.log(`\n✅ Step 4: Validating enhanced data (provider: ${provider})...`);
@@ -119,10 +124,15 @@ function validateEnhancedData(original, enhanced) {
 
   // Preserve personal info identity fields
   if (original.personalInfo) {
+    // Use enhanced fullName (emoji-free) if available, otherwise clean the original
+    const cleanName = enhanced.personalInfo?.fullName ||
+      original.personalInfo.fullName?.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim() ||
+      original.personalInfo.fullName;
+
     validated.personalInfo = {
       summary: enhanced.personalInfo?.summary || original.personalInfo.summary || '',
       title: enhanced.personalInfo?.title || original.personalInfo.title || '',
-      fullName: original.personalInfo.fullName,
+      fullName: cleanName,
       email: original.personalInfo.email,
       phone: original.personalInfo.phone,
       location: original.personalInfo.location,
@@ -130,20 +140,46 @@ function validateEnhancedData(original, enhanced) {
       github: original.personalInfo.github,
       portfolio: original.personalInfo.portfolio,
       website: original.personalInfo.website,
+      photo: original.personalInfo.photo || '',
+      twitter: original.personalInfo.twitter || '',
     };
   }
 
-  // Preserve experience identity fields
+  // Preserve experience identity fields and enforce 4 bullets
   if (original.experience && Array.isArray(original.experience)) {
     validated.experience = original.experience.map((origExp, idx) => {
       const enhancedExp = enhanced.experience?.[idx] || origExp;
-      let bulletPoints = origExp.bulletPoints || [];
+      let bulletPoints = [];
 
+      // Get bullets from enhanced data
       if (enhancedExp.bulletPoints?.length > 0) {
         bulletPoints = enhancedExp.bulletPoints;
       } else if (enhancedExp.highlights?.length > 0) {
         bulletPoints = enhancedExp.highlights;
+      } else {
+        bulletPoints = origExp.bulletPoints || [];
       }
+
+      // Enforce exactly 4 bullets
+      if (bulletPoints.length > 4) {
+        // Consolidate: take first 4 (AI should have consolidated, but enforce)
+        console.log(`   Warning: ${origExp.company} has ${bulletPoints.length} bullets, truncating to 4`);
+        bulletPoints = bulletPoints.slice(0, 4);
+      } else if (bulletPoints.length < 4 && bulletPoints.length > 0) {
+        console.log(`   Warning: ${origExp.company} has only ${bulletPoints.length} bullets`);
+      }
+
+      // Check for short bullets and unchanged bullets
+      const origBullets = new Set((origExp.bulletPoints || []).map(b => b?.toLowerCase().trim()));
+      bulletPoints.forEach((bullet, i) => {
+        const wordCount = bullet?.split(/\s+/).filter(w => w.length > 0).length || 0;
+        if (wordCount < 15) {
+          console.log(`   Warning: ${origExp.company} bullet ${i + 1} has only ${wordCount} words (should be 15+)`);
+        }
+        if (origBullets.has(bullet?.toLowerCase().trim())) {
+          console.log(`   Warning: ${origExp.company} bullet ${i + 1} was not rewritten (matches original)`);
+        }
+      });
 
       return {
         id: origExp.id,
@@ -155,6 +191,10 @@ function validateEnhancedData(original, enhanced) {
         location: origExp.location,
         description: enhancedExp.description || origExp.description || '',
         bulletPoints,
+        // Preserve LinkedIn-imported fields
+        companyUrl: origExp.companyUrl || '',
+        employmentType: origExp.employmentType || '',
+        remote: origExp.remote || false,
       };
     });
   }
@@ -170,26 +210,41 @@ function validateEnhancedData(original, enhanced) {
         field: origEdu.field,
         startDate: origEdu.startDate,
         endDate: origEdu.endDate,
+        current: origEdu.current || false,
         location: origEdu.location,
         gpa: origEdu.gpa,
         description: enhancedEdu.description || origEdu.description || '',
         achievements: enhancedEdu.achievements || origEdu.achievements || '',
-        activities: enhancedEdu.activities || origEdu.activities || '',
+        activities: enhancedEdu.activities || origEdu.activities || [],
+        honors: origEdu.honors || [],
+        coursework: origEdu.coursework || [],
       };
     });
   }
 
-  // Preserve skills
-  if (original.skills && Array.isArray(original.skills)) {
-    const originalSkillNames = new Set(original.skills.map(s => s.name.toLowerCase()));
-    const enhancedSkills = enhanced.skills || [];
+  // Handle skills - prefer enhanced if valid, otherwise use deduplicated original
+  const originalSkills = (original.skills || []).filter(s => s && s.name);
+  const enhancedSkills = (enhanced.skills || []).filter(s => s && s.name);
 
-    validated.skills = [...original.skills];
-    enhancedSkills.forEach(skill => {
-      if (!originalSkillNames.has(skill.name.toLowerCase())) {
-        validated.skills.push(skill);
-      }
+  if (enhancedSkills.length > 0) {
+    // AI returned skills - map with original IDs
+    const originalSkillsById = new Map(originalSkills.map(s => [s.name.toLowerCase(), s]));
+    validated.skills = enhancedSkills.map(skill => {
+      const origSkill = originalSkillsById.get(skill.name.toLowerCase());
+      return {
+        id: origSkill?.id || skill.id || `skill-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
+        name: skill.name,
+        category: skill.category || origSkill?.category || 'Technical',
+      };
     });
+  } else {
+    // AI returned empty - use deduplicated original skills
+    validated.skills = deduplicateSkillsSimple(originalSkills);
+  }
+
+  // Ensure skills is never empty - fallback to original if still empty
+  if (!validated.skills || validated.skills.length === 0) {
+    validated.skills = originalSkills;
   }
 
   // Preserve projects
@@ -203,6 +258,7 @@ function validateEnhancedData(original, enhanced) {
         startDate: origProj.startDate,
         endDate: origProj.endDate,
         technologies: enhancedProj.technologies || origProj.technologies || [],
+        techStack: origProj.techStack || [],
         description: enhancedProj.description || origProj.description || '',
         highlights: enhancedProj.highlights || origProj.highlights || [],
       };
@@ -244,4 +300,43 @@ function validateEnhancedData(original, enhanced) {
   validated.settings = original.settings;
 
   return validated;
+}
+
+/**
+ * Simple skill deduplication for fallback
+ */
+function deduplicateSkillsSimple(skills) {
+  const seen = new Map();
+  const duplicatePatterns = [
+    ['seo', 'search engine optimization', 'search engine optimization (seo)'],
+    ['css', 'cascading style sheets', 'cascading style sheets (css)'],
+    ['html', 'hypertext markup language', 'html5'],
+    ['js', 'javascript'],
+    ['c++', 'c/ c++', 'c/c++'],
+    ['aws', 'amazon web services', 'amazon web services (aws)'],
+    ['redux', 'redux.js'],
+    ['react', 'react.js', 'reactjs'],
+    ['vue', 'vue.js', 'vuejs'],
+    ['angular', 'angularjs'],
+    ['web design', 'web designing'],
+    ['ux', 'user experience', 'user experience (ux)'],
+  ];
+
+  const normalized = new Map();
+  duplicatePatterns.forEach(group => {
+    const primary = group[0];
+    group.forEach(variant => normalized.set(variant.toLowerCase(), primary));
+  });
+
+  return skills.filter(skill => {
+    if (!skill || !skill.name) return false;
+    const nameLower = skill.name.toLowerCase().trim();
+    const normalizedName = normalized.get(nameLower) || nameLower;
+
+    if (seen.has(normalizedName)) {
+      return false;
+    }
+    seen.set(normalizedName, true);
+    return true;
+  });
 }

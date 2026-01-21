@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import type { ResumeData } from "@/types/resume";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
 import { StyleOptionsProvider } from "@/contexts/StyleOptionsContext";
@@ -14,6 +14,13 @@ interface TemplatePreviewV2Props {
   className?: string;
 }
 
+// Scale values: mobile shows more of the resume (smaller scale), desktop shows larger detail
+// Mobile: 0.22 scale = shows more of full A4 layout
+// Desktop: 0.35 scale = shows more detail
+const MOBILE_SCALE = 0.22;
+const DESKTOP_SCALE = 0.35;
+const MD_BREAKPOINT = 768;
+
 export const TemplatePreviewV2 = memo<TemplatePreviewV2Props>(({
   templateId,
   themeColor = "#2563eb",
@@ -23,6 +30,27 @@ export const TemplatePreviewV2 = memo<TemplatePreviewV2Props>(({
   const template = getTemplate(templateId);
   const resumeData = sampleData || template?.mockData || MOCK_RESUME_DATA;
   const [previewData] = useState(resumeData);
+  const [scale, setScale] = useState(() =>
+    typeof window !== 'undefined' && window.innerWidth < MD_BREAKPOINT ? MOBILE_SCALE : DESKTOP_SCALE
+  );
+
+  // Listen for screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      setScale(window.innerWidth < MD_BREAKPOINT ? MOBILE_SCALE : DESKTOP_SCALE);
+    };
+
+    // Use matchMedia for better performance
+    const mediaQuery = window.matchMedia(`(min-width: ${MD_BREAKPOINT}px)`);
+    const handleMediaChange = (e: MediaQueryListEvent) => {
+      setScale(e.matches ? DESKTOP_SCALE : MOBILE_SCALE);
+    };
+
+    mediaQuery.addEventListener('change', handleMediaChange);
+    return () => mediaQuery.removeEventListener('change', handleMediaChange);
+  }, []);
+
+  const scaledWidth = 100 / scale;
 
   return (
     <div className={`relative w-full h-full overflow-hidden bg-white ${className}`}>
@@ -30,14 +58,14 @@ export const TemplatePreviewV2 = memo<TemplatePreviewV2Props>(({
         <div
           className="w-full origin-top-left"
           style={{
-            transform: 'scale(0.35)',
-            width: '285.7%',
-            minHeight: '285.7%'
+            transform: `scale(${scale})`,
+            width: `${scaledWidth}%`,
+            minHeight: `${scaledWidth}%`
           }}
         >
           <StyleOptionsProvider>
             <StyleOptionsWrapper>
-              <div id="resume-preview-v2" style={{ width: '100%', height: '100%' }}>
+              <div style={{ width: '100%', height: '100%' }}>
                 <InlineEditProvider resumeData={previewData} setResumeData={() => {}}>
                   <ResumeRenderer
                     resumeData={previewData}

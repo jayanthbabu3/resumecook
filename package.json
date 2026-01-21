@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "NODE_OPTIONS='--max-old-space-size=8192' vite",
+    "dev": "concurrently -n \"api,web\" -c \"blue,green\" \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:web": "NODE_OPTIONS='--max-old-space-size=8192' vite --port 5173",
+    "dev:api": "cd cloud-run && npm run dev",
     "build": "NODE_OPTIONS='--max-old-space-size=8192' vite build",
     "build:dev": "NODE_OPTIONS='--max-old-space-size=8192' vite build --mode development",
     "lint": "eslint .",
@@ -90,6 +92,7 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.1",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
