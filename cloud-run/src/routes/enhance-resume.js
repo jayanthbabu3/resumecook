@@ -1,30 +1,18 @@
 /**
  * AI Resume Enhancement Route
  *
- * Takes existing resume data and enhances it to be more ATS-friendly,
- * impactful, and professional.
+ * Intelligent resume enhancement that:
+ * 1. Analyzes the resume to understand its current state
+ * 2. Builds a context-aware prompt based on analysis
+ * 3. Applies targeted enhancements based on what's actually needed
  */
 
 import { Router } from 'express';
 import { callAIWithFallback, getApiKeys } from '../utils/ai-providers.js';
+import { analyzeResume } from '../utils/resume-analyzer.js';
+import { buildEnhancementPrompt, buildSystemPrompt, getEnhancementTemperature } from '../utils/prompt-builder.js';
 
 export const enhanceResumeRouter = Router();
-
-const ENHANCEMENT_PROMPT = `Rewrite this resume professionally. Return JSON only.
-
-PRESERVE: names, emails, phones, companies, titles, dates, schools, degrees, skill names, IDs
-REWRITE: summary, descriptions, ALL bulletPoints (use action verbs: Led, Architected, Optimized, Delivered)
-
-Add ATS keywords naturally. Use "bulletPoints" array (not "highlights"). Suggest 3-5 relevant skills in "suggestedSkills" array.
-
-Seed: {{ENHANCEMENT_SEED}}
-
-RESUME:
-`;
-
-function generateEnhancementSeed() {
-  return `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-}
 
 enhanceResumeRouter.post('/', async (req, res) => {
   const keys = getApiKeys();
@@ -36,32 +24,71 @@ enhanceResumeRouter.post('/', async (req, res) => {
   }
 
   try {
-    const { resumeData } = req.body;
+    const { resumeData, options } = req.body;
 
     if (!resumeData) {
       return res.status(400).json({ error: 'Resume data is required' });
     }
 
-    // Clean data before sending to AI
-    const cleanData = { ...resumeData };
-    delete cleanData._parsedSections;
-    delete cleanData._enhancements;
-    delete cleanData.suggestedSkills;
+    // User customization options
+    const userOptions = {
+      targetRole: options?.targetRole || null,
+      additionalContext: options?.additionalContext || null,
+      focusAreas: options?.focusAreas || [],
+    };
 
-    const resumeJson = JSON.stringify(cleanData, null, 2);
-    const prompt = ENHANCEMENT_PROMPT.replace('{{ENHANCEMENT_SEED}}', generateEnhancementSeed()) + resumeJson;
+    const userName = resumeData.personalInfo?.fullName || 'Unknown';
+    console.log(`\n${'='.repeat(60)}`);
+    console.log(`ENHANCING RESUME FOR: ${userName}`);
+    console.log(`${'='.repeat(60)}`);
 
-    console.log(`Enhancing resume for: ${cleanData.personalInfo?.fullName || 'Unknown'}`);
+    if (userOptions.targetRole) {
+      console.log(`   User specified target role: ${userOptions.targetRole}`);
+    }
+    if (userOptions.additionalContext) {
+      console.log(`   User provided additional context`);
+    }
+    if (userOptions.focusAreas.length > 0) {
+      console.log(`   Focus areas: ${userOptions.focusAreas.join(', ')}`);
+    }
 
+    // Step 1: Analyze the resume to understand its current state
+    console.log('\n📊 Step 1: Analyzing resume...');
+    const analysis = analyzeResume(resumeData);
+
+    console.log(`   Detected Role: ${userOptions.targetRole || analysis.detectedRole}`);
+    console.log(`   Career Level: ${analysis.careerLevel} (~${analysis.yearsOfExperience} years)`);
+    console.log(`   Scores: Completeness ${analysis.completenessScore}% | Metrics ${analysis.metricsScore}% | ATS ${analysis.atsScore}%`);
+
+    if (analysis.enhancementPriorities.length > 0) {
+      console.log(`   Enhancement Priorities:`);
+      analysis.enhancementPriorities.slice(0, 3).forEach((p, i) => {
+        console.log(`      ${i + 1}. [${p.priority.toUpperCase()}] ${p.message}`);
+      });
+    }
+
+    // Step 2: Build intelligent, context-aware prompt with user options
+    console.log('\n🔧 Step 2: Building context-aware prompt...');
+    const prompt = buildEnhancementPrompt(resumeData, analysis, userOptions);
+    const systemPrompt = buildSystemPrompt(analysis);
+    const temperature = getEnhancementTemperature(analysis);
+
+    console.log(`   Temperature: ${temperature} (${analysis.completenessScore < 50 ? 'higher for sparse resume' : 'standard'})`);
+
+    // Step 3: Call AI with the intelligent prompt
+    console.log('\n🤖 Step 3: Calling AI for enhancement...');
     const { data: enhancedData, provider } = await callAIWithFallback(prompt, {
-      temperature: 0.6,
-      timeout: 90000, // 90 seconds - plenty of headroom on Cloud Run
-      systemPrompt: 'You are an expert resume writer. Use bulletPoints (not highlights) for experience items.',
+      temperature,
+      timeout: 90000,
+      systemPrompt,
     });
 
+    // Step 4: Validate and merge the enhanced data
+    console.log(`\n✅ Step 4: Validating enhanced data (provider: ${provider})...`);
     const validatedData = validateEnhancedData(resumeData, enhancedData);
 
-    console.log(`Enhancement successful using ${provider}`);
+    console.log(`\n🎉 Enhancement complete for ${userName}!`);
+    console.log(`${'='.repeat(60)}\n`);
 
     res.json({
       success: true,
@@ -69,6 +96,14 @@ enhanceResumeRouter.post('/', async (req, res) => {
       enhancements: validatedData._enhancements || {},
       suggestedSkills: validatedData.suggestedSkills || [],
       provider,
+      analysis: {
+        detectedRole: analysis.detectedRole,
+        careerLevel: analysis.careerLevel,
+        completenessScore: analysis.completenessScore,
+        metricsScore: analysis.metricsScore,
+        atsScore: analysis.atsScore,
+        prioritiesAddressed: analysis.enhancementPriorities.length,
+      },
     });
   } catch (error) {
     console.error('Enhancement error:', error);

@@ -21,6 +21,8 @@ import {
   ChevronRight,
   Target,
   Award,
+  ChevronDown,
+  MessageSquare,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -139,6 +141,11 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
   const [acceptSuggestedSkills, setAcceptSuggestedSkills] = useState<Set<string>>(new Set());
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // User customization options
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [additionalContext, setAdditionalContext] = useState('');
+  const [selectedFocusAreas, setSelectedFocusAreas] = useState<Set<string>>(new Set());
+
   // Refs for synchronized scrolling
   const originalScrollRef = useRef<HTMLDivElement>(null);
   const enhancedScrollRef = useRef<HTMLDivElement>(null);
@@ -171,6 +178,9 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
       setEnhancementResult(null);
       setProgressIndex(0);
       setAcceptSuggestedSkills(new Set());
+      setShowAdvancedOptions(false);
+      setAdditionalContext('');
+      setSelectedFocusAreas(new Set());
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
@@ -202,9 +212,23 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
     setProgressMessage(PROGRESS_MESSAGES[0]);
 
     try {
+      // Build options from user customization
+      const options: {
+        additionalContext?: string;
+        focusAreas?: string[];
+      } = {};
+
+      if (additionalContext.trim()) {
+        options.additionalContext = additionalContext.trim();
+      }
+
+      if (selectedFocusAreas.size > 0) {
+        options.focusAreas = Array.from(selectedFocusAreas);
+      }
+
       const response = await apiFetch(API_ENDPOINTS.enhanceResume, {
         method: 'POST',
-        body: JSON.stringify({ resumeData }),
+        body: JSON.stringify({ resumeData, options }),
       });
 
       const result = await response.json();
@@ -228,7 +252,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
       setError(err instanceof Error ? err.message : 'Failed to enhance resume');
       setStatus('error');
     }
-  }, [resumeData]);
+  }, [resumeData, additionalContext, selectedFocusAreas]);
 
   // Apply enhancements
   const handleApply = async () => {
@@ -395,6 +419,86 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Advanced Options Toggle */}
+              <div className="mb-4">
+                <button
+                  onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors mx-auto"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Add context or preferences</span>
+                  <ChevronDown className={cn(
+                    "w-4 h-4 transition-transform duration-200",
+                    showAdvancedOptions && "rotate-180"
+                  )} />
+                </button>
+
+                {/* Advanced Options Panel */}
+                {showAdvancedOptions && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100 text-left">
+                    {/* Additional Context */}
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Additional context (optional)
+                      </label>
+                      <textarea
+                        value={additionalContext}
+                        onChange={(e) => setAdditionalContext(e.target.value)}
+                        placeholder="E.g., I'm applying for senior roles, focus on leadership. I led a team of 5. My project increased sales by 20%..."
+                        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 resize-none"
+                        style={{ focusRing: themeColor } as any}
+                        rows={3}
+                      />
+                      <p className="text-xs text-gray-400 mt-1">
+                        Share specific achievements or metrics you want highlighted
+                      </p>
+                    </div>
+
+                    {/* Focus Areas */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Enhancement focus (optional)
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          { id: 'action_verbs', label: 'Action Verbs', desc: 'Stronger language' },
+                          { id: 'clarity', label: 'Clarity', desc: 'Easier to read' },
+                          { id: 'ats_keywords', label: 'ATS Keywords', desc: 'Better matching' },
+                          { id: 'conciseness', label: 'Concise', desc: 'Remove fluff' },
+                        ].map((focus) => (
+                          <button
+                            key={focus.id}
+                            onClick={() => {
+                              setSelectedFocusAreas(prev => {
+                                const next = new Set(prev);
+                                if (next.has(focus.id)) {
+                                  next.delete(focus.id);
+                                } else {
+                                  next.add(focus.id);
+                                }
+                                return next;
+                              });
+                            }}
+                            className={cn(
+                              "px-3 py-1.5 rounded-lg text-xs font-medium transition-all border",
+                              selectedFocusAreas.has(focus.id)
+                                ? "border-transparent text-white"
+                                : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
+                            )}
+                            style={selectedFocusAreas.has(focus.id) ? {
+                              backgroundColor: themeColor,
+                            } : {}}
+                            title={focus.desc}
+                          >
+                            {focus.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* CTA Section */}

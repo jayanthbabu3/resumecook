@@ -241,10 +241,11 @@ export async function callOpenAI(apiKey, prompt, options = {}) {
 
 /**
  * Try all AI providers in priority order
+ * Default: Groq first (fastest, free tier), then OpenAI as fallback
  */
 export async function callAIWithFallback(prompt, options = {}) {
   const {
-    priority = ['gemini', 'groq', 'claude', 'openai'],
+    priority = ['groq', 'openai', 'claude', 'gemini'],
     ...aiOptions
   } = options;
 

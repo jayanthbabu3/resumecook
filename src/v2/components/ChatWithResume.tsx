@@ -38,6 +38,7 @@ import { useVoiceInput } from '../hooks/useVoiceInput';
 import { formatSectionName, SectionVariantsMap } from '../services/chatService';
 import { useResumeHistory } from '../hooks/useResumeHistory';
 import { VoiceInputBar } from './VoiceInputBar';
+import ReactMarkdown from 'react-markdown';
 
 interface ChatWithResumeProps {
   resumeData: V2ResumeData;
@@ -1171,10 +1172,14 @@ function MessageBubble({ message, isLast }: MessageBubbleProps) {
       >
         {isTyping ? (
           <TypingIndicator />
-        ) : (
+        ) : isUser ? (
           <p className="text-sm whitespace-pre-wrap leading-relaxed">
             {message.content}
           </p>
+        ) : (
+          <div className="text-sm leading-relaxed prose prose-sm prose-gray max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-strong:text-gray-900 prose-headings:text-gray-900 prose-headings:font-semibold">
+            <ReactMarkdown>{message.content}</ReactMarkdown>
+          </div>
         )}
 
         {/* Updated sections badge */}

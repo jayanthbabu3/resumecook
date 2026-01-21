@@ -3,6 +3,9 @@
  *
  * Takes existing resume and job description, optimizes the resume
  * to better match the job requirements.
+ *
+ * SIMPLIFIED VERSION: Relies on AI's inherent knowledge while providing
+ * essential rules and job-specific context.
  */
 
 import { Router } from 'express';
@@ -11,94 +14,136 @@ import { callAIWithFallback, getApiKeys } from '../utils/ai-providers.js';
 export const tailorResumeRouter = Router();
 
 /**
- * RESUME OPTIMIZATION PROMPT
- *
- * This prompt is designed to transform a resume to perfectly match a target job.
- * It focuses on three key areas:
- * 1. Professional Summary - Rewritten to mirror job requirements
- * 2. Experience Bullet Points - Reframed to highlight relevant achievements
- * 3. Skills - Augmented with missing but relevant skills from the JD
+ * Build the tailoring prompt
  */
-const JOB_TAILOR_PROMPT = `You are an expert resume writer, ATS optimization specialist, and career coach with 15+ years of experience helping candidates land their dream jobs.
+function buildTailoringPrompt(resumeData, jobDescription, jobTitle, companyName) {
+  // Extract key metrics from original summary to preserve
+  const originalMetrics = extractMetricsFromText(resumeData.personalInfo?.summary || '');
 
-Your task: Transform this resume to perfectly match the target job description while maintaining authenticity.
+  return `# Resume Tailoring Task
 
-## CRITICAL RULES (MUST FOLLOW):
+You are tailoring a resume to match this specific job.
 
-### 1. PRESERVE UNCHANGED (Never modify):
-- Full name, email, phone, LinkedIn, GitHub, portfolio URLs
-- Company names, job titles, employment dates, locations
-- Education institution names, degrees, graduation dates
-- All IDs in the data structure
+## Job Details
+${jobTitle ? `**Position:** ${jobTitle}` : ''}
+${companyName ? `**Company:** ${companyName}` : ''}
 
-### 2. PROFESSIONAL SUMMARY (MUST REWRITE):
-- Analyze the job description for: required years of experience, key responsibilities, must-have skills, and industry keywords
-- Rewrite the summary to directly address these requirements
-- Lead with the most relevant experience/skills for THIS specific role
-- Include 2-3 key technical skills or tools mentioned in the JD
-- Keep it concise (3-4 sentences, ~50-75 words)
-- Use action-oriented, confident language
-- Example transformation:
-  * Before: "Software developer with experience in various technologies"
-  * After: "Senior Full-Stack Developer with 5+ years building scalable React and Node.js applications. Proven track record of leading cross-functional teams and delivering high-impact features that increased user engagement by 40%. Expertise in AWS cloud architecture, CI/CD pipelines, and agile methodologies."
+## Job Description
+${jobDescription}
 
-### 3. EXPERIENCE BULLET POINTS (MUST REFRAME):
-- Each experience entry has a "bulletPoints" array - update these bullets
-- Analyze each responsibility/achievement and reframe to emphasize JD-relevant skills
-- Use the CAR format: Challenge → Action → Result
-- Start each bullet with a strong action verb (Led, Developed, Implemented, Optimized, etc.)
-- Quantify achievements where possible using ONLY numbers from the original resume
-- Mirror language and keywords from the job description naturally
-- Prioritize bullets that demonstrate skills mentioned in the JD
-- Each bullet should be unique - no repeated themes across experiences
-- Keep 3-5 bullets per experience, focusing on the most impactful
+## Core Rules (MUST FOLLOW)
 
-### 4. SKILLS SECTION (MUST AUGMENT):
-- Keep ALL existing skills from the original resume
-- Analyze the job description for required/preferred skills
-- Add NEW skills that:
-  * Are mentioned in the JD but missing from the resume
-  * Are closely related to the candidate's existing skills
-  * Would realistically be possessed by someone with this background
-- For suggestedSkills array: include skills the candidate might want to add
-- Categorize skills appropriately (Technical, Soft Skills, Tools, Languages, etc.)
+1. **NEVER fabricate** - Don't invent metrics, percentages, or achievements
+2. **Mirror the JD language** - Use keywords and phrases from the job description naturally
+3. **Preserve ALL original metrics** - Keep exact numbers from the original resume
+4. **Rewrite the summary** - Make it directly address this specific job's requirements
+5. **Enhance bullet points** - Reframe existing experience to highlight JD-relevant skills
+6. **Keep it authentic** - Only use skills/experience the candidate actually has
 
-### 5. KEYWORD INTEGRATION:
-- Identify key terms, technologies, and phrases from the job description
-- Naturally integrate these throughout the resume
-- DO NOT stuff keywords - they must flow naturally in context
-- Focus on: technical skills, tools, methodologies, certifications mentioned in JD
+${originalMetrics.length > 0 ? `## ⚠️ PRESERVE THESE METRICS FROM ORIGINAL:
+${originalMetrics.map(m => `- "${m}"`).join('\n')}
+` : ''}
 
-## OUTPUT FORMAT (JSON ONLY):
-Return the complete resume JSON with these additions:
-- "_analysis" object containing:
-  - "matchScore": 0-100 (how well the resume now matches the JD)
-  - "keywordsFound": [list of JD keywords already present in original]
-  - "keywordsMissing": [list of important JD keywords still missing]
-  - "keywordsAdded": [list of keywords newly integrated]
-  - "summaryEnhanced": true/false
-  - "experienceEnhanced": true/false
-  - "roleAlignment": "brief explanation of how resume now aligns with role"
+## What to Change
+- **Summary**: Rewrite to directly address job requirements (lead with most relevant experience)
+- **Bullet points**: Use "bulletPoints" array. Reframe using JD keywords naturally
+- **Skills**: Keep all original, suggest additions that match JD and candidate's background
 
-- "suggestedSkills" array containing skills to consider adding:
-  [{
-    "id": "unique-id",
-    "name": "Skill Name",
-    "category": "Technical/Tools/Soft Skills",
-    "reason": "Why this skill would help (mentioned in JD, related to existing skills, etc.)"
-  }]
+## What NOT to Change
+- Names, emails, phones, addresses, URLs
+- Company names, job titles, employment dates
+- Education details
 
-## QUALITY CHECKLIST:
-Before responding, verify:
-✓ Summary directly addresses job requirements
-✓ Bullet points use action verbs and show impact
-✓ Keywords integrated naturally (not stuffed)
-✓ No fabricated metrics or experiences
-✓ Skills section includes relevant additions
-✓ All personal/company info preserved exactly
+## Output Format
 
-Return ONLY valid JSON. No markdown, no explanations outside the JSON.
-`;
+Return valid JSON with this structure:
+\`\`\`json
+{
+  "personalInfo": { /* with enhanced summary and optionally improved title */ },
+  "experience": [ /* with enhanced bulletPoints arrays */ ],
+  "education": [ /* preserved */ ],
+  "skills": [ /* original + new relevant skills */ ],
+  ...other sections,
+  "_analysis": {
+    "matchScore": 0-100,
+    "keywordsFound": ["skills already in resume"],
+    "keywordsMissing": ["important JD skills still missing"],
+    "keywordsAdded": ["keywords newly integrated"],
+    "summaryEnhanced": true,
+    "experienceEnhanced": true,
+    "roleAlignment": "brief explanation of alignment"
+  },
+  "suggestedSkills": [
+    { "id": "suggested-1", "name": "Skill", "category": "Technical", "reason": "Mentioned in JD" }
+  ]
+}
+\`\`\`
+
+## Resume Data
+
+\`\`\`json
+${JSON.stringify(cleanResumeData(resumeData), null, 2)}
+\`\`\``;
+}
+
+/**
+ * Extract metrics from text for preservation
+ */
+function extractMetricsFromText(text) {
+  if (!text) return [];
+
+  const metrics = [];
+  const patterns = [
+    /\d+\+?\s*years?/gi,
+    /\d+K\+?\s*\w*/gi,
+    /\d+M\+?\s*\w*/gi,
+    /\$[\d,]+[KMB]?\+?/gi,
+    /\d+\+\s*\w+/gi,
+    /\d+%/gi,
+  ];
+
+  for (const pattern of patterns) {
+    const matches = text.match(pattern);
+    if (matches) metrics.push(...matches);
+  }
+
+  return [...new Set(metrics)];
+}
+
+/**
+ * Clean resume data before including in prompt
+ */
+function cleanResumeData(resumeData) {
+  const cleanData = { ...resumeData };
+  delete cleanData._parsedSections;
+  delete cleanData._enhancements;
+  delete cleanData._analysis;
+  delete cleanData.suggestedSkills;
+  return cleanData;
+}
+
+/**
+ * Calculate match score based on keyword analysis
+ */
+function calculateMatchScore(original, tailored, analysis) {
+  // If AI provided a score, use it as base
+  let score = analysis?.matchScore || 70;
+
+  // Adjust based on keywords added
+  const keywordsAdded = analysis?.keywordsAdded?.length || 0;
+  const keywordsMissing = analysis?.keywordsMissing?.length || 0;
+
+  // Bonus for keywords added, penalty for still missing
+  score = Math.min(100, score + (keywordsAdded * 2));
+  score = Math.max(50, score - (keywordsMissing * 1));
+
+  // Check if summary was enhanced
+  if (tailored.personalInfo?.summary !== original.personalInfo?.summary) {
+    score = Math.min(100, score + 5);
+  }
+
+  return Math.round(score);
+}
 
 tailorResumeRouter.post('/', async (req, res) => {
   const keys = getApiKeys();
@@ -122,50 +167,43 @@ tailorResumeRouter.post('/', async (req, res) => {
       });
     }
 
-    // Clean data
-    const cleanData = { ...resumeData };
-    delete cleanData._parsedSections;
-    delete cleanData._enhancements;
-    delete cleanData._analysis;
-    delete cleanData.suggestedSkills;
-
-    const jobContext = `
-JOB DESCRIPTION:
-${jobTitle ? `Job Title: ${jobTitle}` : ''}
-${companyName ? `Company: ${companyName}` : ''}
-
-${jobDescription}
-
-RESUME TO TAILOR:
-${JSON.stringify(cleanData, null, 2)}
-`;
-
-    console.log(`Tailoring resume for: ${cleanData.personalInfo?.fullName || 'Unknown'}`);
+    const userName = resumeData.personalInfo?.fullName || 'Unknown';
+    console.log(`\n${'='.repeat(60)}`);
+    console.log(`TAILORING RESUME FOR: ${userName}`);
     console.log(`Job: ${jobTitle || 'Not specified'} at ${companyName || 'Not specified'}`);
+    console.log(`${'='.repeat(60)}`);
 
-    // Groq is fastest, use it first for tailoring
-    const { data: tailoredData, provider } = await callAIWithFallback(
-      JOB_TAILOR_PROMPT + jobContext,
-      {
-        temperature: 0.3,
-        timeout: 90000,
-        priority: ['groq', 'gemini', 'claude', 'openai'], // Groq first for speed
-        systemPrompt: 'You are an expert resume writer and ATS specialist.',
-      }
-    );
+    // Build the prompt
+    const prompt = buildTailoringPrompt(resumeData, jobDescription, jobTitle, companyName);
 
+    // Call AI
+    const { data: tailoredData, provider } = await callAIWithFallback(prompt, {
+      temperature: 0.3, // Lower temperature for more consistent output
+      timeout: 90000,
+      systemPrompt: 'You are an expert resume writer and ATS optimization specialist. Return ONLY valid JSON.',
+    });
+
+    // Validate and merge
     const validatedData = validateTailoredData(resumeData, tailoredData);
 
+    // Calculate final match score
     const analysis = validatedData._analysis || {
       matchScore: 70,
       keywordsFound: [],
       keywordsMissing: [],
       keywordsAdded: [],
+      summaryEnhanced: true,
+      experienceEnhanced: true,
     };
+
+    analysis.matchScore = calculateMatchScore(resumeData, validatedData, analysis);
 
     delete validatedData._analysis;
 
-    console.log(`Tailoring successful using ${provider}`);
+    console.log(`\n✅ Tailoring complete (provider: ${provider})`);
+    console.log(`   Match Score: ${analysis.matchScore}%`);
+    console.log(`   Keywords Added: ${analysis.keywordsAdded?.length || 0}`);
+    console.log(`${'='.repeat(60)}\n`);
 
     res.json({
       success: true,
@@ -208,8 +246,16 @@ function validateTailoredData(original, tailored) {
   if (original.experience && Array.isArray(original.experience)) {
     validated.experience = original.experience.map((origExp, idx) => {
       const tailoredExp = tailored.experience?.[idx] || origExp;
+
+      // Handle both bulletPoints and highlights
+      let bulletPoints = origExp.bulletPoints || [];
+      if (tailoredExp.bulletPoints?.length > 0) {
+        bulletPoints = tailoredExp.bulletPoints;
+      } else if (tailoredExp.highlights?.length > 0) {
+        bulletPoints = tailoredExp.highlights;
+      }
+
       return {
-        ...tailoredExp,
         id: origExp.id,
         company: origExp.company,
         position: origExp.position,
@@ -217,6 +263,8 @@ function validateTailoredData(original, tailored) {
         endDate: origExp.endDate,
         current: origExp.current,
         location: origExp.location,
+        description: tailoredExp.description || origExp.description || '',
+        bulletPoints,
       };
     });
   }
@@ -240,7 +288,6 @@ function validateTailoredData(original, tailored) {
   }
 
   // Skills: Keep original skills AND add new skills from AI
-  // The AI is allowed to add new relevant skills based on the job description
   if (tailored.skills && Array.isArray(tailored.skills)) {
     const originalSkillIds = new Set((original.skills || []).map(s => s.id));
     const originalSkillNames = new Set((original.skills || []).map(s => s.name?.toLowerCase()));
@@ -267,9 +314,26 @@ function validateTailoredData(original, tailored) {
     validated.skills = [...original.skills];
   }
 
+  // Preserve projects
+  if (original.projects && Array.isArray(original.projects)) {
+    validated.projects = original.projects.map((origProj, idx) => {
+      const tailoredProj = tailored.projects?.[idx] || origProj;
+      return {
+        id: origProj.id,
+        name: origProj.name,
+        url: origProj.url,
+        startDate: origProj.startDate,
+        endDate: origProj.endDate,
+        technologies: tailoredProj.technologies || origProj.technologies || [],
+        description: tailoredProj.description || origProj.description || '',
+        highlights: tailoredProj.highlights || origProj.highlights || [],
+      };
+    });
+  }
+
   // Preserve other sections
   const arraySections = [
-    'languages', 'certifications', 'projects', 'awards', 'achievements',
+    'languages', 'certifications', 'awards', 'achievements',
     'strengths', 'volunteer', 'publications', 'speaking', 'patents',
     'interests', 'references', 'courses'
   ];
