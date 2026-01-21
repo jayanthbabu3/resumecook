@@ -345,39 +345,39 @@ export function ChatWithResume({
     );
   }
 
-  // Panel mode - full height side panel
+  // Panel mode - full height side panel on desktop, floating sheet on mobile
   return (
     <SidePanelChat
-      messages={messages}
-      isLoading={isLoading}
-      inputValue={inputValue}
-      suggestedQuestions={suggestedQuestions}
-      highlightedSections={highlightedSections}
-      isStreamingResume={isStreamingResume}
-      messagesEndRef={messagesEndRef}
-      inputRef={inputRef}
-      onInputChange={setInputValue}
-      onSubmit={handleSubmit}
-      onKeyDown={handleKeyDown}
-      onQuickAction={handleQuickAction}
-      onSuggestedQuestion={handleSuggestedQuestion}
-      onClear={clearChat}
-      onClose={handleClose}
-      onAdjustHeight={adjustTextareaHeight}
-      className={className}
-      voiceSupported={voiceSupported}
-      isListening={isListening}
-      voiceError={voiceError}
-      onToggleVoice={toggleListening}
-      onVoiceCancel={handleVoiceCancel}
-      onVoiceConfirm={handleVoiceConfirm}
-      canUndo={canUndo}
-      canRedo={canRedo}
-      undoLabel={undoLabel}
-      redoLabel={redoLabel}
-      onUndo={handleUndo}
-      onRedo={handleRedo}
-    />
+        messages={messages}
+        isLoading={isLoading}
+        inputValue={inputValue}
+        suggestedQuestions={suggestedQuestions}
+        highlightedSections={highlightedSections}
+        isStreamingResume={isStreamingResume}
+        messagesEndRef={messagesEndRef}
+        inputRef={inputRef}
+        onInputChange={setInputValue}
+        onSubmit={handleSubmit}
+        onKeyDown={handleKeyDown}
+        onQuickAction={handleQuickAction}
+        onSuggestedQuestion={handleSuggestedQuestion}
+        onClear={clearChat}
+        onClose={handleClose}
+        onAdjustHeight={adjustTextareaHeight}
+        className={className}
+        voiceSupported={voiceSupported}
+        isListening={isListening}
+        voiceError={voiceError}
+        onToggleVoice={toggleListening}
+        onVoiceCancel={handleVoiceCancel}
+        onVoiceConfirm={handleVoiceConfirm}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        undoLabel={undoLabel}
+        redoLabel={redoLabel}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
+      />
   );
 }
 
@@ -483,33 +483,46 @@ function SidePanelChat({
   return (
     <div
       className={cn(
-        'flex flex-col h-full',
-        'bg-white rounded-xl border border-gray-200 shadow-sm',
+        'flex flex-col',
+        // Mobile: fixed bottom sheet style, account for bottom toolbar (~70px)
+        'fixed inset-x-0 bottom-[70px] h-[60vh] max-h-[500px] z-50',
+        // Desktop: normal full-height panel
+        'md:relative md:inset-auto md:bottom-0 md:h-full md:max-h-none md:z-auto',
+        'bg-white border border-gray-200 shadow-xl',
+        // Mobile: rounded corners for floating sheet
+        'rounded-2xl md:rounded-xl',
+        // Mobile: add margin on sides for floating effect
+        'mx-2 md:mx-0',
         'overflow-hidden',
         className
       )}
     >
+      {/* Mobile drag handle */}
+      <div className="md:hidden flex justify-center py-2 bg-gradient-to-r from-primary via-blue-600 to-indigo-600">
+        <div className="w-10 h-1 bg-white/40 rounded-full" />
+      </div>
+
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary via-blue-600 to-indigo-600 text-white">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between px-3 py-2 md:px-4 md:py-3 bg-gradient-to-r from-primary via-blue-600 to-indigo-600 text-white">
+        <div className="flex items-center gap-2 md:gap-3">
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-1 md:p-1.5 hover:bg-white/20 rounded-lg transition-colors"
             title="Back to form"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-white/20 rounded-lg">
+            <div className="p-1 md:p-1.5 bg-white/20 rounded-lg hidden sm:flex">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
               <h3 className="font-semibold text-sm">Talk with Resume</h3>
-              <p className="text-xs text-white/80">AI-powered resume builder</p>
+              <p className="text-[10px] md:text-xs text-white/80 hidden sm:block">AI-powered resume builder</p>
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 md:gap-1">
           {/* Undo/Redo buttons */}
           <TooltipProvider>
             <Tooltip>
@@ -519,9 +532,9 @@ function SidePanelChat({
                   size="icon"
                   onClick={onUndo}
                   disabled={!canUndo}
-                  className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="h-7 w-7 md:h-8 md:w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
-                  <Undo2 className="w-4 h-4" />
+                  <Undo2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
@@ -537,9 +550,9 @@ function SidePanelChat({
                   size="icon"
                   onClick={onRedo}
                   disabled={!canRedo}
-                  className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="h-7 w-7 md:h-8 md:w-8 text-white/80 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
-                  <Redo2 className="w-4 h-4" />
+                  <Redo2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
@@ -547,42 +560,43 @@ function SidePanelChat({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          {/* Close button (X icon) */}
           <Button
             variant="ghost"
             size="icon"
-            onClick={onClear}
-            className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20"
-            title="Clear chat"
+            onClick={onClose}
+            className="h-7 w-7 md:h-8 md:w-8 text-white/80 hover:text-white hover:bg-white/20"
+            title="Close"
           >
-            <Trash2 className="w-4 h-4" />
+            <X className="w-4 h-4" />
           </Button>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
+      <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gray-50/50">
         {/* Quick actions for new chat */}
         {showQuickActions && (
-          <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="text-center py-4">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary/10 to-blue-100 mb-3">
-                <Sparkles className="w-6 h-6 text-primary" />
+          <div className="space-y-2 md:space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="text-center py-2 md:py-4">
+              <div className="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary/10 to-blue-100 mb-2 md:mb-3">
+                <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </div>
               <h4 className="text-sm font-medium text-gray-900 mb-1">
                 Let's build your resume together
               </h4>
-              <p className="text-xs text-gray-500 max-w-[280px] mx-auto">
+              <p className="text-[11px] md:text-xs text-gray-500 max-w-[280px] mx-auto">
                 Tell me about yourself - your experience, skills, education - and I'll help structure it perfectly.
               </p>
             </div>
-            <p className="text-xs text-gray-500 text-center">Quick start:</p>
-            <div className="flex flex-wrap gap-2 justify-center">
+            <p className="text-[10px] md:text-xs text-gray-500 text-center">Quick start:</p>
+            <div className="flex flex-wrap gap-1.5 md:gap-2 justify-center">
               {DEFAULT_QUICK_ACTIONS.map((action) => (
                 <button
                   key={action.id}
                   onClick={() => onQuickAction(action.prompt)}
                   className={cn(
-                    'px-3 py-2 text-xs font-medium rounded-lg',
+                    'px-2.5 py-1.5 md:px-3 md:py-2 text-[11px] md:text-xs font-medium rounded-lg',
                     'bg-white border border-gray-200',
                     'text-gray-700 hover:text-primary',
                     'hover:border-primary/30 hover:bg-primary/5',
@@ -637,15 +651,15 @@ function SidePanelChat({
 
         {/* Suggested questions */}
         {suggestedQuestions.length > 0 && !isLoading && messages.length > 1 && (
-          <div className="space-y-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <p className="text-xs text-gray-500 text-center">Suggestions:</p>
-            <div className="flex flex-col gap-1.5">
+          <div className="space-y-1.5 md:space-y-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <p className="text-[10px] md:text-xs text-gray-500 text-center">Suggestions:</p>
+            <div className="flex flex-col gap-1 md:gap-1.5">
               {suggestedQuestions.slice(0, 2).map((question, idx) => (
                 <button
                   key={idx}
                   onClick={() => onSuggestedQuestion(question)}
                   className={cn(
-                    'w-full px-3 py-2 text-xs text-left rounded-lg',
+                    'w-full px-2.5 py-1.5 md:px-3 md:py-2 text-[11px] md:text-xs text-left rounded-lg',
                     'bg-white border border-gray-200',
                     'text-gray-600 hover:text-primary',
                     'hover:border-primary/30 hover:bg-primary/5',
@@ -675,7 +689,7 @@ function SidePanelChat({
       )}
 
       {/* Input */}
-      <div className="p-3 sm:p-4 bg-white border-t border-gray-100">
+      <div className="p-2.5 md:p-4 bg-white border-t border-gray-100 pb-safe">
         {/* Voice Recording Bar - ChatGPT style */}
         {isListening ? (
           <VoiceInputBar
@@ -687,7 +701,7 @@ function SidePanelChat({
         ) : (
           <form onSubmit={onSubmit}>
             <div className={cn(
-              "flex items-end gap-2 sm:gap-3 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5 sm:p-2",
+              "flex items-end gap-1.5 md:gap-3 bg-gray-50 rounded-2xl border transition-all duration-200 p-1.5 md:p-2",
               "border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
             )}>
               <textarea
@@ -701,7 +715,7 @@ function SidePanelChat({
                 placeholder="Tell me about yourself..."
                 rows={1}
                 className={cn(
-                  'flex-1 px-3 py-2.5 sm:py-3',
+                  'flex-1 px-2.5 py-2 md:px-3 md:py-3',
                   'bg-transparent border-none',
                   'text-sm text-gray-900 placeholder:text-gray-400',
                   'focus:outline-none',
@@ -709,8 +723,8 @@ function SidePanelChat({
                   'transition-all duration-200'
                 )}
                 style={{
-                  minHeight: '44px',
-                  maxHeight: '200px',
+                  minHeight: '40px',
+                  maxHeight: '120px',
                 }}
                 disabled={isLoading}
               />
@@ -725,12 +739,12 @@ function SidePanelChat({
                         onClick={onToggleVoice}
                         disabled={isLoading}
                         className={cn(
-                          'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
+                          'h-9 w-9 md:h-11 md:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
                           'bg-gray-200 hover:bg-gray-300 text-gray-600',
                           'transition-all duration-200'
                         )}
                       >
-                        <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <Mic className="w-4 h-4 md:w-5 md:h-5" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="top">
@@ -744,7 +758,7 @@ function SidePanelChat({
                 type="submit"
                 disabled={!inputValue.trim() || isLoading}
                 className={cn(
-                  'h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
+                  'h-9 w-9 md:h-11 md:w-11 rounded-xl flex-shrink-0 self-end mb-0.5',
                   'bg-gradient-to-r from-primary to-blue-600',
                   'hover:from-primary/90 hover:to-blue-700',
                   'disabled:opacity-40 disabled:cursor-not-allowed',
@@ -753,15 +767,15 @@ function SidePanelChat({
                 )}
               >
                 {isLoading ? (
-                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                  <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
                 ) : (
-                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Send className="w-4 h-4 md:w-5 md:h-5" />
                 )}
               </Button>
             </div>
           </form>
         )}
-        <p className="text-[10px] text-gray-400 mt-2 text-center">
+        <p className="text-[10px] text-gray-400 mt-1.5 md:mt-2 text-center hidden md:block">
           {isListening ? (
             <span className="text-gray-500 font-medium">Speak now... Press ✓ to send or ✕ to cancel</span>
           ) : (

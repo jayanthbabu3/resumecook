@@ -2795,30 +2795,40 @@ export const BuilderV2: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile Chat Overlay - Full screen on mobile */}
+          {/* Mobile Chat Overlay - Floating panel with dimmed backdrop */}
           {isChatMode && (
-            <div className="lg:hidden fixed inset-0 z-50 bg-white">
-              <ResumeAnimationProvider>
-                <ChatWithResume
-                  resumeData={resumeData}
-                  sectionVariants={currentSectionVariants}
-                  onResumeUpdate={handleChatResumeUpdate}
-                  onHighlightSections={(sections) => {
-                    const previewElement = document.getElementById('resume-preview-v2-mobile');
-                    if (previewElement && sections.length > 0) {
-                      previewElement.classList.add('animate-pulse');
-                      previewElement.style.boxShadow = '0 0 0 4px rgba(139, 92, 246, 0.3)';
-                      setTimeout(() => {
-                        previewElement.classList.remove('animate-pulse');
-                        previewElement.style.boxShadow = '';
-                      }, 2000);
-                    }
-                  }}
-                  mode="panel"
-                  onClose={() => setIsChatMode(false)}
-                />
-              </ResumeAnimationProvider>
-            </div>
+            <>
+              {/* Backdrop - dimmed so resume is visible behind */}
+              <div
+                className="lg:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px]"
+                onClick={() => setIsChatMode(false)}
+              />
+              {/* Chat panel floats on top */}
+              <div className="lg:hidden fixed inset-0 z-50 pointer-events-none">
+                <div className="pointer-events-auto">
+                  <ResumeAnimationProvider>
+                    <ChatWithResume
+                      resumeData={resumeData}
+                      sectionVariants={currentSectionVariants}
+                      onResumeUpdate={handleChatResumeUpdate}
+                      onHighlightSections={(sections) => {
+                        const previewElement = document.getElementById('resume-preview-v2-mobile');
+                        if (previewElement && sections.length > 0) {
+                          previewElement.classList.add('animate-pulse');
+                          previewElement.style.boxShadow = '0 0 0 4px rgba(139, 92, 246, 0.3)';
+                          setTimeout(() => {
+                            previewElement.classList.remove('animate-pulse');
+                            previewElement.style.boxShadow = '';
+                          }, 2000);
+                        }
+                      }}
+                      mode="panel"
+                      onClose={() => setIsChatMode(false)}
+                    />
+                  </ResumeAnimationProvider>
+                </div>
+              </div>
+            </>
           )}
 
           {/* Mobile Bottom Bar - Fixed at bottom */}
