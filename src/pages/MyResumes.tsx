@@ -16,9 +16,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { resumeService } from "@/lib/firestore/resumeService";
-import type { Resume } from "@/types/resume";
-import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
+import { resumeService, type Resume } from "@/services";
+import { useAuth } from "@/contexts/AuthContext";
 import { templateMetaMap } from "@/constants/templateMeta";
 import { useToast } from "@/hooks/use-toast";
 import { CircularScoreIndicator } from "@/components/CircularScoreIndicator";
@@ -47,9 +46,9 @@ import {
 
 const MyResumes = () => {
   const navigate = useNavigate();
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
-  const { favorites, favoritesLimit, favoritesCount, canAddFavorite } = useFavoriteTemplates();
+  const { favoritesLimit, favoritesCount, canAddFavorite } = useFavoriteTemplates();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -68,7 +67,7 @@ const MyResumes = () => {
 
     try {
       setLoading(true);
-      const userResumes = await resumeService.getUserResumes();
+      const userResumes = await resumeService.getAll();
       setResumes(userResumes);
     } catch (error) {
       console.error("Error loading resumes:", error);
@@ -84,7 +83,7 @@ const MyResumes = () => {
 
   const handleDelete = async (resumeId: string) => {
     try {
-      await resumeService.deleteResume(resumeId);
+      await resumeService.delete(resumeId);
       setResumes(resumes.filter((r) => r.id !== resumeId));
       toast({
         title: "Success",
@@ -115,7 +114,7 @@ const MyResumes = () => {
     }
 
     try {
-      await resumeService.duplicateResume(resumeId);
+      await resumeService.duplicate(resumeId);
       await loadResumes();
       toast({
         title: "Success",

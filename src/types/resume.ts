@@ -1,5 +1,3 @@
-import type { Timestamp } from 'firebase/firestore';
-
 /**
  * Core resume data structure - template agnostic
  */
@@ -223,15 +221,15 @@ export interface ResumeMetadata {
   isPrimary: boolean;
   isPublic: boolean;
   shareSlug?: string; // For public sharing
-  createdAt: Date | Timestamp;
-  updatedAt: Date | Timestamp;
-  lastViewedAt: Date | Timestamp;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  lastViewedAt: Date | string;
 
   // Analytics
   wordCount?: number;
   atsScore?: number;
   atsReport?: any; // Detailed ATS report (from atsAnalyzer)
-  atsAnalyzedAt?: Date | Timestamp; // When was the last ATS analysis
+  atsAnalyzedAt?: Date | string; // When was the last ATS analysis
   viewCount?: number;
   downloadCount?: number;
 
@@ -256,7 +254,7 @@ export interface ResumeVersion {
   data: ResumeData;
   templateId: string;
   themeColor: string;
-  createdAt: Date | Timestamp;
+  createdAt: Date | string;
   createdBy: string;
   versionNumber: number;
   changeDescription?: string;
@@ -280,8 +278,8 @@ export interface PublicResume {
   views: number;
   rating?: number;
   tags: string[];
-  createdAt: Date | Timestamp;
-  updatedAt: Date | Timestamp;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 /**

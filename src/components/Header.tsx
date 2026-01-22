@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { LogOut, User, LayoutDashboard, FileText, BookOpen, Menu, FolderOpen, ChevronDown, CreditCard, Crown, Sparkles, Home, Zap, Settings, MessageSquarePlus, Shield } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
-import { useSubscription } from "@/hooks/useSubscription";
+import { useAuth } from "@/contexts/AuthContext";
+import { useSubscription } from "@/hooks/useSubscriptionNew";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -23,7 +23,7 @@ import {
 
 const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
-  const { user, signOut, isAdmin } = useFirebaseAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const { isPro } = useSubscription();
 
   // Memoize user-related values to prevent recalculation
@@ -31,15 +31,15 @@ const HeaderComponent: React.FC = () => {
     if (!user) return { initials: "U", displayName: "User", email: "", photoURL: undefined };
 
     let initials = "U";
-    if (user.displayName) {
-      initials = user.displayName.split(' ').map(name => name[0]).join('').slice(0, 2).toUpperCase();
+    if (user.fullName) {
+      initials = user.fullName.split(' ').map(name => name[0]).join('').slice(0, 2).toUpperCase();
     } else if (user.email) {
       initials = user.email.split('@')[0].slice(0, 2).toUpperCase();
     }
 
     let displayName = "User";
-    if (user.displayName) {
-      displayName = user.displayName;
+    if (user.fullName) {
+      displayName = user.fullName;
     } else if (user.email) {
       displayName = user.email.split('@')[0];
     }
@@ -48,9 +48,9 @@ const HeaderComponent: React.FC = () => {
       initials,
       displayName,
       email: user.email || "",
-      photoURL: user.photoURL || undefined
+      photoURL: user.profilePhoto || undefined
     };
-  }, [user?.displayName, user?.email, user?.photoURL]);
+  }, [user?.fullName, user?.email, user?.profilePhoto]);
 
   // Navigation items based on auth state
   const navItems = useMemo(() => {

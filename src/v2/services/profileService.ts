@@ -2,23 +2,15 @@
  * Profile Service
  *
  * Manages user profile data - the single source of truth for all resume content.
- * Profile data is separate from resume-specific settings (template, colors, visibility).
+ * Now uses the API backend instead of Firestore directly.
  *
  * Architecture:
- * - users/{userId}/profile - Single document containing all user's professional data
+ * - Profile data is stored via API
  * - Profile data is used by all resumes
  * - Each resume stores which items to show/hide, not the data itself
  */
 
-import {
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  serverTimestamp,
-  Timestamp,
-} from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase';
+import api from '@/services/api';
 import { toast } from 'sonner';
 import type {
   V2ResumeData,
@@ -78,9 +70,9 @@ export interface UserProfile {
 
   // Metadata
   linkedinUrl?: string;
-  linkedinImportedAt?: Date | Timestamp;
-  createdAt: Date | Timestamp;
-  updatedAt: Date | Timestamp;
+  linkedinImportedAt?: Date | string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 /**
@@ -111,30 +103,6 @@ export interface UpdateProfilePayload {
 // ============================================================================
 
 class ProfileService {
-  /**
-   * Get user's profile document reference
-   */
-  private getProfileRef(userId: string) {
-    return doc(db, 'users', userId, 'profile', 'data');
-  }
-
-  /**
-   * Convert Firestore timestamps to Date objects
-   */
-  private convertTimestamps(data: any): any {
-    const converted = { ...data };
-    if (data.createdAt instanceof Timestamp) {
-      converted.createdAt = data.createdAt.toDate();
-    }
-    if (data.updatedAt instanceof Timestamp) {
-      converted.updatedAt = data.updatedAt.toDate();
-    }
-    if (data.linkedinImportedAt instanceof Timestamp) {
-      converted.linkedinImportedAt = data.linkedinImportedAt.toDate();
-    }
-    return converted;
-  }
-
   /**
    * Create empty profile with defaults
    */
@@ -171,83 +139,38 @@ class ProfileService {
    * Check if user has a profile
    */
   async hasProfile(): Promise<boolean> {
-    const user = auth.currentUser;
-    if (!user) return false;
-
-    const docRef = this.getProfileRef(user.uid);
-    const docSnap = await getDoc(docRef);
-    return docSnap.exists();
+    try {
+      const profile = await this.getProfile();
+      return profile !== null;
+    } catch {
+      return false;
+    }
   }
 
   /**
    * Get user's profile
    */
   async getProfile(): Promise<UserProfile | null> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
-    const docRef = this.getProfileRef(user.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (!docSnap.exists()) return null;
-
-    return this.convertTimestamps(docSnap.data()) as UserProfile;
+    try {
+      const response = await api.get<{ success: boolean; data: UserProfile }>('/users/profile');
+      return response.data.data;
+    } catch {
+      return null;
+    }
   }
 
   /**
    * Create or replace user's profile
    */
   async saveProfile(profile: Omit<UserProfile, 'createdAt' | 'updatedAt'>): Promise<void> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
-    const docRef = this.getProfileRef(user.uid);
-    const existingDoc = await getDoc(docRef);
-
-    const profileData = {
-      ...profile,
-      updatedAt: serverTimestamp(),
-      ...(existingDoc.exists() ? {} : { createdAt: serverTimestamp() }),
-    };
-
-    await setDoc(docRef, profileData, { merge: true });
+    await api.put('/users/profile', profile);
   }
 
   /**
    * Update specific fields in user's profile
    */
   async updateProfile(updates: UpdateProfilePayload): Promise<void> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
-    const docRef = this.getProfileRef(user.uid);
-
-    // Check if profile exists, create if not
-    const existingDoc = await getDoc(docRef);
-    if (!existingDoc.exists()) {
-      const emptyProfile = this.createEmptyProfile();
-      await setDoc(docRef, {
-        ...emptyProfile,
-        ...updates,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
-      return;
-    }
-
-    // Update existing profile
-    const updatePayload: any = { ...updates, updatedAt: serverTimestamp() };
-
-    // Handle nested personalInfo updates
-    if (updates.personalInfo) {
-      const existingData = existingDoc.data();
-      updatePayload.personalInfo = {
-        ...existingData.personalInfo,
-        ...updates.personalInfo,
-      };
-    }
-
-    await updateDoc(docRef, updatePayload);
+    await api.patch('/users/profile', updates);
   }
 
   /**
@@ -258,9 +181,6 @@ class ProfileService {
     linkedInData: V2ResumeData,
     linkedinUrl?: string
   ): Promise<void> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
     // Get existing profile to preserve any data LinkedIn doesn't have
     const existingProfile = await this.getProfile();
 
@@ -293,16 +213,7 @@ class ProfileService {
       linkedinUrl: linkedinUrl || linkedInData.personalInfo.linkedin,
     };
 
-    const docRef = this.getProfileRef(user.uid);
-    const existingDoc = await getDoc(docRef);
-
-    await setDoc(docRef, {
-      ...profile,
-      linkedinImportedAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      ...(existingDoc.exists() ? {} : { createdAt: serverTimestamp() }),
-    });
-
+    await this.saveProfile(profile);
     toast.success('LinkedIn profile imported successfully!');
   }
 
@@ -343,9 +254,6 @@ class ProfileService {
    * Called when user edits resume in builder
    */
   async syncFromResumeData(resumeData: V2ResumeData): Promise<void> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
     await this.updateProfile({
       personalInfo: resumeData.personalInfo,
       experience: resumeData.experience,

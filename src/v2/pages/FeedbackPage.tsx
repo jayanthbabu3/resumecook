@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import { createFeedback } from '@/lib/firestore/feedbackService';
+import { useAuth } from '@/contexts/AuthContext';
+import { feedbackService } from '@/services';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import {
@@ -72,7 +72,7 @@ const CategoryCard: React.FC<{
 
 export const FeedbackPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user, userProfile } = useFirebaseAuth();
+  const { user } = useAuth();
 
   const [selectedType, setSelectedType] = useState<FeedbackType | null>(null);
   const [subject, setSubject] = useState('');
@@ -130,16 +130,11 @@ export const FeedbackPage: React.FC = () => {
 
       setIsSubmitting(true);
       try {
-        await createFeedback(
-          user.uid,
-          user.email || '',
-          userProfile.fullName || user.displayName || 'User',
-          {
-            type: selectedType,
-            subject: subject.trim(),
-            description: description.trim(),
-          }
-        );
+        await feedbackService.submit({
+          type: selectedType,
+          subject: subject.trim(),
+          description: description.trim(),
+        });
 
         setIsSuccess(true);
         toast.success('Feedback submitted!');
@@ -150,7 +145,7 @@ export const FeedbackPage: React.FC = () => {
         setIsSubmitting(false);
       }
     },
-    [user, userProfile, selectedType, subject, description, navigate]
+    [user, selectedType, subject, description, navigate]
   );
 
   const handleSubmitAnother = useCallback(() => {

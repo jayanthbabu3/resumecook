@@ -6,14 +6,14 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FileText, Sparkles, Shield, Zap, Check, Crown } from 'lucide-react';
 
 const Auth = () => {
-  const { signInWithGoogle, loading, user } = useFirebaseAuth();
+  const { signInWithGoogle, loading, user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);

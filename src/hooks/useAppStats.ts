@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../lib/firebase';
-import { AppStats, initializeStats } from '../lib/firestore/statsService';
 
-const STATS_COLLECTION = 'app_stats';
-const STATS_DOC_ID = 'global_stats';
+export interface AppStats {
+  usersCount: number;
+  downloadsCount: number;
+  lastUpdated: Date;
+}
 
 interface UseAppStatsReturn {
   stats: AppStats | null;
@@ -13,65 +13,27 @@ interface UseAppStatsReturn {
 }
 
 /**
- * Hook to fetch and listen to real-time app stats from Firestore
+ * Hook to provide app stats
+ * Currently returns static values - can be updated to fetch from API later
  */
 export const useAppStats = (): UseAppStatsReturn => {
   const [stats, setStats] = useState<AppStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
+    // Return static stats for now
+    // These can be updated to fetch from an API endpoint
+    const timer = setTimeout(() => {
+      setStats({
+        usersCount: 10000,
+        downloadsCount: 25000,
+        lastUpdated: new Date(),
+      });
+      setLoading(false);
+    }, 100);
 
-    const setupStatsListener = async () => {
-      try {
-        // Set up real-time listener directly without initializing
-        const statsRef = doc(db, STATS_COLLECTION, STATS_DOC_ID);
-
-        unsubscribe = onSnapshot(
-          statsRef,
-          (snapshot) => {
-            if (snapshot.exists()) {
-              const data = snapshot.data();
-              setStats({
-                usersCount: data.usersCount || 0,
-                downloadsCount: data.downloadsCount || 0,
-                lastUpdated: data.lastUpdated?.toDate() || new Date(),
-              });
-            } else {
-              // Document doesn't exist, try to initialize
-              initializeStats().catch(console.error);
-              setStats({
-                usersCount: 0,
-                downloadsCount: 0,
-                lastUpdated: new Date(),
-              });
-            }
-            setLoading(false);
-            setError(null);
-          },
-          (err) => {
-            console.error('Error listening to stats:', err);
-            setError(err as Error);
-            setLoading(false);
-          }
-        );
-      } catch (err) {
-        console.error('Error setting up stats listener:', err);
-        setError(err as Error);
-        setLoading(false);
-      }
-    };
-
-    setupStatsListener();
-
-    // Cleanup listener on unmount
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
+    return () => clearTimeout(timer);
   }, []);
 
-  return { stats, loading, error };
+  return { stats, loading, error: null };
 };

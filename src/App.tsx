@@ -4,19 +4,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
-import { FirebaseAuthProvider } from "@/hooks/useFirebaseAuth";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { MigrationHandler } from "@/components/MigrationHandler";
+// Using new JWT-based auth context (exports FirebaseAuthProvider as alias for backward compatibility)
+import { FirebaseAuthProvider } from "@/contexts/AuthContext";
 import { ResumeDataProvider } from "@/contexts/ResumeDataContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Hero from "./pages/Hero";
-import Dashboard from "./pages/Dashboard";
-import ProfessionTemplates from "./pages/ProfessionTemplates";
-import Editor from "./pages/Editor";
-import LiveEditor from "./pages/LiveEditor";
 import ScratchBuilder from "./pages/ScratchBuilder";
 import Auth from "./pages/Auth";
-import Profile from "./pages/Profile";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import VerifyEmail from "./pages/VerifyEmail";
 import ATSGuidelines from "./pages/ATSGuidelines";
@@ -83,7 +77,6 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
-            {/* Temporarily removed ProtectedRoute for easier development - TODO: Re-enable before production */}
             <Route path="/profile-completion" element={<ProfileCompletion />} />
             
             {/* Redirect legacy routes */}
@@ -122,56 +115,6 @@ const App = () => (
             <Route path="/admin/feedback/:id" element={<AdminRoute><AdminFeedbackDetailPage /></AdminRoute>} />
             <Route path="/admin/users" element={<AdminRoute><AdminUsersPage /></AdminRoute>} />
 
-            {/* Original protected routes (commented out for development):
-            <Route
-              path="/profile-completion"
-              element={
-                <ProtectedRoute>
-                  <ProfileCompletion />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/my-resumes"
-              element={
-                <ProtectedRoute>
-                  <MyResumes />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/editor/:templateId"
-              element={
-                <ProtectedRoute>
-                  <Editor />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/builder/scratch"
-              element={
-                <ProtectedRoute>
-                  <ScratchBuilder />
-                </ProtectedRoute>
-              }
-            />
-            */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

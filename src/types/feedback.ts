@@ -1,5 +1,3 @@
-import type { Timestamp } from 'firebase/firestore';
-
 /**
  * Feedback Types and Interfaces
  * For the user feedback/support system
@@ -38,12 +36,16 @@ export interface Feedback {
   priority: FeedbackPriority;
 
   // Timestamps
-  createdAt: Date | Timestamp;
-  updatedAt: Date | Timestamp;
-  resolvedAt?: Date | Timestamp;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  resolvedAt?: Date | string;
 
   // Admin notes (internal, not visible to user)
   adminNotes?: string;
+
+  // Admin reply
+  adminReply?: string;
+  repliedAt?: Date | string;
 
   // Count of replies (for quick display)
   replyCount?: number;
@@ -72,8 +74,8 @@ export interface FeedbackReply {
   message: string;
 
   // Timestamps
-  createdAt: Date | Timestamp;
-  updatedAt?: Date | Timestamp;
+  createdAt: Date | string;
+  updatedAt?: Date | string;
 }
 
 /**

@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { subscribeToAllFeedback } from '@/lib/firestore/feedbackService';
+import { feedbackService } from '@/services';
 import { cn } from '@/lib/utils';
 import {
   ArrowLeft,
@@ -166,14 +166,20 @@ export const AdminFeedbackPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
   const [typeFilter, setTypeFilter] = useState(searchParams.get('type') || 'all');
 
-  // Subscribe to all feedback
+  // Fetch all feedback
   useEffect(() => {
-    const unsubscribe = subscribeToAllFeedback((feedback) => {
-      setFeedbackList(feedback);
-      setLoading(false);
-    });
+    const fetchFeedback = async () => {
+      try {
+        const response = await feedbackService.getAllFeedback();
+        setFeedbackList(response.feedback);
+      } catch (error) {
+        console.error('Error fetching feedback:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return () => unsubscribe();
+    fetchFeedback();
   }, []);
 
   // Calculate counts

@@ -19,18 +19,16 @@ import { SectionVariantModal } from '../components/scratch/SectionVariantModal';
 import { toast } from 'sonner';
 import type { V2SectionType } from '../types/resumeData';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
-import { incrementDownloadsCount } from '@/lib/firestore/statsService';
 import type { SectionVariant } from '@/constants/sectionVariants';
 import { applyVariantDataToResume } from '../utils/variantDataApplier';
-import { resumeService } from '@/lib/firestore/resumeService';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { convertV2ToV1 } from '../utils/dataConverter';
 import { generateScratchConfig } from '../utils/scratchConfigGenerator';
 import { cn } from '@/lib/utils';
 
 const ScratchBuilderV2: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
   const {
     resumeData,
     setResumeData,

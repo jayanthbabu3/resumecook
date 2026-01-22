@@ -10,10 +10,10 @@ export default defineConfig(({ mode }) => ({
     port: 5173,
     proxy: {
       // Proxy API calls to local backend during development
+      // Backend expects /api prefix, so no rewriting needed
       "/api": {
         target: "http://localhost:8080",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

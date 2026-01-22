@@ -30,8 +30,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import { useSubscription } from '@/hooks/useSubscription';
+import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscriptionNew';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import {
@@ -127,14 +127,14 @@ const SettingRow: React.FC<{
 
 export const AccountSettings: React.FC = () => {
   const navigate = useNavigate();
-  const { user, userProfile, signOut, updateUserProfile, resetPassword } = useFirebaseAuth();
+  const { user, signOut } = useAuth();
   const {
     subscription,
-    loading: subscriptionLoading,
+    isLoading: subscriptionLoading,
     isPro,
     isTrial,
     trialDaysRemaining,
-    initiateSubscription,
+    startCheckout,
     cancelSubscription,
   } = useSubscription();
 
@@ -146,7 +146,7 @@ export const AccountSettings: React.FC = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // Profile form state
-  const [fullName, setFullName] = useState(userProfile?.fullName || user?.displayName || '');
+  const [fullName, setFullName] = useState(user?.fullName || '');
 
   // Format date helper
   const formatDate = (date?: Date) => {
@@ -183,25 +183,19 @@ export const AccountSettings: React.FC = () => {
       return;
     }
 
-    setIsResettingPassword(true);
-    try {
-      await resetPassword(user.email);
-      toast.success('Password reset email sent! Check your inbox.');
-    } catch {
-      toast.error('Failed to send password reset email');
-    } finally {
-      setIsResettingPassword(false);
-    }
-  }, [user?.email, resetPassword]);
+    // Password reset not available for Google sign-in
+    toast.info('You signed in with Google. Manage your password through your Google account.');
+    setIsResettingPassword(false);
+  }, []);
 
   // Handle subscription upgrade
   const handleUpgrade = useCallback(async () => {
     try {
-      await initiateSubscription();
+      await startCheckout();
     } catch {
       toast.error('Failed to initiate upgrade. Please try again.');
     }
-  }, [initiateSubscription]);
+  }, [startCheckout]);
 
   // Handle subscription cancellation
   const handleCancelSubscription = useCallback(async () => {
@@ -238,7 +232,7 @@ export const AccountSettings: React.FC = () => {
     : user?.email?.slice(0, 2).toUpperCase() || 'U';
 
   // Auth provider
-  const authProvider = userProfile?.provider || (user?.providerData?.[0]?.providerId === 'google.com' ? 'google' : 'email');
+  const authProvider = 'google';
 
   // If not logged in, redirect to auth
   if (!user) {
@@ -629,7 +623,7 @@ export const AccountSettings: React.FC = () => {
                   />
                   <Button
                     onClick={handleUpdateProfile}
-                    disabled={isUpdatingProfile || fullName === (userProfile?.fullName || user?.displayName)}
+                    disabled={isUpdatingProfile || fullName === (user?.fullName)}
                   >
                     {isUpdatingProfile ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

@@ -2,32 +2,16 @@
  * V2 Resume Service
  *
  * Extends the base resume service to work with V2ResumeData type.
- * This service stores resumes using the universal V2 data format,
- * which is template-agnostic and can be rendered with any template.
+ * This service now uses the API backend instead of Firestore directly.
  */
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  orderBy,
-  serverTimestamp,
-  Timestamp,
-  increment,
-  getCountFromServer,
-} from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase';
+import { resumeService } from '@/services';
 import { toast } from 'sonner';
 import type { V2ResumeData } from '../types/resumeData';
 import { USER_LIMITS, LIMIT_ERRORS } from '@/config/limits';
 
 /**
- * V2 Resume Metadata - stored in Firestore
+ * V2 Resume Metadata - stored in backend
  */
 export interface V2ResumeMetadata {
   id: string;
@@ -38,9 +22,9 @@ export interface V2ResumeMetadata {
   themeColors?: { primary?: string; secondary?: string };
   isPrimary: boolean;
   isPublic: boolean;
-  createdAt: Date | Timestamp;
-  updatedAt: Date | Timestamp;
-  lastViewedAt: Date | Timestamp;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  lastViewedAt?: Date | string;
 
   // Analytics
   wordCount?: number;
@@ -96,135 +80,148 @@ export interface UpdateV2ResumePayload {
   sectionLabels?: Record<string, string>;
 }
 
-class ResumeServiceV2 {
-  /**
-   * Get user's resumes collection reference
-   */
-  private getUserResumesRef(userId: string) {
-    return collection(db, 'users', userId, 'resumes');
-  }
+/**
+ * Convert API resume to V2Resume format
+ */
+function convertToV2Resume(apiResume: any): V2Resume {
+  return {
+    id: apiResume.id || apiResume._id,
+    userId: apiResume.userId,
+    title: apiResume.title,
+    templateId: apiResume.templateId,
+    themeColor: apiResume.settings?.themeColor || '#0891b2',
+    themeColors: apiResume.settings?.themeColors,
+    isPrimary: apiResume.isPrimary || false,
+    isPublic: apiResume.isPublic || false,
+    createdAt: apiResume.createdAt,
+    updatedAt: apiResume.updatedAt,
+    lastViewedAt: apiResume.lastViewedAt,
+    wordCount: apiResume.wordCount,
+    viewCount: apiResume.viewCount,
+    downloadCount: apiResume.downloadCount,
+    tags: apiResume.tags,
+    folder: apiResume.folder,
+    sectionOverrides: apiResume.settings?.sectionOverrides,
+    enabledSections: apiResume.settings?.enabledSections,
+    sectionLabels: apiResume.settings?.sectionLabels,
+    data: normalizeResumeData(apiResume.data),
+  };
+}
 
+/**
+ * Normalize V2 resume data to ensure all required fields exist
+ */
+function normalizeResumeData(data: any): V2ResumeData {
+  return {
+    version: '2.0',
+    personalInfo: data?.personalInfo || {
+      fullName: '',
+      email: '',
+      phone: '',
+      location: '',
+      title: '',
+      summary: '',
+    },
+    experience: Array.isArray(data?.experience) ? data.experience : [],
+    education: Array.isArray(data?.education) ? data.education : [],
+    skills: Array.isArray(data?.skills) ? data.skills : [],
+    // Optional sections
+    languages: data?.languages,
+    achievements: data?.achievements,
+    strengths: data?.strengths,
+    certifications: data?.certifications,
+    projects: data?.projects,
+    awards: data?.awards,
+    publications: data?.publications,
+    volunteer: data?.volunteer,
+    speaking: data?.speaking,
+    patents: data?.patents,
+    interests: data?.interests,
+    references: data?.references,
+    courses: data?.courses,
+    customSections: data?.customSections,
+    settings: data?.settings,
+  };
+}
+
+/**
+ * Calculate word count from V2 resume data
+ */
+function calculateWordCount(data: V2ResumeData): number {
+  let text = '';
+  text += data.personalInfo?.summary || '';
+
+  // Experience descriptions and bullet points
+  (data.experience || []).forEach((exp) => {
+    text += ' ' + (exp.description || '');
+    (exp.bulletPoints || []).forEach((bp) => {
+      text += ' ' + bp;
+    });
+  });
+
+  // Education descriptions
+  (data.education || []).forEach((edu) => {
+    text += ' ' + (edu.description || '');
+  });
+
+  // Skills
+  (data.skills || []).forEach((skill) => {
+    text += ' ' + skill.name;
+  });
+
+  // Achievements
+  (data.achievements || []).forEach((ach) => {
+    text += ' ' + ach.title + ' ' + ach.description;
+  });
+
+  // Strengths
+  (data.strengths || []).forEach((str) => {
+    text += ' ' + str.title + ' ' + str.description;
+  });
+
+  // Projects
+  (data.projects || []).forEach((proj) => {
+    text += ' ' + proj.name + ' ' + proj.description;
+    (proj.highlights || []).forEach((h) => {
+      text += ' ' + h;
+    });
+  });
+
+  return text.split(/\s+/).filter((word) => word.length > 0).length;
+}
+
+class ResumeServiceV2 {
   /**
    * Get the count of user's resumes
    */
   async getResumeCount(): Promise<number> {
-    const user = auth.currentUser;
-    if (!user) return 0;
-
-    const resumesRef = this.getUserResumesRef(user.uid);
-    const snapshot = await getCountFromServer(resumesRef);
-    return snapshot.data().count;
+    try {
+      const resumes = await resumeService.getAll();
+      return resumes.length;
+    } catch {
+      return 0;
+    }
   }
 
   /**
    * Check if user can create a new resume
    */
   async canCreateResume(): Promise<{ allowed: boolean; count: number; limit: number }> {
-    const count = await this.getResumeCount();
-    return {
-      allowed: count < USER_LIMITS.MAX_RESUMES,
-      count,
-      limit: USER_LIMITS.MAX_RESUMES,
-    };
-  }
-
-  /**
-   * Convert Firestore timestamps to Date objects
-   */
-  private convertTimestamps(data: any): any {
-    const converted = { ...data };
-    if (data.createdAt instanceof Timestamp) {
-      converted.createdAt = data.createdAt.toDate();
+    try {
+      const result = await resumeService.canCreateMore();
+      return {
+        allowed: result.canCreate,
+        count: result.current,
+        limit: result.limit,
+      };
+    } catch {
+      const count = await this.getResumeCount();
+      return {
+        allowed: count < USER_LIMITS.MAX_RESUMES,
+        count,
+        limit: USER_LIMITS.MAX_RESUMES,
+      };
     }
-    if (data.updatedAt instanceof Timestamp) {
-      converted.updatedAt = data.updatedAt.toDate();
-    }
-    if (data.lastViewedAt instanceof Timestamp) {
-      converted.lastViewedAt = data.lastViewedAt.toDate();
-    }
-    return converted;
-  }
-
-  /**
-   * Normalize V2 resume data to ensure all required fields exist
-   */
-  private normalizeResumeData(data: any): V2ResumeData {
-    return {
-      version: '2.0',
-      personalInfo: data.personalInfo || {
-        fullName: '',
-        email: '',
-        phone: '',
-        location: '',
-        title: '',
-        summary: '',
-      },
-      experience: Array.isArray(data.experience) ? data.experience : [],
-      education: Array.isArray(data.education) ? data.education : [],
-      skills: Array.isArray(data.skills) ? data.skills : [],
-      // Optional sections
-      languages: data.languages,
-      achievements: data.achievements,
-      strengths: data.strengths,
-      certifications: data.certifications,
-      projects: data.projects,
-      awards: data.awards,
-      publications: data.publications,
-      volunteer: data.volunteer,
-      speaking: data.speaking,
-      patents: data.patents,
-      interests: data.interests,
-      references: data.references,
-      courses: data.courses,
-      customSections: data.customSections,
-      settings: data.settings,
-    };
-  }
-
-  /**
-   * Calculate word count from V2 resume data
-   */
-  private calculateWordCount(data: V2ResumeData): number {
-    let text = '';
-    text += data.personalInfo?.summary || '';
-
-    // Experience descriptions and bullet points
-    (data.experience || []).forEach((exp) => {
-      text += ' ' + (exp.description || '');
-      (exp.bulletPoints || []).forEach((bp) => {
-        text += ' ' + bp;
-      });
-    });
-
-    // Education descriptions
-    (data.education || []).forEach((edu) => {
-      text += ' ' + (edu.description || '');
-    });
-
-    // Skills
-    (data.skills || []).forEach((skill) => {
-      text += ' ' + skill.name;
-    });
-
-    // Achievements
-    (data.achievements || []).forEach((ach) => {
-      text += ' ' + ach.title + ' ' + ach.description;
-    });
-
-    // Strengths
-    (data.strengths || []).forEach((str) => {
-      text += ' ' + str.title + ' ' + str.description;
-    });
-
-    // Projects
-    (data.projects || []).forEach((proj) => {
-      text += ' ' + proj.name + ' ' + proj.description;
-      (proj.highlights || []).forEach((h) => {
-        text += ' ' + h;
-      });
-    });
-
-    return text.split(/\s+/).filter((word) => word.length > 0).length;
   }
 
   /**
@@ -235,120 +232,90 @@ class ResumeServiceV2 {
     data: V2ResumeData,
     options?: CreateV2ResumeOptions
   ): Promise<string> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
     // Check resume limit
-    const { allowed, count } = await this.canCreateResume();
+    const { allowed } = await this.canCreateResume();
     if (!allowed) {
       toast.error(LIMIT_ERRORS.RESUMES_LIMIT_REACHED);
       throw new Error(LIMIT_ERRORS.RESUMES_LIMIT_REACHED);
     }
 
-    const resumesRef = this.getUserResumesRef(user.uid);
-    const resumeId = doc(resumesRef).id;
+    const title = options?.title || (data.personalInfo?.fullName
+      ? `${data.personalInfo.fullName}'s Resume`
+      : `Resume - ${new Date().toLocaleDateString()}`);
 
-    // Calculate word count
-    const wordCount = this.calculateWordCount(data);
-
-    const resume: Omit<V2Resume, 'id'> = {
-      userId: user.uid,
+    const resume = await resumeService.create({
+      title,
       templateId,
-      themeColor: options?.themeColor || '#2563eb',
-      themeColors: options?.themeColors,
-      title: options?.title || data.personalInfo?.fullName
-        ? `${data.personalInfo.fullName}'s Resume`
-        : `Resume - ${new Date().toLocaleDateString()}`,
-      isPrimary: options?.isPrimary || false,
-      isPublic: false,
-      data,
-      createdAt: serverTimestamp() as any,
-      updatedAt: serverTimestamp() as any,
-      lastViewedAt: serverTimestamp() as any,
-      wordCount,
-      viewCount: 0,
-      downloadCount: 0,
-      tags: options?.tags || [],
-      sectionOverrides: options?.sectionOverrides,
-      enabledSections: options?.enabledSections,
-      sectionLabels: options?.sectionLabels,
-    };
-
-    await setDoc(doc(resumesRef, resumeId), resume);
+      data: data as any,
+      settings: {
+        themeColor: options?.themeColor || '#2563eb',
+        themeColors: options?.themeColors,
+        sectionOverrides: options?.sectionOverrides,
+        enabledSections: options?.enabledSections,
+        sectionLabels: options?.sectionLabels,
+      } as any,
+    });
 
     toast.success('Resume saved successfully');
-    return resumeId;
+    return resume.id;
   }
 
   /**
    * Get a single resume by ID
    */
   async getResume(resumeId: string): Promise<V2Resume | null> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
-    const docRef = doc(this.getUserResumesRef(user.uid), resumeId);
-    const docSnap = await getDoc(docRef);
-
-    if (!docSnap.exists()) return null;
-
-    // Update last viewed timestamp (don't await)
-    updateDoc(docRef, {
-      lastViewedAt: serverTimestamp(),
-      viewCount: increment(1),
-    }).catch(console.error);
-
-    const docData = docSnap.data();
-    const resume = {
-      id: docSnap.id,
-      ...this.convertTimestamps(docData),
-    } as V2Resume;
-
-    // Normalize the resume data
-    if (resume.data) {
-      resume.data = this.normalizeResumeData(resume.data);
+    try {
+      const apiResume = await resumeService.getById(resumeId);
+      return convertToV2Resume(apiResume);
+    } catch {
+      return null;
     }
-
-    return resume;
   }
 
   /**
    * Get all user's resumes (metadata only)
    */
   async getUserResumes(): Promise<V2ResumeMetadata[]> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
-    const q = query(
-      this.getUserResumesRef(user.uid),
-      orderBy('updatedAt', 'desc')
-    );
-
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...this.convertTimestamps(doc.data()),
-    })) as V2ResumeMetadata[];
+    const apiResumes = await resumeService.getAll();
+    return apiResumes.map((resume) => ({
+      id: resume.id,
+      userId: resume.userId,
+      title: resume.title,
+      templateId: resume.templateId,
+      themeColor: (resume.settings as any)?.themeColor || '#0891b2',
+      themeColors: (resume.settings as any)?.themeColors,
+      isPrimary: (resume as any).isPrimary || false,
+      isPublic: resume.isPublic,
+      createdAt: resume.createdAt,
+      updatedAt: resume.updatedAt,
+      lastViewedAt: (resume as any).lastViewedAt,
+      wordCount: (resume as any).wordCount,
+      viewCount: (resume as any).viewCount,
+      downloadCount: (resume as any).downloadCount,
+      tags: (resume as any).tags,
+      folder: (resume as any).folder,
+      sectionOverrides: (resume.settings as any)?.sectionOverrides,
+      enabledSections: (resume.settings as any)?.enabledSections,
+      sectionLabels: (resume.settings as any)?.sectionLabels,
+    }));
   }
 
   /**
    * Update resume
    */
   async updateResume(resumeId: string, updates: UpdateV2ResumePayload): Promise<void> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
-    const docRef = doc(this.getUserResumesRef(user.uid), resumeId);
-
-    // Calculate word count if data is being updated
-    const updatePayload: any = { ...updates };
-    if (updates.data) {
-      updatePayload.wordCount = this.calculateWordCount(updates.data);
-    }
-
-    updatePayload.updatedAt = serverTimestamp();
-
-    await updateDoc(docRef, updatePayload);
+    await resumeService.update(resumeId, {
+      title: updates.title,
+      templateId: updates.templateId,
+      data: updates.data as any,
+      settings: {
+        themeColor: updates.themeColor,
+        themeColors: updates.themeColors,
+        sectionOverrides: updates.sectionOverrides,
+        enabledSections: updates.enabledSections,
+        sectionLabels: updates.sectionLabels,
+      } as any,
+    });
   }
 
   /**
@@ -409,10 +376,7 @@ class ResumeServiceV2 {
    * Delete resume
    */
   async deleteResume(resumeId: string): Promise<void> {
-    const user = auth.currentUser;
-    if (!user) throw new Error('User not authenticated');
-
-    await deleteDoc(doc(this.getUserResumesRef(user.uid), resumeId));
+    await resumeService.delete(resumeId);
     toast.success('Resume deleted');
   }
 
@@ -420,34 +384,17 @@ class ResumeServiceV2 {
    * Duplicate resume
    */
   async duplicateResume(resumeId: string): Promise<string> {
-    const resume = await this.getResume(resumeId);
-    if (!resume) throw new Error('Resume not found');
-
-    const newId = await this.createResume(resume.templateId, resume.data, {
-      title: `${resume.title} (Copy)`,
-      themeColor: resume.themeColor,
-      themeColors: resume.themeColors,
-      tags: resume.tags,
-      sectionOverrides: resume.sectionOverrides,
-      enabledSections: resume.enabledSections,
-      sectionLabels: resume.sectionLabels,
-    });
-
+    const newResume = await resumeService.duplicate(resumeId);
     toast.success('Resume duplicated');
-    return newId;
+    return newResume.id;
   }
 
   /**
    * Increment download count
    */
-  async incrementDownloadCount(resumeId: string): Promise<void> {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const docRef = doc(this.getUserResumesRef(user.uid), resumeId);
-    await updateDoc(docRef, {
-      downloadCount: increment(1),
-    });
+  async incrementDownloadCount(_resumeId: string): Promise<void> {
+    // This will be tracked by the backend when PDF is generated
+    // No explicit call needed, but kept for backwards compatibility
   }
 }
 

@@ -50,7 +50,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { MonthYearPicker } from '@/components/ui/month-year-picker';
 import { toast } from 'sonner';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { profileService, UserProfile } from '../services/profileService';
 import { SubscriptionCard } from '@/components/SubscriptionCard';
 import { cn } from '@/lib/utils';
@@ -646,7 +646,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, completeness, on
 
 const ProfilePageV2: React.FC = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useFirebaseAuth();
+  const { user, loading: authLoading } = useAuth();
 
   // State
   const [profile, setProfile] = useState<UserProfile | null>(null);

@@ -11,9 +11,8 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import { useSubscription } from '@/hooks/useSubscription';
-import { useTrial } from '@/hooks/useTrial';
+import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscriptionNew';
 import { FEATURES } from '@/config/features';
 import { Gift, Timer, Sparkles, ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
@@ -31,10 +30,12 @@ export const TrialBanner = ({
   onClaimClick
 }: TrialBannerProps) => {
   const navigate = useNavigate();
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
   const { isPro, isTrial, trialDaysRemaining } = useSubscription();
-  const { trialStatus } = useTrial();
   const [dismissed, setDismissed] = useState(false);
+
+  // Simplified trial status - we always show trials available for non-Pro users
+  const trialStatus = { trialsAvailable: !isPro && !isTrial, trialsRemaining: 1000 };
 
   // Don't show if trial system is disabled
   if (!FEATURES.TRIAL_SYSTEM_ENABLED) return null;

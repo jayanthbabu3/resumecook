@@ -12,8 +12,8 @@ import {
   DialogContent,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import { useSubscription } from '@/hooks/useSubscription';
+import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscriptionNew';
 import {
   Sparkles,
   Crown,
@@ -41,8 +41,8 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
   featureName = 'AI Features',
 }) => {
   const navigate = useNavigate();
-  const { user, signInWithGoogle } = useFirebaseAuth();
-  const { initiateSubscription } = useSubscription();
+  const { user, signInWithGoogle } = useAuth();
+  const { startCheckout } = useSubscription();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignIn = async () => {
@@ -62,7 +62,7 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
     setIsLoading(true);
     try {
       // Initiate Razorpay subscription checkout (opens modal)
-      await initiateSubscription();
+      await startCheckout();
       onClose();
     } catch (error) {
       toast.error('Something went wrong. Please try again.');

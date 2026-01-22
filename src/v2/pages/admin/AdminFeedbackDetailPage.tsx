@@ -5,7 +5,7 @@
  * Full admin controls for managing individual feedback items.
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/button';
@@ -31,16 +31,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import {
-  getFeedbackById,
-  addReply,
-  updateFeedbackStatus,
-  updateFeedbackPriority,
-  markFeedbackAsReadByAdmin,
-  deleteFeedback,
-  subscribeToFeedbackReplies,
-} from '@/lib/firestore/feedbackService';
+import { useAuth } from '@/contexts/AuthContext';
+import { feedbackService } from '@/services';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import {
@@ -56,12 +48,9 @@ import {
   Shield,
   User,
   Trash2,
-  AlertCircle,
-  CheckCircle2,
-  XCircle,
   Mail,
 } from 'lucide-react';
-import type { Feedback, FeedbackReply, FeedbackType, FeedbackStatus, FeedbackPriority } from '@/types/feedback';
+import type { Feedback, FeedbackType, FeedbackStatus, FeedbackPriority } from '@/types/feedback';
 import { FEEDBACK_TYPE_INFO, FEEDBACK_STATUS_INFO, FEEDBACK_PRIORITY_INFO } from '@/types/feedback';
 
 // Type icons
@@ -73,46 +62,15 @@ const typeIcons: Record<FeedbackType, React.ReactNode> = {
 };
 
 // Format date helper
-const formatDate = (date: Date) => {
+const formatDate = (date: Date | string) => {
+  const d = date instanceof Date ? date : new Date(date);
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
     hour: 'numeric',
     minute: '2-digit',
-  }).format(date);
-};
-
-// Compact reply bubble component
-const ReplyBubble: React.FC<{
-  reply: FeedbackReply;
-  isAdmin: boolean;
-}> = ({ reply }) => {
-  const replyIsAdmin = reply.authorRole === 'admin';
-
-  return (
-    <div className={cn('flex gap-2', replyIsAdmin ? 'flex-row-reverse' : 'flex-row')}>
-      <Avatar className={cn('w-7 h-7 flex-shrink-0', replyIsAdmin && 'ring-1 ring-primary/30')}>
-        <AvatarImage src={reply.authorPhoto} alt={reply.authorName} />
-        <AvatarFallback
-          className={cn('text-xs font-semibold text-white', replyIsAdmin ? 'bg-gradient-to-br from-primary to-blue-600' : 'bg-gray-400')}
-        >
-          {replyIsAdmin ? <Shield className="w-3 h-3" /> : reply.authorName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
-        </AvatarFallback>
-      </Avatar>
-      <div className={cn('flex-1 max-w-[85%]', replyIsAdmin && 'flex flex-col items-end')}>
-        <div className={cn('flex items-center gap-1.5 mb-0.5', replyIsAdmin && 'flex-row-reverse')}>
-          <span className="text-xs font-medium text-gray-900">{replyIsAdmin ? 'You' : reply.authorName}</span>
-          <span className="text-[10px] text-gray-400">
-            {formatDate(reply.createdAt instanceof Date ? reply.createdAt : new Date())}
-          </span>
-        </div>
-        <div className={cn('px-3 py-2 rounded-xl text-sm', replyIsAdmin ? 'bg-primary text-white rounded-tr-sm' : 'bg-gray-100 text-gray-700 rounded-tl-sm')}>
-          <p className="whitespace-pre-wrap">{reply.message}</p>
-        </div>
-      </div>
-    </div>
-  );
+  }).format(d);
 };
 
 // Compact info row component
@@ -129,11 +87,9 @@ const InfoRow: React.FC<{
 export const AdminFeedbackDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { user, userProfile } = useFirebaseAuth();
-  const repliesEndRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
 
   const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const [replies, setReplies] = useState<FeedbackReply[]>([]);
   const [loading, setLoading] = useState(true);
   const [replyText, setReplyText] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -149,7 +105,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
       }
 
       try {
-        const feedbackData = await getFeedbackById(id);
+        const feedbackData = await feedbackService.getById(id);
 
         if (!feedbackData) {
           toast.error('Feedback not found');
@@ -158,10 +114,9 @@ export const AdminFeedbackDetailPage: React.FC = () => {
         }
 
         setFeedback(feedbackData);
-
-        // Mark as read by admin
-        if (feedbackData.hasUnreadUserReply) {
-          await markFeedbackAsReadByAdmin(id);
+        // Pre-fill reply if exists
+        if (feedbackData.adminReply) {
+          setReplyText(feedbackData.adminReply);
         }
       } catch (error) {
         console.error('Error loading feedback:', error);
@@ -174,38 +129,14 @@ export const AdminFeedbackDetailPage: React.FC = () => {
     loadFeedback();
   }, [id, navigate]);
 
-  // Subscribe to replies
-  useEffect(() => {
-    if (!id) return;
-
-    const unsubscribe = subscribeToFeedbackReplies(id, (newReplies) => {
-      setReplies(newReplies);
-    });
-
-    return () => unsubscribe();
-  }, [id]);
-
-  // Scroll to bottom
-  useEffect(() => {
-    repliesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [replies]);
-
   // Handle send reply
   const handleSendReply = useCallback(async () => {
-    if (!id || !user || !userProfile || !replyText.trim()) return;
+    if (!id || !replyText.trim()) return;
 
     setIsSending(true);
     try {
-      await addReply(
-        id,
-        user.uid,
-        'Support Team',
-        'admin',
-        { message: replyText.trim() },
-        user.photoURL || undefined
-      );
-
-      setReplyText('');
+      const updated = await feedbackService.reply(id, replyText.trim());
+      setFeedback(updated);
       toast.success('Reply sent to user');
     } catch (error) {
       console.error('Error sending reply:', error);
@@ -213,7 +144,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
     } finally {
       setIsSending(false);
     }
-  }, [id, user, userProfile, replyText]);
+  }, [id, replyText]);
 
   // Handle status change
   const handleStatusChange = useCallback(
@@ -221,8 +152,8 @@ export const AdminFeedbackDetailPage: React.FC = () => {
       if (!id || !feedback) return;
 
       try {
-        await updateFeedbackStatus(id, newStatus);
-        setFeedback({ ...feedback, status: newStatus });
+        const updated = await feedbackService.updateStatus(id, newStatus);
+        setFeedback(updated);
         toast.success(`Status updated to ${FEEDBACK_STATUS_INFO[newStatus].label}`);
       } catch (error) {
         console.error('Error updating status:', error);
@@ -238,8 +169,8 @@ export const AdminFeedbackDetailPage: React.FC = () => {
       if (!id || !feedback) return;
 
       try {
-        await updateFeedbackPriority(id, newPriority);
-        setFeedback({ ...feedback, priority: newPriority });
+        const updated = await feedbackService.updatePriority(id, newPriority);
+        setFeedback(updated);
         toast.success(`Priority updated to ${FEEDBACK_PRIORITY_INFO[newPriority].label}`);
       } catch (error) {
         console.error('Error updating priority:', error);
@@ -255,7 +186,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
 
     setIsDeleting(true);
     try {
-      await deleteFeedback(id);
+      await feedbackService.delete(id);
       toast.success('Feedback deleted');
       navigate('/admin/feedback');
     } catch (error) {
@@ -338,55 +269,68 @@ export const AdminFeedbackDetailPage: React.FC = () => {
               <p className="text-sm text-gray-700 whitespace-pre-wrap">{feedback.description}</p>
             </div>
 
-            {/* Conversation */}
+            {/* Reply Section */}
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
               <div className="px-4 py-2.5 border-b border-gray-100 bg-gray-50/50">
                 <h2 className="text-sm font-medium text-gray-900 flex items-center gap-1.5">
                   <MessageSquare className="w-4 h-4 text-gray-500" />
-                  Conversation
-                  {replies.length > 0 && <span className="text-xs text-gray-400">({replies.length})</span>}
+                  {feedback.adminReply ? 'Edit Response' : 'Send Response'}
                 </h2>
               </div>
 
-              <div className="p-4 space-y-4 max-h-[280px] overflow-y-auto">
-                {replies.length === 0 ? (
-                  <div className="text-center py-6 text-gray-500">
-                    <MessageSquare className="w-6 h-6 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">No replies yet</p>
+              {/* Current Reply if exists */}
+              {feedback.adminReply && (
+                <div className="p-4 border-b border-gray-100 bg-gray-50/30">
+                  <div className="flex gap-3">
+                    <Avatar className="w-8 h-8 flex-shrink-0 ring-1 ring-primary/30">
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-blue-600 text-white text-xs font-semibold">
+                        <Shield className="w-3.5 h-3.5" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-medium text-gray-900">Current Response</span>
+                        {feedback.repliedAt && (
+                          <span className="text-xs text-gray-400">
+                            {formatDate(feedback.repliedAt)}
+                          </span>
+                        )}
+                      </div>
+                      <div className="px-3 py-2 rounded-xl bg-primary/5 border border-primary/10">
+                        <p className="text-sm text-gray-700 whitespace-pre-wrap">{feedback.adminReply}</p>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  replies.map((reply) => <ReplyBubble key={reply.id} reply={reply} isAdmin={true} />)
-                )}
-                <div ref={repliesEndRef} />
-              </div>
-
-              <Separator />
+                </div>
+              )}
 
               {/* Reply Input */}
-              <div className="p-3">
-                <div className="flex gap-2">
-                  <Avatar className="w-7 h-7 flex-shrink-0 ring-1 ring-primary/30">
-                    <AvatarImage src={user?.photoURL || undefined} />
+              <div className="p-4">
+                <div className="flex gap-3">
+                  <Avatar className="w-8 h-8 flex-shrink-0 ring-1 ring-primary/30">
+                    <AvatarImage src={user?.profilePhoto || undefined} />
                     <AvatarFallback className="bg-gradient-to-br from-primary to-blue-600 text-white text-xs font-semibold">
-                      <Shield className="w-3 h-3" />
+                      <Shield className="w-3.5 h-3.5" />
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 flex gap-2">
+                  <div className="flex-1 space-y-2">
                     <Textarea
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
-                      placeholder="Reply..."
-                      className="min-h-[36px] max-h-[80px] resize-none text-sm"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          handleSendReply();
-                        }
-                      }}
+                      placeholder="Write a response..."
+                      className="min-h-[100px] resize-none text-sm"
                     />
-                    <Button onClick={handleSendReply} disabled={isSending || !replyText.trim()} size="icon" className="h-9 w-9 flex-shrink-0">
-                      {isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                    </Button>
+                    <div className="flex justify-end">
+                      <Button
+                        onClick={handleSendReply}
+                        disabled={isSending || !replyText.trim()}
+                        size="sm"
+                        className="gap-1.5"
+                      >
+                        {isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                        {feedback.adminReply ? 'Update Response' : 'Send Response'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -430,7 +374,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
               <div className="p-3 space-y-3">
                 <div>
                   <label className="text-xs font-medium text-gray-700 mb-1 block">Status</label>
-                  <Select value={feedback.status} onValueChange={handleStatusChange}>
+                  <Select value={feedback.status} onValueChange={(v) => handleStatusChange(v as FeedbackStatus)}>
                     <SelectTrigger className="h-8 text-sm">
                       <SelectValue />
                     </SelectTrigger>
@@ -444,7 +388,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="text-xs font-medium text-gray-700 mb-1 block">Priority</label>
-                  <Select value={feedback.priority} onValueChange={handlePriorityChange}>
+                  <Select value={feedback.priority} onValueChange={(v) => handlePriorityChange(v as FeedbackPriority)}>
                     <SelectTrigger className="h-8 text-sm">
                       <SelectValue />
                     </SelectTrigger>
@@ -464,8 +408,8 @@ export const AdminFeedbackDetailPage: React.FC = () => {
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
               </div>
               <div className="p-3 divide-y divide-gray-100">
-                <InfoRow label="Created" value={formatDate(feedback.createdAt instanceof Date ? feedback.createdAt : new Date())} />
-                <InfoRow label="Replies" value={String(replies.length)} />
+                <InfoRow label="Created" value={formatDate(feedback.createdAt)} />
+                <InfoRow label="Updated" value={formatDate(feedback.updatedAt)} />
               </div>
             </div>
 
@@ -486,7 +430,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete feedback?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This will permanently delete the feedback and all replies.
+                        This will permanently delete the feedback and the response.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

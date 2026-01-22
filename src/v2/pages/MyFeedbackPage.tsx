@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import { subscribeToUserFeedback } from '@/lib/firestore/feedbackService';
+import { useAuth } from '@/contexts/AuthContext';
+import { feedbackService } from '@/services';
 import { cn } from '@/lib/utils';
 import {
   ArrowLeft,
@@ -161,25 +161,31 @@ const StatusTabs: React.FC<{
 
 export const MyFeedbackPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
 
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  // Subscribe to user's feedback
+  // Fetch user's feedback
   useEffect(() => {
     if (!user) {
       setLoading(false);
       return;
     }
 
-    const unsubscribe = subscribeToUserFeedback(user.uid, (feedback) => {
-      setFeedbackList(feedback);
-      setLoading(false);
-    });
+    const fetchFeedback = async () => {
+      try {
+        const response = await feedbackService.getMyFeedback();
+        setFeedbackList(response.feedback);
+      } catch (error) {
+        console.error('Error fetching feedback:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return () => unsubscribe();
+    fetchFeedback();
   }, [user]);
 
   // Calculate counts for each status

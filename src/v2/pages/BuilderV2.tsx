@@ -33,13 +33,12 @@ import {
   Layout,
   Sparkles,
 } from 'lucide-react';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { resumeServiceV2, type V2Resume } from '../services/resumeServiceV2';
 import { profileService } from '../services/profileService';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
-import { incrementDownloadsCount } from '@/lib/firestore/statsService';
 import { PDF_STYLES } from '@/lib/pdfStyles';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
 import { StyleOptionsProvider, updateStyleOptionExternal } from '@/contexts/StyleOptionsContext';
@@ -82,7 +81,7 @@ import { Target } from 'lucide-react';
 
 // Pro Feature Modal
 import { ProFeatureModal } from '../components/ProFeatureModal';
-import { useSubscription } from '@/hooks/useSubscription';
+import { useSubscription } from '@/hooks/useSubscriptionNew';
 
 // ATS Score Panel - Hidden for refinement
 // import { ATSScorePanel } from '../components/ATSScorePanel';
@@ -102,7 +101,7 @@ export const BuilderV2: React.FC = () => {
   const templateId = searchParams.get('template') || 'executive-split-v2';
   const resumeId = searchParams.get('resumeId');
   const templateDefinition = getTemplate(templateId);
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
   const { isPro } = useSubscription();
 
   const initialResumeData = React.useMemo(

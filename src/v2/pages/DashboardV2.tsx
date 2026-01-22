@@ -27,8 +27,8 @@ import { ChatWithResumeIntroModal } from '@/v2/components/ChatWithResumeIntroMod
 import { DashboardTour } from '@/v2/components/DashboardTour';
 import { TrialBanner } from '@/components/TrialBanner';
 // import { ATSCheckerModal } from '@/v2/components/ATSCheckerModal'; // Hidden for refinement
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import { useSubscription } from '@/hooks/useSubscription';
+import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscriptionNew';
 import type { V2ResumeData } from '../types';
 
 interface TailorAnalysis {
@@ -43,7 +43,7 @@ interface TailorAnalysis {
 
 const DashboardV2 = () => {
   const navigate = useNavigate();
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
   const { isPro } = useSubscription();
   const [linkedInModalOpen, setLinkedInModalOpen] = useState(false);
   const [resumeUploadModalOpen, setResumeUploadModalOpen] = useState(false);

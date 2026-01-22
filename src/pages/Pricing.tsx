@@ -13,9 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
-import { useSubscription } from "@/hooks/useSubscription";
-import { useTrial } from "@/hooks/useTrial";
+import { useAuth } from "@/contexts/AuthContext";
+import { useSubscription } from "@/hooks/useSubscriptionNew";
 import { useCountry, type Currency } from "@/hooks/useCountry";
 import { FEATURES as FEATURE_FLAGS } from "@/config/features";
 import { toast } from "sonner";
@@ -102,17 +101,21 @@ const FAQS = [
 const Pricing = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { user, signInWithGoogle } = useFirebaseAuth();
+  const { user, signInWithGoogle } = useAuth();
   const {
     isPro,
     isTrial,
     trialDaysRemaining,
-    initiateSubscription,
-    loading: subscriptionLoading,
-    error: subscriptionError
+    startCheckout,
+    claimTrial,
+    isLoading: subscriptionLoading,
+    isCheckoutLoading,
+    isClaimingTrial,
   } = useSubscription();
-  const { trialStatus, claimTrial, loading: trialLoading } = useTrial();
   const { currency, isIndia, loading: countryLoading } = useCountry();
+  // Simplified trial status - we'll check from subscription hook
+  const trialStatus = { trialsAvailable: !isPro && !isTrial, trialsRemaining: 1000 };
+  const trialLoading = isClaimingTrial;
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [pendingTrialClaim, setPendingTrialClaim] = useState(false);
@@ -146,25 +149,13 @@ const Pricing = () => {
 
   // Auto-claim trial after login if user came from trial banner
   useEffect(() => {
-    const handleTrialClaim = async () => {
-      if (pendingTrialClaim && user && !isPro && !isTrial && trialStatus?.trialsAvailable) {
-        setPendingTrialClaim(false);
-        const success = await claimTrial();
-        if (success) {
-          toast.success("Welcome! Your 21-day Pro trial is now active.");
-          navigate("/dashboard");
-        }
-      }
-    };
-    handleTrialClaim();
-  }, [pendingTrialClaim, user, isPro, isTrial, trialStatus?.trialsAvailable, claimTrial, navigate]);
-
-  // Show error toast when subscription error occurs
-  useEffect(() => {
-    if (subscriptionError) {
-      toast.error(subscriptionError);
+    if (pendingTrialClaim && user && !isPro && !isTrial) {
+      setPendingTrialClaim(false);
+      claimTrial();
+      // Toast and navigation handled by the mutation's onSuccess
+      navigate("/dashboard");
     }
-  }, [subscriptionError]);
+  }, [pendingTrialClaim, user, isPro, isTrial, claimTrial, navigate]);
 
   const handleGetStarted = () => {
     navigate("/templates");
@@ -200,10 +191,10 @@ const Pricing = () => {
     }
 
     // Pass the detected currency to initiate subscription with correct plan
-    await initiateSubscription(currency);
+    await startCheckout(currency);
   };
 
-  const handleClaimTrial = async () => {
+  const handleClaimTrial = () => {
     if (!user) {
       setPendingTrialClaim(true);
       setShowLoginModal(true);
@@ -215,14 +206,12 @@ const Pricing = () => {
       return;
     }
 
-    const success = await claimTrial();
-    if (success) {
-      toast.success("Welcome! Your 21-day Pro trial is now active.");
-      navigate("/dashboard");
-    }
+    claimTrial();
+    // Toast handled by mutation, navigate after claim
+    navigate("/dashboard");
   };
 
-  const isLoading = subscriptionLoading;
+  const isLoading = subscriptionLoading || isCheckoutLoading;
 
   return (
     <div className="min-h-screen bg-white">

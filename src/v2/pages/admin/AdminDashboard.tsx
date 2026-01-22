@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getAdminDashboardStats, getRecentSignups, type UserWithSubscription } from '@/lib/firestore/adminService';
-import { getAllFeedback } from '@/lib/firestore/feedbackService';
+import { adminService, feedbackService } from '@/services';
+import type { DashboardStats, AdminUser } from '@/services/adminService';
 import { cn } from '@/lib/utils';
 import {
   Users,
@@ -30,7 +30,6 @@ import {
   BarChart3,
   Activity,
 } from 'lucide-react';
-import type { AdminDashboardStats } from '@/types/feedback';
 import type { Feedback } from '@/types/feedback';
 import { FEEDBACK_STATUS_INFO, FEEDBACK_TYPE_INFO } from '@/types/feedback';
 
@@ -121,19 +120,20 @@ const RecentFeedbackItem: React.FC<{
 
 // Compact recent user item
 const RecentUserItem: React.FC<{
-  user: UserWithSubscription;
+  user: AdminUser;
 }> = ({ user }) => {
   const getSubscriptionBadge = () => {
-    if (user.subscriptionStatus === 'active') {
+    if (user.subscription?.status === 'active') {
       return <Badge className="text-[10px] bg-primary text-white border-0">Pro</Badge>;
     }
-    if (user.subscriptionStatus === 'trialing') {
+    if (user.subscription?.status === 'trialing') {
       return <Badge className="text-[10px] bg-amber-100 text-amber-700">Trial</Badge>;
     }
     return <Badge className="text-[10px] bg-gray-100 text-gray-600">Free</Badge>;
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -165,23 +165,23 @@ const RecentUserItem: React.FC<{
 export const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
 
-  const [stats, setStats] = useState<AdminDashboardStats | null>(null);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentFeedback, setRecentFeedback] = useState<Feedback[]>([]);
-  const [recentUsers, setRecentUsers] = useState<UserWithSubscription[]>([]);
+  const [recentUsers, setRecentUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [dashboardStats, feedbackList, userList] = await Promise.all([
-          getAdminDashboardStats(),
-          getAllFeedback(),
-          getRecentSignups(7),
+        const [dashboardStats, feedbackResponse, usersResponse] = await Promise.all([
+          adminService.getDashboardStats(),
+          feedbackService.getAllFeedback(1, 5),
+          adminService.getUsers(1, 5, { sortBy: 'createdAt', sortOrder: 'desc' }),
         ]);
 
         setStats(dashboardStats);
-        setRecentFeedback(feedbackList.slice(0, 5));
-        setRecentUsers(userList.slice(0, 5));
+        setRecentFeedback(feedbackResponse.feedback);
+        setRecentUsers(usersResponse.users);
       } catch (error) {
         console.error('Error loading admin data:', error);
       } finally {
@@ -203,8 +203,8 @@ export const AdminDashboard: React.FC = () => {
     );
   }
 
-  const openFeedbackCount = stats?.feedbackStats.open || 0;
-  const inProgressCount = stats?.feedbackStats.inProgress || 0;
+  const openFeedbackCount = stats?.feedback.open || 0;
+  const inProgressCount = stats?.feedback.inProgress || 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -223,23 +223,23 @@ export const AdminDashboard: React.FC = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
           <StatsCard
             title="Total Users"
-            value={stats?.totalUsers || 0}
-            subtitle={`+${stats?.recentSignups || 0} this week`}
+            value={stats?.users.total || 0}
+            subtitle={`+${stats?.users.newThisWeek || 0} this week`}
             icon={<Users className="w-4 h-4" />}
             color="blue"
             onClick={() => navigate('/admin/users')}
           />
           <StatsCard
             title="Pro Users"
-            value={stats?.proUsers || 0}
-            subtitle={`${stats?.trialUsers || 0} trial`}
+            value={stats?.users.activeSubscriptions || 0}
+            subtitle={`${stats?.users.trialUsers || 0} trial`}
             icon={<Crown className="w-4 h-4" />}
             color="purple"
             onClick={() => navigate('/admin/users?filter=pro')}
           />
           <StatsCard
-            title="Downloads"
-            value={stats?.totalDownloads || 0}
+            title="Total Resumes"
+            value={stats?.resumes.total || 0}
             icon={<Download className="w-4 h-4" />}
             color="green"
           />
@@ -314,7 +314,7 @@ export const AdminDashboard: React.FC = () => {
                   <UserPlus className="w-4 h-4 text-gray-500" />
                   Recent Signups
                 </h2>
-                <Badge className="text-[10px] bg-green-100 text-green-700">+{stats?.recentSignups || 0}</Badge>
+                <Badge className="text-[10px] bg-green-100 text-green-700">+{stats?.users.newThisWeek || 0}</Badge>
               </div>
               <div className="divide-y divide-gray-100">
                 {recentUsers.length === 0 ? (
@@ -341,21 +341,21 @@ export const AdminDashboard: React.FC = () => {
                     <AlertCircle className="w-3.5 h-3.5 text-blue-600" />
                     <span className="text-xs text-gray-600">Open</span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-900">{stats?.feedbackStats.open || 0}</span>
+                  <span className="text-sm font-semibold text-gray-900">{stats?.feedback.open || 0}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-amber-600" />
                     <span className="text-xs text-gray-600">In Progress</span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-900">{stats?.feedbackStats.inProgress || 0}</span>
+                  <span className="text-sm font-semibold text-gray-900">{stats?.feedback.inProgress || 0}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
                     <span className="text-xs text-gray-600">Resolved</span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-900">{stats?.feedbackStats.resolved || 0}</span>
+                  <span className="text-sm font-semibold text-gray-900">{stats?.feedback.resolved || 0}</span>
                 </div>
               </div>
             </div>

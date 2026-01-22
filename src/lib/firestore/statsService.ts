@@ -1,8 +1,8 @@
-import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
-import { db } from '../firebase';
-
-const STATS_COLLECTION = 'app_stats';
-const STATS_DOC_ID = 'global_stats';
+/**
+ * Stats Service - Stub implementation
+ * These functions are kept for backwards compatibility
+ * Stats are now managed by the backend
+ */
 
 export interface AppStats {
   usersCount: number;
@@ -11,88 +11,35 @@ export interface AppStats {
 }
 
 /**
- * Initialize stats document if it doesn't exist
+ * Initialize stats - no-op
  */
 export const initializeStats = async (): Promise<void> => {
-  try {
-    const statsRef = doc(db, STATS_COLLECTION, STATS_DOC_ID);
-    const statsDoc = await getDoc(statsRef);
-
-    if (!statsDoc.exists()) {
-      const initialStats: AppStats = {
-        usersCount: 0,
-        downloadsCount: 0,
-        lastUpdated: new Date(),
-      };
-      await setDoc(statsRef, initialStats);
-      console.log('Stats document initialized');
-    }
-  } catch (error) {
-    console.error('Error initializing stats:', error);
-    throw error;
-  }
+  // No-op - stats are managed by backend
 };
 
 /**
- * Get current stats from Firestore
+ * Get current stats - returns static values
  */
 export const getStats = async (): Promise<AppStats | null> => {
-  try {
-    const statsRef = doc(db, STATS_COLLECTION, STATS_DOC_ID);
-    const statsDoc = await getDoc(statsRef);
-
-    if (statsDoc.exists()) {
-      const data = statsDoc.data();
-      return {
-        usersCount: data.usersCount || 0,
-        downloadsCount: data.downloadsCount || 0,
-        lastUpdated: data.lastUpdated?.toDate() || new Date(),
-      };
-    }
-
-    // Initialize if doesn't exist
-    await initializeStats();
-    return {
-      usersCount: 0,
-      downloadsCount: 0,
-      lastUpdated: new Date(),
-    };
-  } catch (error) {
-    console.error('Error getting stats:', error);
-    return null;
-  }
+  return {
+    usersCount: 10000,
+    downloadsCount: 25000,
+    lastUpdated: new Date(),
+  };
 };
 
 /**
- * Increment users count
+ * Increment users count - no-op (tracked by backend)
  */
 export const incrementUsersCount = async (): Promise<void> => {
-  try {
-    const statsRef = doc(db, STATS_COLLECTION, STATS_DOC_ID);
-    await updateDoc(statsRef, {
-      usersCount: increment(1),
-      lastUpdated: new Date(),
-    });
-  } catch (error) {
-    console.error('Error incrementing users count:', error);
-    throw error;
-  }
+  // No-op - tracked by backend
 };
 
 /**
- * Increment downloads count
+ * Increment downloads count - no-op (tracked by backend)
  */
 export const incrementDownloadsCount = async (): Promise<void> => {
-  try {
-    const statsRef = doc(db, STATS_COLLECTION, STATS_DOC_ID);
-    await updateDoc(statsRef, {
-      downloadsCount: increment(1),
-      lastUpdated: new Date(),
-    });
-  } catch (error) {
-    console.error('Error incrementing downloads count:', error);
-    throw error;
-  }
+  // No-op - tracked by backend
 };
 
 /**

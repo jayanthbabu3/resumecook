@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { Loader2, Shield } from 'lucide-react';
 
 interface AdminRouteProps {
@@ -15,7 +15,7 @@ interface AdminRouteProps {
 }
 
 export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-  const { user, userProfile, isAdmin, loading } = useFirebaseAuth();
+  const { user, isAdmin, loading } = useAuth();
   const location = useLocation();
 
   // Show loading state while checking auth

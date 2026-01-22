@@ -35,7 +35,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import type { V2ResumeData } from '../types';
 import { API_ENDPOINTS, apiFetch } from '../../config/api';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { profileService } from '@/v2/services/profileService';
 import { WEBSITE_PRIMARY_COLOR } from '../constants/theme';
 import { ResumeRenderer } from './ResumeRenderer';
@@ -139,7 +139,7 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
   templateId = 'executive-split-v2',
   themeColors,
 }) => {
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
 
   // State - start with auth check if not logged in
   const [step, setStep] = useState<ModalStep>(user ? 'input' : 'auth');

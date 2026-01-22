@@ -1,22 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
-import { resumeService } from '@/lib/firestore/resumeService';
-import { useFirebaseAuth } from './useFirebaseAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { USER_LIMITS } from '@/config/limits';
 
+const FAVORITES_STORAGE_KEY = 'resumecook_favorite_templates';
+
 /**
  * Custom hook for managing favorite templates
- * Provides real-time favorite state and toggle functionality
+ * Uses localStorage for persistence (favorites API to be added later)
  */
 export const useFavoriteTemplates = () => {
-  const { user } = useFirebaseAuth();
+  const { user } = useAuth();
   const [favorites, setFavorites] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState<Record<string, boolean>>({});
 
-  // Load favorites when user changes
+  // Load favorites from localStorage
   useEffect(() => {
-    const loadFavorites = async () => {
+    const loadFavorites = () => {
       if (!user) {
         setFavorites([]);
         setLoading(false);
@@ -24,9 +25,12 @@ export const useFavoriteTemplates = () => {
       }
 
       try {
-        setLoading(true);
-        const favoriteIds = await resumeService.getFavoriteTemplates();
-        setFavorites(favoriteIds);
+        const stored = localStorage.getItem(`${FAVORITES_STORAGE_KEY}_${user.id}`);
+        if (stored) {
+          setFavorites(JSON.parse(stored));
+        } else {
+          setFavorites([]);
+        }
       } catch (error) {
         console.error('Error loading favorites:', error);
         setFavorites([]);
@@ -36,6 +40,16 @@ export const useFavoriteTemplates = () => {
     };
 
     loadFavorites();
+  }, [user]);
+
+  // Save favorites to localStorage
+  const saveFavorites = useCallback((newFavorites: string[]) => {
+    if (!user) return;
+    try {
+      localStorage.setItem(`${FAVORITES_STORAGE_KEY}_${user.id}`, JSON.stringify(newFavorites));
+    } catch (error) {
+      console.error('Error saving favorites:', error);
+    }
   }, [user]);
 
   /**
@@ -53,17 +67,12 @@ export const useFavoriteTemplates = () => {
    */
   const toggleFavorite = useCallback(
     async (templateId: string) => {
-      console.log('[Favorites] Toggle favorite clicked for:', templateId);
-      console.log('[Favorites] User authenticated:', !!user);
-
       if (!user) {
         toast.error('Please sign in to save favorites');
         return;
       }
 
-      // Prevent multiple simultaneous toggles
       if (toggling[templateId]) {
-        console.log('[Favorites] Toggle already in progress, skipping');
         return;
       }
 
@@ -71,45 +80,27 @@ export const useFavoriteTemplates = () => {
         setToggling(prev => ({ ...prev, [templateId]: true }));
 
         const wasFavorited = favorites.includes(templateId);
-        console.log('[Favorites] Current favorite status:', wasFavorited ? 'favorited' : 'not favorited');
 
         // Check limit before adding
         if (!wasFavorited && favorites.length >= USER_LIMITS.MAX_FAVORITES) {
-          toast.error(`You can only have up to ${USER_LIMITS.MAX_FAVORITES} favorite templates. Please remove a favorite to add a new one.`);
-          setToggling(prev => ({ ...prev, [templateId]: false }));
+          toast.error(`You can only have up to ${USER_LIMITS.MAX_FAVORITES} favorite templates.`);
           return;
         }
 
-        // Optimistically update UI
+        let newFavorites: string[];
         if (wasFavorited) {
-          setFavorites(prev => prev.filter(id => id !== templateId));
+          newFavorites = favorites.filter(id => id !== templateId);
         } else {
-          setFavorites(prev => [...prev, templateId]);
+          newFavorites = [...favorites, templateId];
         }
 
-        // Update in Firestore
-        console.log('[Favorites] Updating Firestore...');
-        if (wasFavorited) {
-          await resumeService.removeFavoriteTemplate(templateId);
-        } else {
-          await resumeService.addFavoriteTemplate(templateId);
-        }
-        console.log('[Favorites] Firestore update successful');
-      } catch (error) {
-        console.error('[Favorites] Error toggling favorite:', error);
-        toast.error('Failed to update favorites. Please try again.');
-        // Revert optimistic update on error
-        try {
-          const currentFavorites = await resumeService.getFavoriteTemplates();
-          setFavorites(currentFavorites);
-        } catch (revertError) {
-          console.error('[Favorites] Error reverting favorites:', revertError);
-        }
+        setFavorites(newFavorites);
+        saveFavorites(newFavorites);
       } finally {
         setToggling(prev => ({ ...prev, [templateId]: false }));
       }
     },
-    [user, favorites, toggling]
+    [user, favorites, toggling, saveFavorites]
   );
 
   /**
@@ -126,30 +117,16 @@ export const useFavoriteTemplates = () => {
         return;
       }
 
-      // Check limit before adding
       if (favorites.length >= USER_LIMITS.MAX_FAVORITES) {
-        toast.error(`You can only have up to ${USER_LIMITS.MAX_FAVORITES} favorite templates. Please remove a favorite to add a new one.`);
+        toast.error(`You can only have up to ${USER_LIMITS.MAX_FAVORITES} favorite templates.`);
         return;
       }
 
-      try {
-        setToggling(prev => ({ ...prev, [templateId]: true }));
-        setFavorites(prev => [...prev, templateId]);
-        await resumeService.addFavoriteTemplate(templateId);
-      } catch (error) {
-        console.error('[Favorites] Error adding favorite:', error);
-        toast.error('Failed to add to favorites');
-        try {
-          const currentFavorites = await resumeService.getFavoriteTemplates();
-          setFavorites(currentFavorites);
-        } catch (revertError) {
-          console.error('[Favorites] Error reverting:', revertError);
-        }
-      } finally {
-        setToggling(prev => ({ ...prev, [templateId]: false }));
-      }
+      const newFavorites = [...favorites, templateId];
+      setFavorites(newFavorites);
+      saveFavorites(newFavorites);
     },
-    [user, favorites]
+    [user, favorites, saveFavorites]
   );
 
   /**
@@ -166,41 +143,24 @@ export const useFavoriteTemplates = () => {
         return;
       }
 
-      try {
-        setToggling(prev => ({ ...prev, [templateId]: true }));
-        setFavorites(prev => prev.filter(id => id !== templateId));
-        await resumeService.removeFavoriteTemplate(templateId);
-      } catch (error) {
-        console.error('[Favorites] Error removing favorite:', error);
-        toast.error('Failed to remove from favorites');
-        try {
-          const currentFavorites = await resumeService.getFavoriteTemplates();
-          setFavorites(currentFavorites);
-        } catch (revertError) {
-          console.error('[Favorites] Error reverting:', revertError);
-        }
-      } finally {
-        setToggling(prev => ({ ...prev, [templateId]: false }));
-      }
+      const newFavorites = favorites.filter(id => id !== templateId);
+      setFavorites(newFavorites);
+      saveFavorites(newFavorites);
     },
-    [user, favorites]
+    [user, favorites, saveFavorites]
   );
 
   /**
-   * Refresh favorites from Firestore
+   * Refresh favorites
    */
   const refreshFavorites = useCallback(async () => {
     if (!user) return;
-
-    try {
-      const favoriteIds = await resumeService.getFavoriteTemplates();
-      setFavorites(favoriteIds);
-    } catch (error) {
-      console.error('Error refreshing favorites:', error);
+    const stored = localStorage.getItem(`${FAVORITES_STORAGE_KEY}_${user.id}`);
+    if (stored) {
+      setFavorites(JSON.parse(stored));
     }
   }, [user]);
 
-  // Check if user can add more favorites
   const canAddFavorite = favorites.length < USER_LIMITS.MAX_FAVORITES;
   const favoritesLimit = USER_LIMITS.MAX_FAVORITES;
   const favoritesCount = favorites.length;
@@ -214,7 +174,6 @@ export const useFavoriteTemplates = () => {
     addFavorite,
     removeFavorite,
     refreshFavorites,
-    // Limit info
     canAddFavorite,
     favoritesLimit,
     favoritesCount,
