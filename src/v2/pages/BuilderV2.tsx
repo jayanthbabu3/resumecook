@@ -2891,8 +2891,36 @@ export const BuilderV2: React.FC = () => {
                 <ResumeAnimationProvider>
                   <ChatWithResume
                     resumeData={resumeData}
-                    sectionVariants={currentSectionVariants}
-                    onResumeUpdate={handleChatResumeUpdate}
+                    config={config as Record<string, unknown>}
+                    sectionOverrides={sectionOverrides}
+                    enabledSections={enabledSections}
+                    sectionLabels={sectionLabels}
+                    onResumeDataUpdate={(data) => {
+                      setResumeData(data);
+                      setHasUnsavedChanges(true);
+                    }}
+                    onConfigUpdate={(newConfig) => {
+                      // Handle theme color changes
+                      if (newConfig.colors) {
+                        setThemeColors(prev => ({
+                          ...prev,
+                          ...(newConfig.colors as Record<string, string>)
+                        }));
+                      }
+                      setHasUnsavedChanges(true);
+                    }}
+                    onSectionOverridesUpdate={(overrides) => {
+                      setSectionOverrides(overrides);
+                      setHasUnsavedChanges(true);
+                    }}
+                    onEnabledSectionsUpdate={(sections) => {
+                      setEnabledSections(sections);
+                      setHasUnsavedChanges(true);
+                    }}
+                    onSectionLabelsUpdate={(labels) => {
+                      setSectionLabels(labels);
+                      setHasUnsavedChanges(true);
+                    }}
                     onHighlightSections={(sections) => {
                       // Add a visual pulse to the resume preview when sections are updated
                       const previewElement = document.getElementById('resume-preview-v2');
@@ -2927,8 +2955,36 @@ export const BuilderV2: React.FC = () => {
                   <ResumeAnimationProvider>
                     <ChatWithResume
                       resumeData={resumeData}
-                      sectionVariants={currentSectionVariants}
-                      onResumeUpdate={handleChatResumeUpdate}
+                      config={config as Record<string, unknown>}
+                      sectionOverrides={sectionOverrides}
+                      enabledSections={enabledSections}
+                      sectionLabels={sectionLabels}
+                      onResumeDataUpdate={(data) => {
+                        setResumeData(data);
+                        setHasUnsavedChanges(true);
+                      }}
+                      onConfigUpdate={(newConfig) => {
+                        // Handle theme color changes
+                        if (newConfig.colors) {
+                          setThemeColors(prev => ({
+                            ...prev,
+                            ...(newConfig.colors as Record<string, string>)
+                          }));
+                        }
+                        setHasUnsavedChanges(true);
+                      }}
+                      onSectionOverridesUpdate={(overrides) => {
+                        setSectionOverrides(overrides);
+                        setHasUnsavedChanges(true);
+                      }}
+                      onEnabledSectionsUpdate={(sections) => {
+                        setEnabledSections(sections);
+                        setHasUnsavedChanges(true);
+                      }}
+                      onSectionLabelsUpdate={(labels) => {
+                        setSectionLabels(labels);
+                        setHasUnsavedChanges(true);
+                      }}
                       onHighlightSections={(sections) => {
                         const previewElement = document.getElementById('resume-preview-v2-mobile');
                         if (previewElement && sections.length > 0) {

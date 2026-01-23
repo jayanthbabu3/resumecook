@@ -31,11 +31,12 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ChatMessage, ChatResumeUpdatePayload, DEFAULT_QUICK_ACTIONS } from '../types/chat';
+import { ChatMessage, DEFAULT_QUICK_ACTIONS } from '../types/chat';
 import { V2ResumeData } from '../types/resumeData';
-import { useChatWithResume } from '../hooks/useChatWithResume';
+import { useChatWithResumeV2 } from '../hooks/useChatWithResumeV2';
 import { useVoiceInput } from '../hooks/useVoiceInput';
-import { formatSectionName, SectionVariantsMap } from '../services/chatService';
+import { formatSectionName } from '../services/chatServiceV2';
+import type { SectionOverride } from '../services/actionExecutor';
 import { useResumeHistory } from '../hooks/useResumeHistory';
 import { VoiceInputBar } from './VoiceInputBar';
 import ReactMarkdown from 'react-markdown';
@@ -45,10 +46,25 @@ import { ProFeatureModal } from './ProFeatureModal';
 
 interface ChatWithResumeProps {
   resumeData: V2ResumeData;
-  /** Current section variants for context (e.g., {skills: 'pills', experience: 'timeline'}) */
-  sectionVariants?: SectionVariantsMap;
-  /** Callback when resume is updated - includes section info for selective enabling */
-  onResumeUpdate: (payload: ChatResumeUpdatePayload) => void;
+  /** Current resume config */
+  config: Record<string, unknown>;
+  /** Current section overrides (variants, columns, order) */
+  sectionOverrides: Record<string, SectionOverride>;
+  /** Currently enabled sections */
+  enabledSections: string[];
+  /** Custom section labels/titles */
+  sectionLabels: Record<string, string>;
+  /** Callback when resume data is updated */
+  onResumeDataUpdate: (data: V2ResumeData) => void;
+  /** Callback when config is updated */
+  onConfigUpdate: (config: Record<string, unknown>) => void;
+  /** Callback when section overrides are updated */
+  onSectionOverridesUpdate: (overrides: Record<string, SectionOverride>) => void;
+  /** Callback when enabled sections are updated */
+  onEnabledSectionsUpdate: (sections: string[]) => void;
+  /** Callback when section labels are updated */
+  onSectionLabelsUpdate: (labels: Record<string, string>) => void;
+  /** Callback to highlight sections */
   onHighlightSections?: (sections: string[]) => void;
   className?: string;
   /** When true, renders as a side panel instead of floating button */
@@ -59,8 +75,15 @@ interface ChatWithResumeProps {
 
 export function ChatWithResume({
   resumeData,
-  sectionVariants,
-  onResumeUpdate,
+  config,
+  sectionOverrides,
+  enabledSections,
+  sectionLabels,
+  onResumeDataUpdate,
+  onConfigUpdate,
+  onSectionOverridesUpdate,
+  onEnabledSectionsUpdate,
+  onSectionLabelsUpdate,
   onHighlightSections,
   className,
   mode = 'floating',
@@ -89,44 +112,31 @@ export function ChatWithResume({
     maxHistory: 50,
   });
 
-  // Wrap onResumeUpdate to track history
-  const handleResumeUpdate = useCallback(
-    (payload: ChatResumeUpdatePayload) => {
-      // Only track if there are actual updates
-      if (payload.updatedSections && payload.updatedSections.length > 0) {
-        const label = payload.updatedSections.length === 1
-          ? `Update ${formatSectionName(payload.updatedSections[0])}`
-          : `Update ${payload.updatedSections.length} sections`;
-        pushState(payload.data, label);
-      }
-      onResumeUpdate(payload);
+  // Wrap onResumeDataUpdate to track history
+  const handleResumeDataUpdate = useCallback(
+    (data: V2ResumeData) => {
+      // Track in history with generic label (will be updated when we have section info)
+      pushState(data, 'Update resume');
+      onResumeDataUpdate(data);
     },
-    [onResumeUpdate, pushState]
+    [onResumeDataUpdate, pushState]
   );
 
   // Handle undo action
   const handleUndo = useCallback(() => {
     const previousData = undo();
     if (previousData) {
-      onResumeUpdate({
-        data: previousData,
-        updatedSections: [],
-        updates: {},
-      });
+      onResumeDataUpdate(previousData);
     }
-  }, [undo, onResumeUpdate]);
+  }, [undo, onResumeDataUpdate]);
 
   // Handle redo action
   const handleRedo = useCallback(() => {
     const restoredData = redo();
     if (restoredData) {
-      onResumeUpdate({
-        data: restoredData,
-        updatedSections: [],
-        updates: {},
-      });
+      onResumeDataUpdate(restoredData);
     }
-  }, [redo, onResumeUpdate]);
+  }, [redo, onResumeDataUpdate]);
 
   const {
     messages,
@@ -134,18 +144,27 @@ export function ChatWithResume({
     isOpen,
     suggestedQuestions,
     highlightedSections,
-    isStreamingResume,
     sendMessage,
     clearChat: clearChatMessages,
     toggleChat,
     closeChat,
     openChat,
-  } = useChatWithResume({
+  } = useChatWithResumeV2({
     resumeData,
-    sectionVariants,
-    onResumeUpdate: handleResumeUpdate,
+    config,
+    sectionOverrides,
+    enabledSections,
+    sectionLabels,
+    onResumeDataUpdate: handleResumeDataUpdate,
+    onConfigUpdate,
+    onSectionOverridesUpdate,
+    onEnabledSectionsUpdate,
+    onSectionLabelsUpdate,
     onHighlightSections,
   });
+
+  // V2 doesn't use streaming - actions are applied instantly
+  const isStreamingResume = false;
 
   // Clear chat and history together
   const clearChat = useCallback(() => {

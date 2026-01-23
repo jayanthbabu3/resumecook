@@ -27,6 +27,7 @@ import { parseResumeRouter } from './routes/parse-resume.js';
 import { generateResumeRouter } from './routes/generate-resume-from-job.js';
 import { tailorResumeRouter } from './routes/tailor-resume-for-job.js';
 import { chatRouter } from './routes/chat-with-resume.js';
+import { chatRouterV2 } from './routes/chat-with-resume-v2.js';
 import { generatePdfRouter } from './routes/generate-pdf.js';
 import { atsScoreRouter } from './routes/ats-score.js';
 import { razorpayRouter } from './routes/razorpay.js';
@@ -125,6 +126,7 @@ app.use('/api/parse-resume', aiLimiter, parseResumeRouter);
 app.use('/api/generate-resume-from-job', aiLimiter, generateResumeRouter);
 app.use('/api/tailor-resume-for-job', aiLimiter, tailorResumeRouter);
 app.use('/api/chat-with-resume', aiLimiter, chatRouter);
+app.use('/api/ai/chat', aiLimiter, chatRouterV2); // V2 Action-based chat
 
 // PDF Generation (resource intensive, separate rate limit)
 app.use('/api/generate-pdf', pdfLimiter, generatePdfRouter);
