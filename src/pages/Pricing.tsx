@@ -166,7 +166,8 @@ const Pricing = () => {
     try {
       await signInWithGoogle();
       setShowLoginModal(false);
-      // If pending trial claim, don't show generic success - the trial claim effect will handle it
+      // If pending trial claim, the useEffect will handle trial claim and navigation
+      // Otherwise, just stay on pricing page for the user to continue
       if (!pendingTrialClaim) {
         toast.success("Signed in successfully! You can now upgrade to Pro.");
       }

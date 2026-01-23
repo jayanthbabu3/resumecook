@@ -68,11 +68,11 @@ const WELCOME_MESSAGE_V2: ChatMessage = {
   role: 'assistant',
   content: `Hi! 👋 I'm your resume assistant. I can help you:
 
-• **Add or remove** skills, experience, education, and more
-• **Show or hide** sections on your resume
-• **Change styles** - try "show skills as pills" or "use timeline for experience"
-• **Update your info** - title, summary, contact details
-• **Improve content** - "improve my bullet points"
+- **Add or remove** skills, experience, education, and more
+- **Show or hide** sections on your resume
+- **Change styles** - try "show skills as pills" or "use timeline for experience"
+- **Update your info** - title, summary, contact details
+- **Improve content** - "improve my bullet points"
 
 Just tell me what you'd like to change!`,
   timestamp: new Date(),

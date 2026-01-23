@@ -2,21 +2,28 @@
  * Voice Input Bar Component
  *
  * ChatGPT-style voice recording input with:
- * - Pill-shaped container
- * - Real-time audio waveform visualization
- * - Cancel (X) and Submit (checkmark) buttons
- * - Visual feedback showing transcribed text
+ * - Smooth animated waveform visualization
+ * - Real-time audio level feedback
+ * - Elegant transitions and animations
+ * - Cancel and Confirm actions
+ * - Transcript preview with interim results
  */
 
-import React, { useEffect, useRef, useState } from 'react';
-import { X, Check, Mic } from 'lucide-react';
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import { X, Check, Mic, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface VoiceInputBarProps {
   /** Whether currently recording */
   isRecording: boolean;
-  /** Current transcript text */
+  /** Whether connected to speech service */
+  isConnected?: boolean;
+  /** Current transcript text (final) */
   transcript?: string;
+  /** Interim (in-progress) transcript */
+  interimTranscript?: string;
+  /** Audio level for visualization (0-1) */
+  audioLevel?: number;
   /** Called when user cancels recording */
   onCancel: () => void;
   /** Called when user confirms the recording */
@@ -26,307 +33,301 @@ interface VoiceInputBarProps {
 }
 
 // Number of bars in the waveform
-const BAR_COUNT = 32;
-// Smoothing factor for audio levels (0-1, higher = smoother)
-const SMOOTHING = 0.7;
+const BAR_COUNT = 40;
+
+// Waveform colors - vibrant gradient
+const COLORS = {
+  idle: { h: 220, s: 85, l: 55 },      // Blue
+  active: { h: 260, s: 85, l: 60 },     // Purple/Violet
+  peak: { h: 280, s: 90, l: 65 },       // Magenta
+};
 
 export function VoiceInputBar({
   isRecording,
+  isConnected = false,
   transcript,
+  interimTranscript,
+  audioLevel = 0,
   onCancel,
   onConfirm,
   className,
 }: VoiceInputBarProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const previousLevelsRef = useRef<number[]>(new Array(BAR_COUNT).fill(0));
-  const [audioLevel, setAudioLevel] = useState(0);
+  const barsRef = useRef<number[]>(new Array(BAR_COUNT).fill(0));
+  const targetBarsRef = useRef<number[]>(new Array(BAR_COUNT).fill(0));
+  const phaseRef = useRef(0);
+  const audioLevelRef = useRef(0);
 
-  // Cleanup function
-  const cleanup = () => {
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
+  // Memoize display transcript
+  const displayTranscript = useMemo(() => {
+    if (transcript && interimTranscript) {
+      return { final: transcript, interim: interimTranscript };
     }
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-    if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-      audioContextRef.current.close().catch(() => {});
-      audioContextRef.current = null;
-    }
-    analyserRef.current = null;
-    previousLevelsRef.current = new Array(BAR_COUNT).fill(0);
-  };
+    return { final: transcript || '', interim: interimTranscript || '' };
+  }, [transcript, interimTranscript]);
 
-  // Setup audio visualization
+  const hasTranscript = (displayTranscript.final + displayTranscript.interim).trim().length > 0;
+
+  // Update audio level ref
   useEffect(() => {
-    if (!isRecording) {
-      cleanup();
-      return;
+    audioLevelRef.current = audioLevel;
+  }, [audioLevel]);
+
+  // Generate target bar heights based on audio level
+  const updateTargetBars = useCallback(() => {
+    const level = audioLevelRef.current;
+    const normalizedLevel = Math.min(1, level * 4); // Amplify for visibility
+
+    for (let i = 0; i < BAR_COUNT; i++) {
+      // Create organic wave pattern
+      const centerOffset = Math.abs(i - BAR_COUNT / 2) / (BAR_COUNT / 2);
+      const wavePhase = phaseRef.current + i * 0.15;
+
+      // Multiple sine waves for organic feel
+      const wave1 = Math.sin(wavePhase) * 0.3;
+      const wave2 = Math.sin(wavePhase * 1.7 + 0.5) * 0.2;
+      const wave3 = Math.sin(wavePhase * 0.6 + 1) * 0.15;
+
+      // Combine waves with audio level
+      const baseHeight = 0.15 + (wave1 + wave2 + wave3 + 0.65) * 0.5;
+      const audioInfluence = normalizedLevel * (1 - centerOffset * 0.3);
+
+      // More responsive to audio
+      const targetHeight = baseHeight * (0.3 + audioInfluence * 0.7);
+
+      targetBarsRef.current[i] = Math.max(0.1, Math.min(1, targetHeight));
     }
 
-    // Start audio visualization
-    const setupAudio = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
-          }
-        });
-        streamRef.current = stream;
+    phaseRef.current += 0.08;
+  }, []);
 
-        const audioContext = new AudioContext();
-        audioContextRef.current = audioContext;
-
-        const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 256;
-        analyser.smoothingTimeConstant = SMOOTHING;
-        analyserRef.current = analyser;
-
-        const source = audioContext.createMediaStreamSource(stream);
-        source.connect(analyser);
-
-        // Start animation
-        drawWaveform();
-      } catch (err) {
-        console.warn('Failed to access microphone for visualization:', err);
-        // Fallback to simple animation if mic access fails
-        drawSimpleWaveform();
-      }
-    };
-
-    setupAudio();
-
-    return cleanup;
-  }, [isRecording]);
-
-  // Draw real audio waveform with frequency data
-  const drawWaveform = () => {
-    const canvas = canvasRef.current;
-    const analyser = analyserRef.current;
-    if (!canvas || !analyser) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const draw = () => {
-      if (!isRecording || !analyserRef.current) return;
-      animationRef.current = requestAnimationFrame(draw);
-
-      analyser.getByteFrequencyData(dataArray);
-
-      const width = canvas.width;
-      const height = canvas.height;
-      const barWidth = 3;
-      const gap = 3;
-      const totalWidth = BAR_COUNT * (barWidth + gap) - gap;
-      const startX = (width - totalWidth) / 2;
-      const centerY = height / 2;
-
-      ctx.clearRect(0, 0, width, height);
-
-      // Calculate average audio level for overall feedback
-      let sum = 0;
-      for (let i = 0; i < bufferLength; i++) {
-        sum += dataArray[i];
-      }
-      const avgLevel = sum / bufferLength / 255;
-      setAudioLevel(avgLevel);
-
-      // Draw bars symmetrically from center
-      for (let i = 0; i < BAR_COUNT; i++) {
-        // Map bar index to frequency bin (focus on voice frequencies)
-        const frequencyIndex = Math.floor((i / BAR_COUNT) * (bufferLength * 0.7)) + Math.floor(bufferLength * 0.1);
-        const value = dataArray[frequencyIndex] || 0;
-
-        // Smooth the transitions
-        const normalizedValue = value / 255;
-        const prevLevel = previousLevelsRef.current[i];
-        const smoothedValue = prevLevel * 0.6 + normalizedValue * 0.4;
-        previousLevelsRef.current[i] = smoothedValue;
-
-        // Calculate bar height with minimum
-        const minHeight = 4;
-        const maxHeight = height * 0.85;
-        const barHeight = Math.max(minHeight, smoothedValue * maxHeight);
-
-        const x = startX + i * (barWidth + gap);
-
-        // Color based on audio level - more vibrant when speaking
-        const intensity = Math.min(1, smoothedValue * 2);
-        const hue = 220 - intensity * 20; // Blue to slightly purple
-        const saturation = 70 + intensity * 30;
-        const lightness = 45 + intensity * 15;
-
-        ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-
-        // Draw rounded bar centered vertically
-        ctx.beginPath();
-        ctx.roundRect(x, centerY - barHeight / 2, barWidth, barHeight, barWidth / 2);
-        ctx.fill();
-      }
-    };
-
-    draw();
-  };
-
-  // Simple animated waveform (fallback when mic access fails)
-  const drawSimpleWaveform = () => {
+  // Smooth animation loop
+  const animate = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let phase = 0;
+    // Update target bars
+    updateTargetBars();
 
-    const draw = () => {
-      if (!isRecording) return;
-      animationRef.current = requestAnimationFrame(draw);
+    // Smooth interpolation
+    for (let i = 0; i < BAR_COUNT; i++) {
+      const diff = targetBarsRef.current[i] - barsRef.current[i];
+      barsRef.current[i] += diff * 0.15; // Smooth easing
+    }
 
-      const width = canvas.width;
-      const height = canvas.height;
-      const barWidth = 3;
-      const gap = 3;
-      const totalWidth = BAR_COUNT * (barWidth + gap) - gap;
-      const startX = (width - totalWidth) / 2;
-      const centerY = height / 2;
+    // Canvas dimensions
+    const dpr = window.devicePixelRatio || 1;
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
 
-      ctx.clearRect(0, 0, width, height);
+    // Set canvas size for retina displays
+    if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+      canvas.width = displayWidth * dpr;
+      canvas.height = displayHeight * dpr;
+      ctx.scale(dpr, dpr);
+    }
 
-      phase += 0.08;
+    // Clear canvas
+    ctx.clearRect(0, 0, displayWidth, displayHeight);
 
-      for (let i = 0; i < BAR_COUNT; i++) {
-        // Create organic wave effect
-        const wave1 = Math.sin(phase + i * 0.2) * 0.4 + 0.5;
-        const wave2 = Math.sin(phase * 1.3 + i * 0.15) * 0.3 + 0.5;
-        const wave3 = Math.sin(phase * 0.7 + i * 0.25) * 0.2 + 0.5;
-        const combined = (wave1 + wave2 + wave3) / 3;
+    // Calculate bar dimensions
+    const totalGap = (BAR_COUNT - 1) * 2;
+    const availableWidth = displayWidth - 16; // Padding
+    const barWidth = Math.max(2, (availableWidth - totalGap) / BAR_COUNT);
+    const gap = 2;
+    const startX = (displayWidth - (barWidth * BAR_COUNT + gap * (BAR_COUNT - 1))) / 2;
+    const centerY = displayHeight / 2;
+    const maxBarHeight = displayHeight * 0.8;
 
-        const minHeight = 4;
-        const maxHeight = height * 0.7;
-        const barHeight = Math.max(minHeight, combined * maxHeight);
+    // Draw bars
+    for (let i = 0; i < BAR_COUNT; i++) {
+      const barHeight = Math.max(4, barsRef.current[i] * maxBarHeight);
+      const x = startX + i * (barWidth + gap);
 
-        const x = startX + i * (barWidth + gap);
+      // Color based on height and position
+      const intensity = barsRef.current[i];
+      const centerOffset = 1 - Math.abs(i - BAR_COUNT / 2) / (BAR_COUNT / 2);
 
-        // Gradient blue color
-        ctx.fillStyle = '#3b82f6';
-        ctx.beginPath();
-        ctx.roundRect(x, centerY - barHeight / 2, barWidth, barHeight, barWidth / 2);
-        ctx.fill();
+      // Interpolate between colors based on intensity
+      const h = COLORS.idle.h + (COLORS.active.h - COLORS.idle.h) * intensity * centerOffset;
+      const s = COLORS.idle.s + (COLORS.peak.s - COLORS.idle.s) * intensity;
+      const l = COLORS.idle.l + (COLORS.peak.l - COLORS.idle.l) * intensity * 0.5;
+
+      // Create gradient for each bar
+      const gradient = ctx.createLinearGradient(x, centerY - barHeight / 2, x, centerY + barHeight / 2);
+      gradient.addColorStop(0, `hsla(${h}, ${s}%, ${l}%, 0.9)`);
+      gradient.addColorStop(0.5, `hsla(${h + 20}, ${s}%, ${l + 5}%, 1)`);
+      gradient.addColorStop(1, `hsla(${h}, ${s}%, ${l}%, 0.9)`);
+
+      ctx.fillStyle = gradient;
+
+      // Draw rounded bar
+      const radius = barWidth / 2;
+      ctx.beginPath();
+      ctx.roundRect(x, centerY - barHeight / 2, barWidth, barHeight, radius);
+      ctx.fill();
+    }
+
+    // Continue animation
+    if (isRecording) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
+  }, [isRecording, updateTargetBars]);
+
+  // Start/stop animation
+  useEffect(() => {
+    if (isRecording) {
+      // Reset bars
+      barsRef.current = new Array(BAR_COUNT).fill(0.15);
+      targetBarsRef.current = new Array(BAR_COUNT).fill(0.15);
+      phaseRef.current = 0;
+
+      // Start animation
+      animate();
+    } else {
+      // Stop animation
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
     };
-
-    draw();
-  };
+  }, [isRecording, animate]);
 
   if (!isRecording) return null;
-
-  const hasTranscript = transcript && transcript.trim().length > 0;
 
   return (
     <div
       className={cn(
-        'flex flex-col gap-2 p-3',
-        'bg-white rounded-2xl border border-gray-200 shadow-lg',
-        'animate-in fade-in zoom-in-95 duration-200',
+        'flex flex-col gap-3 p-4',
+        'bg-white/95 backdrop-blur-xl rounded-2xl',
+        'border border-gray-200/80 shadow-xl shadow-black/5',
+        'animate-in fade-in slide-in-from-bottom-4 duration-300',
         className
       )}
     >
-      {/* Recording indicator and transcript preview */}
-      <div className="flex items-center gap-3 px-2">
-        {/* Pulsing mic indicator */}
-        <div className={cn(
-          'relative flex items-center justify-center',
-          'w-8 h-8 rounded-full bg-red-100',
-        )}>
+      {/* Status and transcript row */}
+      <div className="flex items-start gap-3 px-1">
+        {/* Animated recording indicator */}
+        <div className="relative flex-shrink-0">
           <div className={cn(
-            'absolute inset-0 rounded-full bg-red-400',
-            'animate-ping opacity-30'
-          )} />
-          <Mic className="w-4 h-4 text-red-500 relative z-10" />
+            'w-10 h-10 rounded-full flex items-center justify-center',
+            'bg-gradient-to-br from-red-500 to-rose-600',
+            'shadow-lg shadow-red-500/30',
+          )}>
+            <Mic className="w-5 h-5 text-white" />
+          </div>
+          {/* Pulse rings */}
+          <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-20" />
+          <div
+            className="absolute inset-0 rounded-full bg-red-400 animate-pulse opacity-30"
+            style={{ animationDelay: '150ms' }}
+          />
         </div>
 
-        {/* Transcript preview or listening indicator */}
-        <div className="flex-1 min-w-0">
+        {/* Transcript or listening indicator */}
+        <div className="flex-1 min-w-0 pt-1">
           {hasTranscript ? (
-            <p className="text-sm text-gray-700 truncate">
-              {transcript}
-            </p>
+            <div className="space-y-1">
+              <p className="text-sm text-gray-800 leading-relaxed">
+                {displayTranscript.final}
+                {displayTranscript.interim && (
+                  <span className="text-gray-400 italic"> {displayTranscript.interim}</span>
+                )}
+              </p>
+            </div>
           ) : (
-            <p className="text-sm text-gray-400 animate-pulse">
-              Listening...
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-gray-500">
+                {isConnected ? 'Listening...' : 'Connecting...'}
+              </p>
+              {!isConnected && (
+                <div className="flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
 
-      {/* Waveform and controls row */}
-      <div className="flex items-center gap-2">
+      {/* Waveform visualization */}
+      <div className="relative h-16 mx-1">
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full"
+          style={{ imageRendering: 'crisp-edges' }}
+        />
+
+        {/* Subtle gradient overlay for depth */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-white/20 via-transparent to-white/20 rounded-lg" />
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex items-center justify-center gap-4">
         {/* Cancel button */}
         <button
           type="button"
           onClick={onCancel}
           className={cn(
-            'flex items-center justify-center',
-            'w-10 h-10 rounded-full',
-            'text-gray-500 hover:text-red-600',
-            'hover:bg-red-50',
+            'flex items-center justify-center gap-2 px-5 py-2.5',
+            'rounded-full text-sm font-medium',
+            'text-gray-600 bg-gray-100 hover:bg-gray-200',
             'transition-all duration-150',
-            'active:scale-95'
+            'active:scale-95',
           )}
-          title="Cancel recording"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
+          <span>Cancel</span>
         </button>
 
-        {/* Waveform container */}
-        <div className="flex-1 flex items-center justify-center px-2">
-          <canvas
-            ref={canvasRef}
-            width={240}
-            height={48}
-            className="w-full max-w-[240px] h-12"
-          />
-        </div>
-
-        {/* Confirm button */}
+        {/* Stop/Confirm button */}
         <button
           type="button"
           onClick={onConfirm}
-          disabled={!hasTranscript}
           className={cn(
-            'flex items-center justify-center',
-            'w-10 h-10 rounded-full',
+            'flex items-center justify-center gap-2 px-6 py-2.5',
+            'rounded-full text-sm font-medium',
             'transition-all duration-150',
             'active:scale-95',
             hasTranscript
-              ? 'text-white bg-primary hover:bg-primary/90 shadow-md'
-              : 'text-gray-400 bg-gray-100 cursor-not-allowed'
+              ? 'text-white bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25'
+              : 'text-white bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 shadow-lg shadow-red-500/25'
           )}
-          title={hasTranscript ? 'Done - add to input' : 'Speak to enable'}
         >
-          <Check className="w-5 h-5" />
+          {hasTranscript ? (
+            <>
+              <Check className="w-4 h-4" />
+              <span>Done</span>
+            </>
+          ) : (
+            <>
+              <Square className="w-3.5 h-3.5 fill-current" />
+              <span>Stop</span>
+            </>
+          )}
         </button>
       </div>
 
-      {/* Visual audio level indicator */}
-      <div className="h-1 bg-gray-100 rounded-full overflow-hidden mx-2">
+      {/* Audio level indicator bar */}
+      <div className="h-1 mx-1 bg-gray-100 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-blue-400 to-primary transition-all duration-75 rounded-full"
+          className="h-full bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-full transition-all duration-75"
           style={{
-            width: `${Math.min(100, audioLevel * 200)}%`,
-            opacity: audioLevel > 0.05 ? 1 : 0.3
+            width: `${Math.min(100, audioLevel * 300)}%`,
+            opacity: audioLevel > 0.02 ? 1 : 0.3,
           }}
         />
       </div>

@@ -35,6 +35,7 @@ import { ChatMessage, DEFAULT_QUICK_ACTIONS } from '../types/chat';
 import { V2ResumeData } from '../types/resumeData';
 import { useChatWithResumeV2 } from '../hooks/useChatWithResumeV2';
 import { useVoiceInput } from '../hooks/useVoiceInput';
+import { useDeepgramVoice } from '../hooks/useDeepgramVoice';
 import { formatSectionName } from '../services/chatServiceV2';
 import type { SectionOverride } from '../services/actionExecutor';
 import { useResumeHistory } from '../hooks/useResumeHistory';
@@ -175,46 +176,93 @@ export function ChatWithResume({
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [audioLevel, setAudioLevel] = useState(0);
 
-  // Voice input hook
-  const {
-    isSupported: voiceSupported,
-    isListening,
-    transcript,
-    interimTranscript,
-    error: voiceError,
-    startListening,
-    stopListening,
-    toggleListening,
-    clearTranscript,
-  } = useVoiceInput({
+  // Deepgram voice input (primary - better accuracy)
+  const deepgram = useDeepgramVoice({
+    onTranscript: (text, isFinal) => {
+      // Update input value with transcribed text
+      if (text.trim()) {
+        if (isFinal) {
+          setInputValue(prev => prev ? `${prev} ${text}` : text);
+        }
+      }
+    },
+    onAudioLevel: (level) => {
+      setAudioLevel(level);
+    },
+    onError: (error) => {
+      console.warn('[Voice] Deepgram error:', error);
+    },
+  });
+
+  // Web Speech API fallback
+  const webSpeech = useVoiceInput({
     language: 'en-US',
-    autoSubmitDelay: 0, // Disabled - user will review and send manually
+    autoSubmitDelay: 0,
     onResult: (finalText) => {
-      // When voice input is complete, set as input value for user to review
       if (finalText.trim()) {
         setInputValue(finalText.trim());
       }
     },
     onInterimResult: (interim) => {
-      // Show interim results in real-time
       if (interim) {
         setInputValue(prev => {
-          // Replace only the interim part
-          const finalPart = transcript.replace(interimTranscript, '');
+          const finalPart = webSpeech.transcript.replace(webSpeech.interimTranscript, '');
           return finalPart + interim;
         });
       }
     },
   });
 
-  // Update input when transcript changes during voice input
-  // Only update if we're actively listening and have a transcript
-  useEffect(() => {
-    if (isListening && transcript) {
-      setInputValue(transcript);
+  // Use Deepgram if available and user is logged in, otherwise fallback to Web Speech
+  const useDeepgram = deepgram.isAvailable && user;
+  const voiceSupported = useDeepgram ? deepgram.isAvailable : webSpeech.isSupported;
+  const isListening = useDeepgram ? deepgram.isListening : webSpeech.isListening;
+  const isConnected = useDeepgram ? deepgram.isConnected : true;
+  const transcript = useDeepgram ? deepgram.transcript : webSpeech.transcript;
+  const interimTranscript = useDeepgram ? deepgram.interimTranscript : webSpeech.interimTranscript;
+  const voiceError = useDeepgram ? deepgram.error : webSpeech.error;
+
+  const startListening = useCallback(() => {
+    setInputValue(''); // Clear input when starting
+    if (useDeepgram) {
+      deepgram.startListening();
+    } else {
+      webSpeech.startListening();
     }
-  }, [isListening, transcript]);
+  }, [useDeepgram, deepgram, webSpeech]);
+
+  const stopListening = useCallback(() => {
+    if (useDeepgram) {
+      deepgram.stopListening();
+    } else {
+      webSpeech.stopListening();
+    }
+  }, [useDeepgram, deepgram, webSpeech]);
+
+  const toggleListening = useCallback(() => {
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  }, [isListening, startListening, stopListening]);
+
+  const clearTranscript = useCallback(() => {
+    if (useDeepgram) {
+      deepgram.clearTranscript();
+    } else {
+      webSpeech.clearTranscript();
+    }
+  }, [useDeepgram, deepgram, webSpeech]);
+
+  // Update input when transcript changes during voice input (for Web Speech fallback)
+  useEffect(() => {
+    if (!useDeepgram && isListening && webSpeech.transcript) {
+      setInputValue(webSpeech.transcript);
+    }
+  }, [useDeepgram, isListening, webSpeech.transcript]);
 
   // Auto-resize textarea based on content
   const adjustTextareaHeight = useCallback(() => {
@@ -374,6 +422,10 @@ export function ChatWithResume({
             onAdjustHeight={adjustTextareaHeight}
             voiceSupported={voiceSupported}
             isListening={isListening}
+            isConnected={isConnected}
+            transcript={transcript}
+            interimTranscript={interimTranscript}
+            audioLevel={audioLevel}
             voiceError={voiceError}
             onToggleVoice={toggleListening}
             onVoiceCancel={handleVoiceCancel}
@@ -421,6 +473,10 @@ export function ChatWithResume({
         className={className}
         voiceSupported={voiceSupported}
         isListening={isListening}
+        isConnected={isConnected}
+        transcript={transcript}
+        interimTranscript={interimTranscript}
+        audioLevel={audioLevel}
         voiceError={voiceError}
         onToggleVoice={toggleListening}
         onVoiceCancel={handleVoiceCancel}
@@ -488,6 +544,10 @@ interface SidePanelChatProps {
   // Voice input props
   voiceSupported: boolean;
   isListening: boolean;
+  isConnected: boolean;
+  transcript: string;
+  interimTranscript: string;
+  audioLevel: number;
   voiceError: string | null;
   onToggleVoice: () => void;
   onVoiceCancel: () => void;
@@ -521,6 +581,10 @@ function SidePanelChat({
   className,
   voiceSupported,
   isListening,
+  isConnected,
+  transcript,
+  interimTranscript,
+  audioLevel,
   voiceError,
   onToggleVoice,
   onVoiceCancel,
@@ -748,7 +812,10 @@ function SidePanelChat({
         {isListening ? (
           <VoiceInputBar
             isRecording={isListening}
-            transcript={inputValue}
+            isConnected={isConnected}
+            transcript={transcript}
+            interimTranscript={interimTranscript}
+            audioLevel={audioLevel}
             onCancel={onVoiceCancel}
             onConfirm={onVoiceConfirm}
           />
@@ -769,22 +836,23 @@ function SidePanelChat({
                 placeholder="Tell me about yourself..."
                 rows={1}
                 className={cn(
-                  'flex-1 px-2.5 py-2 md:px-3 md:py-3',
+                  'flex-1 px-3 py-2.5 md:px-4 md:py-3',
                   'bg-transparent border-none',
-                  'text-sm text-gray-900 placeholder:text-gray-400',
+                  'text-sm md:text-base text-gray-900 placeholder:text-gray-400',
                   'focus:outline-none',
                   'resize-none overflow-y-auto',
-                  'transition-all duration-200'
+                  'transition-all duration-200',
+                  'leading-relaxed'
                 )}
                 style={{
-                  minHeight: '40px',
-                  maxHeight: '120px',
+                  minHeight: '44px',
+                  maxHeight: '160px',
                 }}
                 disabled={isLoading}
               />
 
-              {/* Voice Input Button */}
-              {voiceSupported && (
+              {/* Voice Input Button - only show when input is empty */}
+              {voiceSupported && !inputValue.trim() && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -865,6 +933,10 @@ interface FloatingChatPanelProps {
   // Voice input props
   voiceSupported: boolean;
   isListening: boolean;
+  isConnected: boolean;
+  transcript: string;
+  interimTranscript: string;
+  audioLevel: number;
   voiceError: string | null;
   onToggleVoice: () => void;
   onVoiceCancel: () => void;
@@ -897,6 +969,10 @@ function FloatingChatPanel({
   onAdjustHeight,
   voiceSupported,
   isListening,
+  isConnected,
+  transcript,
+  interimTranscript,
+  audioLevel,
   voiceError,
   onToggleVoice,
   onVoiceCancel,
@@ -1100,7 +1176,10 @@ function FloatingChatPanel({
         {isListening ? (
           <VoiceInputBar
             isRecording={isListening}
-            transcript={inputValue}
+            isConnected={isConnected}
+            transcript={transcript}
+            interimTranscript={interimTranscript}
+            audioLevel={audioLevel}
             onCancel={onVoiceCancel}
             onConfirm={onVoiceConfirm}
           />
@@ -1126,17 +1205,18 @@ function FloatingChatPanel({
                   'text-sm text-gray-900 placeholder:text-gray-400',
                   'focus:outline-none',
                   'resize-none overflow-y-auto',
-                  'transition-all duration-200'
+                  'transition-all duration-200',
+                  'leading-relaxed'
                 )}
                 style={{
-                  minHeight: '40px',
-                  maxHeight: '200px',
+                  minHeight: '44px',
+                  maxHeight: '180px',
                 }}
                 disabled={isLoading}
               />
 
-              {/* Voice Input Button */}
-              {voiceSupported && (
+              {/* Voice Input Button - only show when input is empty */}
+              {voiceSupported && !inputValue.trim() && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>

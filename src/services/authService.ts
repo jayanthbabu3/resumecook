@@ -159,8 +159,8 @@ export const authService = {
         if (authData) {
           try {
             const { accessToken, refreshToken, timestamp } = JSON.parse(authData);
-            // Only accept if recent (within last 30 seconds)
-            if (Date.now() - timestamp < 30000) {
+            // Only accept if recent (within last 60 seconds - extended for slower networks)
+            if (Date.now() - timestamp < 60000) {
               if (resolved) return;
               resolved = true;
               tokenManager.setTokens(accessToken, refreshToken);
@@ -186,7 +186,7 @@ export const authService = {
             if (authData) {
               try {
                 const { accessToken, refreshToken, timestamp } = JSON.parse(authData);
-                if (Date.now() - timestamp < 30000) {
+                if (Date.now() - timestamp < 60000) { // Extended to 60 seconds
                   if (resolved) return true;
                   resolved = true;
                   tokenManager.setTokens(accessToken, refreshToken);
@@ -205,18 +205,27 @@ export const authService = {
           // Check immediately
           if (checkAuth()) return;
 
-          // Check again after delays to catch any race conditions
-          setTimeout(() => {
+          // Multiple retry checks with increasing delays to handle race conditions
+          // This is crucial for slower networks or when the callback page takes time to load
+          const retryDelays = [300, 500, 800, 1000, 1500];
+          let retryIndex = 0;
+
+          const retryCheck = () => {
             if (checkAuth()) return;
-            setTimeout(() => {
-              if (checkAuth()) return;
-              // Final check failed, auth was cancelled
+            retryIndex++;
+            if (retryIndex < retryDelays.length) {
+              setTimeout(retryCheck, retryDelays[retryIndex]);
+            } else {
+              // All retry checks failed, auth was cancelled
               if (!resolved) {
                 cleanup();
                 reject(new Error('Authentication cancelled'));
               }
-            }, 500);
-          }, 500);
+            }
+          };
+
+          // Start first retry
+          setTimeout(retryCheck, retryDelays[0]);
         }
       }, 500);
     });

@@ -49,8 +49,8 @@ export const TrialBanner = ({
   // Don't show for paid Pro users (not trial)
   if (isPro && !isTrial) return null;
 
-  // Active trial user - show countdown
-  if (isTrial && trialDaysRemaining !== null) {
+  // Active trial user - show countdown (only if authenticated)
+  if (isAuthenticated && isTrial && trialDaysRemaining !== null) {
     const isUrgent = trialDaysRemaining <= 2;
 
     return (

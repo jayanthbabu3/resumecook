@@ -34,7 +34,8 @@ const Auth = () => {
     setError('');
     try {
       await signInWithGoogle();
-      // Navigation will happen via useEffect when user state updates
+      // Navigate to the redirect destination after successful sign-in
+      navigate(redirectTo, { replace: true });
     } catch (error: any) {
       setError(error.message || 'Failed to sign in with Google. Please try again.');
     } finally {

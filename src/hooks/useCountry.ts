@@ -134,31 +134,47 @@ export const getCurrencyForCountry = (countryCode: string): Currency => {
  * Hook to detect user's country and determine appropriate currency
  */
 export const useCountry = (): CountryInfo => {
-  const [countryInfo, setCountryInfo] = useState<CountryInfo>({
-    countryCode: 'US',
-    currency: 'USD',
-    isIndia: false,
-    loading: true,
-    error: null,
-  });
-
-  const detectCountry = useCallback(async () => {
-    // Check cache first
+  // Initialize with a smart default based on timezone/locale/cache for instant display
+  const [countryInfo, setCountryInfo] = useState<CountryInfo>(() => {
+    // First, try to get from cache (instant)
     const cachedCountry = getCachedCountry();
     if (cachedCountry) {
       const isIndia = cachedCountry === 'IN';
-      setCountryInfo({
+      return {
         countryCode: cachedCountry,
         currency: getCurrencyForCountry(cachedCountry),
         isIndia,
-        loading: false,
+        loading: false, // Cache hit means no loading needed
         error: null,
-      });
+      };
+    }
+
+    // Second, use timezone as initial guess (instant, no network)
+    const tzCountry = detectCountryFromTimezone();
+    const localeCountry = detectCountryFromLocale();
+    const initialCountry = tzCountry === 'IN' || localeCountry === 'IN' ? 'IN' : 'US';
+    const isIndia = initialCountry === 'IN';
+
+    return {
+      countryCode: initialCountry,
+      currency: getCurrencyForCountry(initialCountry),
+      isIndia,
+      loading: true, // Still loading to do proper IP-based detection
+      error: null,
+    };
+  });
+
+  const detectCountry = useCallback(async () => {
+    // Check cache first - if cached, we already set state in initializer
+    const cachedCountry = getCachedCountry();
+    if (cachedCountry) {
+      // Cache was already applied in initializer, just ensure loading is false
+      setCountryInfo(prev => ({ ...prev, loading: false }));
       return;
     }
 
     try {
-      // Try IP geolocation
+      // Try IP geolocation for more accurate detection
       const countryCode = await detectCountryFromIP();
       const isIndia = countryCode === 'IN';
 
@@ -173,22 +189,15 @@ export const useCountry = (): CountryInfo => {
         error: null,
       });
     } catch (error) {
-      // Fallback to timezone/locale detection
-      const tzCountry = detectCountryFromTimezone();
-      const localeCountry = detectCountryFromLocale();
-
-      // Prefer Indian detection if either method suggests India
-      const countryCode = tzCountry === 'IN' || localeCountry === 'IN' ? 'IN' : 'US';
-      const isIndia = countryCode === 'IN';
-
-      cacheCountry(countryCode);
-
-      setCountryInfo({
-        countryCode,
-        currency: getCurrencyForCountry(countryCode),
-        isIndia,
-        loading: false,
-        error: 'Using fallback detection',
+      // IP detection failed, use the timezone/locale detection we already have
+      // Just mark loading as complete and cache the current detection
+      setCountryInfo(prev => {
+        cacheCountry(prev.countryCode);
+        return {
+          ...prev,
+          loading: false,
+          error: 'Using fallback detection',
+        };
       });
     }
   }, []);

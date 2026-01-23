@@ -14,9 +14,11 @@
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { authService, User, tokenManager } from '@/services';
 import { subscriptionService } from '@/services';
+import { subscriptionKeys } from '@/hooks/useSubscriptionNew';
 
 // Re-export User type for backward compatibility
 export type { User } from '@/services';
@@ -86,6 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Convert User to UserProfile for backward compatibility
   const userProfile: UserProfile | null = user
@@ -151,7 +154,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Check if this is a new verified user - claim trial
       const subStatus = response.user.subscription?.status;
-      if (subStatus === 'none' || subStatus === 'free') {
+      if (subStatus === 'none') {
         try {
           await subscriptionService.claimTrial();
           toast.success('Signed in successfully! Your 21-day free Pro trial has started!');
@@ -192,7 +195,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Check if new user - claim trial
       const subStatus = currentUser.subscription?.status;
-      if (subStatus === 'none' || subStatus === 'free') {
+      if (subStatus === 'none') {
         try {
           await subscriptionService.claimTrial();
           toast.success(
@@ -206,7 +209,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         toast.success('Signed in with Google successfully');
       }
 
-      navigate('/dashboard');
+      // Note: Navigation is handled by the calling component (Auth.tsx, Pricing.tsx, etc.)
+      // This allows each page to handle its own redirect logic (e.g., trial claim flow)
     } catch (error: any) {
       const message =
         error.response?.data?.error?.message || error.message || 'Failed to sign in with Google';
@@ -269,12 +273,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await authService.logout();
       setUser(null);
+      // Clear subscription cache to prevent stale data showing after logout
+      queryClient.removeQueries({ queryKey: subscriptionKeys.all });
       toast.success('Signed out successfully');
       navigate('/');
     } catch (error: any) {
       console.error('Sign out error:', error);
       // Still clear state even if logout API fails
       setUser(null);
+      queryClient.removeQueries({ queryKey: subscriptionKeys.all });
       navigate('/');
     }
   };
