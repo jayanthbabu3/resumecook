@@ -23,7 +23,7 @@ export const monoElegantConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '24px',
+      fontSize: '22px',
       fontWeight: 500,
       lineHeight: 1.1,
       letterSpacing: '0.1em',
@@ -87,16 +87,16 @@ export const monoElegantConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '36px',
-      right: '36px',
-      bottom: '36px',
-      left: '36px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
-    sectionGap: '20px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '3px',
-    contactGap: '6px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

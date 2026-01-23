@@ -24,7 +24,7 @@ export const geometricBoldConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.0,
       letterSpacing: '-0.03em',
@@ -32,7 +32,7 @@ export const geometricBoldConfig: TemplateConfig = createTemplateConfig({
       color: '#0f172a',
     },
     title: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       letterSpacing: '0.08em',
@@ -48,13 +48,13 @@ export const geometricBoldConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#0f172a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: ACCENT_COLOR,
@@ -87,16 +87,16 @@ export const geometricBoldConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '28px',
+      top: '32px',
       right: '32px',
-      bottom: '28px',
+      bottom: '32px',
       left: '32px',
     },
-    sectionGap: '20px',
-    itemGap: '14px',
-    headingToContent: '10px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
     bulletGap: '4px',
-    contactGap: '16px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

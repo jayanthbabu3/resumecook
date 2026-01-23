@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { TemplateConfig } from '../../../../types';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 
@@ -24,6 +25,8 @@ export const SummaryAccentBorder: React.FC<SummaryAccentBorderProps> = ({
   editable = false,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   return (
     <div style={{
@@ -38,7 +41,7 @@ export const SummaryAccentBorder: React.FC<SummaryAccentBorderProps> = ({
           value={content}
           as="p"
           style={{
-            fontSize: typography.body.fontSize,
+            fontSize: scaleFontSize(typography.body.fontSize),
             color: '#374151',
             lineHeight: '1.7',
             margin: 0,
@@ -48,7 +51,7 @@ export const SummaryAccentBorder: React.FC<SummaryAccentBorderProps> = ({
         />
       ) : (
         <p style={{
-          fontSize: typography.body.fontSize,
+          fontSize: scaleFontSize(typography.body.fontSize),
           color: '#374151',
           lineHeight: '1.7',
           margin: 0,

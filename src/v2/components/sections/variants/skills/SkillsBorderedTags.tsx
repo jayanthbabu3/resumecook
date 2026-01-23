@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { TemplateConfig } from '../../../../types';
 
 interface SkillsBorderedTagsProps {
@@ -23,6 +24,8 @@ export const SkillsBorderedTags: React.FC<SkillsBorderedTagsProps> = ({
   editable = false,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   // Normalize skills to string array
   const normalizedSkills = skills.map(skill => 
@@ -43,7 +46,7 @@ export const SkillsBorderedTags: React.FC<SkillsBorderedTagsProps> = ({
           style={{
             display: 'inline-block',
             padding: '6px 14px',
-            fontSize: typography.body.fontSize,
+            fontSize: scaleFontSize(typography.body.fontSize),
             color: '#374151',
             backgroundColor: '#ffffff',
             border: `1px solid #e5e7eb`,

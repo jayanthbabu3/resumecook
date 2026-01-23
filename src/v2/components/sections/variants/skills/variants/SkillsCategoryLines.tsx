@@ -9,6 +9,7 @@ import React from 'react';
 import { Plus, X } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 import type { SkillItem } from '../../../../types/resumeData';
 
@@ -35,6 +36,8 @@ export const SkillsCategoryLines: React.FC<SkillsCategoryLinesProps> = ({
 }) => {
   const { typography } = config;
   const { addArrayItem, removeArrayItem } = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   const grouped = React.useMemo(() => {
     const order: string[] = [];
@@ -74,7 +77,7 @@ export const SkillsCategoryLines: React.FC<SkillsCategoryLinesProps> = ({
   };
 
   const categoryHeadingStyle: React.CSSProperties = {
-    fontSize: typography.body.fontSize,
+    fontSize: scaleFontSize(typography.body.fontSize),
     fontWeight: 700,
     color: accentColor,
     letterSpacing: '0.02em',
@@ -85,7 +88,7 @@ export const SkillsCategoryLines: React.FC<SkillsCategoryLinesProps> = ({
   };
 
   const skillTextStyle: React.CSSProperties = {
-    fontSize: typography.body.fontSize,
+    fontSize: scaleFontSize(typography.body.fontSize),
     lineHeight: typography.body.lineHeight,
     color: typography.body.color,
   };

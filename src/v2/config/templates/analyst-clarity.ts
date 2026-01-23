@@ -16,14 +16,14 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.2,
       letterSpacing: '-0.01em',
       color: '#1f2937',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       letterSpacing: '0.04em',
@@ -31,7 +31,7 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
       color: '#2563eb',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.35,
       letterSpacing: '0.16em',
@@ -39,37 +39,37 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
       color: '#1f2937',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.45,
       color: '#111827',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.35,
       color: '#2563eb',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 600,
       lineHeight: 1.35,
       color: '#4b5563',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#1f2937',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#111827',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -78,17 +78,17 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '26px',
-      right: '28px',
-      bottom: '26px',
-      left: '28px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
     sectionGap: '18px',
     itemGap: '12px',
     headingToContent: '8px',
-    bulletGap: '6px',
-    contactGap: '10px',
-    skillGap: '10px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

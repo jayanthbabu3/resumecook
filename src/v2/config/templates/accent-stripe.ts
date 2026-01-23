@@ -23,7 +23,7 @@ export const accentStripeConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.1,
       letterSpacing: '-0.03em',
@@ -92,9 +92,9 @@ export const accentStripeConfig: TemplateConfig = createTemplateConfig({
     sectionGap: '18px',
     itemGap: '12px',
     headingToContent: '8px',
-    bulletGap: '3px',
-    contactGap: '8px',
-    skillGap: '6px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

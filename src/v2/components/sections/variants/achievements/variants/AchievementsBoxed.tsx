@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { AchievementsVariantProps } from '../types';
 
 export const AchievementsBoxed: React.FC<AchievementsVariantProps> = ({
@@ -16,6 +17,8 @@ export const AchievementsBoxed: React.FC<AchievementsVariantProps> = ({
   editable = false,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items || items.length === 0) return null;
 
@@ -30,7 +33,7 @@ export const AchievementsBoxed: React.FC<AchievementsVariantProps> = ({
           key={item.id}
           style={{
             padding: '8px 14px',
-            fontSize: typography.body.fontSize,
+            fontSize: scaleFontSize(typography.body.fontSize),
             fontWeight: 400,
             color: typography.body.color || '#374151',
             backgroundColor: '#ffffff',

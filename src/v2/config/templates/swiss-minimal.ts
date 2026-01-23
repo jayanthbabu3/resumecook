@@ -24,7 +24,7 @@ export const swissMinimalConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.0,
       letterSpacing: '-0.03em',
@@ -94,9 +94,9 @@ export const swissMinimalConfig: TemplateConfig = createTemplateConfig({
     sectionGap: '18px',
     itemGap: '12px',
     headingToContent: '8px',
-    bulletGap: '3px',
-    contactGap: '6px',
-    skillGap: '6px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

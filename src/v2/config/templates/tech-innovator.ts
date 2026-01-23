@@ -17,14 +17,14 @@ export const techInnovatorConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.02em',
       color: '#0f172a',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.02em',
@@ -39,31 +39,31 @@ export const techInnovatorConfig: TemplateConfig = createTemplateConfig({
       color: '#0e7490', // Cyan-700
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#0f172a',
     },
     itemSubtitle: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#0891b2',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#64748b',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#334155',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#475569',
@@ -83,10 +83,10 @@ export const techInnovatorConfig: TemplateConfig = createTemplateConfig({
       bottom: '32px',
       left: '32px',
     },
-    sectionGap: '22px',
-    itemGap: '16px',
-    headingToContent: '12px',
-    bulletGap: '5px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
     contactGap: '12px',
     skillGap: '8px',
   },

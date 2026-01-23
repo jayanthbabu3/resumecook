@@ -10,6 +10,7 @@ import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../../experience/types';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
   items,
@@ -23,6 +24,8 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -80,7 +83,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
                       value={exp.position}
                       as="h3"
                       style={{
-                        fontSize: typography.itemTitle.fontSize,
+                        fontSize: scaleFontSize(typography.itemTitle.fontSize),
                         fontWeight: typography.itemTitle.fontWeight,
                         color: typography.itemTitle.color,
                         margin: 0,
@@ -89,7 +92,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
                     />
                   ) : (
                     <h3 style={{
-                      fontSize: typography.itemTitle.fontSize,
+                      fontSize: scaleFontSize(typography.itemTitle.fontSize),
                       fontWeight: typography.itemTitle.fontWeight,
                       color: typography.itemTitle.color,
                       margin: 0,
@@ -99,7 +102,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
                   )}
 
                   <div style={{
-                    fontSize: typography.itemSubtitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                     color: typography.itemSubtitle.color,
                     fontWeight: typography.itemSubtitle.fontWeight,
                     marginTop: '2px',
@@ -109,7 +112,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
                         path={`experience.${index}.company`}
                         value={exp.company}
                         style={{
-                          fontSize: typography.itemSubtitle.fontSize,
+                          fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                           color: typography.itemSubtitle.color,
                           fontWeight: typography.itemSubtitle.fontWeight,
                         }}
@@ -127,7 +130,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
                 </div>
 
                 <div style={{
-                  fontSize: typography.dates.fontSize,
+                  fontSize: scaleFontSize(typography.dates.fontSize),
                   color: typography.dates.color,
                   fontWeight: typography.dates.fontWeight,
                   whiteSpace: 'nowrap',
@@ -162,7 +165,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
                       key={bulletIndex}
                       className="group/bullet"
                       style={{
-                        fontSize: typography.body.fontSize,
+                        fontSize: scaleFontSize(typography.body.fontSize),
                         color: typography.body.color,
                         lineHeight: typography.body.lineHeight,
                         textAlign: 'justify',

@@ -7,6 +7,7 @@
 import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 import { getPillTextColor } from '../utils';
 
@@ -19,13 +20,15 @@ export const SkillsPillsEnhanced: React.FC<SkillsVariantProps> = ({
   onRemoveSkill,
 }) => {
   const { skills } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
   const pillStyle: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
-    fontSize: skills?.badge?.fontSize || '12px',
+    fontSize: scaleFontSize(skills?.badge?.fontSize || '12px'),
     fontWeight: 500,
     padding: skills?.badge?.padding || '4px 12px',
     borderRadius: '9999px',
@@ -44,7 +47,7 @@ export const SkillsPillsEnhanced: React.FC<SkillsVariantProps> = ({
               <InlineEditableText
                 path={`skills.${index}.name`}
                 value={skill.name}
-                style={{ fontSize: skills?.badge?.fontSize || '12px' }}
+                style={{ fontSize: scaleFontSize(skills?.badge?.fontSize || '12px') }}
                 placeholder="Skill"
               />
             ) : (

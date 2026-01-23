@@ -16,7 +16,7 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.15,
       letterSpacing: '-0.02em',
@@ -24,7 +24,7 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
       textTransform: 'none',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.05em',
@@ -40,31 +40,31 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
       color: '#7c3aed',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#1e1b4b',
     },
     itemSubtitle: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#7c3aed',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#374151',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#e9d5ff',
@@ -79,17 +79,17 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '0',
-      right: '28px',
-      bottom: '28px',
-      left: '28px',
+      top: '0px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
     sectionGap: '18px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '5px',
-    contactGap: '10px',
-    skillGap: '6px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

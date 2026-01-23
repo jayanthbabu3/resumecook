@@ -25,20 +25,20 @@ export const adminAssistantProConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.01em',
       color: ACCENT_COLOR, // Golden name
     },
     title: {
-      fontSize: '16px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#1a1a1a', // Dark gray title
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.05em',
@@ -46,37 +46,37 @@ export const adminAssistantProConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR, // Golden section headings
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#1a1a1a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#4b5563', // Gray for company/location
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#374151',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#1a1a1a',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',

@@ -16,20 +16,20 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.01em',
       color: '#0f172a',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.3,
       color: '#1e40af',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.08em',
@@ -37,37 +37,37 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
       color: '#0f172a',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#0f172a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1e40af',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.3,
       color: '#475569',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#1e293b',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#0f172a',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.3,
       color: '#475569',

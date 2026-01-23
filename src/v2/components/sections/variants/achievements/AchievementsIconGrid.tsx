@@ -8,6 +8,7 @@
 
 import React from 'react';
 import { Star, Award, TrendingUp, Target, Zap, CheckCircle, Trophy, Medal } from 'lucide-react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { TemplateConfig } from '../../../../types';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 
@@ -35,6 +36,8 @@ export const AchievementsIconGrid: React.FC<AchievementsIconGridProps> = ({
   editable = false,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items?.length) return null;
 
@@ -87,7 +90,7 @@ export const AchievementsIconGrid: React.FC<AchievementsIconGridProps> = ({
                   value={item.title}
                   as="h4"
                   style={{
-                    fontSize: typography.itemTitle?.fontSize || '14px',
+                    fontSize: scaleFontSize(typography.itemTitle?.fontSize || '14px'),
                     fontWeight: '600',
                     color: accentColor,
                     margin: 0,
@@ -97,7 +100,7 @@ export const AchievementsIconGrid: React.FC<AchievementsIconGridProps> = ({
                 />
               ) : (
                 <h4 style={{
-                  fontSize: typography.itemTitle?.fontSize || '14px',
+                  fontSize: scaleFontSize(typography.itemTitle?.fontSize || '14px'),
                   fontWeight: '600',
                   color: accentColor,
                   margin: 0,
@@ -114,7 +117,7 @@ export const AchievementsIconGrid: React.FC<AchievementsIconGridProps> = ({
                       path={`achievements.${index}.description`}
                       value={description}
                       style={{
-                        fontSize: typography.body.fontSize,
+                        fontSize: scaleFontSize(typography.body.fontSize),
                         color: '#4b5563',
                         lineHeight: '1.5',
                       }}
@@ -122,7 +125,7 @@ export const AchievementsIconGrid: React.FC<AchievementsIconGridProps> = ({
                     />
                   ) : (
                     <p style={{
-                      fontSize: typography.body.fontSize,
+                      fontSize: scaleFontSize(typography.body.fontSize),
                       color: '#4b5563',
                       lineHeight: '1.5',
                       margin: 0,

@@ -16,7 +16,7 @@ export const accountantProConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: '0',
@@ -24,14 +24,14 @@ export const accountantProConfig: TemplateConfig = createTemplateConfig({
       textTransform: 'none', // Title case, not uppercase
     },
     title: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#2563eb', // Blue
       letterSpacing: '0.01em',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.08em',
@@ -39,37 +39,37 @@ export const accountantProConfig: TemplateConfig = createTemplateConfig({
       color: '#374151', // Dark gray
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1f2937',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#2563eb', // Blue for company name
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280', // Gray
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.55,
       color: '#4b5563',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -78,16 +78,16 @@ export const accountantProConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '28px',
-      right: '28px',
-      bottom: '28px',
-      left: '28px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
     sectionGap: '18px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '3px',
-    contactGap: '20px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

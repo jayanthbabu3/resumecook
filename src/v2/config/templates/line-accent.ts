@@ -24,7 +24,7 @@ export const lineAccentConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 600,
       lineHeight: 1.1,
       letterSpacing: '-0.01em',
@@ -86,16 +86,16 @@ export const lineAccentConfig: TemplateConfig = createTemplateConfig({
   spacing: {
     pagePadding: {
       top: '32px',
-      right: '40px',
+      right: '32px',
       bottom: '32px',
-      left: '40px',
+      left: '32px',
     },
-    sectionGap: '20px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '3px',
-    contactGap: '6px',
-    skillGap: '6px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

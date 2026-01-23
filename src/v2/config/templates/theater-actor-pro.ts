@@ -20,20 +20,20 @@ export const theaterActorProConfig: TemplateConfig = createTemplateConfig({
   // Typography
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: '-0.01em',
       color: '#1e3a5f',
     },
     title: {
-      fontSize: '16px',
+      fontSize: '12px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#1e3a5f',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.05em',
@@ -41,37 +41,37 @@ export const theaterActorProConfig: TemplateConfig = createTemplateConfig({
       color: '#1e3a5f',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1f2937',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#1e3a5f',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#374151',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#374151',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -81,17 +81,17 @@ export const theaterActorProConfig: TemplateConfig = createTemplateConfig({
   // Spacing
   spacing: {
     pagePadding: {
-      top: '24px',
-      right: '28px',
-      bottom: '24px',
-      left: '28px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
     sectionGap: '18px',
     itemGap: '12px',
-    headingToContent: '10px',
+    headingToContent: '8px',
     bulletGap: '4px',
-    contactGap: '16px',
-    skillGap: '6px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   // Layout - Two column

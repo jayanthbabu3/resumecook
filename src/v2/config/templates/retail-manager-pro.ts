@@ -21,20 +21,20 @@ export const retailManagerProConfig: TemplateConfig = createTemplateConfig({
   // Typography - Clean and professional
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.02em',
       color: '#1a1a1a',
     },
     title: {
-      fontSize: '15px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#0d9488', // Teal accent
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.05em',
@@ -42,31 +42,31 @@ export const retailManagerProConfig: TemplateConfig = createTemplateConfig({
       color: '#1a1a1a',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1a1a1a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#0d9488', // Teal accent for company names
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#4b5563',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#6b7280',
@@ -79,20 +79,20 @@ export const retailManagerProConfig: TemplateConfig = createTemplateConfig({
     },
   },
 
-  // Spacing - Compact for two-column
+  // Spacing - Standard for two-column
   spacing: {
     pagePadding: {
-      top: '28px',
-      right: '28px',
-      bottom: '28px',
-      left: '28px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
     sectionGap: '18px',
     itemGap: '12px',
-    headingToContent: '10px',
+    headingToContent: '8px',
     bulletGap: '4px',
-    contactGap: '16px',
-    skillGap: '6px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   // Layout - Two column with right sidebar

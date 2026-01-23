@@ -11,6 +11,7 @@ import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../types';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
   items,
@@ -24,6 +25,8 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -59,7 +62,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                   path={`experience.${index}.position`}
                   value={exp.position}
                   style={{
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     fontWeight: 600,
                     color: typography.itemTitle.color,
                   }}
@@ -70,7 +73,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                   path={`experience.${index}.company`}
                   value={exp.company}
                   style={{
-                    fontSize: typography.itemSubtitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                     fontWeight: 500,
                     color: accentColor,
                   }}
@@ -80,7 +83,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
             ) : (
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
                 <span style={{
-                  fontSize: typography.itemTitle.fontSize,
+                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
                   fontWeight: 600,
                   color: typography.itemTitle.color,
                 }}>
@@ -88,7 +91,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                 </span>
                 <span style={{ color: accentColor, fontWeight: 300 }}>|</span>
                 <span style={{
-                  fontSize: typography.itemSubtitle.fontSize,
+                  fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                   fontWeight: 500,
                   color: accentColor,
                 }}>
@@ -104,7 +107,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
             alignItems: 'center',
             gap: '12px',
             marginBottom: '8px',
-            fontSize: typography.dates?.fontSize || '11px',
+            fontSize: scaleFontSize(typography.dates?.fontSize || '11px'),
             color: typography.dates?.color || '#6b7280',
           }}>
             {editable ? (
@@ -113,7 +116,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                   path={`experience.${index}.startDate`}
                   value={exp.startDate}
                   formatDisplay={formatDate}
-                  style={{ fontSize: typography.dates?.fontSize || '11px', color: typography.dates?.color || '#6b7280' }}
+                  style={{ fontSize: scaleFontSize(typography.dates?.fontSize || '11px'), color: typography.dates?.color || '#6b7280' }}
                 />
                 <span>–</span>
                 {exp.current ? (
@@ -123,7 +126,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                     path={`experience.${index}.endDate`}
                     value={exp.endDate}
                     formatDisplay={formatDate}
-                    style={{ fontSize: typography.dates?.fontSize || '11px', color: typography.dates?.color || '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates?.fontSize || '11px'), color: typography.dates?.color || '#6b7280' }}
                   />
                 )}
               </>
@@ -139,7 +142,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                   <InlineEditableText
                     path={`experience.${index}.location`}
                     value={exp.location}
-                    style={{ fontSize: typography.dates?.fontSize || '11px', color: typography.dates?.color || '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates?.fontSize || '11px'), color: typography.dates?.color || '#6b7280' }}
                     placeholder="Location"
                   />
                 ) : (
@@ -163,7 +166,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                   key={bulletIndex}
                   className="group/bullet relative"
                   style={{
-                    fontSize: typography.body.fontSize,
+                    fontSize: scaleFontSize(typography.body.fontSize),
                     lineHeight: typography.body.lineHeight,
                     color: typography.body.color,
                     textAlign: 'justify',
@@ -189,7 +192,7 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
                         path={`experience.${index}.bulletPoints.${bulletIndex}`}
                         value={bullet}
                         style={{
-                          fontSize: typography.body.fontSize,
+                          fontSize: scaleFontSize(typography.body.fontSize),
                           lineHeight: typography.body.lineHeight,
                           color: typography.body.color,
                           flex: 1,

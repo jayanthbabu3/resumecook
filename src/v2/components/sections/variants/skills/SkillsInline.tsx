@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from './SkillsVariantRenderer';
 
 interface SkillsInlineProps extends SkillsVariantProps {
@@ -20,6 +21,8 @@ export const SkillsInline: React.FC<SkillsInlineProps> = ({
   separator = 'bullet',
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length) return null;
 
@@ -34,7 +37,7 @@ export const SkillsInline: React.FC<SkillsInlineProps> = ({
   return (
     <p
       style={{
-        fontSize: typography.body.fontSize,
+        fontSize: scaleFontSize(typography.body.fontSize),
         lineHeight: typography.body.lineHeight,
         color: typography.body.color,
         margin: 0,

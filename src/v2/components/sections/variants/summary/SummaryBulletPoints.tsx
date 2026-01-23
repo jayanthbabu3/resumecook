@@ -13,6 +13,7 @@
 import React from 'react';
 import { Plus, X } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { TemplateConfig } from '../../../../types/templateConfig';
 
 interface SummaryBulletPointsProps {
@@ -42,6 +43,8 @@ export const SummaryBulletPoints: React.FC<SummaryBulletPointsProps> = ({
   showIntro = true,
 }) => {
   const { typography, colors, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const accent = accentColor || colors.primary;
 
   // Parse summary to extract intro paragraph and bullet points
@@ -79,7 +82,7 @@ export const SummaryBulletPoints: React.FC<SummaryBulletPointsProps> = ({
   }, [summary, externalBullets]);
 
   const introStyle: React.CSSProperties = {
-    fontSize: typography.body.fontSize,
+    fontSize: scaleFontSize(typography.body.fontSize),
     fontWeight: typography.body.fontWeight,
     lineHeight: typography.body.lineHeight,
     color: typography.body.color,
@@ -102,13 +105,13 @@ export const SummaryBulletPoints: React.FC<SummaryBulletPointsProps> = ({
     color: accent,
     fontWeight: 600,
     flexShrink: 0,
-    fontSize: bulletStyle === '■' ? '8px' : typography.body.fontSize,
+    fontSize: bulletStyle === '■' ? scaleFontSize('8px') : scaleFontSize(typography.body.fontSize),
     lineHeight: typography.body.lineHeight,
     marginTop: bulletStyle === '■' ? '6px' : '0',
   };
 
   const bulletTextStyle: React.CSSProperties = {
-    fontSize: typography.body.fontSize,
+    fontSize: scaleFontSize(typography.body.fontSize),
     fontWeight: typography.body.fontWeight,
     lineHeight: typography.body.lineHeight,
     color: typography.body.color,

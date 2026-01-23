@@ -24,21 +24,21 @@ export const fresherAtsProConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '26px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '0',
       color: '#1a1a1a',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.01em',
       color: '#4a5568',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.06em',
@@ -46,31 +46,31 @@ export const fresherAtsProConfig: TemplateConfig = createTemplateConfig({
       color: '#1a1a1a',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1a1a1a',
     },
     itemSubtitle: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#2d3748',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#718096',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#2d3748',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#4a5568',
@@ -84,12 +84,12 @@ export const fresherAtsProConfig: TemplateConfig = createTemplateConfig({
   },
 
   spacing: {
-    pagePadding: { top: '28px', right: '28px', bottom: '28px', left: '28px' },
-    sectionGap: '16px',
-    itemGap: '12px',
-    headingToContent: '8px',
-    bulletGap: '4px',
-    contactGap: '10px',
+    pagePadding: { top: '24px', right: '28px', bottom: '24px', left: '28px' },
+    sectionGap: '14px',
+    itemGap: '10px',
+    headingToContent: '6px',
+    bulletGap: '3px',
+    contactGap: '8px',
     skillGap: '6px',
   },
 

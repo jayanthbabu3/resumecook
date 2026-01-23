@@ -24,7 +24,7 @@ export const auroraCreativeConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.1,
       letterSpacing: '-0.02em',
@@ -38,7 +38,7 @@ export const auroraCreativeConfig: TemplateConfig = createTemplateConfig({
       color: 'rgba(255,255,255,0.95)',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.06em',
@@ -46,19 +46,19 @@ export const auroraCreativeConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#0f172a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: ACCENT_COLOR,
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: SECONDARY_COLOR,
@@ -90,11 +90,11 @@ export const auroraCreativeConfig: TemplateConfig = createTemplateConfig({
       bottom: '32px',
       left: '32px',
     },
-    sectionGap: '22px',
-    itemGap: '16px',
-    headingToContent: '12px',
-    bulletGap: '5px',
-    contactGap: '8px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

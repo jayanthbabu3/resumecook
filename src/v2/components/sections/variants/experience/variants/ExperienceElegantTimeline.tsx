@@ -11,6 +11,7 @@ import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../../experience/types';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
   items,
@@ -24,6 +25,8 @@ export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -94,7 +97,7 @@ export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
                     value={exp.position}
                     as="h3"
                     style={{
-                      fontSize: typography.itemTitle.fontSize,
+                      fontSize: scaleFontSize(typography.itemTitle.fontSize),
                       fontWeight: 600,
                       color: typography.itemTitle.color || '#1a1a1a',
                       margin: 0,
@@ -104,7 +107,7 @@ export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
                   />
                 ) : (
                   <h3 style={{
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     fontWeight: 600,
                     color: typography.itemTitle.color || '#1a1a1a',
                     margin: 0,
@@ -117,7 +120,7 @@ export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
 
               {/* Dates */}
               <div style={{
-                fontSize: typography.dates.fontSize,
+                fontSize: scaleFontSize(typography.dates.fontSize),
                 color: accentColor,
                 fontWeight: 500,
                 whiteSpace: 'nowrap',
@@ -152,7 +155,7 @@ export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
 
             {/* Company & Location */}
             <div style={{
-              fontSize: typography.itemSubtitle.fontSize,
+              fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
               fontWeight: 500,
               color: typography.itemSubtitle.color || '#4b5563',
               marginBottom: '10px',
@@ -203,7 +206,7 @@ export const ExperienceElegantTimeline: React.FC<ExperienceVariantProps> = ({
                     key={bulletIndex}
                     className="group/bullet"
                     style={{
-                      fontSize: typography.body.fontSize,
+                      fontSize: scaleFontSize(typography.body.fontSize),
                       color: typography.body.color,
                       lineHeight: typography.body.lineHeight,
                       textAlign: 'justify',

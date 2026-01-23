@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from './SkillsVariantRenderer';
 
 export const SkillsTags: React.FC<SkillsVariantProps> = ({
@@ -14,11 +15,13 @@ export const SkillsTags: React.FC<SkillsVariantProps> = ({
   editable = false,
 }) => {
   const { skills } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   const tagStyle: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
-    fontSize: skills.badge?.fontSize || '12px',
+    fontSize: scaleFontSize(skills.badge?.fontSize || '12px'),
     fontWeight: 500,
     padding: skills.badge?.padding || '4px 10px',
     borderRadius: '4px',

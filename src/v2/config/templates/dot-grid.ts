@@ -24,7 +24,7 @@ export const dotGridConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.1,
       letterSpacing: '-0.02em',
@@ -93,9 +93,9 @@ export const dotGridConfig: TemplateConfig = createTemplateConfig({
     sectionGap: '18px',
     itemGap: '12px',
     headingToContent: '8px',
-    bulletGap: '3px',
-    contactGap: '8px',
-    skillGap: '6px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

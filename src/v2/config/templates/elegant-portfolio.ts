@@ -24,14 +24,14 @@ export const elegantPortfolioConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.02em',
       color: '#1f2937',
     },
     title: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.02em',
@@ -46,19 +46,19 @@ export const elegantPortfolioConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1f2937',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: ACCENT_COLOR,
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -85,17 +85,17 @@ export const elegantPortfolioConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '28px',
+      top: '32px',
       right: '32px',
-      bottom: '28px',
+      bottom: '32px',
       left: '32px',
     },
     sectionGap: '18px',
-    itemGap: '14px',
-    headingToContent: '10px',
+    itemGap: '12px',
+    headingToContent: '8px',
     bulletGap: '4px',
-    contactGap: '8px',
-    skillGap: '6px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

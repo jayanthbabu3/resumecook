@@ -12,6 +12,7 @@ import React from 'react';
 import { Plus, X } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 import type { SkillItem } from '../../../../types/resumeData';
 
@@ -35,6 +36,8 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
 }) => {
   const { typography, colors } = config;
   const { addArrayItem, removeArrayItem } = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   // Group skills by category maintaining insertion order - use 'General' as default to match form editor
   const grouped = React.useMemo(() => {
@@ -77,7 +80,7 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
   const tableStyle: React.CSSProperties = {
     width: '100%',
     borderCollapse: 'collapse',
-    fontSize: typography.body.fontSize,
+    fontSize: scaleFontSize(typography.body.fontSize),
     lineHeight: typography.body.lineHeight,
     border: getBorderStyle(),
   };
@@ -85,7 +88,7 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
   const headerCellStyle: React.CSSProperties = {
     padding: '8px 12px',
     fontWeight: 700,
-    fontSize: typography.small?.fontSize || '11px',
+    fontSize: scaleFontSize(typography.small?.fontSize || '11px'),
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
     color: colors.text.muted,
@@ -103,7 +106,7 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
     verticalAlign: 'top',
     whiteSpace: 'nowrap',
     width: '160px',
-    fontSize: typography.body.fontSize,
+    fontSize: scaleFontSize(typography.body.fontSize),
   };
 
   const skillsCellStyle: React.CSSProperties = {

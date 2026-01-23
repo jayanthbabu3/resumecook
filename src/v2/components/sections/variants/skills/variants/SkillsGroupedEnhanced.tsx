@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 import { getPillTextColor } from '../utils';
 
@@ -24,6 +25,8 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
 }) => {
   const { typography, skills } = config;
   const { addArrayItem, removeArrayItem } = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -42,7 +45,7 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
   const pillStyle: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
-    fontSize: skills?.badge?.fontSize || '11px',
+    fontSize: scaleFontSize(skills?.badge?.fontSize || '11px'),
     fontWeight: 500,
     padding: skills?.badge?.padding || '3px 10px',
     borderRadius: '9999px',
@@ -88,7 +91,7 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
         <div key={category}>
           <h4
             style={{
-              fontSize: typography.body.fontSize,
+              fontSize: scaleFontSize(typography.body.fontSize),
               fontWeight: 600,
               color: accentColor,
               marginBottom: '10px',
@@ -110,7 +113,7 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
                         <InlineEditableText
                           path={`skills.${skillIndex}.name`}
                           value={skill.name}
-                          style={{ fontSize: skills?.badge?.fontSize || '11px' }}
+                          style={{ fontSize: scaleFontSize(skills?.badge?.fontSize || '11px') }}
                           placeholder="Skill"
                         />
                       ) : (

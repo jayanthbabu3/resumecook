@@ -16,14 +16,14 @@ export const backendPrecisionConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '34px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.1,
       letterSpacing: '-0.02em',
       color: '#ffffff',
     },
     title: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.08em',
@@ -31,7 +31,7 @@ export const backendPrecisionConfig: TemplateConfig = createTemplateConfig({
       color: '#5eead4', // Teal accent
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.15em',
@@ -39,31 +39,31 @@ export const backendPrecisionConfig: TemplateConfig = createTemplateConfig({
       color: '#0d9488',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#134e4a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#0d9488',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#64748b',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#334155',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#ccfbf1',
@@ -78,15 +78,15 @@ export const backendPrecisionConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '0',
+      top: '0px',
       right: '32px',
       bottom: '32px',
       left: '32px',
     },
-    sectionGap: '20px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '5px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
     contactGap: '12px',
     skillGap: '8px',
   },

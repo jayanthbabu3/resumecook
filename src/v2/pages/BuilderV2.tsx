@@ -56,6 +56,7 @@ import { ResumeForm } from '@/components/resume/ResumeForm';
 import { StyleOptionsPanelV2 } from '../components/StyleOptionsPanelV2';
 import SectionReorderDialog from '../components/SectionReorderDialog';
 import { AddSectionModal, ADDABLE_SECTIONS } from '../components/AddSectionModal';
+import { ManageSectionsModal } from '../components/ManageSectionsModal';
 import { FontSelector, RESUME_FONTS } from '../components/FontSelector';
 
 import { ResumeRenderer } from '../components/ResumeRenderer';
@@ -130,6 +131,8 @@ export const BuilderV2: React.FC = () => {
   const [editorMode, setEditorMode] = useState<'preview' | 'live' | 'form'>('form');
   const [sectionOverrides, setSectionOverrides] = useState<Record<string, any>>({});
   const [showReorder, setShowReorder] = useState(false);
+  // Manage Sections Modal state (unified section management)
+  const [showManageSections, setShowManageSections] = useState(false);
   // Add Section Modal state
   const [showAddSectionModal, setShowAddSectionModal] = useState(false);
   const [addSectionTargetColumn, setAddSectionTargetColumn] = useState<'main' | 'sidebar'>('main');
@@ -1830,6 +1833,50 @@ export const BuilderV2: React.FC = () => {
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }, [config.sections, resumeData.customSections, sectionOverrides, enabledSections]);
 
+  // Get all sections for ManageSectionsModal (includes both enabled and disabled)
+  const getAllSectionsForManage = useCallback(() => {
+    // Apply enabled state and sectionOverrides to config sections
+    const configSections = config.sections
+      .filter(s => s.type !== 'header') // Exclude header from management
+      .map(s => {
+        const override = sectionOverrides[s.id];
+        return {
+          ...s,
+          enabled: enabledSections.includes(s.id),
+          order: override?.order ?? s.order,
+          column: override?.column ?? s.column,
+          variant: override?.variant ?? s.variant,
+        };
+      });
+
+    const configIds = new Set(configSections.map(s => s.id));
+    const configTitles = new Set(configSections.map(s => (s.title || s.id).toLowerCase()));
+
+    // Add dynamic/custom sections from resumeData
+    const dynamicSections: typeof configSections = [];
+    (resumeData.customSections || []).forEach((s, idx) => {
+      const titleLower = (s.title || s.id || '').toLowerCase();
+      if (configIds.has(s.id)) return;
+      if (configTitles.has(titleLower)) return;
+
+      const maxOrder = Math.max(...configSections.map(cs => cs.order ?? 0), 0);
+      dynamicSections.push({
+        type: 'custom',
+        id: s.id,
+        title: s.title || s.id,
+        defaultTitle: s.title || s.id,
+        enabled: enabledSections.includes(s.id),
+        order: sectionOverrides[s.id]?.order ?? maxOrder + idx + 1,
+        column: sectionOverrides[s.id]?.column || 'main',
+        variant: sectionOverrides[s.id]?.variant,
+      });
+    });
+
+    // Return all sections sorted by order
+    return [...configSections, ...dynamicSections]
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  }, [config.sections, resumeData.customSections, sectionOverrides, enabledSections]);
+
   // Get all sections for the form - includes both config sections AND dynamic sections from resumeData
   // This ensures sections like projects, publications, languages etc. show in the form when they have data
   const sectionsForForm = React.useMemo(() => {
@@ -2463,48 +2510,22 @@ export const BuilderV2: React.FC = () => {
                       </TooltipContent>
                     </Tooltip>
 
-                    {/* Sections Button */}
-                    <Popover>
-                      <PopoverTrigger asChild>
+                    {/* Sections Button - Opens Manage Sections Modal */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
                         <button
                           data-tour="sections-menu"
+                          onClick={() => setShowManageSections(true)}
                           className="h-9 w-9 flex items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
                           title="Manage sections"
                         >
                           <Layers className="h-4 w-4" />
                         </button>
-                      </PopoverTrigger>
-                      <PopoverContent align="end" side="bottom" className="w-64 p-2 shadow-xl rounded-xl">
-                        <div className="space-y-1">
-                          <button
-                            onClick={() => {
-                              setShowAddSectionModal(true);
-                            }}
-                            className="w-full h-10 px-3 flex items-center gap-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
-                              <Plus className="h-4 w-4 text-green-600" />
-                            </div>
-                            <div className="text-left">
-                              <div className="text-sm font-medium">Add Section</div>
-                              <div className="text-xs text-gray-500">Add new content sections</div>
-                            </div>
-                          </button>
-                          <button
-                            onClick={() => setShowReorder(true)}
-                            className="w-full h-10 px-3 flex items-center gap-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                              <LayoutGrid className="h-4 w-4 text-blue-600" />
-                            </div>
-                            <div className="text-left">
-                              <div className="text-sm font-medium">Rearrange</div>
-                              <div className="text-xs text-gray-500">Reorder & manage sections</div>
-                            </div>
-                          </button>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        <p>Manage sections</p>
+                      </TooltipContent>
+                    </Tooltip>
 
                     {/* Styling Button */}
                     <Popover>
@@ -2972,33 +2993,14 @@ export const BuilderV2: React.FC = () => {
                 </PopoverContent>
               </Popover>
 
-              {/* Sections */}
-              <Popover>
-                <PopoverTrigger asChild>
-                  <button
-                    className="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
-                    title="Manage sections"
-                  >
-                    <Layers className="h-5 w-5 text-gray-600" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent align="center" side="top" className="w-56 p-2 shadow-xl rounded-xl mb-2">
-                  <button
-                    onClick={() => setShowAddSectionModal(true)}
-                    className="w-full h-10 px-3 flex items-center gap-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                  >
-                    <Plus className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-medium">Add Section</span>
-                  </button>
-                  <button
-                    onClick={() => setShowReorder(true)}
-                    className="w-full h-10 px-3 flex items-center gap-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                  >
-                    <LayoutGrid className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-medium">Rearrange</span>
-                  </button>
-                </PopoverContent>
-              </Popover>
+              {/* Sections - Opens Manage Sections Modal */}
+              <button
+                onClick={() => setShowManageSections(true)}
+                className="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200"
+                title="Manage sections"
+              >
+                <Layers className="h-5 w-5 text-gray-600" />
+              </button>
 
               {/* Sync from Profile */}
               <button
@@ -3106,6 +3108,22 @@ export const BuilderV2: React.FC = () => {
         onOpenChange={setShowReorder}
         sections={getAllSectionsForReorder()}
         onApply={handleApplyReorder}
+      />
+
+      <ManageSectionsModal
+        isOpen={showManageSections}
+        onClose={() => setShowManageSections(false)}
+        sections={getAllSectionsForManage()}
+        enabledSections={enabledSections}
+        sectionLabels={sectionLabels}
+        sectionOverrides={sectionOverrides}
+        onToggleSection={handleToggleSection}
+        onReorderSections={handleApplyReorder}
+        onUpdateLabel={handleUpdateLabel}
+        onChangeVariant={handleChangeSectionVariant}
+        onAddSection={handleAddSection}
+        themeColor={themeColors.primary || '#0891b2'}
+        layoutType={config.layout.type}
       />
 
       <AddSectionModal

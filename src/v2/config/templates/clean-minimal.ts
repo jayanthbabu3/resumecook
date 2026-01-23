@@ -24,7 +24,7 @@ export const cleanMinimalConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '26px',
+      fontSize: '22px',
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: '0',
@@ -86,16 +86,16 @@ export const cleanMinimalConfig: TemplateConfig = createTemplateConfig({
   spacing: {
     pagePadding: {
       top: '32px',
-      right: '36px',
+      right: '32px',
       bottom: '32px',
-      left: '36px',
+      left: '32px',
     },
-    sectionGap: '20px',
+    sectionGap: '18px',
     itemGap: '12px',
     headingToContent: '8px',
-    bulletGap: '3px',
-    contactGap: '6px',
-    skillGap: '6px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

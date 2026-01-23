@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { TemplateConfig } from '../../../../types';
 
 interface SkillsInlineDotsProps {
@@ -23,6 +24,8 @@ export const SkillsInlineDots: React.FC<SkillsInlineDotsProps> = ({
   editable = false,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   // Normalize skills to string array
   const normalizedSkills = skills.map(skill => 
@@ -33,7 +36,7 @@ export const SkillsInlineDots: React.FC<SkillsInlineDotsProps> = ({
 
   return (
     <div style={{
-      fontSize: typography.body.fontSize,
+      fontSize: scaleFontSize(typography.body.fontSize),
       color: '#374151',
       lineHeight: '1.8',
     }}>

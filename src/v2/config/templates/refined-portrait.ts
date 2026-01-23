@@ -16,7 +16,7 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.25,
       letterSpacing: '0.08em',
@@ -24,7 +24,7 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
       textTransform: 'uppercase',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#b07a44',
@@ -40,37 +40,37 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
       color: '#4b5563',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.45,
       color: '#1f2937',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#9a6b3a',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#374151',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#374151',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.45,
       color: '#6b7280',
@@ -79,16 +79,16 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '26px',
-      right: '32px',
-      bottom: '26px',
-      left: '32px',
+      top: '40px',
+      right: '40px',
+      bottom: '40px',
+      left: '40px',
     },
-    sectionGap: '18px',
-    itemGap: '10px',
-    headingToContent: '8px',
-    bulletGap: '5px',
-    contactGap: '14px',
+    sectionGap: '22px',
+    itemGap: '14px',
+    headingToContent: '10px',
+    bulletGap: '4px',
+    contactGap: '16px',
     skillGap: '8px',
   },
 

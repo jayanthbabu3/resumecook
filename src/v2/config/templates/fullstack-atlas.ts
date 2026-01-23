@@ -16,14 +16,14 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '36px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.1,
       letterSpacing: '-0.03em',
       color: '#78350f',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.06em',
@@ -31,7 +31,7 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
       color: '#d97706', // Amber accent
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.14em',
@@ -39,31 +39,31 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
       color: '#d97706',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#78350f',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#d97706',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#92400e',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#44403c',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#92400e',
@@ -78,15 +78,15 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '28px',
+      top: '32px',
       right: '32px',
       bottom: '32px',
       left: '32px',
     },
-    sectionGap: '20px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '5px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
     contactGap: '12px',
     skillGap: '8px',
   },

@@ -16,14 +16,14 @@ export const systemArchitectConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '38px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.1,
       letterSpacing: '-0.03em',
       color: '#1e293b',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.1em',
@@ -31,7 +31,7 @@ export const systemArchitectConfig: TemplateConfig = createTemplateConfig({
       color: '#e11d48', // Rose accent
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.16em',
@@ -39,31 +39,31 @@ export const systemArchitectConfig: TemplateConfig = createTemplateConfig({
       color: '#475569',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#1e293b',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#be123c',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#64748b',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#334155',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#64748b',
@@ -78,16 +78,16 @@ export const systemArchitectConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '36px',
-      right: '36px',
-      bottom: '36px',
-      left: '36px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
-    sectionGap: '22px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '5px',
-    contactGap: '14px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

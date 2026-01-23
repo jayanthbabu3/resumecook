@@ -25,14 +25,14 @@ export const modernEleganceConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '36px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.02em',
       color: '#111827', // Dark charcoal
     },
     title: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.12em',
@@ -40,7 +40,7 @@ export const modernEleganceConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280', // Muted gray
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.08em',
@@ -48,19 +48,19 @@ export const modernEleganceConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#111827',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#4b5563',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: ACCENT_COLOR,
@@ -72,7 +72,7 @@ export const modernEleganceConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     contact: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',
@@ -87,16 +87,16 @@ export const modernEleganceConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '36px',
-      right: '36px',
-      bottom: '36px',
-      left: '36px',
+      top: '40px',
+      right: '40px',
+      bottom: '40px',
+      left: '40px',
     },
     sectionGap: '22px',
-    itemGap: '16px',
-    headingToContent: '14px',
-    bulletGap: '5px',
-    contactGap: '12px',
+    itemGap: '14px',
+    headingToContent: '10px',
+    bulletGap: '4px',
+    contactGap: '16px',
     skillGap: '8px',
   },
 

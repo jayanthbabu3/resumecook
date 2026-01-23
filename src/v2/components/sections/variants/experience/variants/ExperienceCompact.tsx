@@ -10,6 +10,7 @@ import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../../experience/types';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 export const ExperienceCompact: React.FC<ExperienceVariantProps> = ({
   items,
@@ -21,6 +22,8 @@ export const ExperienceCompact: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -56,19 +59,19 @@ export const ExperienceCompact: React.FC<ExperienceVariantProps> = ({
                   value={exp.position}
                   style={{
                     fontWeight: typography.itemTitle.fontWeight,
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     color: typography.itemTitle.color,
                   }}
                   placeholder="Position"
                 />
-                <span style={{ color: typography.dates.color, fontSize: typography.body.fontSize }}>at</span>
+                <span style={{ color: typography.dates.color, fontSize: scaleFontSize(typography.body.fontSize) }}>at</span>
                 <InlineEditableText
                   path={`experience.${index}.company`}
                   value={exp.company}
                   style={{
                     color: accentColor,
                     fontWeight: typography.itemSubtitle.fontWeight,
-                    fontSize: typography.itemSubtitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                   }}
                   placeholder="Company"
                 />
@@ -77,23 +80,23 @@ export const ExperienceCompact: React.FC<ExperienceVariantProps> = ({
               <>
                 <span style={{
                   fontWeight: typography.itemTitle.fontWeight,
-                  fontSize: typography.itemTitle.fontSize,
+                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
                   color: typography.itemTitle.color,
                 }}>
                   {exp.position}
                 </span>
-                <span style={{ color: typography.dates.color, fontSize: typography.body.fontSize }}>at</span>
+                <span style={{ color: typography.dates.color, fontSize: scaleFontSize(typography.body.fontSize) }}>at</span>
                 <span style={{
                   color: accentColor,
                   fontWeight: typography.itemSubtitle.fontWeight,
-                  fontSize: typography.itemSubtitle.fontSize,
+                  fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                 }}>{exp.company}</span>
               </>
             )}
           </div>
 
           <div style={{
-            fontSize: typography.dates.fontSize,
+            fontSize: scaleFontSize(typography.dates.fontSize),
             color: typography.dates.color,
             whiteSpace: 'nowrap',
             flexShrink: 0,

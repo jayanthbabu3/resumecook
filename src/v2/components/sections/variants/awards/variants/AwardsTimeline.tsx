@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, Award } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { AwardsVariantProps } from '../types';
 
 export const AwardsTimeline: React.FC<AwardsVariantProps> = ({
@@ -21,6 +22,8 @@ export const AwardsTimeline: React.FC<AwardsVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -78,7 +81,7 @@ export const AwardsTimeline: React.FC<AwardsVariantProps> = ({
                     path={`awards.${index}.title`}
                     value={award.title}
                     style={{
-                      fontSize: typography.itemTitle.fontSize,
+                      fontSize: scaleFontSize(typography.itemTitle.fontSize),
                       fontWeight: typography.itemTitle.fontWeight,
                       color: typography.itemTitle.color,
                     }}
@@ -86,7 +89,7 @@ export const AwardsTimeline: React.FC<AwardsVariantProps> = ({
                   />
                 ) : (
                   <span style={{
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     fontWeight: typography.itemTitle.fontWeight,
                     color: typography.itemTitle.color,
                   }}>
@@ -96,7 +99,7 @@ export const AwardsTimeline: React.FC<AwardsVariantProps> = ({
               </div>
 
               <div style={{
-                fontSize: typography.body.fontSize,
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: accentColor,
                 fontWeight: 500,
                 marginTop: '2px',
@@ -116,7 +119,7 @@ export const AwardsTimeline: React.FC<AwardsVariantProps> = ({
 
               {(award.description || editable) && (
                 <div style={{
-                  fontSize: typography.body.fontSize,
+                  fontSize: scaleFontSize(typography.body.fontSize),
                   color: typography.body.color,
                   marginTop: '6px',
                   marginLeft: '22px',
@@ -138,7 +141,7 @@ export const AwardsTimeline: React.FC<AwardsVariantProps> = ({
 
             {award.date && (
               <div style={{
-                fontSize: typography.dates.fontSize,
+                fontSize: scaleFontSize(typography.dates.fontSize),
                 color: typography.dates.color,
                 whiteSpace: 'nowrap',
                 padding: '2px 8px',

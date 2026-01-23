@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { EducationVariantProps } from '../types';
 
 export const EducationStandard: React.FC<EducationVariantProps> = ({
@@ -20,6 +21,8 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -47,8 +50,8 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
                     path={`education.${index}.degree`}
                     value={edu.degree}
                     as="h3"
-                    style={{ 
-                      fontSize: typography.itemTitle.fontSize, 
+                    style={{
+                      fontSize: scaleFontSize(typography.itemTitle.fontSize),
                       fontWeight: typography.itemTitle.fontWeight,
                       color: typography.itemTitle.color,
                       margin: 0,
@@ -61,8 +64,8 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
                       <InlineEditableText
                         path={`education.${index}.field`}
                         value={edu.field}
-                        style={{ 
-                          fontSize: typography.itemTitle.fontSize, 
+                        style={{
+                          fontSize: scaleFontSize(typography.itemTitle.fontSize),
                           fontWeight: typography.itemTitle.fontWeight,
                           color: typography.itemTitle.color,
                         }}
@@ -72,8 +75,8 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
                   )}
                 </div>
               ) : (
-                <h3 style={{ 
-                  fontSize: typography.itemTitle.fontSize, 
+                <h3 style={{
+                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
                   fontWeight: typography.itemTitle.fontWeight,
                   color: typography.itemTitle.color,
                   margin: 0,
@@ -82,8 +85,8 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
                 </h3>
               )}
               
-              <div style={{ 
-                fontSize: typography.body.fontSize, 
+              <div style={{
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: accentColor,
                 fontWeight: 500,
                 marginTop: '2px',
@@ -117,8 +120,8 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
               </div>
             </div>
             
-            <div style={{ 
-              fontSize: typography.dates?.fontSize || '13px', 
+            <div style={{
+              fontSize: scaleFontSize(typography.dates?.fontSize || '10px'),
               color: typography.dates?.color || '#6b7280',
               whiteSpace: 'nowrap',
               marginLeft: '16px',
@@ -165,7 +168,7 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
           {/* GPA */}
           {(edu.gpa || editable) && (
             <div style={{ 
-              fontSize: typography.body.fontSize, 
+              fontSize: scaleFontSize(typography.body.fontSize), 
               color: typography.body.color,
               marginTop: '4px',
             }}>
@@ -185,7 +188,7 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
           {/* Honors */}
           {edu.honors && edu.honors.length > 0 && (
             <div style={{ 
-              fontSize: typography.body.fontSize, 
+              fontSize: scaleFontSize(typography.body.fontSize), 
               color: typography.body.color,
               marginTop: '4px',
             }}>
@@ -197,7 +200,7 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
           {/* Coursework */}
           {edu.coursework && edu.coursework.length > 0 && (
             <div style={{ 
-              fontSize: typography.body.fontSize, 
+              fontSize: scaleFontSize(typography.body.fontSize), 
               color: typography.body.color,
               marginTop: '4px',
             }}>
@@ -209,7 +212,7 @@ export const EducationStandard: React.FC<EducationVariantProps> = ({
           {/* Minor */}
           {edu.minor && (
             <div style={{ 
-              fontSize: typography.body.fontSize, 
+              fontSize: scaleFontSize(typography.body.fontSize), 
               color: typography.body.color,
               marginTop: '4px',
             }}>

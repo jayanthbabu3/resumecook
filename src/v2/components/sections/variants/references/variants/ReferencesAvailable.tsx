@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ReferencesVariantProps } from '../types';
 
 export const ReferencesAvailable: React.FC<ReferencesVariantProps> = ({
@@ -13,6 +14,8 @@ export const ReferencesAvailable: React.FC<ReferencesVariantProps> = ({
   accentColor,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   return (
     <div
@@ -21,7 +24,7 @@ export const ReferencesAvailable: React.FC<ReferencesVariantProps> = ({
         backgroundColor: `${accentColor}06`,
         borderRadius: '6px',
         borderLeft: `2px solid ${accentColor}`,
-        fontSize: typography.body.fontSize,
+        fontSize: scaleFontSize(typography.body.fontSize),
         color: typography.body.color,
         fontStyle: 'italic',
       }}

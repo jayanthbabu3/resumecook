@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from './SkillsVariantRenderer';
 import { getPillTextColor } from './utils';
 
@@ -21,6 +22,8 @@ export const SkillsGrouped: React.FC<SkillsGroupedProps> = ({
   columns = 1,
 }) => {
   const { typography, skills } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length) return null;
 
@@ -39,7 +42,7 @@ export const SkillsGrouped: React.FC<SkillsGroupedProps> = ({
   const pillStyle: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
-    fontSize: skills.badge?.fontSize || '11px',
+    fontSize: scaleFontSize(skills.badge?.fontSize || '11px'),
     fontWeight: 500,
     padding: skills.badge?.padding || '3px 10px',
     borderRadius: '9999px',
@@ -79,7 +82,7 @@ export const SkillsGrouped: React.FC<SkillsGroupedProps> = ({
         <div key={category}>
           <h4
             style={{
-              fontSize: typography.body.fontSize,
+              fontSize: scaleFontSize(typography.body.fontSize),
               fontWeight: 600,
               color: accentColor,
               marginBottom: '8px',

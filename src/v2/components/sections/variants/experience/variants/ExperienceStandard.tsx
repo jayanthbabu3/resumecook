@@ -10,6 +10,7 @@ import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../../experience/types';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
   items,
@@ -23,6 +24,8 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing, experience } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -59,8 +62,8 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
                   path={`experience.${index}.position`}
                   value={exp.position}
                   as="h3"
-                  style={{ 
-                    fontSize: typography.itemTitle.fontSize, 
+                  style={{
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     fontWeight: typography.itemTitle.fontWeight,
                     color: typography.itemTitle.color,
                     margin: 0,
@@ -68,8 +71,8 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
                   placeholder="Position Title"
                 />
               ) : (
-                <h3 style={{ 
-                  fontSize: typography.itemTitle.fontSize, 
+                <h3 style={{
+                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
                   fontWeight: typography.itemTitle.fontWeight,
                   color: typography.itemTitle.color,
                   margin: 0,
@@ -79,7 +82,7 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
               )}
               
               <div style={{
-                fontSize: typography.body.fontSize,
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: typography.itemSubtitle?.color || '#4b5563',
                 fontWeight: 500,
                 marginTop: '2px',
@@ -113,8 +116,8 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
               </div>
             </div>
             
-            <div style={{ 
-              fontSize: typography.dates?.fontSize || '13px', 
+            <div style={{
+              fontSize: scaleFontSize(typography.dates?.fontSize || '13px'),
               color: typography.dates?.color || '#6b7280',
               whiteSpace: 'nowrap',
               marginLeft: '16px',
@@ -148,7 +151,7 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
           {/* Description */}
           {(exp.description || editable) && (
             <div style={{
-              fontSize: typography.body.fontSize,
+              fontSize: scaleFontSize(typography.body.fontSize),
               color: typography.body.color,
               margin: '8px 0',
               lineHeight: typography.body.lineHeight,
@@ -179,7 +182,7 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
                   key={bulletIndex}
                   className="group/bullet relative"
                   style={{
-                    fontSize: typography.body.fontSize,
+                    fontSize: scaleFontSize(typography.body.fontSize),
                     color: typography.body.color,
                     lineHeight: typography.body.lineHeight,
                     marginBottom: spacing.bulletGap || '4px',

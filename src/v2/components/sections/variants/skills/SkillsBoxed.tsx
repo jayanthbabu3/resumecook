@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { TemplateConfig } from '../../../../types';
 import type { SkillItem } from '../../../../types/resumeData';
 
@@ -24,6 +25,8 @@ export const SkillsBoxed: React.FC<SkillsBoxedProps> = ({
   editable = false,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   // Normalize skills to array of names
   const normalizedSkills = skills.map(skill => {
@@ -44,7 +47,7 @@ export const SkillsBoxed: React.FC<SkillsBoxedProps> = ({
           key={index}
           style={{
             padding: '8px 14px',
-            fontSize: typography.body.fontSize,
+            fontSize: scaleFontSize(typography.body.fontSize),
             fontWeight: 400,
             color: typography.body.color || '#374151',
             backgroundColor: '#ffffff',

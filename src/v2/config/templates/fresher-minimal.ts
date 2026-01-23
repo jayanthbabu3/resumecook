@@ -16,20 +16,20 @@ export const fresherMinimalConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.02em',
       color: '#1e293b',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#0ea5e9', // Will be overridden by accent
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.08em',
@@ -37,31 +37,31 @@ export const fresherMinimalConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1e293b',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#0ea5e9', // Accent color for subtitles
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#64748b',
     },
     body: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#475569',
     },
     contact: {
-      fontSize: '13px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#475569',
@@ -75,13 +75,13 @@ export const fresherMinimalConfig: TemplateConfig = createTemplateConfig({
   },
 
   spacing: {
-    pagePadding: { top: '0', right: '28px', bottom: '24px', left: '28px' },
-    sectionGap: '18px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '4px',
-    contactGap: '14px',
-    skillGap: '8px',
+    pagePadding: { top: '24px', right: '28px', bottom: '24px', left: '28px' },
+    sectionGap: '14px',
+    itemGap: '10px',
+    headingToContent: '6px',
+    bulletGap: '3px',
+    contactGap: '8px',
+    skillGap: '6px',
   },
 
   layout: {

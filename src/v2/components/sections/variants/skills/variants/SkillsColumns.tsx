@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 
 interface SkillsColumnsProps extends SkillsVariantProps {
@@ -23,6 +24,8 @@ export const SkillsColumns: React.FC<SkillsColumnsProps> = ({
 }) => {
   const { typography } = config;
   const { addArrayItem, removeArrayItem } = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -61,11 +64,11 @@ export const SkillsColumns: React.FC<SkillsColumnsProps> = ({
             {colItems.map((skill) => {
               const skillIndex = items.findIndex(s => s.id === skill.id);
               return (
-                <li 
+                <li
                   key={skill.id}
                   className="group relative"
-                  style={{ 
-                    fontSize: typography.body.fontSize,
+                  style={{
+                    fontSize: scaleFontSize(typography.body.fontSize),
                     color: typography.body.color,
                     marginBottom: '4px',
                     lineHeight: 1.5,
@@ -75,7 +78,7 @@ export const SkillsColumns: React.FC<SkillsColumnsProps> = ({
                     <InlineEditableText
                       path={`skills.${skillIndex}.name`}
                       value={skill.name}
-                      style={{ fontSize: typography.body.fontSize }}
+                      style={{ fontSize: scaleFontSize(typography.body.fontSize) }}
                       placeholder="Skill"
                     />
                   ) : (

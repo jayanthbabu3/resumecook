@@ -24,7 +24,7 @@ export const inkBlotConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.1,
       letterSpacing: '-0.02em',
@@ -85,17 +85,17 @@ export const inkBlotConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '36px',
-      right: '36px',
-      bottom: '36px',
-      left: '36px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
-    sectionGap: '20px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '3px',
-    contactGap: '8px',
-    skillGap: '6px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

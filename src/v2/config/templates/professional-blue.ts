@@ -16,7 +16,7 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '0.02em',
@@ -30,7 +30,7 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
       color: '#4b5563',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.08em',
@@ -44,31 +44,31 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
       color: '#1f2937',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1e3a5f',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#374151',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -77,17 +77,17 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '28px',
-      right: '28px',
-      bottom: '28px',
-      left: '28px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
-    sectionGap: '8px',
-    itemGap: '8px',
-    headingToContent: '6px',
-    bulletGap: '2px',
-    contactGap: '8px',
-    skillGap: '4px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   layout: {

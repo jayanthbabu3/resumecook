@@ -26,14 +26,14 @@ export const projectManagerProConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '42px',
+      fontSize: '22px',
       fontWeight: 400,
       lineHeight: 1.1,
       letterSpacing: '-0.02em',
       color: '#1a1a1a', // Dark name, not accent color
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       letterSpacing: '0.08em',
@@ -49,7 +49,7 @@ export const projectManagerProConfig: TemplateConfig = createTemplateConfig({
       color: '#1a1a1a',
     },
     itemTitle: {
-      fontSize: '11px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       letterSpacing: '0.06em',
@@ -57,13 +57,13 @@ export const projectManagerProConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR, // Position title in accent color
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#1a1a1a', // Company name in bold black
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -95,11 +95,11 @@ export const projectManagerProConfig: TemplateConfig = createTemplateConfig({
       bottom: '32px',
       left: '40px', // Extra left padding for accent bar
     },
-    sectionGap: '24px',
-    itemGap: '18px',
-    headingToContent: '14px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
     bulletGap: '4px',
-    contactGap: '10px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

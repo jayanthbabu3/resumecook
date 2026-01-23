@@ -11,6 +11,7 @@ import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../../experience/types';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 // Get company initials for the icon
 const getCompanyInitial = (company: string): string => {
@@ -63,6 +64,8 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -121,7 +124,7 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
                     value={exp.position}
                     as="h3"
                     style={{
-                      fontSize: typography.itemTitle.fontSize,
+                      fontSize: scaleFontSize(typography.itemTitle.fontSize),
                       fontWeight: 700,
                       color: accentColor,
                       margin: 0,
@@ -133,7 +136,7 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
                   />
                 ) : (
                   <h3 style={{
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     fontWeight: 700,
                     color: accentColor,
                     margin: 0,
@@ -148,7 +151,7 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
 
               {/* Dates on right */}
               <div style={{
-                fontSize: typography.dates.fontSize,
+                fontSize: scaleFontSize(typography.dates.fontSize),
                 color: typography.dates.color,
                 whiteSpace: 'nowrap',
                 marginLeft: '16px',
@@ -182,7 +185,7 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
 
             {/* Company & Location Row */}
             <div style={{
-              fontSize: typography.itemSubtitle.fontSize,
+              fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
               fontWeight: typography.itemSubtitle.fontWeight || 700,
               color: typography.itemSubtitle.color || '#1a1a1a',
               marginBottom: '8px',
@@ -233,7 +236,7 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
                     key={bulletIndex}
                     className="group/bullet"
                     style={{
-                      fontSize: typography.body.fontSize,
+                      fontSize: scaleFontSize(typography.body.fontSize),
                       color: typography.body.color,
                       lineHeight: typography.body.lineHeight,
                       textAlign: 'justify',

@@ -24,7 +24,7 @@ export const minimalEdgeConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 600,
       lineHeight: 1.15,
       letterSpacing: '-0.02em',
@@ -87,15 +87,15 @@ export const minimalEdgeConfig: TemplateConfig = createTemplateConfig({
   spacing: {
     pagePadding: {
       top: '32px',
-      right: '40px',
+      right: '32px',
       bottom: '32px',
-      left: '40px',
+      left: '32px',
     },
-    sectionGap: '22px',
-    itemGap: '16px',
-    headingToContent: '12px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
     bulletGap: '4px',
-    contactGap: '8px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

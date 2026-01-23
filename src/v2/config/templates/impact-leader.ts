@@ -23,21 +23,21 @@ export const impactLeaderConfig: TemplateConfig = createTemplateConfig({
   // Typography - Modern, professional hierarchy
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.15,
       letterSpacing: '-0.025em',
       color: '#0f172a', // Slate-900
     },
     title: {
-      fontSize: '15px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.01em',
       color: '#0d9488', // Teal-600
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.1em',
@@ -45,56 +45,56 @@ export const impactLeaderConfig: TemplateConfig = createTemplateConfig({
       color: '#0f172a', // Slate-900
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1e293b', // Slate-800
     },
     itemSubtitle: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#0d9488', // Teal-600
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#64748b', // Slate-500
     },
     body: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#334155', // Slate-700
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#475569', // Slate-600
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#64748b', // Slate-500
     },
   },
 
-  // Spacing - Generous for excellent readability
+  // Spacing - Standard spacing
   spacing: {
     pagePadding: {
-      top: '36px',
-      right: '36px',
-      bottom: '36px',
-      left: '36px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
-    sectionGap: '24px',
-    itemGap: '16px',
-    headingToContent: '14px',
-    bulletGap: '5px',
-    contactGap: '16px',
+    sectionGap: '18px',
+    itemGap: '12px',
+    headingToContent: '8px',
+    bulletGap: '4px',
+    contactGap: '12px',
     skillGap: '8px',
   },
 

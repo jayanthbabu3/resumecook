@@ -24,7 +24,7 @@ export const refinedSerifConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 400,
       lineHeight: 1.1,
       letterSpacing: '0.02em',
@@ -86,17 +86,17 @@ export const refinedSerifConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '36px',
+      top: '40px',
       right: '40px',
-      bottom: '36px',
+      bottom: '40px',
       left: '40px',
     },
     sectionGap: '22px',
     itemGap: '14px',
     headingToContent: '10px',
-    bulletGap: '3px',
-    contactGap: '8px',
-    skillGap: '6px',
+    bulletGap: '4px',
+    contactGap: '16px',
+    skillGap: '8px',
   },
 
   layout: {

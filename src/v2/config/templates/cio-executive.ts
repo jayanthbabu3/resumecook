@@ -20,20 +20,20 @@ export const cioExecutiveConfig: TemplateConfig = createTemplateConfig({
   // Typography
   typography: {
     name: {
-      fontSize: '34px',
+      fontSize: '22px',
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: '-0.01em',
       color: '#1f2937',
     },
     title: {
-      fontSize: '15px',
+      fontSize: '12px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     sectionHeading: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.05em',
@@ -41,37 +41,37 @@ export const cioExecutiveConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1f2937',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#9ca3af',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#4b5563',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#374151',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -81,17 +81,17 @@ export const cioExecutiveConfig: TemplateConfig = createTemplateConfig({
   // Spacing
   spacing: {
     pagePadding: {
-      top: '24px',
-      right: '28px',
-      bottom: '24px',
-      left: '28px',
+      top: '32px',
+      right: '32px',
+      bottom: '32px',
+      left: '32px',
     },
     sectionGap: '18px',
     itemGap: '12px',
-    headingToContent: '10px',
+    headingToContent: '8px',
     bulletGap: '4px',
-    contactGap: '16px',
-    skillGap: '6px',
+    contactGap: '12px',
+    skillGap: '8px',
   },
 
   // Layout - Two column

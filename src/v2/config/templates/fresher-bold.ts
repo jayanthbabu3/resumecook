@@ -19,14 +19,14 @@ export const fresherBoldConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '36px',
+      fontSize: '22px',
       fontWeight: 800,
       lineHeight: 1.1,
       letterSpacing: '-0.02em',
       color: '#ffffff',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0.05em',
@@ -42,31 +42,31 @@ export const fresherBoldConfig: TemplateConfig = createTemplateConfig({
       color: '#1e293b',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 700,
       lineHeight: 1.4,
       color: '#0f172a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#3b82f6',
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#64748b',
     },
     body: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#334155',
     },
     contact: {
-      fontSize: '13px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#cbd5e1',
@@ -80,12 +80,12 @@ export const fresherBoldConfig: TemplateConfig = createTemplateConfig({
   },
 
   spacing: {
-    pagePadding: { top: '0', right: '32px', bottom: '32px', left: '32px' },
-    sectionGap: '20px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '4px',
-    contactGap: '12px',
+    pagePadding: { top: '0px', right: '28px', bottom: '24px', left: '28px' },
+    sectionGap: '14px',
+    itemGap: '10px',
+    headingToContent: '6px',
+    bulletGap: '3px',
+    contactGap: '8px',
     skillGap: '6px',
   },
 

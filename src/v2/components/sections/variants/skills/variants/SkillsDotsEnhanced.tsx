@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 
 export const SkillsDotsEnhanced: React.FC<SkillsVariantProps> = ({
@@ -22,6 +23,8 @@ export const SkillsDotsEnhanced: React.FC<SkillsVariantProps> = ({
 }) => {
   const { typography } = config;
   const inlineEdit = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [hoverLevel, setHoverLevel] = useState<number | null>(null);
 
@@ -70,14 +73,14 @@ export const SkillsDotsEnhanced: React.FC<SkillsVariantProps> = ({
                     path={`skills.${index}.name`}
                     value={skill.name}
                     style={{
-                      fontSize: typography.body.fontSize,
+                      fontSize: scaleFontSize(typography.body.fontSize),
                       color: typography.body.color,
                     }}
                     placeholder="Skill name"
                   />
                 ) : (
                   <span style={{
-                    fontSize: typography.body.fontSize,
+                    fontSize: scaleFontSize(typography.body.fontSize),
                     color: typography.body.color,
                   }}>
                     {skill.name}

@@ -16,7 +16,7 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',      // 18-24px range
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: '0.02em',
@@ -24,13 +24,13 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
       textTransform: 'none',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',      // Professional title
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#4b5563',
     },
     sectionHeading: {
-      fontSize: '11px',
+      fontSize: '11px',      // 11-12px range
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.08em',
@@ -38,37 +38,37 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
       color: '#111827',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',      // 11-13px range
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#111827',
     },
     itemSubtitle: {
-      fontSize: '13px',
+      fontSize: '11px',      // Company/school names
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#4b5563',
     },
     dates: {
-      fontSize: '13px',
+      fontSize: '10px',      // 10-11px range
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '13px',
+      fontSize: '11px',      // 10-12px (11px ideal)
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#374151',
     },
     contact: {
-      fontSize: '13px',
+      fontSize: '10px',      // Contact info
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',
     },
     small: {
-      fontSize: '12px',
+      fontSize: '10px',      // Meta info
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -82,10 +82,10 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
       bottom: '40px',
       left: '40px',
     },
-    sectionGap: '16px',
-    itemGap: '12px',
-    headingToContent: '8px',
-    bulletGap: '3px',
+    sectionGap: '22px',
+    itemGap: '14px',
+    headingToContent: '10px',
+    bulletGap: '4px',
     contactGap: '16px',
     skillGap: '8px',
   },

@@ -16,7 +16,7 @@ export const minimalConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '32px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.1,
       letterSpacing: '-0.015em',
@@ -24,7 +24,7 @@ export const minimalConfig: TemplateConfig = createTemplateConfig({
       textTransform: 'none',
     },
     title: {
-      fontSize: '15px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#2563eb',
@@ -38,37 +38,37 @@ export const minimalConfig: TemplateConfig = createTemplateConfig({
       color: '#0f172a',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#0f172a',
     },
     itemSubtitle: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#2563eb',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '13px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#1f2937',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#475569',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -77,16 +77,16 @@ export const minimalConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '32px',
-      right: '32px',
-      bottom: '32px',
-      left: '32px',
+      top: '40px',
+      right: '40px',
+      bottom: '40px',
+      left: '40px',
     },
     sectionGap: '22px',
     itemGap: '14px',
     headingToContent: '10px',
-    bulletGap: '5px',
-    contactGap: '12px',
+    bulletGap: '4px',
+    contactGap: '16px',
     skillGap: '8px',
   },
 

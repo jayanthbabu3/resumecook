@@ -7,6 +7,7 @@
 import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 
 interface SkillsCompactProps extends SkillsVariantProps {
@@ -23,6 +24,8 @@ export const SkillsCompact: React.FC<SkillsCompactProps> = ({
   separator = 'bullet',
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -40,8 +43,8 @@ export const SkillsCompact: React.FC<SkillsCompactProps> = ({
             <InlineEditableText
               path={`skills.${index}.name`}
               value={skill.name}
-              style={{ 
-                fontSize: typography.body.fontSize,
+              style={{
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: typography.body.color,
               }}
               placeholder="Skill"
@@ -74,8 +77,8 @@ export const SkillsCompact: React.FC<SkillsCompactProps> = ({
   }
 
   return (
-    <div style={{ 
-      fontSize: typography.body.fontSize,
+    <div style={{
+      fontSize: scaleFontSize(typography.body.fontSize),
       color: typography.body.color,
       lineHeight: 1.6,
     }}>

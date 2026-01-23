@@ -10,6 +10,7 @@ import { X, Plus, MapPin, Calendar } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../../experience/types';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 // Get company initials for the icon
 const getCompanyInitial = (company: string): string => {
@@ -29,6 +30,8 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -99,7 +102,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                   value={exp.position}
                   as="h3"
                   style={{
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     fontWeight: 700,
                     color: typography.itemTitle.color,
                     margin: 0,
@@ -109,7 +112,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                 />
               ) : (
                 <h3 style={{
-                  fontSize: typography.itemTitle.fontSize,
+                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
                   fontWeight: 700,
                   color: typography.itemTitle.color,
                   margin: 0,
@@ -124,7 +127,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                   path={`experience.${index}.company`}
                   value={exp.company}
                   style={{
-                    fontSize: typography.itemSubtitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                     color: accentColor,
                     fontWeight: 600,
                     marginTop: '2px',
@@ -133,7 +136,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                 />
               ) : (
                 <div style={{
-                  fontSize: typography.itemSubtitle.fontSize,
+                  fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
                   color: accentColor,
                   fontWeight: 600,
                   marginTop: '2px',
@@ -149,7 +152,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
               flexWrap: 'wrap',
               gap: '12px',
               marginBottom: '10px',
-              fontSize: typography.small.fontSize,
+              fontSize: scaleFontSize(typography.small?.fontSize || typography.dates.fontSize),
               color: typography.dates.color,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -205,7 +208,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
             {/* Description */}
             {(exp.description || editable) && (
               <div style={{
-                fontSize: typography.body.fontSize,
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: typography.body.color,
                 marginBottom: '8px',
                 lineHeight: typography.body.lineHeight,
@@ -232,7 +235,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                     key={bulletIndex}
                     className="group/bullet"
                     style={{
-                      fontSize: typography.body.fontSize,
+                      fontSize: scaleFontSize(typography.body.fontSize),
                       color: typography.body.color,
                       lineHeight: typography.body.lineHeight,
                       textAlign: 'justify',

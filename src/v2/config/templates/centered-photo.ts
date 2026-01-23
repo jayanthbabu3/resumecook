@@ -16,7 +16,7 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '28px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '0.02em',
@@ -24,7 +24,7 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
       textTransform: 'none',
     },
     title: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#6366f1',
@@ -38,37 +38,37 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
       color: '#6366f1',
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1a1a2e',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#6366f1',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#374151',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -77,16 +77,16 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '24px',
-      right: '28px',
-      bottom: '24px',
-      left: '28px',
+      top: '40px',
+      right: '40px',
+      bottom: '40px',
+      left: '40px',
     },
-    sectionGap: '18px',
-    itemGap: '12px',
-    headingToContent: '8px',
+    sectionGap: '22px',
+    itemGap: '14px',
+    headingToContent: '10px',
     bulletGap: '4px',
-    contactGap: '14px',
+    contactGap: '16px',
     skillGap: '8px',
   },
 

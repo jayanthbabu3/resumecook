@@ -16,7 +16,7 @@ export const frontendHorizonConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.15,
       letterSpacing: '0.02em',
@@ -24,7 +24,7 @@ export const frontendHorizonConfig: TemplateConfig = createTemplateConfig({
       textTransform: 'uppercase',
     },
     title: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#bae6fd',
@@ -38,37 +38,37 @@ export const frontendHorizonConfig: TemplateConfig = createTemplateConfig({
       color: '#0f172a',
     },
     itemTitle: {
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#0f172a',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#2563eb',
     },
     dates: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#64748b',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#1f2937',
     },
     contact: {
-      fontSize: '12px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#e0f2fe',
     },
     small: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#94a3b8',
@@ -79,13 +79,13 @@ export const frontendHorizonConfig: TemplateConfig = createTemplateConfig({
     pagePadding: {
       top: '0px',
       right: '32px',
-      bottom: '28px',
+      bottom: '32px',
       left: '32px',
     },
-    sectionGap: '20px',
+    sectionGap: '18px',
     itemGap: '12px',
     headingToContent: '8px',
-    bulletGap: '5px',
+    bulletGap: '4px',
     contactGap: '12px',
     skillGap: '8px',
   },

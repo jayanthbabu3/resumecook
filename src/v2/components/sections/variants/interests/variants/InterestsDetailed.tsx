@@ -8,6 +8,7 @@
 import React from 'react';
 import { X, Plus, Heart } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { InterestsVariantProps } from '../types';
 
 export const InterestsDetailed: React.FC<InterestsVariantProps> = ({
@@ -19,6 +20,8 @@ export const InterestsDetailed: React.FC<InterestsVariantProps> = ({
   onRemoveInterest,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -62,7 +65,7 @@ export const InterestsDetailed: React.FC<InterestsVariantProps> = ({
                   value={interest.name}
                   style={{
                     fontWeight: 600,
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     color: typography.itemTitle.color,
                   }}
                   placeholder="Interest/Hobby"
@@ -71,7 +74,7 @@ export const InterestsDetailed: React.FC<InterestsVariantProps> = ({
                 <div
                   style={{
                     fontWeight: 600,
-                    fontSize: typography.itemTitle.fontSize,
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
                     color: typography.itemTitle.color,
                   }}
                 >
@@ -83,7 +86,7 @@ export const InterestsDetailed: React.FC<InterestsVariantProps> = ({
                 <div
                   style={{
                     marginTop: '4px',
-                    fontSize: typography.body.fontSize,
+                    fontSize: scaleFontSize(typography.body.fontSize),
                     color: typography.body.color,
                     lineHeight: typography.body.lineHeight,
                   }}

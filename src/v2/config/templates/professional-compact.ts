@@ -24,7 +24,7 @@ export const professionalCompactConfig: TemplateConfig = createTemplateConfig({
 
   typography: {
     name: {
-      fontSize: '30px',
+      fontSize: '22px',
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.01em',
@@ -46,19 +46,19 @@ export const professionalCompactConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     itemTitle: {
-      fontSize: '13px',
+      fontSize: '12px',
       fontWeight: 600,
       lineHeight: 1.4,
       color: '#1f2937',
     },
     itemSubtitle: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: ACCENT_COLOR,
     },
     dates: {
-      fontSize: '11px',
+      fontSize: '10px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: '#6b7280',
@@ -85,15 +85,15 @@ export const professionalCompactConfig: TemplateConfig = createTemplateConfig({
 
   spacing: {
     pagePadding: {
-      top: '28px',
-      right: '32px',
-      bottom: '28px',
-      left: '32px',
+      top: '24px',
+      right: '28px',
+      bottom: '24px',
+      left: '28px',
     },
-    sectionGap: '18px',
-    itemGap: '14px',
-    headingToContent: '10px',
-    bulletGap: '4px',
+    sectionGap: '14px',
+    itemGap: '10px',
+    headingToContent: '6px',
+    bulletGap: '3px',
     contactGap: '8px',
     skillGap: '6px',
   },
