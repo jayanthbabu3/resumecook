@@ -45,7 +45,7 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
         {items.map((exp, index) => (
-          <div key={exp.id || index} className="group relative">
+          <div key={exp.id || index} className="group relative pdf-experience-entry" data-experience-entry="true">
             {/* Timeline dot - centered on line */}
             <div style={{
               position: 'absolute',
@@ -71,8 +71,8 @@ export const ExperienceDotsTimeline: React.FC<ExperienceVariantProps> = ({
             )}
 
             <div>
-              {/* Header row with title and dates */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
+              {/* Entry Header - keep together for PDF page breaks */}
+              <div data-entry-header="true" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
                 <div style={{ flex: 1, minWidth: '200px' }}>
                   {editable ? (
                     <InlineEditableText

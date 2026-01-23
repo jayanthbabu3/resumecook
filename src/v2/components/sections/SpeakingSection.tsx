@@ -22,6 +22,8 @@ interface SpeakingItem {
   description?: string;
 }
 
+type SpeakingVariant = 'standard' | 'cards' | 'compact';
+
 interface SpeakingSectionProps {
   items: SpeakingItem[];
   config: TemplateConfig;
@@ -29,6 +31,7 @@ interface SpeakingSectionProps {
   sectionTitle?: string;
   onAddItem?: () => void;
   onRemoveItem?: (id: string) => void;
+  variantOverride?: string;
 }
 
 export const SpeakingSection: React.FC<SpeakingSectionProps> = ({
@@ -38,11 +41,14 @@ export const SpeakingSection: React.FC<SpeakingSectionProps> = ({
   sectionTitle = 'Speaking',
   onAddItem,
   onRemoveItem,
+  variantOverride,
 }) => {
+  const variant: SpeakingVariant = (variantOverride as SpeakingVariant) || 'standard';
   const { typography, spacing, colors } = config;
   const accent = colors.primary;
 
   const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const formatDate = styleContext?.formatDate || ((date: string) => {
     if (!date) return '';
     const [year, month] = date.split('-');
@@ -78,7 +84,8 @@ export const SpeakingSection: React.FC<SpeakingSectionProps> = ({
     color: typography.body.color,
   };
 
-  const renderItem = (item: SpeakingItem, index: number) => (
+  // Standard variant - full layout with icons
+  const renderStandardItem = (item: SpeakingItem, index: number) => (
     <div
       key={item.id}
       className="group relative"
@@ -105,7 +112,7 @@ export const SpeakingSection: React.FC<SpeakingSectionProps> = ({
               </a>
             )}
           </div>
-          
+
           {editable ? (
             <InlineEditableText
               path={`speaking.${index}.event`}
@@ -187,6 +194,178 @@ export const SpeakingSection: React.FC<SpeakingSectionProps> = ({
       )}
     </div>
   );
+
+  // Compact variant - single line per item
+  const renderCompactItem = (item: SpeakingItem, index: number) => (
+    <div
+      key={item.id}
+      className="group relative"
+      style={{
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: '8px',
+        marginBottom: index < items.length - 1 ? spacing.bulletGap : 0,
+        fontSize: typography.body.fontSize,
+      }}
+    >
+      <span style={{ color: accent, fontWeight: 600 }}>•</span>
+      <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'baseline' }}>
+        {editable ? (
+          <InlineEditableText
+            path={`speaking.${index}.topic`}
+            value={item.topic}
+            style={{ fontWeight: 600, color: typography.itemTitle.color }}
+            placeholder="Topic"
+          />
+        ) : (
+          <span style={{ fontWeight: 600, color: typography.itemTitle.color }}>{item.topic}</span>
+        )}
+        <span style={{ color: typography.body.color }}>—</span>
+        {editable ? (
+          <InlineEditableText
+            path={`speaking.${index}.event`}
+            value={item.event}
+            style={{ color: accent }}
+            placeholder="Event"
+          />
+        ) : (
+          <span style={{ color: accent }}>{item.event}</span>
+        )}
+        {item.location && (
+          <span style={{ color: typography.dates.color }}>({item.location})</span>
+        )}
+      </div>
+      <div style={{ ...dateStyle, flexShrink: 0 }}>
+        {editable ? (
+          <InlineEditableDate
+            path={`speaking.${index}.date`}
+            value={item.date}
+            formatDisplay={formatDate}
+          />
+        ) : (
+          formatDate(item.date)
+        )}
+      </div>
+      {editable && onRemoveItem && (
+        <button
+          onClick={() => onRemoveItem(item.id)}
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
+        >
+          <X className="w-3 h-3 text-red-500" />
+        </button>
+      )}
+    </div>
+  );
+
+  // Cards variant - card-based layout
+  const renderCardsItem = (item: SpeakingItem, index: number) => (
+    <div
+      key={item.id}
+      className="group relative"
+      style={{
+        backgroundColor: '#fff',
+        borderRadius: '10px',
+        padding: '16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+        border: '1px solid #e5e7eb',
+        marginBottom: index < items.length - 1 ? '12px' : 0,
+      }}
+    >
+      <div className="flex items-start gap-3">
+        <div
+          style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '8px',
+            backgroundColor: `${accent}15`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <Mic className="w-4 h-4" style={{ color: accent }} />
+        </div>
+        <div style={{ flex: 1 }}>
+          {editable ? (
+            <InlineEditableText
+              path={`speaking.${index}.topic`}
+              value={item.topic}
+              as="h3"
+              style={{ ...titleStyle, marginBottom: '2px' }}
+              placeholder="Talk Topic"
+            />
+          ) : (
+            <h3 style={{ ...titleStyle, marginBottom: '2px' }}>{item.topic}</h3>
+          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            {editable ? (
+              <InlineEditableText
+                path={`speaking.${index}.event`}
+                value={item.event}
+                style={{ ...subtitleStyle, fontSize: '13px' }}
+                placeholder="Event"
+              />
+            ) : (
+              <span style={{ ...subtitleStyle, fontSize: '13px' }}>{item.event}</span>
+            )}
+            <span style={{ ...dateStyle, fontSize: scaleFontSize(typography.dates.fontSize) }}>
+              {editable ? (
+                <InlineEditableDate
+                  path={`speaking.${index}.date`}
+                  value={item.date}
+                  formatDisplay={formatDate}
+                />
+              ) : (
+                formatDate(item.date)
+              )}
+            </span>
+          </div>
+          {item.location && (
+            <div className="flex items-center gap-1 mt-1" style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.body.color }}>
+              <MapPin className="w-3 h-3" />
+              {editable ? (
+                <InlineEditableText
+                  path={`speaking.${index}.location`}
+                  value={item.location}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.body.color }}
+                  placeholder="Location"
+                />
+              ) : (
+                item.location
+              )}
+            </div>
+          )}
+          {item.description && (
+            <div style={{ ...bodyStyle, fontSize: '13px', marginTop: '8px' }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`speaking.${index}.description`}
+                  value={item.description}
+                  style={{ ...bodyStyle, fontSize: '13px' }}
+                  multiline
+                  placeholder="Description"
+                />
+              ) : (
+                item.description
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+      {editable && onRemoveItem && (
+        <button
+          onClick={() => onRemoveItem(item.id)}
+          className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full"
+        >
+          <X className="w-3 h-3 text-red-600" />
+        </button>
+      )}
+    </div>
+  );
+
+  // Choose render function based on variant
+  const renderItem = variant === 'cards' ? renderCardsItem : variant === 'compact' ? renderCompactItem : renderStandardItem;
 
   return (
     <section style={{ marginBottom: spacing.sectionGap }}>

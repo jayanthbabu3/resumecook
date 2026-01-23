@@ -39,6 +39,9 @@ import { formatSectionName, SectionVariantsMap } from '../services/chatService';
 import { useResumeHistory } from '../hooks/useResumeHistory';
 import { VoiceInputBar } from './VoiceInputBar';
 import ReactMarkdown from 'react-markdown';
+import { useAuth } from '@/contexts/AuthContext';
+import { useSubscription } from '@/hooks/useSubscriptionNew';
+import { ProFeatureModal } from './ProFeatureModal';
 
 interface ChatWithResumeProps {
   resumeData: V2ResumeData;
@@ -63,6 +66,14 @@ export function ChatWithResume({
   mode = 'floating',
   onClose,
 }: ChatWithResumeProps) {
+  // Auth and subscription check
+  const { user } = useAuth();
+  const { isPro } = useSubscription();
+  const [showProModal, setShowProModal] = useState(false);
+
+  // Check if user can access chat (must be logged in AND have subscription)
+  const canAccessChat = user && isPro;
+
   // Resume history for undo/redo
   const {
     canUndo,
@@ -234,11 +245,17 @@ export function ChatWithResume({
       e?.preventDefault();
       if (!inputValue.trim() || isLoading) return;
 
+      // Check if user can access chat before sending
+      if (!canAccessChat) {
+        setShowProModal(true);
+        return;
+      }
+
       const message = inputValue;
       setInputValue('');
       await sendMessage(message);
     },
-    [inputValue, isLoading, sendMessage]
+    [inputValue, isLoading, sendMessage, canAccessChat]
   );
 
   const handleKeyDown = useCallback(
@@ -261,9 +278,14 @@ export function ChatWithResume({
 
   const handleSuggestedQuestion = useCallback(
     async (question: string) => {
+      // Check if user can access chat before sending
+      if (!canAccessChat) {
+        setShowProModal(true);
+        return;
+      }
       await sendMessage(question);
     },
-    [sendMessage]
+    [sendMessage, canAccessChat]
   );
 
   const handleClose = useCallback(() => {
@@ -306,9 +328,15 @@ export function ChatWithResume({
   // Floating mode - show button when closed, popup when open
   if (mode === 'floating') {
     return (
-      <div className={cn('fixed bottom-4 right-4 z-50', className)}>
-        {isOpen ? (
-          <FloatingChatPanel
+      <>
+        <ProFeatureModal
+          isOpen={showProModal}
+          onClose={() => setShowProModal(false)}
+          featureName="AI Chat"
+        />
+        <div className={cn('fixed bottom-4 right-4 z-30', className)}>
+          {isOpen ? (
+            <FloatingChatPanel
             messages={messages}
             isLoading={isLoading}
             inputValue={inputValue}
@@ -341,13 +369,20 @@ export function ChatWithResume({
         ) : (
           <ChatButton onClick={toggleChat} />
         )}
-      </div>
+        </div>
+      </>
     );
   }
 
   // Panel mode - full height side panel on desktop, floating sheet on mobile
   return (
-    <SidePanelChat
+    <>
+      <ProFeatureModal
+        isOpen={showProModal}
+        onClose={() => setShowProModal(false)}
+        featureName="AI Chat"
+      />
+      <SidePanelChat
         messages={messages}
         isLoading={isLoading}
         inputValue={inputValue}
@@ -378,6 +413,7 @@ export function ChatWithResume({
         onUndo={handleUndo}
         onRedo={handleRedo}
       />
+    </>
   );
 }
 
@@ -394,17 +430,16 @@ function ChatButton({ onClick }: ChatButtonProps) {
     <button
       onClick={onClick}
       className={cn(
-        'flex items-center gap-2 px-4 py-3 rounded-full',
-        'bg-gradient-to-r from-primary via-blue-600 to-indigo-600',
-        'text-white font-medium shadow-lg shadow-primary/30',
-        'hover:shadow-xl hover:shadow-primary/40',
-        'active:scale-95',
+        'flex items-center gap-2 px-4 py-2.5 rounded-lg',
+        'bg-primary text-white font-medium',
+        'shadow-md hover:shadow-lg',
+        'hover:bg-primary/90',
+        'active:scale-[0.98]',
         'transition-all duration-200'
       )}
     >
-      <Sparkles className="w-5 h-5" />
-      <span className="hidden sm:inline">Talk with Resume</span>
-      <MessageCircle className="w-5 h-5 sm:hidden" />
+      <Sparkles className="w-4 h-4" />
+      <span className="text-sm">Chat with AI</span>
     </button>
   );
 }

@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus, GraduationCap } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { EducationVariantProps } from '../types';
 
 export const EducationTimeline: React.FC<EducationVariantProps> = ({
@@ -20,6 +21,8 @@ export const EducationTimeline: React.FC<EducationVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -117,7 +120,7 @@ export const EducationTimeline: React.FC<EducationVariantProps> = ({
                 </div>
                 
                 <div style={{ 
-                  fontSize: '12px', 
+                  fontSize: scaleFontSize(typography.body.fontSize), 
                   color: '#6b7280',
                   backgroundColor: '#f3f4f6',
                   padding: '4px 8px',
@@ -138,7 +141,7 @@ export const EducationTimeline: React.FC<EducationVariantProps> = ({
               
               {edu.gpa && (
                 <div style={{ 
-                  fontSize: '13px', 
+                  fontSize: scaleFontSize(typography.body.fontSize), 
                   color: typography.body.color,
                   marginTop: '8px',
                   display: 'flex',
@@ -159,7 +162,7 @@ export const EducationTimeline: React.FC<EducationVariantProps> = ({
               
               {edu.honors && edu.honors.length > 0 && (
                 <div style={{ 
-                  fontSize: '13px', 
+                  fontSize: scaleFontSize(typography.body.fontSize), 
                   color: typography.body.color,
                   marginTop: '6px',
                 }}>

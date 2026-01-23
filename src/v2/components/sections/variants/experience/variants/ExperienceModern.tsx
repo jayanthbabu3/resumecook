@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ExperienceVariantProps } from '../../experience/types';
 
 export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
@@ -23,16 +24,19 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {items.map((exp, index) => (
-        <div 
+        <div
           key={exp.id || index}
-          className="group relative"
-          style={{ 
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
+          style={{
             borderLeft: `4px solid ${accentColor}`,
             paddingLeft: '20px',
             paddingBottom: '4px',
@@ -47,8 +51,8 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
           
-          {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+          {/* Header - keep together for PDF page breaks */}
+          <div data-entry-header="true" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
             <div style={{ flex: 1 }}>
               {editable ? (
                 <InlineEditableText
@@ -121,11 +125,11 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
                       <InlineEditableText
                         path={`experience.${index}.location`}
                         value={exp.location}
-                        style={{ fontSize: '13px', color: '#6b7280' }}
+                        style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#6b7280' }}
                         placeholder="Location"
                       />
                     ) : (
-                      <span style={{ fontSize: '13px', color: '#6b7280' }}>{exp.location}</span>
+                      <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#6b7280' }}>{exp.location}</span>
                     )}
                   </>
                 )}
@@ -133,7 +137,7 @@ export const ExperienceModern: React.FC<ExperienceVariantProps> = ({
             </div>
             
             <div style={{ 
-              fontSize: '13px', 
+              fontSize: scaleFontSize(typography.body.fontSize), 
               color: '#6b7280',
               fontWeight: 500,
               whiteSpace: 'nowrap',

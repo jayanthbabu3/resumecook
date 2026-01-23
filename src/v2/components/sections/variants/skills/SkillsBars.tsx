@@ -8,6 +8,7 @@
 import React, { useState } from 'react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from './SkillsVariantRenderer';
 
 interface SkillsBarsProps extends SkillsVariantProps {
@@ -24,6 +25,8 @@ export const SkillsBars: React.FC<SkillsBarsProps> = ({
 }) => {
   const { typography } = config;
   const inlineEdit = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [hoverLevel, setHoverLevel] = useState<number | null>(null);
 
@@ -60,7 +63,7 @@ export const SkillsBars: React.FC<SkillsBarsProps> = ({
               }}
             />
           </div>
-          <span style={{ fontSize: '11px', color: '#6b7280', minWidth: '24px' }}>
+          <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', minWidth: '24px' }}>
             {level}/5
           </span>
         </div>
@@ -103,7 +106,7 @@ export const SkillsBars: React.FC<SkillsBarsProps> = ({
             />
           ))}
         </div>
-        <span style={{ fontSize: '11px', color: '#6b7280', minWidth: '24px' }}>
+        <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', minWidth: '24px' }}>
           {displayLevel}/5
         </span>
       </div>

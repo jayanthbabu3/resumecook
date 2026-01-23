@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { PublicationsVariantProps } from '../types';
 
 export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
@@ -21,6 +22,8 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -86,7 +89,7 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
 
             {/* Date */}
             <div style={{
-              fontSize: '11px',
+              fontSize: scaleFontSize(typography.dates.fontSize),
               color: typography.dates.color,
               whiteSpace: 'nowrap',
               flexShrink: 0,
@@ -96,7 +99,7 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
                   path={`publications.${index}.date`}
                   value={pub.date}
                   formatDisplay={formatDate}
-                  style={{ fontSize: '11px' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                 />
               ) : (
                 formatDate ? formatDate(pub.date) : pub.date
@@ -110,7 +113,7 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
             alignItems: 'center',
             gap: '8px',
             marginTop: '4px',
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             color: '#6b7280',
             flexWrap: 'wrap',
           }}>
@@ -120,7 +123,7 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
                   <InlineEditableText
                     path={`publications.${index}.authors`}
                     value={Array.isArray(pub.authors) ? pub.authors.join(', ') : (pub.authors || '')}
-                    style={{ fontSize: '11px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                     placeholder="Authors"
                   />
                 ) : (
@@ -134,7 +137,7 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
               <InlineEditableText
                 path={`publications.${index}.publisher`}
                 value={pub.publisher}
-                style={{ fontSize: '11px', color: accentColor, fontWeight: 500 }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor, fontWeight: 500 }}
                 placeholder="Publisher / Journal"
               />
             ) : (
@@ -149,7 +152,7 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
                   <InlineEditableText
                     path={`publications.${index}.doi`}
                     value={pub.doi || ''}
-                    style={{ fontSize: '11px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                     placeholder="DOI"
                   />
                 ) : (
@@ -188,7 +191,7 @@ export const PublicationsAcademic: React.FC<PublicationsVariantProps> = ({
               <InlineEditableText
                 path={`publications.${index}.url`}
                 value={pub.url || ''}
-                style={{ fontSize: '10px', color: accentColor }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                 placeholder="URL (optional)"
               />
             </div>

@@ -490,7 +490,7 @@ const Pricing = () => {
                   )}
                 </div>
                 <div className="p-4 text-center border-l border-gray-100">
-                  <Check className="h-4 w-4 text-primary mx-auto" />
+                  <Check className="h-4 w-4 text-emerald-500 mx-auto" />
                 </div>
               </div>
             ))}
@@ -619,19 +619,19 @@ const Pricing = () => {
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">What you'll get</p>
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div className="flex items-center gap-2 text-gray-700">
-                      <Check className="h-4 w-4 text-primary" />
+                      <Check className="h-4 w-4 text-emerald-500" />
                       <span>LinkedIn Import</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
-                      <Check className="h-4 w-4 text-primary" />
+                      <Check className="h-4 w-4 text-emerald-500" />
                       <span>AI Enhancement</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
-                      <Check className="h-4 w-4 text-primary" />
+                      <Check className="h-4 w-4 text-emerald-500" />
                       <span>Job Tailoring</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
-                      <Check className="h-4 w-4 text-primary" />
+                      <Check className="h-4 w-4 text-emerald-500" />
                       <span>AI Chat</span>
                     </div>
                   </div>

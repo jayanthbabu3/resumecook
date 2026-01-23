@@ -7,6 +7,7 @@
 import React from 'react';
 import { X, Plus, Award } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { AchievementsVariantProps } from '../types';
 
 export const AchievementsBadges: React.FC<AchievementsVariantProps> = ({
@@ -19,6 +20,8 @@ export const AchievementsBadges: React.FC<AchievementsVariantProps> = ({
   showIndicators = true,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -85,7 +88,7 @@ export const AchievementsBadges: React.FC<AchievementsVariantProps> = ({
                       <InlineEditableText
                         path={`achievements.${index}.description`}
                         value={item.description || ''}
-                        style={{ color: typography.body.color, fontSize: '11px', marginTop: '2px', display: 'block' }}
+                        style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize), marginTop: '2px', display: 'block' }}
                         placeholder="Description"
                         multiline
                       />
@@ -97,7 +100,7 @@ export const AchievementsBadges: React.FC<AchievementsVariantProps> = ({
                       {item.title}
                     </span>
                     {item.description && (
-                      <span style={{ color: typography.body.color, fontSize: '11px', marginTop: '2px', display: 'block' }}>
+                      <span style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize), marginTop: '2px', display: 'block' }}>
                         {item.description}
                       </span>
                     )}

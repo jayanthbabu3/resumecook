@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ExperienceVariantProps } from '../../experience/types';
 
 export const ExperienceMinimal: React.FC<ExperienceVariantProps> = ({
@@ -21,16 +22,20 @@ export const ExperienceMinimal: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {items.map((exp, index) => (
-        <div 
+        <div
           key={exp.id || index}
-          className="group relative"
-          style={{ 
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
+          data-entry-header="true"
+          style={{
             display: 'flex',
             alignItems: 'baseline',
             flexWrap: 'wrap',
@@ -67,17 +72,17 @@ export const ExperienceMinimal: React.FC<ExperienceVariantProps> = ({
                 path={`experience.${index}.startDate`}
                 value={exp.startDate}
                 formatDisplay={formatDate}
-                style={{ fontSize: '13px', color: '#9ca3af' }}
+                style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#9ca3af' }}
               />
               <span style={{ color: '#9ca3af' }}>–</span>
               {exp.current ? (
-                <span style={{ fontSize: '13px', color: '#9ca3af' }}>Present</span>
+                <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#9ca3af' }}>Present</span>
               ) : (
                 <InlineEditableDate
                   path={`experience.${index}.endDate`}
                   value={exp.endDate}
                   formatDisplay={formatDate}
-                  style={{ fontSize: '13px', color: '#9ca3af' }}
+                  style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#9ca3af' }}
                 />
               )}
               <span style={{ color: '#d1d5db' }}>)</span>
@@ -89,7 +94,7 @@ export const ExperienceMinimal: React.FC<ExperienceVariantProps> = ({
               </span>
               <span style={{ color: '#9ca3af' }}>–</span>
               <span style={{ color: typography.body.color }}>{exp.company}</span>
-              <span style={{ fontSize: '13px', color: '#9ca3af' }}>
+              <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#9ca3af' }}>
                 ({formatDate ? formatDate(exp.startDate) : exp.startDate} – {exp.current ? 'Present' : (formatDate ? formatDate(exp.endDate) : exp.endDate)})
               </span>
             </>

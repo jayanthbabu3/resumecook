@@ -38,27 +38,39 @@ const AuthCallback = () => {
       // Handle successful OAuth with tokens
       if (accessToken && refreshToken) {
         try {
-          // Store tokens
+          // Store tokens in localStorage for both popup and non-popup scenarios
           tokenManager.setTokens(accessToken, refreshToken);
 
-          // If this is opened in a popup (from authService.googleAuth)
+          // Always set the auth success flag - parent window will pick this up
+          localStorage.setItem('google_auth_success', JSON.stringify({
+            accessToken,
+            refreshToken,
+            timestamp: Date.now(),
+          }));
+
+          // Try postMessage if opener exists
           if (window.opener) {
-            window.opener.postMessage(
-              {
-                type: 'GOOGLE_AUTH_SUCCESS',
-                accessToken,
-                refreshToken,
-              },
-              window.location.origin
-            );
-            window.close();
-            return;
+            try {
+              window.opener.postMessage(
+                { type: 'GOOGLE_AUTH_SUCCESS', accessToken, refreshToken },
+                window.location.origin
+              );
+            } catch (e) {
+              // Ignore postMessage errors
+            }
           }
 
-          // If not a popup, redirect to dashboard
-          setStatus('success');
-          toast.success('Signed in successfully!');
-          navigate('/dashboard', { replace: true });
+          // Try to close the window - this will work if we're a popup
+          // If we're not a popup, window.close() will be ignored by the browser
+          window.close();
+
+          // If window didn't close (not a popup), redirect to dashboard after a short delay
+          setTimeout(() => {
+            // If we're still here, we're not in a popup
+            setStatus('success');
+            toast.success('Signed in successfully!');
+            navigate('/dashboard', { replace: true });
+          }, 500);
         } catch (err) {
           setStatus('error');
           setErrorMessage('Failed to complete authentication');

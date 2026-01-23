@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, CheckCircle } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { CoursesVariantProps } from '../types';
 
 export const CoursesCompact: React.FC<CoursesVariantProps> = ({
@@ -21,6 +22,8 @@ export const CoursesCompact: React.FC<CoursesVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -37,7 +40,7 @@ export const CoursesCompact: React.FC<CoursesVariantProps> = ({
             padding: '6px 10px',
             backgroundColor: index % 2 === 0 ? `${accentColor}04` : 'transparent',
             borderRadius: '4px',
-            fontSize: '12px',
+            fontSize: scaleFontSize(typography.body.fontSize),
           }}
         >
           {editable && onRemoveCourse && (
@@ -55,7 +58,7 @@ export const CoursesCompact: React.FC<CoursesVariantProps> = ({
               <InlineEditableText
                 path={`courses.${index}.name`}
                 value={item.name}
-                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: '12px' }}
+                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Course Name"
               />
             ) : (
@@ -72,7 +75,7 @@ export const CoursesCompact: React.FC<CoursesVariantProps> = ({
               <InlineEditableText
                 path={`courses.${index}.provider`}
                 value={item.provider}
-                style={{ color: accentColor, fontSize: '12px' }}
+                style={{ color: accentColor, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Provider"
               />
             ) : (
@@ -81,13 +84,13 @@ export const CoursesCompact: React.FC<CoursesVariantProps> = ({
           </div>
 
           {/* Date */}
-          <div style={{ fontSize: '11px', color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
             {editable ? (
               <InlineEditableDate
                 path={`courses.${index}.date`}
                 value={item.date}
                 formatDisplay={formatDate}
-                style={{ fontSize: '11px' }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
               />
             ) : (
               formatDate ? formatDate(item.date) : item.date

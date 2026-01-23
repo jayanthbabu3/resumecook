@@ -570,7 +570,10 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
+    <div className={cn(
+      "fixed inset-0 z-50 flex justify-center",
+      step === 'comparing' ? "items-center p-2 sm:p-4" : "items-end sm:items-center sm:p-4"
+    )}>
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -579,36 +582,46 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
 
       {/* Modal */}
       <div className={cn(
-        "relative bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 flex flex-col",
+        "relative bg-white shadow-2xl overflow-hidden animate-in fade-in-0 duration-200 flex flex-col",
         step === 'comparing'
-          ? "w-[calc(100%-1rem)] sm:w-[95vw] h-[calc(100%-1rem)] sm:h-[95vh] max-w-[1800px]"
-          : "w-[calc(100%-1rem)] sm:w-full max-w-2xl max-h-[85vh]"
+          ? "w-[calc(100%-1rem)] sm:w-[95vw] h-[calc(100%-1rem)] sm:h-[95vh] max-w-[1800px] rounded-2xl sm:rounded-3xl zoom-in-95"
+          : "w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[85vh] rounded-t-2xl sm:rounded-2xl slide-in-from-bottom-4 sm:zoom-in-95"
       )}>
+        {/* Mobile drag handle */}
+        {step !== 'comparing' && (
+          <div
+            className="sm:hidden flex justify-center py-2 flex-shrink-0"
+            style={{ background: `linear-gradient(135deg, ${themeColor}08 0%, ${themeColor}15 100%)` }}
+          >
+            <div className="w-10 h-1 bg-gray-300 rounded-full" />
+          </div>
+        )}
+
         {/* Header */}
         <div
           className={cn(
             "flex items-center justify-between border-b flex-shrink-0",
-            step === 'comparing' ? "px-3 py-2 sm:px-4 sm:py-2" : "px-4 py-3 sm:px-6 sm:py-4"
+            step === 'comparing' ? "px-3 py-2 sm:px-4 sm:py-2" : "px-4 py-2.5 sm:px-6 sm:py-4"
           )}
           style={{
-            background: `linear-gradient(135deg, ${themeColor}08 0%, ${themeColor}15 100%)`,
+            background: step !== 'comparing' ? `linear-gradient(135deg, ${themeColor}08 0%, ${themeColor}15 100%)` : undefined,
             borderColor: `${themeColor}20`
           }}
         >
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             <div
               className={cn(
                 "rounded-xl flex items-center justify-center shadow-lg flex-shrink-0",
-                step === 'comparing' ? "w-8 h-8 sm:w-10 sm:h-10" : "w-9 h-9 sm:w-12 sm:h-12"
+                step === 'comparing' ? "w-8 h-8 sm:w-10 sm:h-10" : "w-10 h-10 sm:w-12 sm:h-12"
               )}
               style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)` }}
             >
-              <Target className={step === 'comparing' ? "w-4 h-4 sm:w-5 sm:h-5 text-white" : "w-4 h-4 sm:w-6 sm:h-6 text-white"} />
+              <Target className={step === 'comparing' ? "w-4 h-4 sm:w-5 sm:h-5 text-white" : "w-5 h-5 sm:w-6 sm:h-6 text-white"} />
             </div>
             <div className="min-w-0">
               <h2 className={cn(
                 "font-bold text-gray-900 truncate",
-                step === 'comparing' ? "text-sm sm:text-base" : "text-base sm:text-lg"
+                step === 'comparing' ? "text-sm sm:text-base" : "text-sm sm:text-lg"
               )}>
                 {step === 'auth' && 'Sign In Required'}
                 {step === 'input' && 'Match Resume to Job'}
@@ -621,7 +634,7 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
                 {step === 'error' && 'Something Went Wrong'}
               </h2>
               {step !== 'comparing' && (
-                <p className="text-xs sm:text-sm text-gray-500 mt-0.5 truncate">
+                <p className="text-[11px] sm:text-sm text-gray-500 mt-0.5 truncate hidden xs:block">
                   {step === 'auth' && 'This is a premium feature'}
                   {step === 'input' && 'Paste the job description to optimize your resume'}
                   {step === 'source' && 'Upload or use your existing profile'}
@@ -721,8 +734,8 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
           {step === 'input' && (
             <div className="p-4 sm:p-6">
               {/* Job Description */}
-              <div className="mb-3 sm:mb-4">
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+              <div className="mb-4 sm:mb-5">
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Job Description <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -730,70 +743,65 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
                   onChange={(e) => setJobDescription(e.target.value)}
                   placeholder="Paste the full job description here..."
                   className={cn(
-                    "w-full h-36 sm:h-48 p-3 sm:p-4 rounded-xl border-2 resize-none text-sm focus:outline-none transition-colors",
+                    "w-full h-32 sm:h-44 p-3 sm:p-4 rounded-xl border-2 resize-none text-sm focus:outline-none transition-all focus:ring-2",
                     error
-                      ? "border-red-300 focus:border-red-400"
-                      : "border-gray-200 focus:border-amber-400"
+                      ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                      : "border-gray-200 focus:border-primary focus:ring-primary/20"
                   )}
                 />
-                <div className="flex items-center justify-between mt-1.5 sm:mt-2">
-                  <p className="text-[10px] sm:text-xs text-gray-400">
+                <div className="flex items-center justify-between mt-1.5">
+                  <p className="text-[11px] sm:text-xs text-gray-400">
                     {jobDescription.length} characters (minimum 50)
                   </p>
                   {error && (
-                    <p className="text-[10px] sm:text-xs text-red-500">{error}</p>
+                    <p className="text-[11px] sm:text-xs text-red-500">{error}</p>
                   )}
                 </div>
               </div>
 
               {/* Optional Fields */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4 sm:mb-6">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-5">
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                    Job Title <span className="text-gray-400 text-[10px] sm:text-xs">(optional)</span>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Job Title <span className="text-gray-400 text-[10px] sm:text-xs font-normal">(optional)</span>
                   </label>
                   <input
                     type="text"
                     value={jobTitle}
                     onChange={(e) => setJobTitle(e.target.value)}
-                    placeholder="e.g., Senior Soft..."
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border-2 border-gray-200 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                    placeholder="e.g., Senior Software..."
+                    className="w-full px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                    Company <span className="text-gray-400 text-[10px] sm:text-xs">(optional)</span>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Company <span className="text-gray-400 text-[10px] sm:text-xs font-normal">(optional)</span>
                   </label>
                   <input
                     type="text"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="e.g., Google"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border-2 border-gray-200 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                    className="w-full px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                 </div>
               </div>
 
               {/* Info Box */}
               <div
-                className="p-3 sm:p-4 rounded-xl border"
-                style={{ backgroundColor: `${themeColor}08`, borderColor: `${themeColor}25` }}
+                className="p-3 sm:p-4 rounded-xl border bg-gradient-to-br from-primary/5 to-blue-50"
+                style={{ borderColor: 'hsl(var(--primary) / 0.2)' }}
               >
-                <div className="flex items-start gap-2.5 sm:gap-3">
-                  <div
-                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)` }}
-                  >
-                    <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-primary to-blue-600 shadow-md">
+                    <Sparkles className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" />
                   </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-800">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-800">
                       AI-Powered Resume Optimization
                     </p>
-                    <p className="text-[11px] sm:text-xs text-gray-600 mt-0.5 sm:mt-1 leading-relaxed">
-                      Our AI will rewrite your <strong>professional summary</strong> to match the role,
-                      enhance your <strong>experience bullet points</strong> with relevant keywords,
-                      and add <strong>missing skills</strong> from the job description.
+                    <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                      Our AI will rewrite your <strong className="text-gray-700">professional summary</strong>, enhance <strong className="text-gray-700">bullet points</strong> with keywords, and add <strong className="text-gray-700">missing skills</strong>.
                     </p>
                   </div>
                 </div>
@@ -1342,22 +1350,19 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
 
         {/* Footer */}
         {step === 'input' && (
-          <div
-            className="px-4 py-3 sm:px-6 sm:py-4 border-t flex flex-col-reverse sm:flex-row items-center justify-between gap-3 sm:gap-0 flex-shrink-0"
-            style={{ backgroundColor: `${themeColor}05`, borderColor: `${themeColor}15` }}
-          >
-            <p className="text-[10px] sm:text-xs text-gray-500 text-center sm:text-left">
+          <div className="px-4 py-3 sm:px-6 sm:py-4 border-t border-gray-100 bg-gray-50/50 flex flex-col-reverse sm:flex-row items-center justify-between gap-3 flex-shrink-0 pb-safe">
+            <p className="text-[10px] sm:text-xs text-gray-400 text-center sm:text-left">
               Your data is processed securely
             </p>
             <Button
               onClick={handleContinueToSource}
               disabled={jobDescription.trim().length < 50}
-              className="gap-2 w-full sm:w-auto h-9 sm:h-10 text-sm"
-              style={{
-                background: jobDescription.trim().length >= 50
-                  ? `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)`
-                  : '#d1d5db'
-              }}
+              className={cn(
+                "gap-2 w-full sm:w-auto h-10 sm:h-11 text-sm font-semibold rounded-xl shadow-md transition-all",
+                jobDescription.trim().length >= 50
+                  ? "bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-700 hover:shadow-lg"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              )}
             >
               Continue
               <ArrowRight className="w-4 h-4" />
@@ -1367,13 +1372,13 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
 
         {step === 'comparing' && (
           <div
-            className="px-4 py-2 border-t flex items-center justify-between flex-shrink-0"
+            className="px-3 py-2 sm:px-4 sm:py-3 border-t flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0 flex-shrink-0 pb-safe"
             style={{
               background: `linear-gradient(135deg, ${themeColor}04, white)`,
               borderColor: `${themeColor}12`
             }}
           >
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 hidden sm:block">
               {acceptedSkills.size > 0 && (
                 <span
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium"
@@ -1384,17 +1389,17 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={onClose} className="px-4 py-2 rounded-lg text-sm h-9">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2">
+              <Button variant="outline" onClick={onClose} className="px-4 py-2 rounded-xl text-sm h-10 sm:h-9 w-full sm:w-auto">
                 Cancel
               </Button>
               <Button
                 onClick={handleApply}
-                className="gap-1.5 px-5 py-2 shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg text-sm h-9"
+                className="gap-1.5 px-4 sm:px-5 py-2 shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] rounded-xl text-sm h-10 sm:h-9 w-full sm:w-auto justify-center"
                 style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)` }}
               >
                 <Target className="w-3.5 h-3.5" />
-                Apply & Select Template
+                <span className="sm:inline">Apply & Select Template</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </Button>
             </div>

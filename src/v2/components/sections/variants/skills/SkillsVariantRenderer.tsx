@@ -45,8 +45,28 @@ export const SkillsVariantRenderer: React.FC<SkillsVariantRendererProps> = ({
   onRemoveSkill,
   onUpdateSkill,
 }) => {
+  // Helper to get skill name from various possible formats
+  const getSkillName = (skill: SkillsVariantProps['items'][0]): string => {
+    // V2 format: individual skill with name
+    if (skill.name && skill.name.trim()) return skill.name;
+    // Legacy format: grouped skills with items array
+    const legacySkill = skill as typeof skill & { items?: string[] };
+    if (legacySkill.items && legacySkill.items.length > 0) {
+      return legacySkill.items.filter(Boolean).join(', ');
+    }
+    // Fallback: use category name if nothing else
+    if (skill.category && skill.category.trim()) return skill.category;
+    return 'Unnamed skill';
+  };
+
+  // Normalize items to ensure all have proper names
+  const normalizedItems = items.map(item => ({
+    ...item,
+    name: getSkillName(item),
+  }));
+
   const props: SkillsVariantProps = {
-    items,
+    items: normalizedItems,
     config,
     accentColor,
     editable,

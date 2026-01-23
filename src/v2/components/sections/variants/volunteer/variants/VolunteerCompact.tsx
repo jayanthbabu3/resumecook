@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { VolunteerVariantProps } from '../types';
 
 export const VolunteerCompact: React.FC<VolunteerVariantProps> = ({
@@ -21,6 +22,8 @@ export const VolunteerCompact: React.FC<VolunteerVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -37,7 +40,7 @@ export const VolunteerCompact: React.FC<VolunteerVariantProps> = ({
             padding: '6px 10px',
             backgroundColor: index % 2 === 0 ? `${accentColor}04` : 'transparent',
             borderRadius: '4px',
-            fontSize: '12px',
+            fontSize: scaleFontSize(typography.body.fontSize),
           }}
         >
           {editable && onRemoveVolunteer && (
@@ -55,7 +58,7 @@ export const VolunteerCompact: React.FC<VolunteerVariantProps> = ({
               <InlineEditableText
                 path={`volunteer.${index}.role`}
                 value={item.role}
-                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: '12px' }}
+                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Role"
               />
             ) : (
@@ -68,7 +71,7 @@ export const VolunteerCompact: React.FC<VolunteerVariantProps> = ({
               <InlineEditableText
                 path={`volunteer.${index}.organization`}
                 value={item.organization}
-                style={{ color: accentColor, fontSize: '12px' }}
+                style={{ color: accentColor, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Organization"
               />
             ) : (
@@ -82,25 +85,25 @@ export const VolunteerCompact: React.FC<VolunteerVariantProps> = ({
                   <InlineEditableText
                     path={`volunteer.${index}.location`}
                     value={item.location || ''}
-                    style={{ color: '#6b7280', fontSize: '11px' }}
+                    style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize) }}
                     placeholder="Location"
                   />
                 ) : (
-                  <span style={{ color: '#6b7280', fontSize: '11px' }}>{item.location}</span>
+                  <span style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize) }}>{item.location}</span>
                 )}
               </>
             )}
           </div>
 
           {/* Date on right */}
-          <div style={{ fontSize: '11px', color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
             {editable ? (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
                 <InlineEditableDate
                   path={`volunteer.${index}.startDate`}
                   value={item.startDate}
                   formatDisplay={formatDate}
-                  style={{ fontSize: '11px' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                 />
                 <span>-</span>
                 {item.current ? (
@@ -110,7 +113,7 @@ export const VolunteerCompact: React.FC<VolunteerVariantProps> = ({
                     path={`volunteer.${index}.endDate`}
                     value={item.endDate}
                     formatDisplay={formatDate}
-                    style={{ fontSize: '11px' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                   />
                 )}
               </span>

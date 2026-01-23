@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { VolunteerVariantProps } from '../types';
 
 export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
@@ -21,6 +22,8 @@ export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -76,12 +79,12 @@ export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
           )}
 
           {/* Organization */}
-          <div style={{ fontSize: '11px', color: accentColor, marginTop: '2px' }}>
+          <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor, marginTop: '2px' }}>
             {editable ? (
               <InlineEditableText
                 path={`volunteer.${index}.organization`}
                 value={item.organization}
-                style={{ fontSize: '11px', color: accentColor }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                 placeholder="Organization"
               />
             ) : (
@@ -95,7 +98,7 @@ export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
             alignItems: 'center',
             gap: '8px',
             marginTop: '4px',
-            fontSize: '10px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             color: '#6b7280',
             flexWrap: 'wrap',
           }}>
@@ -105,7 +108,7 @@ export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
                   <InlineEditableText
                     path={`volunteer.${index}.location`}
                     value={item.location || ''}
-                    style={{ fontSize: '10px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                     placeholder="Location"
                   />
                 ) : (
@@ -120,7 +123,7 @@ export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
                   path={`volunteer.${index}.startDate`}
                   value={item.startDate}
                   formatDisplay={formatDate}
-                  style={{ fontSize: '10px' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                 />
                 <span>-</span>
                 {item.current ? (
@@ -130,7 +133,7 @@ export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
                     path={`volunteer.${index}.endDate`}
                     value={item.endDate}
                     formatDisplay={formatDate}
-                    style={{ fontSize: '10px' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                   />
                 )}
               </span>
@@ -178,7 +181,7 @@ export const VolunteerCards: React.FC<VolunteerVariantProps> = ({
             border: `1px dashed ${accentColor}40`,
             backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
           }}

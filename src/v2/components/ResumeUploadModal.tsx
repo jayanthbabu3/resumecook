@@ -15,11 +15,15 @@ import {
   X,
   FileUp,
   Sparkles,
+  User,
+  FileCheck,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import type { V2ResumeData } from '../types';
 import { API_ENDPOINTS, apiFetch } from '../../config/api';
+import { profileService } from '../services/profileService';
+import { toast } from 'sonner';
 
 interface ResumeUploadModalProps {
   isOpen: boolean;
@@ -28,7 +32,7 @@ interface ResumeUploadModalProps {
   themeColor?: string;
 }
 
-type UploadStatus = 'idle' | 'uploading' | 'parsing' | 'success' | 'error';
+type UploadStatus = 'idle' | 'uploading' | 'parsing' | 'success' | 'ask_profile' | 'saving_profile' | 'error';
 
 const ACCEPTED_FILE_TYPES = [
   'application/pdf',
@@ -48,12 +52,14 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [parsedData, setParsedData] = useState<V2ResumeData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resetState = useCallback(() => {
     setStatus('idle');
     setError(null);
     setFileName(null);
+    setParsedData(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -120,12 +126,8 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
       }
 
       if (result.success && result.data) {
-        setStatus('success');
-        // Small delay to show success state
-        setTimeout(() => {
-          onSuccess(result.data);
-          handleClose();
-        }, 1000);
+        setParsedData(result.data);
+        setStatus('ask_profile');
       } else {
         throw new Error('Invalid response from parser');
       }
@@ -168,10 +170,62 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
     fileInputRef.current?.click();
   }, []);
 
+  // Handle "Update Profile & Apply" choice
+  const handleUpdateProfile = useCallback(async () => {
+    if (!parsedData) return;
+
+    setStatus('saving_profile');
+    try {
+      // Save to profile (single source of truth)
+      await profileService.saveProfile({
+        personalInfo: parsedData.personalInfo,
+        experience: parsedData.experience || [],
+        education: parsedData.education || [],
+        skills: parsedData.skills || [],
+        languages: parsedData.languages || [],
+        certifications: parsedData.certifications || [],
+        awards: parsedData.awards || [],
+        projects: parsedData.projects || [],
+        publications: parsedData.publications || [],
+        volunteer: parsedData.volunteer || [],
+        achievements: parsedData.achievements || [],
+        strengths: parsedData.strengths || [],
+        courses: parsedData.courses || [],
+        interests: parsedData.interests || [],
+        references: parsedData.references || [],
+        speaking: parsedData.speaking || [],
+        patents: parsedData.patents || [],
+      });
+
+      toast.success('Profile updated successfully!');
+      setStatus('success');
+      setTimeout(() => {
+        onSuccess(parsedData);
+        handleClose();
+      }, 800);
+    } catch (err) {
+      console.error('Failed to save profile:', err);
+      toast.error('Failed to update profile. Applying to resume only.');
+      // Still apply to resume even if profile save fails
+      onSuccess(parsedData);
+      handleClose();
+    }
+  }, [parsedData, onSuccess, handleClose]);
+
+  // Handle "Just This Resume" choice
+  const handleJustResume = useCallback(() => {
+    if (!parsedData) return;
+    setStatus('success');
+    setTimeout(() => {
+      onSuccess(parsedData);
+      handleClose();
+    }, 500);
+  }, [parsedData, onSuccess, handleClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -179,31 +233,39 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-[calc(100%-2rem)] max-w-lg mx-4 max-h-[85vh] overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200">
+      <div className="relative bg-white shadow-2xl w-full sm:max-w-lg max-h-[90vh] sm:max-h-[85vh] overflow-hidden rounded-t-2xl sm:rounded-2xl animate-in fade-in-0 slide-in-from-bottom-4 sm:zoom-in-95 duration-200 flex flex-col">
+        {/* Mobile drag handle */}
+        <div className="sm:hidden flex justify-center py-2 flex-shrink-0 bg-gradient-to-br from-primary/5 to-blue-500/10">
+          <div className="w-10 h-1 bg-gray-300 rounded-full" />
+        </div>
+
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-100">
-          <div className="flex items-center gap-2.5 sm:gap-3">
-            <div
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: `${themeColor}15` }}
-            >
-              <FileUp className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: themeColor }} />
+        <div
+          className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 border-b flex-shrink-0"
+          style={{
+            background: 'linear-gradient(135deg, hsl(var(--primary) / 0.05) 0%, hsl(var(--primary) / 0.12) 100%)',
+            borderColor: 'hsl(var(--primary) / 0.15)'
+          }}
+        >
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg bg-gradient-to-br from-primary to-blue-600">
+              <FileUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-900">Upload Resume</h2>
-              <p className="text-xs sm:text-sm text-gray-500">Import from existing resume</p>
+              <h2 className="text-base sm:text-lg font-bold text-gray-900">Upload Resume</h2>
+              <p className="text-[11px] sm:text-sm text-gray-500 mt-0.5">Import from existing resume</p>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/80 text-gray-400 hover:text-gray-600 transition-colors border border-transparent hover:border-gray-200 flex-shrink-0"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           {/* Status States */}
           {status === 'idle' && (
             <>
@@ -215,10 +277,10 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
                 onDrop={handleDrop}
                 onClick={handleBrowseClick}
                 className={cn(
-                  "relative border-2 border-dashed rounded-xl p-5 sm:p-8 text-center cursor-pointer transition-all duration-200",
+                  "relative border-2 border-dashed rounded-xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-200",
                   dragActive
-                    ? "border-cyan-400 bg-cyan-50"
-                    : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                    ? "border-primary bg-primary/5"
+                    : "border-gray-200 hover:border-primary/50 hover:bg-gray-50"
                 )}
               >
                 <input
@@ -232,20 +294,22 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
                 <div className="flex flex-col items-center gap-3 sm:gap-4">
                   <div
                     className={cn(
-                      "w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center transition-colors",
-                      dragActive ? "bg-cyan-100" : "bg-gray-100"
+                      "w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all",
+                      dragActive
+                        ? "bg-primary/15 ring-2 ring-primary/30"
+                        : "bg-gray-100"
                     )}
                   >
                     <Upload
                       className={cn(
-                        "w-6 h-6 sm:w-8 sm:h-8 transition-colors",
-                        dragActive ? "text-cyan-600" : "text-gray-400"
+                        "w-6 h-6 sm:w-7 sm:h-7 transition-colors",
+                        dragActive ? "text-primary" : "text-gray-400"
                       )}
                     />
                   </div>
 
                   <div>
-                    <p className="text-sm sm:text-base font-medium text-gray-700">
+                    <p className="text-sm sm:text-base font-semibold text-gray-800">
                       {dragActive ? "Drop your resume here" : "Drag & drop your resume"}
                     </p>
                     <p className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">
@@ -254,23 +318,23 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
                   </div>
 
                   <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-gray-400">
-                    <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <FileText className="w-3.5 h-3.5" />
                     <span>PDF, DOCX, or TXT (max 10MB)</span>
                   </div>
                 </div>
               </div>
 
               {/* AI Info */}
-              <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border border-cyan-100">
+              <div className="mt-3 sm:mt-4 p-3.5 sm:p-4 bg-gradient-to-br from-primary/5 to-blue-500/10 rounded-xl border border-primary/15">
                 <div className="flex items-start gap-2.5 sm:gap-3">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                    <Sparkles className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" />
                   </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-800">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-800">
                       AI-Powered Parsing
                     </p>
-                    <p className="text-[11px] sm:text-xs text-gray-600 mt-0.5 sm:mt-1 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1 leading-relaxed">
                       We'll automatically extract your experience, education, skills,
                       and more using advanced AI. Your data stays private.
                     </p>
@@ -280,36 +344,109 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
             </>
           )}
 
-          {/* Uploading / Parsing State */}
-          {(status === 'uploading' || status === 'parsing') && (
-            <div className="py-8 sm:py-12 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-cyan-50 flex items-center justify-center">
-                <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-600 animate-spin" />
+          {/* Uploading / Parsing / Saving Profile State */}
+          {(status === 'uploading' || status === 'parsing' || status === 'saving_profile') && (
+            <div className="py-10 sm:py-14 text-center">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-5">
+                {/* Animated rings */}
+                <div className="absolute inset-0 rounded-full bg-primary/15 animate-ping opacity-50" />
+                <div className="absolute inset-2 rounded-full bg-primary/20 animate-pulse" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-xl">
+                  <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 text-white animate-spin" />
+                </div>
               </div>
-              <p className="text-base sm:text-lg font-medium text-gray-800">
-                {status === 'uploading' ? 'Uploading...' : 'Parsing with AI...'}
+              <p className="text-base sm:text-lg font-bold text-gray-900">
+                {status === 'uploading' ? 'Uploading...' : status === 'parsing' ? 'Parsing with AI...' : 'Updating Profile...'}
               </p>
-              <p className="text-xs sm:text-sm text-gray-500 mt-1 truncate px-4">
+              <p className="text-xs sm:text-sm text-gray-500 mt-1.5 truncate px-4 max-w-[200px] mx-auto">
                 {fileName}
               </p>
               {status === 'parsing' && (
-                <p className="text-[11px] sm:text-xs text-gray-400 mt-2 sm:mt-3">
+                <p className="text-[11px] sm:text-xs text-gray-400 mt-3 sm:mt-4">
                   Extracting your experience, skills, and education...
+                </p>
+              )}
+              {status === 'saving_profile' && (
+                <p className="text-[11px] sm:text-xs text-gray-400 mt-3 sm:mt-4">
+                  Saving to your profile...
                 </p>
               )}
             </div>
           )}
 
+          {/* Ask Profile Sync State */}
+          {status === 'ask_profile' && (
+            <div className="py-4 sm:py-6">
+              <div className="text-center mb-5 sm:mb-6">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center border border-emerald-200/60">
+                  <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-emerald-500" />
+                </div>
+                <p className="text-base sm:text-lg font-bold text-gray-900">
+                  Resume Parsed Successfully!
+                </p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  Would you like to update your profile with this data?
+                </p>
+              </div>
+
+              <div className="space-y-2.5 sm:space-y-3">
+                {/* Update Profile Option */}
+                <button
+                  onClick={handleUpdateProfile}
+                  className="w-full p-3.5 sm:p-4 border-2 border-primary/30 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                      <User className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm sm:text-base font-semibold text-gray-800">
+                        Update Profile & Apply
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">
+                        Save to your profile and apply to this resume
+                      </p>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Just This Resume Option */}
+                <button
+                  onClick={handleJustResume}
+                  className="w-full p-3.5 sm:p-4 border-2 border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-all text-left group"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-200 transition-colors">
+                      <FileCheck className="w-5 h-5 text-gray-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm sm:text-base font-semibold text-gray-800">
+                        Just This Resume
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">
+                        Apply only to this resume without updating profile
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              <p className="text-[10px] sm:text-xs text-gray-400 text-center mt-4 pb-safe">
+                Tip: Updating your profile lets you easily sync data to all your resumes
+              </p>
+            </div>
+          )}
+
           {/* Success State */}
           {status === 'success' && (
-            <div className="py-8 sm:py-12 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-green-50 flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
+            <div className="py-10 sm:py-14 text-center">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center border border-emerald-200/60">
+                <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-emerald-500" />
               </div>
-              <p className="text-base sm:text-lg font-medium text-gray-800">
-                Resume Parsed Successfully!
+              <p className="text-base sm:text-lg font-bold text-gray-900">
+                Done!
               </p>
-              <p className="text-xs sm:text-sm text-gray-500 mt-1">
+              <p className="text-xs sm:text-sm text-gray-500 mt-1.5">
                 Loading your information...
               </p>
             </div>
@@ -317,11 +454,11 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
 
           {/* Error State */}
           {status === 'error' && (
-            <div className="py-6 sm:py-8 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-red-50 flex items-center justify-center">
-                <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-red-600" />
+            <div className="py-8 sm:py-12 text-center">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-xl sm:rounded-2xl bg-red-50 flex items-center justify-center border border-red-100">
+                <AlertCircle className="w-7 h-7 sm:w-8 sm:h-8 text-red-500" />
               </div>
-              <p className="text-base sm:text-lg font-medium text-gray-800">
+              <p className="text-base sm:text-lg font-bold text-gray-900">
                 Parsing Failed
               </p>
               <p className="text-xs sm:text-sm text-red-600 mt-1.5 sm:mt-2 max-w-sm mx-auto px-4">
@@ -330,7 +467,7 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
               <Button
                 onClick={resetState}
                 variant="outline"
-                className="mt-3 sm:mt-4 h-9 sm:h-10 text-sm"
+                className="mt-4 sm:mt-5 h-10 sm:h-11 text-sm rounded-xl px-6"
               >
                 Try Again
               </Button>
@@ -340,15 +477,14 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
 
         {/* Footer */}
         {status === 'idle' && (
-          <div className="px-4 py-3 sm:px-6 sm:py-4 bg-gray-50 border-t border-gray-100">
-            <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3 sm:gap-4">
-              <p className="text-[10px] sm:text-xs text-gray-500 text-center sm:text-left">
+          <div className="px-4 py-3 sm:px-6 sm:py-4 bg-gray-50/80 border-t border-gray-100 flex-shrink-0">
+            <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
+              <p className="text-[10px] sm:text-xs text-gray-400 text-center sm:text-left">
                 Your resume data is processed securely and not stored.
               </p>
               <Button
                 onClick={handleBrowseClick}
-                style={{ backgroundColor: themeColor }}
-                className="hover:opacity-90 w-full sm:w-auto h-9 sm:h-10 text-sm flex-shrink-0"
+                className="w-full sm:w-auto h-11 sm:h-11 text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 pb-safe"
               >
                 <Upload className="w-4 h-4 mr-2" />
                 Select File

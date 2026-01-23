@@ -450,7 +450,18 @@ export async function sendChatMessage(
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `HTTP error ${response.status}`);
+        // Extract error message properly - handle both string and object error formats
+        let errorMessage = `HTTP error ${response.status}`;
+        if (errorData.error) {
+          if (typeof errorData.error === 'string') {
+            errorMessage = errorData.error;
+          } else if (typeof errorData.error === 'object' && errorData.error.message) {
+            errorMessage = errorData.error.message;
+          }
+        } else if (errorData.message) {
+          errorMessage = errorData.message;
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();

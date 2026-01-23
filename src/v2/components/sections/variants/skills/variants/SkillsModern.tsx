@@ -7,6 +7,7 @@
 import React from 'react';
 import { X, Plus, Code, Palette, Database, Globe, Settings, Zap } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -28,6 +29,8 @@ export const SkillsModern: React.FC<SkillsVariantProps> = ({
   onRemoveSkill,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -115,7 +118,7 @@ export const SkillsModern: React.FC<SkillsVariantProps> = ({
                       path={`skills.${skillIndex}.name`}
                       value={skill.name}
                       style={{ 
-                        fontSize: '13px',
+                        fontSize: scaleFontSize(typography.body.fontSize),
                         color: typography.body.color,
                         flex: 1,
                       }}
@@ -123,7 +126,7 @@ export const SkillsModern: React.FC<SkillsVariantProps> = ({
                     />
                   ) : (
                     <span style={{ 
-                      fontSize: '13px',
+                      fontSize: scaleFontSize(typography.body.fontSize),
                       color: typography.body.color,
                     }}>
                       {skill.name}
@@ -132,7 +135,7 @@ export const SkillsModern: React.FC<SkillsVariantProps> = ({
                   
                   {skill.level && (
                     <span style={{
-                      fontSize: '10px',
+                      fontSize: scaleFontSize(typography.dates.fontSize),
                       color: '#9ca3af',
                       backgroundColor: '#e5e7eb',
                       padding: '1px 6px',
@@ -171,7 +174,7 @@ export const SkillsModern: React.FC<SkillsVariantProps> = ({
             border: `2px dashed ${accentColor}40`,
             backgroundColor: `${accentColor}05`,
             color: accentColor,
-            fontSize: '13px',
+            fontSize: scaleFontSize(typography.body.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
           }}

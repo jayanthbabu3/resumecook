@@ -57,11 +57,20 @@ export interface RegisterData {
   bio?: string;
 }
 
+// Response from login/register endpoints
 export interface AuthResponse {
   success: boolean;
-  accessToken: string;
-  refreshToken: string;
-  user: User;
+  data: {
+    user: User;
+    tokens: {
+      accessToken: string;
+      refreshToken: string;
+    };
+  };
+  // Flattened version for backward compatibility
+  user?: User;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 export interface GoogleAuthResponse {
@@ -73,22 +82,22 @@ export interface GoogleAuthResponse {
 export const authService = {
   /**
    * Register a new user
+   * Note: Returns user data but no tokens - user must verify email first
    */
-  async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/register', data);
-    const { accessToken, refreshToken, user } = response.data;
-    tokenManager.setTokens(accessToken, refreshToken);
-    return response.data;
+  async register(data: RegisterData): Promise<{ user: Partial<User> }> {
+    const response = await api.post<{ success: boolean; data: { user: Partial<User> } }>('/auth/register', data);
+    return { user: response.data.data.user };
   },
 
   /**
    * Login with email and password
    */
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+  async login(credentials: LoginCredentials): Promise<{ user: User; tokens: { accessToken: string; refreshToken: string } }> {
     const response = await api.post<AuthResponse>('/auth/login', credentials);
-    const { accessToken, refreshToken } = response.data;
-    tokenManager.setTokens(accessToken, refreshToken);
-    return response.data;
+    // Backend returns { success: true, data: { user, tokens } }
+    const { user, tokens } = response.data.data;
+    tokenManager.setTokens(tokens.accessToken, tokens.refreshToken);
+    return { user, tokens };
   },
 
   /**
@@ -96,6 +105,9 @@ export const authService = {
    * Returns the redirect URL for Google sign-in
    */
   async googleAuth(): Promise<string> {
+    // Clear any previous auth data
+    localStorage.removeItem('google_auth_success');
+
     // Open Google OAuth in a popup
     const width = 500;
     const height = 600;
@@ -109,18 +121,31 @@ export const authService = {
     );
 
     return new Promise((resolve, reject) => {
+      let resolved = false;
+
+      const cleanup = () => {
+        window.removeEventListener('message', handleMessage);
+        clearInterval(checkClosed);
+        clearInterval(checkLocalStorage);
+      };
+
       // Listen for message from popup
       const handleMessage = (event: MessageEvent) => {
         if (event.origin !== window.location.origin) return;
 
         if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
+          if (resolved) return;
+          resolved = true;
           const { accessToken, refreshToken } = event.data;
           tokenManager.setTokens(accessToken, refreshToken);
-          window.removeEventListener('message', handleMessage);
+          cleanup();
           popup?.close();
+          localStorage.removeItem('google_auth_success');
           resolve('success');
         } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
-          window.removeEventListener('message', handleMessage);
+          if (resolved) return;
+          resolved = true;
+          cleanup();
           popup?.close();
           reject(new Error(event.data.error || 'Google authentication failed'));
         }
@@ -128,14 +153,72 @@ export const authService = {
 
       window.addEventListener('message', handleMessage);
 
+      // Check localStorage for auth success (fallback when postMessage doesn't work)
+      const checkLocalStorage = setInterval(() => {
+        const authData = localStorage.getItem('google_auth_success');
+        if (authData) {
+          try {
+            const { accessToken, refreshToken, timestamp } = JSON.parse(authData);
+            // Only accept if recent (within last 30 seconds)
+            if (Date.now() - timestamp < 30000) {
+              if (resolved) return;
+              resolved = true;
+              tokenManager.setTokens(accessToken, refreshToken);
+              cleanup();
+              popup?.close();
+              localStorage.removeItem('google_auth_success');
+              resolve('success');
+            }
+          } catch (e) {
+            // Invalid data, ignore
+          }
+        }
+      }, 500);
+
       // Check if popup was closed without auth
       const checkClosed = setInterval(() => {
         if (popup?.closed) {
           clearInterval(checkClosed);
-          window.removeEventListener('message', handleMessage);
-          reject(new Error('Authentication cancelled'));
+
+          // Do an immediate localStorage check
+          const checkAuth = () => {
+            const authData = localStorage.getItem('google_auth_success');
+            if (authData) {
+              try {
+                const { accessToken, refreshToken, timestamp } = JSON.parse(authData);
+                if (Date.now() - timestamp < 30000) {
+                  if (resolved) return true;
+                  resolved = true;
+                  tokenManager.setTokens(accessToken, refreshToken);
+                  cleanup();
+                  localStorage.removeItem('google_auth_success');
+                  resolve('success');
+                  return true;
+                }
+              } catch (e) {
+                // Invalid data
+              }
+            }
+            return false;
+          };
+
+          // Check immediately
+          if (checkAuth()) return;
+
+          // Check again after delays to catch any race conditions
+          setTimeout(() => {
+            if (checkAuth()) return;
+            setTimeout(() => {
+              if (checkAuth()) return;
+              // Final check failed, auth was cancelled
+              if (!resolved) {
+                cleanup();
+                reject(new Error('Authentication cancelled'));
+              }
+            }, 500);
+          }, 500);
         }
-      }, 1000);
+      }, 500);
     });
   },
 
@@ -209,11 +292,12 @@ export const authService = {
       throw new Error('No refresh token available');
     }
 
-    const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {
+    const response = await axios.post(`${API_BASE_URL}/api/auth/refresh-token`, {
       refreshToken,
     });
 
-    const { accessToken, refreshToken: newRefreshToken } = response.data;
+    // Backend returns { success: true, data: { tokens: { accessToken, refreshToken } } }
+    const { accessToken, refreshToken: newRefreshToken } = response.data.data.tokens;
     tokenManager.setTokens(accessToken, newRefreshToken);
 
     return { accessToken, refreshToken: newRefreshToken };

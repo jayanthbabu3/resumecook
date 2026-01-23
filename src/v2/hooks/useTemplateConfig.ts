@@ -80,6 +80,35 @@ export function useTemplateConfig({
       });
       
       // Then append any new sections that are not in base config
+      // Known section types that should use their ID as the type
+      const knownSectionTypes = new Set([
+        'projects', 'certifications', 'awards', 'publications', 'volunteer',
+        'speaking', 'patents', 'interests', 'references', 'courses',
+        'languages', 'strengths', 'achievements', 'experience', 'education',
+        'skills', 'summary', 'header',
+      ]);
+
+      // Map of section IDs to their default titles
+      const defaultSectionTitles: Record<string, string> = {
+        projects: 'Projects',
+        certifications: 'Certifications',
+        awards: 'Awards',
+        publications: 'Publications',
+        volunteer: 'Volunteer Experience',
+        speaking: 'Speaking Engagements',
+        patents: 'Patents',
+        interests: 'Interests',
+        references: 'References',
+        courses: 'Courses',
+        languages: 'Languages',
+        strengths: 'Core Strengths',
+        achievements: 'Achievements',
+        experience: 'Experience',
+        education: 'Education',
+        skills: 'Skills',
+        summary: 'Summary',
+      };
+
       Object.entries(sectionOverrides).forEach(([id, override]) => {
         // Skip special keys (disable keys, header variant, layout override)
         if (id.startsWith('__disable_type_') || id === '__header_variant' || id === '__layout_override') return;
@@ -88,13 +117,19 @@ export function useTemplateConfig({
             typeof override.order === 'number'
               ? override.order
               : sections.length + 1;
+
+          // Determine section type: use override.type, or id if it's a known type, otherwise 'custom'
+          const sectionType = override.type || (knownSectionTypes.has(id) ? id : 'custom');
+          // Determine title: use override.title, or default title for known types, otherwise id
+          const sectionTitle = override.title || defaultSectionTitles[id] || id;
+
           sections = [
             ...sections,
             {
-              type: override.type || 'custom',
+              type: sectionType,
               id,
-              title: override.title || 'New Section',
-              defaultTitle: override.defaultTitle || override.title || 'New Section',
+              title: sectionTitle,
+              defaultTitle: override.defaultTitle || sectionTitle,
               enabled: override.enabled !== false,
               order,
               column: override.column || 'main',

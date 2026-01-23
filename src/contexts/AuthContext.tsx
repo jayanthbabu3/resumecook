@@ -150,7 +150,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(response.user);
 
       // Check if this is a new verified user - claim trial
-      if (response.user.subscription.status === 'none') {
+      const subStatus = response.user.subscription?.status;
+      if (subStatus === 'none' || subStatus === 'free') {
         try {
           await subscriptionService.claimTrial();
           toast.success('Signed in successfully! Your 21-day free Pro trial has started!');
@@ -190,7 +191,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(currentUser);
 
       // Check if new user - claim trial
-      if (currentUser.subscription.status === 'none') {
+      const subStatus = currentUser.subscription?.status;
+      if (subStatus === 'none' || subStatus === 'free') {
         try {
           await subscriptionService.claimTrial();
           toast.success(

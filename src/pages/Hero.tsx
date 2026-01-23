@@ -2687,7 +2687,7 @@ const Hero = () => {
                       "Multiple Resumes",
                     ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-2 text-xs">
-                        <Check className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                        <Check className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" />
                         <span className="text-foreground">{feature}</span>
                       </li>
                     ))}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '@/config/api';
 
 export interface AppStats {
   usersCount: number;
@@ -13,27 +14,49 @@ interface UseAppStatsReturn {
 }
 
 /**
- * Hook to provide app stats
- * Currently returns static values - can be updated to fetch from API later
+ * Hook to fetch app stats from the backend
+ * Returns real user and download counts from the database
  */
 export const useAppStats = (): UseAppStatsReturn => {
   const [stats, setStats] = useState<AppStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    // Return static stats for now
-    // These can be updated to fetch from an API endpoint
-    const timer = setTimeout(() => {
-      setStats({
-        usersCount: 10000,
-        downloadsCount: 25000,
-        lastUpdated: new Date(),
-      });
-      setLoading(false);
-    }, 100);
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/public-stats`);
+        const data = await response.json();
 
-    return () => clearTimeout(timer);
+        if (data.success && data.data) {
+          setStats({
+            usersCount: data.data.usersCount || 0,
+            downloadsCount: data.data.downloadsCount || 0,
+            lastUpdated: new Date(),
+          });
+        } else {
+          // Fallback to 0 if API fails
+          setStats({
+            usersCount: 0,
+            downloadsCount: 0,
+            lastUpdated: new Date(),
+          });
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Failed to fetch stats'));
+        // Still set stats to 0 to avoid showing loading forever
+        setStats({
+          usersCount: 0,
+          downloadsCount: 0,
+          lastUpdated: new Date(),
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
   }, []);
 
-  return { stats, loading, error: null };
+  return { stats, loading, error };
 };

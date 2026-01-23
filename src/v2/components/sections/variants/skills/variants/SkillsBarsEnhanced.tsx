@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { SkillsVariantProps } from '../types';
 
 export const SkillsBarsEnhanced: React.FC<SkillsVariantProps> = ({
@@ -22,6 +23,8 @@ export const SkillsBarsEnhanced: React.FC<SkillsVariantProps> = ({
 }) => {
   const { typography } = config;
   const inlineEdit = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [hoverLevel, setHoverLevel] = useState<number | null>(null);
 
@@ -142,7 +145,7 @@ export const SkillsBarsEnhanced: React.FC<SkillsVariantProps> = ({
                     />
                   </div>
                 )}
-                <span style={{ fontSize: '11px', color: '#9ca3af', minWidth: '24px' }}>
+                <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#9ca3af', minWidth: '24px' }}>
                   {displayLevel}/5
                 </span>
               </div>

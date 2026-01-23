@@ -114,11 +114,12 @@ api.interceptors.response.use(
 
     try {
       // Use axios directly to avoid interceptors loop
-      const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/refresh-token`, {
         refreshToken,
       });
 
-      const { accessToken, refreshToken: newRefreshToken } = response.data;
+      // Backend returns { success: true, data: { tokens: { accessToken, refreshToken } } }
+      const { accessToken, refreshToken: newRefreshToken } = response.data.data.tokens;
 
       tokenManager.setTokens(accessToken, newRefreshToken);
 

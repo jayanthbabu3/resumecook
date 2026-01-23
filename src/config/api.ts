@@ -6,7 +6,7 @@
  */
 
 // Cloud Run API base URL (required)
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 // API Key for authentication (prevents unauthorized API usage)
 const API_KEY = import.meta.env.VITE_API_KEY || '';
@@ -20,33 +20,31 @@ if (!API_BASE_URL) {
  * API Endpoints - All routes on Cloud Run
  */
 export const API_ENDPOINTS = {
-  // AI Enhancement endpoints
-  enhanceResume: `${API_BASE_URL}/api/enhance-resume`,
-  parseResume: `${API_BASE_URL}/api/parse-resume`,
-  generateResumeFromJob: `${API_BASE_URL}/api/generate-resume-from-job`,
-  tailorResumeForJob: `${API_BASE_URL}/api/tailor-resume-for-job`,
-  chatWithResume: `${API_BASE_URL}/api/chat-with-resume`,
+  // AI Enhancement endpoints (mounted at /api/ai)
+  enhanceResume: `${API_BASE_URL}/api/ai/enhance-resume`,
+  parseResume: `${API_BASE_URL}/api/ai/parse-resume`,
+  generateResumeFromJob: `${API_BASE_URL}/api/ai/generate-from-job`,
+  tailorResumeForJob: `${API_BASE_URL}/api/ai/tailor-for-job`,
+  chatWithResume: `${API_BASE_URL}/api/ai/chat`,
+  atsScore: `${API_BASE_URL}/api/ai/ats-score`,
 
   // PDF Generation
   generatePdf: `${API_BASE_URL}/api/generate-pdf`,
 
-  // ATS Score
-  atsScore: `${API_BASE_URL}/api/ats-score`,
-
-  // Razorpay Payment endpoints
-  createSubscription: `${API_BASE_URL}/api/razorpay/create-subscription`,
-  verifyPayment: `${API_BASE_URL}/api/razorpay/verify-payment`,
-  verifySubscription: `${API_BASE_URL}/api/razorpay/verify-subscription`,
-  cancelSubscription: `${API_BASE_URL}/api/razorpay/cancel-subscription`,
-  getPricing: `${API_BASE_URL}/api/razorpay/pricing`,
+  // Razorpay Payment endpoints (mounted at /api/payments)
+  createSubscription: `${API_BASE_URL}/api/payments/create-subscription`,
+  verifyPayment: `${API_BASE_URL}/api/payments/verify-payment`,
+  cancelSubscription: `${API_BASE_URL}/api/payments/cancel-subscription`,
+  getPricing: `${API_BASE_URL}/api/payments/pricing`,
+  subscriptionStatus: `${API_BASE_URL}/api/payments/subscription-status`,
 
   // Trial endpoints
-  trialStatus: `${API_BASE_URL}/api/razorpay/trial-status`,
-  claimTrial: `${API_BASE_URL}/api/razorpay/claim-trial`,
-  checkTrialExpiry: `${API_BASE_URL}/api/razorpay/check-trial-expiry`,
+  trialStatus: `${API_BASE_URL}/api/payments/trial-status`,
+  claimTrial: `${API_BASE_URL}/api/payments/claim-trial`,
+  checkTrialExpiry: `${API_BASE_URL}/api/payments/check-trial-expiry`,
 
-  // LinkedIn Import
-  linkedinImport: `${API_BASE_URL}/api/linkedin-import`,
+  // LinkedIn Import (mounted at /api/linkedin)
+  linkedinImport: `${API_BASE_URL}/api/linkedin/import`,
 };
 
 /**
@@ -64,7 +62,7 @@ export function getApiBaseUrl(): string {
 }
 
 /**
- * Get headers for API requests (includes API key)
+ * Get headers for API requests (includes API key and auth token)
  */
 export function getApiHeaders(additionalHeaders: Record<string, string> = {}): Record<string, string> {
   const headers: Record<string, string> = {
@@ -75,6 +73,12 @@ export function getApiHeaders(additionalHeaders: Record<string, string> = {}): R
   // Add API key header if configured
   if (API_KEY) {
     headers['X-API-Key'] = API_KEY;
+  }
+
+  // Add auth token if available
+  const accessToken = localStorage.getItem('accessToken');
+  if (accessToken) {
+    headers['Authorization'] = `Bearer ${accessToken}`;
   }
 
   return headers;

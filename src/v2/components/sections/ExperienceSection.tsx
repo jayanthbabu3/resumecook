@@ -418,7 +418,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 
       return (
         <div key={item.id} style={itemStyle}>
-          <div className="flex">
+          {/* Entry Header - keep together for PDF page breaks */}
+          <div data-entry-header="true" className="flex">
             {/* Left column - dates and location */}
             <div style={leftColumnStyle}>
               <div style={{ ...dateStyle, whiteSpace: 'nowrap' }}>
@@ -462,7 +463,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               )}
             </div>
 
-            {/* Right column - job details */}
+            {/* Right column - job title and company (header part) */}
             <div className="flex-1 border-l-2 pl-4" style={{ borderColor: colors.border }}>
               {editable ? (
                 <InlineEditableText
@@ -474,7 +475,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               ) : (
                 <h3 style={titleStyle}>{item.position}</h3>
               )}
-              
+
               {editable ? (
                 <InlineEditableText
                   path={`experience.${index}.company`}
@@ -484,8 +485,16 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               ) : (
                 <div style={subtitleStyle}>{item.company}</div>
               )}
+            </div>
+          </div>
+          {/* End Entry Header */}
 
-              {/* Bullet points */}
+          {/* Bullet points - can break across pages */}
+          <div className="flex">
+            {/* Empty left column spacer to align with header */}
+            <div style={{ ...leftColumnStyle, visibility: 'hidden' }} aria-hidden="true" />
+            {/* Right column - bullets */}
+            <div className="flex-1 border-l-2 pl-4" style={{ borderColor: colors.border }}>
               {renderBullets()}
             </div>
           </div>

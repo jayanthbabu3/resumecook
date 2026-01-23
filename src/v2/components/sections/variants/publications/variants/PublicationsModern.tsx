@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { PublicationsVariantProps } from '../types';
 
 export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
@@ -21,6 +22,8 @@ export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -88,11 +91,11 @@ export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
                   <InlineEditableText
                     path={`publications.${index}.publisher`}
                     value={pub.publisher}
-                    style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}
+                    style={{ fontSize: scaleFontSize(typography.body.fontSize), color: accentColor, fontWeight: 500 }}
                     placeholder="Publisher"
                   />
                 ) : (
-                  <span style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}>
+                  <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: accentColor, fontWeight: 500 }}>
                     {pub.publisher}
                   </span>
                 )}
@@ -101,7 +104,7 @@ export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
 
             {/* Date */}
             <div style={{
-              fontSize: '11px',
+              fontSize: scaleFontSize(typography.dates.fontSize),
               color: typography.dates.color,
               whiteSpace: 'nowrap',
               flexShrink: 0,
@@ -111,7 +114,7 @@ export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
                   path={`publications.${index}.date`}
                   value={pub.date}
                   formatDisplay={formatDate}
-                  style={{ fontSize: '11px' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                 />
               ) : (
                 formatDate ? formatDate(pub.date) : pub.date
@@ -121,12 +124,12 @@ export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
 
           {/* Second row: Authors (if any) */}
           {(pub.authors?.length || editable) && (
-            <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>
+            <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', marginTop: '4px' }}>
               {editable ? (
                 <InlineEditableText
                   path={`publications.${index}.authors`}
                   value={Array.isArray(pub.authors) ? pub.authors.join(', ') : (pub.authors || '')}
-                  style={{ fontSize: '11px', color: '#6b7280' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                   placeholder="Authors (comma-separated)"
                 />
               ) : (
@@ -164,15 +167,15 @@ export const PublicationsModern: React.FC<PublicationsVariantProps> = ({
                 <InlineEditableText
                   path={`publications.${index}.url`}
                   value={pub.url || ''}
-                  style={{ fontSize: '10px', color: accentColor }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                   placeholder="URL"
                 />
               </div>
-              <div style={{ fontSize: '10px', color: '#6b7280' }}>
+              <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}>
                 DOI: <InlineEditableText
                   path={`publications.${index}.doi`}
                   value={pub.doi || ''}
-                  style={{ fontSize: '10px', color: '#6b7280' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                   placeholder="optional"
                 />
               </div>

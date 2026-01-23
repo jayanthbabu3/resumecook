@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { CertificationsVariantProps } from '../types';
 
 export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
@@ -20,6 +21,8 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -35,7 +38,7 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
             justifyContent: 'space-between',
             gap: '8px',
             padding: '4px 0',
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.body.fontSize),
           }}
         >
           {editable && onRemoveCertification && (
@@ -53,7 +56,7 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
               <InlineEditableText
                 path={`certifications.${index}.name`}
                 value={cert.name}
-                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: '11px' }}
+                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Certification Name"
               />
             ) : (
@@ -66,7 +69,7 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
               <InlineEditableText
                 path={`certifications.${index}.issuer`}
                 value={cert.issuer}
-                style={{ color: '#6b7280', fontSize: '11px' }}
+                style={{ color: typography.body.color, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Issuer"
               />
             ) : (
@@ -75,13 +78,13 @@ export const CertificationsCompact: React.FC<CertificationsVariantProps> = ({
           </div>
 
           {/* Date */}
-          <div style={{ fontSize: '10px', color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
             {editable ? (
               <InlineEditableDate
                 path={`certifications.${index}.date`}
                 value={cert.date}
                 formatDisplay={formatDate}
-                style={{ fontSize: '10px' }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
               />
             ) : (
               formatDate ? formatDate(cert.date) : cert.date

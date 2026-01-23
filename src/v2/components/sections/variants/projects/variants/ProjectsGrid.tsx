@@ -15,6 +15,7 @@ import React from 'react';
 import { Plus, X, ExternalLink, Github } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ProjectsVariantProps } from '../types';
 
 interface ProjectsGridProps extends ProjectsVariantProps {
@@ -37,6 +38,8 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
 }) => {
   const { typography, colors, spacing } = config;
   const { addArrayItem, removeArrayItem } = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const accent = accentColor || colors.primary;
 
   const handleAddProject = () => {
@@ -116,7 +119,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
     borderRadius: '50%',
     backgroundColor: accent,
     color: '#ffffff',
-    fontSize: '11px',
+    fontSize: scaleFontSize(typography.dates.fontSize),
     fontWeight: 700,
     flexShrink: 0,
   };
@@ -137,7 +140,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
   };
 
   const techTagStyle: React.CSSProperties = {
-    fontSize: '10px',
+    fontSize: scaleFontSize(typography.dates.fontSize),
     fontWeight: 500,
     padding: '3px 8px',
     borderRadius: '4px',
@@ -150,7 +153,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
     display: 'inline-flex',
     alignItems: 'center',
     gap: '4px',
-    fontSize: '11px',
+    fontSize: scaleFontSize(typography.dates.fontSize),
     color: accent,
     textDecoration: 'none',
     marginTop: '8px',

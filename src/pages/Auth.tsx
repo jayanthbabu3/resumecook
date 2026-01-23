@@ -20,7 +20,7 @@ const Auth = () => {
   const [error, setError] = useState('');
 
   // Check if user came from upgrade flow
-  const redirectTo = searchParams.get('redirect') || '/templates';
+  const redirectTo = searchParams.get('redirect') || '/dashboard';
   const isUpgradeFlow = searchParams.get('upgrade') === 'true';
 
   useEffect(() => {

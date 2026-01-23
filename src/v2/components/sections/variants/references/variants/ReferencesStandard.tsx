@@ -8,6 +8,7 @@
 import React from 'react';
 import { X, Plus, Mail, Phone } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ReferencesVariantProps } from '../types';
 
 export const ReferencesStandard: React.FC<ReferencesVariantProps> = ({
@@ -19,6 +20,8 @@ export const ReferencesStandard: React.FC<ReferencesVariantProps> = ({
   onRemoveReference,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -74,19 +77,19 @@ export const ReferencesStandard: React.FC<ReferencesVariantProps> = ({
                     <InlineEditableText
                       path={`references.${index}.title`}
                       value={item.title}
-                      style={{ fontSize: '12px', color: accentColor }}
+                      style={{ fontSize: scaleFontSize(typography.body.fontSize), color: accentColor }}
                       placeholder="Title"
                     />
-                    <span style={{ color: '#9ca3af', fontSize: '12px' }}>at</span>
+                    <span style={{ color: '#9ca3af', fontSize: scaleFontSize(typography.body.fontSize) }}>at</span>
                     <InlineEditableText
                       path={`references.${index}.company`}
                       value={item.company}
-                      style={{ fontSize: '12px', color: accentColor }}
+                      style={{ fontSize: scaleFontSize(typography.body.fontSize), color: accentColor }}
                       placeholder="Company"
                     />
                   </>
                 ) : (
-                  <span style={{ fontSize: '12px', color: accentColor }}>
+                  <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: accentColor }}>
                     {item.title} at {item.company}
                   </span>
                 )}
@@ -98,7 +101,7 @@ export const ReferencesStandard: React.FC<ReferencesVariantProps> = ({
                 alignItems: 'center',
                 gap: '12px',
                 marginTop: '4px',
-                fontSize: '11px',
+                fontSize: scaleFontSize(typography.dates.fontSize),
                 color: '#6b7280',
                 flexWrap: 'wrap',
               }}>
@@ -106,7 +109,7 @@ export const ReferencesStandard: React.FC<ReferencesVariantProps> = ({
                   <InlineEditableText
                     path={`references.${index}.relationship`}
                     value={item.relationship}
-                    style={{ fontSize: '11px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                     placeholder="Relationship"
                   />
                 ) : (
@@ -122,11 +125,11 @@ export const ReferencesStandard: React.FC<ReferencesVariantProps> = ({
                         <InlineEditableText
                           path={`references.${index}.email`}
                           value={item.email || ''}
-                          style={{ fontSize: '11px', color: accentColor }}
+                          style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                           placeholder="email"
                         />
                       ) : (
-                        <a href={`mailto:${item.email}`} style={{ color: accentColor, textDecoration: 'none', fontSize: '11px' }}>
+                        <a href={`mailto:${item.email}`} style={{ color: accentColor, textDecoration: 'none', fontSize: scaleFontSize(typography.dates.fontSize) }}>
                           {item.email}
                         </a>
                       )}
@@ -143,11 +146,11 @@ export const ReferencesStandard: React.FC<ReferencesVariantProps> = ({
                         <InlineEditableText
                           path={`references.${index}.phone`}
                           value={item.phone || ''}
-                          style={{ fontSize: '11px', color: '#4b5563' }}
+                          style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#4b5563' }}
                           placeholder="phone"
                         />
                       ) : (
-                        <span style={{ fontSize: '11px' }}>{item.phone}</span>
+                        <span style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}>{item.phone}</span>
                       )}
                     </div>
                   </>

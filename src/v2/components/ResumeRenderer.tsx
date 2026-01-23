@@ -845,6 +845,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
         );
 
       case 'speaking':
+        const speakingVariant = (section as any).variant;
         return wrap('speaking',
           <SpeakingSection
             key={section.id}
@@ -854,6 +855,7 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
             sectionTitle={title}
             onAddItem={onAddSpeaking}
             onRemoveItem={onRemoveSpeaking}
+            variantOverride={speakingVariant}
           />
         );
 

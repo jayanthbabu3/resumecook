@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { PatentsVariantProps } from '../types';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -27,6 +28,8 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -43,7 +46,7 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
             padding: '6px 10px',
             backgroundColor: index % 2 === 0 ? `${accentColor}04` : 'transparent',
             borderRadius: '4px',
-            fontSize: '12px',
+            fontSize: scaleFontSize(typography.body.fontSize),
           }}
         >
           {editable && onRemovePatent && (
@@ -61,7 +64,7 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
               <InlineEditableText
                 path={`patents.${index}.title`}
                 value={item.title}
-                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: '12px' }}
+                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Patent Title"
               />
             ) : (
@@ -74,11 +77,11 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
               <InlineEditableText
                 path={`patents.${index}.patentNumber`}
                 value={item.patentNumber || ''}
-                style={{ color: '#6b7280', fontSize: '11px' }}
+                style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize) }}
                 placeholder="Patent #"
               />
             ) : (
-              <span style={{ color: '#6b7280', fontSize: '11px' }}>{item.patentNumber}</span>
+              <span style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize) }}>{item.patentNumber}</span>
             )}
 
             {/* Status badge */}
@@ -117,13 +120,13 @@ export const PatentsCompact: React.FC<PatentsVariantProps> = ({
           </div>
 
           {/* Date */}
-          <div style={{ fontSize: '11px', color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
             {editable ? (
               <InlineEditableDate
                 path={`patents.${index}.date`}
                 value={item.date}
                 formatDisplay={formatDate}
-                style={{ fontSize: '11px' }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
               />
             ) : (
               formatDate ? formatDate(item.date) : item.date

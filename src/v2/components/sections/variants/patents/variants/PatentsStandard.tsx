@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { PatentsVariantProps } from '../types';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -27,6 +28,8 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -94,11 +97,11 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
                   <InlineEditableText
                     path={`patents.${index}.patentNumber`}
                     value={item.patentNumber || ''}
-                    style={{ fontSize: '11px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                     placeholder="Patent #"
                   />
                 ) : (
-                  <span style={{ fontSize: '11px', color: '#6b7280' }}>
+                  <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}>
                     {item.patentNumber}
                   </span>
                 )}
@@ -106,7 +109,7 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
                 {/* Status badge */}
                 <span
                   style={{
-                    fontSize: '10px',
+                    fontSize: scaleFontSize(typography.dates.fontSize),
                     padding: '1px 6px',
                     borderRadius: '4px',
                     backgroundColor: `${STATUS_COLORS[item.status] || STATUS_COLORS.Pending}15`,
@@ -118,7 +121,7 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
                     <InlineEditableText
                       path={`patents.${index}.status`}
                       value={item.status || 'Pending'}
-                      style={{ fontSize: '10px', fontWeight: 500 }}
+                      style={{ fontSize: scaleFontSize(typography.dates.fontSize), fontWeight: 500 }}
                       placeholder="Status"
                     />
                   ) : (
@@ -130,7 +133,7 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
 
             {/* Date */}
             <div style={{
-              fontSize: '11px',
+              fontSize: scaleFontSize(typography.dates.fontSize),
               color: typography.dates.color,
               whiteSpace: 'nowrap',
               flexShrink: 0,
@@ -140,7 +143,7 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
                   path={`patents.${index}.date`}
                   value={item.date}
                   formatDisplay={formatDate}
-                  style={{ fontSize: '11px' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                 />
               ) : (
                 formatDate ? formatDate(item.date) : item.date
@@ -150,13 +153,13 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
 
           {/* Second row: Inventors (if any) */}
           {(item.inventors?.length || editable) && (
-            <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>
+            <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', marginTop: '4px' }}>
               <span>Inventors: </span>
               {editable ? (
                 <InlineEditableText
                   path={`patents.${index}.inventors`}
                   value={Array.isArray(item.inventors) ? item.inventors.join(', ') : (item.inventors || '')}
-                  style={{ fontSize: '11px', color: '#6b7280' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                   placeholder="Names (comma-separated)"
                 />
               ) : (
@@ -193,7 +196,7 @@ export const PatentsStandard: React.FC<PatentsVariantProps> = ({
               <InlineEditableText
                 path={`patents.${index}.url`}
                 value={item.url || ''}
-                style={{ fontSize: '10px', color: accentColor }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                 placeholder="Patent URL (optional)"
               />
             </div>

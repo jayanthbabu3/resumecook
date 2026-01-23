@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus, BookOpen, Award, Users } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { EducationVariantProps } from '../types';
 
 export const EducationAcademic: React.FC<EducationVariantProps> = ({
@@ -20,6 +21,8 @@ export const EducationAcademic: React.FC<EducationVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -100,7 +103,7 @@ export const EducationAcademic: React.FC<EducationVariantProps> = ({
             </div>
             
             <div style={{ 
-              fontSize: '13px', 
+              fontSize: scaleFontSize(typography.body.fontSize), 
               color: '#6b7280', 
               fontStyle: 'italic',
               whiteSpace: 'nowrap',

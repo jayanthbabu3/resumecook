@@ -5,6 +5,7 @@
 import React from 'react';
 import { X, Plus, Trophy } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { AwardsVariantProps } from '../types';
 
 export const AwardsCompact: React.FC<AwardsVariantProps> = ({
@@ -17,6 +18,8 @@ export const AwardsCompact: React.FC<AwardsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -61,7 +64,7 @@ export const AwardsCompact: React.FC<AwardsVariantProps> = ({
                     <InlineEditableText
                       path={`awards.${index}.issuer`}
                       value={award.issuer}
-                      style={{ color: '#6b7280' }}
+                      style={{ color: typography.body.color }}
                       placeholder="Issuer"
                     />
                   </>
@@ -75,7 +78,7 @@ export const AwardsCompact: React.FC<AwardsVariantProps> = ({
                 {award.issuer && (
                   <>
                     <span style={{ color: '#d1d5db' }}>•</span>
-                    <span style={{ color: '#6b7280' }}>{award.issuer}</span>
+                    <span style={{ color: typography.body.color }}>{award.issuer}</span>
                   </>
                 )}
               </>
@@ -83,7 +86,7 @@ export const AwardsCompact: React.FC<AwardsVariantProps> = ({
           </div>
           
           {award.date && (
-            <div style={{ fontSize: '12px', color: '#9ca3af', whiteSpace: 'nowrap' }}>
+            <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.dates.color, whiteSpace: 'nowrap' }}>
               {formatDate ? formatDate(award.date) : award.date}
             </div>
           )}

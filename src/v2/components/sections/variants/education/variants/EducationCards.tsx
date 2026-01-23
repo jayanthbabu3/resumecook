@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus, GraduationCap, Award, BookOpen } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { EducationVariantProps } from '../types';
 
 export const EducationCards: React.FC<EducationVariantProps> = ({
@@ -20,6 +21,8 @@ export const EducationCards: React.FC<EducationVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -121,7 +124,7 @@ export const EducationCards: React.FC<EducationVariantProps> = ({
           
           {/* Date */}
           <div style={{ 
-            fontSize: '12px', 
+            fontSize: scaleFontSize(typography.body.fontSize), 
             color: '#6b7280',
             marginBottom: '12px',
           }}>
@@ -139,21 +142,21 @@ export const EducationCards: React.FC<EducationVariantProps> = ({
           {/* Details */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {edu.gpa && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: scaleFontSize(typography.body.fontSize) }}>
                 <Award style={{ width: '14px', height: '14px', color: accentColor }} />
                 <span>GPA: {edu.gpa}</span>
               </div>
             )}
             
             {edu.honors && edu.honors.length > 0 && (
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', fontSize: scaleFontSize(typography.body.fontSize) }}>
                 <Award style={{ width: '14px', height: '14px', color: accentColor, marginTop: '2px' }} />
                 <span>{edu.honors.join(', ')}</span>
               </div>
             )}
             
             {edu.coursework && edu.coursework.length > 0 && (
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', fontSize: scaleFontSize(typography.body.fontSize) }}>
                 <BookOpen style={{ width: '14px', height: '14px', color: accentColor, marginTop: '2px' }} />
                 <span>{edu.coursework.slice(0, 3).join(', ')}{edu.coursework.length > 3 ? '...' : ''}</span>
               </div>

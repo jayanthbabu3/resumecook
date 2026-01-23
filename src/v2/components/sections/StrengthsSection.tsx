@@ -31,6 +31,8 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
   variantOverride,
 }) => {
   const { typography, spacing, colors } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const variant: StrengthsVariant = (variantOverride as StrengthsVariant) || config.strengths?.variant || 'cards';
   const showIcons = config.strengths?.showIcons ?? true;
 
@@ -61,7 +63,7 @@ export const StrengthsSection: React.FC<StrengthsSectionProps> = ({
         style={{
           marginTop: '12px',
           padding: '6px 12px',
-          fontSize: '12px',
+          fontSize: scaleFontSize(typography.body.fontSize),
           color: colors.primary,
           background: 'transparent',
           border: `1px dashed ${colors.primary}`,

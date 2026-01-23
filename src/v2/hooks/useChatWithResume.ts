@@ -174,7 +174,13 @@ export function useChatWithResume({
 
         // Create user-friendly error messages based on error type
         let userFriendlyMessage: string;
-        if (errorMessage.includes('HTTP error 5') || errorMessage.includes('Failed to fetch')) {
+        if (errorMessage.includes('subscription required') || errorMessage.includes('Active subscription')) {
+          userFriendlyMessage = "🔒 This feature requires an active subscription. Please upgrade to Pro to use AI-powered chat.";
+        } else if (errorMessage.includes('Trial has expired')) {
+          userFriendlyMessage = "⏰ Your trial has expired. Please upgrade to Pro to continue using AI features.";
+        } else if (errorMessage.includes('HTTP error 403')) {
+          userFriendlyMessage = "🔒 Access denied. Please make sure you have an active subscription to use this feature.";
+        } else if (errorMessage.includes('HTTP error 5') || errorMessage.includes('Failed to fetch')) {
           userFriendlyMessage = "I'm having trouble connecting to the server. Please check your internet connection and try again.";
         } else if (errorMessage.includes('HTTP error 429')) {
           userFriendlyMessage = "I'm getting too many requests right now. Please wait a moment and try again.";

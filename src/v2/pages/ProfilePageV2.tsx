@@ -905,7 +905,7 @@ const ProfilePageV2: React.FC = () => {
       setPatentForm({ status: 'Pending' });
     }
 
-    if (section === 'personal' && profile) {
+    if (section === 'personal' && profile?.personalInfo) {
       setPersonalForm({
         fullName: profile.personalInfo.fullName || '',
         email: profile.personalInfo.email || '',
@@ -1495,7 +1495,7 @@ const ProfilePageV2: React.FC = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fafafa]">
+      <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="flex items-center justify-center min-h-[calc(100vh-73px)]">
           <div className="text-center space-y-4">
@@ -1508,7 +1508,7 @@ const ProfilePageV2: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-gray-50">
       <Header />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -1536,7 +1536,7 @@ const ProfilePageV2: React.FC = () => {
               Edit
             </Button>
           </div>
-          {profile?.personalInfo.summary ? (
+          {profile?.personalInfo?.summary ? (
             <p className="text-gray-600 leading-relaxed">{profile.personalInfo.summary}</p>
           ) : (
             <button
@@ -1693,6 +1693,20 @@ const ProfilePageV2: React.FC = () => {
             badge={profile?.skills?.length ? `${profile.skills.length} skills` : undefined}
           >
             {(() => {
+              // Helper to get skill display name from various possible formats
+              const getSkillName = (skill: typeof profile.skills[0]): string => {
+                // V2 format: individual skill with name
+                if (skill.name && skill.name.trim()) return skill.name;
+                // Legacy format: grouped skills with items array
+                const legacySkill = skill as { items?: string[]; category?: string };
+                if (legacySkill.items && legacySkill.items.length > 0) {
+                  return legacySkill.items.filter(Boolean).join(', ');
+                }
+                // Fallback: use category name if nothing else
+                if (skill.category && skill.category.trim()) return skill.category;
+                return 'Unnamed skill';
+              };
+
               // Group skills by category
               const grouped = (profile?.skills || []).reduce((acc, skill) => {
                 const category = skill.category || 'Other';
@@ -1713,7 +1727,7 @@ const ProfilePageV2: React.FC = () => {
                         className="group relative inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 hover:border-primary/30 hover:bg-primary/5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md"
                         onClick={() => openEditModal('skills', skill.id)}
                       >
-                        <span className="text-gray-700 group-hover:text-gray-900">{skill.name}</span>
+                        <span className="text-gray-700 group-hover:text-gray-900">{getSkillName(skill)}</span>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -1742,7 +1756,7 @@ const ProfilePageV2: React.FC = () => {
                             className="group relative inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 hover:border-primary/30 hover:bg-primary/5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md"
                             onClick={() => openEditModal('skills', skill.id)}
                           >
-                            <span className="text-gray-700 group-hover:text-gray-900">{skill.name}</span>
+                            <span className="text-gray-700 group-hover:text-gray-900">{getSkillName(skill)}</span>
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();

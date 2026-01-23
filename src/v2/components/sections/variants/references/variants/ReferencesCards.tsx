@@ -8,6 +8,7 @@
 import React from 'react';
 import { X, Plus, Mail, Phone } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ReferencesVariantProps } from '../types';
 
 export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
@@ -19,6 +20,8 @@ export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
   onRemoveReference,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -74,20 +77,20 @@ export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
           )}
 
           {/* Title at Company */}
-          <div style={{ fontSize: '11px', color: accentColor, marginTop: '2px' }}>
+          <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor, marginTop: '2px' }}>
             {editable ? (
               <span style={{ display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
                 <InlineEditableText
                   path={`references.${index}.title`}
                   value={item.title}
-                  style={{ fontSize: '11px', color: accentColor }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                   placeholder="Title"
                 />
                 <span style={{ color: '#9ca3af' }}>at</span>
                 <InlineEditableText
                   path={`references.${index}.company`}
                   value={item.company}
-                  style={{ fontSize: '11px', color: accentColor }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                   placeholder="Company"
                 />
               </span>
@@ -97,12 +100,12 @@ export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
           </div>
 
           {/* Relationship */}
-          <div style={{ fontSize: '10px', color: '#6b7280', marginTop: '2px' }}>
+          <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', marginTop: '2px' }}>
             {editable ? (
               <InlineEditableText
                 path={`references.${index}.relationship`}
                 value={item.relationship}
-                style={{ fontSize: '10px', color: '#6b7280' }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                 placeholder="Relationship"
               />
             ) : (
@@ -117,7 +120,7 @@ export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
               alignItems: 'center',
               gap: '8px',
               marginTop: '6px',
-              fontSize: '10px',
+              fontSize: scaleFontSize(typography.dates.fontSize),
               flexWrap: 'wrap',
             }}>
               {(item.email || editable) && (
@@ -127,7 +130,7 @@ export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
                     <InlineEditableText
                       path={`references.${index}.email`}
                       value={item.email || ''}
-                      style={{ fontSize: '10px', color: accentColor }}
+                      style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                       placeholder="email"
                     />
                   ) : (
@@ -144,7 +147,7 @@ export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
                     <InlineEditableText
                       path={`references.${index}.phone`}
                       value={item.phone || ''}
-                      style={{ fontSize: '10px', color: '#4b5563' }}
+                      style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#4b5563' }}
                       placeholder="phone"
                     />
                   ) : (
@@ -170,7 +173,7 @@ export const ReferencesCards: React.FC<ReferencesVariantProps> = ({
             border: `1px dashed ${accentColor}40`,
             backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
           }}

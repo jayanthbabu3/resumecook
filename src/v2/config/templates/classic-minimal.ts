@@ -191,12 +191,14 @@ export const classicMinimalConfig: TemplateConfig = createTemplateConfig({
     primary: "'Source Sans Pro', 'Lato', 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif",
   },
 
-  // Creative decorations - modern geometric accents inspired by creative resumes
+  // Creative decorations - subtle top accent only
+  // header-accent provides a gradient that fades from top to transparent
+  // gradientBackground disabled to avoid dark gradient at bottom of pages
   decorations: {
     enabled: true,
-    elements: ['top-accent-line', 'diagonal-shape', 'header-accent', 'bottom-wave'],
+    elements: ['top-accent-line', 'header-accent'],
     opacity: 1,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

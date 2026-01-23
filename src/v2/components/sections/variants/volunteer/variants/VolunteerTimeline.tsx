@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { VolunteerVariantProps } from '../types';
 
 export const VolunteerTimeline: React.FC<VolunteerVariantProps> = ({
@@ -21,6 +22,8 @@ export const VolunteerTimeline: React.FC<VolunteerVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -96,11 +99,11 @@ export const VolunteerTimeline: React.FC<VolunteerVariantProps> = ({
                   <InlineEditableText
                     path={`volunteer.${index}.organization`}
                     value={item.organization}
-                    style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}
+                    style={{ fontSize: scaleFontSize(typography.body.fontSize), color: accentColor, fontWeight: 500 }}
                     placeholder="Organization"
                   />
                 ) : (
-                  <span style={{ fontSize: '12px', color: accentColor, fontWeight: 500 }}>
+                  <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: accentColor, fontWeight: 500 }}>
                     {item.organization}
                   </span>
                 )}
@@ -111,11 +114,11 @@ export const VolunteerTimeline: React.FC<VolunteerVariantProps> = ({
                       <InlineEditableText
                         path={`volunteer.${index}.location`}
                         value={item.location || ''}
-                        style={{ fontSize: '11px', color: '#6b7280' }}
+                        style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                         placeholder="Location"
                       />
                     ) : (
-                      <span style={{ fontSize: '11px', color: '#6b7280' }}>{item.location}</span>
+                      <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}>{item.location}</span>
                     )}
                   </>
                 )}
@@ -123,7 +126,7 @@ export const VolunteerTimeline: React.FC<VolunteerVariantProps> = ({
 
               {/* Date */}
               <div style={{
-                fontSize: '11px',
+                fontSize: scaleFontSize(typography.dates.fontSize),
                 color: typography.dates.color,
                 whiteSpace: 'nowrap',
                 flexShrink: 0,
@@ -134,7 +137,7 @@ export const VolunteerTimeline: React.FC<VolunteerVariantProps> = ({
                       path={`volunteer.${index}.startDate`}
                       value={item.startDate}
                       formatDisplay={formatDate}
-                      style={{ fontSize: '11px' }}
+                      style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                     />
                     <span>-</span>
                     {item.current ? (
@@ -144,7 +147,7 @@ export const VolunteerTimeline: React.FC<VolunteerVariantProps> = ({
                         path={`volunteer.${index}.endDate`}
                         value={item.endDate}
                         formatDisplay={formatDate}
-                        style={{ fontSize: '11px' }}
+                        style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                       />
                     )}
                   </span>

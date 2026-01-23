@@ -10,6 +10,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Plus, ChevronDown } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { LanguagesVariantProps } from '../types';
 
 const proficiencyLevels: { key: string; level: number; label: string }[] = [
@@ -42,6 +43,8 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
 }) => {
   const { typography } = config;
   const inlineEdit = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -89,7 +92,7 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
                   style={{
                     fontWeight: 600,
                     color: typography.itemTitle.color,
-                    fontSize: '12px',
+                    fontSize: scaleFontSize(typography.body.fontSize),
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -102,7 +105,7 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
                 <span style={{
                   fontWeight: 600,
                   color: typography.itemTitle.color,
-                  fontSize: '12px',
+                  fontSize: scaleFontSize(typography.body.fontSize),
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -119,7 +122,7 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
                   <button
                     onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
                     className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-gray-100 transition-colors"
-                    style={{ fontSize: '10px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                   >
                     {profInfo.label}
                     <ChevronDown className="w-3 h-3" />
@@ -144,7 +147,7 @@ export const LanguagesBars: React.FC<LanguagesVariantProps> = ({
                   )}
                 </div>
               ) : (
-                <span style={{ fontSize: '10px', color: '#6b7280', flexShrink: 0 }}>
+                <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', flexShrink: 0 }}>
                   {profInfo.label}
                 </span>
               )}

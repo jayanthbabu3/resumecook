@@ -29,7 +29,9 @@ export const ExperienceCompact: React.FC<ExperienceVariantProps> = ({
       {items.map((exp, index) => (
         <div
           key={exp.id || index}
-          className="group relative"
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
+          data-entry-header="true"
           style={{
             display: 'flex',
             justifyContent: 'space-between',

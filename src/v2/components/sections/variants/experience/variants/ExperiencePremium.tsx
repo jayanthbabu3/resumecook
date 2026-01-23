@@ -16,6 +16,7 @@ import React from 'react';
 import { X, Plus, Briefcase } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ExperienceVariantProps } from '../../experience/types';
 
 export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
@@ -30,6 +31,8 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -42,7 +45,8 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
       {items.map((exp, index) => (
         <div
           key={exp.id || index}
-          className="group relative"
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
           style={{
             paddingBottom: index < items.length - 1 ? '16px' : '0',
             borderBottom: index < items.length - 1 ? '1px solid #f0f0f0' : 'none',
@@ -58,6 +62,8 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
 
+          {/* Entry Header - keep together for PDF page breaks */}
+          <div data-entry-header="true">
           {/* Header Row: Position + Date */}
           <div style={{
             display: 'flex',
@@ -97,7 +103,7 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
 
             {/* Date Badge */}
             <div style={{
-              fontSize: '11px',
+              fontSize: scaleFontSize(typography.dates.fontSize),
               fontWeight: '500',
               color: '#6b7280',
               whiteSpace: 'nowrap',
@@ -165,7 +171,7 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
             {/* Location */}
             {exp.location && (
               <span style={{
-                fontSize: '12px',
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: '#9ca3af',
                 marginLeft: '8px',
               }}>
@@ -173,6 +179,8 @@ export const ExperiencePremium: React.FC<ExperienceVariantProps> = ({
               </span>
             )}
           </div>
+          </div>
+          {/* End Entry Header */}
 
           {/* Description if present */}
           {exp.description && (

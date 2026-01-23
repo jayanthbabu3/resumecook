@@ -200,20 +200,10 @@ const DashboardV2 = () => {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/30">
       <Header />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        {/* Trial Banner - Compact inline version */}
-        <TrialBanner variant="compact" className="mb-6 rounded-lg" />
+      {/* Trial Banner - Full width */}
+      <TrialBanner variant="compact" />
 
-        {/* Hero Section */}
-        <div className="text-center mb-10 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
-            Create Your Perfect Resume
-          </h1>
-          <p className="text-gray-600 text-base sm:text-lg">
-            Choose from <span className="font-semibold text-primary">{totalTemplates} professional templates</span> and powerful tools to land your dream job
-          </p>
-        </div>
-
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
         {/* FREE SECTION */}
         <div className="mb-10 sm:mb-14" data-tour="free-section">
           <div className="flex items-center gap-3 mb-4">
@@ -258,16 +248,16 @@ const DashboardV2 = () => {
               <div className="absolute top-4 right-4">
                 <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">FREE</span>
               </div>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full opacity-60" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center mb-4">
                   <MousePointerClick className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Live Editor</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
                   Edit your resume in real-time with instant visual preview
                 </p>
-                <div className="flex items-center gap-1 text-blue-600 font-medium text-sm">
+                <div className="flex items-center gap-1 text-primary font-medium text-sm">
                   <span>Start Editing</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -283,16 +273,16 @@ const DashboardV2 = () => {
               <div className="absolute top-4 right-4">
                 <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">FREE</span>
               </div>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-violet-50 to-transparent rounded-bl-full opacity-60" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center mb-4">
                   <FileText className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Form Editor</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
                   Step-by-step guided form to build your resume section by section
                 </p>
-                <div className="flex items-center gap-1 text-violet-600 font-medium text-sm">
+                <div className="flex items-center gap-1 text-primary font-medium text-sm">
                   <span>Start Building</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -308,16 +298,16 @@ const DashboardV2 = () => {
               <div className="absolute top-4 right-4">
                 <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">FREE</span>
               </div>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-rose-50 to-transparent rounded-bl-full opacity-60" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-emerald-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center mb-4">
                   <Download className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Export & Customize</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
                   Download as PDF, customize colors, fonts, and spacing
                 </p>
-                <div className="flex items-center gap-1 text-rose-600 font-medium text-sm">
+                <div className="flex items-center gap-1 text-emerald-600 font-medium text-sm">
                   <span>Create Resume</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -344,7 +334,7 @@ const DashboardV2 = () => {
               data-tour="chat-resume"
             >
               <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
                   <Sparkles className="w-2.5 h-2.5" />
                   NEW
                 </span>
@@ -374,16 +364,16 @@ const DashboardV2 = () => {
               <div className="absolute top-4 right-4">
                 <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">PRO</span>
               </div>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-sky-50 to-transparent rounded-bl-full opacity-60" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-cyan-600 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center mb-4">
                   <FileUp className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Upload Resume</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
                   Import your existing resume, AI fills in everything
                 </p>
-                <div className="flex items-center gap-1 text-sky-600 font-medium text-sm">
+                <div className="flex items-center gap-1 text-primary font-medium text-sm">
                   <span>Upload Now</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -399,16 +389,16 @@ const DashboardV2 = () => {
               <div className="absolute top-4 right-4">
                 <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">PRO</span>
               </div>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-50 to-transparent rounded-bl-full opacity-60" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-emerald-50 to-transparent rounded-bl-full opacity-60" />
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center mb-4">
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1.5">Match to Job</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-3">
                   Paste a job post, AI tailors your resume to fit perfectly
                 </p>
-                <div className="flex items-center gap-1 text-orange-600 font-medium text-sm">
+                <div className="flex items-center gap-1 text-emerald-600 font-medium text-sm">
                   <span>Match Now</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -470,22 +460,22 @@ const DashboardV2 = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button
-            size="lg"
-            className="gap-2 px-8 h-12 text-base font-semibold rounded-xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
+            size="sm"
+            className="gap-1.5 px-4 h-9 text-sm font-medium rounded-lg bg-primary hover:bg-primary/90"
             onClick={() => navigate("/templates")}
           >
             Start Building Free
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </Button>
           <Button
-            size="lg"
+            size="sm"
             variant="outline"
-            className="gap-2 px-8 h-12 text-base font-semibold rounded-xl border-2"
+            className="gap-1.5 px-4 h-9 text-sm font-medium rounded-lg"
             onClick={() => navigate("/pricing")}
           >
-            <Crown className="w-5 h-5 text-slate-500" />
+            <Crown className="w-4 h-4 text-slate-500" />
             View Pro Plans
           </Button>
         </div>
@@ -555,7 +545,7 @@ const DashboardV2 = () => {
           setPendingEditorMode(null);
         }}
         onSelect={handleEditorTemplateSelect}
-        themeColor={pendingEditorMode === 'form' ? '#8b5cf6' : '#3b82f6'}
+        themeColor="#3b82f6"
       />
 
       {/* Dashboard Tour */}

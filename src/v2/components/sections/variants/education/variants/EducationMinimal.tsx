@@ -7,6 +7,7 @@
 import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { EducationVariantProps } from '../types';
 
 export const EducationMinimal: React.FC<EducationVariantProps> = ({
@@ -19,6 +20,8 @@ export const EducationMinimal: React.FC<EducationVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -54,7 +57,7 @@ export const EducationMinimal: React.FC<EducationVariantProps> = ({
                 style={{ color: typography.body.color }}
                 placeholder="School"
               />
-              <span style={{ fontSize: '13px', color: '#9ca3af' }}>
+              <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#9ca3af' }}>
                 ({edu.endDate})
               </span>
             </div>
@@ -66,7 +69,7 @@ export const EducationMinimal: React.FC<EducationVariantProps> = ({
               <span style={{ color: '#9ca3af' }}> – </span>
               <span style={{ color: typography.body.color }}>{edu.school}</span>
               {edu.endDate && (
-                <span style={{ fontSize: '13px', color: '#9ca3af' }}>
+                <span style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#9ca3af' }}>
                   {' '}({formatDate ? formatDate(edu.endDate) : edu.endDate})
                 </span>
               )}

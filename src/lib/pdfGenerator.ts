@@ -1001,8 +1001,13 @@ function captureV2ResumeHTMLWithStyles(
             break-after: avoid !important;
           }
 
-          /* Experience/Education entries - each entry should stay together */
-          /* But page breaks CAN occur BETWEEN entries */
+          /* ============================================================ */
+          /* EXPERIENCE ENTRIES - Smart page breaking                     */
+          /* Allow entries to break, but keep header with first bullet    */
+          /* ============================================================ */
+
+          /* Experience/Education entries - ALLOW breaking for long entries */
+          /* This prevents large white gaps when an entry can't fit */
           .resume-v2 [data-experience-entry="true"],
           .resume-v2 .pdf-experience-entry,
           .resume-v2 [data-section="experience"] > div > div[class*="group"],
@@ -1010,28 +1015,55 @@ function captureV2ResumeHTMLWithStyles(
           .resume-v2 [data-section="projects"] > div > div[class*="group"],
           .resume-v2 [data-section="volunteer"] > div > div[class*="group"],
           .resume-v2 [data-section="publications"] > div > div[class*="group"] {
+            page-break-inside: auto !important;
+            break-inside: auto !important;
+          }
+
+          /* Also allow the inner wrapper divs to break */
+          .resume-v2 [data-experience-entry] > div,
+          .resume-v2 .pdf-experience-entry > div {
+            page-break-inside: auto !important;
+            break-inside: auto !important;
+          }
+
+          /* Entry HEADER ONLY (title, company, dates) must stay together */
+          /* ONLY target elements with data-entry-header attribute */
+          .resume-v2 [data-entry-header] {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
           }
 
-          /* For experience entries, keep entry header with first bullet */
-          .resume-v2 [data-experience-entry] h3,
-          .resume-v2 [data-experience-entry] > div:first-child {
-            page-break-after: avoid !important;
-            break-after: avoid !important;
+          /* BULLET POINTS LIST - allow breaking freely */
+          .resume-v2 [data-experience-entry] ul,
+          .resume-v2 .pdf-experience-entry ul {
+            page-break-inside: auto !important;
+            break-inside: auto !important;
           }
 
-          /* Prevent orphaned first bullets */
+          /* First bullet should stay with header to avoid orphaning */
           .resume-v2 [data-experience-entry] ul li:first-child {
             page-break-before: avoid !important;
             break-before: avoid !important;
           }
 
+          /* Individual bullets should not break mid-text */
+          .resume-v2 [data-experience-entry] ul li {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+
           /* Prevent widows/orphans in text content */
           .resume-v2 p,
           .resume-v2 li {
-            orphans: 3;
-            widows: 3;
+            orphans: 2;
+            widows: 2;
+          }
+
+          /* Projects and Education entries - allow breaking too */
+          .resume-v2 [data-section="projects"] > div > div,
+          .resume-v2 [data-section="education"] > div > div {
+            page-break-inside: auto !important;
+            break-inside: auto !important;
           }
 
           /* ============================================================ */

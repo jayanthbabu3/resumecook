@@ -8,6 +8,7 @@
 import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ReferencesVariantProps } from '../types';
 
 export const ReferencesCompact: React.FC<ReferencesVariantProps> = ({
@@ -19,6 +20,8 @@ export const ReferencesCompact: React.FC<ReferencesVariantProps> = ({
   onRemoveReference,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -35,7 +38,7 @@ export const ReferencesCompact: React.FC<ReferencesVariantProps> = ({
             padding: '6px 10px',
             backgroundColor: index % 2 === 0 ? `${accentColor}04` : 'transparent',
             borderRadius: '4px',
-            fontSize: '12px',
+            fontSize: scaleFontSize(typography.body.fontSize),
           }}
         >
           {editable && onRemoveReference && (
@@ -53,7 +56,7 @@ export const ReferencesCompact: React.FC<ReferencesVariantProps> = ({
               <InlineEditableText
                 path={`references.${index}.name`}
                 value={item.name}
-                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: '12px' }}
+                style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Name"
               />
             ) : (
@@ -67,14 +70,14 @@ export const ReferencesCompact: React.FC<ReferencesVariantProps> = ({
                 <InlineEditableText
                   path={`references.${index}.title`}
                   value={item.title}
-                  style={{ color: accentColor, fontSize: '12px' }}
+                  style={{ color: accentColor, fontSize: scaleFontSize(typography.body.fontSize) }}
                   placeholder="Title"
                 />
                 <span style={{ color: '#9ca3af' }}>at</span>
                 <InlineEditableText
                   path={`references.${index}.company`}
                   value={item.company}
-                  style={{ color: accentColor, fontSize: '12px' }}
+                  style={{ color: accentColor, fontSize: scaleFontSize(typography.body.fontSize) }}
                   placeholder="Company"
                 />
               </>
@@ -88,11 +91,11 @@ export const ReferencesCompact: React.FC<ReferencesVariantProps> = ({
               <InlineEditableText
                 path={`references.${index}.relationship`}
                 value={item.relationship}
-                style={{ color: '#6b7280', fontSize: '11px' }}
+                style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize) }}
                 placeholder="Relationship"
               />
             ) : (
-              <span style={{ color: '#6b7280', fontSize: '11px' }}>{item.relationship}</span>
+              <span style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize) }}>{item.relationship}</span>
             )}
           </div>
         </div>

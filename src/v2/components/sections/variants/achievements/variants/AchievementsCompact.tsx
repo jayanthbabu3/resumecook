@@ -2,11 +2,13 @@
  * Achievements Compact Variant
  *
  * Space-efficient single-line layout for achievements.
+ * Respects template typography and spacing configuration.
  */
 
 import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { AchievementsVariantProps } from '../types';
 
 export const AchievementsCompact: React.FC<AchievementsVariantProps> = ({
@@ -17,22 +19,29 @@ export const AchievementsCompact: React.FC<AchievementsVariantProps> = ({
   onAddAchievement,
   onRemoveAchievement,
 }) => {
-  const { typography } = config;
+  const { typography, spacing, colors } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
+  // Use muted text color for bullet, fallback to gray
+  const bulletColor = colors?.text?.muted || '#9ca3af';
+  const separatorColor = colors?.text?.muted || '#d1d5db';
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing?.bulletGap || '6px' }}>
       {items.map((item, index) => (
         <div
           key={item.id || index}
           className="group relative"
           style={{
             display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '4px 0',
-            fontSize: '11px',
+            alignItems: 'flex-start',
+            gap: '10px',
+            padding: '2px 0',
+            fontSize: scaleFontSize(typography.body.fontSize),
+            lineHeight: typography.body.lineHeight,
           }}
         >
           {editable && onRemoveAchievement && (
@@ -47,31 +56,39 @@ export const AchievementsCompact: React.FC<AchievementsVariantProps> = ({
           {/* Bullet indicator */}
           <div
             style={{
-              width: '4px',
-              height: '4px',
+              width: '5px',
+              height: '5px',
               borderRadius: '50%',
-              backgroundColor: '#9ca3af',
+              backgroundColor: bulletColor,
               flexShrink: 0,
+              marginTop: '0.5em',
             }}
           />
 
           {/* Content inline */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', flex: 1, minWidth: 0, flexWrap: 'wrap' }}>
             {editable ? (
               <>
                 <InlineEditableText
                   path={`achievements.${index}.title`}
                   value={item.title}
-                  style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: '11px' }}
+                  style={{
+                    fontWeight: typography.itemTitle.fontWeight || 600,
+                    color: typography.itemTitle.color,
+                    fontSize: scaleFontSize(typography.body.fontSize),
+                  }}
                   placeholder="Achievement"
                 />
                 {item.description && (
                   <>
-                    <span style={{ color: '#d1d5db' }}>—</span>
+                    <span style={{ color: separatorColor }}>—</span>
                     <InlineEditableText
                       path={`achievements.${index}.description`}
                       value={item.description}
-                      style={{ color: typography.body.color, fontSize: '11px' }}
+                      style={{
+                        color: typography.body.color,
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                      }}
                       placeholder="Description"
                     />
                   </>
@@ -79,10 +96,15 @@ export const AchievementsCompact: React.FC<AchievementsVariantProps> = ({
               </>
             ) : (
               <>
-                <span style={{ fontWeight: 600, color: typography.itemTitle.color }}>{item.title}</span>
+                <span style={{
+                  fontWeight: typography.itemTitle.fontWeight || 600,
+                  color: typography.itemTitle.color,
+                }}>
+                  {item.title}
+                </span>
                 {item.description && (
                   <>
-                    <span style={{ color: '#d1d5db' }}>—</span>
+                    <span style={{ color: separatorColor }}>—</span>
                     <span style={{ color: typography.body.color }}>{item.description}</span>
                   </>
                 )}

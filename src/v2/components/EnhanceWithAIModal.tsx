@@ -10,19 +10,12 @@ import {
   Sparkles,
   X,
   Loader2,
-  CheckCircle,
   Check,
-  Zap,
   FileText,
   AlertCircle,
   RotateCcw,
   Lightbulb,
-  Eye,
   ChevronRight,
-  Target,
-  Award,
-  ChevronDown,
-  MessageSquare,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -142,9 +135,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // User customization options
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [additionalContext, setAdditionalContext] = useState('');
-  const [selectedFocusAreas, setSelectedFocusAreas] = useState<Set<string>>(new Set());
 
   // Mobile tab state for comparing view
   const [mobileCompareTab, setMobileCompareTab] = useState<'original' | 'enhanced'>('enhanced');
@@ -153,6 +144,49 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
   const originalScrollRef = useRef<HTMLDivElement>(null);
   const enhancedScrollRef = useRef<HTMLDivElement>(null);
   const isScrollingSyncRef = useRef<boolean>(false);
+  const originalContainerRef = useRef<HTMLDivElement>(null);
+  const enhancedContainerRef = useRef<HTMLDivElement>(null);
+  const [resumeScale, setResumeScale] = useState(0.5);
+
+  // A4 dimensions at 96dpi
+  const A4_WIDTH = 794;
+  const A4_HEIGHT = 1123;
+
+  // Calculate scale based on container width for optimal fit
+  useEffect(() => {
+    if (status !== 'comparing' && status !== 'applying') return;
+
+    const calculateScale = () => {
+      const container = originalContainerRef.current;
+      if (!container) {
+        // Default scale if container not available
+        setResumeScale(0.65);
+        return;
+      }
+
+      // Get container width minus padding (32px total for p-4)
+      const availableWidth = container.clientWidth - 32;
+
+      // Calculate scale to fit width with some margin (20px on each side)
+      const optimalScale = Math.min((availableWidth - 40) / A4_WIDTH, 0.85);
+
+      // Ensure minimum readable scale
+      const finalScale = Math.max(optimalScale, 0.5);
+
+      setResumeScale(finalScale);
+    };
+
+    // Initial calculation
+    calculateScale();
+
+    // Recalculate on resize
+    const resizeObserver = new ResizeObserver(calculateScale);
+    if (originalContainerRef.current) {
+      resizeObserver.observe(originalContainerRef.current);
+    }
+
+    return () => resizeObserver.disconnect();
+  }, [status]);
 
   // Synchronized scroll handler
   const handleScroll = useCallback((source: 'original' | 'enhanced') => {
@@ -181,9 +215,7 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
       setEnhancementResult(null);
       setProgressIndex(0);
       setAcceptSuggestedSkills(new Set());
-      setShowAdvancedOptions(false);
       setAdditionalContext('');
-      setSelectedFocusAreas(new Set());
       setMobileCompareTab('enhanced');
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
@@ -217,17 +249,10 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
 
     try {
       // Build options from user customization
-      const options: {
-        additionalContext?: string;
-        focusAreas?: string[];
-      } = {};
+      const options: { additionalContext?: string } = {};
 
       if (additionalContext.trim()) {
         options.additionalContext = additionalContext.trim();
-      }
-
-      if (selectedFocusAreas.size > 0) {
-        options.focusAreas = Array.from(selectedFocusAreas);
       }
 
       const response = await apiFetch(API_ENDPOINTS.enhanceResume, {
@@ -238,7 +263,11 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to enhance resume');
+        // Handle error object or string
+        const errorMessage = typeof result.error === 'object'
+          ? result.error?.message || result.message || 'Failed to enhance resume'
+          : result.error || result.message || 'Failed to enhance resume';
+        throw new Error(errorMessage);
       }
 
       if (result.success && result.data) {
@@ -253,10 +282,22 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
       }
     } catch (err) {
       console.error('Enhancement error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to enhance resume');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to enhance resume';
+
+      // Create user-friendly error messages for subscription errors
+      let userFriendlyError: string;
+      if (errorMessage.includes('subscription required') || errorMessage.includes('Active subscription')) {
+        userFriendlyError = 'This feature requires an active subscription. Please upgrade to Pro to use AI enhancement.';
+      } else if (errorMessage.includes('Trial has expired')) {
+        userFriendlyError = 'Your trial has expired. Please upgrade to Pro to continue using AI features.';
+      } else {
+        userFriendlyError = errorMessage;
+      }
+
+      setError(userFriendlyError);
       setStatus('error');
     }
-  }, [resumeData, additionalContext, selectedFocusAreas]);
+  }, [resumeData, additionalContext]);
 
   // Apply enhancements
   const handleApply = async () => {
@@ -294,69 +335,42 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
         onClick={status === 'applying' ? undefined : onClose}
       />
 
-      {/* Modal - Full screen for comparison (mobile: 100%), smaller for other states */}
+      {/* Modal */}
       <div className={cn(
         "relative bg-white shadow-2xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 flex flex-col",
         status === 'comparing' || status === 'applying'
-          ? "w-full h-full sm:w-[95vw] sm:h-[95vh] sm:max-w-[1800px] rounded-none sm:rounded-3xl"
-          : "w-full max-w-2xl rounded-2xl sm:rounded-3xl max-h-[90vh]"
+          ? "w-full h-full sm:w-[95vw] sm:h-[95vh] sm:max-w-[1800px] rounded-none sm:rounded-2xl"
+          : "w-full max-w-md rounded-xl max-h-[90vh]"
       )}>
-        {/* Header - Compact for comparing state, responsive for mobile */}
+        {/* Header */}
         <div
           className={cn(
-            "flex items-center justify-between border-b flex-shrink-0",
+            "flex items-center justify-between flex-shrink-0 border-b",
             status === 'comparing' || status === 'applying'
               ? "px-3 py-2 sm:px-4"
-              : "px-4 py-4 sm:px-8 sm:py-5"
+              : "px-4 py-3"
           )}
-          style={{
-            background: `linear-gradient(135deg, ${themeColor}06 0%, ${themeColor}12 100%)`,
-            borderColor: `${themeColor}15`
-          }}
+          style={{ borderColor: '#f3f4f6' }}
         >
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-2 min-w-0">
             <div
-              className={cn(
-                "rounded-xl flex items-center justify-center shadow-lg flex-shrink-0",
-                status === 'comparing' || status === 'applying'
-                  ? "w-8 h-8 sm:w-10 sm:h-10"
-                  : "w-10 h-10 sm:w-14 sm:h-14"
-              )}
-              style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
+              className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: themeColor }}
             >
-              <Sparkles className={cn(
-                "text-white",
-                status === 'comparing' || status === 'applying'
-                  ? "w-4 h-4 sm:w-5 sm:h-5"
-                  : "w-5 h-5 sm:w-6 sm:h-6"
-              )} />
+              <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
-            <div className="min-w-0">
-              <h2 className={cn(
-                "font-bold text-gray-900 truncate",
-                status === 'comparing' || status === 'applying'
-                  ? "text-sm sm:text-base"
-                  : "text-lg sm:text-xl"
-              )}>
-                {status === 'idle' && 'Enhance with AI'}
-                {status === 'enhancing' && 'AI Enhancement in Progress'}
-                {status === 'comparing' && 'Review Enhancements'}
-                {status === 'applying' && 'Applying Changes...'}
-                {status === 'error' && 'Enhancement Failed'}
-              </h2>
-              {(status !== 'comparing' && status !== 'applying') && (
-                <p className="text-xs sm:text-sm text-gray-500 mt-0.5 truncate">
-                  {status === 'idle' && 'Transform your resume with AI-powered improvements'}
-                  {status === 'enhancing' && 'Please wait while we optimize your resume'}
-                  {status === 'error' && 'Something went wrong'}
-                </p>
-              )}
-            </div>
+            <h2 className="font-semibold text-gray-900 text-sm">
+              {status === 'idle' && 'Enhance with AI'}
+              {status === 'enhancing' && 'Enhancing...'}
+              {status === 'comparing' && 'Review Changes'}
+              {status === 'applying' && 'Applying...'}
+              {status === 'error' && 'Error'}
+            </h2>
           </div>
           {status !== 'applying' && (
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/80 text-gray-400 hover:text-gray-600 transition-colors border border-transparent hover:border-gray-200 flex-shrink-0"
+              className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
             >
               <X className="w-4 h-4" />
             </button>
@@ -365,184 +379,49 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
-          {/* Idle State - Compact Elegant Design, responsive */}
+          {/* Idle State - Simple Clean Flow */}
           {status === 'idle' && (
-            <div className="px-4 py-4 sm:px-6 sm:py-6">
-              {/* Hero Section */}
-              <div className="text-center mb-6">
-                {/* Icon */}
-                <div
-                  className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg"
+            <div className="px-6 py-5">
+              {/* Description */}
+              <p className="text-sm text-gray-600 leading-relaxed mb-5">
+                AI will enhance your <span className="font-medium" style={{ color: themeColor }}>summary</span>, <span className="font-medium" style={{ color: themeColor }}>experience bullet points</span>, and <span className="font-medium" style={{ color: themeColor }}>skills</span> with stronger action verbs and ATS-optimized keywords.
+              </p>
+
+              {/* Context Input */}
+              <div className="mb-5">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                  Additional context <span className="text-gray-400 font-normal">(optional)</span>
+                </label>
+                <textarea
+                  value={additionalContext}
+                  onChange={(e) => setAdditionalContext(e.target.value)}
+                  placeholder="e.g. Targeting senior engineering roles at FAANG companies"
+                  className="w-full px-3 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 resize-none transition-all"
                   style={{
-                    background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)`,
-                    boxShadow: `0 8px 24px ${themeColor}30`
-                  }}
-                >
-                  <Sparkles className="w-8 h-8 text-white" />
-                </div>
-
-                <h3 className="text-xl font-bold text-gray-900 mb-1">
-                  Transform Your Resume
-                </h3>
-                <p className="text-sm text-gray-500">
-                  AI-powered improvements for a professional, ATS-optimized resume
-                </p>
+                    borderColor: additionalContext ? themeColor : '#e5e7eb',
+                    // @ts-ignore
+                    '--tw-ring-color': `${themeColor}40`
+                  } as React.CSSProperties}
+                  rows={2}
+                />
               </div>
 
-              {/* Features Grid - Compact Cards, responsive */}
-              <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-3 mb-6">
-                {[
-                  {
-                    icon: <FileText className="w-4 h-4" />,
-                    label: 'Summary',
-                    desc: 'Compelling 3-line hook',
-                    gradient: 'from-blue-500 to-cyan-500'
-                  },
-                  {
-                    icon: <Zap className="w-4 h-4" />,
-                    label: 'Experience',
-                    desc: 'Skill-matched bullets',
-                    gradient: 'from-primary to-blue-500'
-                  },
-                  {
-                    icon: <Target className="w-4 h-4" />,
-                    label: 'ATS Keywords',
-                    desc: 'Industry-specific terms',
-                    gradient: 'from-emerald-500 to-teal-500'
-                  },
-                  {
-                    icon: <Award className="w-4 h-4" />,
-                    label: 'Skills',
-                    desc: 'Smart suggestions',
-                    gradient: 'from-orange-500 to-amber-500'
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="group relative p-3 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-9 h-9 rounded-lg bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-sm flex-shrink-0`}
-                      >
-                        <div className="text-white">{item.icon}</div>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-gray-900 text-sm">{item.label}</div>
-                        <div className="text-xs text-gray-400">{item.desc}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {/* CTA Button */}
+              <Button
+                onClick={handleEnhance}
+                className="w-full py-3 gap-2 text-[15px] font-semibold rounded-lg transition-all duration-200 hover:opacity-90 active:scale-[0.99]"
+                style={{
+                  backgroundColor: themeColor,
+                  color: 'white',
+                }}
+              >
+                <Sparkles className="w-4 h-4" />
+                Enhance Resume
+              </Button>
 
-              {/* Advanced Options Toggle */}
-              <div className="mb-4">
-                <button
-                  onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
-                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors mx-auto"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Add context or preferences</span>
-                  <ChevronDown className={cn(
-                    "w-4 h-4 transition-transform duration-200",
-                    showAdvancedOptions && "rotate-180"
-                  )} />
-                </button>
-
-                {/* Advanced Options Panel */}
-                {showAdvancedOptions && (
-                  <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100 text-left">
-                    {/* Additional Context */}
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                        Additional context (optional)
-                      </label>
-                      <textarea
-                        value={additionalContext}
-                        onChange={(e) => setAdditionalContext(e.target.value)}
-                        placeholder="E.g., I'm applying for senior roles, focus on leadership. I led a team of 5. My project increased sales by 20%..."
-                        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 resize-none"
-                        style={{ focusRing: themeColor } as any}
-                        rows={3}
-                      />
-                      <p className="text-xs text-gray-400 mt-1">
-                        Share specific achievements or metrics you want highlighted
-                      </p>
-                    </div>
-
-                    {/* Focus Areas */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Enhancement focus (optional)
-                      </label>
-                      <div className="flex flex-wrap gap-2">
-                        {[
-                          { id: 'action_verbs', label: 'Action Verbs', desc: 'Stronger language' },
-                          { id: 'clarity', label: 'Clarity', desc: 'Easier to read' },
-                          { id: 'ats_keywords', label: 'ATS Keywords', desc: 'Better matching' },
-                          { id: 'conciseness', label: 'Concise', desc: 'Remove fluff' },
-                        ].map((focus) => (
-                          <button
-                            key={focus.id}
-                            onClick={() => {
-                              setSelectedFocusAreas(prev => {
-                                const next = new Set(prev);
-                                if (next.has(focus.id)) {
-                                  next.delete(focus.id);
-                                } else {
-                                  next.add(focus.id);
-                                }
-                                return next;
-                              });
-                            }}
-                            className={cn(
-                              "px-3 py-1.5 rounded-lg text-xs font-medium transition-all border",
-                              selectedFocusAreas.has(focus.id)
-                                ? "border-transparent text-white"
-                                : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
-                            )}
-                            style={selectedFocusAreas.has(focus.id) ? {
-                              backgroundColor: themeColor,
-                            } : {}}
-                            title={focus.desc}
-                          >
-                            {focus.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* CTA Section */}
-              <div className="text-center">
-                <Button
-                  onClick={handleEnhance}
-                  className="group relative px-6 sm:px-8 py-4 sm:py-5 gap-2 text-sm font-semibold rounded-xl overflow-hidden transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                  style={{
-                    background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)`,
-                    boxShadow: `0 4px 16px ${themeColor}30`
-                  }}
-                >
-                  {/* Shimmer effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                  <Sparkles className="w-4 h-4 relative" />
-                  <span className="relative">Enhance My Resume</span>
-                </Button>
-
-                <p className="text-[10px] sm:text-xs text-gray-400 mt-3 flex items-center justify-center gap-3 sm:gap-4">
-                  <span className="flex items-center gap-1">
-                    <Eye className="w-3 h-3" />
-                    Preview first
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3" />
-                    ~15 seconds
-                  </span>
-                </p>
-              </div>
+              <p className="text-center text-xs text-gray-400 mt-3">
+                You'll preview changes before applying
+              </p>
             </div>
           )}
 
@@ -651,18 +530,34 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                       <span className="font-medium text-gray-500 text-sm">Original</span>
                     </div>
                   </div>
-                  {/* Resume Container - Full height, scaled on mobile */}
-                  <div className="flex-1 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-0 relative">
+                  {/* Resume Container - Scrollable scaled preview */}
+                  <div
+                    ref={originalContainerRef}
+                    className="flex-1 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-0 relative"
+                  >
                     <div
                       ref={originalScrollRef}
                       onScroll={() => handleScroll('original')}
-                      className="absolute inset-0 overflow-y-auto"
+                      className="absolute inset-0 overflow-auto p-4"
                     >
-                      {/* Mobile: scaled preview (0.45x), Desktop: full size */}
-                      <div className="p-2 min-h-full flex justify-center md:p-1">
+                      {/* Resume wrapper with scale transform */}
+                      <div
+                        className="bg-white shadow-sm"
+                        style={{
+                          width: A4_WIDTH * resumeScale,
+                          minHeight: A4_HEIGHT * resumeScale,
+                          margin: '0 auto',
+                          overflow: 'hidden',
+                          opacity: 0.85,
+                        }}
+                      >
                         <div
-                          className="bg-white shadow-sm flex-shrink-0 opacity-70 origin-top scale-[0.45] md:scale-100"
-                          style={{ width: 794 }}
+                          style={{
+                            width: A4_WIDTH,
+                            minHeight: A4_HEIGHT,
+                            transform: `scale(${resumeScale})`,
+                            transformOrigin: 'top left',
+                          }}
                         >
                           <StyleOptionsProvider>
                             <StyleOptionsWrapper>
@@ -714,8 +609,9 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                       AI
                     </span>
                   </div>
-                  {/* Resume Container - Highlighted, Full height, scaled on mobile */}
+                  {/* Resume Container - Highlighted, Scrollable scaled preview */}
                   <div
+                    ref={enhancedContainerRef}
                     className="flex-1 rounded-lg overflow-hidden min-h-0 relative"
                     style={{
                       backgroundColor: `${themeColor}03`,
@@ -726,15 +622,25 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                     <div
                       ref={enhancedScrollRef}
                       onScroll={() => handleScroll('enhanced')}
-                      className="absolute inset-0 overflow-y-auto"
+                      className="absolute inset-0 overflow-auto p-4"
                     >
-                      {/* Mobile: scaled preview (0.45x), Desktop: full size */}
-                      <div className="p-2 min-h-full flex justify-center md:p-1">
+                      {/* Resume wrapper with scale transform */}
+                      <div
+                        className="bg-white shadow-lg"
+                        style={{
+                          width: A4_WIDTH * resumeScale,
+                          minHeight: A4_HEIGHT * resumeScale,
+                          margin: '0 auto',
+                          overflow: 'hidden',
+                          boxShadow: `0 0 0 2px ${themeColor}20, 0 10px 30px -5px rgba(0,0,0,0.12)`
+                        }}
+                      >
                         <div
-                          className="bg-white shadow-lg flex-shrink-0 origin-top scale-[0.45] md:scale-100"
                           style={{
-                            width: 794,
-                            boxShadow: `0 0 0 2px ${themeColor}20, 0 10px 30px -5px rgba(0,0,0,0.12)`
+                            width: A4_WIDTH,
+                            minHeight: A4_HEIGHT,
+                            transform: `scale(${resumeScale})`,
+                            transformOrigin: 'top left',
                           }}
                         >
                           <StyleOptionsProvider>

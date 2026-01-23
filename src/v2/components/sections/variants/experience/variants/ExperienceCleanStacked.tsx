@@ -32,7 +32,8 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
       {items.map((exp, index) => (
         <div
           key={exp.id || index}
-          className="group relative"
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
           style={{
             paddingBottom: index < items.length - 1 ? '16px' : '0',
             borderBottom: index < items.length - 1 ? `1px solid ${accentColor}15` : 'none',
@@ -48,6 +49,8 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
 
+          {/* Entry Header - keep together for PDF page breaks */}
+          <div data-entry-header="true">
           {/* Header: Position | Company */}
           <div style={{ marginBottom: '4px' }}>
             {editable ? (
@@ -145,6 +148,8 @@ export const ExperienceCleanStacked: React.FC<ExperienceVariantProps> = ({
               </>
             )}
           </div>
+          </div>
+          {/* End Entry Header */}
 
           {/* Bullet Points */}
           {(exp.bulletPoints?.length > 0 || editable) && (

@@ -206,7 +206,7 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
                   <button
                     onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
                     className="text-left hover:bg-gray-200/50 rounded px-1 -ml-1 transition-colors"
-                    style={{ fontSize: '10px', color: '#9ca3af' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#9ca3af' }}
                   >
                     {lang.proficiency}
                   </button>
@@ -242,7 +242,7 @@ export const LanguagesGrid: React.FC<LanguagesVariantProps> = ({
                   )}
                 </div>
               ) : (
-                <span style={{ fontSize: '10px', color: '#9ca3af' }}>
+                <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#9ca3af' }}>
                   {lang.proficiency}
                 </span>
               )}

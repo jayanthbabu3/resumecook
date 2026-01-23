@@ -7,6 +7,7 @@
 import React from 'react';
 import { X, Plus, Trophy, Medal, Star } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { AwardsVariantProps } from '../types';
 
 const awardIcons = [Trophy, Medal, Star];
@@ -21,6 +22,8 @@ export const AwardsTrophies: React.FC<AwardsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -93,7 +96,7 @@ export const AwardsTrophies: React.FC<AwardsVariantProps> = ({
             
             {award.issuer && (
               <div style={{ 
-                fontSize: '12px', 
+                fontSize: scaleFontSize(typography.body.fontSize), 
                 color: '#6b7280',
                 marginTop: '4px',
               }}>
@@ -103,7 +106,7 @@ export const AwardsTrophies: React.FC<AwardsVariantProps> = ({
             
             {award.date && (
               <div style={{ 
-                fontSize: '11px', 
+                fontSize: scaleFontSize(typography.dates.fontSize), 
                 color: '#9ca3af',
                 marginTop: '4px',
               }}>
@@ -129,7 +132,7 @@ export const AwardsTrophies: React.FC<AwardsVariantProps> = ({
             border: `2px dashed ${accentColor}40`,
             backgroundColor: `${accentColor}05`,
             color: accentColor,
-            fontSize: '13px',
+            fontSize: scaleFontSize(typography.body.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
           }}

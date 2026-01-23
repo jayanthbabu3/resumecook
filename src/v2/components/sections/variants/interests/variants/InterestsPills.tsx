@@ -19,6 +19,7 @@ export const InterestsPills: React.FC<InterestsVariantProps> = ({
   onAddInterest,
   onRemoveInterest,
 }) => {
+  const { typography } = config;
   const styleContext = useStyleOptions();
   const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
@@ -69,7 +70,7 @@ export const InterestsPills: React.FC<InterestsVariantProps> = ({
         <button
           onClick={onAddInterest}
           className="flex items-center gap-1 text-xs px-2.5 py-0.5 rounded-full border border-dashed hover:bg-gray-50 transition-colors"
-          style={{ color: accentColor, borderColor: accentColor, fontSize: '11px' }}
+          style={{ color: accentColor, borderColor: accentColor, fontSize: scaleFontSize(typography.dates.fontSize) }}
         >
           <Plus className="w-3 h-3" />
           Add

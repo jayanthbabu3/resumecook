@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, Award } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { AwardsVariantProps } from '../types';
 
 export const AwardsCards: React.FC<AwardsVariantProps> = ({
@@ -21,6 +22,8 @@ export const AwardsCards: React.FC<AwardsVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -92,7 +95,7 @@ export const AwardsCards: React.FC<AwardsVariantProps> = ({
               )}
 
               <div style={{
-                fontSize: '12px',
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: accentColor,
                 fontWeight: 500,
                 marginTop: '2px',
@@ -101,7 +104,7 @@ export const AwardsCards: React.FC<AwardsVariantProps> = ({
                   <InlineEditableText
                     path={`awards.${index}.issuer`}
                     value={award.issuer}
-                    style={{ color: accentColor, fontWeight: 500, fontSize: '12px' }}
+                    style={{ color: accentColor, fontWeight: 500, fontSize: scaleFontSize(typography.body.fontSize) }}
                     placeholder="Organization"
                   />
                 ) : (
@@ -111,7 +114,7 @@ export const AwardsCards: React.FC<AwardsVariantProps> = ({
 
               {award.date && (
                 <div style={{
-                  fontSize: '11px',
+                  fontSize: scaleFontSize(typography.dates.fontSize),
                   color: typography.dates.color,
                   marginTop: '6px',
                 }}>
@@ -120,7 +123,7 @@ export const AwardsCards: React.FC<AwardsVariantProps> = ({
                       path={`awards.${index}.date`}
                       value={award.date}
                       formatDisplay={formatDate}
-                      style={{ fontSize: '11px' }}
+                      style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                     />
                   ) : (
                     formatDate ? formatDate(award.date) : award.date
@@ -167,7 +170,7 @@ export const AwardsCards: React.FC<AwardsVariantProps> = ({
             border: `2px dashed ${accentColor}40`,
             backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '12px',
+            fontSize: scaleFontSize(typography.body.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
             minHeight: '80px',

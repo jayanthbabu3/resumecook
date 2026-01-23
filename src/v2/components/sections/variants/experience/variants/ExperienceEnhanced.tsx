@@ -12,6 +12,7 @@ import React from 'react';
 import { X, Plus, Calendar, MapPin } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ExperienceVariantProps } from '../../experience/types';
 
 export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
@@ -26,13 +27,15 @@ export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
       {items.map((exp, index) => (
-        <div key={exp.id || index} className="group relative">
+        <div key={exp.id || index} className="group relative pdf-experience-entry" data-experience-entry="true">
           {/* Delete button */}
           {editable && onRemoveExperience && (
             <button
@@ -43,6 +46,8 @@ export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
 
+          {/* Entry Header - keep together for PDF page breaks */}
+          <div data-entry-header="true">
           {/* Position Title */}
           <div style={{ marginBottom: '4px' }}>
             {editable ? (
@@ -111,7 +116,7 @@ export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              fontSize: '12px',
+              fontSize: scaleFontSize(typography.body.fontSize),
               color: '#6b7280',
             }}>
               <Calendar style={{ width: '12px', height: '12px', color: '#9ca3af' }} />
@@ -144,7 +149,7 @@ export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                fontSize: '12px',
+                fontSize: scaleFontSize(typography.body.fontSize),
                 color: '#6b7280',
               }}>
                 <MapPin style={{ width: '12px', height: '12px', color: '#9ca3af' }} />
@@ -152,7 +157,7 @@ export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
                   <InlineEditableText
                     path={`experience.${index}.location`}
                     value={exp.location || ''}
-                    style={{ fontSize: '12px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#6b7280' }}
                     placeholder="Location"
                   />
                 ) : (
@@ -161,6 +166,8 @@ export const ExperienceEnhanced: React.FC<ExperienceVariantProps> = ({
               </div>
             )}
           </div>
+          </div>
+          {/* End Entry Header */}
 
           {/* Bullet Points */}
           {(exp.bulletPoints?.length > 0 || editable) && (

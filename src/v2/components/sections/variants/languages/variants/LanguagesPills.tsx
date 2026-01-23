@@ -10,6 +10,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Plus, ChevronDown } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { LanguagesVariantProps } from '../types';
 
 const proficiencyOptions: { key: string; label: string }[] = [
@@ -71,6 +72,8 @@ export const LanguagesPills: React.FC<LanguagesVariantProps> = ({
 }) => {
   const { typography } = config;
   const inlineEdit = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -134,7 +137,7 @@ export const LanguagesPills: React.FC<LanguagesVariantProps> = ({
                   onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
                   className="flex items-center gap-0.5 hover:opacity-70 transition-opacity"
                   style={{
-                    fontSize: '11px',
+                    fontSize: scaleFontSize(typography.dates.fontSize),
                     color: colors.text,
                     opacity: 0.8,
                   }}
@@ -161,7 +164,7 @@ export const LanguagesPills: React.FC<LanguagesVariantProps> = ({
               </div>
             ) : (
               <span style={{
-                fontSize: '11px',
+                fontSize: scaleFontSize(typography.dates.fontSize),
                 color: colors.text,
                 opacity: 0.8,
               }}>

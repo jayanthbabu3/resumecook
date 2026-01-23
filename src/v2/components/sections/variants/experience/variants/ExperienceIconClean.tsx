@@ -71,14 +71,14 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
       {items.map((exp, index) => (
         <div
           key={exp.id || index}
-          className="group relative"
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
           style={{
             display: 'flex',
             gap: '14px',
             paddingBottom: index < items.length - 1 ? spacing.itemGap : 0,
             borderBottom: index < items.length - 1 ? `1px solid #f3f4f6` : 'none',
-            pageBreakInside: 'avoid',
-            breakInside: 'avoid',
+            // Let CSS control page breaks for smarter pagination
           }}
         >
           {/* Company Icon - Circular with subtle background */}
@@ -109,6 +109,8 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
               </button>
             )}
 
+            {/* Entry Header - keep together for PDF page breaks */}
+            <div data-entry-header="true">
             {/* Position Title & Dates Row */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
               {/* Position Title - Accent color, uppercase */}
@@ -215,6 +217,9 @@ export const ExperienceIconClean: React.FC<ExperienceVariantProps> = ({
                 </span>
               )}
             </div>
+
+            </div>
+            {/* End Entry Header */}
 
             {/* Bullet points with square markers */}
             {(exp.bulletPoints?.length > 0 || editable) && (

@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, ExternalLink } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { PublicationsVariantProps } from '../types';
 
 export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
@@ -21,6 +22,8 @@ export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -79,7 +82,7 @@ export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
             alignItems: 'center',
             gap: '8px',
             marginTop: '4px',
-            fontSize: '10px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             color: '#6b7280',
             flexWrap: 'wrap',
           }}>
@@ -87,7 +90,7 @@ export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
               <InlineEditableText
                 path={`publications.${index}.publisher`}
                 value={pub.publisher}
-                style={{ fontSize: '10px', color: accentColor }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                 placeholder="Publisher"
               />
             ) : (
@@ -101,7 +104,7 @@ export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
                 path={`publications.${index}.date`}
                 value={pub.date}
                 formatDisplay={formatDate}
-                style={{ fontSize: '10px' }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
               />
             ) : (
               <span>{formatDate ? formatDate(pub.date) : pub.date}</span>
@@ -124,12 +127,12 @@ export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
 
           {/* Authors */}
           {(pub.authors?.length || editable) && (
-            <div style={{ fontSize: '10px', color: '#6b7280', marginTop: '4px' }}>
+            <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', marginTop: '4px' }}>
               {editable ? (
                 <InlineEditableText
                   path={`publications.${index}.authors`}
                   value={Array.isArray(pub.authors) ? pub.authors.join(', ') : (pub.authors || '')}
-                  style={{ fontSize: '10px', color: '#6b7280' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                   placeholder="Authors"
                 />
               ) : (
@@ -146,15 +149,15 @@ export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
                 <InlineEditableText
                   path={`publications.${index}.url`}
                   value={pub.url || ''}
-                  style={{ fontSize: '10px', color: accentColor }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                   placeholder="URL"
                 />
               </div>
-              <div style={{ fontSize: '10px', color: '#6b7280' }}>
+              <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}>
                 DOI: <InlineEditableText
                   path={`publications.${index}.doi`}
                   value={pub.doi || ''}
-                  style={{ fontSize: '10px', color: '#6b7280' }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280' }}
                   placeholder="optional"
                 />
               </div>
@@ -176,7 +179,7 @@ export const PublicationsCards: React.FC<PublicationsVariantProps> = ({
             border: `1px dashed ${accentColor}40`,
             backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
           }}

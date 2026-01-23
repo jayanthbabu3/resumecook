@@ -9,6 +9,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Plus, ChevronDown } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { LanguagesVariantProps } from '../types';
 
 const proficiencyOptions: { key: string; label: string }[] = [
@@ -83,6 +84,8 @@ export const LanguagesFlags: React.FC<LanguagesVariantProps> = ({
 }) => {
   const { typography } = config;
   const inlineEdit = useInlineEdit();
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -139,7 +142,7 @@ export const LanguagesFlags: React.FC<LanguagesVariantProps> = ({
                 <button
                   onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
                   className="flex items-center gap-0.5 hover:opacity-70 transition-opacity text-left"
-                  style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.2 }}
+                  style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#9ca3af', lineHeight: 1.2 }}
                 >
                   {lang.proficiency}
                   <ChevronDown className="w-2.5 h-2.5" />
@@ -162,7 +165,7 @@ export const LanguagesFlags: React.FC<LanguagesVariantProps> = ({
                 )}
               </div>
             ) : (
-              <span style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.2 }}>
+              <span style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#9ca3af', lineHeight: 1.2 }}>
                 {lang.proficiency}
               </span>
             )}

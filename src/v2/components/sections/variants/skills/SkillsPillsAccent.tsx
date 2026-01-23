@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { TemplateConfig } from '../../../../types';
 
 interface SkillsPillsAccentProps {
@@ -22,6 +23,8 @@ export const SkillsPillsAccent: React.FC<SkillsPillsAccentProps> = ({
   editable = false,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   // Normalize skills to string array
   const normalizedSkills = skills.map(skill => 
@@ -46,7 +49,7 @@ export const SkillsPillsAccent: React.FC<SkillsPillsAccentProps> = ({
           style={{
             display: 'inline-block',
             padding: '5px 14px',
-            fontSize: '13px',
+            fontSize: scaleFontSize(typography.body.fontSize),
             fontWeight: '500',
             color: accentColor,
             backgroundColor: bgColor,

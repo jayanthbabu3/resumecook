@@ -205,7 +205,7 @@ export const LanguagesStandard: React.FC<LanguagesVariantProps> = ({
         <button
           onClick={onAddLanguage}
           className="mt-2 flex items-center gap-1 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
-          style={{ color: accentColor, borderColor: accentColor, fontSize: '11px' }}
+          style={{ color: accentColor, borderColor: accentColor, fontSize: scaleFontSize(typography.dates.fontSize) }}
         >
           <Plus className="h-3 w-3" />
           Add

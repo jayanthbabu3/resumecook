@@ -41,7 +41,8 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
       {items.map((exp, index) => (
         <div
           key={exp.id || index}
-          className="group relative"
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
           style={{
             display: 'flex',
             gap: '16px',
@@ -88,6 +89,8 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
               </button>
             )}
 
+            {/* Entry Header - keep together for PDF page breaks */}
+            <div data-entry-header="true">
             {/* Position & Company Row */}
             <div style={{ marginBottom: '8px' }}>
               {editable ? (
@@ -196,6 +199,8 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                 </div>
               )}
             </div>
+            </div>
+            {/* End Entry Header */}
 
             {/* Description */}
             {(exp.description || editable) && (

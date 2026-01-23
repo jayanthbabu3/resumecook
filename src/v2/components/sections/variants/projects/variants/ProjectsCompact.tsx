@@ -43,10 +43,10 @@ export const ProjectsCompact: React.FC<ProjectsVariantProps> = ({
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: '8px',
-              padding: '5px 8px',
+              padding: '5px 0',
               backgroundColor: index % 2 === 0 ? `${accentColor}04` : 'transparent',
               borderRadius: '4px',
-              fontSize: scaleFontSize('11px'),
+              fontSize: scaleFontSize(typography.body.fontSize),
             }}
           >
             {editable && onRemoveProject && (
@@ -64,7 +64,7 @@ export const ProjectsCompact: React.FC<ProjectsVariantProps> = ({
                 <InlineEditableText
                   path={`projects.${index}.name`}
                   value={item.name}
-                  style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: scaleFontSize('11px') }}
+                  style={{ fontWeight: 600, color: typography.itemTitle.color, fontSize: scaleFontSize(typography.body.fontSize) }}
                   placeholder="Project Name"
                 />
               ) : (
@@ -78,7 +78,7 @@ export const ProjectsCompact: React.FC<ProjectsVariantProps> = ({
                     <InlineEditableText
                       path={`projects.${index}.role`}
                       value={item.role || ''}
-                      style={{ color: accentColor, fontSize: scaleFontSize('11px') }}
+                      style={{ color: accentColor, fontSize: scaleFontSize(typography.body.fontSize) }}
                       placeholder="Role"
                     />
                   ) : (
@@ -90,7 +90,7 @@ export const ProjectsCompact: React.FC<ProjectsVariantProps> = ({
               {displayTech && !editable && (
                 <>
                   <span style={{ color: '#d1d5db' }}>•</span>
-                  <span style={{ color: '#6b7280', fontSize: scaleFontSize('10px') }}>
+                  <span style={{ color: typography.body.color, fontSize: scaleFontSize(typography.dates.fontSize) }}>
                     {displayTech}{hasMore ? '...' : ''}
                   </span>
                 </>
@@ -99,14 +99,14 @@ export const ProjectsCompact: React.FC<ProjectsVariantProps> = ({
 
             {/* Date */}
             {(item.startDate || item.endDate || editable) && (
-              <div style={{ fontSize: scaleFontSize('10px'), color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
+              <div style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: typography.dates.color, whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {editable ? (
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
                     <InlineEditableDate
                       path={`projects.${index}.startDate`}
                       value={item.startDate || ''}
                       formatDisplay={formatDate}
-                      style={{ fontSize: scaleFontSize('10px') }}
+                      style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                     />
                     <span>-</span>
                     {item.current ? (
@@ -116,7 +116,7 @@ export const ProjectsCompact: React.FC<ProjectsVariantProps> = ({
                         path={`projects.${index}.endDate`}
                         value={item.endDate || ''}
                         formatDisplay={formatDate}
-                        style={{ fontSize: scaleFontSize('10px') }}
+                        style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
                       />
                     )}
                   </span>

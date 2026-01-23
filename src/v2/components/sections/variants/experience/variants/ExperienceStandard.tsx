@@ -29,14 +29,13 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
       {items.map((exp, index) => (
-        <div 
-          key={exp.id || index} 
-          className="group relative"
-          style={{ 
+        <div
+          key={exp.id || index}
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
+          style={{
             marginBottom: index < items.length - 1 ? spacing.itemGap : 0,
-            // Prevent individual items from breaking across pages
-            pageBreakInside: 'avoid',
-            breakInside: 'avoid',
+            // Let CSS control page breaks for smarter pagination
           }}
         >
           {/* Delete button */}
@@ -49,8 +48,11 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
 
-          {/* Header row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
+          {/* Header row - keep together with first content */}
+          <div
+            data-entry-header="true"
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}
+          >
             <div style={{ flex: 1 }}>
               {editable ? (
                 <InlineEditableText

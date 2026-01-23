@@ -55,8 +55,22 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
     color: skills.badge?.textColor || accent,
   };
 
+  // Helper to get skill name from various possible formats
+  const getSkillName = (skill: SkillItem): string => {
+    // V2 format: individual skill with name
+    if (skill.name && skill.name.trim()) return skill.name;
+    // Legacy format: grouped skills with items array
+    const legacySkill = skill as SkillItem & { items?: string[] };
+    if (legacySkill.items && legacySkill.items.length > 0) {
+      return legacySkill.items.filter(Boolean).join(', ');
+    }
+    // Fallback: use category name if nothing else
+    if (skill.category && skill.category.trim()) return skill.category;
+    return 'Unnamed skill';
+  };
+
   // Convert V2 SkillItem[] to string[] for InlineEditableSkills
-  const skillStrings = items.map(item => item.name);
+  const skillStrings = items.map(item => getSkillName(item));
 
   // Render based on variant
   const renderSkills = () => {

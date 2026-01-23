@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, MapPin, Calendar } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ExperienceVariantProps } from '../../experience/types';
 
 export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
@@ -23,16 +24,19 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
       {items.map((exp, index) => (
-        <div 
+        <div
           key={exp.id || index}
-          className="group relative"
-          style={{ 
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
+          style={{
             backgroundColor: '#fff',
             borderRadius: '12px',
             padding: '20px',
@@ -50,6 +54,8 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
           
+          {/* Entry Header - keep together for PDF page breaks */}
+          <div data-entry-header="true">
           {/* Company badge */}
           <div style={{
             display: 'inline-flex',
@@ -57,7 +63,7 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
             gap: '6px',
             backgroundColor: `${accentColor}15`,
             color: accentColor,
-            fontSize: '12px',
+            fontSize: scaleFontSize(typography.body.fontSize),
             fontWeight: 600,
             padding: '4px 10px',
             borderRadius: '20px',
@@ -67,7 +73,7 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
               <InlineEditableText
                 path={`experience.${index}.company`}
                 value={exp.company}
-                style={{ color: accentColor, fontWeight: 600, fontSize: '12px' }}
+                style={{ color: accentColor, fontWeight: 600, fontSize: scaleFontSize(typography.body.fontSize) }}
                 placeholder="Company"
               />
             ) : (
@@ -104,7 +110,7 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
           
           {/* Meta info */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#6b7280' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: scaleFontSize(typography.body.fontSize), color: '#6b7280' }}>
               <Calendar style={{ width: '12px', height: '12px' }} />
               {editable ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -128,13 +134,13 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
             </div>
             
             {exp.location && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#6b7280' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: scaleFontSize(typography.body.fontSize), color: '#6b7280' }}>
                 <MapPin style={{ width: '12px', height: '12px' }} />
                 {editable ? (
                   <InlineEditableText
                     path={`experience.${index}.location`}
                     value={exp.location}
-                    style={{ fontSize: '12px', color: '#6b7280' }}
+                    style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#6b7280' }}
                     placeholder="Location"
                   />
                 ) : (
@@ -143,7 +149,9 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
               </div>
             )}
           </div>
-          
+          </div>
+          {/* End Entry Header */}
+
           {/* Bullet points */}
           {(exp.bulletPoints?.length > 0 || editable) && (
             <ul style={{ 
@@ -156,7 +164,7 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
                   key={bulletIndex}
                   className="group/bullet"
                   style={{
-                    fontSize: '13px',
+                    fontSize: scaleFontSize(typography.body.fontSize),
                     color: typography.body.color,
                     lineHeight: 1.5,
                     textAlign: 'justify',
@@ -179,7 +187,7 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
                       <InlineEditableText
                         path={`experience.${index}.bulletPoints.${bulletIndex}`}
                         value={bullet}
-                        style={{ flex: 1, fontSize: '13px' }}
+                        style={{ flex: 1, fontSize: scaleFontSize(typography.body.fontSize) }}
                         placeholder="Achievement..."
                       />
                       {onRemoveBulletPoint && (

@@ -159,7 +159,7 @@ export const InterestsIcons: React.FC<InterestsVariantProps> = ({
               border: `2px dashed ${accentColor}40`,
               backgroundColor: 'transparent',
               color: accentColor,
-              fontSize: '11px',
+              fontSize: scaleFontSize(typography.dates.fontSize),
               fontWeight: 500,
               cursor: 'pointer',
             }}
@@ -274,7 +274,7 @@ export const InterestsIcons: React.FC<InterestsVariantProps> = ({
             border: `2px dashed ${accentColor}40`,
             backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
             minHeight: isNarrow ? '60px' : '70px',

@@ -100,7 +100,7 @@ export const InterestsStandard: React.FC<InterestsVariantProps> = ({
         <button
           onClick={onAddInterest}
           className="mt-1 flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded border border-dashed hover:bg-gray-50 transition-colors w-fit"
-          style={{ color: accentColor, borderColor: accentColor, fontSize: '11px' }}
+          style={{ color: accentColor, borderColor: accentColor, fontSize: scaleFontSize(typography.dates.fontSize) }}
         >
           <Plus className="h-3 w-3" />
           Add

@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, Briefcase } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ExperienceVariantProps } from '../../experience/types';
 
 export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
@@ -23,6 +24,8 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -41,7 +44,7 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
         {items.map((exp, index) => (
-          <div key={exp.id || index} className="group relative">
+          <div key={exp.id || index} className="group relative pdf-experience-entry" data-experience-entry="true">
             {/* Timeline dot */}
             <div style={{
               position: 'absolute',
@@ -69,13 +72,14 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
               </button>
             )}
             
-            <div style={{ 
+            <div style={{
               backgroundColor: `${accentColor}08`,
               borderRadius: '8px',
               padding: '12px 16px',
               borderLeft: `3px solid ${accentColor}`,
             }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              {/* Entry Header - keep together for PDF page breaks */}
+              <div data-entry-header="true" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                   {editable ? (
                     <InlineEditableText
@@ -121,7 +125,7 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
                 </div>
                 
                 <div style={{ 
-                  fontSize: '12px', 
+                  fontSize: scaleFontSize(typography.body.fontSize), 
                   color: '#6b7280',
                   backgroundColor: '#f3f4f6',
                   padding: '4px 8px',
@@ -149,7 +153,8 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
                   )}
                 </div>
               </div>
-              
+              {/* End Entry Header */}
+
               {/* Bullet points */}
               {(exp.bulletPoints?.length > 0 || editable) && (
                 <ul style={{ 

@@ -32,6 +32,8 @@ import {
   Type,
   Layout,
   Sparkles,
+  RefreshCw,
+  User,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { resumeServiceV2, type V2Resume } from '../services/resumeServiceV2';
@@ -40,6 +42,7 @@ import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { generatePDFFromPreview } from '@/lib/pdfGenerator';
 import { PDF_STYLES } from '@/lib/pdfStyles';
+import { incrementDownloadsCount } from '@/lib/firestore/statsService';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
 import { StyleOptionsProvider, updateStyleOptionExternal } from '@/contexts/StyleOptionsContext';
 import { StyleOptionsWrapper } from '@/components/resume/StyleOptionsWrapper';
@@ -119,6 +122,7 @@ export const BuilderV2: React.FC = () => {
   const [themeColor, setThemeColor] = useState('#0891b2');
   const [themeColors, setThemeColors] = useState<{ primary?: string; secondary?: string }>({});
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isSyncingProfile, setIsSyncingProfile] = useState(false);
   const [sectionLabels, setSectionLabels] = useState<Record<string, string>>({});
   const [enabledSections, setEnabledSections] = useState<string[]>(['header', 'summary', 'experience', 'education', 'strengths', 'skills', 'achievements']);
   const [editingLabelId, setEditingLabelId] = useState<string | null>(null);
@@ -308,63 +312,39 @@ export const BuilderV2: React.FC = () => {
     }
   }, [searchParams]);
 
-  // Load profile data for new resumes (no resumeId)
+  // Load sample data for new resumes (no resumeId)
+  // Profile data is only loaded when user clicks "Sync from Profile"
   useEffect(() => {
-    const loadProfileData = async () => {
+    const loadSampleData = () => {
       // Skip if we're loading an existing resume or external data is pending
       if (resumeId) return;
       const source = searchParams.get('source');
       if (source === 'linkedin' || source === 'upload' || source === 'job-tailor') return;
 
-      // Only load profile if user is authenticated
-      if (!user) return;
+      // Load sample data to show how template looks
+      // User can click "Sync from Profile" to load their profile data
+      externalDataImportedRef.current = true; // Prevent template effect from overwriting
+      setResumeData(MOCK_RESUME_DATA);
 
-      try {
-        const profile = await profileService.getProfile();
-        if (profile && profile.personalInfo?.fullName) {
-          const profileResumeData = profileService.profileToResumeData(profile);
-          externalDataImportedRef.current = true; // Prevent template effect from overwriting
-          setResumeData(profileResumeData);
+      // Enable common sections to showcase the template
+      setEnabledSections([
+        'header',
+        'summary',
+        'experience',
+        'education',
+        'skills',
+        'certifications',
+        'projects',
+        'achievements',
+      ]);
 
-          // Dynamically enable sections based on profile data
-          const sectionsToEnable: string[] = ['header'];
-          if (profileResumeData.personalInfo?.summary) sectionsToEnable.push('summary');
-          if (profileResumeData.experience?.length > 0) sectionsToEnable.push('experience');
-          if (profileResumeData.education?.length > 0) sectionsToEnable.push('education');
-          if (profileResumeData.skills?.length > 0) sectionsToEnable.push('skills');
-          if (profileResumeData.languages?.length > 0) sectionsToEnable.push('languages');
-          if (profileResumeData.certifications?.length > 0) sectionsToEnable.push('certifications');
-          if (profileResumeData.projects?.length > 0) sectionsToEnable.push('projects');
-          if (profileResumeData.awards?.length > 0) sectionsToEnable.push('awards');
-          if (profileResumeData.achievements?.length > 0) sectionsToEnable.push('achievements');
-          if (profileResumeData.strengths?.length > 0) sectionsToEnable.push('strengths');
-          if (profileResumeData.volunteer?.length > 0) sectionsToEnable.push('volunteer');
-          if (profileResumeData.publications?.length > 0) sectionsToEnable.push('publications');
-          if (profileResumeData.speaking?.length > 0) sectionsToEnable.push('speaking');
-          if (profileResumeData.patents?.length > 0) sectionsToEnable.push('patents');
-          if (profileResumeData.interests?.length > 0) sectionsToEnable.push('interests');
-          if (profileResumeData.references?.length > 0) sectionsToEnable.push('references');
-          if (profileResumeData.courses?.length > 0) sectionsToEnable.push('courses');
-
-          // Handle custom sections
-          if (profileResumeData.customSections?.length > 0) {
-            profileResumeData.customSections.forEach((section: { id: string }) => {
-              sectionsToEnable.push(section.id);
-            });
-          }
-
-          setEnabledSections(sectionsToEnable);
-
-          toast.success('Profile data loaded! Customize your resume.');
-        }
-      } catch (error) {
-        console.error('Error loading profile:', error);
-        // Silently fail - user can still use mock data
-      }
+      toast.info('Sample data loaded. Click "Sync from Profile" to use your profile data.', {
+        duration: 4000,
+      });
     };
 
-    loadProfileData();
-  }, [user, resumeId, searchParams]);
+    loadSampleData();
+  }, [resumeId, searchParams]);
 
   // Load resume from URL param if present
   useEffect(() => {
@@ -454,6 +434,68 @@ export const BuilderV2: React.FC = () => {
       return;
     }
     setShowSaveOptions(true);
+  }, [user]);
+
+  // Sync from profile - load user's profile data into resume
+  const handleSyncFromProfile = useCallback(async () => {
+    if (!user) {
+      toast.error('Please sign in to sync from profile');
+      return;
+    }
+
+    setIsSyncingProfile(true);
+    try {
+      const profile = await profileService.getProfile();
+
+      // Check if profile has any meaningful data
+      const hasExperience = (profile?.experience?.length ?? 0) > 0;
+      const hasEducation = (profile?.education?.length ?? 0) > 0;
+      const hasSkills = (profile?.skills?.length ?? 0) > 0;
+      const hasSummary = !!profile?.personalInfo?.summary?.trim();
+      const hasProjects = (profile?.projects?.length ?? 0) > 0;
+      const hasCertifications = (profile?.certifications?.length ?? 0) > 0;
+
+      if (!hasExperience && !hasEducation && !hasSkills && !hasSummary && !hasProjects && !hasCertifications) {
+        toast.info('Your profile is empty. Import from LinkedIn or add data to your profile first.', {
+          duration: 5000,
+          action: {
+            label: 'Go to Profile',
+            onClick: () => window.open('/profile', '_blank'),
+          },
+        });
+        return;
+      }
+
+      // Convert profile to resume data
+      const profileResumeData = profileService.profileToResumeData(profile);
+      setResumeData(profileResumeData);
+
+      // Enable sections based on profile data
+      const sectionsToEnable: string[] = ['header'];
+      if (profileResumeData.personalInfo?.summary) sectionsToEnable.push('summary');
+      if (profileResumeData.experience?.length > 0) sectionsToEnable.push('experience');
+      if (profileResumeData.education?.length > 0) sectionsToEnable.push('education');
+      if (profileResumeData.skills?.length > 0) sectionsToEnable.push('skills');
+      if (profileResumeData.languages?.length > 0) sectionsToEnable.push('languages');
+      if (profileResumeData.certifications?.length > 0) sectionsToEnable.push('certifications');
+      if (profileResumeData.projects?.length > 0) sectionsToEnable.push('projects');
+      if (profileResumeData.awards?.length > 0) sectionsToEnable.push('awards');
+      if (profileResumeData.achievements?.length > 0) sectionsToEnable.push('achievements');
+      if (profileResumeData.strengths?.length > 0) sectionsToEnable.push('strengths');
+      if (profileResumeData.volunteer?.length > 0) sectionsToEnable.push('volunteer');
+      if (profileResumeData.publications?.length > 0) sectionsToEnable.push('publications');
+      if (profileResumeData.interests?.length > 0) sectionsToEnable.push('interests');
+
+      setEnabledSections(sectionsToEnable);
+      setHasUnsavedChanges(true);
+
+      toast.success('Profile data synced successfully!');
+    } catch (error) {
+      console.error('Error syncing from profile:', error);
+      toast.error('Failed to sync profile data');
+    } finally {
+      setIsSyncingProfile(false);
+    }
   }, [user]);
 
   // Core save function (without profile sync)
@@ -1319,13 +1361,48 @@ export const BuilderV2: React.FC = () => {
 
   // Change section variant
   const handleChangeSectionVariant = useCallback((sectionId: string, variantId: string) => {
+    // Map of section IDs to their proper titles (for dynamic sections not in base config)
+    const sectionTitles: Record<string, string> = {
+      projects: 'Projects',
+      certifications: 'Certifications',
+      awards: 'Awards',
+      publications: 'Publications',
+      volunteer: 'Volunteer Experience',
+      speaking: 'Speaking Engagements',
+      patents: 'Patents',
+      interests: 'Interests',
+      references: 'References',
+      courses: 'Courses',
+      languages: 'Languages',
+      strengths: 'Core Strengths',
+      achievements: 'Achievements',
+      experience: 'Experience',
+      education: 'Education',
+      skills: 'Skills',
+      summary: 'Summary',
+    };
+
+    // Update section override with new variant, type, title, and ensure enabled
+    // This is critical for dynamic sections that aren't in the base template config
     setSectionOverrides(prev => ({
       ...prev,
       [sectionId]: {
         ...prev[sectionId],
+        type: sectionId, // Ensure type matches section ID for proper rendering
+        title: prev[sectionId]?.title || sectionTitles[sectionId] || sectionId,
         variant: variantId,
+        enabled: true, // Ensure section stays enabled
       },
     }));
+
+    // Also ensure the section is in enabledSections (for dynamic sections)
+    setEnabledSections(prev => {
+      if (!prev.includes(sectionId)) {
+        return [...prev, sectionId];
+      }
+      return prev;
+    });
+
     toast.success('Section style updated!');
   }, []);
 
@@ -2450,6 +2527,27 @@ export const BuilderV2: React.FC = () => {
                       </PopoverContent>
                     </Popover>
 
+                    {/* Sync from Profile Button */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={handleSyncFromProfile}
+                          disabled={isSyncingProfile}
+                          className="h-9 px-3 flex items-center gap-1.5 rounded-lg text-purple-600 border border-purple-200 bg-purple-50 hover:bg-purple-100 transition-all duration-200 disabled:opacity-50"
+                        >
+                          {isSyncingProfile ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <RefreshCw className="h-4 w-4" />
+                          )}
+                          <span className="text-sm font-medium">Sync Profile</span>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        <p>Load data from your profile</p>
+                      </TooltipContent>
+                    </Tooltip>
+
                     {/* Separator before actions */}
                     <div className="h-5 w-px bg-gray-200" />
 
@@ -2901,6 +2999,20 @@ export const BuilderV2: React.FC = () => {
                   </button>
                 </PopoverContent>
               </Popover>
+
+              {/* Sync from Profile */}
+              <button
+                onClick={handleSyncFromProfile}
+                disabled={isSyncingProfile}
+                className="h-10 w-10 flex items-center justify-center rounded-xl bg-purple-50 text-purple-600 hover:bg-purple-100 transition-all duration-200 disabled:opacity-50"
+                title="Sync from Profile"
+              >
+                {isSyncingProfile ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <RefreshCw className="h-5 w-5" />
+                )}
+              </button>
 
               {/* Settings/Styling */}
               <Popover>

@@ -9,6 +9,7 @@ import React from 'react';
 import { X, Plus, ExternalLink, CheckCircle } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { CoursesVariantProps } from '../types';
 
 export const CoursesCards: React.FC<CoursesVariantProps> = ({
@@ -21,6 +22,8 @@ export const CoursesCards: React.FC<CoursesVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -88,7 +91,7 @@ export const CoursesCards: React.FC<CoursesVariantProps> = ({
             alignItems: 'center',
             gap: '8px',
             marginTop: '4px',
-            fontSize: '10px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             color: '#6b7280',
             flexWrap: 'wrap',
           }}>
@@ -96,7 +99,7 @@ export const CoursesCards: React.FC<CoursesVariantProps> = ({
               <InlineEditableText
                 path={`courses.${index}.provider`}
                 value={item.provider}
-                style={{ fontSize: '10px', color: accentColor }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                 placeholder="Provider"
               />
             ) : (
@@ -110,7 +113,7 @@ export const CoursesCards: React.FC<CoursesVariantProps> = ({
                 path={`courses.${index}.date`}
                 value={item.date}
                 formatDisplay={formatDate}
-                style={{ fontSize: '10px' }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize) }}
               />
             ) : (
               <span>{formatDate ? formatDate(item.date) : item.date}</span>
@@ -138,7 +141,7 @@ export const CoursesCards: React.FC<CoursesVariantProps> = ({
               <InlineEditableText
                 path={`courses.${index}.url`}
                 value={item.url || ''}
-                style={{ fontSize: '10px', color: accentColor }}
+                style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: accentColor }}
                 placeholder="URL"
               />
             </div>
@@ -159,7 +162,7 @@ export const CoursesCards: React.FC<CoursesVariantProps> = ({
             border: `1px dashed ${accentColor}40`,
             backgroundColor: 'transparent',
             color: accentColor,
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
           }}

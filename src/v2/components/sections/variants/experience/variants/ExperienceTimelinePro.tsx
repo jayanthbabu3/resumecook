@@ -12,6 +12,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { ExperienceVariantProps } from '../../experience/types';
 
 export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
@@ -26,15 +27,18 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
   formatDate,
 }) => {
   const { typography, spacing } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
       {items.map((exp, index) => (
-        <div 
-          key={exp.id || index} 
-          className="group relative"
+        <div
+          key={exp.id || index}
+          className="group relative pdf-experience-entry"
+          data-experience-entry="true"
           style={{
             display: 'grid',
             gridTemplateColumns: '120px 20px 1fr',
@@ -52,6 +56,8 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
 
+          {/* Entry Header - keep together for PDF page breaks */}
+          <div data-entry-header="true" style={{ display: 'contents' }}>
           {/* Left Column - Date and Location */}
           <div style={{
             textAlign: 'right',
@@ -59,7 +65,7 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
             paddingTop: '2px',
           }}>
             <div style={{
-              fontSize: '12px',
+              fontSize: scaleFontSize(typography.body.fontSize),
               fontWeight: '600',
               color: '#374151',
               marginBottom: '4px',
@@ -85,14 +91,14 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
               ) : (
                 <>
                   <div>{formatDate ? formatDate(exp.startDate) : exp.startDate}</div>
-                  <div style={{ color: '#9ca3af', fontSize: '10px' }}>-</div>
+                  <div style={{ color: '#9ca3af', fontSize: scaleFontSize(typography.dates.fontSize) }}>-</div>
                   <div>{exp.current ? 'Present' : (formatDate ? formatDate(exp.endDate) : exp.endDate)}</div>
                 </>
               )}
             </div>
             {(exp.location || editable) && (
               <div style={{
-                fontSize: '11px',
+                fontSize: scaleFontSize(typography.dates.fontSize),
                 color: '#6b7280',
                 marginTop: '8px',
               }}>
@@ -100,7 +106,7 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                   <InlineEditableText
                     path={`experience.${index}.location`}
                     value={exp.location || ''}
-                    style={{ fontSize: '11px', color: '#6b7280', textAlign: 'right' }}
+                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', textAlign: 'right' }}
                     placeholder="Location"
                   />
                 ) : (
@@ -189,6 +195,8 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                 </span>
               )}
             </div>
+            </div>
+            {/* End Entry Header */}
 
             {/* Bullet Points */}
             {(exp.bulletPoints?.length > 0 || editable) && (

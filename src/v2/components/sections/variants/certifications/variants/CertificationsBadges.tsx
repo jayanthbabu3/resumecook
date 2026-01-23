@@ -150,7 +150,7 @@ export const CertificationsBadges: React.FC<CertificationsVariantProps> = ({
             border: '1px dashed #d1d5db',
             backgroundColor: 'transparent',
             color: '#6b7280',
-            fontSize: '11px',
+            fontSize: scaleFontSize(typography.dates.fontSize),
             fontWeight: 500,
             cursor: 'pointer',
           }}

@@ -8,6 +8,7 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 import type { EducationVariantProps } from '../types';
 
 export const EducationCompact: React.FC<EducationVariantProps> = ({
@@ -20,6 +21,8 @@ export const EducationCompact: React.FC<EducationVariantProps> = ({
   formatDate,
 }) => {
   const { typography } = config;
+  const styleContext = useStyleOptions();
+  const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
   if (!items.length && !editable) return null;
 
@@ -87,7 +90,7 @@ export const EducationCompact: React.FC<EducationVariantProps> = ({
             )}
           </div>
           
-          <div style={{ fontSize: '13px', color: '#6b7280', whiteSpace: 'nowrap' }}>
+          <div style={{ fontSize: scaleFontSize(typography.body.fontSize), color: '#6b7280', whiteSpace: 'nowrap' }}>
             {editable ? (
               <InlineEditableDate
                 path={`education.${index}.endDate`}
