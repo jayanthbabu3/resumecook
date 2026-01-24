@@ -51,6 +51,11 @@ export const API_ENDPOINTS = {
 
   // LinkedIn Import (mounted at /api/linkedin)
   linkedinImport: `${API_BASE_URL}/api/linkedin/import`,
+
+  // Mock Interview endpoints (mounted at /api/interview)
+  interviewGenerateQuestions: `${API_BASE_URL}/api/interview/generate-questions`,
+  interviewAnalyzeAnswer: `${API_BASE_URL}/api/interview/analyze-answer`,
+  interviewGenerateReport: `${API_BASE_URL}/api/interview/generate-report`,
 };
 
 /**

@@ -93,6 +93,10 @@ import { FileCheck } from 'lucide-react';
 
 // Chat With Resume - Conversational Resume Builder
 import { ChatWithResume } from '../components/ChatWithResume';
+
+// Mock Interview Modal
+import { MockInterviewModal } from '../components/MockInterviewModal';
+import { MessageSquare } from 'lucide-react';
 import { ResumeAnimationProvider } from '../contexts/ResumeAnimationContext';
 import type { ChatResumeUpdatePayload } from '../types/chat';
 
@@ -159,6 +163,9 @@ export const BuilderV2: React.FC = () => {
   const [showSaveOptions, setShowSaveOptions] = useState(false);
   // ATS Score panel state - Hidden for refinement
   // const [showATSPanel, setShowATSPanel] = useState(false);
+
+  // Mock Interview modal state
+  const [showMockInterview, setShowMockInterview] = useState(false);
 
   // Chat mode state - when true, shows chat panel instead of form
   const [isChatMode, setIsChatMode] = useState(false);
@@ -2388,6 +2395,36 @@ export const BuilderV2: React.FC = () => {
                       </TooltipContent>
                     </Tooltip>
 
+                    {/* Practice Interview Button */}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          data-tour="mock-interview"
+                          onClick={() => {
+                            if (!user || !isPro) {
+                              setProModalFeature({
+                                name: 'Practice Interview',
+                                description: 'AI-generated interview questions based on your resume with real-time feedback',
+                              });
+                              setShowProModal(true);
+                            } else {
+                              setShowMockInterview(true);
+                            }
+                          }}
+                          className="h-9 px-4 flex items-center gap-2 rounded-lg text-white font-medium text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.02] shadow-md hover:shadow-lg"
+                          style={{
+                            background: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
+                          }}
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                          <span>Practice Interview</span>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="bg-gray-900 text-white border-0">
+                        <p>Practice with AI-generated interview questions</p>
+                      </TooltipContent>
+                    </Tooltip>
+
 {/* ATS Score Button - Hidden for refinement */}
                     {/* TODO: Re-enable when ATS checker is refined
                     <Tooltip>
@@ -3301,6 +3338,13 @@ export const BuilderV2: React.FC = () => {
         onSaveAndUpdateProfile={handleSaveAndUpdateProfile}
         isSaving={isSaving}
         isNewResume={!currentResumeId}
+      />
+
+      {/* Mock Interview Modal */}
+      <MockInterviewModal
+        open={showMockInterview}
+        onClose={() => setShowMockInterview(false)}
+        resumeData={resumeData}
       />
 
 {/* ATS Score Panel - Hidden for refinement */}

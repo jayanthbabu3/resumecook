@@ -35,11 +35,11 @@ interface VoiceInputBarProps {
 // Number of bars in the waveform
 const BAR_COUNT = 40;
 
-// Waveform colors - vibrant gradient
+// Waveform colors - Blue theme (matching website)
 const COLORS = {
-  idle: { h: 220, s: 85, l: 55 },      // Blue
-  active: { h: 260, s: 85, l: 60 },     // Purple/Violet
-  peak: { h: 280, s: 90, l: 65 },       // Magenta
+  idle: { h: 217, s: 91, l: 60 },       // Primary blue
+  active: { h: 221, s: 83, l: 53 },     // Deeper blue
+  peak: { h: 213, s: 94, l: 68 },       // Bright blue
 };
 
 export function VoiceInputBar({
@@ -324,7 +324,7 @@ export function VoiceInputBar({
       {/* Audio level indicator bar */}
       <div className="h-1 mx-1 bg-gray-100 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-full transition-all duration-75"
+          className="h-full bg-gradient-to-r from-primary via-blue-500 to-blue-400 rounded-full transition-all duration-75"
           style={{
             width: `${Math.min(100, audioLevel * 300)}%`,
             opacity: audioLevel > 0.02 ? 1 : 0.3,
