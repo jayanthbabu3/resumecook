@@ -12,7 +12,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { useSubscription } from '@/hooks/useSubscriptionNew';
+import { useSubscription, useTrialStatus } from '@/hooks/useSubscriptionNew';
 import { FEATURES } from '@/config/features';
 import { Gift, Timer, Sparkles, ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
@@ -32,10 +32,8 @@ export const TrialBanner = ({
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   const { isPro, isTrial, trialDaysRemaining, isLoading } = useSubscription();
+  const { data: trialStatus } = useTrialStatus();
   const [dismissed, setDismissed] = useState(false);
-
-  // Simplified trial status - we always show trials available for non-Pro users
-  const trialStatus = { trialsAvailable: !isPro && !isTrial, trialsRemaining: 1000 };
 
   // Don't show if trial system is disabled
   if (!FEATURES.TRIAL_SYSTEM_ENABLED) return null;
@@ -50,7 +48,7 @@ export const TrialBanner = ({
   if (isPro && !isTrial) return null;
 
   // Active trial user - show countdown (only if authenticated)
-  if (isAuthenticated && isTrial && trialDaysRemaining !== null) {
+  if (isAuthenticated && isTrial) {
     const isUrgent = trialDaysRemaining <= 2;
 
     return (
@@ -88,7 +86,8 @@ export const TrialBanner = ({
   // Non-trial user - show trial availability
   if (trialStatus?.trialsAvailable && !isPro) {
     const remaining = trialStatus.trialsRemaining || 0;
-    const isLimited = remaining < 500;
+    const maxTrials = trialStatus.maxTrials || 1000;
+    const isLimited = remaining < maxTrials / 2; // Show progress when less than 50% remaining
 
     if (variant === 'compact') {
       return (
@@ -162,12 +161,12 @@ export const TrialBanner = ({
           <div className="mt-4 pt-3 border-t border-violet-200">
             <div className="flex items-center justify-between text-xs text-gray-500 mb-1.5">
               <span>Free trials claimed</span>
-              <span>{1000 - remaining} of 1,000</span>
+              <span>{maxTrials - remaining} of {maxTrials.toLocaleString()}</span>
             </div>
             <div className="h-1.5 bg-violet-200 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-violet-500 to-purple-500 rounded-full transition-all"
-                style={{ width: `${((1000 - remaining) / 1000) * 100}%` }}
+                style={{ width: `${((maxTrials - remaining) / maxTrials) * 100}%` }}
               />
             </div>
           </div>

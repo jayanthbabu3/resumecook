@@ -23,6 +23,22 @@ const Auth = () => {
   const redirectTo = searchParams.get('redirect') || '/dashboard';
   const isUpgradeFlow = searchParams.get('upgrade') === 'true';
 
+  // Check for OAuth errors in URL params (from backend redirect)
+  useEffect(() => {
+    const oauthError = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
+    if (oauthError) {
+      const errorMessages: Record<string, string> = {
+        'google_auth_failed': 'Google authentication failed. Please try again.',
+        'no_user': 'Unable to create user account. Please try again.',
+        'callback_failed': 'Authentication callback failed. Please try again.',
+        'access_denied': 'Access was denied. Please try again or use a different account.',
+      };
+      // Use error description if available, otherwise use our mapped message
+      setError(errorDescription || errorMessages[oauthError] || `Authentication error: ${oauthError}`);
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     if (!loading && user) {
       navigate(redirectTo, { replace: true });

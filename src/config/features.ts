@@ -2,13 +2,14 @@
  * Feature Flags Configuration
  *
  * Central place to enable/disable features.
- * After 1000 trial users, set TRIAL_SYSTEM_ENABLED to false.
+ * Trial count is managed dynamically via the backend (maxTrialUsers in TRIAL_CONFIG).
  */
 
 export const FEATURES = {
   /**
-   * Trial System - First 1000 users get 21 days free Pro
-   * Set to false after reaching 1000 users to disable all trial UI
+   * Trial System - Users get 21 days free Pro
+   * The max trial count is configured in the backend (TRIAL_CONFIG.maxTrialUsers)
+   * Set to false to disable all trial UI when trials are exhausted
    */
   TRIAL_SYSTEM_ENABLED: true,
 };

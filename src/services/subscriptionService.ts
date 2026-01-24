@@ -50,10 +50,10 @@ export interface PaymentVerificationData {
 }
 
 export interface TrialStatus {
-  isEligible: boolean;
-  hasUsedTrial: boolean;
-  trialDays: number;
-  currentStatus: SubscriptionStatus;
+  trialsAvailable: boolean;
+  trialsRemaining: number;
+  maxTrials: number;
+  trialDurationDays: number;
 }
 
 // Subscription service methods
@@ -221,8 +221,26 @@ export const subscriptionService = {
       theme: {
         color: '#6366f1',
       },
-      handler: (response: PaymentVerificationData) => {
-        onSuccess(response);
+      handler: (response: any) => {
+        // Razorpay may not return subscription_id in the callback for subscription payments
+        // Use the subscription ID we already have from the create-subscription response
+        const subscriptionId = response.razorpay_subscription_id || options.subscriptionId;
+
+        const verificationData: PaymentVerificationData = {
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_subscription_id: subscriptionId,
+          razorpay_signature: response.razorpay_signature,
+        };
+
+        // Validate before sending
+        if (!verificationData.razorpay_payment_id ||
+            !verificationData.razorpay_subscription_id ||
+            !verificationData.razorpay_signature) {
+          onError(new Error('Missing required payment verification parameters'));
+          return;
+        }
+
+        onSuccess(verificationData);
       },
       modal: {
         ondismiss: () => {

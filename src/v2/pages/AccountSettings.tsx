@@ -3,7 +3,7 @@
  * Clean, compact design
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,34 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+// Detect user's currency based on locale/timezone
+function detectCurrency(): 'INR' | 'USD' {
+  try {
+    // Check timezone for India
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (timezone?.includes('Kolkata') || timezone?.includes('Calcutta')) {
+      return 'INR';
+    }
+
+    // Check locale for India
+    const locale = navigator.language || (navigator as any).userLanguage || '';
+    if (locale.includes('IN') || locale.includes('hi')) {
+      return 'INR';
+    }
+
+    // Default to USD for international users
+    return 'USD';
+  } catch {
+    return 'USD';
+  }
+}
+
+// Price display based on currency
+const PRICES = {
+  INR: { amount: 169, symbol: '₹', display: '₹169/mo' },
+  USD: { amount: 9, symbol: '$', display: '$9/mo' },
+};
+
 // Google icon
 const GoogleIcon = () => (
   <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -67,6 +95,10 @@ export const AccountSettings: React.FC = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
+  // Auto-detect currency based on user's country
+  const currency = useMemo(() => detectCurrency(), []);
+  const priceInfo = PRICES[currency];
+
   const handleUpdateName = useCallback(async () => {
     if (!fullName.trim() || fullName === user?.fullName) return;
     setIsUpdating(true);
@@ -82,11 +114,11 @@ export const AccountSettings: React.FC = () => {
 
   const handleUpgrade = useCallback(async () => {
     try {
-      await startCheckout();
+      await startCheckout(currency);
     } catch {
       toast.error('Failed to start checkout');
     }
-  }, [startCheckout]);
+  }, [startCheckout, currency]);
 
   const handleCancel = useCallback(() => {
     cancelSubscription();
@@ -262,10 +294,10 @@ export const AccountSettings: React.FC = () => {
                           {subscription.isTrial ? 'Trial expired' : 'Subscription expired'}
                         </span>
                       </div>
-                      <p className="text-xs text-red-600 mb-2">Upgrade to continue using Pro features</p>
-                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
-                        <Zap className="w-3 h-3" />
-                        Upgrade to Pro
+                      <p className="text-xs text-red-600 mb-3">Upgrade to continue using Pro features</p>
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-9 gap-1.5">
+                        <Zap className="w-3.5 h-3.5" />
+                        Upgrade to Pro — {priceInfo.display}
                       </Button>
                     </div>
                   )}
@@ -279,26 +311,26 @@ export const AccountSettings: React.FC = () => {
                           Subscription ended
                         </span>
                       </div>
-                      <p className="text-xs text-gray-500 mb-2">Your subscription has been cancelled</p>
-                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
-                        <Zap className="w-3 h-3" />
-                        Resubscribe
+                      <p className="text-xs text-gray-500 mb-3">Your subscription has been cancelled</p>
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-9 gap-1.5">
+                        <Zap className="w-3.5 h-3.5" />
+                        Resubscribe — {priceInfo.display}
                       </Button>
                     </div>
                   )}
 
                   {/* Trial Banner (active trial, not cancelled) */}
-                  {isTrial && !subscription?.cancelledAt && trialDaysRemaining !== null && (
+                  {isTrial && !subscription?.cancelledAt && (
                     <div className="p-3 mb-4 rounded-lg bg-amber-50 border border-amber-200">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-2 mb-3">
                         <Clock className="w-4 h-4 text-amber-600" />
                         <span className="text-sm font-medium text-amber-700">
-                          {trialDaysRemaining} days left in trial
+                          {trialDaysRemaining} {trialDaysRemaining === 1 ? 'day' : 'days'} left in trial
                         </span>
                       </div>
-                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
-                        <Zap className="w-3 h-3" />
-                        Subscribe
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-9 gap-1.5">
+                        <Zap className="w-3.5 h-3.5" />
+                        Subscribe — {priceInfo.display}
                       </Button>
                     </div>
                   )}
@@ -312,14 +344,14 @@ export const AccountSettings: React.FC = () => {
                           Trial cancelled
                         </span>
                       </div>
-                      <p className="text-xs text-amber-600 mb-2">
+                      <p className="text-xs text-amber-600 mb-3">
                         You'll have access until {subscription.trialEndsAt
                           ? new Date(subscription.trialEndsAt).toLocaleDateString()
                           : 'the trial ends'}
                       </p>
-                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
-                        <Zap className="w-3 h-3" />
-                        Subscribe Now
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-9 gap-1.5">
+                        <Zap className="w-3.5 h-3.5" />
+                        Subscribe Now — {priceInfo.display}
                       </Button>
                     </div>
                   )}
@@ -328,10 +360,10 @@ export const AccountSettings: React.FC = () => {
                   {!isPro && subscription?.status !== 'expired' && subscription?.status !== 'cancelled' && (
                     <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
                       <p className="text-sm font-medium text-gray-900">Free Plan</p>
-                      <p className="text-xs text-gray-500 mb-2">Limited features</p>
-                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
-                        <Zap className="w-3 h-3" />
-                        Upgrade
+                      <p className="text-xs text-gray-500 mb-3">Limited features</p>
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-9 gap-1.5">
+                        <Zap className="w-3.5 h-3.5" />
+                        Upgrade — {priceInfo.display}
                       </Button>
                     </div>
                   )}

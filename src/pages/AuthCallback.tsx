@@ -60,17 +60,21 @@ const AuthCallback = () => {
             }
           }
 
-          // Try to close the window - this will work if we're a popup
-          // If we're not a popup, window.close() will be ignored by the browser
-          window.close();
-
-          // If window didn't close (not a popup), redirect to dashboard after a short delay
+          // Give the parent window time to read localStorage before closing
+          // The parent polls every 500ms, so we wait 1 second to ensure it catches it
           setTimeout(() => {
-            // If we're still here, we're not in a popup
-            setStatus('success');
-            toast.success('Signed in successfully!');
-            navigate('/dashboard', { replace: true });
-          }, 500);
+            // Try to close the window - this will work if we're a popup
+            // If we're not a popup, window.close() will be ignored by the browser
+            window.close();
+
+            // If window didn't close (not a popup), redirect to dashboard after a short delay
+            setTimeout(() => {
+              // If we're still here, we're not in a popup
+              setStatus('success');
+              toast.success('Signed in successfully!');
+              navigate('/dashboard', { replace: true });
+            }, 500);
+          }, 1000);
         } catch (err) {
           setStatus('error');
           setErrorMessage('Failed to complete authentication');

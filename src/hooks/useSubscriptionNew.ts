@@ -13,6 +13,7 @@ import {
   PaymentVerificationData,
 } from '@/services';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTrialWelcome } from '@/contexts/TrialWelcomeContext';
 
 // Query keys
 export const subscriptionKeys = {
@@ -32,20 +33,18 @@ export function useSubscriptionStatus() {
     queryKey: subscriptionKeys.status(),
     queryFn: () => subscriptionService.getStatus(),
     enabled: isAuthenticated,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60, // 1 minute - refresh more frequently for accurate trial count
   });
 }
 
 /**
- * Hook to get trial status
+ * Hook to get trial availability (public - shows remaining trials count)
  */
 export function useTrialStatus() {
-  const { isAuthenticated } = useAuth();
-
   return useQuery({
     queryKey: subscriptionKeys.trial(),
     queryFn: () => subscriptionService.getTrialStatus(),
-    enabled: isAuthenticated,
+    staleTime: 1000 * 60 * 5, // 5 minutes - trial count doesn't change frequently
   });
 }
 
@@ -62,15 +61,17 @@ export function usePricing() {
 
 /**
  * Hook to claim free trial
+ * @param onTrialClaimed - Optional callback when trial is successfully claimed (used to show welcome modal)
  */
-export function useClaimTrial() {
+export function useClaimTrial(onTrialClaimed?: () => void) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => subscriptionService.claimTrial(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: subscriptionKeys.all });
-      toast.success('Your 21-day free Pro trial has started!');
+      // Don't show toast - the welcome modal will handle the success message
+      onTrialClaimed?.();
     },
     onError: (error: any) => {
       toast.error(
@@ -170,7 +171,8 @@ export function useSubscriptionCheckout() {
 export function useSubscription() {
   const { data: status, isLoading, refetch } = useSubscriptionStatus();
   const { startCheckout, isLoading: isCheckoutLoading } = useSubscriptionCheckout();
-  const claimTrial = useClaimTrial();
+  const { showTrialWelcome } = useTrialWelcome();
+  const claimTrial = useClaimTrial(showTrialWelcome);
   const cancelSubscription = useCancelSubscription();
 
   // Computed properties

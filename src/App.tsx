@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-
 // Using new JWT-based auth context (exports FirebaseAuthProvider as alias for backward compatibility)
 import { FirebaseAuthProvider } from "@/contexts/AuthContext";
 import { ResumeDataProvider } from "@/contexts/ResumeDataContext";
+import { TrialWelcomeProvider } from "@/contexts/TrialWelcomeContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Hero from "./pages/Hero";
 import ScratchBuilder from "./pages/ScratchBuilder";
@@ -67,8 +68,9 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <FirebaseAuthProvider>
-            <ResumeDataProvider>
-              <Routes>
+            <TrialWelcomeProvider>
+              <ResumeDataProvider>
+                <Routes>
               <Route path="/" element={<Hero />} />
             <Route path="/ats-guidelines" element={<ATSGuidelines />} />
             <Route path="/pricing" element={<Pricing />} />
@@ -116,10 +118,11 @@ const App = () => (
             <Route path="/admin/users" element={<AdminRoute><AdminUsersPage /></AdminRoute>} />
             <Route path="/admin/users/:userId" element={<AdminRoute><AdminUserDetailPage /></AdminRoute>} />
 
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            </ResumeDataProvider>
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              </ResumeDataProvider>
+            </TrialWelcomeProvider>
           </FirebaseAuthProvider>
         </BrowserRouter>
       </TooltipProvider>

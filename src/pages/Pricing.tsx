@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSubscription } from "@/hooks/useSubscriptionNew";
+import { useSubscription, useTrialStatus } from "@/hooks/useSubscriptionNew";
 import { useCountry, type Currency } from "@/hooks/useCountry";
 import { FEATURES as FEATURE_FLAGS } from "@/config/features";
 import { toast } from "sonner";
@@ -113,8 +113,8 @@ const Pricing = () => {
     isClaimingTrial,
   } = useSubscription();
   const { currency, isIndia, loading: countryLoading } = useCountry();
-  // Simplified trial status - we'll check from subscription hook
-  const trialStatus = { trialsAvailable: !isPro && !isTrial, trialsRemaining: 1000 };
+  // Get real trial status from API
+  const { data: trialStatus } = useTrialStatus();
   const trialLoading = isClaimingTrial;
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
@@ -152,10 +152,9 @@ const Pricing = () => {
     if (pendingTrialClaim && user && !isPro && !isTrial) {
       setPendingTrialClaim(false);
       claimTrial();
-      // Toast and navigation handled by the mutation's onSuccess
-      navigate("/dashboard");
+      // The trial welcome modal will show and let user choose where to go
     }
-  }, [pendingTrialClaim, user, isPro, isTrial, claimTrial, navigate]);
+  }, [pendingTrialClaim, user, isPro, isTrial, claimTrial]);
 
   const handleGetStarted = () => {
     navigate("/templates");
@@ -208,8 +207,7 @@ const Pricing = () => {
     }
 
     claimTrial();
-    // Toast handled by mutation, navigate after claim
-    navigate("/dashboard");
+    // The trial welcome modal will show and let user choose where to go
   };
 
   const isLoading = subscriptionLoading || isCheckoutLoading;
@@ -664,7 +662,7 @@ const Pricing = () => {
 
                 {trialStatus && (
                   <p className="text-xs text-center text-primary mt-3 font-medium">
-                    {trialStatus.trialsRemaining} of 1,000 free trials remaining
+                    {trialStatus.trialsRemaining?.toLocaleString()} of {trialStatus.maxTrials?.toLocaleString()} free trials remaining
                   </p>
                 )}
 
