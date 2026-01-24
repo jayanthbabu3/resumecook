@@ -5,7 +5,7 @@
  * using AI to extract structured data into the V2ResumeData format.
  */
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   Upload,
   FileText,
@@ -20,7 +20,9 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { StyleOptionsWrapper } from '@/components/resume/StyleOptionsWrapper';
 import type { V2ResumeData } from '../types';
+import { ResumeRenderer } from './ResumeRenderer';
 import { API_ENDPOINTS, apiFetch } from '../../config/api';
 import { profileService } from '../services/profileService';
 import { toast } from 'sonner';
@@ -41,6 +43,9 @@ const ACCEPTED_FILE_TYPES = [
 ];
 
 const ACCEPTED_EXTENSIONS = ['.pdf', '.docx', '.txt'];
+const PREVIEW_TEMPLATE_ID = 'executive-split-v2';
+const A4_WIDTH = 794;
+const A4_HEIGHT = 1123;
 
 export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
   isOpen,
@@ -54,6 +59,39 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const [parsedData, setParsedData] = useState<V2ResumeData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+  const [previewScale, setPreviewScale] = useState(0.6);
+
+  useEffect(() => {
+    if (status !== 'ask_profile') return;
+    const container = previewContainerRef.current;
+    if (!container || typeof window === 'undefined') return;
+
+    const calcScale = () => {
+      const width = container.clientWidth;
+      if (!width) return;
+      const nextScale = Math.max(Math.min((width - 24) / A4_WIDTH, 1), 0.3);
+      setPreviewScale(nextScale);
+    };
+
+    calcScale();
+
+    if (typeof ResizeObserver !== 'undefined') {
+      const observer = new ResizeObserver(calcScale);
+      observer.observe(container);
+      return () => observer.disconnect();
+    }
+
+    window.addEventListener('resize', calcScale);
+    return () => window.removeEventListener('resize', calcScale);
+  }, [status]);
+
+  const previewData = parsedData ? {
+    ...parsedData,
+    experience: parsedData.experience || [],
+    education: parsedData.education || [],
+    skills: parsedData.skills || [],
+  } : null;
 
   const resetState = useCallback(() => {
     setStatus('idle');
@@ -229,11 +267,10 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={handleClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-white shadow-2xl w-full sm:max-w-lg max-h-[90vh] sm:max-h-[85vh] overflow-hidden rounded-t-2xl sm:rounded-2xl animate-in fade-in-0 slide-in-from-bottom-4 sm:zoom-in-95 duration-200 flex flex-col">
+      <div className="relative bg-white shadow-2xl w-full sm:max-w-6xl h-[95vh] sm:h-[95vh] max-h-[95vh] overflow-hidden rounded-t-2xl sm:rounded-2xl animate-in fade-in-0 slide-in-from-bottom-4 sm:zoom-in-95 duration-200 flex flex-col">
         {/* Mobile drag handle */}
         <div className="sm:hidden flex justify-center py-2 flex-shrink-0 bg-gradient-to-br from-primary/5 to-blue-500/10">
           <div className="w-10 h-1 bg-gray-300 rounded-full" />
@@ -265,7 +302,12 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+        <div
+          className={cn(
+            "flex-1 min-h-0",
+            status === 'ask_profile' ? "p-3 sm:p-4 overflow-hidden" : "p-4 sm:p-6 overflow-y-auto"
+          )}
+        >
           {/* Status States */}
           {status === 'idle' && (
             <>
@@ -376,64 +418,56 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
 
           {/* Ask Profile Sync State */}
           {status === 'ask_profile' && (
-            <div className="py-4 sm:py-6">
-              <div className="text-center mb-5 sm:mb-6">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center border border-emerald-200/60">
-                  <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-emerald-500" />
+            <div className="flex flex-col h-full min-h-0">
+
+              {previewData && (
+                <div className="flex flex-col flex-1 min-h-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200/70 px-2 py-0.5 text-[10px] sm:text-xs font-semibold">
+                        <CheckCircle className="w-3 h-3" />
+                        Parsed successfully
+                      </span>
+                      <p className="hidden sm:block text-xs sm:text-sm font-semibold text-gray-700">
+                        Preview (default template)
+                      </p>
+                    </div>
+                    <span className="hidden sm:inline text-[10px] sm:text-xs text-gray-400">
+                      You can change this later
+                    </span>
+                  </div>
+                  <div
+                    ref={previewContainerRef}
+                    className="flex-1 min-h-0 rounded-xl border border-gray-200 bg-gray-100 overflow-y-auto p-2"
+                  >
+                    <div
+                      className="bg-white shadow-sm rounded-lg overflow-hidden"
+                      style={{
+                        width: A4_WIDTH * previewScale,
+                        minHeight: A4_HEIGHT * previewScale,
+                        margin: '0 auto',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: A4_WIDTH,
+                          minHeight: A4_HEIGHT,
+                          transform: `scale(${previewScale})`,
+                          transformOrigin: 'top left',
+                        }}
+                      >
+                        <StyleOptionsWrapper>
+                          <ResumeRenderer
+                            resumeData={previewData}
+                            templateId={PREVIEW_TEMPLATE_ID}
+                            editable={false}
+                          />
+                        </StyleOptionsWrapper>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-base sm:text-lg font-bold text-gray-900">
-                  Resume Parsed Successfully!
-                </p>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Would you like to update your profile with this data?
-                </p>
-              </div>
-
-              <div className="space-y-2.5 sm:space-y-3">
-                {/* Update Profile Option */}
-                <button
-                  onClick={handleUpdateProfile}
-                  className="w-full p-3.5 sm:p-4 border-2 border-primary/30 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left group"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-                      <User className="w-5 h-5 text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm sm:text-base font-semibold text-gray-800">
-                        Update Profile & Apply
-                      </p>
-                      <p className="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">
-                        Save to your profile and apply to this resume
-                      </p>
-                    </div>
-                  </div>
-                </button>
-
-                {/* Just This Resume Option */}
-                <button
-                  onClick={handleJustResume}
-                  className="w-full p-3.5 sm:p-4 border-2 border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-all text-left group"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-200 transition-colors">
-                      <FileCheck className="w-5 h-5 text-gray-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm sm:text-base font-semibold text-gray-800">
-                        Just This Resume
-                      </p>
-                      <p className="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">
-                        Apply only to this resume without updating profile
-                      </p>
-                    </div>
-                  </div>
-                </button>
-              </div>
-
-              <p className="text-[10px] sm:text-xs text-gray-400 text-center mt-4 pb-safe">
-                Tip: Updating your profile lets you easily sync data to all your resumes
-              </p>
+              )}
             </div>
           )}
 
@@ -489,6 +523,33 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
                 <Upload className="w-4 h-4 mr-2" />
                 Select File
               </Button>
+            </div>
+          </div>
+        )}
+
+        {status === 'ask_profile' && (
+          <div className="px-4 py-3 sm:px-6 sm:py-4 bg-gray-50/90 border-t border-gray-100 flex-shrink-0">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <p className="text-[11px] sm:text-xs text-gray-500 text-center sm:text-left leading-snug">
+                Review the preview, then choose an action. Saving to your profile lets you sync across all resumes.
+              </p>
+              <div className="flex w-full sm:w-auto flex-col sm:flex-row gap-2">
+                <Button
+                  onClick={handleJustResume}
+                  variant="outline"
+                  className="w-full sm:w-auto h-11 text-sm rounded-xl"
+                >
+                  <FileCheck className="w-4 h-4 mr-2" />
+                  Use for this resume only
+                </Button>
+                <Button
+                  onClick={handleUpdateProfile}
+                  className="w-full sm:w-auto h-11 text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Save to profile & apply
+                </Button>
+              </div>
             </div>
           </div>
         )}
