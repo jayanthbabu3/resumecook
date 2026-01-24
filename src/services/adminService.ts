@@ -6,8 +6,6 @@
 
 import api from './api';
 import { User } from './authService';
-import { Resume } from './resumeService';
-import { SubscriptionStatus } from './subscriptionService';
 
 // Types
 export interface DashboardStats {
@@ -21,15 +19,8 @@ export interface DashboardStats {
   };
   resumes: {
     total: number;
-    createdToday: number;
-    createdThisWeek: number;
+    totalDownloads: number;
     averagePerUser: number;
-  };
-  revenue: {
-    totalLifetime: number;
-    thisMonth: number;
-    thisWeek: number;
-    currency: string;
   };
   feedback: {
     total: number;
@@ -37,12 +28,28 @@ export interface DashboardStats {
     inProgress: number;
     resolved: number;
   };
+  subscriptionStats: Record<string, number>;
+  resumesByTemplate: Array<{ _id: string; count: number }>;
+  dailySignups: Array<{ _id: string; count: number }>;
 }
 
-export interface AdminUser extends User {
-  subscription: SubscriptionStatus;
-  resumeCount: number;
-  lastActive: string;
+export interface AdminUserSubscription {
+  status?: 'none' | 'trial' | 'active' | 'cancelled' | 'expired';
+  plan?: string;
+  isTrial?: boolean;
+  startDate?: string;
+  endDate?: string;
+  trialEndsAt?: string;
+  razorpaySubscriptionId?: string;
+}
+
+export interface AdminUser extends Omit<User, 'subscription'> {
+  _id?: string;
+  subscription?: AdminUserSubscription;
+  resumeCount?: number;
+  lastActive?: string;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 export interface AdminUserListResponse {
@@ -55,14 +62,67 @@ export interface AdminUserListResponse {
   };
 }
 
+export interface AdminResume {
+  _id: string;
+  title: string;
+  templateId: string;
+  userId: {
+    _id: string;
+    email: string;
+    fullName: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  downloads: number;
+  views?: number;
+  isPublic?: boolean;
+}
+
 export interface AdminResumeListResponse {
-  resumes: (Resume & { userName: string; userEmail: string })[];
+  resumes: AdminResume[];
   pagination: {
     page: number;
     limit: number;
     total: number;
     pages: number;
   };
+}
+
+export interface UserDetailResponse {
+  user: AdminUser;
+  stats: {
+    resumeCount: number;
+  };
+  recentResumes: Array<{
+    _id: string;
+    title: string;
+    templateId: string;
+    createdAt: string;
+    updatedAt: string;
+    downloads: number;
+  }>;
+}
+
+export interface TrialStats {
+  totalTrials: number;
+  activeTrials: number;
+  expiredTrials: number;
+  convertedTrials: number;
+  conversionRate: string | number;
+}
+
+export interface SystemHealth {
+  status: 'healthy' | 'degraded' | 'unhealthy';
+  mongodb: string;
+  uptime: number;
+  memoryUsage: {
+    rss: number;
+    heapTotal: number;
+    heapUsed: number;
+    external: number;
+  };
+  nodeVersion: string;
+  timestamp: string;
 }
 
 // Admin service methods
@@ -84,10 +144,13 @@ export const adminService = {
           trialUsers: number;
           openFeedback: number;
         };
+        subscriptionStats: Record<string, number>;
+        resumesByTemplate: Array<{ _id: string; count: number }>;
+        dailySignups: Array<{ _id: string; count: number }>;
       };
     }>('/admin/stats');
 
-    const { overview } = response.data.data;
+    const { overview, subscriptionStats, resumesByTemplate, dailySignups } = response.data.data;
     const averagePerUser = overview.totalUsers
       ? Math.round((overview.totalResumes / overview.totalUsers) * 100) / 100
       : 0;
@@ -103,15 +166,8 @@ export const adminService = {
       },
       resumes: {
         total: overview.totalResumes,
-        createdToday: 0,
-        createdThisWeek: 0,
+        totalDownloads: overview.totalDownloads,
         averagePerUser,
-      },
-      revenue: {
-        totalLifetime: 0,
-        thisMonth: 0,
-        thisWeek: 0,
-        currency: 'USD',
       },
       feedback: {
         total: overview.openFeedback,
@@ -119,7 +175,32 @@ export const adminService = {
         inProgress: 0,
         resolved: 0,
       },
+      subscriptionStats: subscriptionStats || {},
+      resumesByTemplate: resumesByTemplate || [],
+      dailySignups: dailySignups || [],
     };
+  },
+
+  /**
+   * Get trial statistics
+   */
+  async getTrialStats(): Promise<TrialStats> {
+    const response = await api.get<{
+      success: boolean;
+      data: TrialStats;
+    }>('/admin/trial-stats');
+    return response.data.data;
+  },
+
+  /**
+   * Get system health
+   */
+  async getSystemHealth(): Promise<SystemHealth> {
+    const response = await api.get<{
+      success: boolean;
+      data: SystemHealth;
+    }>('/admin/system/health');
+    return response.data.data;
   },
 
   /**
@@ -130,8 +211,8 @@ export const adminService = {
     limit: number = 20,
     filters?: {
       search?: string;
-      status?: 'all' | 'active' | 'trial' | 'expired' | 'none';
-      sortBy?: 'createdAt' | 'lastActive' | 'email';
+      status?: 'all' | 'active' | 'trial' | 'expired' | 'none' | 'cancelled';
+      sortBy?: 'createdAt' | 'lastActive' | 'email' | 'fullName';
       sortOrder?: 'asc' | 'desc';
     }
   ): Promise<AdminUserListResponse> {
@@ -145,47 +226,79 @@ export const adminService = {
     if (filters?.sortBy) params.append('sortBy', filters.sortBy);
     if (filters?.sortOrder) params.append('sortOrder', filters.sortOrder);
 
-    const response = await api.get<{ success: boolean; data: AdminUserListResponse }>(
-      `/admin/users?${params.toString()}`
+    const response = await api.get<{
+      success: boolean;
+      data: AdminUser[];
+      pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+      };
+    }>(`/admin/users?${params.toString()}`);
+
+    return {
+      users: response.data.data,
+      pagination: {
+        page: response.data.pagination.page,
+        limit: response.data.pagination.limit,
+        total: response.data.pagination.total,
+        pages: response.data.pagination.totalPages,
+      },
+    };
+  },
+
+  /**
+   * Get a single user by ID with details
+   */
+  async getUserById(userId: string): Promise<UserDetailResponse> {
+    const response = await api.get<{ success: boolean; data: UserDetailResponse }>(
+      `/admin/users/${userId}`
     );
     return response.data.data;
   },
 
   /**
-   * Get a single user by ID
+   * Update user (role, subscription, emailVerified)
    */
-  async getUserById(userId: string): Promise<AdminUser> {
-    const response = await api.get<{ success: boolean; data: AdminUser }>(`/admin/users/${userId}`);
-    return response.data.data;
-  },
-
-  /**
-   * Update user role
-   */
-  async updateUserRole(userId: string, role: 'user' | 'admin'): Promise<AdminUser> {
-    const response = await api.patch<{ success: boolean; data: AdminUser }>(
-      `/admin/users/${userId}/role`,
-      { role }
-    );
-    return response.data.data;
-  },
-
-  /**
-   * Update user subscription status (manual override)
-   */
-  async updateUserSubscription(
+  async updateUser(
     userId: string,
-    subscription: Partial<SubscriptionStatus>
+    updates: {
+      role?: 'user' | 'admin';
+      subscription?: Partial<AdminUserSubscription>;
+      emailVerified?: boolean;
+    }
   ): Promise<AdminUser> {
     const response = await api.patch<{ success: boolean; data: AdminUser }>(
-      `/admin/users/${userId}/subscription`,
-      { subscription }
+      `/admin/users/${userId}`,
+      updates
     );
     return response.data.data;
   },
 
   /**
-   * Delete a user
+   * Manage user subscription (grant, revoke, extend)
+   */
+  async manageSubscription(
+    userId: string,
+    action: 'grant' | 'revoke' | 'extend',
+    options?: {
+      plan?: string;
+      durationDays?: number;
+    }
+  ): Promise<{ subscription: AdminUserSubscription }> {
+    const response = await api.post<{
+      success: boolean;
+      data: { subscription: AdminUserSubscription };
+    }>(`/admin/users/${userId}/subscription`, {
+      action,
+      ...options,
+    });
+    return response.data.data;
+  },
+
+  /**
+   * Delete a user and all their data
    */
   async deleteUser(userId: string): Promise<void> {
     await api.delete(`/admin/users/${userId}`);
@@ -200,7 +313,8 @@ export const adminService = {
     filters?: {
       userId?: string;
       search?: string;
-      sortBy?: 'createdAt' | 'updatedAt' | 'title';
+      templateId?: string;
+      sortBy?: 'createdAt' | 'updatedAt' | 'title' | 'downloads';
       sortOrder?: 'asc' | 'desc';
     }
   ): Promise<AdminResumeListResponse> {
@@ -211,13 +325,30 @@ export const adminService = {
 
     if (filters?.userId) params.append('userId', filters.userId);
     if (filters?.search) params.append('search', filters.search);
+    if (filters?.templateId) params.append('templateId', filters.templateId);
     if (filters?.sortBy) params.append('sortBy', filters.sortBy);
     if (filters?.sortOrder) params.append('sortOrder', filters.sortOrder);
 
-    const response = await api.get<{ success: boolean; data: AdminResumeListResponse }>(
-      `/admin/resumes?${params.toString()}`
-    );
-    return response.data.data;
+    const response = await api.get<{
+      success: boolean;
+      data: AdminResume[];
+      pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+      };
+    }>(`/admin/resumes?${params.toString()}`);
+
+    return {
+      resumes: response.data.data,
+      pagination: {
+        page: response.data.pagination.page,
+        limit: response.data.pagination.limit,
+        total: response.data.pagination.total,
+        pages: response.data.pagination.totalPages,
+      },
+    };
   },
 
   /**
@@ -225,48 +356,6 @@ export const adminService = {
    */
   async deleteResume(resumeId: string): Promise<void> {
     await api.delete(`/admin/resumes/${resumeId}`);
-  },
-
-  /**
-   * Get system health and metrics
-   */
-  async getSystemHealth(): Promise<{
-    status: 'healthy' | 'degraded' | 'unhealthy';
-    uptime: number;
-    memory: { used: number; total: number };
-    database: { status: string; latency: number };
-  }> {
-    const response = await api.get<{
-      success: boolean;
-      data: {
-        status: 'healthy' | 'degraded' | 'unhealthy';
-        uptime: number;
-        memory: { used: number; total: number };
-        database: { status: string; latency: number };
-      };
-    }>('/admin/health');
-    return response.data.data;
-  },
-
-  /**
-   * Export users data (CSV)
-   */
-  async exportUsers(): Promise<Blob> {
-    const response = await api.get('/admin/users/export', {
-      responseType: 'blob',
-    });
-    return response.data;
-  },
-
-  /**
-   * Send announcement email to all users
-   */
-  async sendAnnouncement(subject: string, message: string): Promise<{ sent: number }> {
-    const response = await api.post<{ success: boolean; data: { sent: number } }>(
-      '/admin/announcement',
-      { subject, message }
-    );
-    return response.data.data;
   },
 };
 

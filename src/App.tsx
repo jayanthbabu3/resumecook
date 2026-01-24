@@ -36,7 +36,7 @@ import FeedbackDetailPage from "./v2/pages/FeedbackDetailPage";
 
 // Admin Pages
 import { AdminRoute } from "./components/AdminRoute";
-import { AdminDashboard, AdminFeedbackPage, AdminFeedbackDetailPage, AdminUsersPage } from "./v2/pages/admin";
+import { AdminDashboard, AdminFeedbackPage, AdminFeedbackDetailPage, AdminUsersPage, AdminUserDetailPage } from "./v2/pages/admin";
 
 const queryClient = new QueryClient();
 
@@ -114,6 +114,7 @@ const App = () => (
             <Route path="/admin/feedback" element={<AdminRoute><AdminFeedbackPage /></AdminRoute>} />
             <Route path="/admin/feedback/:id" element={<AdminRoute><AdminFeedbackDetailPage /></AdminRoute>} />
             <Route path="/admin/users" element={<AdminRoute><AdminUsersPage /></AdminRoute>} />
+            <Route path="/admin/users/:userId" element={<AdminRoute><AdminUserDetailPage /></AdminRoute>} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

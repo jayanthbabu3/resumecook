@@ -75,7 +75,13 @@ Backend always returns: `{ success: boolean, data: T, message?: string }`
 VITE_API_BASE_URL=http://localhost:8080
 ```
 
-### Cloud Run Deployment
+### Production Deployment
+
+**Backend URL (Cloud Run)**: `https://resumecook-api-70255328091.us-central1.run.app`
+**Frontend URL (Vercel)**: `https://resumecook.com`
+
+**Cloud Run Service**: `resumecook-api` (region: `us-central1`)
+
 **NEVER use `--set-env-vars`** - always use `--update-env-vars` to preserve existing vars.
 
 | Variable | Purpose |
@@ -85,6 +91,14 @@ VITE_API_BASE_URL=http://localhost:8080
 | `APIFY_API_KEY` | LinkedIn import |
 | `RAZORPAY_*` | Payments |
 | `MONGODB_URI` | MongoDB Atlas connection |
+| `LOGTAIL_SOURCE_TOKEN` | Better Stack (Logtail) logging |
+
+### Logging & Monitoring
+
+- **Better Stack (Logtail)**: https://telemetry.betterstack.com
+- Logs are sent automatically via Winston transport
+- View logs: Live tail in Better Stack dashboard
+- Local logs: `logs/` directory (error.log, combined.log, http.log)
 
 ## Important Notes
 
