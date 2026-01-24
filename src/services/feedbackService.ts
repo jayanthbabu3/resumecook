@@ -13,16 +13,30 @@ import type {
 } from '@/types/feedback';
 
 // API types
+export interface APIFeedbackReply {
+  id?: string;
+  _id?: string;
+  authorId: string;
+  authorRole: 'user' | 'admin';
+  authorName: string;
+  message: string;
+  createdAt: string;
+}
+
 export interface APIFeedback {
   id: string;
   userId: string;
   userEmail: string;
   userName?: string;
-  category: 'bug' | 'feature' | 'improvement' | 'other' | 'payment' | 'general';
+  type: 'bug' | 'feature' | 'general' | 'question' | 'payment';
   subject: string;
   message: string;
   status: 'open' | 'in_progress' | 'resolved' | 'closed';
-  priority: 'low' | 'medium' | 'high';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  adminNotes?: string;
+  replies?: APIFeedbackReply[];
+  unreadByUser?: boolean;
+  unreadByAdmin?: boolean;
   adminReply?: string;
   repliedAt?: string;
   createdAt: string;
@@ -49,57 +63,77 @@ export interface FeedbackListResponse {
 }
 
 // Map API category to UI type
-function mapCategoryToType(category: string): FeedbackType {
+function mapApiTypeToUi(type: string): FeedbackType {
   const mapping: Record<string, FeedbackType> = {
     bug: 'bug',
     feature: 'feature',
-    improvement: 'feature',
     payment: 'payment',
     general: 'general',
-    other: 'general',
-  };
-  return mapping[category] || 'general';
-}
-
-// Map UI type to API category
-function mapTypeToCategory(type: FeedbackType): string {
-  const mapping: Record<FeedbackType, string> = {
-    bug: 'bug',
-    feature: 'feature',
-    payment: 'payment',
-    general: 'general',
+    question: 'general',
   };
   return mapping[type] || 'general';
 }
 
+// Map UI type to API type
+function mapUiTypeToApi(type: FeedbackType): string {
+  return type;
+}
+
+function mapApiPriorityToUi(priority: string): FeedbackPriority {
+  if (priority === 'urgent') return 'urgent';
+  if (priority === 'high') return 'high';
+  if (priority === 'medium') return 'medium';
+  return 'low';
+}
+
 // Convert API feedback to UI format
 function convertToUIFeedback(api: APIFeedback): UIFeedback {
+  const replies = api.replies || [];
+  let latestAdminReply: APIFeedbackReply | undefined;
+  for (let i = replies.length - 1; i >= 0; i -= 1) {
+    if (replies[i].authorRole === 'admin') {
+      latestAdminReply = replies[i];
+      break;
+    }
+  }
+
+  const adminReply = api.adminReply ?? latestAdminReply?.message;
+  const repliedAt = api.repliedAt
+    ? new Date(api.repliedAt)
+    : latestAdminReply?.createdAt
+      ? new Date(latestAdminReply.createdAt)
+      : undefined;
+
   return {
     id: api.id,
     userId: api.userId,
     userEmail: api.userEmail,
     userName: api.userName || 'Unknown',
-    type: mapCategoryToType(api.category),
+    type: mapApiTypeToUi(api.type),
     subject: api.subject,
     description: api.message,
     status: api.status as FeedbackStatus,
-    priority: api.priority as FeedbackPriority,
+    priority: mapApiPriorityToUi(api.priority),
     createdAt: new Date(api.createdAt),
     updatedAt: new Date(api.updatedAt),
-    adminReply: api.adminReply,
-    repliedAt: api.repliedAt ? new Date(api.repliedAt) : undefined,
-    hasUnreadAdminReply: !!api.adminReply && !api.repliedAt,
+    adminNotes: api.adminNotes,
+    adminReply,
+    repliedAt,
+    replyCount: replies.length,
+    hasUnreadAdminReply: !!api.unreadByUser,
+    hasUnreadUserReply: !!api.unreadByAdmin,
   };
 }
 
 // API response types
 interface APIFeedbackListResponse {
-  feedback: APIFeedback[];
+  success: boolean;
+  data: APIFeedback[];
   pagination: {
     page: number;
     limit: number;
     total: number;
-    pages: number;
+    totalPages: number;
   };
 }
 
@@ -110,7 +144,7 @@ export const feedbackService = {
    */
   async submit(data: CreateFeedbackData): Promise<UIFeedback> {
     const apiData = {
-      category: mapTypeToCategory(data.type),
+      type: mapUiTypeToApi(data.type),
       subject: data.subject,
       message: data.description,
     };
@@ -121,21 +155,29 @@ export const feedbackService = {
   /**
    * Get user's feedback history
    */
-  async getMyFeedback(page: number = 1, limit: number = 100): Promise<FeedbackListResponse> {
-    const response = await api.get<{ success: boolean; data: APIFeedbackListResponse }>(
-      `/feedback/my?page=${page}&limit=${limit}`
+  async getMyFeedback(page: number = 1, limit: number = 50): Promise<FeedbackListResponse> {
+    const response = await api.get<APIFeedbackListResponse>(
+      `/feedback?page=${page}&limit=${limit}`
     );
+    const total = response.data.pagination?.total ?? response.data.data.length;
+    const totalPages = (response.data.pagination?.totalPages ?? Math.ceil(total / limit)) || 1;
     return {
-      feedback: response.data.data.feedback.map(convertToUIFeedback),
-      pagination: response.data.data.pagination,
+      feedback: response.data.data.map(convertToUIFeedback),
+      pagination: {
+        page: response.data.pagination?.page ?? page,
+        limit: response.data.pagination?.limit ?? limit,
+        total,
+        pages: totalPages,
+      },
     };
   },
 
   /**
    * Get a single feedback item
    */
-  async getById(id: string): Promise<UIFeedback> {
-    const response = await api.get<{ success: boolean; data: APIFeedback }>(`/feedback/${id}`);
+  async getById(id: string, options?: { admin?: boolean }): Promise<UIFeedback> {
+    const path = options?.admin ? `/feedback/admin/${id}` : `/feedback/${id}`;
+    const response = await api.get<{ success: boolean; data: APIFeedback }>(path);
     return convertToUIFeedback(response.data.data);
   },
 
@@ -143,7 +185,7 @@ export const feedbackService = {
    * Delete user's feedback
    */
   async delete(id: string): Promise<void> {
-    await api.delete(`/feedback/${id}`);
+    await api.delete(`/feedback/admin/${id}`);
   },
 
   // Admin methods
@@ -166,15 +208,22 @@ export const feedbackService = {
     });
 
     if (filters?.status) params.append('status', filters.status);
-    if (filters?.type) params.append('category', mapTypeToCategory(filters.type));
+    if (filters?.type) params.append('type', mapUiTypeToApi(filters.type));
     if (filters?.priority) params.append('priority', filters.priority);
 
-    const response = await api.get<{ success: boolean; data: APIFeedbackListResponse }>(
-      `/feedback/admin?${params.toString()}`
+    const response = await api.get<APIFeedbackListResponse>(
+      `/feedback/admin/all?${params.toString()}`
     );
+    const total = response.data.pagination?.total ?? response.data.data.length;
+    const totalPages = (response.data.pagination?.totalPages ?? Math.ceil(total / limit)) || 1;
     return {
-      feedback: response.data.data.feedback.map(convertToUIFeedback),
-      pagination: response.data.data.pagination,
+      feedback: response.data.data.map(convertToUIFeedback),
+      pagination: {
+        page: response.data.pagination?.page ?? page,
+        limit: response.data.pagination?.limit ?? limit,
+        total,
+        pages: totalPages,
+      },
     };
   },
 
@@ -183,7 +232,7 @@ export const feedbackService = {
    */
   async updateStatus(id: string, status: FeedbackStatus): Promise<UIFeedback> {
     const response = await api.patch<{ success: boolean; data: APIFeedback }>(
-      `/feedback/${id}/status`,
+      `/feedback/admin/${id}`,
       { status }
     );
     return convertToUIFeedback(response.data.data);
@@ -194,7 +243,7 @@ export const feedbackService = {
    */
   async updatePriority(id: string, priority: FeedbackPriority): Promise<UIFeedback> {
     const response = await api.patch<{ success: boolean; data: APIFeedback }>(
-      `/feedback/${id}/priority`,
+      `/feedback/admin/${id}`,
       { priority }
     );
     return convertToUIFeedback(response.data.data);
@@ -205,8 +254,8 @@ export const feedbackService = {
    */
   async reply(id: string, message: string): Promise<UIFeedback> {
     const response = await api.post<{ success: boolean; data: APIFeedback }>(
-      `/feedback/${id}/reply`,
-      { reply: message }
+      `/feedback/admin/${id}/reply`,
+      { message }
     );
     return convertToUIFeedback(response.data.data);
   },
@@ -215,7 +264,7 @@ export const feedbackService = {
    * Mark feedback as read by user
    */
   async markAsRead(id: string): Promise<void> {
-    await api.patch(`/feedback/${id}/read`);
+    await api.get(`/feedback/${id}`);
   },
 };
 

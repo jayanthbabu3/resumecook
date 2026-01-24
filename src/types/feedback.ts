@@ -10,7 +10,7 @@ export type FeedbackType = 'bug' | 'payment' | 'feature' | 'general';
 export type FeedbackStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
 
 // Feedback priority
-export type FeedbackPriority = 'low' | 'medium' | 'high';
+export type FeedbackPriority = 'low' | 'medium' | 'high' | 'urgent';
 
 // User role
 export type UserRole = 'user' | 'admin';
@@ -243,5 +243,11 @@ export const FEEDBACK_PRIORITY_INFO: Record<FeedbackPriority, {
     color: 'text-red-600',
     bgColor: 'bg-red-50',
     borderColor: 'border-red-200',
+  },
+  urgent: {
+    label: 'Urgent',
+    color: 'text-rose-700',
+    bgColor: 'bg-rose-50',
+    borderColor: 'border-rose-200',
   },
 };

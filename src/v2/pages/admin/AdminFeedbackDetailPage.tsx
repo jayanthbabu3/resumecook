@@ -105,7 +105,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
       }
 
       try {
-        const feedbackData = await feedbackService.getById(id);
+        const feedbackData = await feedbackService.getById(id, { admin: true });
 
         if (!feedbackData) {
           toast.error('Feedback not found');
@@ -396,6 +396,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
                       <SelectItem value="low">Low</SelectItem>
                       <SelectItem value="medium">Medium</SelectItem>
                       <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="urgent">Urgent</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

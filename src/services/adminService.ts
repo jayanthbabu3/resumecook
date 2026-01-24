@@ -71,8 +71,55 @@ export const adminService = {
    * Get dashboard statistics
    */
   async getDashboardStats(): Promise<DashboardStats> {
-    const response = await api.get<{ success: boolean; data: DashboardStats }>('/admin/dashboard');
-    return response.data.data;
+    const response = await api.get<{
+      success: boolean;
+      data: {
+        overview: {
+          totalUsers: number;
+          totalResumes: number;
+          totalDownloads: number;
+          newUsersThisMonth: number;
+          newUsersThisWeek: number;
+          activeSubscriptions: number;
+          trialUsers: number;
+          openFeedback: number;
+        };
+      };
+    }>('/admin/stats');
+
+    const { overview } = response.data.data;
+    const averagePerUser = overview.totalUsers
+      ? Math.round((overview.totalResumes / overview.totalUsers) * 100) / 100
+      : 0;
+
+    return {
+      users: {
+        total: overview.totalUsers,
+        newToday: 0,
+        newThisWeek: overview.newUsersThisWeek,
+        newThisMonth: overview.newUsersThisMonth,
+        activeSubscriptions: overview.activeSubscriptions,
+        trialUsers: overview.trialUsers,
+      },
+      resumes: {
+        total: overview.totalResumes,
+        createdToday: 0,
+        createdThisWeek: 0,
+        averagePerUser,
+      },
+      revenue: {
+        totalLifetime: 0,
+        thisMonth: 0,
+        thisWeek: 0,
+        currency: 'USD',
+      },
+      feedback: {
+        total: overview.openFeedback,
+        open: overview.openFeedback,
+        inProgress: 0,
+        resolved: 0,
+      },
+    };
   },
 
   /**
