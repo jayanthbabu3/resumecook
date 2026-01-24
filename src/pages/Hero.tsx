@@ -1122,7 +1122,7 @@ const Hero = () => {
               </div>
               */}
 
-              {/* Feature 4: Job Tailoring */}
+              {/* Feature 4: Match to Job */}
               <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
                 <div className="p-6 md:p-8">
@@ -1132,7 +1132,7 @@ const Hero = () => {
                         <Target className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-foreground">Job Description Tailoring</h3>
+                        <h3 className="text-lg font-bold text-foreground">Match to Job</h3>
                         <p className="text-sm text-muted-foreground">Match any job posting</p>
                       </div>
                     </div>
@@ -1186,7 +1186,7 @@ const Hero = () => {
                     className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-amber-200 text-amber-600 hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-all group"
                     onClick={() => navigate("/dashboard?feature=tailor")}
                   >
-                    <span>Try Job Tailoring</span>
+                    <span>Try Match to Job</span>
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                   </Button>
                 </div>
@@ -1264,6 +1264,78 @@ const Hero = () => {
                     onClick={() => navigate("/dashboard?feature=chat")}
                   >
                     <span>Try AI Chat</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Feature 6: AI Mock Interview */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-violet-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <Mic className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">AI Mock Interview</h3>
+                        <p className="text-sm text-muted-foreground">Practice before the real thing</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-indigo-200 text-indigo-600 bg-indigo-50">PRO</Badge>
+                  </div>
+
+                  {/* Visual Demo - Interview Interface */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="space-y-3">
+                      {/* Question card */}
+                      <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="h-5 w-5 rounded-full bg-indigo-100 flex items-center justify-center">
+                            <span className="text-[10px] font-bold text-indigo-600">Q1</span>
+                          </div>
+                          <span className="text-[10px] font-medium text-indigo-600 uppercase">Behavioral Question</span>
+                        </div>
+                        <p className="text-xs text-gray-700 font-medium">
+                          "Tell me about a time you led a challenging project. What was your approach?"
+                        </p>
+                      </div>
+
+                      {/* Answer input simulation */}
+                      <div className="flex items-center gap-2 bg-white rounded-full border border-gray-200 p-1.5 pl-3">
+                        <span className="text-[10px] text-gray-400 flex-1">Your answer...</span>
+                        <div className="h-6 w-6 rounded-full bg-indigo-500 flex items-center justify-center animate-pulse">
+                          <Mic className="h-3 w-3 text-white" />
+                        </div>
+                      </div>
+
+                      {/* Feedback preview */}
+                      <div className="bg-gradient-to-r from-indigo-50 to-violet-50 rounded-lg p-2 border border-indigo-100">
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1">
+                            <div className="h-4 w-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                              <Check className="h-2.5 w-2.5 text-white" />
+                            </div>
+                            <span className="text-[10px] text-emerald-600 font-medium">8/10</span>
+                          </div>
+                          <span className="text-[10px] text-gray-500">•</span>
+                          <span className="text-[10px] text-indigo-600">AI feedback ready</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Practice interviews with AI-generated questions based on your resume. Get instant feedback and improve your responses.
+                  </p>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-indigo-200 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-700 transition-all group"
+                    onClick={() => navigate("/dashboard?feature=interview")}
+                  >
+                    <span>Try Mock Interview</span>
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                   </Button>
                 </div>
@@ -2491,11 +2563,11 @@ const Hero = () => {
                   <Target className="h-5 w-5 text-amber-600" />
                 </div>
                 <h3 className="text-sm font-semibold mb-1.5 text-foreground flex items-center gap-1.5">
-                  Job Tailoring
+                  Match to Job
                   <Badge className="text-[8px] px-1 py-0 bg-primary/10 text-primary border-0">PRO</Badge>
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Optimize your resume for any job description with AI keyword matching.
+                  Match your resume to any job posting with AI keyword matching.
                 </p>
               </div>
 
@@ -2627,8 +2699,9 @@ const Hero = () => {
                     {[
                       "LinkedIn Import",
                       "AI Enhancement",
-                      "Job Tailoring",
+                      "Match to Job",
                       "AI Chat Assistant",
+                      "AI Mock Interview",
                     ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-2 text-xs">
                         <X className="h-3.5 w-3.5 text-gray-300 flex-shrink-0" />
@@ -2679,6 +2752,7 @@ const Hero = () => {
                       "AI Resume Enhancement",
                       "Job Description Tailoring",
                       "AI Chat Assistant",
+                      "AI Mock Interview",
                       "Voice Input Support",
                       "Generate from Job Description",
                       "Multiple Resumes",

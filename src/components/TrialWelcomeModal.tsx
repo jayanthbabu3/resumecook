@@ -21,6 +21,7 @@ import {
   ArrowRight,
   Check,
   Crown,
+  Mic,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -46,8 +47,8 @@ const PRO_FEATURES = [
   },
   {
     icon: Target,
-    title: 'Job Tailoring',
-    description: 'Optimize your resume for any job',
+    title: 'Match to Job',
+    description: 'Match your resume to any job posting',
     color: 'text-emerald-600',
     bgColor: 'bg-emerald-50',
   },
@@ -64,6 +65,13 @@ const PRO_FEATURES = [
     description: 'Get personalized resume advice',
     color: 'text-pink-600',
     bgColor: 'bg-pink-50',
+  },
+  {
+    icon: Mic,
+    title: 'AI Mock Interview',
+    description: 'Practice with AI-generated questions',
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-50',
   },
 ];
 
@@ -82,7 +90,7 @@ export const TrialWelcomeModal = ({ open, onClose }: TrialWelcomeModalProps) => 
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-[480px] p-0 gap-0 overflow-hidden border-0 shadow-2xl rounded-2xl">
+      <DialogContent className="sm:max-w-[480px] max-h-[90vh] p-0 gap-0 overflow-y-auto border-0 shadow-2xl rounded-2xl">
         {/* Header with gradient */}
         <div className="bg-gradient-to-br from-primary via-blue-600 to-indigo-600 px-6 pt-8 pb-6 text-center relative overflow-hidden">
           {/* Background decoration */}

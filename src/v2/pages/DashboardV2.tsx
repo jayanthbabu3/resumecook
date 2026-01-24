@@ -13,6 +13,7 @@ import {
   FileText,
   Download,
   Crown,
+  Mic,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -127,6 +128,20 @@ const DashboardV2 = () => {
   //     setAtsCheckerOpen(true);
   //   }
   // };
+
+  const handleMockInterviewClick = () => {
+    if (!user || !isPro) {
+      setProModalFeature({
+        name: 'AI Mock Interview',
+        description: 'Practice interviews with AI-generated questions based on your resume',
+      });
+      setProModalOpen(true);
+    } else {
+      // Navigate to builder with mock interview feature flag
+      // User needs to have a resume open to use mock interview
+      navigate('/builder?feature=interview');
+    }
+  };
 
   // Handle template selection from chat intro modal
   const handleChatTemplateSelect = (templateId: string) => {
@@ -425,6 +440,31 @@ const DashboardV2 = () => {
                 </p>
                 <div className="flex items-center gap-1 text-[#0077B5] font-medium text-sm">
                   <span>Import Now</span>
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+            </button>
+
+            {/* AI Mock Interview */}
+            <button
+              onClick={handleMockInterviewClick}
+              className="group relative bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 text-left"
+              data-tour="mock-interview"
+            >
+              <div className="absolute top-4 right-4">
+                <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">PRO</span>
+              </div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-indigo-50 to-transparent rounded-bl-full opacity-60" />
+              <div className="relative">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center mb-4">
+                  <Mic className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-1.5">AI Mock Interview</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-3">
+                  Practice with AI questions based on your resume
+                </p>
+                <div className="flex items-center gap-1 text-indigo-600 font-medium text-sm">
+                  <span>Practice Now</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>

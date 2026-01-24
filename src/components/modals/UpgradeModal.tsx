@@ -28,6 +28,7 @@ import {
   Loader2,
   Gift,
   Clock,
+  Mic,
 } from 'lucide-react';
 
 interface UpgradeModalProps {
@@ -154,11 +155,12 @@ export function UpgradeModal({ open, onOpenChange, feature }: UpgradeModalProps)
     { icon: MessageSquare, text: 'Chat with AI Assistant' },
     { icon: Target, text: 'ATS Score Analysis' },
     { icon: Zap, text: 'LinkedIn Profile Import' },
+    { icon: Mic, text: 'AI Mock Interview' },
   ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-[480px] max-h-[90vh] p-0 overflow-y-auto">
         {/* Header with gradient */}
         <div className="bg-gradient-to-br from-primary/10 via-blue-500/10 to-indigo-500/5 px-6 pt-8 pb-6">
           <div className="flex justify-center mb-4">

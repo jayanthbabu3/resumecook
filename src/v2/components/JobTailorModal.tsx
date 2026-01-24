@@ -440,9 +440,9 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
     setProgressMessage(PROGRESS_MESSAGES[0]);
 
     try {
-      // Create AbortController for frontend timeout (slightly longer than backend)
+      // Create AbortController for frontend timeout (longer than backend's 60s AI timeout)
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 65000); // 65 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout
 
       let response: Response;
       try {

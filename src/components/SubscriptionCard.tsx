@@ -177,7 +177,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
             <div className="space-y-4">
               {/* Features */}
               <div className="flex flex-wrap gap-2">
-                {['LinkedIn Import', 'AI Enhancement', 'Job Tailoring', 'Resume Upload'].map((feature) => (
+                {['LinkedIn Import', 'AI Enhancement', 'Match to Job', 'Resume Upload'].map((feature) => (
                   <span
                     key={feature}
                     className="inline-flex items-center gap-1 px-2 py-1 bg-primary/5 text-primary text-xs font-medium rounded-full"

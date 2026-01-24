@@ -141,7 +141,7 @@ export const TrialBanner = ({
               {isLimited ? (
                 <>Only <strong className="text-violet-600">{remaining}</strong> trials remaining!</>
               ) : (
-                <>Unlock AI features, LinkedIn import, and job tailoring</>
+                <>Unlock AI features, LinkedIn import, and job matching</>
               )}
             </p>
           </div>

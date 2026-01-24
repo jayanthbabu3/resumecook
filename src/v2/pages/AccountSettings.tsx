@@ -372,7 +372,7 @@ export const AccountSettings: React.FC = () => {
                   {isPro && (
                     <div className="space-y-3">
                       <div className="flex flex-wrap gap-1.5">
-                        {['LinkedIn Import', 'AI Enhancement', 'Job Tailoring', 'Resume Upload'].map((f) => (
+                        {['LinkedIn Import', 'AI Enhancement', 'Match to Job', 'Resume Upload'].map((f) => (
                           <span key={f} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                             <Check className="w-3 h-3" />
                             {f}

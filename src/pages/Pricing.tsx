@@ -35,6 +35,7 @@ import {
   FileUp,
   Gift,
   Timer,
+  Mic,
 } from "lucide-react";
 import {
   Dialog,
@@ -72,9 +73,10 @@ const FEATURES = [
   { name: "Section Reordering", free: true, pro: true },
   { name: "LinkedIn Profile Import", free: false, pro: true },
   { name: "AI Resume Enhancement", free: false, pro: true },
-  { name: "Job-Specific Tailoring", free: false, pro: true },
+  { name: "Match to Job", free: false, pro: true },
   { name: "Resume Upload & Parse", free: false, pro: true },
   { name: "AI Chat Assistant", free: false, pro: true },
+  { name: "AI Mock Interview", free: false, pro: true },
   { name: "Unlimited Resume Versions", free: false, pro: true },
 ];
 
@@ -386,7 +388,7 @@ const Pricing = () => {
               <p className="text-xs text-center text-gray-500 mt-3 mb-6">
                 {FEATURE_FLAGS.TRIAL_SYSTEM_ENABLED && trialStatus?.trialsAvailable && !isPro && !isTrial
                   ? `No credit card required • ${trialStatus.trialsRemaining} trials left`
-                  : "Cancel anytime • 21-day money-back guarantee"
+                  : "Cancel anytime"
                 }
               </p>
 
@@ -418,8 +420,8 @@ const Pricing = () => {
                     <Target className="h-3.5 w-3.5 text-primary" />
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-gray-900">Job Tailoring</span>
-                    <p className="text-xs text-gray-500">Optimize for any job description</p>
+                    <span className="text-sm font-medium text-gray-900">Match to Job</span>
+                    <p className="text-xs text-gray-500">Match your resume to any job posting</p>
                   </div>
                 </div>
 
@@ -435,6 +437,16 @@ const Pricing = () => {
                     <MessageSquare className="h-3.5 w-3.5 text-gray-600" />
                   </div>
                   <span className="text-sm text-gray-700">AI Chat Assistant</span>
+                </div>
+
+                <div className="flex items-start gap-2.5">
+                  <div className="p-1.5 rounded-lg bg-primary/10 mt-0.5">
+                    <Mic className="h-3.5 w-3.5 text-primary" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-gray-900">AI Mock Interview</span>
+                    <p className="text-xs text-gray-500">Practice with AI-generated questions</p>
+                  </div>
                 </div>
 
                 <div className="flex items-start gap-2.5">
@@ -627,7 +639,7 @@ const Pricing = () => {
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
                       <Check className="h-4 w-4 text-emerald-500" />
-                      <span>Job Tailoring</span>
+                      <span>Match to Job</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
                       <Check className="h-4 w-4 text-emerald-500" />

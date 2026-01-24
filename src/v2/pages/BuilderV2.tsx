@@ -2373,8 +2373,8 @@ export const BuilderV2: React.FC = () => {
                           onClick={() => {
                             if (!user || !isPro) {
                               setProModalFeature({
-                                name: 'Job Tailoring',
-                                description: 'Optimize your resume for specific job descriptions',
+                                name: 'Match to Job',
+                                description: 'Match your resume to specific job postings',
                               });
                               setShowProModal(true);
                             } else {

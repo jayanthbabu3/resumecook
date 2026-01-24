@@ -33,6 +33,7 @@ import {
   Clock,
   Shield,
   FileText,
+  Mic,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { API_BASE_URL } from '@/config/api';
@@ -159,6 +160,7 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
     { icon: Target, label: 'Job-specific Tailoring' },
     { icon: Linkedin, label: 'LinkedIn Import' },
     { icon: FileUp, label: 'Resume Upload & Parse' },
+    { icon: Mic, label: 'AI Mock Interview' },
   ];
 
   const freeFeatures = [
@@ -169,7 +171,7 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[440px] p-0 gap-0 overflow-hidden border-0 shadow-2xl">
+      <DialogContent className="sm:max-w-[440px] max-h-[90vh] p-0 gap-0 overflow-y-auto border-0 shadow-2xl">
         {/* Close Button */}
         <button
           onClick={onClose}
