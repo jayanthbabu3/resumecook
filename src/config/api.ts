@@ -22,8 +22,11 @@ if (!API_BASE_URL) {
 export const API_ENDPOINTS = {
   // AI Enhancement endpoints (mounted at /api/ai)
   enhanceResume: `${API_BASE_URL}/api/ai/enhance-resume`,
+  // Streaming endpoint for real-time progress
   enhanceSectionsStream: `${API_BASE_URL}/api/enhance-sections/stream`,
+  // Non-streaming endpoints
   enhanceSectionsBatch: `${API_BASE_URL}/api/enhance-sections/batch`,
+  enhanceSections: `${API_BASE_URL}/api/enhance-sections/enhance`,
   parseResume: `${API_BASE_URL}/api/ai/parse-resume`,
   generateResumeFromJob: `${API_BASE_URL}/api/ai/generate-from-job`,
   tailorResumeForJob: `${API_BASE_URL}/api/ai/tailor-for-job`,

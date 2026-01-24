@@ -1,14 +1,13 @@
 /**
- * Enhance with AI Modal - Progressive Resume Reveal Animation
+ * Enhance with AI Modal - Section by Section
  *
- * Features:
- * - Live resume preview that reveals from top to bottom as sections complete
- * - Smooth animations showing the resume being "built"
- * - Section-by-section streaming with visual progress
- * - Final comparison view with original vs enhanced
+ * Simple approach:
+ * 1. Call API for each enabled section one at a time
+ * 2. Show real progress as each section completes
+ * 3. Show comparison when all done
  */
 
-import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
   Sparkles,
   X,
@@ -20,14 +19,22 @@ import {
   Lightbulb,
   ChevronRight,
   CheckCircle2,
-  XCircle,
-  Circle,
   ArrowRight,
+  Briefcase,
+  GraduationCap,
+  Code,
+  Award,
+  Target,
+  Heart,
+  BookOpen,
+  Users,
+  Trophy,
+  Globe,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import type { V2ResumeData } from '../types';
-import { API_ENDPOINTS, getApiHeaders } from '../../config/api';
+import { API_BASE_URL, getApiHeaders } from '../../config/api';
 import { WEBSITE_PRIMARY_COLOR } from '../constants/theme';
 import { ResumeRenderer } from './ResumeRenderer';
 import { InlineEditProvider } from '@/contexts/InlineEditContext';
@@ -42,26 +49,35 @@ interface EnhanceWithAIModalProps {
   themeColor?: string;
   templateId?: string;
   themeColors?: { primary?: string; secondary?: string };
+  enabledSections: string[];
 }
 
-type EnhancementStatus = 'idle' | 'enhancing' | 'comparing' | 'applying' | 'error';
+type ModalStatus = 'idle' | 'enhancing' | 'comparing' | 'applying' | 'error';
+type SectionStatus = 'pending' | 'in_progress' | 'complete' | 'error';
 
 interface SectionProgress {
   id: string;
   label: string;
-  status: 'pending' | 'in_progress' | 'success' | 'error';
-  error?: string;
+  status: SectionStatus;
+  dataKey: string;
 }
 
-interface EnhancementResult {
-  data: V2ResumeData;
-  suggestedSkills?: Array<{
-    id: string;
-    name: string;
-    category: string;
-    reason: string;
-  }>;
-}
+// Section config
+const SECTION_CONFIG: Record<string, { label: string; icon: React.ElementType; dataKey: keyof V2ResumeData }> = {
+  summary: { label: 'Summary', icon: FileText, dataKey: 'personalInfo' },
+  experience: { label: 'Experience', icon: Briefcase, dataKey: 'experience' },
+  education: { label: 'Education', icon: GraduationCap, dataKey: 'education' },
+  skills: { label: 'Skills', icon: Code, dataKey: 'skills' },
+  projects: { label: 'Projects', icon: Code, dataKey: 'projects' },
+  certifications: { label: 'Certifications', icon: Award, dataKey: 'certifications' },
+  achievements: { label: 'Achievements', icon: Trophy, dataKey: 'achievements' },
+  strengths: { label: 'Strengths', icon: Target, dataKey: 'strengths' },
+  languages: { label: 'Languages', icon: Globe, dataKey: 'languages' },
+  volunteer: { label: 'Volunteer', icon: Heart, dataKey: 'volunteer' },
+  publications: { label: 'Publications', icon: BookOpen, dataKey: 'publications' },
+  awards: { label: 'Awards', icon: Trophy, dataKey: 'awards' },
+  interests: { label: 'Interests', icon: Users, dataKey: 'interests' },
+};
 
 export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
   isOpen,
@@ -71,790 +87,404 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
   themeColor = WEBSITE_PRIMARY_COLOR,
   templateId = 'executive-split-v2',
   themeColors,
+  enabledSections,
 }) => {
-  const [status, setStatus] = useState<EnhancementStatus>('idle');
+  const [status, setStatus] = useState<ModalStatus>('idle');
   const [error, setError] = useState<string | null>(null);
-  const [enhancementResult, setEnhancementResult] = useState<EnhancementResult | null>(null);
-  const [sections, setSections] = useState<SectionProgress[]>([]);
-  const [currentSection, setCurrentSection] = useState<string>('');
-  const [acceptSuggestedSkills, setAcceptSuggestedSkills] = useState<Set<string>>(new Set());
-
-  // Progressive reveal state - tracks what's been enhanced so far
-  const [progressiveData, setProgressiveData] = useState<V2ResumeData | null>(null);
-  const [revealProgress, setRevealProgress] = useState(0); // 0-100 for reveal animation
-  const [completedSections, setCompletedSections] = useState<Set<string>>(new Set());
-
-  // User customization options
+  const [enhancedData, setEnhancedData] = useState<V2ResumeData | null>(null);
+  const [suggestedSkills, setSuggestedSkills] = useState<Array<{ id: string; name: string; category: string; reason: string }>>([]);
+  const [acceptedSkills, setAcceptedSkills] = useState<Set<string>>(new Set());
   const [additionalContext, setAdditionalContext] = useState('');
+  const [mobileTab, setMobileTab] = useState<'original' | 'enhanced'>('enhanced');
+  const [sectionProgress, setSectionProgress] = useState<SectionProgress[]>([]);
 
-  // Mobile tab state for comparing view
-  const [mobileCompareTab, setMobileCompareTab] = useState<'original' | 'enhanced'>('enhanced');
-
-  // Refs
+  const abortRef = useRef(false);
   const originalScrollRef = useRef<HTMLDivElement>(null);
   const enhancedScrollRef = useRef<HTMLDivElement>(null);
-  const isScrollingSyncRef = useRef<boolean>(false);
-  const originalContainerRef = useRef<HTMLDivElement>(null);
-  const enhancedContainerRef = useRef<HTMLDivElement>(null);
-  const progressiveContainerRef = useRef<HTMLDivElement>(null);
-  const [resumeScale, setResumeScale] = useState(0.5);
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.5);
 
-  // A4 dimensions at 96dpi
   const A4_WIDTH = 794;
   const A4_HEIGHT = 1123;
 
-  // Calculate reveal height based on progress
-  const revealHeight = useMemo(() => {
-    // Map sections to approximate resume heights
-    const sectionHeights: Record<string, number> = {
-      'summary': 15, // Header + Summary = ~15% of page
-    };
-
-    // Calculate experience section heights
-    const expCount = resumeData.experience?.length || 0;
-    const expHeightPer = expCount > 0 ? 50 / expCount : 0; // Experience = ~50% total
-
-    let currentHeight = 0;
-    completedSections.forEach(sectionId => {
-      if (sectionId === 'summary') {
-        currentHeight += 15;
-      } else if (sectionId.startsWith('experience-')) {
-        currentHeight += expHeightPer;
-      } else if (sectionId === 'projects') {
-        currentHeight += 20; // Projects = ~20%
-      } else if (sectionId === 'skills') {
-        currentHeight += 15; // Skills = ~15%
-      }
-    });
-
-    return Math.min(100, currentHeight);
-  }, [completedSections, resumeData.experience?.length]);
-
-  // Calculate scale based on container width
+  // Calculate scale
   useEffect(() => {
-    if (status !== 'comparing' && status !== 'applying' && status !== 'enhancing') return;
-
-    const calculateScale = () => {
-      const container = status === 'enhancing' ? progressiveContainerRef.current : originalContainerRef.current;
-      if (!container) {
-        setResumeScale(0.65);
-        return;
-      }
-
-      const availableWidth = container.clientWidth - 32;
-      const optimalScale = Math.min((availableWidth - 40) / A4_WIDTH, 0.85);
-      const finalScale = Math.max(optimalScale, 0.5);
-      setResumeScale(finalScale);
+    if (status !== 'comparing' && status !== 'applying') return;
+    const calc = () => {
+      if (!containerRef.current) return setScale(0.65);
+      const w = containerRef.current.clientWidth - 32;
+      setScale(Math.max(Math.min((w - 40) / A4_WIDTH, 0.85), 0.5));
     };
-
-    calculateScale();
-
-    const resizeObserver = new ResizeObserver(calculateScale);
-    const targetContainer = status === 'enhancing' ? progressiveContainerRef.current : originalContainerRef.current;
-    if (targetContainer) {
-      resizeObserver.observe(targetContainer);
-    }
-
-    return () => resizeObserver.disconnect();
+    calc();
+    const obs = new ResizeObserver(calc);
+    if (containerRef.current) obs.observe(containerRef.current);
+    return () => obs.disconnect();
   }, [status]);
 
-  // Synchronized scroll handler
-  const handleScroll = useCallback((source: 'original' | 'enhanced') => {
-    if (isScrollingSyncRef.current) return;
-
-    isScrollingSyncRef.current = true;
-
-    const sourceRef = source === 'original' ? originalScrollRef : enhancedScrollRef;
-    const targetRef = source === 'original' ? enhancedScrollRef : originalScrollRef;
-
-    if (sourceRef.current && targetRef.current) {
-      targetRef.current.scrollTop = sourceRef.current.scrollTop;
-    }
-
-    requestAnimationFrame(() => {
-      isScrollingSyncRef.current = false;
-    });
+  // Sync scroll
+  const syncScroll = useCallback((src: 'original' | 'enhanced') => {
+    const from = src === 'original' ? originalScrollRef : enhancedScrollRef;
+    const to = src === 'original' ? enhancedScrollRef : originalScrollRef;
+    if (from.current && to.current) to.current.scrollTop = from.current.scrollTop;
   }, []);
 
-  // Reset state when modal opens/closes
+  // Reset on close
   useEffect(() => {
     if (!isOpen) {
+      abortRef.current = true;
       setStatus('idle');
       setError(null);
-      setEnhancementResult(null);
-      setSections([]);
-      setCurrentSection('');
-      setAcceptSuggestedSkills(new Set());
+      setEnhancedData(null);
+      setSuggestedSkills([]);
+      setAcceptedSkills(new Set());
       setAdditionalContext('');
-      setMobileCompareTab('enhanced');
-      setProgressiveData(null);
-      setRevealProgress(0);
-      setCompletedSections(new Set());
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-        abortControllerRef.current = null;
-      }
+      setMobileTab('enhanced');
+      setSectionProgress([]);
     }
   }, [isOpen]);
 
-  // Initialize sections based on resume data
-  const initializeSections = useCallback(() => {
-    const sectionList: SectionProgress[] = [
-      { id: 'summary', label: 'Summary & Title', status: 'pending' },
-    ];
+  // Get sections to enhance (only those with data)
+  const getSectionsToEnhance = useCallback((): SectionProgress[] => {
+    const sections: SectionProgress[] = [];
 
-    (resumeData.experience || []).forEach((exp, idx) => {
-      sectionList.push({
-        id: `experience-${idx}`,
-        label: exp.company || `Experience ${idx + 1}`,
-        status: 'pending',
-      });
+    for (const sectionId of enabledSections) {
+      if (sectionId === 'header') continue; // Skip header, we handle summary separately
+
+      const config = SECTION_CONFIG[sectionId];
+      if (!config) continue;
+
+      // Check if section has data
+      if (sectionId === 'summary') {
+        if (resumeData.personalInfo?.summary) {
+          sections.push({ id: 'summary', label: 'Summary', status: 'pending', dataKey: 'personalInfo' });
+        }
+      } else {
+        const data = resumeData[config.dataKey];
+        if (Array.isArray(data) && data.length > 0) {
+          sections.push({ id: sectionId, label: config.label, status: 'pending', dataKey: config.dataKey });
+        }
+      }
+    }
+
+    return sections;
+  }, [enabledSections, resumeData]);
+
+  // Enhance a single section
+  const enhanceSection = async (sectionType: string, sectionData: any, context?: any): Promise<any> => {
+    const response = await fetch(`${API_BASE_URL}/api/enhance-sections/section`, {
+      method: 'POST',
+      headers: getApiHeaders(),
+      body: JSON.stringify({ sectionType, sectionData, context }),
     });
 
-    if (resumeData.projects && resumeData.projects.length > 0) {
-      sectionList.push({ id: 'projects', label: 'Projects', status: 'pending' });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || err.message || 'Enhancement failed');
     }
 
-    sectionList.push({ id: 'skills', label: 'Skill Suggestions', status: 'pending' });
+    const result = await response.json();
+    return result.data;
+  };
 
-    return sectionList;
-  }, [resumeData]);
-
-  // Stream enhancement with SSE and progressive updates
-  const handleEnhanceStream = useCallback(async () => {
+  // Main enhance function - section by section
+  const handleEnhance = useCallback(async () => {
     setStatus('enhancing');
     setError(null);
-    const initialSections = initializeSections();
-    setSections(initialSections);
+    abortRef.current = false;
 
-    // Initialize progressive data with original resume
-    setProgressiveData({ ...resumeData });
-    setCompletedSections(new Set());
-    setRevealProgress(0);
+    const sections = getSectionsToEnhance();
+    setSectionProgress(sections);
 
-    abortControllerRef.current = new AbortController();
+    // Start with original data
+    const result: V2ResumeData = JSON.parse(JSON.stringify(resumeData));
+    const context = additionalContext.trim() ? { additionalContext: additionalContext.trim() } : undefined;
 
     try {
-      const headers = getApiHeaders();
+      // Process each section one by one
+      for (let i = 0; i < sections.length; i++) {
+        if (abortRef.current) return;
 
-      const response = await fetch(API_ENDPOINTS.enhanceSectionsStream, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          resumeData,
-          options: {
-            additionalContext: additionalContext.trim() || null,
-          },
-        }),
-        signal: abortControllerRef.current.signal,
-      });
+        const section = sections[i];
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || errorData.message || 'Enhancement failed');
-      }
+        // Mark as in progress
+        setSectionProgress(prev => prev.map((s, idx) =>
+          idx === i ? { ...s, status: 'in_progress' } : s
+        ));
 
-      const reader = response.body?.getReader();
-      if (!reader) throw new Error('No response body');
-
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        let eventType = '';
-        let eventData = '';
-
-        for (const line of lines) {
-          if (line.startsWith('event: ')) {
-            eventType = line.slice(7);
-          } else if (line.startsWith('data: ')) {
-            eventData = line.slice(6);
-
-            if (eventType && eventData) {
-              try {
-                const data = JSON.parse(eventData);
-                handleSSEEvent(eventType, data);
-              } catch (e) {
-                console.error('Failed to parse SSE data:', e);
+        try {
+          if (section.id === 'summary') {
+            // Enhance summary
+            const enhanced = await enhanceSection('summary', resumeData.personalInfo?.summary, context);
+            if (typeof enhanced === 'string') {
+              result.personalInfo = { ...result.personalInfo, summary: enhanced };
+            }
+          } else {
+            // Enhance array section
+            const dataKey = section.dataKey as keyof V2ResumeData;
+            const data = resumeData[dataKey];
+            if (Array.isArray(data) && data.length > 0) {
+              const enhanced = await enhanceSection(section.id, data, context);
+              if (Array.isArray(enhanced)) {
+                (result as any)[dataKey] = enhanced;
               }
-              eventType = '';
-              eventData = '';
             }
           }
+
+          // Mark as complete
+          setSectionProgress(prev => prev.map((s, idx) =>
+            idx === i ? { ...s, status: 'complete' } : s
+          ));
+
+        } catch (err) {
+          console.error(`Error enhancing ${section.id}:`, err);
+          // Mark as error but continue with others
+          setSectionProgress(prev => prev.map((s, idx) =>
+            idx === i ? { ...s, status: 'error' } : s
+          ));
         }
       }
 
-    } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') {
-        console.log('Enhancement cancelled');
-        return;
-      }
+      if (abortRef.current) return;
 
-      console.error('Enhancement error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to enhance resume';
-
-      let userFriendlyError = errorMessage;
-      if (errorMessage.includes('subscription required') || errorMessage.includes('Active subscription')) {
-        userFriendlyError = 'This feature requires an active subscription. Please upgrade to Pro.';
-      } else if (errorMessage.includes('Trial has expired')) {
-        userFriendlyError = 'Your trial has expired. Please upgrade to Pro.';
-      }
-
-      setError(userFriendlyError);
-      setStatus('error');
-    }
-  }, [resumeData, additionalContext, initializeSections]);
-
-  // Handle SSE events with progressive updates
-  const handleSSEEvent = useCallback((event: string, data: any) => {
-    switch (event) {
-      case 'start':
-        console.log('[Enhance] Started:', data);
-        break;
-
-      case 'section_start':
-        setCurrentSection(data.label || data.section);
-        setSections(prev => prev.map(s => {
-          if (data.section === 'experience' && s.id === `experience-${data.index}`) {
-            return { ...s, status: 'in_progress' };
-          }
-          if (s.id === data.section) {
-            return { ...s, status: 'in_progress' };
-          }
-          return s;
-        }));
-        break;
-
-      case 'section_complete':
-        const sectionId = data.section === 'experience' ? `experience-${data.index}` : data.section;
-
-        setSections(prev => prev.map(s => {
-          if (s.id === sectionId) {
-            return {
-              ...s,
-              status: data.status === 'success' ? 'success' : 'error',
-              error: data.error,
-            };
-          }
-          return s;
-        }));
-
-        // Mark section as completed for reveal animation
-        if (data.status === 'success') {
-          setCompletedSections(prev => new Set([...prev, sectionId]));
-        }
-        break;
-
-      case 'complete':
-        console.log('[Enhance] Complete:', data);
-
-        // Set the final enhanced data
-        setProgressiveData(data.data);
-        setEnhancementResult({
-          data: data.data,
-          suggestedSkills: data.suggestedSkills?.map((s: any, idx: number) => ({
-            id: s.id || `suggested-${Date.now()}-${idx}`,
-            name: s.name,
-            category: s.category || 'Technical',
-            reason: s.reason || '',
-          })),
+      // Get suggested skills
+      try {
+        const skillsResponse = await fetch(`${API_BASE_URL}/api/enhance-sections/suggest-skills`, {
+          method: 'POST',
+          headers: getApiHeaders(),
+          body: JSON.stringify({
+            currentSkills: resumeData.skills || [],
+            experience: resumeData.experience || [],
+            targetRole: additionalContext.trim() || undefined,
+          }),
         });
-
-        // Small delay before showing comparison
-        setTimeout(() => {
-          setStatus('comparing');
-        }, 800);
-        break;
-
-      case 'error':
-        console.error('[Enhance] Error:', data);
-        setError(data.error || 'Enhancement failed');
-        setStatus('error');
-        break;
-    }
-  }, []);
-
-  // Fallback to batch enhancement
-  const handleEnhanceBatch = useCallback(async () => {
-    setStatus('enhancing');
-    setError(null);
-    const initialSections = initializeSections();
-    setSections(initialSections.map(s => ({ ...s, status: 'in_progress' })));
-    setProgressiveData({ ...resumeData });
-
-    try {
-      const headers = getApiHeaders();
-
-      const response = await fetch(API_ENDPOINTS.enhanceSectionsBatch, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          resumeData,
-          options: {
-            additionalContext: additionalContext.trim() || null,
-          },
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || result.message || 'Enhancement failed');
+        if (skillsResponse.ok) {
+          const skillsResult = await skillsResponse.json();
+          setSuggestedSkills(skillsResult.data || []);
+        }
+      } catch (e) {
+        // Ignore skill suggestions error
       }
 
-      setProgressiveData(result.data);
-      setEnhancementResult({
-        data: result.data,
-        suggestedSkills: result.suggestedSkills,
-      });
-      setSections(prev => prev.map(s => ({ ...s, status: 'success' })));
-
-      setTimeout(() => {
-        setStatus('comparing');
-      }, 500);
+      setEnhancedData(result);
+      setStatus('comparing');
 
     } catch (err) {
-      console.error('Batch enhancement error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to enhance resume';
-      setError(errorMessage);
+      console.error('Enhancement error:', err);
+      const msg = err instanceof Error ? err.message : 'Enhancement failed';
+
+      // User-friendly messages
+      let userMsg = msg;
+      if (msg.includes('subscription') || msg.includes('Subscription')) {
+        userMsg = 'This feature requires an active subscription. Please upgrade to Pro.';
+      } else if (msg.includes('Trial')) {
+        userMsg = 'Your trial has expired. Please upgrade to Pro.';
+      }
+
+      setError(userMsg);
       setStatus('error');
     }
-  }, [resumeData, additionalContext, initializeSections]);
+  }, [resumeData, additionalContext, getSectionsToEnhance]);
 
-  const handleEnhance = useCallback(async () => {
-    try {
-      await handleEnhanceStream();
-    } catch (err) {
-      console.log('Streaming failed, falling back to batch:', err);
-      await handleEnhanceBatch();
-    }
-  }, [handleEnhanceStream, handleEnhanceBatch]);
-
+  // Apply enhancements
   const handleApply = async () => {
-    if (!enhancementResult) return;
+    if (!enhancedData) return;
 
     setStatus('applying');
+    await new Promise(r => setTimeout(r, 300));
 
-    await new Promise(resolve => setTimeout(resolve, 800));
+    let final = { ...enhancedData };
 
-    let finalData = { ...enhancementResult.data };
-
-    if (acceptSuggestedSkills.size > 0 && enhancementResult.suggestedSkills) {
-      const newSkills = enhancementResult.suggestedSkills
-        .filter(s => acceptSuggestedSkills.has(s.id))
+    // Add accepted suggested skills
+    if (acceptedSkills.size > 0) {
+      const newSkills = suggestedSkills
+        .filter(s => acceptedSkills.has(s.id))
         .map(s => ({ id: s.id, name: s.name, category: s.category }));
-      finalData = {
-        ...finalData,
-        skills: [...(finalData.skills || []), ...newSkills],
-      };
+      final.skills = [...(final.skills || []), ...newSkills];
     }
 
-    onApplyEnhancements(finalData, true);
+    onApplyEnhancements(final, true);
     onClose();
   };
 
-  const getSectionIcon = (sectionStatus: SectionProgress['status']) => {
-    switch (sectionStatus) {
-      case 'pending':
-        return <Circle className="w-4 h-4 text-gray-300" />;
-      case 'in_progress':
-        return <Loader2 className="w-4 h-4 animate-spin" style={{ color: themeColor }} />;
-      case 'success':
-        return <CheckCircle2 className="w-4 h-4 text-emerald-500" />;
-      case 'error':
-        return <XCircle className="w-4 h-4 text-amber-500" />;
-    }
-  };
-
-  // Calculate progress percentage
-  const progressPercentage = useMemo(() => {
-    if (sections.length === 0) return 0;
-    const completed = sections.filter(s => s.status === 'success' || s.status === 'error').length;
-    return Math.round((completed / sections.length) * 100);
-  }, [sections]);
-
   if (!isOpen) return null;
+
+  const sectionsToShow = getSectionsToEnhance();
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={status === 'applying' || status === 'enhancing' ? undefined : onClose}
       />
 
-      {/* Modal */}
       <div className={cn(
         "relative bg-white shadow-2xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 flex flex-col",
-        status === 'comparing' || status === 'applying' || status === 'enhancing'
+        status === 'comparing' || status === 'applying'
           ? "w-full h-full sm:w-[95vw] sm:h-[95vh] sm:max-w-[1800px] rounded-none sm:rounded-2xl"
           : "w-full max-w-md rounded-xl max-h-[90vh]"
       )}>
         {/* Header */}
-        <div
-          className={cn(
-            "flex items-center justify-between flex-shrink-0 border-b",
-            "px-3 py-2 sm:px-4"
-          )}
-          style={{ borderColor: '#f3f4f6' }}
-        >
-          <div className="flex items-center gap-2 min-w-0">
-            <div
-              className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: themeColor }}
-            >
+        <div className="flex items-center justify-between flex-shrink-0 border-b border-gray-100 px-3 py-2 sm:px-4">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ backgroundColor: themeColor }}>
               <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
             <h2 className="font-semibold text-gray-900 text-sm">
               {status === 'idle' && 'Enhance with AI'}
-              {status === 'enhancing' && `Enhancing... ${progressPercentage}%`}
+              {status === 'enhancing' && 'Enhancing...'}
               {status === 'comparing' && 'Review Changes'}
               {status === 'applying' && 'Applying...'}
               {status === 'error' && 'Error'}
             </h2>
-            {status === 'enhancing' && (
-              <span className="text-xs text-gray-500 hidden sm:inline">
-                {currentSection}
-              </span>
-            )}
           </div>
           {status !== 'applying' && status !== 'enhancing' && (
-            <button
-              onClick={onClose}
-              className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
-            >
+            <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-hidden">
           {/* Idle State */}
           {status === 'idle' && (
             <div className="px-6 py-5 overflow-y-auto h-full">
-              <p className="text-sm text-gray-600 leading-relaxed mb-5">
-                AI will enhance your <span className="font-medium" style={{ color: themeColor }}>summary</span>, <span className="font-medium" style={{ color: themeColor }}>experience bullet points</span>, and <span className="font-medium" style={{ color: themeColor }}>skills</span> with stronger action verbs and ATS-optimized keywords.
+              <p className="text-sm text-gray-600 mb-5">
+                AI will enhance your resume section by section with stronger language and ATS-optimized keywords.
               </p>
+
+              <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                <p className="text-xs font-medium text-blue-700 mb-2">Sections to enhance ({sectionsToShow.length}):</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {sectionsToShow.map(s => (
+                    <span key={s.id} className="px-2 py-0.5 bg-white rounded text-xs text-blue-600 border border-blue-200">
+                      {s.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
               <div className="mb-5">
                 <label className="block text-xs font-medium text-gray-500 mb-1.5">
-                  Additional context <span className="text-gray-400 font-normal">(optional)</span>
+                  Target role <span className="text-gray-400">(optional)</span>
                 </label>
                 <textarea
                   value={additionalContext}
                   onChange={(e) => setAdditionalContext(e.target.value)}
-                  placeholder="e.g. Targeting senior engineering roles at FAANG companies"
-                  className="w-full px-3 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 resize-none transition-all"
-                  style={{
-                    borderColor: additionalContext ? themeColor : '#e5e7eb',
-                    // @ts-ignore
-                    '--tw-ring-color': `${themeColor}40`
-                  } as React.CSSProperties}
+                  placeholder="e.g. Senior Frontend Engineer at Google"
+                  className="w-full px-3 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 resize-none border-gray-200"
                   rows={2}
                 />
               </div>
 
               <Button
                 onClick={handleEnhance}
-                className="w-full py-3 gap-2 text-[15px] font-semibold rounded-lg transition-all duration-200 hover:opacity-90 active:scale-[0.99]"
-                style={{
-                  backgroundColor: themeColor,
-                  color: 'white',
-                }}
+                disabled={sectionsToShow.length === 0}
+                className="w-full py-3 gap-2 text-[15px] font-semibold rounded-lg"
+                style={{ backgroundColor: themeColor, color: 'white' }}
               >
                 <Sparkles className="w-4 h-4" />
-                Enhance Resume
+                Enhance {sectionsToShow.length} Section{sectionsToShow.length !== 1 ? 's' : ''}
               </Button>
 
-              <p className="text-center text-xs text-gray-400 mt-3">
-                You'll preview changes before applying
-              </p>
+              <p className="text-center text-xs text-gray-400 mt-3">You'll preview changes before applying</p>
             </div>
           )}
 
-          {/* Enhancing State - Live Resume Preview with Progress Sidebar */}
-          {status === 'enhancing' && progressiveData && (
-            <div className="flex h-full">
-              {/* Left: Section Progress Sidebar */}
-              <div className="w-64 lg:w-72 flex-shrink-0 border-r border-gray-100 bg-gray-50/50 flex flex-col">
-                {/* Progress Header */}
-                <div className="p-4 border-b border-gray-100">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center relative"
-                      style={{ backgroundColor: `${themeColor}15` }}
-                    >
-                      <Sparkles className="w-5 h-5 animate-pulse" style={{ color: themeColor }} />
-                      {/* Rotating ring */}
-                      <div
-                        className="absolute inset-0 rounded-xl border-2 border-transparent animate-spin"
-                        style={{
-                          borderTopColor: themeColor,
-                          animationDuration: '2s'
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Enhancing</h3>
-                      <p className="text-xs text-gray-500">{progressPercentage}% complete</p>
-                    </div>
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500 ease-out"
-                      style={{
-                        width: `${progressPercentage}%`,
-                        background: `linear-gradient(90deg, ${themeColor}, ${themeColor}bb)`,
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Section List */}
-                <div className="flex-1 overflow-y-auto p-3">
-                  <div className="space-y-1.5">
-                    {sections.map((section, idx) => (
-                      <div
-                        key={section.id}
-                        className={cn(
-                          "flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-all duration-300",
-                          section.status === 'in_progress' && "bg-white shadow-sm border border-blue-100",
-                          section.status === 'success' && "bg-emerald-50/70",
-                          section.status === 'error' && "bg-amber-50/70",
-                          section.status === 'pending' && "opacity-50"
-                        )}
-                        style={{
-                          transform: section.status === 'in_progress' ? 'scale(1.02)' : 'scale(1)',
-                        }}
-                      >
-                        {getSectionIcon(section.status)}
-                        <div className="flex-1 min-w-0">
-                          <p className={cn(
-                            "text-xs font-medium truncate",
-                            section.status === 'in_progress' && "text-gray-900",
-                            section.status === 'success' && "text-emerald-700",
-                            section.status === 'error' && "text-amber-700",
-                            section.status === 'pending' && "text-gray-400"
-                          )}>
-                            {section.label}
-                          </p>
-                          {section.status === 'in_progress' && (
-                            <p className="text-[10px] text-blue-500 animate-pulse">Processing...</p>
-                          )}
-                          {section.error && (
-                            <p className="text-[10px] text-amber-600">Using original</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Current Action */}
-                <div className="p-3 border-t border-gray-100 bg-white">
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <Loader2 className="w-3 h-3 animate-spin" style={{ color: themeColor }} />
-                    <span className="truncate">{currentSection || 'Starting...'}</span>
-                  </div>
-                </div>
+          {/* Enhancing State */}
+          {status === 'enhancing' && (
+            <div className="flex flex-col items-center justify-center py-8 px-6">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ backgroundColor: `${themeColor}15` }}>
+                <Loader2 className="w-7 h-7 animate-spin" style={{ color: themeColor }} />
               </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Enhancing Your Resume</h3>
+              <p className="text-sm text-gray-500 mb-5">Processing each section...</p>
 
-              {/* Right: Live Resume Preview */}
-              <div className="flex-1 flex flex-col min-w-0 bg-gradient-to-br from-gray-100 to-gray-50">
-                {/* Preview Header */}
-                <div className="px-4 py-2 flex items-center justify-between border-b border-gray-200/50 bg-white/50 backdrop-blur-sm">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" style={{ color: themeColor }} />
-                    <span className="text-sm font-medium text-gray-700">Live Preview</span>
-                  </div>
-                  <span className="text-xs text-gray-400">
-                    Updating as sections complete
-                  </span>
-                </div>
-
-                {/* Resume Preview with Reveal Animation */}
-                <div
-                  ref={progressiveContainerRef}
-                  className="flex-1 overflow-auto p-4 sm:p-6"
-                >
-                  <div className="flex justify-center">
-                    {/* Resume Container with Reveal Mask */}
+              <div className="w-full max-w-xs space-y-2">
+                {sectionProgress.map(section => {
+                  const config = SECTION_CONFIG[section.id];
+                  const Icon = config?.icon || FileText;
+                  return (
                     <div
-                      className="bg-white shadow-2xl relative overflow-hidden"
-                      style={{
-                        width: A4_WIDTH * resumeScale,
-                        minHeight: A4_HEIGHT * resumeScale,
-                        boxShadow: `0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px ${themeColor}20`,
-                      }}
+                      key={section.id}
+                      className={cn(
+                        "flex items-center gap-3 p-2.5 rounded-lg transition-all",
+                        section.status === 'in_progress' && "bg-blue-50 border border-blue-200",
+                        section.status === 'complete' && "bg-emerald-50 border border-emerald-200",
+                        section.status === 'error' && "bg-red-50 border border-red-200",
+                        section.status === 'pending' && "bg-gray-50"
+                      )}
                     >
-                      {/* The actual resume */}
-                      <div
-                        style={{
-                          width: A4_WIDTH,
-                          minHeight: A4_HEIGHT,
-                          transform: `scale(${resumeScale})`,
-                          transformOrigin: 'top left',
-                        }}
-                      >
-                        <StyleOptionsProvider>
-                          <StyleOptionsWrapper>
-                            <InlineEditProvider resumeData={progressiveData as any} setResumeData={() => {}}>
-                              <ResumeRenderer
-                                resumeData={progressiveData}
-                                templateId={templateId}
-                                themeColors={themeColors}
-                                editable={false}
-                              />
-                            </InlineEditProvider>
-                          </StyleOptionsWrapper>
-                        </StyleOptionsProvider>
+                      <div className={cn(
+                        "w-7 h-7 rounded-md flex items-center justify-center",
+                        section.status === 'in_progress' && "bg-blue-100",
+                        section.status === 'complete' && "bg-emerald-100",
+                        section.status === 'error' && "bg-red-100",
+                        section.status === 'pending' && "bg-gray-100"
+                      )}>
+                        {section.status === 'complete' && <Check className="w-4 h-4 text-emerald-600" />}
+                        {section.status === 'in_progress' && <Loader2 className="w-4 h-4 animate-spin text-blue-600" />}
+                        {section.status === 'error' && <AlertCircle className="w-4 h-4 text-red-500" />}
+                        {section.status === 'pending' && <Icon className="w-4 h-4 text-gray-400" />}
                       </div>
-
-                      {/* Reveal Overlay - slides down as sections complete */}
-                      <div
-                        className="absolute inset-0 pointer-events-none transition-all duration-700 ease-out"
-                        style={{
-                          background: `linear-gradient(to bottom,
-                            transparent ${revealHeight}%,
-                            ${themeColor}08 ${revealHeight + 2}%,
-                            ${themeColor}15 ${revealHeight + 5}%,
-                            white ${revealHeight + 15}%
-                          )`,
-                        }}
-                      />
-
-                      {/* Scanning Line Effect */}
-                      {progressPercentage < 100 && (
-                        <div
-                          className="absolute left-0 right-0 h-1 pointer-events-none transition-all duration-700"
-                          style={{
-                            top: `${revealHeight}%`,
-                            background: `linear-gradient(90deg, transparent, ${themeColor}, transparent)`,
-                            boxShadow: `0 0 20px ${themeColor}`,
-                          }}
-                        />
-                      )}
-
-                      {/* Shimmer effect on unrevealed area */}
-                      {progressPercentage < 100 && (
-                        <div
-                          className="absolute inset-0 pointer-events-none overflow-hidden"
-                          style={{ top: `${revealHeight + 10}%` }}
-                        >
-                          <div
-                            className="absolute inset-0 animate-shimmer"
-                            style={{
-                              background: `linear-gradient(90deg, transparent, ${themeColor}10, transparent)`,
-                              backgroundSize: '200% 100%',
-                            }}
-                          />
-                        </div>
-                      )}
+                      <span className={cn(
+                        "text-sm font-medium flex-1",
+                        section.status === 'in_progress' && "text-blue-700",
+                        section.status === 'complete' && "text-emerald-700",
+                        section.status === 'error' && "text-red-600",
+                        section.status === 'pending' && "text-gray-500"
+                      )}>
+                        {section.label}
+                      </span>
+                      {section.status === 'complete' && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
                     </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </div>
           )}
 
-          {/* Comparing State - Side-by-Side */}
-          {(status === 'comparing' || status === 'applying') && enhancementResult && (
+          {/* Comparing State */}
+          {(status === 'comparing' || status === 'applying') && enhancedData && (
             <div className="flex flex-col h-full min-h-0">
-              {/* Mobile Tab Switcher */}
+              {/* Mobile tabs */}
               <div className="md:hidden flex-shrink-0 px-2 pt-2 pb-1">
                 <div className="flex bg-gray-100 rounded-lg p-1">
                   <button
-                    onClick={() => setMobileCompareTab('original')}
-                    className={cn(
-                      "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium transition-all",
-                      mobileCompareTab === 'original'
-                        ? "bg-white text-gray-700 shadow-sm"
-                        : "text-gray-500 hover:text-gray-600"
+                    onClick={() => setMobileTab('original')}
+                    className={cn("flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium",
+                      mobileTab === 'original' ? "bg-white text-gray-700 shadow-sm" : "text-gray-500"
                     )}
                   >
-                    <FileText className="w-3.5 h-3.5" />
-                    Original
+                    <FileText className="w-3.5 h-3.5" /> Original
                   </button>
                   <button
-                    onClick={() => setMobileCompareTab('enhanced')}
-                    className={cn(
-                      "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium transition-all",
-                      mobileCompareTab === 'enhanced'
-                        ? "text-white shadow-sm"
-                        : "text-gray-500 hover:text-gray-600"
+                    onClick={() => setMobileTab('enhanced')}
+                    className={cn("flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium",
+                      mobileTab === 'enhanced' ? "text-white shadow-sm" : "text-gray-500"
                     )}
-                    style={mobileCompareTab === 'enhanced' ? {
-                      background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)`
-                    } : {}}
+                    style={mobileTab === 'enhanced' ? { backgroundColor: themeColor } : {}}
                   >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Enhanced
+                    <Sparkles className="w-3.5 h-3.5" /> Enhanced
                   </button>
                 </div>
               </div>
 
-              {/* Resume Previews */}
+              {/* Previews */}
               <div className="flex-1 flex gap-2 p-2 min-h-0">
-                {/* Original Resume */}
-                <div className={cn(
-                  "flex-1 flex flex-col min-w-0 min-h-0",
-                  "md:flex",
-                  mobileCompareTab === 'original' ? "flex" : "hidden"
-                )}>
-                  <div className="hidden md:flex items-center justify-between mb-1.5 px-1">
-                    <div className="flex items-center gap-1.5">
-                      <FileText className="w-4 h-4 text-gray-400" />
-                      <span className="font-medium text-gray-500 text-sm">Original</span>
-                    </div>
+                {/* Original */}
+                <div className={cn("flex-1 flex flex-col min-w-0 min-h-0 md:flex", mobileTab === 'original' ? "flex" : "hidden")}>
+                  <div className="hidden md:flex items-center gap-1.5 mb-1.5 px-1">
+                    <FileText className="w-4 h-4 text-gray-400" />
+                    <span className="font-medium text-gray-500 text-sm">Original</span>
                   </div>
-                  <div
-                    ref={originalContainerRef}
-                    className="flex-1 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-0 relative"
-                  >
-                    <div
-                      ref={originalScrollRef}
-                      onScroll={() => handleScroll('original')}
-                      className="absolute inset-0 overflow-auto p-4"
-                    >
-                      <div
-                        className="bg-white shadow-sm"
-                        style={{
-                          width: A4_WIDTH * resumeScale,
-                          minHeight: A4_HEIGHT * resumeScale,
-                          margin: '0 auto',
-                          overflow: 'hidden',
-                          opacity: 0.85,
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: A4_WIDTH,
-                            minHeight: A4_HEIGHT,
-                            transform: `scale(${resumeScale})`,
-                            transformOrigin: 'top left',
-                          }}
-                        >
+                  <div ref={containerRef} className="flex-1 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-0 relative">
+                    <div ref={originalScrollRef} onScroll={() => syncScroll('original')} className="absolute inset-0 overflow-auto p-4">
+                      <div className="bg-white shadow-sm" style={{ width: A4_WIDTH * scale, minHeight: A4_HEIGHT * scale, margin: '0 auto', opacity: 0.85 }}>
+                        <div style={{ width: A4_WIDTH, minHeight: A4_HEIGHT, transform: `scale(${scale})`, transformOrigin: 'top left' }}>
                           <StyleOptionsProvider>
                             <StyleOptionsWrapper>
                               <InlineEditProvider resumeData={resumeData as any} setResumeData={() => {}}>
-                                <ResumeRenderer
-                                  resumeData={resumeData}
-                                  templateId={templateId}
-                                  themeColors={themeColors}
-                                  editable={false}
-                                />
+                                <ResumeRenderer resumeData={resumeData} templateId={templateId} themeColors={themeColors} editable={false} />
                               </InlineEditProvider>
                             </StyleOptionsWrapper>
                           </StyleOptionsProvider>
@@ -864,78 +494,34 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
                   </div>
                 </div>
 
-                {/* Center Divider with Arrow */}
+                {/* Arrow */}
                 <div className="hidden md:flex flex-col items-center justify-center">
                   <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg my-2"
-                    style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
-                  >
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg my-2" style={{ backgroundColor: themeColor }}>
                     <ArrowRight className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
                 </div>
 
-                {/* Enhanced Resume */}
-                <div className={cn(
-                  "flex-1 flex flex-col min-w-0 min-h-0",
-                  "md:flex",
-                  mobileCompareTab === 'enhanced' ? "flex" : "hidden"
-                )}>
+                {/* Enhanced */}
+                <div className={cn("flex-1 flex flex-col min-w-0 min-h-0 md:flex", mobileTab === 'enhanced' ? "flex" : "hidden")}>
                   <div className="hidden md:flex items-center justify-between mb-1.5 px-1">
                     <div className="flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4" style={{ color: themeColor }} />
                       <span className="font-semibold text-sm" style={{ color: themeColor }}>Enhanced</span>
                     </div>
-                    <span
-                      className="text-[10px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5"
-                      style={{ backgroundColor: `${themeColor}15`, color: themeColor }}
-                    >
-                      <Sparkles className="w-2.5 h-2.5" />
-                      AI Enhanced
+                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
+                      <Sparkles className="w-2.5 h-2.5" /> AI Enhanced
                     </span>
                   </div>
-                  <div
-                    ref={enhancedContainerRef}
-                    className="flex-1 rounded-lg overflow-hidden min-h-0 relative"
-                    style={{
-                      backgroundColor: `${themeColor}03`,
-                      border: `2px solid ${themeColor}40`,
-                      boxShadow: `0 0 30px ${themeColor}12`
-                    }}
-                  >
-                    <div
-                      ref={enhancedScrollRef}
-                      onScroll={() => handleScroll('enhanced')}
-                      className="absolute inset-0 overflow-auto p-4"
-                    >
-                      <div
-                        className="bg-white shadow-lg animate-in fade-in duration-500"
-                        style={{
-                          width: A4_WIDTH * resumeScale,
-                          minHeight: A4_HEIGHT * resumeScale,
-                          margin: '0 auto',
-                          overflow: 'hidden',
-                          boxShadow: `0 0 0 2px ${themeColor}20, 0 10px 30px -5px rgba(0,0,0,0.12)`
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: A4_WIDTH,
-                            minHeight: A4_HEIGHT,
-                            transform: `scale(${resumeScale})`,
-                            transformOrigin: 'top left',
-                          }}
-                        >
+                  <div className="flex-1 rounded-lg overflow-hidden min-h-0 relative" style={{ backgroundColor: `${themeColor}05`, border: `2px solid ${themeColor}40` }}>
+                    <div ref={enhancedScrollRef} onScroll={() => syncScroll('enhanced')} className="absolute inset-0 overflow-auto p-4">
+                      <div className="bg-white shadow-lg" style={{ width: A4_WIDTH * scale, minHeight: A4_HEIGHT * scale, margin: '0 auto' }}>
+                        <div style={{ width: A4_WIDTH, minHeight: A4_HEIGHT, transform: `scale(${scale})`, transformOrigin: 'top left' }}>
                           <StyleOptionsProvider>
                             <StyleOptionsWrapper>
-                              <InlineEditProvider resumeData={enhancementResult.data as any} setResumeData={() => {}}>
-                                <ResumeRenderer
-                                  resumeData={enhancementResult.data}
-                                  templateId={templateId}
-                                  themeColors={themeColors}
-                                  editable={false}
-                                />
+                              <InlineEditProvider resumeData={enhancedData as any} setResumeData={() => {}}>
+                                <ResumeRenderer resumeData={enhancedData} templateId={templateId} themeColors={themeColors} editable={false} />
                               </InlineEditProvider>
                             </StyleOptionsWrapper>
                           </StyleOptionsProvider>
@@ -947,45 +533,31 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
               </div>
 
               {/* Suggested Skills */}
-              {enhancementResult.suggestedSkills && enhancementResult.suggestedSkills.length > 0 && (
-                <div className="px-2 sm:px-3 py-1.5 border-t border-gray-100 flex items-center gap-1.5 sm:gap-2 flex-shrink-0 bg-gray-50/50">
-                  <Lightbulb className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" style={{ color: themeColor }} />
-                  <span className="text-[10px] sm:text-xs text-gray-500 flex-shrink-0 hidden sm:inline">Add Skills:</span>
-                  <div className="flex gap-1 flex-1 min-w-0 overflow-x-auto scrollbar-hide">
-                    {enhancementResult.suggestedSkills.map(skill => (
+              {suggestedSkills.length > 0 && (
+                <div className="px-3 py-2 border-t border-gray-100 flex items-center gap-2 flex-shrink-0 bg-gray-50/50">
+                  <Lightbulb className="w-3.5 h-3.5 flex-shrink-0" style={{ color: themeColor }} />
+                  <span className="text-xs text-gray-500 flex-shrink-0">Add Skills:</span>
+                  <div className="flex gap-1.5 flex-1 min-w-0 overflow-x-auto">
+                    {suggestedSkills.map(skill => (
                       <button
                         key={skill.id}
                         onClick={() => {
                           if (status === 'applying') return;
-                          setAcceptSuggestedSkills(prev => {
+                          setAcceptedSkills(prev => {
                             const next = new Set(prev);
-                            if (next.has(skill.id)) {
-                              next.delete(skill.id);
-                            } else {
-                              next.add(skill.id);
-                            }
+                            next.has(skill.id) ? next.delete(skill.id) : next.add(skill.id);
                             return next;
                           });
                         }}
                         disabled={status === 'applying'}
                         className={cn(
-                          "inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium transition-all whitespace-nowrap",
-                          acceptSuggestedSkills.has(skill.id)
-                            ? ""
-                            : "bg-white border border-gray-200 hover:border-gray-300 text-gray-600"
+                          "inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium whitespace-nowrap",
+                          acceptedSkills.has(skill.id) ? "" : "bg-white border border-gray-200 text-gray-600"
                         )}
-                        style={acceptSuggestedSkills.has(skill.id) ? {
-                          backgroundColor: `${themeColor}15`,
-                          border: `1px solid ${themeColor}`,
-                          color: themeColor
-                        } : {}}
+                        style={acceptedSkills.has(skill.id) ? { backgroundColor: `${themeColor}15`, border: `1px solid ${themeColor}`, color: themeColor } : {}}
                         title={skill.reason}
                       >
-                        {acceptSuggestedSkills.has(skill.id) ? (
-                          <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5" />
-                        ) : (
-                          <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-sm border border-gray-300" />
-                        )}
+                        {acceptedSkills.has(skill.id) ? <Check className="w-2.5 h-2.5" /> : <div className="w-2.5 h-2.5 rounded-sm border border-gray-300" />}
                         {skill.name}
                       </button>
                     ))}
@@ -997,107 +569,48 @@ export const EnhanceWithAIModal: React.FC<EnhanceWithAIModalProps> = ({
 
           {/* Error State */}
           {status === 'error' && (
-            <div className="text-center py-8 sm:py-12 px-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl bg-red-50 flex items-center justify-center border border-red-100">
-                <AlertCircle className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
+            <div className="text-center py-12 px-6">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-50 flex items-center justify-center border border-red-100">
+                <AlertCircle className="w-8 h-8 text-red-500" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                Enhancement Failed
-              </h3>
-              <p className="text-xs sm:text-sm text-red-600 mb-4 sm:mb-6 max-w-sm mx-auto">
-                {error}
-              </p>
-              <Button
-                onClick={handleEnhance}
-                className="gap-2 w-full sm:w-auto"
-                style={{
-                  background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)`,
-                }}
-              >
-                <RotateCcw className="w-4 h-4" />
-                Try Again
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Enhancement Failed</h3>
+              <p className="text-sm text-red-600 mb-6 max-w-sm mx-auto">{error}</p>
+              <Button onClick={handleEnhance} className="gap-2" style={{ backgroundColor: themeColor }}>
+                <RotateCcw className="w-4 h-4" /> Try Again
               </Button>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        {(status === 'comparing') && (
-          <div
-            className="px-3 py-2 sm:px-4 border-t flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0 flex-shrink-0"
-            style={{
-              background: `linear-gradient(135deg, ${themeColor}04, white)`,
-              borderColor: `${themeColor}12`
-            }}
-          >
-            <div className="hidden sm:flex items-center gap-3 text-sm text-gray-500">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                {sections.filter(s => s.status === 'success').length} sections enhanced
-              </span>
-              {acceptSuggestedSkills.size > 0 && (
-                <span
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium"
-                  style={{
-                    backgroundColor: `${themeColor}10`,
-                    color: themeColor
-                  }}
-                >
-                  <Check className="w-3 h-3" />
-                  +{acceptSuggestedSkills.size} skill{acceptSuggestedSkills.size !== 1 ? 's' : ''}
+        {status === 'comparing' && (
+          <div className="px-3 py-2 sm:px-4 border-t flex items-center justify-between gap-2 flex-shrink-0" style={{ borderColor: `${themeColor}20` }}>
+            <div className="hidden sm:flex items-center gap-2 text-sm text-gray-500">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>Enhancement complete</span>
+              {acceptedSkills.size > 0 && (
+                <span className="px-2 py-0.5 rounded text-xs font-medium" style={{ backgroundColor: `${themeColor}15`, color: themeColor }}>
+                  +{acceptedSkills.size} skill{acceptedSkills.size !== 1 ? 's' : ''}
                 </span>
               )}
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              <Button
-                variant="outline"
-                onClick={onClose}
-                className="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-sm h-9"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleApply}
-                className="flex-1 sm:flex-none gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] rounded-lg text-sm h-9"
-                style={{
-                  background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)`,
-                }}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span className="truncate">Apply Enhancements</span>
+              <Button variant="outline" onClick={onClose} className="flex-1 sm:flex-none">Cancel</Button>
+              <Button onClick={handleApply} className="flex-1 sm:flex-none gap-1.5" style={{ backgroundColor: themeColor }}>
+                <Sparkles className="w-3.5 h-3.5" /> Apply Enhancements
                 <ChevronRight className="w-3.5 h-3.5 hidden sm:block" />
               </Button>
             </div>
           </div>
         )}
 
-        {/* Applying Footer */}
         {status === 'applying' && (
-          <div
-            className="px-4 py-3 sm:px-8 sm:py-5 border-t flex items-center justify-center gap-2 sm:gap-3"
-            style={{
-              background: `linear-gradient(135deg, ${themeColor}06, ${themeColor}02)`,
-              borderColor: `${themeColor}15`
-            }}
-          >
-            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" style={{ color: themeColor }} />
-            <span className="font-medium text-sm sm:text-base" style={{ color: themeColor }}>
-              Applying enhancements...
-            </span>
+          <div className="px-4 py-4 border-t flex items-center justify-center gap-2" style={{ borderColor: `${themeColor}20` }}>
+            <Loader2 className="w-5 h-5 animate-spin" style={{ color: themeColor }} />
+            <span className="font-medium" style={{ color: themeColor }}>Applying enhancements...</span>
           </div>
         )}
       </div>
-
-      {/* Add shimmer animation CSS */}
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite linear;
-        }
-      `}</style>
     </div>
   );
 };

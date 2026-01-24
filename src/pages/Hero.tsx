@@ -1063,7 +1063,7 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Feature 3: AI Resume Enhancement */}
+              {/* TODO: Re-enable when AI Enhancement is fixed
               <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-blue-500" />
                 <div className="p-6 md:p-8">
@@ -1080,10 +1080,8 @@ const Hero = () => {
                     <Badge variant="outline" className="border-primary/30 text-primary bg-primary/5">PRO</Badge>
                   </div>
 
-                  {/* Visual Demo */}
                   <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
                     <div className="space-y-3">
-                      {/* Before */}
                       <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
                         <div className="text-[10px] text-gray-400 mb-1 uppercase font-medium">Before</div>
                         <p className="text-xs text-gray-600 line-through opacity-60">
@@ -1091,7 +1089,6 @@ const Hero = () => {
                         </p>
                       </div>
 
-                      {/* AI Processing */}
                       <div className="flex justify-center">
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
                           <Sparkles className="h-3 w-3 text-primary animate-pulse" />
@@ -1099,7 +1096,6 @@ const Hero = () => {
                         </div>
                       </div>
 
-                      {/* After */}
                       <div className="bg-white rounded-lg p-3 border-2 border-primary/30 shadow-sm relative">
                         <div className="absolute -top-2 left-3 px-2 py-0.5 bg-primary text-white text-[8px] font-bold rounded uppercase">Enhanced</div>
                         <div className="text-[10px] text-gray-400 mb-1 uppercase font-medium mt-1">After</div>
@@ -1124,6 +1120,7 @@ const Hero = () => {
                   </Button>
                 </div>
               </div>
+              */}
 
               {/* Feature 4: Job Tailoring */}
               <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">

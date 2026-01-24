@@ -2119,6 +2119,7 @@ export const BuilderV2: React.FC = () => {
 
               {/* Center: AI Buttons */}
               <div className="flex items-center gap-1.5">
+                {/* TODO: Re-enable when AI Enhancement is fixed
                 <button
                   data-tour="mobile-ai-btn"
                   onClick={() => setShowEnhanceModal(true)}
@@ -2130,6 +2131,7 @@ export const BuilderV2: React.FC = () => {
                   <Sparkles className="w-3 h-3" />
                   <span>AI</span>
                 </button>
+                */}
                 <button
                   onClick={() => setShowJobTailorModal(true)}
                   className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
@@ -2325,7 +2327,7 @@ export const BuilderV2: React.FC = () => {
 
                   {/* Center Section: AI Features (most prominent) */}
                   <div className="flex items-center gap-2">
-                    {/* Enhance with AI Button */}
+                    {/* TODO: Re-enable when AI Enhancement is fixed
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button
@@ -2354,6 +2356,7 @@ export const BuilderV2: React.FC = () => {
                         <p>AI-powered resume improvement</p>
                       </TooltipContent>
                     </Tooltip>
+                    */}
 
                     {/* Tailor for Job Button */}
                     <Tooltip>
@@ -3217,6 +3220,7 @@ export const BuilderV2: React.FC = () => {
         resumeData={resumeData}
         templateId={templateId}
         themeColors={themeColors}
+        enabledSections={enabledSections}
         onApplyEnhancements={(enhancedData, animate) => {
           if (animate) {
             // Add a brief visual pulse to the resume preview
