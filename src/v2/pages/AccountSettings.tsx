@@ -234,8 +234,42 @@ export const AccountSettings: React.FC = () => {
 
               {!subscriptionLoading && (
                 <>
-                  {/* Trial Banner */}
-                  {isTrial && trialDaysRemaining !== null && (
+                  {/* Expired Subscription */}
+                  {subscription?.status === 'expired' && (
+                    <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <XCircle className="w-4 h-4 text-red-600" />
+                        <span className="text-sm font-medium text-red-700">
+                          {subscription.isTrial ? 'Trial expired' : 'Subscription expired'}
+                        </span>
+                      </div>
+                      <p className="text-xs text-red-600 mb-2">Upgrade to continue using Pro features</p>
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
+                        <Zap className="w-3 h-3" />
+                        Upgrade to Pro
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Fully Cancelled (no longer active) */}
+                  {subscription?.status === 'cancelled' && (
+                    <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <XCircle className="w-4 h-4 text-gray-500" />
+                        <span className="text-sm font-medium text-gray-700">
+                          Subscription ended
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">Your subscription has been cancelled</p>
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
+                        <Zap className="w-3 h-3" />
+                        Resubscribe
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Trial Banner (active trial, not cancelled) */}
+                  {isTrial && !subscription?.cancelledAt && trialDaysRemaining !== null && (
                     <div className="p-3 mb-4 rounded-lg bg-amber-50 border border-amber-200">
                       <div className="flex items-center gap-2 mb-2">
                         <Clock className="w-4 h-4 text-amber-600" />
@@ -250,8 +284,29 @@ export const AccountSettings: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Free User */}
-                  {!isPro && (
+                  {/* Trial Cancelled (pending expiry) */}
+                  {isTrial && subscription?.cancelledAt && (
+                    <div className="p-3 mb-4 rounded-lg bg-amber-50 border border-amber-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <XCircle className="w-4 h-4 text-amber-600" />
+                        <span className="text-sm font-medium text-amber-700">
+                          Trial cancelled
+                        </span>
+                      </div>
+                      <p className="text-xs text-amber-600 mb-2">
+                        You'll have access until {subscription.trialEndsAt
+                          ? new Date(subscription.trialEndsAt).toLocaleDateString()
+                          : 'the trial ends'}
+                      </p>
+                      <Button size="sm" onClick={handleUpgrade} className="w-full h-8 gap-1">
+                        <Zap className="w-3 h-3" />
+                        Subscribe Now
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Free User (not expired, not cancelled) */}
+                  {!isPro && subscription?.status !== 'expired' && subscription?.status !== 'cancelled' && (
                     <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
                       <p className="text-sm font-medium text-gray-900">Free Plan</p>
                       <p className="text-xs text-gray-500 mb-2">Limited features</p>
@@ -262,7 +317,7 @@ export const AccountSettings: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Pro Features */}
+                  {/* Pro Features (active subscription or trial) */}
                   {isPro && (
                     <div className="space-y-3">
                       <div className="flex flex-wrap gap-1.5">
@@ -274,6 +329,7 @@ export const AccountSettings: React.FC = () => {
                         ))}
                       </div>
 
+                      {/* Active paid subscription - can cancel */}
                       {!isTrial && !subscription?.cancelledAt && (
                         <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
                           <AlertDialogTrigger asChild>
@@ -298,6 +354,7 @@ export const AccountSettings: React.FC = () => {
                         </AlertDialog>
                       )}
 
+                      {/* Active trial - can cancel */}
                       {isTrial && !subscription?.cancelledAt && (
                         <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
                           <AlertDialogTrigger asChild>
@@ -322,8 +379,21 @@ export const AccountSettings: React.FC = () => {
                         </AlertDialog>
                       )}
 
-                      {subscription?.cancelledAt && (
-                        <p className="text-xs text-amber-600">Your subscription will not renew</p>
+                      {/* Paid subscription cancelled (pending end of period) */}
+                      {!isTrial && subscription?.cancelledAt && (
+                        <div className="p-2 rounded-lg bg-amber-50 border border-amber-200">
+                          <div className="flex items-center gap-2">
+                            <XCircle className="w-4 h-4 text-amber-600" />
+                            <span className="text-xs font-medium text-amber-700">
+                              Subscription cancelled
+                            </span>
+                          </div>
+                          <p className="text-xs text-amber-600 mt-1">
+                            You'll have access until {subscription.currentPeriodEnd
+                              ? new Date(subscription.currentPeriodEnd).toLocaleDateString()
+                              : 'the end of your billing period'}
+                          </p>
+                        </div>
                       )}
                     </div>
                   )}
