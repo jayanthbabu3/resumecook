@@ -52,7 +52,7 @@ const formatDate = (date: Date | string) => {
 export const FeedbackDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [loading, setLoading] = useState(true);
@@ -101,6 +101,18 @@ export const FeedbackDetailPage: React.FC = () => {
 
     loadFeedback();
   }, [id, user, navigate]);
+
+  // Auth loading state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 64px)' }}>
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </main>
+      </div>
+    );
+  }
 
   // Not logged in
   if (!user) {

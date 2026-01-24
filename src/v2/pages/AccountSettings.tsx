@@ -51,7 +51,7 @@ const GoogleIcon = () => (
 
 export const AccountSettings: React.FC = () => {
   const navigate = useNavigate();
-  const { user, signOut, updateUserProfile } = useAuth();
+  const { user, signOut, updateUserProfile, loading: authLoading } = useAuth();
   const {
     status: subscription,
     isLoading: subscriptionLoading,
@@ -109,6 +109,19 @@ export const AccountSettings: React.FC = () => {
     .slice(0, 2)
     .toUpperCase() || user?.email?.slice(0, 2).toUpperCase() || 'U';
 
+  // Show loading state while auth is being checked
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 64px)' }}>
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </main>
+      </div>
+    );
+  }
+
+  // Only show sign-in required after auth loading is complete
   if (!user) {
     return (
       <div className="min-h-screen bg-white">
@@ -229,8 +242,14 @@ export const AccountSettings: React.FC = () => {
             <div className="bg-white rounded-xl border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-gray-900">Subscription</h2>
-                {subscriptionLoading && <Loader2 className="w-4 h-4 animate-spin text-gray-400" />}
               </div>
+
+              {/* Loading state */}
+              {subscriptionLoading && (
+                <div className="flex items-center justify-center py-6">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                </div>
+              )}
 
               {!subscriptionLoading && (
                 <>

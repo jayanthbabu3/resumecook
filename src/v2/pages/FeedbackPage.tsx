@@ -35,7 +35,7 @@ const categories = [
 
 export const FeedbackPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const [selectedType, setSelectedType] = useState<FeedbackType | null>(null);
   const [subject, setSubject] = useState('');
@@ -61,6 +61,18 @@ export const FeedbackPage: React.FC = () => {
       setIsSubmitting(false);
     }
   }, [user, selectedType, subject, description]);
+
+  // Loading auth state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <main className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 64px)' }}>
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </main>
+      </div>
+    );
+  }
 
   // Not signed in
   if (!user) {

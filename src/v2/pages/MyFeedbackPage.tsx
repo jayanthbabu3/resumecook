@@ -161,7 +161,7 @@ const StatusTabs: React.FC<{
 
 export const MyFeedbackPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
@@ -203,6 +203,18 @@ export const MyFeedbackPage: React.FC = () => {
     activeFilter === 'all'
       ? feedbackList
       : feedbackList.filter((fb) => fb.status === activeFilter);
+
+  // Loading auth state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 64px)' }}>
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </main>
+      </div>
+    );
+  }
 
   // If not logged in
   if (!user) {
