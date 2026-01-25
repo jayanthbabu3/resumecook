@@ -72,7 +72,7 @@ export const geometricBoldConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#4b5563',
@@ -102,6 +102,7 @@ export const geometricBoldConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -136,7 +137,7 @@ export const geometricBoldConfig: TemplateConfig = createTemplateConfig({
     photoSize: '80px',
     photoShape: 'rounded',
     padding: '0',
-    marginBottom: '28px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '14px',

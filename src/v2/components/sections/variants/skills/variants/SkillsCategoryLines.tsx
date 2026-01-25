@@ -161,11 +161,22 @@ export const SkillsCategoryLines: React.FC<SkillsCategoryLinesProps> = ({
       {editable && !items.length && (
         <button
           onClick={() => handleAddSkill('Skills')}
-          className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+          className="mt-3 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors print:hidden"
           style={{ color: accentColor, borderColor: accentColor }}
         >
           <Plus className="h-3 w-3" />
           Add Skill
+        </button>
+      )}
+
+      {editable && items.length > 0 && (
+        <button
+          onClick={() => handleAddSkill(`Category ${grouped.order.length + 1}`)}
+          className="mt-4 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded border border-dashed hover:bg-gray-50 transition-colors print:hidden"
+          style={{ color: accentColor, borderColor: accentColor }}
+        >
+          <Plus className="h-3 w-3" />
+          Add Category
         </button>
       )}
     </div>

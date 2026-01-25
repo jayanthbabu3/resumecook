@@ -31,6 +31,7 @@ import type {
   ReplaceBulletsAction,
   UpdateSettingAction,
   UpdateThemeColorAction,
+  UpdateBackgroundColorAction,
   UpdateHeaderConfigAction,
   UpdateSectionConfigAction,
   AddCustomSectionAction,
@@ -782,6 +783,7 @@ function executeUpdateSetting(
 
 /**
  * Execute updateThemeColor action
+ * Supports: primary, secondary, headerBackground, sidebarBackground
  */
 function executeUpdateThemeColor(
   action: UpdateThemeColorAction,
@@ -794,7 +796,23 @@ function executeUpdateThemeColor(
       context.config.colors = {};
     }
 
+    // Store all theme colors at the top level of config.colors for easy extraction
+    // The actual application to config structure happens in applyThemeColors
     (context.config.colors as Record<string, unknown>)[colorKey] = value;
+
+    // Also apply to the appropriate nested location for immediate use
+    if (colorKey === 'headerBackground') {
+      if (!context.config.header) {
+        context.config.header = {};
+      }
+      (context.config.header as Record<string, unknown>).backgroundColor = value;
+    } else if (colorKey === 'sidebarBackground') {
+      const colors = context.config.colors as Record<string, unknown>;
+      if (!colors.background) {
+        colors.background = {};
+      }
+      (colors.background as Record<string, unknown>).sidebar = value;
+    }
 
     return {
       success: true,
@@ -806,6 +824,39 @@ function executeUpdateThemeColor(
       success: false,
       action,
       error: `Failed to update color: ${(error as Error).message}`,
+    };
+  }
+}
+
+/**
+ * Execute updateBackgroundColor action
+ */
+function executeUpdateBackgroundColor(
+  action: UpdateBackgroundColorAction,
+  context: ExecutionContext
+): ActionExecutionResult {
+  try {
+    const { target, value } = action;
+
+    if (!context.config.colors) {
+      context.config.colors = {};
+    }
+    const colors = context.config.colors as Record<string, unknown>;
+    if (!colors.background) {
+      colors.background = {};
+    }
+    (colors.background as Record<string, unknown>)[target] = value;
+
+    return {
+      success: true,
+      action,
+      description: `Updated ${target} background color to ${value}`,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      action,
+      error: `Failed to update background color: ${(error as Error).message}`,
     };
   }
 }
@@ -1098,6 +1149,8 @@ function executeSingleAction(
       return executeUpdateSetting(action, context);
     case 'updateThemeColor':
       return executeUpdateThemeColor(action, context);
+    case 'updateBackgroundColor':
+      return executeUpdateBackgroundColor(action, context);
     case 'updateHeaderConfig':
       return executeUpdateHeaderConfig(action, context);
     case 'updateSectionConfig':
@@ -1171,6 +1224,7 @@ function getModifiedSections(actions: ChatAction[]): string[] {
         sections.add('settings');
         break;
       case 'updateThemeColor':
+      case 'updateBackgroundColor':
         sections.add('colors');
         break;
       case 'updateHeaderConfig':

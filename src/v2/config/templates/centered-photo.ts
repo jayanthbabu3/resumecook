@@ -62,7 +62,7 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',
@@ -82,7 +82,7 @@ export const centeredPhotoConfig: TemplateConfig = createTemplateConfig({
       bottom: '40px',
       left: '40px',
     },
-    sectionGap: '22px',
+    sectionGap: '18px',
     itemGap: '14px',
     headingToContent: '10px',
     bulletGap: '4px',

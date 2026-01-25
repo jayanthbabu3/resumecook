@@ -64,7 +64,7 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#e9d5ff',
@@ -98,6 +98,7 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
     sidebarWidth: '35%',
     columnGap: '24px',
     contentPadding: '20px 0 0 0',
+    sidebarPadding: '16px',
   },
 
   colors: {
@@ -200,6 +201,28 @@ export const professionalSalesConfig: TemplateConfig = createTemplateConfig({
     primary: "'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     secondary: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
   },
+
+  // Color slots for customizable colors via UI/chat
+  colorSlots: [
+    {
+      name: 'primary' as const,
+      label: 'Accent Color',
+      defaultColor: '#7c3aed',
+      description: 'Section headings, borders, and skill badges',
+    },
+    {
+      name: 'headerBackground' as const,
+      label: 'Header Background',
+      defaultColor: '#4c1d95',
+      description: 'Background color for the header banner',
+    },
+    {
+      name: 'sidebarBackground' as const,
+      label: 'Sidebar Background',
+      defaultColor: '#faf5ff',
+      description: 'Background color for the sidebar',
+    },
+  ],
 
   // Creative decorations
   decorations: {

@@ -62,7 +62,7 @@ export const frontendHorizonConfig: TemplateConfig = createTemplateConfig({
       color: '#1f2937',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#e0f2fe',

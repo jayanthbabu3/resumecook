@@ -544,7 +544,7 @@ const PhotoSection: React.FC<{
 // Variants that require rating input (these show proficiency levels)
 const RATING_VARIANTS = ['bars', 'dots', 'detailed'];
 // Variants that need category/grouping support
-const CATEGORY_VARIANTS = ['table', 'grouped'];
+const CATEGORY_VARIANTS = ['table', 'grouped', 'category-lines'];
 // Variants that need description field (for strengths)
 const DESCRIPTION_VARIANTS = ['cards', 'grid', 'accent-border'];
 // Section types that can use simple chips UI

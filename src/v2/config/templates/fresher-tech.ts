@@ -59,7 +59,7 @@ export const fresherTechConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#ffffff',

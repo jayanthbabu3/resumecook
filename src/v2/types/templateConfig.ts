@@ -229,7 +229,10 @@ export type HeaderVariant =
   | 'ink-blot'               // Circular accent blob behind name with clean minimal typography
   | 'paper-fold'             // Diagonal corner fold effect with asymmetric elegant layout
   | 'dot-grid'               // Subtle dot grid pattern accent with clean modern typography
-  | 'accent-stripe';         // Vertical accent stripe on left with bold name and stacked contact
+  | 'accent-stripe'          // Vertical accent stripe on left with bold name and stacked contact
+  | 'aurora-glass'           // Aurora glass effect header
+  | 'wave-accent'            // Wave accent design
+  | 'geometric-bold';        // Bold geometric shapes header
 
 export interface HeaderConfig {
   variant: HeaderVariant;

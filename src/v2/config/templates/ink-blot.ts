@@ -64,13 +64,13 @@ export const inkBlotConfig: TemplateConfig = createTemplateConfig({
       color: '#64748b',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#475569',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#64748b',
@@ -100,6 +100,7 @@ export const inkBlotConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -132,7 +133,7 @@ export const inkBlotConfig: TemplateConfig = createTemplateConfig({
     variant: 'ink-blot',
     showPhoto: false,
     padding: '0',
-    marginBottom: '24px',
+    marginBottom: '16px',
     contactIcons: {
       show: false,
       size: '12px',

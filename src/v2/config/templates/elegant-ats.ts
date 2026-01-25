@@ -61,7 +61,7 @@ export const elegantAtsConfig: TemplateConfig = createTemplateConfig({
       color: '#1e293b',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#0f172a',

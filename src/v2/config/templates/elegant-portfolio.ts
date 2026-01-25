@@ -70,7 +70,7 @@ export const elegantPortfolioConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#4b5563',
@@ -100,6 +100,7 @@ export const elegantPortfolioConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -134,7 +135,7 @@ export const elegantPortfolioConfig: TemplateConfig = createTemplateConfig({
     photoSize: '90px',
     photoShape: 'circle',
     padding: '0',
-    marginBottom: '20px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '12px',

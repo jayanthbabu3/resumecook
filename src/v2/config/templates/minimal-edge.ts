@@ -38,7 +38,7 @@ export const minimalEdgeConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.3,
       letterSpacing: '0.1em',
@@ -64,13 +64,13 @@ export const minimalEdgeConfig: TemplateConfig = createTemplateConfig({
       color: '#64748b',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#475569',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#334155',
@@ -101,6 +101,7 @@ export const minimalEdgeConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -133,7 +134,7 @@ export const minimalEdgeConfig: TemplateConfig = createTemplateConfig({
     variant: 'minimal-edge',
     showPhoto: false,
     padding: '0',
-    marginBottom: '24px',
+    marginBottom: '16px',
     contactIcons: {
       show: false,
       size: '12px',

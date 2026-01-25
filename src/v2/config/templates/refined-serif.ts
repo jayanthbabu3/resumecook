@@ -65,13 +65,13 @@ export const refinedSerifConfig: TemplateConfig = createTemplateConfig({
       color: '#888888',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#444444',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#666666',
@@ -91,7 +91,7 @@ export const refinedSerifConfig: TemplateConfig = createTemplateConfig({
       bottom: '40px',
       left: '40px',
     },
-    sectionGap: '22px',
+    sectionGap: '18px',
     itemGap: '14px',
     headingToContent: '10px',
     bulletGap: '4px',
@@ -101,6 +101,7 @@ export const refinedSerifConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -133,7 +134,7 @@ export const refinedSerifConfig: TemplateConfig = createTemplateConfig({
     variant: 'refined-serif',
     showPhoto: false,
     padding: '0',
-    marginBottom: '20px',
+    marginBottom: '16px',
     contactIcons: {
       show: false,
       size: '12px',

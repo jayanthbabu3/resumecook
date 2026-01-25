@@ -39,7 +39,7 @@ export const paperFoldConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.1em',
@@ -65,13 +65,13 @@ export const paperFoldConfig: TemplateConfig = createTemplateConfig({
       color: '#64748b',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#475569',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#64748b',
@@ -101,6 +101,7 @@ export const paperFoldConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -133,7 +134,7 @@ export const paperFoldConfig: TemplateConfig = createTemplateConfig({
     variant: 'paper-fold',
     showPhoto: false,
     padding: '0',
-    marginBottom: '22px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '11px',

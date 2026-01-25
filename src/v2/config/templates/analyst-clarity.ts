@@ -63,7 +63,7 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
       color: '#1f2937',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#111827',
@@ -184,12 +184,12 @@ export const analystClarityConfig: TemplateConfig = createTemplateConfig({
     primary: "'Inter', 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
   },
 
-  // Creative decorations - analyst-inspired data visualization accents
+  // Creative decorations - analyst-inspired data visualization accents (gradient disabled for clean PDF output)
   decorations: {
     enabled: true,
     elements: ['top-accent-line', 'data-grid', 'circuit-lines'],
     opacity: 1,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

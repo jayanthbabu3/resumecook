@@ -38,7 +38,7 @@ export const cleanMinimalConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 600,
       lineHeight: 1.3,
       letterSpacing: '0.12em',
@@ -64,13 +64,13 @@ export const cleanMinimalConfig: TemplateConfig = createTemplateConfig({
       color: '#9ca3af',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#4b5563',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#6b7280',
@@ -100,6 +100,7 @@ export const cleanMinimalConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -132,7 +133,7 @@ export const cleanMinimalConfig: TemplateConfig = createTemplateConfig({
     variant: 'modern-minimal',
     showPhoto: false,
     padding: '0',
-    marginBottom: '20px',
+    marginBottom: '16px',
     contactIcons: {
       show: false,
       size: '12px',

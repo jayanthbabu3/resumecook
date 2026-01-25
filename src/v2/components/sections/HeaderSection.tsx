@@ -1188,28 +1188,49 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
         );
 
       case 'banner-with-summary':
-        // Dark banner with name, title, professional summary, photo on right, and contact info in two rows at bottom
+        // Banner with name, title, professional summary, photo, and contact info
+        // Supports both dark (default) and light background modes via header.textColor
         const summaryBgColor = header.backgroundColor || '#1e293b';
+        const summaryTextColor = header.textColor || '#ffffff';
+        // Check if this is a light background by examining the text color
+        const isLightBgSummary = summaryTextColor !== '#ffffff' && summaryTextColor !== 'white';
+
+        // Helper to create a lighter version of a color for dark backgrounds
+        const getLighterAccent = (hexColor: string): string => {
+          const hex = hexColor.replace('#', '');
+          const r = parseInt(hex.substring(0, 2), 16);
+          const g = parseInt(hex.substring(2, 4), 16);
+          const b = parseInt(hex.substring(4, 6), 16);
+          // Mix with white (70% towards white for better visibility on dark bg)
+          const lightR = Math.round(r + (255 - r) * 0.5).toString(16).padStart(2, '0');
+          const lightG = Math.round(g + (255 - g) * 0.5).toString(16).padStart(2, '0');
+          const lightB = Math.round(b + (255 - b) * 0.5).toString(16).padStart(2, '0');
+          return `#${lightR}${lightG}${lightB}`;
+        };
+
+        // For dark backgrounds, use a lighter version of the accent for better contrast
+        const summaryAccentColor = isLightBgSummary ? accent : getLighterAccent(accent);
         const summaryPhotoPosition = header.photoPosition || 'right';
         const summaryPhotoSize = header.photoSize || '100px';
         const summaryAvatar = renderAvatar({
           size: summaryPhotoSize,
           forBanner: true,
-          borderColor: accent,
-          backgroundColor: `${accent}30`,
-          textColor: accent,
+          borderColor: summaryAccentColor,
+          backgroundColor: `${summaryAccentColor}30`,
+          textColor: summaryAccentColor,
           borderWidth: '4px',
         });
 
-        // Contact style for banner-with-summary - slightly muted white for text
+        // Contact style - use proper text color based on background
+        const summaryContactColor = isLightBgSummary ? colors.text.secondary : 'rgba(255, 255, 255, 0.85)';
         const summaryContactStyle: React.CSSProperties = {
           fontSize: scaleFontSize(typography.contact.fontSize || '13px'),
-          color: 'rgba(255, 255, 255, 0.85)',
+          color: summaryContactColor,
           fontFamily: baseFontFamily,
         };
         const summaryIconSize = header.contactIcons?.size || '16px';
-        // Use accent color for icons to match the screenshot
-        const summaryIconColor = header.contactIcons?.color || accent;
+        // Use lighter accent color for icons on dark backgrounds
+        const summaryIconColor = header.contactIcons?.color || summaryAccentColor;
 
         // Helper to render contact item with icon
         const renderSummaryContactItem = (
@@ -1249,21 +1270,22 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           return content;
         };
 
-        // Title style (accent color)
+        // Title style (accent color - lighter on dark backgrounds)
         const summaryTitleStyle: React.CSSProperties = {
           fontSize: scaleFontSize(typography.title.fontSize || '16px'),
           fontWeight: typography.title.fontWeight || 500,
-          color: accent,
+          color: summaryAccentColor,
           margin: '4px 0 0 0',
           fontFamily: baseFontFamily,
         };
 
-        // Summary text style
+        // Summary text style - use muted color based on background
+        const summaryBodyColor = isLightBgSummary ? colors.text.secondary : 'rgba(255, 255, 255, 0.75)';
         const summaryTextStyle: React.CSSProperties = {
           fontSize: scaleFontSize(typography.body.fontSize || '14px'),
           fontWeight: typography.body.fontWeight || 400,
           lineHeight: 1.7,
-          color: 'rgba(255, 255, 255, 0.75)',
+          color: summaryBodyColor,
           margin: '16px 0 0 0',
           fontFamily: baseFontFamily,
         };
@@ -1274,7 +1296,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
             style={{
               backgroundColor: summaryBgColor,
               padding: header.padding || '32px 40px',
-              color: '#ffffff',
+              color: summaryTextColor,
               position: 'relative',
               fontFamily: baseFontFamily,
               width: '100%',
@@ -1298,7 +1320,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                   fontWeight: typography.name.fontWeight || 700,
                   lineHeight: typography.name.lineHeight || 1.2,
                   letterSpacing: typography.name.letterSpacing || '-0.02em',
-                  color: '#ffffff',
+                  color: summaryTextColor,
                   margin: 0,
                   fontFamily: baseFontFamily,
                 }}>
@@ -1309,7 +1331,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                       style={{
                         fontSize: scaleFontSize(typography.name.fontSize || '32px'),
                         fontWeight: typography.name.fontWeight || 700,
-                        color: '#ffffff',
+                        color: summaryTextColor,
                         fontFamily: baseFontFamily,
                       }}
                     />

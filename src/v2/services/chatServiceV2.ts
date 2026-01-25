@@ -311,6 +311,10 @@ export function describeAction(action: ChatAction): string {
       return `Update ${Object.keys(action.updates).join(', ')}`;
     case 'updateThemeColor':
       return `Change ${action.colorKey} color`;
+    case 'updateBackgroundColor':
+      return `Change ${action.target} background color`;
+    case 'updateHeaderConfig':
+      return 'Update header configuration';
     case 'addCustomSection':
       return `Add custom section "${action.title}"`;
     case 'removeCustomSection':

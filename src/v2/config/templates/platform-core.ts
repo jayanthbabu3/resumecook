@@ -63,7 +63,7 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#c7d2fe',
@@ -206,7 +206,7 @@ export const platformCoreConfig: TemplateConfig = createTemplateConfig({
     enabled: true,
     elements: ['circuit-lines', 'data-grid', 'corner-blob'],
     opacity: 0.85,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

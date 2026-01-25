@@ -63,7 +63,7 @@ export const mobileCraftConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#fff7ed',
@@ -206,7 +206,7 @@ export const mobileCraftConfig: TemplateConfig = createTemplateConfig({
     enabled: true,
     elements: ['header-wave', 'diagonal-lines', 'bottom-wave'],
     opacity: 0.9,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

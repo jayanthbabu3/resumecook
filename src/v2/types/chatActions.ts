@@ -180,7 +180,14 @@ export interface UpdateSettingAction {
 /** Update theme/accent color */
 export interface UpdateThemeColorAction {
   type: 'updateThemeColor';
-  colorKey: 'primary' | 'secondary';
+  colorKey: 'primary' | 'secondary' | 'headerBackground' | 'sidebarBackground';
+  value: string; // hex color
+}
+
+/** Update background colors (sidebar, page, section backgrounds) - DEPRECATED, use updateThemeColor with sidebarBackground */
+export interface UpdateBackgroundColorAction {
+  type: 'updateBackgroundColor';
+  target: 'sidebar' | 'page' | 'section' | 'accent';
   value: string; // hex color
 }
 
@@ -194,6 +201,9 @@ export interface UpdateHeaderConfigAction {
     photoShape: 'circle' | 'square' | 'rounded';
     photoPosition: 'left' | 'right';
     showSocialLinks: boolean;
+    backgroundColor: string;
+    textColor: string;
+    padding: string;
   }>;
 }
 
@@ -303,6 +313,7 @@ export type ChatAction =
   // Settings & Config
   | UpdateSettingAction
   | UpdateThemeColorAction
+  | UpdateBackgroundColorAction
   | UpdateHeaderConfigAction
   | UpdateSectionConfigAction
   // Custom Sections

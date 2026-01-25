@@ -66,7 +66,7 @@ export const fresherElegantConfig: TemplateConfig = createTemplateConfig({
       color: '#44403c',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#57534e',

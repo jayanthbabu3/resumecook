@@ -105,6 +105,7 @@ export const projectManagerProConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -137,7 +138,7 @@ export const projectManagerProConfig: TemplateConfig = createTemplateConfig({
     variant: 'boxed-contact-icons',
     showPhoto: false,
     padding: '0',
-    marginBottom: '20px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '14px',

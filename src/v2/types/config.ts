@@ -93,7 +93,7 @@ export interface LayoutConfig {
 // COLOR CONFIGURATION
 // ============================================================================
 
-export type ColorSlotName = 'primary' | 'secondary';
+export type ColorSlotName = 'primary' | 'secondary' | 'headerBackground' | 'sidebarBackground';
 
 export interface ColorSlot {
   /** Slot identifier */
@@ -143,14 +143,18 @@ export interface ColorConfig {
 // SECTION HEADING STYLES
 // ============================================================================
 
-export type SectionHeadingStyle = 
-  | 'underline'      // Line under heading
-  | 'left-border'    // Colored bar on left
-  | 'background'     // Full background color
-  | 'simple'         // Just text, no decoration
-  | 'dotted'         // Dotted underline
-  | 'double-line'    // Double line under
-  | 'icon-left';     // Icon before text
+export type SectionHeadingStyle =
+  | 'underline'         // Line under heading
+  | 'left-border'       // Colored bar on left
+  | 'background'        // Full background color
+  | 'background-filled' // Solid dark background with white text
+  | 'background-accent' // Solid accent color background
+  | 'accent-bar'        // Accent bar on left
+  | 'simple'            // Just text, no decoration
+  | 'dotted'            // Dotted underline
+  | 'double-line'       // Double line under
+  | 'underline-thick'   // Thick underline
+  | 'icon-left';        // Icon before text
 
 export interface SectionHeadingConfig {
   /** Visual style of section headings */
@@ -171,7 +175,7 @@ export interface SectionHeadingConfig {
 // SKILLS DISPLAY CONFIGURATION
 // ============================================================================
 
-export type SkillsVariant = 
+export type SkillsVariant =
   | 'pills'          // Rounded pill badges
   | 'tags'           // Square/rounded tags
   | 'list'           // Simple comma-separated list
@@ -181,13 +185,15 @@ export type SkillsVariant =
   | 'columns'        // Multi-column list
   | 'inline'         // Inline text with separator
   | 'category-lines' // Grouped headings with inline lists
+  | 'table'          // Table format with categories
   | 'modern'         // Modern cards with icons
   | 'detailed'       // With proficiency levels
   | 'compact'        // Compact single line
   | 'radar'          // Radar/spider chart style
   | 'bordered-tags'  // Production-ready bordered rectangular tags
   | 'pills-accent'   // Production-ready accent-colored pills
-  | 'inline-dots';   // Production-ready inline with dot separators
+  | 'inline-dots'    // Production-ready inline with dot separators
+  | 'boxed';         // Stacked bordered boxes - one skill per box
 
 export interface SkillsConfig {
   /** Display variant */
@@ -230,7 +236,31 @@ export type HeaderVariant =
   | 'banner-with-summary' // Dark banner with name, title, summary and contact info
   | 'clean-summary-contact' // Clean header with name, title, summary paragraph, and horizontal contact bar with icons
   | 'photo-summary-contact-bar' // Photo left, name/title/summary right, gray contact bar below
-  | 'gradient-split-contact'; // Blue gradient banner with content left and contact icons right
+  | 'gradient-split-contact' // Blue gradient banner with content left and contact icons right
+  | 'sidebar-card'       // Card-style header with accent sidebar stripe
+  | 'modern-split'       // Modern split with name on left, contact grid on right
+  | 'boxed-accent'       // Boxed header with accent border
+  | 'summary-photo-right' // Name, title, summary with photo on right and contact separator line
+  | 'boxed-contact-icons' // Serif name, title, contact in bordered boxes with icons, summary section below
+  | 'modern-elegant'      // Bold name with accent underline, uppercase title, contact with dot separators
+  | 'photo-dark-contact-bar' // Photo left, name/title/summary right, dark curved contact bar - CIO style
+  | 'gradient-creative'      // Creative gradient header with decorative shapes and photo support
+  | 'summary-banner'         // Professional header with integrated summary, name/title at top, accent contact bar
+  | 'elegant-photo-card'     // Centered photo with shadow, name below, contact in pills
+  | 'modern-minimal'         // Ultra-clean minimal with thin accent underline, contact with dots
+  | 'refined-serif'          // Elegant serif typography with thin line separators
+  | 'swiss-minimal'          // Swiss design with bold typography and geometric accents
+  | 'mono-elegant'           // Monospace typography with elegant spacing
+  | 'line-accent'            // Clean design with full-width accent lines
+  | 'gradient-flow'          // Diagonal gradient accent with asymmetric modern layout
+  | 'minimal-edge'           // Sharp geometric accents with split contact layout
+  | 'ink-blot'               // Circular accent blob behind name with clean minimal typography
+  | 'paper-fold'             // Diagonal corner fold effect with asymmetric elegant layout
+  | 'dot-grid'               // Subtle dot grid pattern accent with clean modern typography
+  | 'accent-stripe'          // Vertical accent stripe on left with bold name and stacked contact
+  | 'aurora-glass'           // Aurora glass effect header
+  | 'wave-accent'            // Wave accent design
+  | 'geometric-bold';        // Bold geometric shapes header
 
 export interface HeaderConfig {
   /** Header layout variant */
@@ -251,6 +281,8 @@ export interface HeaderConfig {
   padding?: string;
   /** Margin below the header section */
   marginBottom?: string;
+  /** Border bottom (e.g., '2px solid #2563eb') */
+  borderBottom?: string;
   /** Contact icons style */
   contactIcons?: {
     show: boolean;
@@ -268,16 +300,30 @@ export interface HeaderConfig {
 // ============================================================================
 
 export type ExperienceVariant =
-  | 'standard'        // Title, company, dates, bullets
-  | 'compact'         // Condensed single-line header
-  | 'timeline'        // Visual timeline on left
-  | 'card'            // Card-style with border
-  | 'minimal'         // Just essentials
+  | 'standard'         // Title, company, dates, bullets
+  | 'compact'          // Condensed single-line header
+  | 'detailed'         // Full details with descriptions
+  | 'timeline'         // Visual timeline on left
+  | 'card'             // Card-style with border (singular)
+  | 'cards'            // Card-based layout (plural alias)
+  | 'minimal'          // Just essentials
+  | 'modern'           // Modern with accent borders
+  | 'left-border'      // Left colored border accent
+  | 'dates-left'       // Dates on left column
+  | 'dates-right'      // Dates on right side
   | 'two-column-dates' // Dates/location on left column, content on right
-  | 'accent-card'     // Lined header with accent bar and bullets
-  | 'accent-side'     // Left-accent column with stacked content
-  | 'modern'          // Modern with accent borders
-  | 'dots-timeline';  // Simple connected dots timeline
+  | 'accent-card'      // Lined header with accent bar and bullets
+  | 'accent-side'      // Left-accent column with stacked content
+  | 'academic'         // Academic/research focused
+  | 'creative'         // Creative industry style
+  | 'dots-timeline'    // Simple connected dots timeline
+  | 'timeline-pro'     // Professional timeline with dates on left
+  | 'enhanced'         // EnhanceCV-style variant
+  | 'premium'          // Premium with numbered bullets
+  | 'icon-accent'      // Creative card with company icon badge
+  | 'icon-clean'       // Clean layout with circular icon
+  | 'elegant-timeline' // Modern elegant timeline with subtle dots
+  | 'clean-stacked';   // Clean minimal stacked with pipe separator
 
 export interface ExperienceConfig {
   /** Display variant */
@@ -289,7 +335,9 @@ export interface ExperienceConfig {
   /** Show location */
   showLocation?: boolean;
   /** Bullet point style */
-  bulletStyle?: '•' | '◦' | '▪' | '–' | '▸' | 'none';
+  bulletStyle?: '•' | '◦' | '▪' | '–' | '▸' | 'none' | 'numbered';
+  /** Show description */
+  showDescription?: boolean;
 }
 
 // ============================================================================
@@ -315,6 +363,10 @@ export interface EducationConfig {
   showField?: boolean;
   /** Show dates */
   showDates?: boolean;
+  /** Show honors */
+  showHonors?: boolean;
+  /** Show coursework */
+  showCoursework?: boolean;
   /** Date position */
   datePosition?: 'right' | 'below' | 'inline' | 'left';
 }
@@ -352,13 +404,18 @@ export type AchievementsVariant =
   | 'metrics'        // Metrics cards with percentages
   | 'numbered'       // Numbered list
   | 'timeline'       // Timeline style
-  | 'minimal';       // Clean minimal text
+  | 'minimal'        // Clean minimal text
+  | 'boxed';         // Stacked bordered boxes
 
 export interface AchievementsConfig {
   /** Display variant */
   variant: AchievementsVariant;
   /** Show icons/numbers */
   showIndicators?: boolean;
+  /** Show dates */
+  showDates?: boolean;
+  /** Show metrics */
+  showMetrics?: boolean;
 }
 
 // ============================================================================

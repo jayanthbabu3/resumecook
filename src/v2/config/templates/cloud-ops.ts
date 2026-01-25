@@ -63,7 +63,7 @@ export const cloudOpsConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#bae6fd',
@@ -206,7 +206,7 @@ export const cloudOpsConfig: TemplateConfig = createTemplateConfig({
     enabled: true,
     elements: ['dot-pattern', 'geometric-corner', 'bottom-left-corner'],
     opacity: 0.9,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

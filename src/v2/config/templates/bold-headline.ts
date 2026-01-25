@@ -61,7 +61,7 @@ export const boldHeadlineConfig: TemplateConfig = createTemplateConfig({
       color: '#1f2937',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#ffffff', // white for banner

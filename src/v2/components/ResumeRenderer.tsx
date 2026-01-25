@@ -964,12 +964,11 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
 
   // Render single-column layout
   if (layout.type === 'single-column') {
-    // For banner headers, we need top padding (at least 16px) to create gap between banner and content
-    // For non-banner headers, don't add top padding - header's bottom padding handles spacing
-    const bannerContentTopPadding = Math.max(16, parseInt(spacing.pagePadding.top) || 0);
+    // For banner headers, use fixed 10px top padding - banner provides visual separation
+    // For non-banner headers, don't add top padding - header's marginBottom handles spacing
     const contentPaddingStyle: React.CSSProperties = isBannerHeader
       ? {
-          padding: `${bannerContentTopPadding}px ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`,
+          padding: `4px ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`,
         }
       : {
           padding: `0 ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`,
@@ -1056,12 +1055,12 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     padding: `${spacing.pagePadding.top} ${spacing.pagePadding.right} 0 ${spacing.pagePadding.left}`,
   };
 
-  // For banner headers, ensure at least 16px top padding for proper spacing
-  const twoColumnBannerTopPadding = Math.max(16, parseInt(spacing.pagePadding.top) || 0);
+  // For banner headers, use fixed 10px top padding - banner provides visual separation
+  // For non-banner headers, don't add top padding - header's marginBottom handles spacing
   const twoColumnContentPadding: React.CSSProperties = {
     padding:
       isBannerHeader
-        ? `${twoColumnBannerTopPadding}px ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`
+        ? `10px ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`
         : `0 ${spacing.pagePadding.right} ${spacing.pagePadding.bottom} ${spacing.pagePadding.left}`,
   };
 
@@ -1077,16 +1076,21 @@ export const ResumeRenderer: React.FC<ResumeRendererProps> = ({
     padding: 0,
   };
 
-  // Calculate sidebar padding - ensure outer edge aligns with page padding
-  // The page padding already handles the outer edges, so sidebar padding should only apply to inner edges
+  // Calculate sidebar padding - for sidebars with colored backgrounds, add padding on all sides
   // NO top padding so sidebar content aligns with main column content
   const getSidebarPadding = () => {
     const sidebarPadding = layout.sidebarPadding || '0';
     if (typeof sidebarPadding === 'string' && sidebarPadding !== '0') {
-      // Parse padding value (assumes single value for all sides)
       const paddingValue = sidebarPadding.trim();
-      // For right sidebar: no right padding (page padding handles it), no top padding (align with main)
-      // For left sidebar: no left padding (page padding handles it), no top padding (align with main)
+      // Check if sidebar has a distinct background color (needs full padding for content breathing room)
+      const hasSidebarBg = layout.sidebarBackground || colors.background.sidebar;
+      const hasDistinctBg = hasSidebarBg && hasSidebarBg !== colors.background.page;
+
+      if (hasDistinctBg) {
+        // Sidebar has colored background - add padding on all sides (except top to align with main)
+        return `0 ${paddingValue} ${paddingValue} ${paddingValue}`; // top right bottom left
+      }
+      // No distinct background - only inner edge padding
       return isRightSidebar
         ? `0 0 ${paddingValue} ${paddingValue}` // top right bottom left
         : `0 ${paddingValue} ${paddingValue} 0`; // top right bottom left

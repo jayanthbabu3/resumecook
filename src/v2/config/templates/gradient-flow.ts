@@ -64,13 +64,13 @@ export const gradientFlowConfig: TemplateConfig = createTemplateConfig({
       color: '#64748b',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#475569',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#475569',
@@ -100,6 +100,7 @@ export const gradientFlowConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -132,7 +133,7 @@ export const gradientFlowConfig: TemplateConfig = createTemplateConfig({
     variant: 'gradient-flow',
     showPhoto: false,
     padding: '0',
-    marginBottom: '20px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '14px',

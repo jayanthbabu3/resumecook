@@ -70,7 +70,7 @@ export const auroraCreativeConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: 'rgba(255,255,255,0.95)',
@@ -100,6 +100,7 @@ export const auroraCreativeConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -134,7 +135,7 @@ export const auroraCreativeConfig: TemplateConfig = createTemplateConfig({
     photoSize: '85px',
     photoShape: 'circle',
     padding: '0',
-    marginBottom: '28px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '12px',

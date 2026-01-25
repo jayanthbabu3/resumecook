@@ -63,13 +63,13 @@ export const accentStripeConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#4b5563',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#6b7280',
@@ -99,6 +99,7 @@ export const accentStripeConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -129,7 +130,7 @@ export const accentStripeConfig: TemplateConfig = createTemplateConfig({
     variant: 'accent-stripe',
     showPhoto: false,
     padding: '0',
-    marginBottom: '24px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '12px',

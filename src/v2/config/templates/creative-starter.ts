@@ -71,7 +71,7 @@ export const creativeStarterConfig: TemplateConfig = createTemplateConfig({
       color: '#4b5563',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: 'rgba(255,255,255,0.95)',
@@ -101,6 +101,7 @@ export const creativeStarterConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -135,7 +136,7 @@ export const creativeStarterConfig: TemplateConfig = createTemplateConfig({
     photoSize: '90px',
     photoShape: 'circle',
     padding: '0',
-    marginBottom: '24px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '14px',

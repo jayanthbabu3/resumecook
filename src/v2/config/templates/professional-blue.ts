@@ -62,7 +62,7 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#4b5563',
@@ -202,7 +202,7 @@ export const professionalBlueConfig: TemplateConfig = createTemplateConfig({
     enabled: true,
     elements: ['side-stripe', 'curved-lines', 'bottom-wave'],
     opacity: 1,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

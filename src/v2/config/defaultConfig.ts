@@ -68,7 +68,7 @@ export const DEFAULT_TYPOGRAPHY: TypographyConfig = {
     color: '#1a1a1a',
   },
   contact: {
-    fontSize: '10px',    // Contact info should be compact
+    fontSize: '11px',    // Contact info - readable but compact
     fontWeight: 400,
     lineHeight: 1.5,
     color: '#1a1a1a',
@@ -246,6 +246,8 @@ export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
   header: {
     variant: 'left-aligned',
     showPhoto: false,
+    padding: '0',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '14px',
@@ -349,17 +351,61 @@ export function applyThemeColor(config: TemplateConfig, themeColor: string): Tem
 }
 
 /**
+ * Theme colors interface for the extended color system
+ */
+export interface ThemeColors {
+  primary?: string;
+  secondary?: string;
+  headerBackground?: string;
+  sidebarBackground?: string;
+}
+
+/**
+ * Generate a harmonious color palette from a single primary color
+ * Creates darker header background and lighter sidebar background
+ */
+export function generateColorPalette(primaryColor: string): ThemeColors {
+  // Convert hex to RGB
+  const hex = primaryColor.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  // Create darker version for header (multiply by 0.6)
+  const darkerR = Math.round(r * 0.6);
+  const darkerG = Math.round(g * 0.6);
+  const darkerB = Math.round(b * 0.6);
+  const headerBackground = `#${darkerR.toString(16).padStart(2, '0')}${darkerG.toString(16).padStart(2, '0')}${darkerB.toString(16).padStart(2, '0')}`;
+
+  // Create very light version for sidebar (mix with white at 5% opacity)
+  const lightR = Math.round(r + (255 - r) * 0.95);
+  const lightG = Math.round(g + (255 - g) * 0.95);
+  const lightB = Math.round(b + (255 - b) * 0.95);
+  const sidebarBackground = `#${lightR.toString(16).padStart(2, '0')}${lightG.toString(16).padStart(2, '0')}${lightB.toString(16).padStart(2, '0')}`;
+
+  return {
+    primary: primaryColor,
+    headerBackground,
+    sidebarBackground,
+  };
+}
+
+/**
  * Apply multiple theme colors to a template config
- * Primary color: Main accent (headings, links, skill badges, section borders)
- * Secondary color: Sidebar/accent background
+ *
+ * Color slots:
+ * - primary: Main accent (headings, links, skill badges, section borders)
+ * - secondary: Secondary accent color (optional, used by some templates)
+ * - headerBackground: Header background color (independent of primary)
+ * - sidebarBackground: Sidebar background color (independent of primary)
  */
 export function applyThemeColors(
-  config: TemplateConfig, 
-  colors: { primary?: string; secondary?: string }
+  config: TemplateConfig,
+  colors: ThemeColors
 ): TemplateConfig {
   let result = { ...config };
-  
-  // Apply primary color - affects all accent elements
+
+  // Apply primary color - affects accent elements only (NOT header/sidebar backgrounds)
   if (colors.primary) {
     result.colors = {
       ...result.colors,
@@ -369,7 +415,7 @@ export function applyThemeColors(
         accent: `${colors.primary}15`, // 15% opacity for light backgrounds
       },
     };
-    
+
     // Update typography that uses primary color
     result.typography = {
       ...result.typography,
@@ -386,15 +432,41 @@ export function applyThemeColors(
         color: colors.primary,
       },
     };
-    
-    // Update section heading border color
+
+    // Update section heading border color and background color
     if (result.sectionHeading) {
       result.sectionHeading = {
         ...result.sectionHeading,
         borderColor: colors.primary,
+        // For background-filled style, use a darker version of primary
+        ...(result.sectionHeading.style === 'background-filled' && {
+          backgroundColor: (() => {
+            const hex = colors.primary!.replace('#', '');
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            // Create darker version (40% of original)
+            const darkR = Math.round(r * 0.4).toString(16).padStart(2, '0');
+            const darkG = Math.round(g * 0.4).toString(16).padStart(2, '0');
+            const darkB = Math.round(b * 0.4).toString(16).padStart(2, '0');
+            return `#${darkR}${darkG}${darkB}`;
+          })(),
+        }),
       };
     }
-    
+
+    // Update header border if it exists (e.g., borderBottom in fresher-technical)
+    if (result.header?.borderBottom) {
+      // Extract the border style and replace the color
+      const borderMatch = result.header.borderBottom.match(/^(\d+px\s+\w+\s+)(.+)$/);
+      if (borderMatch) {
+        result.header = {
+          ...result.header,
+          borderBottom: `${borderMatch[1]}${colors.primary}`,
+        };
+      }
+    }
+
     // Update skill badge colors - this is critical for pills/tags
     if (result.skills?.badge) {
       result.skills = {
@@ -407,7 +479,7 @@ export function applyThemeColors(
         },
       };
     }
-    
+
     // Update header contact icons if they use primary
     if (result.header?.contactIcons) {
       result.header = {
@@ -419,31 +491,57 @@ export function applyThemeColors(
       };
     }
   }
-  
-  // Apply secondary color - affects sidebar/accent backgrounds and header
+
+  // Apply secondary color - only affects the secondary color value
   if (colors.secondary) {
     result.colors = {
       ...result.colors,
       secondary: colors.secondary,
+    };
+  }
+
+  // Apply header background - independent of primary/secondary
+  // When applying a dark header background, also set text color to white for readability
+  if (colors.headerBackground) {
+    // Determine if the header background is dark by checking luminance
+    const hex = colors.headerBackground.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    // Calculate relative luminance (0-1, where 0 is black and 1 is white)
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    const isDarkBackground = luminance < 0.5;
+
+    result.header = {
+      ...result.header,
+      backgroundColor: colors.headerBackground,
+      // Set text color to white for dark backgrounds, dark for light backgrounds
+      textColor: isDarkBackground ? '#ffffff' : '#111827',
+      // Update contact icons color for dark backgrounds - use lighter primary-based color
+      contactIcons: {
+        ...result.header?.contactIcons,
+        color: isDarkBackground
+          ? (colors.primary ? `${colors.primary}` : 'rgba(255, 255, 255, 0.85)')
+          : (colors.primary || result.header?.contactIcons?.color),
+      },
+    };
+  }
+
+  // Apply sidebar background - independent of primary/secondary
+  if (colors.sidebarBackground) {
+    result.colors = {
+      ...result.colors,
       background: {
         ...result.colors.background,
-        sidebar: colors.secondary,
+        sidebar: colors.sidebarBackground,
       },
     };
 
-    // Update layout sidebar background
-    if (result.layout.sidebarBackground) {
+    // Also update layout sidebar background if it exists
+    if (result.layout.sidebarBackground !== undefined) {
       result.layout = {
         ...result.layout,
-        sidebarBackground: colors.secondary,
-      };
-    }
-
-    // Update header background color for banner headers
-    if (result.header?.backgroundColor) {
-      result.header = {
-        ...result.header,
-        backgroundColor: colors.secondary,
+        sidebarBackground: colors.sidebarBackground,
       };
     }
   }

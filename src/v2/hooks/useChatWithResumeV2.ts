@@ -203,7 +203,10 @@ export function useChatWithResumeV2({
             if (executionResult.updatedResumeData) {
               onResumeDataUpdate(executionResult.updatedResumeData as V2ResumeData);
             }
-            if (executionResult.updatedConfig) {
+
+            // Only update config for color-related actions to avoid corrupting themeColors state
+            // with nested config objects (text, background, etc.)
+            if (executionResult.updatedConfig && response.actions.some(a => a.type === 'updateThemeColor')) {
               onConfigUpdate(executionResult.updatedConfig as Record<string, unknown>);
             }
 
@@ -213,11 +216,75 @@ export function useChatWithResumeV2({
               onEnabledSectionsUpdate(executionResult.updatedEnabledSections);
             }
 
-            // Check if sectionOverrides changed
+            // Check if sectionOverrides changed - preserve special keys like __header_config
             if (response.actions.some(a =>
               ['changeSectionVariant', 'reorderSections', 'moveSectionToColumn'].includes(a.type)
             ) && executionResult.updatedSectionOverrides) {
-              onSectionOverridesUpdate(executionResult.updatedSectionOverrides as Record<string, SectionOverride>);
+              const existingSpecialKeys: Record<string, unknown> = {};
+              // Preserve special keys from current overrides that the executor doesn't know about
+              Object.keys(contextRef.current.sectionOverrides).forEach(key => {
+                if (key.startsWith('__')) {
+                  existingSpecialKeys[key] = contextRef.current.sectionOverrides[key];
+                }
+              });
+              onSectionOverridesUpdate({
+                ...existingSpecialKeys,
+                ...executionResult.updatedSectionOverrides,
+              } as Record<string, SectionOverride>);
+            }
+
+            // Handle header config updates by storing in sectionOverrides with special key
+            // Merge with existing sectionOverrides to preserve other overrides
+            if (response.actions.some(a => a.type === 'updateHeaderConfig') && executionResult.updatedConfig) {
+              const headerConfig = (executionResult.updatedConfig as Record<string, unknown>).header;
+              if (headerConfig) {
+                const existingHeaderConfig = contextRef.current.sectionOverrides.__header_config || {};
+                onSectionOverridesUpdate({
+                  ...contextRef.current.sectionOverrides, // Preserve existing section overrides
+                  ...(executionResult.updatedSectionOverrides || {}),
+                  __header_config: {
+                    ...existingHeaderConfig,
+                    ...headerConfig,
+                  } as SectionOverride,
+                } as Record<string, SectionOverride>);
+              }
+            }
+
+            // Handle background color updates from updateBackgroundColor action
+            // This enables sidebar, page, and section background changes through chat
+            if (response.actions.some(a => a.type === 'updateBackgroundColor') && executionResult.updatedConfig) {
+              const configColors = (executionResult.updatedConfig as Record<string, unknown>).colors as Record<string, unknown>;
+              if (configColors?.background) {
+                const existingColors = contextRef.current.sectionOverrides.__colors_config || {};
+                const existingBg = (existingColors as Record<string, unknown>).background || {};
+                onSectionOverridesUpdate({
+                  ...contextRef.current.sectionOverrides,
+                  __colors_config: {
+                    ...existingColors,
+                    background: {
+                      ...existingBg,
+                      ...configColors.background,
+                    },
+                  } as SectionOverride,
+                } as Record<string, SectionOverride>);
+              }
+            }
+
+            // Handle layout/colors config updates from updateSectionConfig
+            // This enables sidebar background and other layout changes through chat
+            if (response.actions.some(a => a.type === 'updateSectionConfig') && executionResult.updatedConfig) {
+              const configUpdates = executionResult.updatedConfig as Record<string, unknown>;
+              // Check if layout was updated (contains sidebarBackground or other layout props)
+              if (configUpdates.layout) {
+                const existingLayout = contextRef.current.sectionOverrides.__layout_override || {};
+                onSectionOverridesUpdate({
+                  ...contextRef.current.sectionOverrides,
+                  __layout_override: {
+                    ...existingLayout,
+                    ...configUpdates.layout,
+                  } as SectionOverride,
+                } as Record<string, SectionOverride>);
+              }
             }
 
             // Check if sectionLabels changed

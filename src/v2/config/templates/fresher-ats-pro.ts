@@ -70,7 +70,7 @@ export const fresherAtsProConfig: TemplateConfig = createTemplateConfig({
       color: '#2d3748',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#4a5568',

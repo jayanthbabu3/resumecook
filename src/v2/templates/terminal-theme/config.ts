@@ -2,16 +2,20 @@
  * Terminal Theme Template Configuration (V2)
  *
  * Authentic terminal/CLI aesthetic with monospace typography,
- * muted green accents, and minimal visual clutter.
+ * warm amber accents, and minimal visual clutter.
  */
 
 import type { TemplateConfig } from '../../types';
 import { createTemplateConfig } from '../../config/defaultConfig';
 
+// Warm amber - retro terminal feel with high contrast
+const ACCENT_COLOR = '#fbbf24';
+const SECONDARY_COLOR = '#f59e0b';
+
 export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
   id: 'terminal-theme-v2',
   name: 'Terminal Theme',
-  description: 'Authentic terminal aesthetic with monospace typography and muted green accents.',
+  description: 'Authentic terminal aesthetic with monospace typography and warm amber accents.',
   category: 'creative',
 
   typography: {
@@ -20,7 +24,7 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '0',
-      color: '#4ade80', // Terminal green
+      color: ACCENT_COLOR,
     },
     title: {
       fontSize: '12px',
@@ -48,7 +52,7 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
       fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.35,
-      color: '#4ade80', // Green for company names
+      color: ACCENT_COLOR,
     },
     dates: {
       fontSize: '11px',
@@ -57,7 +61,7 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#d1d5db',
@@ -99,8 +103,8 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
   },
 
   colors: {
-    primary: '#4ade80', // Muted terminal green
-    secondary: '#22c55e',
+    primary: ACCENT_COLOR,
+    secondary: SECONDARY_COLOR,
     text: {
       primary: '#e5e7eb',
       secondary: '#d1d5db',
@@ -126,7 +130,7 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
     showPhoto: false,
     padding: '16px 0 12px',
     backgroundColor: 'transparent',
-    textColor: '#4ade80',
+    textColor: ACCENT_COLOR,
     contactIcons: {
       show: true,
       size: '12px',
@@ -151,7 +155,7 @@ export const terminalThemeConfig: TemplateConfig = createTemplateConfig({
   experience: {
     variant: 'standard',
     showLocation: true,
-    bulletStyle: '→',
+    bulletStyle: '▸',
   },
 
   education: {

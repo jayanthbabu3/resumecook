@@ -70,7 +70,7 @@ export const adminAssistantProConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#1a1a1a',
@@ -137,7 +137,7 @@ export const adminAssistantProConfig: TemplateConfig = createTemplateConfig({
     photoSize: '90px',
     photoShape: 'rounded',
     padding: '0',
-    marginBottom: '20px',
+    marginBottom: '16px',
     contactIcons: {
       show: false, // No icons, just text with separators
       size: '14px',

@@ -64,13 +64,13 @@ export const dotGridConfig: TemplateConfig = createTemplateConfig({
       color: '#6b7280',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#4b5563',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#6b7280',
@@ -100,6 +100,7 @@ export const dotGridConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -132,7 +133,7 @@ export const dotGridConfig: TemplateConfig = createTemplateConfig({
     variant: 'dot-grid',
     showPhoto: false,
     padding: '0',
-    marginBottom: '22px',
+    marginBottom: '16px',
     contactIcons: {
       show: true,
       size: '12px',

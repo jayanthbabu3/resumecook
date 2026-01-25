@@ -39,7 +39,7 @@ export const swissMinimalConfig: TemplateConfig = createTemplateConfig({
       color: '#333333',
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 700,
       lineHeight: 1.3,
       letterSpacing: '0.08em',
@@ -65,13 +65,13 @@ export const swissMinimalConfig: TemplateConfig = createTemplateConfig({
       color: '#666666',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.65,
       color: '#333333',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       color: '#666666',
@@ -101,6 +101,7 @@ export const swissMinimalConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -133,7 +134,7 @@ export const swissMinimalConfig: TemplateConfig = createTemplateConfig({
     variant: 'swiss-minimal',
     showPhoto: false,
     padding: '0',
-    marginBottom: '20px',
+    marginBottom: '16px',
     contactIcons: {
       show: false,
       size: '12px',
@@ -168,7 +169,7 @@ export const swissMinimalConfig: TemplateConfig = createTemplateConfig({
     variant: 'clean-stacked',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '■',
+    bulletStyle: '▪',
     showDescription: false,
   },
 

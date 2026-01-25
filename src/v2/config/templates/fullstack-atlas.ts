@@ -63,7 +63,7 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
       color: '#44403c',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#92400e',
@@ -206,7 +206,7 @@ export const fullstackAtlasConfig: TemplateConfig = createTemplateConfig({
     enabled: true,
     elements: ['curved-lines', 'hexagon-cluster', 'left-gradient-bar'],
     opacity: 0.9,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

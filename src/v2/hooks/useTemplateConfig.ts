@@ -12,7 +12,7 @@ import { applyThemeColor, applyThemeColors, DEFAULT_TEMPLATE_CONFIG } from '../c
 interface UseTemplateConfigOptions {
   templateId: string;
   themeColor?: string;
-  themeColors?: { primary?: string; secondary?: string };
+  themeColors?: { primary?: string; secondary?: string; headerBackground?: string; sidebarBackground?: string };
   sectionOverrides?: Partial<Record<string, Partial<SectionConfig>>>;
 }
 
@@ -44,7 +44,7 @@ export function useTemplateConfig({
     let result = baseConfig;
     
     // Apply multi-color theme if provided (check if object has any color values)
-    const hasThemeColors = themeColors && (themeColors.primary || themeColors.secondary);
+    const hasThemeColors = themeColors && (themeColors.primary || themeColors.secondary || themeColors.headerBackground || themeColors.sidebarBackground);
     if (hasThemeColors) {
       result = applyThemeColors(result, themeColors);
     }
@@ -153,7 +153,19 @@ export function useTemplateConfig({
         };
       }
 
-      // Apply layout override if provided (for scratch builder)
+      // Apply header config overrides (backgroundColor, etc.) from chat actions
+      if (sectionOverrides['__header_config']) {
+        const headerConfigOverride = sectionOverrides['__header_config'] as Record<string, unknown>;
+        result = {
+          ...result,
+          header: {
+            ...result.header,
+            ...headerConfigOverride,
+          },
+        };
+      }
+
+      // Apply layout override if provided (for scratch builder or chat)
       if (sectionOverrides['__layout_override']) {
         const layoutOverride = sectionOverrides['__layout_override'] as any;
         result = {
@@ -161,6 +173,21 @@ export function useTemplateConfig({
           layout: {
             ...result.layout,
             ...layoutOverride,
+          },
+        };
+      }
+
+      // Apply background color overrides from chat actions
+      if (sectionOverrides['__colors_config']) {
+        const colorsOverride = sectionOverrides['__colors_config'] as Record<string, unknown>;
+        result = {
+          ...result,
+          colors: {
+            ...result.colors,
+            background: {
+              ...result.colors.background,
+              ...(colorsOverride.background as Record<string, unknown> || {}),
+            },
           },
         };
       }

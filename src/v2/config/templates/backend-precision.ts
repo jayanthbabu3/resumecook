@@ -63,7 +63,7 @@ export const backendPrecisionConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#ccfbf1',
@@ -206,7 +206,7 @@ export const backendPrecisionConfig: TemplateConfig = createTemplateConfig({
     enabled: true,
     elements: ['bottom-gradient-fade', 'geometric-corner'],
     opacity: 0.8,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

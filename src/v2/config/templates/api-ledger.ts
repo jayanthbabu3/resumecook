@@ -63,7 +63,7 @@ export const apiLedgerConfig: TemplateConfig = createTemplateConfig({
       color: '#334155',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#ddd6fe',
@@ -204,7 +204,7 @@ export const apiLedgerConfig: TemplateConfig = createTemplateConfig({
     enabled: true,
     elements: ['code-brackets', 'circuit-lines', 'corner-blob'],
     opacity: 0.9,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

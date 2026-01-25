@@ -38,7 +38,7 @@ export const monoElegantConfig: TemplateConfig = createTemplateConfig({
       color: ACCENT_COLOR,
     },
     sectionHeading: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.3,
       letterSpacing: '0.1em',
@@ -52,33 +52,33 @@ export const monoElegantConfig: TemplateConfig = createTemplateConfig({
       color: '#18181b',
     },
     itemSubtitle: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.4,
       color: ACCENT_COLOR,
     },
     dates: {
-      fontSize: '9px',
+      fontSize: '10px',
       fontWeight: 400,
       lineHeight: 1.4,
       letterSpacing: '0.02em',
       color: '#71717a',
     },
     body: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.7,
       color: '#3f3f46',
     },
     contact: {
-      fontSize: '9px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.5,
       letterSpacing: '0.01em',
       color: '#52525b',
     },
     small: {
-      fontSize: '8px',
+      fontSize: '9px',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#71717a',
@@ -102,6 +102,7 @@ export const monoElegantConfig: TemplateConfig = createTemplateConfig({
 
   layout: {
     type: 'single-column',
+    mainWidth: '100%',
   },
 
   colors: {
@@ -134,7 +135,7 @@ export const monoElegantConfig: TemplateConfig = createTemplateConfig({
     variant: 'mono-elegant',
     showPhoto: false,
     padding: '0',
-    marginBottom: '24px',
+    marginBottom: '16px',
     contactIcons: {
       show: false,
       size: '12px',
@@ -169,7 +170,7 @@ export const monoElegantConfig: TemplateConfig = createTemplateConfig({
     variant: 'clean-stacked',
     datePosition: 'right',
     showLocation: true,
-    bulletStyle: '→',
+    bulletStyle: '▸',
     showDescription: false,
   },
 

@@ -62,6 +62,7 @@ import { FontSelector, RESUME_FONTS } from '../components/FontSelector';
 import { ResumeRenderer } from '../components/ResumeRenderer';
 import { useTemplateConfig } from '../hooks/useTemplateConfig';
 import { getTemplateConfig } from '../config/templates';
+import { generateColorPalette } from '../config/defaultConfig';
 import { MOCK_RESUME_DATA } from '../data/mockData';
 import type { V2ResumeData, SectionType } from '../types';
 import { getTemplate } from '../templates';
@@ -125,7 +126,7 @@ export const BuilderV2: React.FC = () => {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [loadedResume, setLoadedResume] = useState<V2Resume | null>(null);
   const [themeColor, setThemeColor] = useState('#0891b2');
-  const [themeColors, setThemeColors] = useState<{ primary?: string; secondary?: string }>({});
+  const [themeColors, setThemeColors] = useState<{ primary?: string; secondary?: string; headerBackground?: string; sidebarBackground?: string }>({});
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSyncingProfile, setIsSyncingProfile] = useState(false);
   const [sectionLabels, setSectionLabels] = useState<Record<string, string>>({});
@@ -660,9 +661,10 @@ export const BuilderV2: React.FC = () => {
   }, [templateId]);
 
   // Get color slots from base template or create default
+  // Supports up to 4 color slots: primary, secondary, headerBackground, sidebarBackground
   const colorSlots = React.useMemo(() => {
     if (baseConfig?.colorSlots) {
-      return baseConfig.colorSlots.slice(0, 2); // Max 2 colors
+      return baseConfig.colorSlots.slice(0, 4); // Max 4 colors
     }
     return [
       {
@@ -678,7 +680,7 @@ export const BuilderV2: React.FC = () => {
   const initializedRef = React.useRef(false);
   React.useEffect(() => {
     if (!initializedRef.current && colorSlots.length > 0) {
-      const initialColors: { primary?: string; secondary?: string } = {};
+      const initialColors: { primary?: string; secondary?: string; headerBackground?: string; sidebarBackground?: string } = {};
       colorSlots.forEach(slot => {
         initialColors[slot.name] = slot.defaultColor;
       });
@@ -2187,7 +2189,9 @@ export const BuilderV2: React.FC = () => {
                           key={color}
                           onClick={() => {
                             setThemeColor(color);
-                            setThemeColors({ ...themeColors, primary: color });
+                            // Generate harmonious palette from single color
+                            const palette = generateColorPalette(color);
+                            setThemeColors({ ...themeColors, ...palette });
                           }}
                           className={cn(
                             "w-8 h-8 rounded-full transition-all duration-150 hover:scale-110",
@@ -2492,7 +2496,9 @@ export const BuilderV2: React.FC = () => {
                               key={color}
                               onClick={() => {
                                 setThemeColor(color);
-                                setThemeColors({ ...themeColors, primary: color });
+                                // Generate harmonious palette from single color
+                                const palette = generateColorPalette(color);
+                                setThemeColors({ ...themeColors, ...palette });
                               }}
                               className={cn(
                                 "w-7 h-7 rounded-full transition-all duration-150 hover:scale-110",
@@ -2510,7 +2516,9 @@ export const BuilderV2: React.FC = () => {
                             value={themeColors.primary || themeColor}
                             onChange={(e) => {
                               setThemeColor(e.target.value);
-                              setThemeColors({ ...themeColors, primary: e.target.value });
+                              // Generate harmonious palette from single color
+                              const palette = generateColorPalette(e.target.value);
+                              setThemeColors({ ...themeColors, ...palette });
                             }}
                             className="w-7 h-7 rounded cursor-pointer border-0 p-0"
                           />
@@ -2521,7 +2529,13 @@ export const BuilderV2: React.FC = () => {
                               const val = e.target.value;
                               if (/^#[0-9A-Fa-f]{0,6}$/.test(val)) {
                                 setThemeColor(val);
-                                setThemeColors({ ...themeColors, primary: val });
+                                // Only generate full palette when we have a complete hex
+                                if (val.length === 7) {
+                                  const palette = generateColorPalette(val);
+                                  setThemeColors({ ...themeColors, ...palette });
+                                } else {
+                                  setThemeColors({ ...themeColors, primary: val });
+                                }
                               }
                             }}
                             placeholder="#1a365d"
@@ -2940,12 +2954,32 @@ export const BuilderV2: React.FC = () => {
                       setHasUnsavedChanges(true);
                     }}
                     onConfigUpdate={(newConfig) => {
-                      // Handle theme color changes
+                      // Handle theme color changes - extract all supported color slots
                       if (newConfig.colors) {
-                        setThemeColors(prev => ({
-                          ...prev,
-                          ...(newConfig.colors as Record<string, string>)
-                        }));
+                        const colors = newConfig.colors as {
+                          primary?: string;
+                          secondary?: string;
+                          headerBackground?: string;
+                          sidebarBackground?: string;
+                        };
+                        // If only primary is provided (from chat), generate full palette
+                        if (colors.primary && !colors.headerBackground && !colors.sidebarBackground) {
+                          const palette = generateColorPalette(colors.primary);
+                          setThemeColors(prev => ({
+                            ...prev,
+                            ...palette,
+                            ...(colors.secondary && { secondary: colors.secondary }),
+                          }));
+                        } else {
+                          // Otherwise use explicit values
+                          setThemeColors(prev => ({
+                            ...prev,
+                            ...(colors.primary && { primary: colors.primary }),
+                            ...(colors.secondary && { secondary: colors.secondary }),
+                            ...(colors.headerBackground && { headerBackground: colors.headerBackground }),
+                            ...(colors.sidebarBackground && { sidebarBackground: colors.sidebarBackground }),
+                          }));
+                        }
                       }
                       setHasUnsavedChanges(true);
                     }}
@@ -3004,12 +3038,32 @@ export const BuilderV2: React.FC = () => {
                         setHasUnsavedChanges(true);
                       }}
                       onConfigUpdate={(newConfig) => {
-                        // Handle theme color changes
+                        // Handle theme color changes - extract all supported color slots
                         if (newConfig.colors) {
-                          setThemeColors(prev => ({
-                            ...prev,
-                            ...(newConfig.colors as Record<string, string>)
-                          }));
+                          const colors = newConfig.colors as {
+                            primary?: string;
+                            secondary?: string;
+                            headerBackground?: string;
+                            sidebarBackground?: string;
+                          };
+                          // If only primary is provided (from chat), generate full palette
+                          if (colors.primary && !colors.headerBackground && !colors.sidebarBackground) {
+                            const palette = generateColorPalette(colors.primary);
+                            setThemeColors(prev => ({
+                              ...prev,
+                              ...palette,
+                              ...(colors.secondary && { secondary: colors.secondary }),
+                            }));
+                          } else {
+                            // Otherwise use explicit values
+                            setThemeColors(prev => ({
+                              ...prev,
+                              ...(colors.primary && { primary: colors.primary }),
+                              ...(colors.secondary && { secondary: colors.secondary }),
+                              ...(colors.headerBackground && { headerBackground: colors.headerBackground }),
+                              ...(colors.sidebarBackground && { sidebarBackground: colors.sidebarBackground }),
+                            }));
+                          }
                         }
                         setHasUnsavedChanges(true);
                       }}

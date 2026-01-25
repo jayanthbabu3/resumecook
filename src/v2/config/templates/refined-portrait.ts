@@ -64,7 +64,7 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
       color: '#374151',
     },
     contact: {
-      fontSize: '10px',
+      fontSize: '11px',
       fontWeight: 500,
       lineHeight: 1.5,
       color: '#374151',
@@ -84,7 +84,7 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
       bottom: '40px',
       left: '40px',
     },
-    sectionGap: '22px',
+    sectionGap: '18px',
     itemGap: '14px',
     headingToContent: '10px',
     bulletGap: '4px',
@@ -189,12 +189,12 @@ export const refinedPortraitConfig: TemplateConfig = createTemplateConfig({
     primary: "'Source Sans 3', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
   },
 
-  // Creative decorations - warm elegant accents
+  // Creative decorations - warm elegant accents (gradient disabled for clean PDF output)
   decorations: {
     enabled: true,
     elements: ['top-accent-line', 'geometric-corner', 'bottom-wave'],
     opacity: 1,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 

@@ -57,7 +57,7 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
       color: '#64748b',
     },
     body: {
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: 400,
       lineHeight: 1.6,
       color: '#334155',
@@ -147,7 +147,7 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
   },
 
   experience: {
-    variant: 'modern',
+    variant: 'standard',
     showLocation: true,
     bulletStyle: '▸',
   },
@@ -184,12 +184,12 @@ export const obstacleSolverConfig: TemplateConfig = createTemplateConfig({
     secondary: 'Source Sans Pro, Arial, sans-serif',
   },
 
-  // Creative decorations - left-side accents for unique look
+  // Creative decorations - left-side accents for unique look (gradient disabled for clean PDF output)
   decorations: {
     enabled: true,
     elements: ['left-gradient-bar', 'left-dots-accent', 'bottom-left-corner'],
     opacity: 1,
-    gradientBackground: true,
+    gradientBackground: false,
   },
 });
 
