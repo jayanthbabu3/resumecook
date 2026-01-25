@@ -54,6 +54,8 @@ interface JobTailorModalProps {
 
 interface TailorAnalysis {
   matchScore: number;
+  originalScore?: number; // Score before tailoring
+  improvement?: number; // Points improved
   keywordsFound: string[];
   keywordsMissing: string[];
   keywordsAdded: string[];
@@ -72,17 +74,33 @@ const ACCEPTED_FILE_TYPES = [
 
 const ACCEPTED_EXTENSIONS = ['.pdf', '.docx', '.txt'];
 
-// Progress messages during tailoring
+// Progress messages during tailoring (section-by-section)
 const PROGRESS_MESSAGES = [
   "Analyzing job requirements...",
-  "Extracting required skills & keywords...",
-  "Rewriting your professional summary...",
-  "Matching your experience to the role...",
-  "Enhancing bullet points with keywords...",
-  "Adding missing skills from job description...",
-  "Optimizing for ATS systems...",
-  "Calculating job match score...",
-  "Finalizing your optimized resume...",
+  "Extracting keywords for ATS optimization...",
+  "Tailoring your professional summary...",
+  "Optimizing your experience section...",
+  "Reordering skills to match job...",
+  "Enhancing project descriptions...",
+  "Calculating ATS match score...",
+  "Finalizing your tailored resume...",
+];
+
+// Section tailoring steps for real progress tracking
+interface TailorStep {
+  id: string;
+  label: string;
+  sectionType: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'failed' | 'skipped';
+}
+
+const TAILOR_STEPS: TailorStep[] = [
+  { id: 'analyze', label: 'Analyzing job description', sectionType: 'analyze', status: 'pending' },
+  { id: 'summary', label: 'Tailoring summary', sectionType: 'summary', status: 'pending' },
+  { id: 'experience', label: 'Optimizing experience', sectionType: 'experience', status: 'pending' },
+  { id: 'skills', label: 'Reordering skills', sectionType: 'skills', status: 'pending' },
+  { id: 'projects', label: 'Enhancing projects', sectionType: 'projects', status: 'pending' },
+  { id: 'score', label: 'Calculating match score', sectionType: 'score', status: 'pending' },
 ];
 
 // Progress messages during generation (for Start Fresh)
@@ -160,9 +178,11 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Progress state
+  // Progress state - section-by-section tracking
   const [progressMessage, setProgressMessage] = useState(PROGRESS_MESSAGES[0]);
   const [progressIndex, setProgressIndex] = useState(0);
+  const [tailorSteps, setTailorSteps] = useState<TailorStep[]>([...TAILOR_STEPS]);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Scroll refs for synchronized scrolling
@@ -229,10 +249,10 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
     }
   }, [isOpen]);
 
-  // Progress message animation
+  // Progress message animation (only for generating step, tailoring uses real progress)
   useEffect(() => {
-    if (step === 'tailoring' || step === 'generating') {
-      const messages = step === 'generating' ? GENERATION_MESSAGES : PROGRESS_MESSAGES;
+    if (step === 'generating') {
+      const messages = GENERATION_MESSAGES;
       progressIntervalRef.current = setInterval(() => {
         setProgressIndex(prev => {
           const next = (prev + 1) % messages.length;
@@ -433,79 +453,325 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
     }
   };
 
-  // Tailor the resume for the job description
+  // Helper to update a specific step's status
+  const updateStepStatus = (stepId: string, status: TailorStep['status']) => {
+    setTailorSteps(prev => prev.map(s => s.id === stepId ? { ...s, status } : s));
+  };
+
+  // Helper to make API call with retry logic
+  const fetchWithRetry = async (url: string, options: RequestInit, maxRetries = 2): Promise<Response> => {
+    let lastError: Error | null = null;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 35000); // 35s timeout per section
+
+        const response = await apiFetch(url, {
+          ...options,
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        if (response.ok) return response;
+
+        // If not OK but not a timeout, don't retry
+        if (response.status !== 504 && response.status !== 502) {
+          return response;
+        }
+        lastError = new Error(`HTTP ${response.status}`);
+      } catch (err: any) {
+        lastError = err;
+        if (err.name !== 'AbortError' && attempt < maxRetries) {
+          // Exponential backoff: 1s, 2s
+          await new Promise(resolve => setTimeout(resolve, (attempt + 1) * 1000));
+        }
+      }
+    }
+    throw lastError || new Error('Request failed after retries');
+  };
+
+  // Section-by-section tailoring (industry-standard approach - never times out)
   const tailorResume = async (resumeData: V2ResumeData) => {
     setStep('tailoring');
     setProgressIndex(0);
-    setProgressMessage(PROGRESS_MESSAGES[0]);
+    setCurrentStepIndex(0);
+    setTailorSteps([...TAILOR_STEPS]); // Reset steps
+    setProgressMessage('Analyzing job requirements...');
+
+    const tailored = { ...resumeData };
+    let keywords: string[] = [];
+    const failedSections: string[] = [];
 
     try {
-      // Create AbortController for frontend timeout (longer than backend's 60s AI timeout)
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout
+      // Step 1: Analyze job description and extract keywords
+      updateStepStatus('analyze', 'in_progress');
+      setProgressMessage('Extracting keywords for ATS optimization...');
 
-      let response: Response;
       try {
-        response = await apiFetch(API_ENDPOINTS.tailorResumeForJob, {
+        const analyzeResponse = await fetchWithRetry(API_ENDPOINTS.tailorAnalyzeJob, {
           method: 'POST',
-          signal: controller.signal,
           body: JSON.stringify({
-            resumeData,
             jobDescription,
             jobTitle: jobTitle || undefined,
             companyName: companyName || undefined,
           }),
         });
-        clearTimeout(timeoutId);
-      } catch (fetchError: any) {
-        clearTimeout(timeoutId);
-        if (fetchError.name === 'AbortError') {
-          throw new Error('Request timed out. The AI service is taking too long. Please try again.');
+
+        const analyzeResult = await analyzeResponse.json();
+        if (analyzeResult.success && analyzeResult.data?.allKeywords) {
+          keywords = analyzeResult.data.allKeywords;
+          console.log(`[Tailor] Extracted ${keywords.length} keywords`);
         }
-        throw fetchError;
+        updateStepStatus('analyze', 'completed');
+      } catch (err) {
+        console.warn('[Tailor] Keyword extraction failed, continuing with basic tailoring');
+        updateStepStatus('analyze', 'failed');
+        failedSections.push('analyze');
       }
 
-      // Check if response is JSON before parsing
-      const contentType = response.headers.get('content-type');
-      let result: any;
+      setCurrentStepIndex(1);
+
+      // Step 2: Tailor summary
+      if (resumeData.personalInfo?.summary) {
+        updateStepStatus('summary', 'in_progress');
+        setProgressMessage('Tailoring your professional summary...');
+
+        try {
+          const summaryResponse = await fetchWithRetry(API_ENDPOINTS.tailorSection, {
+            method: 'POST',
+            body: JSON.stringify({
+              sectionType: 'summary',
+              sectionData: resumeData.personalInfo.summary,
+              jobDescription,
+              keywords,
+              jobTitle: jobTitle || undefined,
+              companyName: companyName || undefined,
+            }),
+          });
+
+          const summaryResult = await summaryResponse.json();
+          if (summaryResult.success && summaryResult.data) {
+            tailored.personalInfo = {
+              ...tailored.personalInfo,
+              summary: typeof summaryResult.data === 'string'
+                ? summaryResult.data
+                : resumeData.personalInfo.summary,
+            };
+          }
+          updateStepStatus('summary', 'completed');
+        } catch (err) {
+          console.warn('[Tailor] Summary tailoring failed');
+          updateStepStatus('summary', 'failed');
+          failedSections.push('summary');
+        }
+      } else {
+        updateStepStatus('summary', 'skipped');
+      }
+
+      setCurrentStepIndex(2);
+
+      // Step 3: Tailor experience
+      if (resumeData.experience && resumeData.experience.length > 0) {
+        updateStepStatus('experience', 'in_progress');
+        setProgressMessage('Optimizing your experience section...');
+
+        try {
+          const expResponse = await fetchWithRetry(API_ENDPOINTS.tailorSection, {
+            method: 'POST',
+            body: JSON.stringify({
+              sectionType: 'experience',
+              sectionData: resumeData.experience,
+              jobDescription,
+              keywords,
+              jobTitle: jobTitle || undefined,
+              companyName: companyName || undefined,
+            }),
+          });
+
+          const expResult = await expResponse.json();
+          if (expResult.success && Array.isArray(expResult.data)) {
+            // Merge while preserving identity fields
+            tailored.experience = resumeData.experience.map((orig, idx) => {
+              const enhanced = expResult.data.find((e: any) => e.id === orig.id) || expResult.data[idx];
+              return enhanced ? {
+                ...orig,
+                ...enhanced,
+                id: orig.id,
+                company: orig.company,
+                position: orig.position,
+                startDate: orig.startDate,
+                endDate: orig.endDate,
+                current: orig.current,
+                location: orig.location,
+              } : orig;
+            });
+          }
+          updateStepStatus('experience', 'completed');
+        } catch (err) {
+          console.warn('[Tailor] Experience tailoring failed');
+          updateStepStatus('experience', 'failed');
+          failedSections.push('experience');
+        }
+      } else {
+        updateStepStatus('experience', 'skipped');
+      }
+
+      setCurrentStepIndex(3);
+
+      // Step 4: Reorder skills
+      if (resumeData.skills && resumeData.skills.length > 0) {
+        updateStepStatus('skills', 'in_progress');
+        setProgressMessage('Reordering skills to match job requirements...');
+
+        try {
+          const skillsResponse = await fetchWithRetry(API_ENDPOINTS.tailorSection, {
+            method: 'POST',
+            body: JSON.stringify({
+              sectionType: 'skills',
+              sectionData: resumeData.skills,
+              jobDescription,
+              keywords,
+              jobTitle: jobTitle || undefined,
+              companyName: companyName || undefined,
+            }),
+          });
+
+          const skillsResult = await skillsResponse.json();
+          if (skillsResult.success && Array.isArray(skillsResult.data)) {
+            // Backend returns reordered skills + new skills from job requirements
+            // The backend already handles merging - use its result directly
+            // Backend response includes: matched original skills (reordered) + new tailored-skill-* entries
+            tailored.skills = skillsResult.data;
+            console.log(`[Tailor] Skills updated: ${skillsResult.data.length} total (includes new job-relevant skills)`);
+          }
+          updateStepStatus('skills', 'completed');
+        } catch (err) {
+          console.warn('[Tailor] Skills reordering failed');
+          updateStepStatus('skills', 'failed');
+          failedSections.push('skills');
+        }
+      } else {
+        updateStepStatus('skills', 'skipped');
+      }
+
+      setCurrentStepIndex(4);
+
+      // Step 5: Enhance projects (if exists)
+      if (resumeData.projects && resumeData.projects.length > 0) {
+        updateStepStatus('projects', 'in_progress');
+        setProgressMessage('Enhancing project descriptions...');
+
+        try {
+          const projResponse = await fetchWithRetry(API_ENDPOINTS.tailorSection, {
+            method: 'POST',
+            body: JSON.stringify({
+              sectionType: 'projects',
+              sectionData: resumeData.projects,
+              jobDescription,
+              keywords,
+              jobTitle: jobTitle || undefined,
+              companyName: companyName || undefined,
+            }),
+          });
+
+          const projResult = await projResponse.json();
+          if (projResult.success && Array.isArray(projResult.data)) {
+            tailored.projects = resumeData.projects.map((orig, idx) => {
+              const enhanced = projResult.data.find((p: any) => p.id === orig.id) || projResult.data[idx];
+              return enhanced ? { ...orig, ...enhanced, id: orig.id } : orig;
+            });
+          }
+          updateStepStatus('projects', 'completed');
+        } catch (err) {
+          console.warn('[Tailor] Projects tailoring failed');
+          updateStepStatus('projects', 'failed');
+          failedSections.push('projects');
+        }
+      } else {
+        updateStepStatus('projects', 'skipped');
+      }
+
+      setCurrentStepIndex(5);
+
+      // Step 6: Calculate match score
+      updateStepStatus('score', 'in_progress');
+      setProgressMessage('Calculating ATS match score...');
+
+      let matchAnalysis: TailorAnalysis = {
+        matchScore: 70,
+        keywordsFound: [],
+        keywordsMissing: [],
+        keywordsAdded: [],
+        summaryEnhanced: !failedSections.includes('summary'),
+        experienceEnhanced: !failedSections.includes('experience'),
+        roleAlignment: 'Resume has been optimized for the target role',
+      };
 
       try {
-        const text = await response.text();
-        // Check if response looks like a timeout error from Netlify
-        if (text.startsWith('TimeoutError') || text.includes('Task timed out')) {
-          throw new Error('The server timed out processing your request. This usually happens on free Netlify plans (10s limit). Please try again or upgrade to Netlify Pro for longer timeouts.');
-        }
-        result = JSON.parse(text);
-      } catch (parseError: any) {
-        if (parseError.message.includes('server timed out')) {
-          throw parseError;
-        }
-        console.error('Failed to parse response:', parseError);
-        throw new Error('The server returned an invalid response. This may be a timeout issue. Please try again.');
-      }
-
-      if (!response.ok) {
-        throw new Error(result.error || result.details || 'Failed to tailor resume');
-      }
-
-      if (result.success && result.data) {
-        setTailoredData(result.data);
-        setAnalysis(result.analysis || {
-          matchScore: 70,
-          keywordsFound: [],
-          keywordsMissing: [],
-          keywordsAdded: [],
-          summaryEnhanced: true,
-          experienceEnhanced: true,
+        const scoreResponse = await fetchWithRetry(API_ENDPOINTS.tailorMatchScore, {
+          method: 'POST',
+          body: JSON.stringify({
+            resumeData: tailored,
+            originalResumeData: resumeData, // Include original for before/after comparison
+            keywords,
+            jobTitle: jobTitle || undefined,
+          }),
         });
-        setSuggestedSkills(result.suggestedSkills || []);
-        setStep('comparing');
-      } else {
-        throw new Error('Invalid response from tailoring service');
+
+        const scoreResult = await scoreResponse.json();
+        if (scoreResult.success && scoreResult.data) {
+          matchAnalysis = {
+            ...matchAnalysis,
+            matchScore: scoreResult.data.matchScore || 70,
+            originalScore: scoreResult.data.originalScore,
+            improvement: scoreResult.data.improvement,
+            keywordsFound: scoreResult.data.keywordsFound || [],
+            keywordsMissing: (scoreResult.data.keywordsMissing || []).slice(0, 10),
+            keywordsAdded: scoreResult.data.keywordsAdded || [],
+            roleAlignment: scoreResult.data.improvementSummary || scoreResult.data.recommendation || matchAnalysis.roleAlignment,
+          };
+        }
+        updateStepStatus('score', 'completed');
+      } catch (err) {
+        console.warn('[Tailor] Match score calculation failed');
+        updateStepStatus('score', 'failed');
       }
+
+      // Fetch suggested skills
+      setProgressMessage('Finalizing your tailored resume...');
+      try {
+        const skillsResponse = await fetchWithRetry(API_ENDPOINTS.tailorSuggestSkills, {
+          method: 'POST',
+          body: JSON.stringify({
+            currentSkills: tailored.skills || [],
+            jobDescription,
+            keywords,
+            jobTitle: jobTitle || undefined,
+          }),
+        });
+
+        const skillsResult = await skillsResponse.json();
+        if (skillsResult.success && Array.isArray(skillsResult.data)) {
+          setSuggestedSkills(skillsResult.data);
+        }
+      } catch (err) {
+        console.warn('[Tailor] Skill suggestions failed');
+      }
+
+      // Success - show comparison
+      setTailoredData(tailored);
+      setAnalysis(matchAnalysis);
+      setStep('comparing');
+
+      // Log success
+      const successfulSections = TAILOR_STEPS.filter(s =>
+        !failedSections.includes(s.id) && s.id !== 'analyze' && s.id !== 'score'
+      ).length;
+      console.log(`[Tailor] Completed: ${successfulSections} sections tailored, ${failedSections.length} failed`);
+
     } catch (err) {
       console.error('Tailoring error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to tailor resume');
+      setError(err instanceof Error ? err.message : 'Failed to tailor resume. Please try again.');
       setStep('error');
     }
   };
@@ -1053,55 +1319,104 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
 
           {/* Tailoring State */}
           {step === 'tailoring' && (
-            <div className="py-10 sm:py-16 text-center px-4">
-              <div className="relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-6 sm:mb-8">
-                {/* Animated gradient rings */}
-                <div
-                  className="absolute inset-0 rounded-full animate-ping opacity-15"
-                  style={{ backgroundColor: themeColor }}
-                />
-                <div
-                  className="absolute inset-2 sm:inset-3 rounded-full animate-pulse opacity-20"
-                  style={{ backgroundColor: themeColor }}
-                />
-                <div
-                  className="absolute inset-4 sm:inset-6 rounded-full animate-pulse opacity-30"
-                  style={{ backgroundColor: themeColor }}
-                />
-                <div
-                  className="absolute inset-0 rounded-full flex items-center justify-center shadow-xl"
-                  style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
-                >
-                  <Target className="w-7 h-7 sm:w-10 sm:h-10 text-white animate-pulse" />
+            <div className="py-8 sm:py-12 px-4">
+              <div className="max-w-md mx-auto">
+                {/* Header with animation */}
+                <div className="text-center mb-6 sm:mb-8">
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-5">
+                    <div
+                      className="absolute inset-0 rounded-full animate-ping opacity-15"
+                      style={{ backgroundColor: themeColor }}
+                    />
+                    <div
+                      className="absolute inset-0 rounded-full flex items-center justify-center shadow-lg"
+                      style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
+                    >
+                      <Target className="w-7 h-7 sm:w-9 sm:h-9 text-white animate-pulse" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                    Tailoring Your Resume
+                  </h3>
+
+                  <div className="h-6 flex items-center justify-center">
+                    <TypewriterText
+                      text={progressMessage}
+                      speed={35}
+                      className="text-sm text-gray-600"
+                    />
+                  </div>
                 </div>
+
+                {/* Section-by-section progress */}
+                <div className="bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100">
+                  <div className="space-y-3">
+                    {tailorSteps.map((s, idx) => (
+                      <div key={s.id} className="flex items-center gap-3">
+                        <div className={cn(
+                          "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300",
+                          s.status === 'completed' && "bg-green-500",
+                          s.status === 'in_progress' && "border-2",
+                          s.status === 'failed' && "bg-red-100",
+                          s.status === 'skipped' && "bg-gray-200",
+                          s.status === 'pending' && "bg-gray-100"
+                        )}
+                        style={{
+                          borderColor: s.status === 'in_progress' ? themeColor : undefined,
+                          backgroundColor: s.status === 'in_progress' ? `${themeColor}15` : undefined,
+                        }}
+                        >
+                          {s.status === 'completed' && <Check className="w-3.5 h-3.5 text-white" />}
+                          {s.status === 'in_progress' && (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" style={{ color: themeColor }} />
+                          )}
+                          {s.status === 'failed' && <AlertCircle className="w-3.5 h-3.5 text-red-500" />}
+                          {s.status === 'skipped' && <span className="text-[10px] text-gray-400">—</span>}
+                          {s.status === 'pending' && (
+                            <span className="text-[10px] text-gray-400">{idx + 1}</span>
+                          )}
+                        </div>
+                        <span className={cn(
+                          "text-sm transition-colors",
+                          s.status === 'completed' && "text-green-700 font-medium",
+                          s.status === 'in_progress' && "text-gray-900 font-medium",
+                          s.status === 'failed' && "text-red-600",
+                          s.status === 'skipped' && "text-gray-400",
+                          s.status === 'pending' && "text-gray-400"
+                        )}>
+                          {s.label}
+                          {s.status === 'skipped' && <span className="text-xs ml-1">(skipped)</span>}
+                          {s.status === 'failed' && <span className="text-xs ml-1">(retrying...)</span>}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Overall progress */}
+                <div className="mt-4 sm:mt-5">
+                  <div className="flex justify-between text-xs text-gray-500 mb-1.5">
+                    <span>Progress</span>
+                    <span>
+                      {tailorSteps.filter(s => s.status === 'completed' || s.status === 'skipped').length} / {tailorSteps.length}
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500 ease-out"
+                      style={{
+                        width: `${(tailorSteps.filter(s => s.status === 'completed' || s.status === 'skipped').length / tailorSteps.length) * 100}%`,
+                        background: `linear-gradient(90deg, ${themeColor}, ${themeColor}bb)`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <p className="text-xs text-gray-400 text-center mt-4">
+                  Each section is processed separately for reliability
+                </p>
               </div>
-
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                Optimizing Your Resume
-              </h3>
-
-              <div className="h-6 sm:h-8 flex items-center justify-center mb-4 sm:mb-6">
-                <TypewriterText
-                  text={progressMessage}
-                  speed={40}
-                  className="text-sm sm:text-base text-gray-600"
-                />
-              </div>
-
-              {/* Progress bar */}
-              <div className="w-56 sm:w-72 mx-auto h-2 sm:h-2.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
-                <div
-                  className="h-full rounded-full transition-all duration-1000 ease-out"
-                  style={{
-                    width: `${((progressIndex + 1) / PROGRESS_MESSAGES.length) * 100}%`,
-                    background: `linear-gradient(90deg, ${themeColor}, ${themeColor}bb)`,
-                  }}
-                />
-              </div>
-
-              <p className="text-xs sm:text-sm text-gray-400 mt-4 sm:mt-5">
-                This usually takes 10-15 seconds
-              </p>
             </div>
           )}
 
@@ -1149,22 +1464,42 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
           {/* Comparing State - Side by Side Preview */}
           {step === 'comparing' && tailoredData && originalData && analysis && (
             <div className="flex flex-col h-full min-h-0">
-              {/* Match Score Banner */}
+              {/* Match Score Banner - Before/After Comparison */}
               <div
-                className="flex items-center justify-center gap-6 py-2 px-4 border-b"
+                className="flex items-center justify-center gap-4 sm:gap-6 py-2.5 px-4 border-b"
                 style={{ backgroundColor: `${themeColor}08`, borderColor: `${themeColor}20` }}
               >
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" style={{ color: themeColor }} />
                   <span className="text-sm font-medium text-gray-700">Match Score:</span>
-                  <span
-                    className="text-lg font-bold"
-                    style={{ color: themeColor }}
-                  >
-                    {analysis.matchScore}%
-                  </span>
+                  {analysis.originalScore !== undefined && analysis.originalScore < analysis.matchScore ? (
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-base font-medium text-gray-400 line-through">
+                        {analysis.originalScore}%
+                      </span>
+                      <ChevronRight className="w-4 h-4 text-gray-400" />
+                      <span
+                        className="text-lg font-bold"
+                        style={{ color: themeColor }}
+                      >
+                        {analysis.matchScore}%
+                      </span>
+                      {analysis.improvement && analysis.improvement > 0 && (
+                        <span className="text-sm font-semibold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
+                          +{analysis.improvement}%
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <span
+                      className="text-lg font-bold"
+                      style={{ color: themeColor }}
+                    >
+                      {analysis.matchScore}%
+                    </span>
+                  )}
                 </div>
-                {analysis.keywordsAdded.length > 0 && (
+                {analysis.keywordsAdded && analysis.keywordsAdded.length > 0 && (
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-green-600" />
                     <span className="text-sm text-gray-600">

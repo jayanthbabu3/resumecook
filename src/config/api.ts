@@ -34,6 +34,13 @@ export const API_ENDPOINTS = {
   chatWithResumeV2: `${API_BASE_URL}/api/ai/chat-v2`,
   atsScore: `${API_BASE_URL}/api/ai/ats-score`,
 
+  // Section-by-section tailoring (reliable, no timeouts)
+  tailorAnalyzeJob: `${API_BASE_URL}/api/tailor-sections/analyze-job`,
+  tailorSection: `${API_BASE_URL}/api/tailor-sections/section`,
+  tailorSuggestSkills: `${API_BASE_URL}/api/tailor-sections/suggest-skills`,
+  tailorMatchScore: `${API_BASE_URL}/api/tailor-sections/match-score`,
+  tailorFull: `${API_BASE_URL}/api/tailor-sections/full`,
+
   // PDF Generation
   generatePdf: `${API_BASE_URL}/api/generate-pdf`,
 
