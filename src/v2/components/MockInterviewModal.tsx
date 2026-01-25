@@ -328,38 +328,38 @@ export function MockInterviewModal({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-4xl max-h-[85vh] p-0 gap-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-2xl [&>button]:hidden">
+      <DialogContent className="w-full max-w-4xl h-[100dvh] sm:h-auto sm:max-h-[85vh] p-0 gap-0 flex flex-col bg-white sm:rounded-2xl rounded-none border-0 sm:border sm:border-gray-200 shadow-2xl [&>button]:hidden">
         {/* Header - Fixed */}
-        <div className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-white">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center">
-              <MessageSquare className="h-5 w-5 text-white" />
+        <div className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-white">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center">
+              <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                 {stage === 'setup' && 'Practice Interview'}
-                {stage === 'loading' && 'Preparing Your Interview'}
+                {stage === 'loading' && 'Preparing Interview'}
                 {stage === 'interview' && 'Mock Interview'}
-                {stage === 'feedback' && 'Answer Feedback'}
-                {stage === 'report' && 'Interview Results'}
+                {stage === 'feedback' && 'Feedback'}
+                {stage === 'report' && 'Results'}
               </h2>
               {stage === 'setup' && (
-                <p className="text-sm text-gray-500">AI-powered practice based on your resume</p>
+                <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">AI-powered practice based on your resume</p>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* Timer on right side */}
             {(stage === 'interview' || stage === 'feedback') && session && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg">
-                <Clock className="h-4 w-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700 tabular-nums">{formatTime(elapsedTime)}</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-gray-100 rounded-lg">
+                <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700 tabular-nums">{formatTime(elapsedTime)}</span>
               </div>
             )}
             <button
               onClick={onClose}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 transition-colors"
             >
               <X className="h-5 w-5 text-gray-400" />
             </button>
@@ -377,23 +377,23 @@ export function MockInterviewModal({
         )}
 
         {/* Content - Scrollable Body Only */}
-        <div className="px-6 pt-6 pb-4 overflow-y-auto flex-1">
+        <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 overflow-y-auto flex-1">
           {/* ============== SETUP STAGE ============== */}
           {stage === 'setup' && (
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               {/* Compact Description */}
-              <div className="flex items-center gap-4 p-4 bg-primary/5 rounded-xl border border-primary/10">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-primary/5 rounded-xl border border-primary/10">
                 <div className="flex-1">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-600">
                     Practice with AI-generated questions tailored to your resume. Get real-time feedback and improve your interview skills.
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="inline-flex items-center gap-1 text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">
                     <CheckCircle className="h-3 w-3 text-emerald-500" />
                     8 Questions
                   </span>
-                  <span className="inline-flex items-center gap-1 text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-200">
                     <CheckCircle className="h-3 w-3 text-emerald-500" />
                     AI Feedback
                   </span>
@@ -403,7 +403,7 @@ export function MockInterviewModal({
               {/* Interview Type Selection */}
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-2 block">Select Interview Style</label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                   {[
                     { type: 'mixed' as InterviewType, icon: Brain, label: 'Comprehensive', desc: 'All question types' },
                     { type: 'behavioral' as InterviewType, icon: MessageSquare, label: 'Behavioral', desc: 'STAR method focus' },
@@ -413,18 +413,20 @@ export function MockInterviewModal({
                       key={type}
                       onClick={() => setInterviewType(type)}
                       className={cn(
-                        'relative p-4 rounded-xl border-2 transition-all text-left',
+                        'relative p-3 sm:p-4 rounded-xl border-2 transition-all text-left flex sm:block items-center gap-3',
                         interviewType === type
                           ? 'border-primary bg-primary/5'
                           : 'border-gray-200 hover:border-gray-300'
                       )}
                     >
                       {interviewType === type && (
-                        <CheckCircle className="absolute top-2 right-2 h-5 w-5 text-primary" />
+                        <CheckCircle className="absolute top-2 right-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                       )}
-                      <Icon className={cn('h-5 w-5 mb-2', interviewType === type ? 'text-primary' : 'text-gray-400')} />
-                      <span className="font-medium text-gray-900 block text-sm">{label}</span>
-                      <span className="text-xs text-gray-500">{desc}</span>
+                      <Icon className={cn('h-5 w-5 sm:mb-2 flex-shrink-0', interviewType === type ? 'text-primary' : 'text-gray-400')} />
+                      <div>
+                        <span className="font-medium text-gray-900 block text-sm">{label}</span>
+                        <span className="text-xs text-gray-500">{desc}</span>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -434,17 +436,17 @@ export function MockInterviewModal({
               <div className="border border-gray-200 rounded-xl">
                 <button
                   onClick={() => setShowJobInput(!showJobInput)}
-                  className="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-between w-full px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <FileText className="h-4 w-4 text-gray-400" />
                     <span className="text-sm font-medium text-gray-700">Add Job Description</span>
-                    <span className="text-xs text-gray-400">(optional)</span>
+                    <span className="text-xs text-gray-400 hidden sm:inline">(optional)</span>
                   </div>
                   <ChevronDown className={cn('h-4 w-4 text-gray-400 transition-transform', showJobInput && 'rotate-180')} />
                 </button>
                 {showJobInput && (
-                  <div className="px-4 pb-4 border-t border-gray-100">
+                  <div className="px-3 sm:px-4 pb-3 sm:pb-4 border-t border-gray-100">
                     <Textarea
                       placeholder="Paste job description for tailored questions..."
                       value={jobDescription}
@@ -457,7 +459,7 @@ export function MockInterviewModal({
 
               {error && (
                 <div className="p-3 rounded-lg bg-red-50 border border-red-100 flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-red-500" />
+                  <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
                   <p className="text-sm text-red-600">{error}</p>
                 </div>
               )}
@@ -478,17 +480,17 @@ export function MockInterviewModal({
 
           {/* ============== INTERVIEW STAGE ============== */}
           {stage === 'interview' && session && currentQuestion && (
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               {/* Question Header - Centered */}
               <div className="text-center">
-                <div className="inline-flex items-center gap-2 mb-3">
-                  <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
-                    Question {session.currentQuestionIndex + 1} of {session.questions.length}
+                <div className="inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                  <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide">
+                    Q{session.currentQuestionIndex + 1}/{session.questions.length}
                   </span>
-                  <span className="text-gray-300">•</span>
-                  <span className="text-xs font-medium text-gray-500 capitalize">{currentQuestion.type}</span>
+                  <span className="text-gray-300 hidden sm:inline">•</span>
+                  <span className="text-[10px] sm:text-xs font-medium text-gray-500 capitalize">{currentQuestion.type}</span>
                   <span className={cn(
-                    'text-xs font-medium capitalize px-2 py-0.5 rounded-full',
+                    'text-[10px] sm:text-xs font-medium capitalize px-1.5 sm:px-2 py-0.5 rounded-full',
                     currentQuestion.difficulty === 'easy' && 'text-emerald-600 bg-emerald-50',
                     currentQuestion.difficulty === 'medium' && 'text-amber-600 bg-amber-50',
                     currentQuestion.difficulty === 'hard' && 'text-red-600 bg-red-50',
@@ -496,15 +498,15 @@ export function MockInterviewModal({
                 </div>
 
                 {/* Step Dots */}
-                <div className="flex items-center justify-center gap-1.5">
+                <div className="flex items-center justify-center gap-1 sm:gap-1.5">
                   {Array.from({ length: session.questions.length }).map((_, i) => (
                     <div
                       key={i}
                       className={cn(
-                        'h-1.5 rounded-full transition-all',
-                        i < session.currentQuestionIndex && 'w-1.5 bg-emerald-500',
-                        i === session.currentQuestionIndex && 'w-8 bg-primary',
-                        i > session.currentQuestionIndex && 'w-1.5 bg-gray-200'
+                        'h-1 sm:h-1.5 rounded-full transition-all',
+                        i < session.currentQuestionIndex && 'w-1 sm:w-1.5 bg-emerald-500',
+                        i === session.currentQuestionIndex && 'w-5 sm:w-8 bg-primary',
+                        i > session.currentQuestionIndex && 'w-1 sm:w-1.5 bg-gray-200'
                       )}
                     />
                   ))}
@@ -512,10 +514,10 @@ export function MockInterviewModal({
               </div>
 
               {/* Question Card - Clean & Prominent */}
-              <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 p-6">
-                <p className="text-lg text-gray-900 font-medium leading-relaxed">{currentQuestion.question}</p>
+              <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl sm:rounded-2xl border border-gray-100 p-4 sm:p-6">
+                <p className="text-base sm:text-lg text-gray-900 font-medium leading-relaxed">{currentQuestion.question}</p>
                 {currentQuestion.context && (
-                  <div className="mt-4 flex items-start gap-2 text-sm text-amber-600">
+                  <div className="mt-3 sm:mt-4 flex items-start gap-2 text-xs sm:text-sm text-amber-600">
                     <Lightbulb className="h-4 w-4 flex-shrink-0 mt-0.5" />
                     <span>{currentQuestion.context}</span>
                   </div>
@@ -531,10 +533,10 @@ export function MockInterviewModal({
                       <button
                         onClick={handleStartVoice}
                         disabled={isAnalyzing}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gradient-to-r from-primary to-blue-600 hover:opacity-90 transition-opacity"
+                        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gradient-to-r from-primary to-blue-600 hover:opacity-90 transition-opacity"
                       >
                         <Mic className="h-3.5 w-3.5" />
-                        Use Voice
+                        <span className="hidden sm:inline">Use</span> Voice
                       </button>
                     )}
                   </div>
@@ -557,10 +559,10 @@ export function MockInterviewModal({
                       placeholder="Type your answer here... Consider using the STAR method (Situation, Task, Action, Result)"
                       value={currentAnswer}
                       onChange={(e) => setCurrentAnswer(e.target.value)}
-                      className="min-h-[120px] resize-none border-gray-200 rounded-xl focus:ring-primary focus:border-primary bg-white"
+                      className="min-h-[100px] sm:min-h-[120px] resize-none border-gray-200 rounded-xl focus:ring-primary focus:border-primary bg-white text-sm sm:text-base"
                       disabled={isAnalyzing}
                     />
-                    <span className="absolute bottom-3 right-3 text-xs text-gray-300">{currentAnswer.length} chars</span>
+                    <span className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3 text-[10px] sm:text-xs text-gray-300">{currentAnswer.length}</span>
                   </div>
                 )}
                 {voiceError && <p className="mt-2 text-xs text-red-500">{voiceError}</p>}
@@ -570,26 +572,26 @@ export function MockInterviewModal({
 
           {/* ============== FEEDBACK STAGE ============== */}
           {stage === 'feedback' && session && currentQuestion && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* Score and Summary - Horizontal Layout */}
               {currentFeedback && (
-                <div className="flex items-center gap-6 p-4 bg-gray-50 rounded-xl">
-                  <ScoreRing score={currentFeedback.overallScore} maxScore={10} size={80} strokeWidth={6} />
-                  <div className="flex-1">
+                <div className="flex items-center gap-3 sm:gap-6 p-3 sm:p-4 bg-gray-50 rounded-xl">
+                  <ScoreRing score={currentFeedback.overallScore} maxScore={10} size={60} strokeWidth={5} />
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base">
                         {currentFeedback.overallScore >= 8 ? 'Excellent!' : currentFeedback.overallScore >= 6 ? 'Good' : currentFeedback.overallScore >= 4 ? 'Fair' : 'Needs Work'}
                       </h3>
-                      <span className="text-xs text-gray-400">Q{session.currentQuestionIndex + 1} of {session.questions.length}</span>
+                      <span className="text-[10px] sm:text-xs text-gray-400">Q{session.currentQuestionIndex + 1}/{session.questions.length}</span>
                     </div>
-                    {/* Score Bars */}
-                    <div className="grid grid-cols-5 gap-2">
-                      {Object.entries(currentFeedback.scores).map(([key, value]) => (
-                        <div key={key}>
-                          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    {/* Score Bars - Responsive grid */}
+                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 sm:gap-2">
+                      {Object.entries(currentFeedback.scores).map(([key, value], idx) => (
+                        <div key={key} className={cn(idx >= 3 && 'hidden sm:block')}>
+                          <div className="h-1 sm:h-1.5 bg-gray-200 rounded-full overflow-hidden">
                             <div className={cn('h-full rounded-full', value >= 7 ? 'bg-emerald-500' : value >= 5 ? 'bg-blue-500' : 'bg-amber-500')} style={{ width: `${value * 10}%` }} />
                           </div>
-                          <span className="text-[10px] text-gray-400 capitalize">{key}</span>
+                          <span className="text-[8px] sm:text-[10px] text-gray-400 capitalize truncate block">{key}</span>
                         </div>
                       ))}
                     </div>
@@ -599,42 +601,42 @@ export function MockInterviewModal({
 
               {/* Feedback Cards - Full Width */}
               {currentFeedback && (
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {currentFeedback.strengths.length > 0 && (
-                    <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
-                      <div className="flex items-center gap-2 mb-2">
+                    <div className="p-3 sm:p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                      <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
                         <CheckCircle className="h-4 w-4 text-emerald-600" />
-                        <span className="font-medium text-emerald-800 text-sm">Strengths</span>
+                        <span className="font-medium text-emerald-800 text-xs sm:text-sm">Strengths</span>
                       </div>
                       <ul className="space-y-1">
                         {currentFeedback.strengths.map((s, i) => (
-                          <li key={i} className="text-sm text-emerald-700">• {s}</li>
+                          <li key={i} className="text-xs sm:text-sm text-emerald-700">• {s}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
                   {currentFeedback.improvements.length > 0 && (
-                    <div className="p-4 rounded-xl bg-amber-50 border border-amber-100">
-                      <div className="flex items-center gap-2 mb-2">
+                    <div className="p-3 sm:p-4 rounded-xl bg-amber-50 border border-amber-100">
+                      <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
                         <Lightbulb className="h-4 w-4 text-amber-600" />
-                        <span className="font-medium text-amber-800 text-sm">Areas to Improve</span>
+                        <span className="font-medium text-amber-800 text-xs sm:text-sm">Areas to Improve</span>
                       </div>
                       <ul className="space-y-1">
                         {currentFeedback.improvements.map((s, i) => (
-                          <li key={i} className="text-sm text-amber-700">• {s}</li>
+                          <li key={i} className="text-xs sm:text-sm text-amber-700">• {s}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
                   {currentFeedback.suggestedAnswer && (
-                    <div className="p-4 rounded-xl bg-blue-50 border border-blue-100">
-                      <div className="flex items-center gap-2 mb-2">
+                    <div className="p-3 sm:p-4 rounded-xl bg-blue-50 border border-blue-100">
+                      <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
                         <Sparkles className="h-4 w-4 text-blue-600" />
-                        <span className="font-medium text-blue-800 text-sm">Suggested Approach</span>
+                        <span className="font-medium text-blue-800 text-xs sm:text-sm">Suggested Approach</span>
                       </div>
-                      <p className="text-sm text-blue-700">{currentFeedback.suggestedAnswer}</p>
+                      <p className="text-xs sm:text-sm text-blue-700">{currentFeedback.suggestedAnswer}</p>
                     </div>
                   )}
                 </div>
@@ -644,78 +646,80 @@ export function MockInterviewModal({
 
           {/* ============== REPORT STAGE ============== */}
           {stage === 'report' && session && (
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               {isGeneratingReport ? (
-                <div className="py-12 flex flex-col items-center justify-center">
-                  <div className="relative mb-5">
-                    <div className="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-                    <Award className="absolute inset-0 m-auto h-6 w-6 text-primary" />
+                <div className="py-8 sm:py-12 flex flex-col items-center justify-center">
+                  <div className="relative mb-4 sm:mb-5">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+                    <Award className="absolute inset-0 m-auto h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   </div>
-                  <p className="text-gray-700 font-medium">Generating your report...</p>
+                  <p className="text-gray-700 font-medium text-sm sm:text-base">Generating your report...</p>
                 </div>
               ) : session.report ? (
                 <>
-                  {/* Overall Score - Compact */}
-                  <div className="flex items-center gap-6 p-5 rounded-xl bg-gray-50 border border-gray-100">
-                    <ScoreRing score={session.report.overallScore} maxScore={100} size={100} strokeWidth={8} />
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-gray-900 mb-1">Interview Complete</h3>
-                      {(() => {
-                        const readiness = getReadinessInfo(session.report.readinessLevel);
-                        return (
-                          <span className={cn(
-                            'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium',
-                            session.report.readinessLevel === 'interview_ready' && 'bg-emerald-100 text-emerald-700',
-                            session.report.readinessLevel === 'almost_ready' && 'bg-blue-100 text-blue-700',
-                            session.report.readinessLevel === 'needs_practice' && 'bg-amber-100 text-amber-700',
-                            session.report.readinessLevel === 'not_ready' && 'bg-red-100 text-red-700',
-                          )}>
-                            {session.report.readinessLevel === 'interview_ready' && <Trophy className="h-3.5 w-3.5" />}
-                            {session.report.readinessLevel === 'almost_ready' && <TrendingUp className="h-3.5 w-3.5" />}
-                            {readiness.label}
-                          </span>
-                        );
-                      })()}
-                      <div className="flex gap-4 mt-2 text-xs text-gray-500">
-                        <span className="flex items-center gap-1"><MessageSquare className="h-3.5 w-3.5" />{session.questions.length} questions</span>
-                        <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{formatDuration(session.startTime, session.endTime)}</span>
+                  {/* Overall Score - Responsive Layout */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-4 sm:p-5 rounded-xl bg-gray-50 border border-gray-100">
+                    <div className="flex items-center gap-4 sm:gap-6">
+                      <ScoreRing score={session.report.overallScore} maxScore={100} size={80} strokeWidth={6} />
+                      <div className="flex-1 sm:flex-none">
+                        <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">Interview Complete</h3>
+                        {(() => {
+                          const readiness = getReadinessInfo(session.report.readinessLevel);
+                          return (
+                            <span className={cn(
+                              'inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium',
+                              session.report.readinessLevel === 'interview_ready' && 'bg-emerald-100 text-emerald-700',
+                              session.report.readinessLevel === 'almost_ready' && 'bg-blue-100 text-blue-700',
+                              session.report.readinessLevel === 'needs_practice' && 'bg-amber-100 text-amber-700',
+                              session.report.readinessLevel === 'not_ready' && 'bg-red-100 text-red-700',
+                            )}>
+                              {session.report.readinessLevel === 'interview_ready' && <Trophy className="h-3 w-3 sm:h-3.5 sm:w-3.5" />}
+                              {session.report.readinessLevel === 'almost_ready' && <TrendingUp className="h-3 w-3 sm:h-3.5 sm:w-3.5" />}
+                              {readiness.label}
+                            </span>
+                          );
+                        })()}
+                        <div className="flex gap-3 sm:gap-4 mt-2 text-[10px] sm:text-xs text-gray-500">
+                          <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3 sm:h-3.5 sm:w-3.5" />{session.questions.length} questions</span>
+                          <span className="flex items-center gap-1"><Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5" />{formatDuration(session.startTime, session.endTime)}</span>
+                        </div>
                       </div>
                     </div>
                     {/* Category Scores */}
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-4 sm:grid-cols-2 gap-1.5 sm:gap-2 sm:ml-auto">
                       {Object.entries(session.report.categoryScores).map(([key, value]) => (
-                        <div key={key} className="text-center px-3 py-1.5 bg-white rounded-lg border border-gray-100">
-                          <div className={cn('text-lg font-bold', value >= 70 ? 'text-emerald-600' : value >= 50 ? 'text-blue-600' : 'text-amber-600')}>{value}</div>
-                          <div className="text-[10px] text-gray-500 capitalize">{key}</div>
+                        <div key={key} className="text-center px-2 sm:px-3 py-1 sm:py-1.5 bg-white rounded-lg border border-gray-100">
+                          <div className={cn('text-sm sm:text-lg font-bold', value >= 70 ? 'text-emerald-600' : value >= 50 ? 'text-blue-600' : 'text-amber-600')}>{value}</div>
+                          <div className="text-[8px] sm:text-[10px] text-gray-500 capitalize truncate">{key}</div>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  {/* Strengths & Improvements - Side by Side */}
-                  <div className="grid grid-cols-2 gap-3">
+                  {/* Strengths & Improvements - Stack on mobile */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                     {session.report.strengths.length > 0 && (
-                      <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
-                        <div className="flex items-center gap-2 mb-2">
+                      <div className="p-3 sm:p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                        <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
                           <CheckCircle className="h-4 w-4 text-emerald-600" />
-                          <span className="font-medium text-emerald-800 text-sm">Strengths</span>
+                          <span className="font-medium text-emerald-800 text-xs sm:text-sm">Strengths</span>
                         </div>
                         <ul className="space-y-1">
                           {session.report.strengths.slice(0, 3).map((s, i) => (
-                            <li key={i} className="text-sm text-emerald-700">• {s}</li>
+                            <li key={i} className="text-xs sm:text-sm text-emerald-700">• {s}</li>
                           ))}
                         </ul>
                       </div>
                     )}
                     {session.report.areasForImprovement.length > 0 && (
-                      <div className="p-4 rounded-xl bg-amber-50 border border-amber-100">
-                        <div className="flex items-center gap-2 mb-2">
+                      <div className="p-3 sm:p-4 rounded-xl bg-amber-50 border border-amber-100">
+                        <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
                           <TrendingUp className="h-4 w-4 text-amber-600" />
-                          <span className="font-medium text-amber-800 text-sm">Improve</span>
+                          <span className="font-medium text-amber-800 text-xs sm:text-sm">Improve</span>
                         </div>
                         <ul className="space-y-1">
                           {session.report.areasForImprovement.slice(0, 3).map((s, i) => (
-                            <li key={i} className="text-sm text-amber-700">• {s}</li>
+                            <li key={i} className="text-xs sm:text-sm text-amber-700">• {s}</li>
                           ))}
                         </ul>
                       </div>
@@ -724,23 +728,23 @@ export function MockInterviewModal({
 
                   {/* Recommendations */}
                   {session.report.recommendations.length > 0 && (
-                    <div className="p-4 rounded-xl bg-blue-50 border border-blue-100">
-                      <div className="flex items-center gap-2 mb-2">
+                    <div className="p-3 sm:p-4 rounded-xl bg-blue-50 border border-blue-100">
+                      <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
                         <Lightbulb className="h-4 w-4 text-blue-600" />
-                        <span className="font-medium text-blue-800 text-sm">Recommendations</span>
+                        <span className="font-medium text-blue-800 text-xs sm:text-sm">Recommendations</span>
                       </div>
                       <ul className="space-y-1">
                         {session.report.recommendations.slice(0, 3).map((s, i) => (
-                          <li key={i} className="text-sm text-blue-700">{i + 1}. {s}</li>
+                          <li key={i} className="text-xs sm:text-sm text-blue-700">{i + 1}. {s}</li>
                         ))}
                       </ul>
                     </div>
                   )}
                 </>
               ) : (
-                <div className="py-8 text-center">
-                  <AlertCircle className="h-10 w-10 text-red-400 mx-auto mb-3" />
-                  <p className="text-gray-600">{error || 'Failed to generate report.'}</p>
+                <div className="py-6 sm:py-8 text-center">
+                  <AlertCircle className="h-8 w-8 sm:h-10 sm:w-10 text-red-400 mx-auto mb-3" />
+                  <p className="text-sm sm:text-base text-gray-600">{error || 'Failed to generate report.'}</p>
                 </div>
               )}
             </div>
@@ -749,20 +753,24 @@ export function MockInterviewModal({
 
         {/* Fixed Footer - Action Buttons */}
         {stage !== 'loading' && (
-          <div className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-white">
+          <div className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-100 bg-white safe-area-inset-bottom">
             {/* Left Side */}
             <div>
               {stage === 'setup' && (
-                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button variant="outline" onClick={onClose} size="sm" className="h-8 sm:h-9 text-xs sm:text-sm">Cancel</Button>
               )}
               {(stage === 'interview' || stage === 'feedback') && (
-                <Button variant="ghost" size="sm" onClick={handleRestart} className="text-gray-400 hover:text-gray-600">
-                  <RotateCcw className="h-4 w-4 mr-1.5" />Start Over
+                <Button variant="ghost" size="sm" onClick={handleRestart} className="text-gray-400 hover:text-gray-600 h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-3">
+                  <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
+                  <span className="hidden sm:inline">Start Over</span>
+                  <span className="sm:hidden">Reset</span>
                 </Button>
               )}
               {stage === 'report' && !isGeneratingReport && (
-                <Button variant="outline" size="sm" onClick={handleRestart}>
-                  <RotateCcw className="h-4 w-4 mr-1.5" />Practice Again
+                <Button variant="outline" size="sm" onClick={handleRestart} className="h-8 sm:h-9 text-xs sm:text-sm">
+                  <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
+                  <span className="hidden sm:inline">Practice Again</span>
+                  <span className="sm:hidden">Retry</span>
                 </Button>
               )}
             </div>
@@ -772,39 +780,39 @@ export function MockInterviewModal({
               {stage === 'setup' && (
                 <Button
                   onClick={handleStartInterview}
-                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 h-8 sm:h-9 text-xs sm:text-sm px-3 sm:px-4"
                 >
-                  <Play className="h-4 w-4 mr-2" />
-                  Start Interview
+                  <Play className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
+                  Start
                 </Button>
               )}
               {stage === 'interview' && !isListening && (
                 <Button
                   onClick={handleSubmitAnswer}
                   disabled={!currentAnswer.trim() || isAnalyzing}
-                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-md"
+                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-md h-8 sm:h-9 text-xs sm:text-sm px-3 sm:px-4"
                 >
                   {isAnalyzing ? (
-                    <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Analyzing...</>
+                    <><Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 animate-spin" /><span className="hidden sm:inline">Analyzing...</span><span className="sm:hidden">...</span></>
                   ) : (
-                    <><Send className="h-4 w-4 mr-2" />Submit Answer</>
+                    <><Send className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />Submit</>
                   )}
                 </Button>
               )}
               {stage === 'feedback' && session && (
                 <Button
                   onClick={handleNextQuestion}
-                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 h-8 sm:h-9 text-xs sm:text-sm px-3 sm:px-4"
                 >
                   {session.currentQuestionIndex + 1 >= session.questions.length ? (
-                    <><Trophy className="h-4 w-4 mr-2" />View Results</>
+                    <><Trophy className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /><span className="hidden sm:inline">View Results</span><span className="sm:hidden">Results</span></>
                   ) : (
-                    <>Next Question<ArrowRight className="h-4 w-4 ml-2" /></>
+                    <>Next<ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 ml-1.5 sm:ml-2" /></>
                   )}
                 </Button>
               )}
               {stage === 'report' && !isGeneratingReport && (
-                <Button onClick={onClose} className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
+                <Button onClick={onClose} className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 h-8 sm:h-9 text-xs sm:text-sm px-3 sm:px-4">
                   Done
                 </Button>
               )}

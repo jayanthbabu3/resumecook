@@ -2128,45 +2128,84 @@ export const BuilderV2: React.FC = () => {
 
               {/* Center: AI Buttons */}
               <div className="flex items-center gap-1.5">
-                {/* TODO: Re-enable when AI Enhancement is fixed
-                <button
-                  data-tour="mobile-ai-btn"
-                  onClick={() => setShowEnhanceModal(true)}
-                  className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
-                  style={{
-                    background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%)',
-                  }}
-                >
-                  <Sparkles className="w-3 h-3" />
-                  <span>AI</span>
-                </button>
-                */}
-                <button
-                  onClick={() => setShowJobTailorModal(true)}
-                  className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
-                  style={{
-                    background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                  }}
-                >
-                  <Target className="w-3 h-3" />
-                  <span>Job</span>
-                </button>
-{/* ATS Button - Hidden for refinement */}
-                {/* TODO: Re-enable when ATS checker is refined
-                <button
-                  onClick={() => setShowATSPanel(true)}
-                  className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
-                  style={{
-                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                  }}
-                >
-                  <FileCheck className="w-3 h-3" />
-                  <span>ATS</span>
-                </button>
-                */}
+                {/* AI Features Popover - Contains Tailor for Job + Practice Interview */}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      className="h-7 px-2.5 flex items-center gap-1 rounded-lg text-white font-medium text-xs shadow-sm"
+                      style={{
+                        background: 'linear-gradient(135deg, #f59e0b 0%, #06b6d4 100%)',
+                      }}
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      <span>AI</span>
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent align="center" side="bottom" className="w-52 p-2 shadow-xl rounded-xl mt-1">
+                    <div className="space-y-1">
+                      {/* Tailor for Job */}
+                      <button
+                        onClick={() => {
+                          if (!user || !isPro) {
+                            setProModalFeature({
+                              name: 'Match to Job',
+                              description: 'Match your resume to specific job postings',
+                            });
+                            setShowProModal(true);
+                          } else {
+                            setShowJobTailorModal(true);
+                          }
+                        }}
+                        className="w-full px-3 py-2 flex items-center gap-3 rounded-lg hover:bg-amber-50 transition-colors text-left"
+                      >
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{
+                            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                          }}
+                        >
+                          <Target className="h-3.5 w-3.5 text-white" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">Tailor for Job</div>
+                          <div className="text-[10px] text-gray-500">Match to job posting</div>
+                        </div>
+                      </button>
+
+                      {/* Practice Interview */}
+                      <button
+                        onClick={() => {
+                          if (!user || !isPro) {
+                            setProModalFeature({
+                              name: 'Practice Interview',
+                              description: 'AI-generated interview questions based on your resume',
+                            });
+                            setShowProModal(true);
+                          } else {
+                            setShowMockInterview(true);
+                          }
+                        }}
+                        className="w-full px-3 py-2 flex items-center gap-3 rounded-lg hover:bg-cyan-50 transition-colors text-left"
+                      >
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{
+                            background: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
+                          }}
+                        >
+                          <MessageSquare className="h-3.5 w-3.5 text-white" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">Mock Interview</div>
+                          <div className="text-[10px] text-gray-500">AI practice questions</div>
+                        </div>
+                      </button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
 
-              {/* Right: Color + Download */}
+              {/* Right: Color + Save + Download */}
               <div className="flex items-center gap-1">
                 <Popover>
                   <PopoverTrigger asChild>
@@ -2205,6 +2244,30 @@ export const BuilderV2: React.FC = () => {
                     </div>
                   </PopoverContent>
                 </Popover>
+                {/* Save Button */}
+                <button
+                  onClick={() => {
+                    if (!user) {
+                      setProModalFeature({
+                        name: 'Save Resume',
+                        description: 'Sign in to save your resume and access it from anywhere',
+                      });
+                      setShowProModal(true);
+                    } else {
+                      handleSaveClick();
+                    }
+                  }}
+                  disabled={isSaving}
+                  className={cn(
+                    "h-8 w-8 flex items-center justify-center rounded-lg transition-all duration-200",
+                    hasUnsavedChanges
+                      ? "bg-amber-100 text-amber-600"
+                      : "hover:bg-gray-100 text-gray-600"
+                  )}
+                  title={hasUnsavedChanges ? "Save changes" : "Saved"}
+                >
+                  {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                </button>
                 <Button
                   data-tour="mobile-download-btn"
                   onClick={handleDownload}
@@ -3185,42 +3248,6 @@ export const BuilderV2: React.FC = () => {
                   />
                 </PopoverContent>
               </Popover>
-
-              {/* Save */}
-              <button
-                onClick={() => {
-                  if (!user) {
-                    setProModalFeature({
-                      name: 'Save Resume',
-                      description: 'Sign in to save your resume and access it from anywhere',
-                    });
-                    setShowProModal(true);
-                  } else {
-                    handleSaveClick();
-                  }
-                }}
-                disabled={isSaving}
-                className={cn(
-                  "h-10 w-10 flex items-center justify-center rounded-xl transition-all duration-200",
-                  hasUnsavedChanges
-                    ? "bg-amber-50 text-amber-600"
-                    : "hover:bg-gray-100 text-gray-600"
-                )}
-                title={hasUnsavedChanges ? "Save changes" : "Saved"}
-              >
-                {isSaving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
-              </button>
-
-              {/* Download */}
-              <Button
-                onClick={handleDownload}
-                disabled={isDownloading}
-                size="icon"
-                className="h-10 w-10 rounded-xl"
-                title="Download PDF"
-              >
-                {isDownloading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
-              </Button>
             </div>
           </div>
         </div>
@@ -3411,11 +3438,12 @@ export const BuilderV2: React.FC = () => {
       */}
 
       {/* Floating Chat Button - Opens chat panel on the right */}
-      {!isChatMode && (
+      {/* Hidden when JobTailorModal or other modals are open to prevent overlap */}
+      {!isChatMode && !showJobTailorModal && (
         <button
           onClick={() => setIsChatMode(true)}
           className={cn(
-            'fixed z-50',
+            'fixed z-40',
             // Desktop: bottom right with full text
             'lg:bottom-6 lg:right-6',
             // Mobile: above the bottom bar, centered

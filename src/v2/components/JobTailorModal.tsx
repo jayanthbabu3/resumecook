@@ -8,7 +8,7 @@
  * 4. Preview and apply the tailored resume
  */
 
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import {
   Target,
   X,
@@ -24,12 +24,18 @@ import {
   User,
   Briefcase,
   ChevronRight,
+  ChevronDown,
   Lightbulb,
   Check,
   RotateCcw,
   TrendingUp,
   Lock,
   LogIn,
+  Columns,
+  Maximize2,
+  Plus,
+  Eye,
+  Diff,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -113,6 +119,73 @@ const GENERATION_MESSAGES = [
   "Creating role-specific content...",
   "Finalizing your resume structure...",
 ];
+
+// View modes for the comparing step
+type CompareViewMode = 'side-by-side' | 'tailored-only' | 'diff';
+
+// Helper to detect if a section has changed
+interface SectionChanges {
+  summary: boolean;
+  experience: boolean;
+  skills: boolean;
+  projects: boolean;
+  newSkillsCount: number;
+  modifiedBullets: number;
+}
+
+const detectSectionChanges = (original: V2ResumeData, tailored: V2ResumeData): SectionChanges => {
+  const changes: SectionChanges = {
+    summary: false,
+    experience: false,
+    skills: false,
+    projects: false,
+    newSkillsCount: 0,
+    modifiedBullets: 0,
+  };
+
+  // Check summary
+  if (original.personalInfo?.summary !== tailored.personalInfo?.summary) {
+    changes.summary = true;
+  }
+
+  // Check experience - count modified bullets
+  if (original.experience && tailored.experience) {
+    let bulletChanges = 0;
+    tailored.experience.forEach((exp, idx) => {
+      const origExp = original.experience?.[idx];
+      if (origExp) {
+        const origBullets = origExp.highlights?.join('||') || '';
+        const newBullets = exp.highlights?.join('||') || '';
+        if (origBullets !== newBullets) {
+          bulletChanges += (exp.highlights?.length || 0);
+        }
+      }
+    });
+    if (bulletChanges > 0) {
+      changes.experience = true;
+      changes.modifiedBullets = bulletChanges;
+    }
+  }
+
+  // Check skills - count new ones
+  const originalSkillIds = new Set(original.skills?.map(s => s.id) || []);
+  const newSkills = tailored.skills?.filter(s => !originalSkillIds.has(s.id)) || [];
+  if (newSkills.length > 0 || (original.skills?.length !== tailored.skills?.length)) {
+    changes.skills = true;
+    changes.newSkillsCount = newSkills.length;
+  }
+
+  // Check projects
+  if (original.projects && tailored.projects) {
+    const origDesc = original.projects.map(p => p.description).join('||');
+    const newDesc = tailored.projects.map(p => p.description).join('||');
+    if (origDesc !== newDesc) {
+      changes.projects = true;
+    }
+  }
+
+  return changes;
+};
 
 // Typing effect component for progress messages
 const TypewriterText: React.FC<{ text: string; speed?: number; className?: string }> = ({
@@ -198,6 +271,18 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // Compare view mode state
+  const [compareViewMode, setCompareViewMode] = useState<CompareViewMode>('tailored-only');
+  const [showChangesPanel, setShowChangesPanel] = useState(true);
+
+  // Compute section changes when comparing
+  const sectionChanges = useMemo(() => {
+    if (originalData && tailoredData) {
+      return detectSectionChanges(originalData, tailoredData);
+    }
+    return null;
+  }, [originalData, tailoredData]);
 
   // Update step when user auth state changes
   useEffect(() => {
@@ -1461,164 +1546,378 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
             </div>
           )}
 
-          {/* Comparing State - Side by Side Preview */}
+          {/* Comparing State - Redesigned for Maximum Space */}
           {step === 'comparing' && tailoredData && originalData && analysis && (
             <div className="flex flex-col h-full min-h-0">
-              {/* Match Score Banner - Before/After Comparison */}
+              {/* Stats Bar - Ultra compact on mobile */}
               <div
-                className="flex items-center justify-center gap-4 sm:gap-6 py-2.5 px-4 border-b"
-                style={{ backgroundColor: `${themeColor}08`, borderColor: `${themeColor}20` }}
+                className="flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 border-b flex-shrink-0"
+                style={{ backgroundColor: `${themeColor}05`, borderColor: `${themeColor}15` }}
               >
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" style={{ color: themeColor }} />
-                  <span className="text-sm font-medium text-gray-700">Match Score:</span>
+                {/* Left: Match Score */}
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <div
+                    className="w-5 h-5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center"
+                    style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
+                  >
+                    <TrendingUp className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-white" />
+                  </div>
                   {analysis.originalScore !== undefined && analysis.originalScore < analysis.matchScore ? (
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-base font-medium text-gray-400 line-through">
-                        {analysis.originalScore}%
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
-                      <span
-                        className="text-lg font-bold"
-                        style={{ color: themeColor }}
-                      >
+                    <div className="flex items-center gap-0.5 sm:gap-1">
+                      <span className="text-[10px] sm:text-sm text-gray-400 line-through">{analysis.originalScore}%</span>
+                      <ArrowRight className="w-2 h-2 sm:w-3 sm:h-3 text-gray-400" />
+                      <span className="text-sm sm:text-base font-bold" style={{ color: themeColor }}>
                         {analysis.matchScore}%
                       </span>
-                      {analysis.improvement && analysis.improvement > 0 && (
-                        <span className="text-sm font-semibold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
-                          +{analysis.improvement}%
-                        </span>
-                      )}
+                      <span className="text-[9px] sm:text-xs font-semibold text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded-full">
+                        +{analysis.improvement}%
+                      </span>
                     </div>
                   ) : (
-                    <span
-                      className="text-lg font-bold"
-                      style={{ color: themeColor }}
-                    >
+                    <span className="text-sm sm:text-base font-bold" style={{ color: themeColor }}>
                       {analysis.matchScore}%
                     </span>
                   )}
                 </div>
-                {analysis.keywordsAdded && analysis.keywordsAdded.length > 0 && (
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-600">
-                      +{analysis.keywordsAdded.length} keywords added
+
+                {/* Center: Change badges (mobile & desktop) */}
+                <div className="flex items-center gap-1">
+                  {sectionChanges?.summary && (
+                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium bg-blue-50 text-blue-700">
+                      <Diff className="w-2 h-2 sm:w-2.5 sm:h-2.5 hidden sm:block" />
+                      Summary
                     </span>
+                  )}
+                  {sectionChanges?.skills && sectionChanges.newSkillsCount > 0 && (
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-medium bg-emerald-50 text-emerald-700">
+                      +{sectionChanges.newSkillsCount} <span className="hidden sm:inline ml-0.5">skills</span>
+                    </span>
+                  )}
+                </div>
+
+                {/* Right: View Toggle (desktop only) */}
+                <div className="hidden sm:flex items-center gap-1 bg-white rounded-lg p-0.5 shadow-sm border border-gray-200">
+                  <button
+                    onClick={() => setCompareViewMode('tailored-only')}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all",
+                      compareViewMode === 'tailored-only'
+                        ? "text-white shadow-sm"
+                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                    )}
+                    style={compareViewMode === 'tailored-only' ? { background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` } : {}}
+                  >
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    Full View
+                  </button>
+                  <button
+                    onClick={() => setCompareViewMode('side-by-side')}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all",
+                      compareViewMode === 'side-by-side'
+                        ? "text-white shadow-sm"
+                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                    )}
+                    style={compareViewMode === 'side-by-side' ? { background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` } : {}}
+                  >
+                    <Columns className="w-3.5 h-3.5" />
+                    Compare
+                  </button>
+                </div>
+              </div>
+
+              {/* Main Content Area */}
+              <div className="flex-1 flex min-h-0">
+                {/* Resume Preview Area */}
+                <div className={cn(
+                  "flex-1 flex min-h-0 p-1 sm:p-2 gap-2 transition-all duration-300",
+                  // On mobile, always use column layout (full view only)
+                  // On desktop, use row layout for side-by-side
+                  compareViewMode === 'side-by-side' ? "sm:flex-row flex-col" : "flex-col"
+                )}>
+                  {/* Original Resume (shown in side-by-side mode on desktop only) */}
+                  {compareViewMode === 'side-by-side' && (
+                    <div className="hidden sm:flex flex-1 flex-col min-w-0 min-h-0">
+                      <div className="flex items-center gap-1.5 mb-1 px-1">
+                        <FileText className="w-3.5 h-3.5 text-gray-400" />
+                        <span className="font-medium text-gray-500 text-xs">Original</span>
+                      </div>
+                      <div className="flex-1 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-0 relative">
+                        <div
+                          ref={originalScrollRef}
+                          onScroll={() => handleScroll('original')}
+                          className="absolute inset-0 overflow-y-auto"
+                        >
+                          <div className="p-1 min-h-full flex justify-center">
+                            <div className="bg-white shadow-sm flex-shrink-0 opacity-60" style={{ width: '100%', maxWidth: '600px' }}>
+                              <StyleOptionsProvider>
+                                <StyleOptionsWrapper>
+                                  <InlineEditProvider resumeData={originalData as any} setResumeData={() => {}}>
+                                    <ResumeRenderer
+                                      resumeData={originalData}
+                                      templateId={templateId}
+                                      themeColors={themeColors}
+                                      editable={false}
+                                    />
+                                  </InlineEditProvider>
+                                </StyleOptionsWrapper>
+                              </StyleOptionsProvider>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Divider (side-by-side mode on desktop only) */}
+                  {compareViewMode === 'side-by-side' && (
+                    <div className="hidden sm:flex flex-col items-center justify-center w-6">
+                      <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
+                      <div
+                        className="w-5 h-5 rounded-full flex items-center justify-center shadow-sm"
+                        style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
+                      >
+                        <ArrowRight className="w-2.5 h-2.5 text-white" />
+                      </div>
+                      <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
+                    </div>
+                  )}
+
+                  {/* Tailored Resume (main focus) */}
+                  <div className={cn(
+                    "flex flex-col min-h-0",
+                    compareViewMode === 'side-by-side' ? "flex-1 min-w-0" : "flex-1"
+                  )}>
+                    {/* Label for side-by-side mode on desktop */}
+                    {compareViewMode === 'side-by-side' && (
+                      <div className="hidden sm:flex items-center justify-between mb-1 px-1">
+                        <div className="flex items-center gap-1.5">
+                          <Target className="w-3.5 h-3.5" style={{ color: themeColor }} />
+                          <span className="font-semibold text-xs" style={{ color: themeColor }}>Tailored</span>
+                        </div>
+                        <span
+                          className="text-[10px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5"
+                          style={{ backgroundColor: `${themeColor}15`, color: themeColor }}
+                        >
+                          <Sparkles className="w-2.5 h-2.5" />
+                          AI
+                        </span>
+                      </div>
+                    )}
+                    <div
+                      className={cn(
+                        "flex-1 rounded-lg sm:rounded-xl overflow-hidden min-h-0 relative",
+                        (compareViewMode === 'tailored-only' || typeof window !== 'undefined' && window.innerWidth < 640) && "shadow-lg"
+                      )}
+                      style={{
+                        backgroundColor: 'white',
+                        border: `2px solid ${themeColor}30`,
+                      }}
+                    >
+                      <div
+                        ref={tailoredScrollRef}
+                        onScroll={() => handleScroll('tailored')}
+                        className="absolute inset-0 overflow-y-auto"
+                      >
+                        <div className={cn(
+                          "min-h-full flex justify-center",
+                          // Less padding on mobile
+                          "p-1 sm:p-2",
+                          compareViewMode === 'tailored-only' && "sm:p-4"
+                        )}>
+                          <div
+                            className="bg-white shadow-lg flex-shrink-0"
+                            style={{
+                              width: '100%',
+                              maxWidth: compareViewMode === 'tailored-only' ? '800px' : '600px',
+                            }}
+                          >
+                            <StyleOptionsProvider>
+                              <StyleOptionsWrapper>
+                                <InlineEditProvider resumeData={tailoredData as any} setResumeData={() => {}}>
+                                  <ResumeRenderer
+                                    resumeData={tailoredData}
+                                    templateId={templateId}
+                                    themeColors={themeColors}
+                                    editable={false}
+                                  />
+                                </InlineEditProvider>
+                              </StyleOptionsWrapper>
+                            </StyleOptionsProvider>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                </div>
+
+                {/* Right Panel: Changes Summary (collapsible) */}
+                {showChangesPanel && compareViewMode === 'tailored-only' && (
+                  <div className="w-64 border-l border-gray-100 flex flex-col bg-gray-50/50 flex-shrink-0 hidden lg:flex">
+                    <div className="p-3 border-b border-gray-100 flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5" style={{ color: themeColor }} />
+                        What Changed
+                      </h3>
+                      <button
+                        onClick={() => setShowChangesPanel(false)}
+                        className="w-5 h-5 rounded flex items-center justify-center hover:bg-gray-200 text-gray-400"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-3 space-y-3">
+                      {/* Summary Changes */}
+                      {sectionChanges?.summary && (
+                        <div className="bg-white rounded-lg p-2.5 border border-gray-100">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <div className="w-5 h-5 rounded bg-blue-100 flex items-center justify-center">
+                              <FileText className="w-3 h-3 text-blue-600" />
+                            </div>
+                            <span className="text-xs font-semibold text-gray-800">Summary</span>
+                            <Check className="w-3 h-3 text-emerald-500 ml-auto" />
+                          </div>
+                          <p className="text-[10px] text-gray-500 leading-relaxed">
+                            Rewritten with job-specific keywords and role alignment
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Experience Changes */}
+                      {sectionChanges?.experience && (
+                        <div className="bg-white rounded-lg p-2.5 border border-gray-100">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <div className="w-5 h-5 rounded bg-purple-100 flex items-center justify-center">
+                              <Briefcase className="w-3 h-3 text-purple-600" />
+                            </div>
+                            <span className="text-xs font-semibold text-gray-800">Experience</span>
+                            <span className="text-[10px] px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded ml-auto">
+                              {sectionChanges.modifiedBullets} bullets
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-gray-500 leading-relaxed">
+                            Bullet points enhanced with target role terminology
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Skills Changes */}
+                      {sectionChanges?.skills && (
+                        <div className="bg-white rounded-lg p-2.5 border border-gray-100">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <div className="w-5 h-5 rounded bg-emerald-100 flex items-center justify-center">
+                              <Sparkles className="w-3 h-3 text-emerald-600" />
+                            </div>
+                            <span className="text-xs font-semibold text-gray-800">Skills</span>
+                            <span className="text-[10px] px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded ml-auto">
+                              +{sectionChanges.newSkillsCount} added
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-gray-500 leading-relaxed">
+                            Reordered by relevance, added missing job requirements
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Keywords Added */}
+                      {analysis.keywordsAdded && analysis.keywordsAdded.length > 0 && (
+                        <div className="bg-white rounded-lg p-2.5 border border-gray-100">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-5 h-5 rounded bg-amber-100 flex items-center justify-center">
+                              <Target className="w-3 h-3 text-amber-600" />
+                            </div>
+                            <span className="text-xs font-semibold text-gray-800">Keywords Added</span>
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            {analysis.keywordsAdded.slice(0, 8).map((kw, i) => (
+                              <span
+                                key={i}
+                                className="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600"
+                              >
+                                {kw}
+                              </span>
+                            ))}
+                            {analysis.keywordsAdded.length > 8 && (
+                              <span className="text-[10px] px-1.5 py-0.5 text-gray-400">
+                                +{analysis.keywordsAdded.length - 8} more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Missing Skills to Add */}
+                      {suggestedSkills.length > 0 && (
+                        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-2.5 border border-amber-200">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-5 h-5 rounded bg-amber-200 flex items-center justify-center">
+                              <Lightbulb className="w-3 h-3 text-amber-700" />
+                            </div>
+                            <span className="text-xs font-semibold text-amber-800">Add Missing Skills</span>
+                          </div>
+                          <div className="space-y-1">
+                            {suggestedSkills.slice(0, 5).map(skill => (
+                              <button
+                                key={skill.id}
+                                onClick={() => {
+                                  setAcceptedSkills(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has(skill.id)) {
+                                      next.delete(skill.id);
+                                    } else {
+                                      next.add(skill.id);
+                                    }
+                                    return next;
+                                  });
+                                }}
+                                className={cn(
+                                  "w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-all text-left",
+                                  acceptedSkills.has(skill.id)
+                                    ? "bg-amber-200 text-amber-900"
+                                    : "bg-white/80 text-gray-700 hover:bg-white"
+                                )}
+                              >
+                                {acceptedSkills.has(skill.id) ? (
+                                  <Check className="w-3 h-3 text-amber-700 flex-shrink-0" />
+                                ) : (
+                                  <Plus className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                                )}
+                                <span className="font-medium truncate">{skill.name}</span>
+                              </button>
+                            ))}
+                          </div>
+                          {suggestedSkills.length > 5 && (
+                            <p className="text-[10px] text-amber-600 mt-1.5 text-center">
+                              +{suggestedSkills.length - 5} more available
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Collapsed Panel Toggle */}
+                {!showChangesPanel && compareViewMode === 'tailored-only' && (
+                  <button
+                    onClick={() => setShowChangesPanel(true)}
+                    className="hidden lg:flex w-8 items-center justify-center border-l border-gray-100 bg-gray-50/50 hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex flex-col items-center gap-1 -rotate-90">
+                      <Eye className="w-3 h-3 text-gray-400" />
+                      <span className="text-[9px] font-medium text-gray-500 whitespace-nowrap">Changes</span>
+                    </div>
+                  </button>
                 )}
               </div>
 
-              {/* Side-by-Side Resume Previews */}
-              <div className="flex-1 flex gap-2 p-2 min-h-0">
-                {/* Original Resume */}
-                <div className="flex-1 flex flex-col min-w-0 min-h-0">
-                  <div className="flex items-center justify-between mb-1.5 px-1">
-                    <div className="flex items-center gap-1.5">
-                      <FileText className="w-4 h-4 text-gray-400" />
-                      <span className="font-medium text-gray-500 text-sm">Original</span>
-                    </div>
-                  </div>
-                  <div className="flex-1 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-0 relative">
-                    <div
-                      ref={originalScrollRef}
-                      onScroll={() => handleScroll('original')}
-                      className="absolute inset-0 overflow-y-auto"
-                    >
-                      <div className="p-1 min-h-full flex justify-center">
-                        <div className="bg-white shadow-sm flex-shrink-0 opacity-70" style={{ width: '100%' }}>
-                          <StyleOptionsProvider>
-                            <StyleOptionsWrapper>
-                              <InlineEditProvider resumeData={originalData as any} setResumeData={() => {}}>
-                                <ResumeRenderer
-                                  resumeData={originalData}
-                                  templateId={templateId}
-                                  themeColors={themeColors}
-                                  editable={false}
-                                />
-                              </InlineEditProvider>
-                            </StyleOptionsWrapper>
-                          </StyleOptionsProvider>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Center Divider */}
-                <div className="flex flex-col items-center justify-center">
-                  <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center shadow-md my-1"
-                    style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}cc)` }}
-                  >
-                    <ChevronRight className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="flex-1 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
-                </div>
-
-                {/* Tailored Resume */}
-                <div className="flex-1 flex flex-col min-w-0 min-h-0">
-                  <div className="flex items-center justify-between mb-1.5 px-1">
-                    <div className="flex items-center gap-1.5">
-                      <Target className="w-4 h-4" style={{ color: themeColor }} />
-                      <span className="font-semibold text-sm" style={{ color: themeColor }}>Tailored</span>
-                    </div>
-                    <span
-                      className="text-[10px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5"
-                      style={{ backgroundColor: `${themeColor}15`, color: themeColor }}
-                    >
-                      <Sparkles className="w-2.5 h-2.5" />
-                      AI
-                    </span>
-                  </div>
-                  <div
-                    className="flex-1 rounded-lg overflow-hidden min-h-0 relative"
-                    style={{
-                      backgroundColor: `${themeColor}03`,
-                      border: `2px solid ${themeColor}40`,
-                      boxShadow: `0 0 30px ${themeColor}12`
-                    }}
-                  >
-                    <div
-                      ref={tailoredScrollRef}
-                      onScroll={() => handleScroll('tailored')}
-                      className="absolute inset-0 overflow-y-auto"
-                    >
-                      <div className="p-1 min-h-full flex justify-center">
-                        <div
-                          className="bg-white shadow-lg flex-shrink-0"
-                          style={{
-                            width: '100%',
-                            boxShadow: `0 0 0 2px ${themeColor}20, 0 10px 30px -5px rgba(0,0,0,0.12)`
-                          }}
-                        >
-                          <StyleOptionsProvider>
-                            <StyleOptionsWrapper>
-                              <InlineEditProvider resumeData={tailoredData as any} setResumeData={() => {}}>
-                                <ResumeRenderer
-                                  resumeData={tailoredData}
-                                  templateId={templateId}
-                                  themeColors={themeColors}
-                                  editable={false}
-                                />
-                              </InlineEditProvider>
-                            </StyleOptionsWrapper>
-                          </StyleOptionsProvider>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Suggested Skills */}
-              {suggestedSkills.length > 0 && (
-                <div className="px-3 py-1.5 border-t border-gray-100 flex items-center gap-2 flex-shrink-0 bg-gray-50/50">
-                  <Lightbulb className="w-3.5 h-3.5 flex-shrink-0" style={{ color: themeColor }} />
-                  <span className="text-xs text-gray-500 flex-shrink-0">Missing Skills:</span>
+              {/* Mobile/Tablet Missing Skills - Compact horizontal scroll */}
+              {suggestedSkills.length > 0 && (compareViewMode === 'side-by-side' || !showChangesPanel) && (
+                <div className="px-2 py-1.5 border-t border-gray-100 flex items-center gap-1.5 flex-shrink-0 bg-gray-50/30 lg:hidden">
+                  <Lightbulb className="w-3.5 h-3.5 flex-shrink-0 text-amber-500" />
                   <div className="flex gap-1 flex-1 min-w-0 overflow-x-auto">
-                    {suggestedSkills.map(skill => (
+                    {suggestedSkills.slice(0, 5).map(skill => (
                       <button
                         key={skill.id}
                         onClick={() => {
@@ -1633,26 +1932,30 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
                           });
                         }}
                         className={cn(
-                          "inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium transition-all whitespace-nowrap",
+                          "inline-flex items-center gap-0.5 px-2 py-1 rounded text-[10px] font-medium transition-all whitespace-nowrap touch-manipulation",
                           acceptedSkills.has(skill.id)
                             ? ""
-                            : "bg-white border border-gray-200 hover:border-gray-300 text-gray-600"
+                            : "bg-white border border-gray-200 active:bg-gray-50 text-gray-600"
                         )}
                         style={acceptedSkills.has(skill.id) ? {
                           backgroundColor: `${themeColor}15`,
                           border: `1px solid ${themeColor}`,
                           color: themeColor
                         } : {}}
-                        title={skill.reason}
                       >
                         {acceptedSkills.has(skill.id) ? (
                           <Check className="w-2.5 h-2.5" />
                         ) : (
-                          <div className="w-2.5 h-2.5 rounded-sm border border-gray-300" />
+                          <Plus className="w-2.5 h-2.5" />
                         )}
                         {skill.name}
                       </button>
                     ))}
+                    {suggestedSkills.length > 5 && (
+                      <span className="text-[9px] text-gray-400 self-center px-1">
+                        +{suggestedSkills.length - 5}
+                      </span>
+                    )}
                   </div>
                 </div>
               )}
@@ -1707,35 +2010,46 @@ export const JobTailorModal: React.FC<JobTailorModalProps> = ({
 
         {step === 'comparing' && (
           <div
-            className="px-3 py-2 sm:px-4 sm:py-3 border-t flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0 flex-shrink-0 pb-safe"
+            className="px-2 sm:px-4 py-2 sm:py-3 border-t flex items-center justify-between gap-2 sm:gap-4 flex-shrink-0 pb-safe"
             style={{
-              background: `linear-gradient(135deg, ${themeColor}04, white)`,
-              borderColor: `${themeColor}12`
+              background: `linear-gradient(135deg, ${themeColor}08, white)`,
+              borderColor: `${themeColor}20`
             }}
           >
-            <div className="text-sm text-gray-500 hidden sm:block">
-              {acceptedSkills.size > 0 && (
+            {/* Left: Skills to add indicator */}
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              {acceptedSkills.size > 0 ? (
                 <span
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium"
-                  style={{ backgroundColor: `${themeColor}10`, color: themeColor }}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg font-medium text-[10px] sm:text-xs"
+                  style={{ backgroundColor: `${themeColor}15`, color: themeColor }}
                 >
-                  <Check className="w-3 h-3" />
-                  +{acceptedSkills.size} skill{acceptedSkills.size !== 1 ? 's' : ''}
+                  <Plus className="w-3 h-3" />
+                  {acceptedSkills.size} skill{acceptedSkills.size !== 1 ? 's' : ''}
+                </span>
+              ) : (
+                <span className="text-[10px] sm:text-xs text-gray-400 hidden sm:inline">
+                  Review and apply
                 </span>
               )}
             </div>
-            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2">
-              <Button variant="outline" onClick={onClose} className="px-4 py-2 rounded-xl text-sm h-10 sm:h-9 w-full sm:w-auto">
+
+            {/* Right: Action buttons */}
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={onClose}
+                className="px-3 py-1.5 rounded-lg text-[11px] sm:text-sm h-8 sm:h-10"
+              >
                 Cancel
               </Button>
               <Button
                 onClick={handleApply}
-                className="gap-1.5 px-4 sm:px-5 py-2 shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] rounded-xl text-sm h-10 sm:h-9 w-full sm:w-auto justify-center"
+                className="gap-1 sm:gap-2 px-3 sm:px-5 py-1.5 shadow-lg hover:shadow-xl transition-all active:scale-[0.98] rounded-lg text-[11px] sm:text-sm h-8 sm:h-10 font-semibold"
                 style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)` }}
               >
-                <Target className="w-3.5 h-3.5" />
-                <span className="sm:inline">Apply & Select Template</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+                <Check className="w-3 h-3 sm:w-4 sm:h-4" />
+                Apply
+                <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </Button>
             </div>
           </div>
