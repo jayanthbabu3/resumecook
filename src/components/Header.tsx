@@ -64,7 +64,8 @@ const HeaderComponent: React.FC = () => {
   // Navigation items based on auth state
   const navItems = useMemo(() => {
     const baseItems = [
-      { label: "Dashboard", to: "/dashboard", icon: Home },
+      { label: "Home", to: "/", icon: Home },
+      { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
       { label: "Templates", to: "/templates", icon: LayoutDashboard },
       { label: "Pricing", to: "/pricing", icon: CreditCard },
       { label: "ATS Guide", to: "/ats-guidelines", icon: BookOpen },

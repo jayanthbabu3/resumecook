@@ -74,6 +74,9 @@ import {
   Check,
   X,
   Palette,
+  Eye,
+  EyeOff,
+  Upload,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthYearPicker } from '@/components/ui/month-year-picker';
@@ -83,6 +86,7 @@ import {
 } from '../../registry/sectionRegistry';
 import type { V2SectionType } from '../../types/resumeData';
 import type { TemplateSectionConfig } from '../../types/templateConfig';
+import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
 // ============================================================================
 // TYPES
@@ -179,18 +183,15 @@ const SectionHeader: React.FC<{
   title: string;
   subtitle?: string;
   icon: React.ElementType;
-}> = ({ title, subtitle, icon: Icon }) => (
-  <div className="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+}> = ({ title, icon: Icon }) => (
+  <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-gray-100">
     <div
-      className="w-11 h-11 rounded-xl flex items-center justify-center"
-      style={{ backgroundColor: `${WEBSITE_THEME_COLOR}15` }}
+      className="w-8 h-8 rounded-lg flex items-center justify-center"
+      style={{ backgroundColor: `${WEBSITE_THEME_COLOR}12` }}
     >
-      <Icon className="w-5 h-5" style={{ color: WEBSITE_THEME_COLOR }} />
+      <Icon className="w-4 h-4" style={{ color: WEBSITE_THEME_COLOR }} />
     </div>
-    <div>
-      <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-      {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
-    </div>
+    <h2 className="text-base font-semibold text-gray-900">{title}</h2>
   </div>
 );
 
@@ -563,6 +564,11 @@ const PhotoSection: React.FC<{
 }> = ({ data, onChange }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadMethod, setUploadMethod] = useState<'file' | 'url'>('file');
+  const styleOptionsContext = useStyleOptions();
+  const showPhoto = styleOptionsContext?.styleOptions?.showPhoto ?? true;
+  const updateStyleOption = styleOptionsContext?.updateStyleOption;
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
@@ -575,90 +581,196 @@ const PhotoSection: React.FC<{
     reader.readAsDataURL(file);
   };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      handleFileUpload(file);
+    }
+  };
+
   return (
     <div className="space-y-5">
       <SectionHeader
         title="Profile Photo"
-        subtitle="Add a professional photo (optional)"
+        subtitle="Add a professional photo to your resume"
         icon={Camera}
       />
 
-      <div className="flex flex-col items-center gap-8 py-4">
-        {/* Photo Preview */}
-        <div className="relative">
-          <div
-            className={cn(
-              "w-36 h-36 rounded-full border-4 flex items-center justify-center overflow-hidden shadow-sm",
-              data.photo ? "border-gray-200" : "border-dashed border-gray-300 bg-gray-50"
-            )}
-          >
-            {data.photo ? (
-              <img src={data.photo} alt="Profile" className="w-full h-full object-cover" />
-            ) : (
-              <Camera className="w-10 h-10 text-gray-400" />
-            )}
-          </div>
-          {data.photo && (
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => onChange('photo', '')}
-              className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-8 text-sm px-4"
-            >
-              Remove
-            </Button>
-          )}
-        </div>
-
-        {/* Upload Options */}
-        <div className="flex flex-col items-center gap-4 w-full max-w-md">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) handleFileUpload(file);
-            }}
-            className="hidden"
-          />
-          <Button
-            variant="outline"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full h-11 text-base"
-          >
-            <Camera className="w-5 h-5 mr-2" />
-            Upload Photo
-          </Button>
-
-          <div className="flex items-center gap-3 w-full">
-            <div className="h-px flex-1 bg-gray-200" />
-            <span className="text-sm text-gray-400">or</span>
-            <div className="h-px flex-1 bg-gray-200" />
-          </div>
-
-          <div className="flex gap-3 w-full">
-            <Input
-              value={photoUrl}
-              onChange={(e) => setPhotoUrl(e.target.value)}
-              placeholder="Paste image URL"
-              className="h-11 text-base flex-1"
-            />
-            <Button
-              variant="secondary"
-              onClick={() => {
-                if (photoUrl) {
-                  onChange('photo', photoUrl);
-                  setPhotoUrl('');
+      <div className="mx-4 space-y-4">
+        {/* Visibility Toggle Card */}
+        <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-900">Photo Visibility</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {showPhoto ? 'Photo will appear on resume' : 'Photo is hidden'}
+              </p>
+            </div>
+            <Switch
+              checked={showPhoto}
+              onCheckedChange={(checked) => {
+                if (updateStyleOption) {
+                  updateStyleOption('showPhoto', checked);
                 }
               }}
-              disabled={!photoUrl}
-              className="h-11 px-5 text-base"
-            >
-              Add
-            </Button>
+              className="data-[state=checked]:bg-primary"
+            />
           </div>
         </div>
+
+        {showPhoto && (
+          <div className="space-y-4">
+            {/* Photo Preview Area */}
+            <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="flex flex-col items-center space-y-4">
+                {/* Photo Container */}
+                <div
+                  className={cn(
+                    "relative w-36 h-36 rounded-xl overflow-hidden group",
+                    data.photo
+                      ? "shadow-sm"
+                      : "border-2 border-dashed border-gray-300 bg-gray-50"
+                  )}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  {data.photo ? (
+                    <>
+                      <img
+                        src={data.photo}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button
+                          onClick={() => onChange('photo', '')}
+                          className="bg-red-500 text-white px-4 py-1.5 rounded-md text-xs font-medium hover:bg-red-600 transition-colors"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className={cn(
+                      "w-full h-full flex flex-col items-center justify-center transition-colors",
+                      isDragging && "bg-primary/5 border-primary"
+                    )}>
+                      <Camera className={cn(
+                        "h-10 w-10 mb-2 transition-colors",
+                        isDragging ? "text-primary" : "text-gray-400"
+                      )} />
+                      <span className="text-xs font-medium text-gray-500">
+                        {isDragging ? 'Drop photo here' : 'No photo uploaded'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Upload Methods */}
+                <div className="w-full space-y-3">
+                  {/* Method Selector Tabs */}
+                  <div className="flex rounded-lg bg-gray-100 p-1">
+                    <button
+                      type="button"
+                      onClick={() => setUploadMethod('file')}
+                      className={cn(
+                        "flex-1 py-1.5 px-3 text-xs font-medium rounded-md transition-all",
+                        uploadMethod === 'file'
+                          ? "bg-white text-gray-900 shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      )}
+                    >
+                      Upload File
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUploadMethod('url')}
+                      className={cn(
+                        "flex-1 py-1.5 px-3 text-xs font-medium rounded-md transition-all",
+                        uploadMethod === 'url'
+                          ? "bg-white text-gray-900 shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      )}
+                    >
+                      From URL
+                    </button>
+                  </div>
+
+                  {/* Upload Content */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleFileUpload(file);
+                    }}
+                    className="hidden"
+                  />
+
+                  {uploadMethod === 'file' ? (
+                    <Button
+                      type="button"
+                      variant="default"
+                      size="sm"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full"
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Choose from Computer
+                    </Button>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        value={photoUrl}
+                        onChange={(e) => setPhotoUrl(e.target.value)}
+                        placeholder="Enter image URL..."
+                        className="h-9 text-sm"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && photoUrl) {
+                            onChange('photo', photoUrl);
+                            setPhotoUrl('');
+                          }
+                        }}
+                      />
+                      <Button
+                        onClick={() => {
+                          if (photoUrl) {
+                            onChange('photo', photoUrl);
+                            setPhotoUrl('');
+                          }
+                        }}
+                        disabled={!photoUrl}
+                        size="sm"
+                        className="px-6"
+                      >
+                        Add
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Helper Text */}
+            <p className="text-xs text-gray-500 text-center px-4">
+              💡 Tip: Use a professional headshot for best results. Supported formats: JPG, PNG, WebP (max 5MB)
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1839,61 +1951,60 @@ const BulletPointsEditor: React.FC<{
   };
 
   return (
-    <div className="space-y-3 p-4 rounded-xl bg-gray-50/80 border border-gray-100">
+    <div className="space-y-2">
       {items.length > 0 && (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {items.map((item, index) => (
             <div
               key={index}
-              className="flex items-start gap-3 bg-white rounded-lg p-3 border border-gray-100 shadow-sm group hover:border-gray-200 transition-colors"
+              className="flex items-start gap-2 group"
             >
-              <div
-                className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
-                style={{ backgroundColor: `${WEBSITE_THEME_COLOR}15` }}
+              <span
+                className="text-xs font-medium mt-2.5 w-4 text-center flex-shrink-0"
+                style={{ color: WEBSITE_THEME_COLOR }}
               >
-                <span className="text-sm font-medium" style={{ color: WEBSITE_THEME_COLOR }}>{index + 1}</span>
-              </div>
-              <Input
+                {index + 1}.
+              </span>
+              <Textarea
                 value={item}
                 onChange={(e) => updateItem(index, e.target.value)}
-                className="h-9 flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 px-0 text-base"
+                rows={2}
+                className="flex-1 text-sm resize-none min-h-[56px] border-gray-200 focus:border-primary/50 rounded-lg bg-gray-50/50 focus:bg-white transition-colors"
               />
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => removeItem(index)}
-                className="h-8 w-8 p-0 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                className="h-7 w-7 p-0 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-opacity mt-1.5"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </Button>
             </div>
           ))}
         </div>
       )}
-      <div className="flex items-center gap-3">
-        <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 bg-gray-100">
-          <Plus className="w-3.5 h-3.5 text-gray-400" />
-        </div>
-        <Input
+      <div className="flex items-start gap-2 pt-1">
+        <span className="text-xs text-gray-400 mt-2.5 w-4 text-center flex-shrink-0">+</span>
+        <Textarea
           value={newItem}
           onChange={(e) => setNewItem(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
               addItem();
             }
           }}
           placeholder={placeholder || 'Add bullet point...'}
-          className="h-10 flex-1 border-gray-200 bg-white text-base"
+          rows={2}
+          className="flex-1 text-sm resize-none min-h-[56px] border-gray-200 rounded-lg"
         />
         <Button
           size="sm"
           onClick={addItem}
           disabled={!newItem.trim()}
-          className="h-10 px-4 rounded-lg text-sm"
+          className="h-8 px-3 rounded-lg text-xs mt-1.5"
           style={{ backgroundColor: newItem.trim() ? WEBSITE_THEME_COLOR : undefined }}
         >
-          <Plus className="w-4 h-4 mr-1" />
           Add
         </Button>
       </div>

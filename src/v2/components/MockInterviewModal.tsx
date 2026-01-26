@@ -38,6 +38,7 @@ import {
 import type { V2ResumeData } from '../types/resumeData';
 import { useDeepgramVoice } from '../hooks/useDeepgramVoice';
 import { VoiceInputBar } from './VoiceInputBar';
+import { AIDisclaimer } from './AIDisclaimer';
 import {
   type InterviewType,
   type InterviewSession,
@@ -399,6 +400,9 @@ export function MockInterviewModal({
                   </span>
                 </div>
               </div>
+
+              {/* AI Disclaimer */}
+              <AIDisclaimer variant="compact" className="justify-center" />
 
               {/* Interview Type Selection */}
               <div>

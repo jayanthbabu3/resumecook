@@ -200,11 +200,19 @@ const DashboardV2 = () => {
     setEditorTemplateSelectorOpen(true);
   };
 
+  // Handle Export & Customize card click - goes to live mode with download highlight
+  const handleExportCustomizeClick = () => {
+    // Go directly to a popular template with live mode and highlight download
+    navigate('/builder?template=executive-split-v2&editor=live&highlight=download');
+  };
+
   // Handle template selection for editor mode
   const handleEditorTemplateSelect = (templateId: string) => {
     setEditorTemplateSelectorOpen(false);
     if (pendingEditorMode === 'form') {
       navigate(`/builder?template=${templateId}&editor=form`);
+    } else if (pendingEditorMode === 'live') {
+      navigate(`/builder?template=${templateId}&editor=live`);
     } else {
       navigate(`/builder?template=${templateId}`);
     }
@@ -306,7 +314,7 @@ const DashboardV2 = () => {
 
             {/* PDF Export & More */}
             <button
-              onClick={handleLiveEditorClick}
+              onClick={handleExportCustomizeClick}
               className="group relative bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 text-left"
               data-tour="export-customize"
             >

@@ -44,6 +44,7 @@ import ReactMarkdown from 'react-markdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscriptionNew';
 import { ProFeatureModal } from './ProFeatureModal';
+import { AIDisclaimer } from './AIDisclaimer';
 
 interface ChatWithResumeProps {
   resumeData: V2ResumeData;
@@ -691,6 +692,11 @@ function SidePanelChat({
         </div>
       </div>
 
+      {/* AI Disclaimer */}
+      <div className="px-3 md:px-4 pt-2 md:pt-3 pb-1">
+        <AIDisclaimer variant="compact" className="justify-center text-center" />
+      </div>
+
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gray-50/50">
         {/* Quick actions for new chat */}
@@ -1064,6 +1070,11 @@ function FloatingChatPanel({
             <X className="w-4 h-4" />
           </Button>
         </div>
+      </div>
+
+      {/* AI Disclaimer */}
+      <div className="px-4 pt-3 pb-1">
+        <AIDisclaimer variant="compact" className="justify-center text-center" />
       </div>
 
       {/* Messages */}

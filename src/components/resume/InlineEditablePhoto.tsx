@@ -8,7 +8,7 @@
 import React, { useState, useRef } from 'react';
 import { useInlineEdit } from '@/contexts/InlineEditContext';
 import { cn } from '@/lib/utils';
-import { Upload, Image as ImageIcon } from 'lucide-react';
+import { Upload, Image as ImageIcon, X } from 'lucide-react';
 
 interface InlineEditablePhotoProps {
   /** Path to the photo field in resumeData (e.g., "personalInfo.photo") */
@@ -35,6 +35,8 @@ interface InlineEditablePhotoProps {
   initials?: string;
   /** Custom update handler (optional) */
   onCustomUpdate?: (value: string | undefined) => void;
+  /** Hide button handler - shows X button to hide photo */
+  onHide?: () => void;
   /** Additional className */
   className?: string;
   /** Additional styles */
@@ -54,6 +56,7 @@ export const InlineEditablePhoto: React.FC<InlineEditablePhotoProps> = ({
   editable = true,
   initials = 'AB',
   onCustomUpdate,
+  onHide,
   className,
   style,
 }) => {
@@ -201,6 +204,19 @@ export const InlineEditablePhoto: React.FC<InlineEditablePhotoProps> = ({
                   <span className="text-xs font-medium">Change</span>
                 </div>
               </div>
+            )}
+            {/* Hide button - top right corner - LARGER */}
+            {onHide && isHovered && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onHide();
+                }}
+                className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 shadow-xl transition-all z-50 transform hover:scale-110"
+                title="Click to hide photo completely"
+              >
+                <X className="h-4 w-4" strokeWidth={3} />
+              </button>
             )}
           </>
         ) : (

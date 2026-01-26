@@ -38,12 +38,13 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
   const isBannerVariant = ['banner', 'gradient-banner'].includes(variant);
   const bannerTextColor = '#ffffff';
   const bannerMetaTextColor = 'rgba(255, 255, 255, 0.85)';
-  const styleOptions = useStyleOptions();
+  const styleOptionsContext = useStyleOptions();
+  const { updateStyleOption } = styleOptionsContext || {};
   // Photo visibility: check both settings.includePhoto and styleOptions.showPhoto
   const showPhotoFromSettings = settings?.includePhoto ?? true;
-  const showPhotoFromContext = styleOptions?.styleOptions?.showPhoto ?? true;
+  const showPhotoFromContext = styleOptionsContext?.styleOptions?.showPhoto ?? true;
   const showPhoto = showPhotoFromSettings && showPhotoFromContext;
-  const scaleFontSize = styleOptions?.scaleFontSize || ((s: string) => s);
+  const scaleFontSize = styleOptionsContext?.scaleFontSize || ((s: string) => s);
   
   // Base font family from config
   const baseFontFamily = fontFamily?.primary || "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -318,6 +319,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
           boxShadow={boxShadow}
           editable={editable}
           initials={initials}
+          onHide={updateStyleOption ? () => updateStyleOption('showPhoto', false) : undefined}
         />
       );
     }
@@ -794,6 +796,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                 borderWidth="4px"
                 editable={editable}
                 initials={initials}
+                onHide={updateStyleOption ? () => updateStyleOption('showPhoto', false) : undefined}
               />
             );
           }
@@ -3454,6 +3457,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                           path="personalInfo.photo"
                           shape="circle"
                           initials={personalInfo.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                          onHide={updateStyleOption ? () => updateStyleOption('showPhoto', false) : undefined}
                         />
                       ) : personalInfo.photo ? (
                         <img
@@ -3673,6 +3677,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({
                         height: '100%',
                         objectFit: 'cover',
                       }}
+                      onHide={updateStyleOption ? () => updateStyleOption('showPhoto', false) : undefined}
                     />
                   ) : personalInfo.photo ? (
                     <img

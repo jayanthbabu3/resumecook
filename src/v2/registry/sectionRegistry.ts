@@ -269,8 +269,8 @@ export const SECTION_REGISTRY: Record<V2SectionType, SectionDefinition> = {
       { key: 'endDate', label: 'End', type: 'month', group: 'dates', compact: true },
       { key: 'current', label: 'Current', type: 'checkbox', compact: true },
       { key: 'employmentType', label: 'Type', type: 'select', options: EMPLOYMENT_TYPE_OPTIONS, compact: true, showWhenConfig: 'experience.showEmploymentType' },
-      { key: 'description', label: 'Role Summary', type: 'textarea', rows: 2, placeholder: 'Brief overview of your role and key responsibilities...', fullWidth: true },
-      { key: 'bulletPoints', label: 'Key Achievements', type: 'array', placeholder: 'Add achievement...' },
+      { key: 'description', label: 'Role Overview', type: 'textarea', rows: 2, placeholder: 'Brief overview of your role and key responsibilities...', fullWidth: true },
+      { key: 'bulletPoints', label: 'Responsibilities & Impact', type: 'array', placeholder: 'Add responsibility or achievement...' },
     ],
     variants: [
       { id: 'standard', name: 'Standard', description: 'Classic corporate layout' },

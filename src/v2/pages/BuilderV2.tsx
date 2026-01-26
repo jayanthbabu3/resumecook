@@ -109,6 +109,8 @@ export const BuilderV2: React.FC = () => {
   const [searchParams] = useSearchParams();
   const templateId = searchParams.get('template') || 'executive-split-v2';
   const resumeId = searchParams.get('resumeId');
+  const editorParam = searchParams.get('editor'); // 'form' | 'live' | null
+  const highlightDownload = searchParams.get('highlight') === 'download'; // For export & customize
   const templateDefinition = getTemplate(templateId);
   const { user } = useAuth();
   const { isPro } = useSubscription();
@@ -133,7 +135,12 @@ export const BuilderV2: React.FC = () => {
   const [enabledSections, setEnabledSections] = useState<string[]>(['header', 'summary', 'experience', 'education', 'strengths', 'skills', 'achievements']);
   const [editingLabelId, setEditingLabelId] = useState<string | null>(null);
   const [editingLabelValue, setEditingLabelValue] = useState('');
-  const [editorMode, setEditorMode] = useState<'preview' | 'live' | 'form'>('form');
+  // Initialize editor mode from URL param, default to 'form'
+  const [editorMode, setEditorMode] = useState<'preview' | 'live' | 'form'>(() => {
+    if (editorParam === 'live') return 'live';
+    if (editorParam === 'form') return 'form';
+    return 'form';
+  });
   const [sectionOverrides, setSectionOverrides] = useState<Record<string, any>>({});
   const [showReorder, setShowReorder] = useState(false);
   // Manage Sections Modal state (unified section management)
@@ -162,6 +169,8 @@ export const BuilderV2: React.FC = () => {
   const [proModalFeature, setProModalFeature] = useState({ name: '', description: '' });
   // Save Options dialog state
   const [showSaveOptions, setShowSaveOptions] = useState(false);
+  // Flag to track if we should auto-trigger save after login
+  const [shouldAutoSaveAfterLogin, setShouldAutoSaveAfterLogin] = useState(false);
   // ATS Score panel state - Hidden for refinement
   // const [showATSPanel, setShowATSPanel] = useState(false);
 
@@ -179,6 +188,20 @@ export const BuilderV2: React.FC = () => {
 
   // Track if external data was imported (to prevent template effect from overwriting)
   const externalDataImportedRef = useRef(false);
+
+  // Show guidance toast when coming from "Export & Customize" card
+  useEffect(() => {
+    if (highlightDownload) {
+      // Show toast after a short delay to let the page load
+      const timer = setTimeout(() => {
+        toast.info('Edit your resume, then click Download to export as PDF!', {
+          duration: 5000,
+          description: 'Customize colors, fonts, and sections using the toolbar above.',
+        });
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightDownload]);
 
   // Check for LinkedIn imported data on mount
   useEffect(() => {
@@ -357,6 +380,43 @@ export const BuilderV2: React.FC = () => {
     loadSampleData();
   }, [resumeId, searchParams]);
 
+  // Auto-trigger save after login if user was trying to save before
+  useEffect(() => {
+    // Check if user just logged in and there's pending save data
+    const pendingSaveData = sessionStorage.getItem('pending-save-resume-data');
+
+    if (user && pendingSaveData && shouldAutoSaveAfterLogin) {
+      try {
+        const parsedData = JSON.parse(pendingSaveData);
+
+        // Restore the resume data
+        setResumeData(parsedData.resumeData);
+        setThemeColor(parsedData.themeColor);
+        setThemeColors(parsedData.themeColors);
+        setSectionLabels(parsedData.sectionLabels);
+        setEnabledSections(parsedData.enabledSections);
+        setSectionOverrides(parsedData.sectionOverrides);
+
+        // Clear the pending save data
+        sessionStorage.removeItem('pending-save-resume-data');
+
+        // Close the Pro modal and open the save dialog
+        setShowProModal(false);
+        setShouldAutoSaveAfterLogin(false);
+
+        // Small delay to ensure modal is closed
+        setTimeout(() => {
+          setShowSaveOptions(true);
+          toast.success('Your changes have been preserved. Complete the save now.');
+        }, 300);
+      } catch (error) {
+        console.error('Failed to restore pending save data:', error);
+        sessionStorage.removeItem('pending-save-resume-data');
+        setShouldAutoSaveAfterLogin(false);
+      }
+    }
+  }, [user, shouldAutoSaveAfterLogin]);
+
   // Load resume from URL param if present
   useEffect(() => {
     const loadResumeFromUrl = async () => {
@@ -450,7 +510,8 @@ export const BuilderV2: React.FC = () => {
   // Sync from profile - load user's profile data into resume
   const handleSyncFromProfile = useCallback(async () => {
     if (!user) {
-      toast.error('Please sign in to sync from profile');
+      setProModalFeature({ name: 'Sync Profile', description: 'Load your profile data' });
+      setShowProModal(true);
       return;
     }
 
@@ -2248,6 +2309,20 @@ export const BuilderV2: React.FC = () => {
                 <button
                   onClick={() => {
                     if (!user) {
+                      // Store current resume data before showing login modal
+                      const dataToSave = {
+                        resumeData,
+                        themeColor,
+                        themeColors,
+                        sectionLabels,
+                        enabledSections,
+                        sectionOverrides,
+                      };
+                      sessionStorage.setItem('pending-save-resume-data', JSON.stringify(dataToSave));
+
+                      // Set flag to auto-trigger save after login
+                      setShouldAutoSaveAfterLogin(true);
+
                       setProModalFeature({
                         name: 'Save Resume',
                         description: 'Sign in to save your resume and access it from anywhere',
@@ -2696,6 +2771,20 @@ export const BuilderV2: React.FC = () => {
                           data-tour="save-btn"
                           onClick={() => {
                             if (!user) {
+                              // Store current resume data before showing login modal
+                              const dataToSave = {
+                                resumeData,
+                                themeColor,
+                                themeColors,
+                                sectionLabels,
+                                enabledSections,
+                                sectionOverrides,
+                              };
+                              sessionStorage.setItem('pending-save-resume-data', JSON.stringify(dataToSave));
+
+                              // Set flag to auto-trigger save after login
+                              setShouldAutoSaveAfterLogin(true);
+
                               setProModalFeature({
                                 name: 'Save Resume',
                                 description: 'Sign in to save your resume and access it from anywhere',
@@ -2731,7 +2820,10 @@ export const BuilderV2: React.FC = () => {
                       data-tour="download-btn"
                       onClick={handleDownload}
                       disabled={isDownloading}
-                      className="h-9 px-4 gap-2 rounded-lg bg-primary hover:bg-primary/90"
+                      className={cn(
+                        "h-9 px-4 gap-2 rounded-lg bg-primary hover:bg-primary/90",
+                        highlightDownload && "animate-pulse ring-2 ring-primary ring-offset-2"
+                      )}
                     >
                       {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
                       <span className="text-sm font-medium">Download</span>
@@ -2761,7 +2853,7 @@ export const BuilderV2: React.FC = () => {
             {/* Sticky so form stays visible while scrolling resume preview */}
             {!isChatMode && (
               <div className={cn(
-                "w-full lg:w-[480px] xl:w-[520px] flex-shrink-0",
+                "w-full lg:w-[520px] xl:w-[580px] flex-shrink-0",
                 // Height: 100vh minus toolbar and header
                 headerVisible ? "lg:h-[calc(100vh-140px)]" : "lg:h-[calc(100vh-80px)]",
                 "h-auto",
@@ -3406,9 +3498,20 @@ export const BuilderV2: React.FC = () => {
       {/* Pro Feature Modal */}
       <ProFeatureModal
         isOpen={showProModal}
-        onClose={() => setShowProModal(false)}
+        onClose={() => {
+          setShowProModal(false);
+          // Clean up if user closes modal without logging in
+          if (!user && shouldAutoSaveAfterLogin) {
+            sessionStorage.removeItem('pending-save-resume-data');
+            setShouldAutoSaveAfterLogin(false);
+          }
+        }}
         featureName={proModalFeature.name}
         featureDescription={proModalFeature.description}
+        onLoginSuccess={() => {
+          // This will be called after successful login
+          // The useEffect will handle auto-triggering the save dialog
+        }}
       />
 
       {/* Save Options Dialog */}

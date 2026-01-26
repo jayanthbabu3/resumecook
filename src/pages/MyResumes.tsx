@@ -13,6 +13,8 @@ import {
   Star,
   Clock,
   AlertCircle,
+  LogIn,
+  Lock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -46,7 +48,7 @@ import {
 
 const MyResumes = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const { favoritesLimit, favoritesCount, canAddFavorite } = useFavoriteTemplates();
   const [resumes, setResumes] = useState<Resume[]>([]);
@@ -59,8 +61,17 @@ const MyResumes = () => {
   const resumesLimit = USER_LIMITS.MAX_RESUMES;
 
   useEffect(() => {
+    // If auth is still loading, wait
+    if (authLoading) return;
+    
+    // If no user, stop loading state
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    
     loadResumes();
-  }, [user]);
+  }, [user, authLoading]);
 
   const loadResumes = async () => {
     if (!user) return;
@@ -171,7 +182,8 @@ const MyResumes = () => {
       .join(" ");
   };
 
-  if (loading) {
+  // Show loading state only while auth is loading or fetching resumes
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         <Header />
@@ -183,6 +195,79 @@ const MyResumes = () => {
               </div>
             </div>
             <p className="text-sm text-muted-foreground">Loading your resumes...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show sign-in prompt for unauthenticated users
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <Header />
+        <div className="flex items-center justify-center min-h-[70vh] p-4">
+          <div className="max-w-md w-full text-center">
+            {/* Icon */}
+            <div className="flex justify-center mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/15 to-blue-500/15 flex items-center justify-center">
+                <Lock className="h-8 w-8 text-primary" />
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className="space-y-1.5 mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                Sign in to view your resumes
+              </h2>
+              <p className="text-gray-500 text-sm">
+                Save and manage your resumes from anywhere
+              </p>
+            </div>
+
+            {/* Features List */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-8 text-left shadow-sm">
+              <p className="text-sm font-medium text-gray-700 mb-3">With an account you can:</p>
+              <ul className="space-y-2.5">
+                {[
+                  "Save unlimited resume drafts",
+                  "Access your resumes from any device",
+                  "Track your ATS scores",
+                  "Use AI-powered enhancements",
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-center gap-2.5 text-sm text-gray-600">
+                    <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white px-8 shadow-lg shadow-primary/25"
+                onClick={() => navigate("/auth")}
+              >
+                <LogIn className="w-4 h-4 mr-2" />
+                Sign In
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto px-8"
+                onClick={() => navigate("/templates")}
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Browse Templates
+              </Button>
+            </div>
           </div>
         </div>
       </div>
