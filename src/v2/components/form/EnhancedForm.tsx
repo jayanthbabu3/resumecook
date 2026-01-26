@@ -10,6 +10,22 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -188,25 +204,38 @@ const ItemCard: React.FC<{
   subtitle?: string;
   isExpanded?: boolean;
   onToggle?: () => void;
-}> = ({ children, onDelete, className, index, icon: Icon, title, subtitle, isExpanded = true, onToggle }) => (
+  dragHandleProps?: any;
+  isDragging?: boolean;
+}> = ({ children, onDelete, className, index, icon: Icon, title, subtitle, isExpanded = true, onToggle, dragHandleProps, isDragging }) => (
   <div className={cn(
-    "relative rounded-xl border-2 bg-white shadow-sm transition-all duration-200 overflow-hidden",
+    "relative rounded-xl border-2 bg-white shadow-sm transition-all duration-200",
     isExpanded ? "border-blue-200 shadow-md" : "border-gray-100 hover:border-gray-200",
+    isDragging && "shadow-lg border-blue-300",
     className
   )}>
     {/* Card Header - Clickable to toggle */}
     <div
       className={cn(
-        "flex items-center justify-between px-4 py-3 cursor-pointer select-none transition-colors",
+        "flex items-center justify-between px-4 py-3 select-none transition-colors",
         isExpanded ? "border-b border-gray-100" : ""
       )}
       style={{ background: isExpanded
         ? 'linear-gradient(135deg, rgba(8, 145, 178, 0.06) 0%, rgba(8, 145, 178, 0.02) 100%)'
         : 'linear-gradient(135deg, rgba(248, 250, 252, 1) 0%, rgba(255, 255, 255, 1) 100%)'
       }}
-      onClick={onToggle}
     >
-      <div className="flex items-center gap-3 flex-1 min-w-0">
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        {/* Drag Handle with grip icon */}
+        {typeof index === 'number' && dragHandleProps && (
+          <div
+            {...dragHandleProps}
+            className="flex items-center justify-center w-6 h-8 rounded-md cursor-grab active:cursor-grabbing touch-none text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors flex-shrink-0"
+            onClick={(e) => e.stopPropagation()}
+            title="Drag to reorder"
+          >
+            <GripVertical className="w-4 h-4" />
+          </div>
+        )}
         {/* Index Badge */}
         {typeof index === 'number' && (
           <div
@@ -228,8 +257,11 @@ const ItemCard: React.FC<{
             <Icon className="w-3.5 h-3.5" style={{ color: WEBSITE_THEME_COLOR }} />
           </div>
         )}
-        {/* Title/Subtitle Preview */}
-        <div className="min-w-0 flex-1">
+        {/* Title/Subtitle Preview - Clickable to toggle */}
+        <div 
+          className="min-w-0 flex-1 cursor-pointer"
+          onClick={onToggle}
+        >
           {(title || subtitle) ? (
             <>
               {title && <p className="text-sm font-semibold text-gray-800 truncate">{title}</p>}
@@ -244,9 +276,10 @@ const ItemCard: React.FC<{
         {/* Expand/Collapse indicator */}
         <ChevronRight
           className={cn(
-            "w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0",
+            "w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0 cursor-pointer",
             isExpanded && "rotate-90"
           )}
+          onClick={onToggle}
         />
       </div>
       {/* Delete button - stop propagation to prevent toggle */}
@@ -276,6 +309,63 @@ const ItemCard: React.FC<{
   </div>
 );
 
+// Sortable wrapper for ItemCard
+interface SortableItemCardProps {
+  id: string;
+  children: React.ReactNode;
+  onDelete?: () => void;
+  index?: number;
+  icon?: React.ElementType;
+  title?: string;
+  subtitle?: string;
+  isExpanded?: boolean;
+  onToggle?: () => void;
+}
+
+const SortableItemCard: React.FC<SortableItemCardProps> = ({
+  id,
+  children,
+  onDelete,
+  index,
+  icon,
+  title,
+  subtitle,
+  isExpanded,
+  onToggle,
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className={cn(isDragging && 'opacity-50 z-50')}>
+      <ItemCard
+        onDelete={onDelete}
+        index={index}
+        icon={icon}
+        title={title}
+        subtitle={subtitle}
+        isExpanded={isExpanded}
+        onToggle={onToggle}
+        dragHandleProps={{ ...attributes, ...listeners }}
+        isDragging={isDragging}
+      >
+        {children}
+      </ItemCard>
+    </div>
+  );
+};
+
 // ============================================================================
 // SECTION COMPONENTS
 // ============================================================================
@@ -283,7 +373,45 @@ const ItemCard: React.FC<{
 const PersonalSection: React.FC<{
   data: any;
   onChange: (field: string, value: any) => void;
-}> = ({ data, onChange }) => (
+}> = ({ data, onChange }) => {
+  // Parse fullName into first and last name parts
+  // Use local state to allow spaces in first name
+  const parseFullName = (fullName: string) => {
+    if (!fullName) return { first: '', last: '' };
+    const parts = fullName.trim().split(' ');
+    if (parts.length === 1) return { first: parts[0], last: '' };
+    // Last word is last name, everything else is first name
+    const last = parts[parts.length - 1];
+    const first = parts.slice(0, -1).join(' ');
+    return { first, last };
+  };
+
+  const initialParsed = parseFullName(data.fullName || '');
+  const [firstName, setFirstName] = useState(initialParsed.first);
+  const [lastName, setLastName] = useState(initialParsed.last);
+
+  // Sync local state when fullName changes externally (e.g., from profile sync)
+  useEffect(() => {
+    const parsed = parseFullName(data.fullName || '');
+    // Only update if local values don't match (to avoid overwriting during typing)
+    const currentFullName = `${firstName} ${lastName}`.trim();
+    if (data.fullName && data.fullName !== currentFullName) {
+      setFirstName(parsed.first);
+      setLastName(parsed.last);
+    }
+  }, [data.fullName]);
+
+  const handleFirstNameChange = (value: string) => {
+    setFirstName(value);
+    onChange('fullName', `${value} ${lastName}`.trim());
+  };
+
+  const handleLastNameChange = (value: string) => {
+    setLastName(value);
+    onChange('fullName', `${firstName} ${value}`.trim());
+  };
+
+  return (
   <div className="space-y-5">
     <SectionHeader
       title="Personal Details"
@@ -294,11 +422,8 @@ const PersonalSection: React.FC<{
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <FormField label="First Name" required>
         <Input
-          value={data.fullName?.split(' ')[0] || ''}
-          onChange={(e) => {
-            const lastName = data.fullName?.split(' ').slice(1).join(' ') || '';
-            onChange('fullName', `${e.target.value} ${lastName}`.trim());
-          }}
+          value={firstName}
+          onChange={(e) => handleFirstNameChange(e.target.value)}
           placeholder="John"
           className="h-11 text-base"
         />
@@ -306,11 +431,8 @@ const PersonalSection: React.FC<{
 
       <FormField label="Last Name" required>
         <Input
-          value={data.fullName?.split(' ').slice(1).join(' ') || ''}
-          onChange={(e) => {
-            const firstName = data.fullName?.split(' ')[0] || '';
-            onChange('fullName', `${firstName} ${e.target.value}`.trim());
-          }}
+          value={lastName}
+          onChange={(e) => handleLastNameChange(e.target.value)}
           placeholder="Doe"
           className="h-11 text-base"
         />
@@ -371,7 +493,7 @@ const PersonalSection: React.FC<{
         value={data.summary || ''}
         onChange={(e) => onChange('summary', e.target.value)}
         placeholder="Experienced software engineer with 5+ years of experience..."
-        className="min-h-[120px] resize-none text-base leading-relaxed"
+        className="min-h-[120px] resize-none text-base md:text-sm leading-relaxed"
         maxLength={500}
       />
       <div className="flex justify-end mt-1">
@@ -381,7 +503,8 @@ const PersonalSection: React.FC<{
       </div>
     </FormField>
   </div>
-);
+  );
+};
 
 const SocialLinksSection: React.FC<{
   data: any;
@@ -1180,6 +1303,49 @@ const ListSection: React.FC<{
     });
   };
 
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } })
+  );
+
+  // Handle drag end for reordering
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = items.findIndex((item: any) => item.id === active.id);
+    const newIndex = items.findIndex((item: any) => item.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      onChange(arrayMove(items, oldIndex, newIndex));
+      // Update expanded items to follow the moved item
+      setExpandedItems(prev => {
+        const newSet = new Set<number>();
+        prev.forEach(expandedIndex => {
+          if (expandedIndex === oldIndex) {
+            newSet.add(newIndex);
+          } else if (oldIndex < newIndex) {
+            // Moving down
+            if (expandedIndex > oldIndex && expandedIndex <= newIndex) {
+              newSet.add(expandedIndex - 1);
+            } else {
+              newSet.add(expandedIndex);
+            }
+          } else {
+            // Moving up
+            if (expandedIndex >= newIndex && expandedIndex < oldIndex) {
+              newSet.add(expandedIndex + 1);
+            } else {
+              newSet.add(expandedIndex);
+            }
+          }
+        });
+        return newSet;
+      });
+    }
+  };
+
   // Filter fields based on showWhenConfig and showForVariants
   const shouldShowField = (field: FormFieldDefinition) => {
     // Check showWhenConfig - evaluates dot-notation path against templateConfig
@@ -1574,44 +1740,56 @@ const ListSection: React.FC<{
           </div>
         )
       ) : (
-        /* Standard Accordion UI for other sections */
+        /* Standard Accordion UI for other sections with drag-and-drop */
         <div className="space-y-4">
-          {items.map((item, index) => (
-            <ItemCard
-              key={item.id || index}
-              onDelete={() => removeItem(index)}
-              index={index}
-              icon={icon}
-              title={item[titleKey] || undefined}
-              subtitle={subtitleKey ? item[subtitleKey] || undefined : undefined}
-              isExpanded={expandedItems.has(index)}
-              onToggle={() => toggleItem(index)}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={items.map((item: any) => item.id || `item-${items.indexOf(item)}`)}
+              strategy={verticalListSortingStrategy}
             >
-              <div className="space-y-5">
-                {/* Two-column grid for compact fields */}
-                <div className="grid grid-cols-2 gap-x-5 gap-y-5">
-                  {definition.formFields
-                    .filter(shouldShowField)
-                    .filter(f => !isFullWidth(f))
-                    .map((field) => (
-                      <div key={field.key}>
-                        {renderField(field, item, index)}
-                      </div>
-                    ))}
-                </div>
-
-                {/* Full-width fields (textarea, array/bullets) */}
-                {definition.formFields
-                  .filter(shouldShowField)
-                  .filter(f => isFullWidth(f))
-                  .map((field) => (
-                    <div key={field.key}>
-                      {renderField(field, item, index)}
+              {items.map((item, index) => (
+                <SortableItemCard
+                  key={item.id || index}
+                  id={item.id || `item-${index}`}
+                  onDelete={() => removeItem(index)}
+                  index={index}
+                  icon={icon}
+                  title={item[titleKey] || undefined}
+                  subtitle={subtitleKey ? item[subtitleKey] || undefined : undefined}
+                  isExpanded={expandedItems.has(index)}
+                  onToggle={() => toggleItem(index)}
+                >
+                  <div className="space-y-5">
+                    {/* Two-column grid for compact fields */}
+                    <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+                      {definition.formFields
+                        .filter(shouldShowField)
+                        .filter(f => !isFullWidth(f))
+                        .map((field) => (
+                          <div key={field.key}>
+                            {renderField(field, item, index)}
+                          </div>
+                        ))}
                     </div>
-                  ))}
-              </div>
-            </ItemCard>
-          ))}
+
+                    {/* Full-width fields (textarea, array/bullets) */}
+                    {definition.formFields
+                      .filter(shouldShowField)
+                      .filter(f => isFullWidth(f))
+                      .map((field) => (
+                        <div key={field.key}>
+                          {renderField(field, item, index)}
+                        </div>
+                      ))}
+                  </div>
+                </SortableItemCard>
+              ))}
+            </SortableContext>
+          </DndContext>
 
           {/* Add New Item Button */}
           <button

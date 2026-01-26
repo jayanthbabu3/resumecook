@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCountry } from '@/hooks/useCountry';
 import { subscriptionService } from '@/services/subscriptionService';
 import { toast } from 'sonner';
 import { API_BASE_URL } from '@/config/api';
@@ -30,6 +31,12 @@ import {
   Clock,
   Mic,
 } from 'lucide-react';
+
+// Default prices based on currency (used as fallback)
+const DEFAULT_PRICES = {
+  INR: { currency: 'INR', symbol: '₹', amount: 169 },
+  USD: { currency: 'USD', symbol: '$', amount: 9 },
+};
 
 interface UpgradeModalProps {
   open: boolean;
@@ -52,6 +59,7 @@ interface TrialInfo {
 
 export function UpgradeModal({ open, onOpenChange, feature }: UpgradeModalProps) {
   const { user, refreshUser } = useAuth();
+  const { currency } = useCountry();
   const [pricing, setPricing] = useState<PricingInfo | null>(null);
   const [trialInfo, setTrialInfo] = useState<TrialInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,18 +68,21 @@ export function UpgradeModal({ open, onOpenChange, feature }: UpgradeModalProps)
 
   const featureText = feature || 'this feature';
 
+  // Get the default price based on detected currency (for fallback)
+  const defaultPrice = DEFAULT_PRICES[currency];
+
   // Fetch pricing and trial info
   useEffect(() => {
     if (open) {
       fetchPricingAndTrialInfo();
     }
-  }, [open]);
+  }, [open, currency]);
 
   const fetchPricingAndTrialInfo = async () => {
     setLoading(true);
     try {
       const [pricingRes, trialRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/api/payments/pricing`).then((r) => r.json()),
+        fetch(`${API_BASE_URL}/api/payments/pricing?currency=${currency}`).then((r) => r.json()),
         fetch(`${API_BASE_URL}/api/payments/trial-status`).then((r) => r.json()),
       ]);
 
@@ -113,7 +124,8 @@ export function UpgradeModal({ open, onOpenChange, feature }: UpgradeModalProps)
   const handleSubscribe = async () => {
     setSubscribing(true);
     try {
-      const response = await subscriptionService.createSubscription(pricing?.currency || 'INR');
+      // Use detected currency as fallback if pricing not loaded from API
+      const response = await subscriptionService.createSubscription(pricing?.currency || currency);
 
       // Open Razorpay checkout
       await subscriptionService.openCheckout(
@@ -242,7 +254,7 @@ export function UpgradeModal({ open, onOpenChange, feature }: UpgradeModalProps)
                     <p className="text-sm font-medium text-muted-foreground">Pro Plan</p>
                     <div className="flex items-baseline gap-1 mt-1">
                       <span className="text-3xl font-bold text-foreground">
-                        {pricing?.symbol || '₹'}{pricing?.amount || 169}
+                        {pricing?.symbol || defaultPrice.symbol}{pricing?.amount || defaultPrice.amount}
                       </span>
                       <span className="text-sm text-muted-foreground">/month</span>
                     </div>

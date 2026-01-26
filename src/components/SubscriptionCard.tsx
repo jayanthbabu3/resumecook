@@ -12,6 +12,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useCountry } from '@/hooks/useCountry';
 import { toast } from 'sonner';
 import {
   Crown,
@@ -25,6 +26,12 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// Price display based on currency
+const PRICES = {
+  INR: { amount: 169, symbol: '₹', display: '₹169' },
+  USD: { amount: 9, symbol: '$', display: '$9' },
+};
 
 interface SubscriptionCardProps {
   className?: string;
@@ -42,6 +49,8 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
     cancelSubscription,
     verifySubscription,
   } = useSubscription();
+  const { currency } = useCountry();
+  const priceInfo = PRICES[currency];
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Handle success redirect from Razorpay - verify and sync subscription
@@ -253,7 +262,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ className })
 
               {/* Price */}
               <div className="flex items-baseline gap-1 py-2">
-                <span className="text-2xl font-bold text-gray-900">₹169</span>
+                <span className="text-2xl font-bold text-gray-900">{priceInfo.display}</span>
                 <span className="text-gray-500">/month</span>
               </div>
 

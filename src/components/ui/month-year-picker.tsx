@@ -6,6 +6,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Calendar, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -83,13 +84,14 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
   id,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [openAbove, setOpenAbove] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number; width: number; openAbove: boolean }>({ top: 0, left: 0, width: 280, openAbove: false });
   const [viewYear, setViewYear] = useState(() => {
     const parsed = parseValueStatic(value);
     return parsed.year ?? new Date().getFullYear();
   });
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Parse current value - supports both "Mon YYYY" and "YYYY-MM" formats
   const parseValue = () => parseValueStatic(value);
@@ -125,7 +127,11 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
   // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        containerRef.current && !containerRef.current.contains(target) &&
+        dropdownRef.current && !dropdownRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
@@ -143,19 +149,39 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
     }
   }, [selectedYear]);
 
-  // Calculate if dropdown should open above or below
-  const handleOpen = () => {
-    if (disabled) return;
+  // Update dropdown position when open or on scroll/resize
+  useEffect(() => {
+    const updatePosition = () => {
+      if (triggerRef.current && isOpen) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        const dropdownHeight = 340; // Approximate height of dropdown
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const openAbove = spaceBelow < dropdownHeight && rect.top > dropdownHeight;
 
-    if (triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      const dropdownHeight = 320; // Approximate height of dropdown
+        setDropdownPosition({
+          top: openAbove ? rect.top - dropdownHeight - 4 : rect.bottom + 4,
+          left: rect.left,
+          width: Math.max(rect.width, 280),
+          openAbove,
+        });
+      }
+    };
 
-      // Open above if not enough space below
-      setOpenAbove(spaceBelow < dropdownHeight && rect.top > dropdownHeight);
+    if (isOpen) {
+      updatePosition();
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
     }
 
+    return () => {
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, [isOpen]);
+
+  // Calculate position and open dropdown
+  const handleOpen = () => {
+    if (disabled) return;
     setIsOpen(!isOpen);
   };
 
@@ -205,12 +231,19 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
         )}
       </button>
 
-      {/* Dropdown */}
-      {isOpen && (
-        <div className={cn(
-          "absolute z-50 w-full min-w-[280px] bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150",
-          openAbove ? "bottom-full mb-1" : "top-full mt-1"
-        )}>
+      {/* Dropdown - rendered via Portal to escape overflow:hidden containers */}
+      {isOpen && createPortal(
+        <div
+          ref={dropdownRef}
+          style={{
+            position: 'fixed',
+            top: dropdownPosition.top,
+            left: dropdownPosition.left,
+            width: dropdownPosition.width,
+            zIndex: 99999,
+          }}
+          className="min-w-[280px] bg-white rounded-xl border border-gray-200 shadow-xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150"
+        >
           {/* Year Navigation */}
           <div className="flex items-center justify-between px-3 py-2.5 bg-gray-50 border-b border-gray-100">
             <button
@@ -300,7 +333,8 @@ export const MonthYearPicker: React.FC<MonthYearPickerProps> = ({
               This month
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

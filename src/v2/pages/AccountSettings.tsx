@@ -3,7 +3,7 @@
  * Clean, compact design
  */
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscriptionNew';
+import { useCountry } from '@/hooks/useCountry';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import {
@@ -38,28 +39,6 @@ import {
   MessageSquare,
   Sparkles,
 } from 'lucide-react';
-
-// Detect user's currency based on locale/timezone
-function detectCurrency(): 'INR' | 'USD' {
-  try {
-    // Check timezone for India
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (timezone?.includes('Kolkata') || timezone?.includes('Calcutta')) {
-      return 'INR';
-    }
-
-    // Check locale for India
-    const locale = navigator.language || (navigator as any).userLanguage || '';
-    if (locale.includes('IN') || locale.includes('hi')) {
-      return 'INR';
-    }
-
-    // Default to USD for international users
-    return 'USD';
-  } catch {
-    return 'USD';
-  }
-}
 
 // Price display based on currency
 const PRICES = {
@@ -95,8 +74,8 @@ export const AccountSettings: React.FC = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
-  // Auto-detect currency based on user's country
-  const currency = useMemo(() => detectCurrency(), []);
+  // Auto-detect currency based on user's country using IP geolocation
+  const { currency } = useCountry();
   const priceInfo = PRICES[currency];
 
   const handleUpdateName = useCallback(async () => {

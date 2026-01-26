@@ -5,6 +5,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscriptionNew";
+import { useCountry } from "@/hooks/useCountry";
+
+// Price display based on currency
+const PRICES = {
+  INR: { amount: 169, symbol: '₹', display: '₹169/month' },
+  USD: { amount: 9, symbol: '$', display: '$9/month' },
+};
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -25,6 +32,8 @@ const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
   const { user, signOut, isAdmin } = useAuth();
   const { isPro } = useSubscription();
+  const { currency } = useCountry();
+  const priceInfo = PRICES[currency];
 
   // Memoize user-related values to prevent recalculation
   const userInfo = useMemo(() => {
@@ -210,7 +219,7 @@ const HeaderComponent: React.FC = () => {
                         <Zap className="mr-2.5 h-4 w-4 text-primary" />
                         <div className="flex-1">
                           <span className="font-semibold text-primary">Upgrade to Pro</span>
-                          <span className="text-xs text-gray-500 block">₹169/month</span>
+                          <span className="text-xs text-gray-500 block">{priceInfo.display}</span>
                         </div>
                         <Crown className="h-4 w-4 text-primary/60" />
                       </DropdownMenuItem>
@@ -434,7 +443,7 @@ const HeaderComponent: React.FC = () => {
                               </div>
                               <div className="flex-1 text-left">
                                 <span className="text-sm font-semibold block">Upgrade to Pro</span>
-                                <span className="text-xs text-white/80">₹169/month</span>
+                                <span className="text-xs text-white/80">{priceInfo.display}</span>
                               </div>
                               <Crown className="h-5 w-5 text-white/80" />
                             </button>

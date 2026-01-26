@@ -10,6 +10,22 @@
  */
 
 import React, { useState } from 'react';
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -183,6 +199,25 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
     );
   };
 
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } })
+  );
+
+  // Handle drag end for reordering
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = items.findIndex((item: any) => item.id === active.id);
+    const newIndex = items.findIndex((item: any) => item.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      onChange(arrayMove(items, oldIndex, newIndex));
+    }
+  };
+
   // Get primary display value for an item
   const getPrimaryValue = (item: any): string => {
     const primaryField = visibleFields.find(f => f.required) || visibleFields[0];
@@ -243,23 +278,33 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
   // ============================================================================
 
   const renderComplexSection = () => {
+    const itemIds = items.map((item: any) => item.id);
+
     return (
       <div className="space-y-2">
-        {items.map((item: any, index: number) => (
-          <ComplexItemCard
-            key={item.id}
-            item={item}
-            index={index}
-            fields={visibleFields}
-            isExpanded={editingId === item.id}
-            onToggle={() => setEditingId(editingId === item.id ? null : item.id)}
-            onUpdate={(field, value) => handleUpdateItem(item.id, field, value)}
-            onRemove={() => handleRemoveItem(item.id)}
-            accentColor={accentColor}
-            sectionType={sectionType}
-            disabled={disabled}
-          />
-        ))}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
+            {items.map((item: any, index: number) => (
+              <SortableComplexItemCard
+                key={item.id}
+                item={item}
+                index={index}
+                fields={visibleFields}
+                isExpanded={editingId === item.id}
+                onToggle={() => setEditingId(editingId === item.id ? null : item.id)}
+                onUpdate={(field, value) => handleUpdateItem(item.id, field, value)}
+                onRemove={() => handleRemoveItem(item.id)}
+                accentColor={accentColor}
+                sectionType={sectionType}
+                disabled={disabled}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
         
         {/* Add button */}
         <button
@@ -522,6 +567,53 @@ const InlineEditableItem: React.FC<InlineEditableItemProps> = ({
 };
 
 // ============================================================================
+// SORTABLE COMPLEX ITEM CARD WRAPPER (for drag and drop)
+// ============================================================================
+
+interface SortableComplexItemCardProps {
+  item: any;
+  index: number;
+  fields: FormFieldDefinition[];
+  isExpanded: boolean;
+  onToggle: () => void;
+  onUpdate: (field: string, value: any) => void;
+  onRemove: () => void;
+  accentColor: string;
+  sectionType: string;
+  disabled: boolean;
+}
+
+const SortableComplexItemCard: React.FC<SortableComplexItemCardProps> = (props) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: props.item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(isDragging && 'opacity-50 z-50')}
+    >
+      <ComplexItemCard
+        {...props}
+        dragHandleProps={{ ...attributes, ...listeners }}
+        isDragging={isDragging}
+      />
+    </div>
+  );
+};
+
+// ============================================================================
 // COMPLEX ITEM CARD (for Experience, Education)
 // ============================================================================
 
@@ -536,6 +628,8 @@ interface ComplexItemCardProps {
   accentColor: string;
   sectionType: string;
   disabled: boolean;
+  dragHandleProps?: any;
+  isDragging?: boolean;
 }
 
 const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
@@ -549,6 +643,8 @@ const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
   accentColor,
   sectionType,
   disabled,
+  dragHandleProps,
+  isDragging,
 }) => {
   // Get display values
   const getTitle = () => {
@@ -585,13 +681,30 @@ const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
   });
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white overflow-hidden transition-all hover:border-gray-300">
+    <div className={cn(
+      "rounded-lg border border-gray-200 bg-white overflow-hidden transition-all hover:border-gray-300",
+      isDragging && "shadow-lg border-gray-300"
+    )}>
       {/* Header - Always visible */}
       <div 
-        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-gray-50/50 transition-colors"
-        onClick={onToggle}
+        className="flex items-center gap-2 px-3 py-2.5 hover:bg-gray-50/50 transition-colors"
       >
-        <div className="flex-1 min-w-0">
+        {/* Drag Handle */}
+        {dragHandleProps && (
+          <div
+            {...dragHandleProps}
+            className="flex items-center justify-center w-7 h-7 rounded-lg cursor-grab active:cursor-grabbing touch-none hover:bg-gray-100 transition-colors"
+            style={{ backgroundColor: `${accentColor}10`, color: accentColor }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="text-xs font-semibold">{index + 1}</span>
+          </div>
+        )}
+        
+        <div 
+          className="flex-1 min-w-0 cursor-pointer"
+          onClick={onToggle}
+        >
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-gray-900 truncate">
               {getTitle()}
@@ -609,10 +722,22 @@ const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
           )}
         </div>
         
-        <ChevronRight className={cn(
-          "w-4 h-4 text-gray-400 transition-transform shrink-0",
-          isExpanded && "rotate-90"
-        )} />
+        <ChevronRight 
+          className={cn(
+            "w-4 h-4 text-gray-400 transition-transform shrink-0 cursor-pointer",
+            isExpanded && "rotate-90"
+          )}
+          onClick={onToggle}
+        />
+        
+        {/* Delete button */}
+        <button
+          onClick={(e) => { e.stopPropagation(); onRemove(); }}
+          disabled={disabled}
+          className="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
       </div>
       
       {/* Expanded content */}
@@ -672,18 +797,6 @@ const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
               accentColor={accentColor}
             />
           ))}
-          
-          {/* Remove button */}
-          <div className="flex justify-end pt-2 border-t border-gray-100">
-            <button
-              onClick={(e) => { e.stopPropagation(); onRemove(); }}
-              disabled={disabled}
-              className="text-xs text-red-500 hover:text-red-600 hover:bg-red-50 px-2 py-1 rounded transition-colors flex items-center gap-1"
-            >
-              <Trash2 className="w-3 h-3" />
-              Remove
-            </button>
-          </div>
         </div>
       )}
     </div>

@@ -13,6 +13,13 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { getAllTemplates, getTemplateConfig } from "@/v2/config/templates";
 import { ElegantForm } from "@/v2/components/form/ElegantForm";
 import type { V2ResumeData } from "@/v2/types/resumeData";
+import { useCountry } from "@/hooks/useCountry";
+
+// Price display based on currency
+const PRICES = {
+  INR: { amount: 169, symbol: '₹', display: '₹169/month' },
+  USD: { amount: 9, symbol: '$', display: '$9/month' },
+};
 
 const DEFAULT_THEME_COLOR = "#2563eb";
 import { InlineEditProvider } from "@/contexts/InlineEditContext";
@@ -32,6 +39,8 @@ import { TrialBanner } from "@/components/TrialBanner";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { currency } = useCountry();
+  const priceInfo = PRICES[currency];
   const v2Templates = getAllTemplates();
   
   // Featured templates - show first 4 templates
@@ -1354,7 +1363,7 @@ const Hero = () => {
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
                 <p className="text-sm text-muted-foreground">
-                  Starting at just <span className="font-semibold text-foreground">₹169/month</span>
+                  Starting at just <span className="font-semibold text-foreground">{priceInfo.display}</span>
                 </p>
               </div>
             </div>
@@ -2732,7 +2741,7 @@ const Hero = () => {
                   </div>
 
                   <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-bold text-foreground">₹169</span>
+                    <span className="text-2xl font-bold text-foreground">{priceInfo.symbol}{PRICES[currency].amount}</span>
                     <span className="text-sm text-muted-foreground">/mo</span>
                   </div>
 

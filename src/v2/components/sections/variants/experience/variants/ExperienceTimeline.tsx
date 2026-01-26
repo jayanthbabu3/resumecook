@@ -1,12 +1,12 @@
 /**
  * Experience Timeline Variant
  * 
- * Visual timeline with connecting line and dots.
- * Great for showing career progression.
+ * Clean, modern timeline with subtle connecting elements.
+ * Professional design that's ATS-friendly and print-ready.
  */
 
 import React from 'react';
-import { X, Plus, Briefcase } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import { useStyleOptions } from '@/contexts/StyleOptionsContext';
@@ -29,15 +29,21 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
 
   if (!items.length && !editable) return null;
 
+  // Timeline dot size for alignment calculation
+  const dotSize = 8;
+  const dotLeft = 0; // Position from left edge
+  const lineLeft = dotLeft + (dotSize / 2) - 0.5; // Center line on dot (subtract half line width)
+  const contentPaddingLeft = dotLeft + dotSize + 12; // Space after dot for content
+
   return (
-    <div style={{ position: 'relative', paddingLeft: '32px' }}>
-      {/* Timeline line */}
+    <div style={{ position: 'relative', paddingLeft: `${contentPaddingLeft}px` }}>
+      {/* Timeline line - perfectly centered on dots */}
       <div style={{
         position: 'absolute',
-        left: '11px',
+        left: `${lineLeft}px`,
         top: '12px',
-        bottom: editable ? '60px' : '12px',
-        width: '2px',
+        bottom: editable ? '50px' : '12px',
+        width: '1px',
         backgroundColor: accentColor,
         opacity: 0.2,
       }} />
@@ -45,22 +51,16 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
       <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
         {items.map((exp, index) => (
           <div key={exp.id || index} className="group relative pdf-experience-entry" data-experience-entry="true">
-            {/* Timeline dot */}
+            {/* Timeline dot - centered on the line */}
             <div style={{
               position: 'absolute',
-              left: '-26px',
-              top: '4px',
-              width: '24px',
-              height: '24px',
+              left: `${dotLeft - contentPaddingLeft}px`,
+              top: '6px',
+              width: `${dotSize}px`,
+              height: `${dotSize}px`,
               borderRadius: '50%',
               backgroundColor: accentColor,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: `0 0 0 4px ${accentColor}20`,
-            }}>
-              <Briefcase style={{ width: '12px', height: '12px', color: '#fff' }} />
-            </div>
+            }} />
             
             {/* Delete button */}
             {editable && onRemoveExperience && (
@@ -72,15 +72,11 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
               </button>
             )}
             
-            <div style={{
-              backgroundColor: `${accentColor}08`,
-              borderRadius: '8px',
-              padding: '12px 16px',
-              borderLeft: `3px solid ${accentColor}`,
-            }}>
-              {/* Entry Header - keep together for PDF page breaks */}
-              <div data-entry-header="true" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ flex: 1 }}>
+            <div style={{ paddingBottom: '4px' }}>
+              {/* Entry Header */}
+              <div data-entry-header="true" style={{ marginBottom: '8px' }}>
+                {/* Title and Date Row */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '8px' }}>
                   {editable ? (
                     <InlineEditableText
                       path={`experience.${index}.position`}
@@ -91,6 +87,7 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
                         fontWeight: typography.itemTitle.fontWeight,
                         color: typography.itemTitle.color,
                         margin: 0,
+                        flex: 1,
                       }}
                       placeholder="Position Title"
                     />
@@ -100,90 +97,90 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
                       fontWeight: typography.itemTitle.fontWeight,
                       color: typography.itemTitle.color,
                       margin: 0,
+                      flex: 1,
                     }}>
                       {exp.position}
                     </h3>
                   )}
                   
                   <div style={{ 
-                    fontSize: typography.body.fontSize, 
-                    color: accentColor,
-                    fontWeight: 500,
-                    marginTop: '2px',
+                    fontSize: scaleFontSize(typography.body.fontSize), 
+                    color: '#64748b',
+                    whiteSpace: 'nowrap',
+                    fontWeight: 400,
                   }}>
                     {editable ? (
-                      <InlineEditableText
-                        path={`experience.${index}.company`}
-                        value={exp.company}
-                        style={{ color: accentColor, fontWeight: 500 }}
-                        placeholder="Company Name"
-                      />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <InlineEditableDate
+                          path={`experience.${index}.startDate`}
+                          value={exp.startDate}
+                          formatDisplay={formatDate}
+                        />
+                        <span> – </span>
+                        {exp.current ? 'Present' : (
+                          <InlineEditableDate
+                            path={`experience.${index}.endDate`}
+                            value={exp.endDate}
+                            formatDisplay={formatDate}
+                          />
+                        )}
+                      </div>
                     ) : (
-                      exp.company
+                      `${formatDate ? formatDate(exp.startDate) : exp.startDate} – ${exp.current ? 'Present' : (formatDate ? formatDate(exp.endDate) : exp.endDate)}`
                     )}
                   </div>
                 </div>
                 
+                {/* Company - muted, secondary */}
                 <div style={{ 
-                  fontSize: scaleFontSize(typography.body.fontSize), 
-                  color: '#6b7280',
-                  backgroundColor: '#f3f4f6',
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  whiteSpace: 'nowrap',
+                  fontSize: typography.body.fontSize, 
+                  color: '#64748b',
+                  fontWeight: 500,
+                  marginTop: '2px',
                 }}>
                   {editable ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <InlineEditableDate
-                        path={`experience.${index}.startDate`}
-                        value={exp.startDate}
-                        formatDisplay={formatDate}
-                      />
-                      <span> – </span>
-                      {exp.current ? 'Present' : (
-                        <InlineEditableDate
-                          path={`experience.${index}.endDate`}
-                          value={exp.endDate}
-                          formatDisplay={formatDate}
-                        />
-                      )}
-                    </div>
+                    <InlineEditableText
+                      path={`experience.${index}.company`}
+                      value={exp.company}
+                      style={{ color: '#64748b', fontWeight: 500 }}
+                      placeholder="Company Name"
+                    />
                   ) : (
-                    `${formatDate ? formatDate(exp.startDate) : exp.startDate} – ${exp.current ? 'Present' : (formatDate ? formatDate(exp.endDate) : exp.endDate)}`
+                    exp.company
+                  )}
+                  {exp.location && (
+                    <span style={{ fontWeight: 400, color: '#94a3b8' }}> · {exp.location}</span>
                   )}
                 </div>
               </div>
-              {/* End Entry Header */}
 
-              {/* Bullet points */}
+              {/* Bullet points - improved spacing */}
               {(exp.bulletPoints?.length > 0 || editable) && (
-                <ul style={{ 
-                  margin: '12px 0 0 0', 
-                  paddingLeft: '16px',
-                  listStyleType: 'none',
+                <div style={{ 
+                  marginTop: '10px',
                 }}>
                   {exp.bulletPoints?.map((bullet, bulletIndex) => (
-                    <li
+                    <div
                       key={bulletIndex}
                       className="group/bullet"
                       style={{
                         fontSize: typography.body.fontSize,
                         color: typography.body.color,
-                        lineHeight: typography.body.lineHeight,
+                        lineHeight: '1.6',
                         textAlign: 'justify',
                         marginBottom: '6px',
                         position: 'relative',
-                        paddingLeft: '12px',
+                        paddingLeft: '14px',
                       }}
                     >
                       <span style={{
                         position: 'absolute',
-                        left: 0,
-                        top: '8px',
+                        left: '2px',
+                        top: '9px',
                         width: '4px',
                         height: '4px',
                         borderRadius: '50%',
-                        backgroundColor: accentColor,
+                        backgroundColor: '#94a3b8',
                       }} />
                       {editable ? (
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
@@ -191,7 +188,7 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
                             path={`experience.${index}.bulletPoints.${bulletIndex}`}
                             value={bullet}
                             style={{ flex: 1 }}
-                            placeholder="Achievement..."
+                            placeholder="Achievement or responsibility..."
                           />
                           {onRemoveBulletPoint && (
                             <button
@@ -205,22 +202,22 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
                       ) : (
                         bullet
                       )}
-                    </li>
+                    </div>
                   ))}
                   
                   {editable && onAddBulletPoint && (
-                    <li style={{ listStyle: 'none', marginTop: '8px' }}>
+                    <div style={{ marginTop: '8px' }}>
                       <button
                         onClick={() => onAddBulletPoint(exp.id)}
-                        className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-white/50 transition-colors"
-                        style={{ color: accentColor, borderColor: accentColor }}
+                        className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
+                        style={{ color: accentColor, borderColor: `${accentColor}60` }}
                       >
                         <Plus className="w-3 h-3" />
                         Add bullet
                       </button>
-                    </li>
+                    </div>
                   )}
-                </ul>
+                </div>
               )}
             </div>
           </div>
@@ -231,7 +228,7 @@ export const ExperienceTimeline: React.FC<ExperienceVariantProps> = ({
         <button
           onClick={onAddExperience}
           className="mt-4 flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
-          style={{ color: accentColor, borderColor: accentColor }}
+          style={{ color: accentColor, borderColor: `${accentColor}60` }}
         >
           <Plus className="h-3 w-3" />
           Add Experience

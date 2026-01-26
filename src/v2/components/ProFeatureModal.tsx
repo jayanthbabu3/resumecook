@@ -17,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscriptionNew';
+import { useCountry } from '@/hooks/useCountry';
 import { subscriptionService } from '@/services/subscriptionService';
 import {
   Sparkles,
@@ -37,6 +38,12 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { API_BASE_URL } from '@/config/api';
+
+// Default prices based on currency (used as fallback)
+const DEFAULT_PRICES = {
+  INR: { currency: 'INR', symbol: '₹', amount: 169 },
+  USD: { currency: 'USD', symbol: '$', amount: 9 },
+};
 
 interface ProFeatureModalProps {
   isOpen: boolean;
@@ -65,11 +72,15 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
   const navigate = useNavigate();
   const { user, signInWithGoogle, refreshUser } = useAuth();
   const { startCheckout } = useSubscription();
+  const { currency } = useCountry();
   const [isLoading, setIsLoading] = useState(false);
   const [isClaimingTrial, setIsClaimingTrial] = useState(false);
   const [trialInfo, setTrialInfo] = useState<TrialInfo | null>(null);
   const [pricing, setPricing] = useState<PricingInfo | null>(null);
   const [loadingInfo, setLoadingInfo] = useState(true);
+
+  // Get the default price based on detected currency (for fallback)
+  const defaultPrice = DEFAULT_PRICES[currency];
 
   // Fetch trial and pricing info when modal opens for logged-in users
   useEffect(() => {
@@ -79,14 +90,14 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
       // Reset states when modal closes
       setLoadingInfo(true);
     }
-  }, [isOpen, user]);
+  }, [isOpen, user, currency]);
 
   const fetchTrialAndPricing = async () => {
     setLoadingInfo(true);
     try {
       const [trialRes, pricingRes] = await Promise.all([
         fetch(`${API_BASE_URL}/api/payments/trial-status`).then((r) => r.json()),
-        fetch(`${API_BASE_URL}/api/payments/pricing`).then((r) => r.json()),
+        fetch(`${API_BASE_URL}/api/payments/pricing?currency=${currency}`).then((r) => r.json()),
       ]);
 
       if (trialRes.success !== false) {
@@ -141,7 +152,8 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
   const handleUpgrade = async () => {
     setIsLoading(true);
     try {
-      await startCheckout();
+      // Pass the detected currency to ensure correct plan is selected
+      await startCheckout(pricing?.currency || currency);
       onClose();
     } catch (error) {
       toast.error('Something went wrong. Please try again.');
@@ -280,7 +292,7 @@ export const ProFeatureModal: React.FC<ProFeatureModalProps> = ({
                         <span className="text-xs text-gray-500 font-medium">Pro Plan</span>
                         <div className="flex items-baseline gap-0.5 mt-0.5">
                           <span className="text-2xl font-bold text-gray-900">
-                            {pricing?.symbol || '₹'}{pricing?.amount || 169}
+                            {pricing?.symbol || defaultPrice.symbol}{pricing?.amount || defaultPrice.amount}
                           </span>
                           <span className="text-sm text-gray-500">/month</span>
                         </div>
