@@ -148,7 +148,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      setLoading(true);
+      // Don't set loading here - let components manage their own loading states
       const response = await authService.login({ email, password });
       setUser(response.user);
 
@@ -179,14 +179,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         toast.error(message);
       }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const signInWithGoogle = async () => {
     try {
-      setLoading(true);
+      // Don't set loading here - let components manage their own loading states
+      // The global loading state should only be for initial auth check
       await authService.googleAuth();
 
       // Fetch user after successful Google auth
@@ -216,13 +215,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         error.response?.data?.error?.message || error.message || 'Failed to sign in with Google';
 
       if (message === 'Authentication cancelled') {
-        toast.error('Sign-in was cancelled');
+        // Don't show toast for cancelled auth - user intentionally closed it
+        // Just throw the error so the component can handle it
       } else {
         toast.error(message);
       }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -241,7 +239,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   ) => {
     try {
-      setLoading(true);
+      // Don't set loading here - let components manage their own loading states
       await authService.register({
         email,
         password,
@@ -264,8 +262,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         toast.error(message);
       }
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 

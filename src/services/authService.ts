@@ -122,6 +122,7 @@ export const authService = {
 
     return new Promise((resolve, reject) => {
       let resolved = false;
+      let popupCheckCount = 0;
 
       const cleanup = () => {
         window.removeEventListener('message', handleMessage);
@@ -175,15 +176,34 @@ export const authService = {
         }
       }, 500);
 
+      // Quick initial check for popup closure - more aggressive for better UX
+      let firstCheckComplete = false;
+      setTimeout(() => {
+        firstCheckComplete = true;
+      }, 2000); // Give popup 2 seconds to load initially
+
       // Check if popup was closed without auth
       // Note: popup.closed can briefly report true during OAuth redirects
       let popupClosedCount = 0;
       const checkClosed = setInterval(() => {
+        popupCheckCount++;
+
         if (popup?.closed) {
           popupClosedCount++;
-          // Wait for 3 consecutive closed checks (1.5 seconds) to confirm popup is really closed
+
+          // If popup closes very early (within first 2 seconds), it was likely cancelled immediately
+          if (!firstCheckComplete && popupClosedCount === 1) {
+            clearInterval(checkClosed);
+            if (!resolved) {
+              cleanup();
+              reject(new Error('Authentication cancelled'));
+            }
+            return;
+          }
+
+          // Otherwise wait for 2 consecutive closed checks (1 second) to confirm popup is really closed
           // This handles false positives during OAuth redirects
-          if (popupClosedCount < 3) {
+          if (popupClosedCount < 2) {
             return;
           }
           clearInterval(checkClosed);
@@ -213,10 +233,9 @@ export const authService = {
           // Check immediately
           if (checkAuth()) return;
 
-          // Multiple retry checks with increasing delays to handle race conditions
-          // This is crucial for slower networks or when the callback page takes time to load
-          // Extended delays to give more time for OAuth flow to complete
-          const retryDelays = [500, 1000, 1500, 2000, 3000, 4000, 5000];
+          // Shorter retry delays for faster cancellation detection
+          // Balanced to handle slower networks while providing quick feedback
+          const retryDelays = [300, 500, 700, 1000, 1500];
           let retryIndex = 0;
 
           const retryCheck = () => {

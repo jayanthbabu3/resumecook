@@ -31,6 +31,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import {
   Select,
   SelectContent,
@@ -192,11 +193,23 @@ export const CompactSectionForm: React.FC<CompactSectionFormProps> = ({
   };
 
   const handleUpdateItem = (itemId: string, fieldKey: string, value: any) => {
-    onChange(
-      items.map((item: any) =>
-        item.id === itemId ? { ...item, [fieldKey]: value } : item
-      )
-    );
+    // Special handling for 'current' field
+    if (fieldKey === 'current' && value === true) {
+      // When setting current to true, also clear endDate
+      onChange(
+        items.map((item: any) =>
+          item.id === itemId
+            ? { ...item, current: true, endDate: '' }
+            : item
+        )
+      );
+    } else {
+      onChange(
+        items.map((item: any) =>
+          item.id === itemId ? { ...item, [fieldKey]: value } : item
+        )
+      );
+    }
   };
 
   // Drag and drop sensors
@@ -754,6 +767,7 @@ const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
                   onChange={(v) => onUpdate(field.key, v)}
                   disabled={disabled}
                   accentColor={accentColor}
+                  item={item}
                 />
               ))}
             </div>
@@ -770,6 +784,7 @@ const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
                 disabled={disabled}
                 accentColor={accentColor}
                 className={field.fullWidth ? 'col-span-2' : ''}
+                item={item}
               />
             ))}
           </div>
@@ -783,6 +798,7 @@ const ComplexItemCard: React.FC<ComplexItemCardProps> = ({
               onChange={(v) => onUpdate(field.key, v)}
               disabled={disabled}
               accentColor={accentColor}
+              item={item}
             />
           ))}
           
@@ -814,6 +830,7 @@ interface CompactFieldProps {
   disabled?: boolean;
   accentColor: string;
   className?: string;
+  item?: any; // The full item data, to check related fields like 'current'
 }
 
 const CompactField: React.FC<CompactFieldProps> = ({
@@ -823,8 +840,16 @@ const CompactField: React.FC<CompactFieldProps> = ({
   disabled,
   accentColor,
   className,
+  item,
 }) => {
   const { key, label, type, placeholder, options, required } = field;
+
+  // Special handling for endDate field - disable if current is checked
+  const isEndDateField = key === 'endDate';
+  const isDisabled = disabled || (isEndDateField && item?.current);
+
+  // Special handling for current field - use Switch instead of checkbox
+  const isCurrentField = key === 'current';
 
   return (
     <div className={cn("space-y-1", className)}>
@@ -832,18 +857,18 @@ const CompactField: React.FC<CompactFieldProps> = ({
         {label}
         {required && <span className="text-red-400 ml-0.5">*</span>}
       </Label>
-      
+
       {type === 'textarea' ? (
         <Textarea
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={isDisabled}
           rows={2}
           className={`resize-none ${COMPACT_FIELD_INPUT_CLASS}`}
         />
       ) : type === 'select' ? (
-        <Select value={value || ''} onValueChange={onChange} disabled={disabled}>
+        <Select value={value || ''} onValueChange={onChange} disabled={isDisabled}>
           <SelectTrigger className={`h-8 ${COMPACT_FIELD_INPUT_CLASS}`}>
             <SelectValue placeholder={placeholder || 'Select...'} />
           </SelectTrigger>
@@ -856,23 +881,36 @@ const CompactField: React.FC<CompactFieldProps> = ({
           </SelectContent>
         </Select>
       ) : type === 'checkbox' ? (
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={value || false}
-            onChange={(e) => onChange(e.target.checked)}
-            disabled={disabled}
-            className="rounded border-gray-300"
-            style={{ accentColor }}
-          />
-          <span className="text-xs text-gray-600">{placeholder || label}</span>
-        </label>
+        isCurrentField ? (
+          // Use Switch for "Current" field for better UX
+          <div className="flex items-center gap-2 h-8">
+            <Switch
+              id={`${key}-switch`}
+              checked={value || false}
+              onCheckedChange={(checked) => onChange(checked)}
+              className="data-[state=checked]:bg-primary"
+            />
+            <span className="text-xs text-gray-600">{placeholder || 'Currently active'}</span>
+          </div>
+        ) : (
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={value || false}
+              onChange={(e) => onChange(e.target.checked)}
+              disabled={isDisabled}
+              className="rounded border-gray-300"
+              style={{ accentColor }}
+            />
+            <span className="text-xs text-gray-600">{placeholder || label}</span>
+          </label>
+        )
       ) : type === 'month' ? (
         <MonthYearPicker
-          value={value || ''}
+          value={isDisabled && isEndDateField ? 'Present' : (value || '')}
           onChange={onChange}
-          disabled={disabled}
-          placeholder={placeholder || 'Select date'}
+          disabled={isDisabled}
+          placeholder={isDisabled && isEndDateField ? 'Present' : (placeholder || 'Select date')}
           className="h-8"
         />
       ) : type === 'number' ? (
@@ -881,7 +919,7 @@ const CompactField: React.FC<CompactFieldProps> = ({
           value={value || ''}
           onChange={(e) => onChange(e.target.value ? Number(e.target.value) : '')}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={isDisabled}
           min={field.min}
           max={field.max}
           className={`h-8 w-20 ${COMPACT_FIELD_INPUT_CLASS}`}
@@ -891,7 +929,7 @@ const CompactField: React.FC<CompactFieldProps> = ({
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={isDisabled}
           className={`h-8 ${COMPACT_FIELD_INPUT_CLASS}`}
         />
       )}

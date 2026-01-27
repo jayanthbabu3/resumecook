@@ -30,16 +30,17 @@ export const TrialBanner = ({
   onClaimClick
 }: TrialBannerProps) => {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
-  const { isPro, isTrial, trialDaysRemaining, isLoading } = useSubscription();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { isPro, isTrial, trialDaysRemaining, isLoading: subscriptionLoading } = useSubscription();
   const { data: trialStatus } = useTrialStatus();
   const [dismissed, setDismissed] = useState(false);
 
   // Don't show if trial system is disabled
   if (!FEATURES.TRIAL_SYSTEM_ENABLED) return null;
 
-  // Don't show anything while loading subscription status (prevents banner flash)
-  if (isAuthenticated && isLoading) return null;
+  // Don't show anything while loading auth or subscription status (prevents banner flash)
+  const isLoading = authLoading || (isAuthenticated && subscriptionLoading);
+  if (isLoading) return null;
 
   // Don't show if dismissed
   if (dismissed) return null;

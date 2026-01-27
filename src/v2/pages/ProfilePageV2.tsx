@@ -48,6 +48,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
 import { MonthYearPicker } from '@/components/ui/month-year-picker';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
@@ -953,7 +954,11 @@ const ProfilePageV2: React.FC = () => {
       if (editModal.mode === 'edit' && editModal.itemId) {
         const index = experiences.findIndex(e => e.id === editModal.itemId);
         if (index !== -1) {
-          experiences[index] = { ...experiences[index], ...experienceForm } as ExperienceItem;
+          experiences[index] = {
+            ...experiences[index],
+            ...experienceForm,
+            endDate: experienceForm.current ? '' : (experienceForm.endDate || '')
+          } as ExperienceItem;
         }
       } else {
         const newExp: ExperienceItem = {
@@ -961,7 +966,7 @@ const ProfilePageV2: React.FC = () => {
           company: experienceForm.company || '',
           position: experienceForm.position || '',
           startDate: experienceForm.startDate || '',
-          endDate: experienceForm.endDate || '',
+          endDate: experienceForm.current ? '' : (experienceForm.endDate || ''),
           current: experienceForm.current || false,
           location: experienceForm.location,
           description: experienceForm.description,
@@ -1248,7 +1253,11 @@ const ProfilePageV2: React.FC = () => {
       if (editModal.mode === 'edit' && editModal.itemId) {
         const index = volunteer.findIndex(v => v.id === editModal.itemId);
         if (index !== -1) {
-          volunteer[index] = { ...volunteer[index], ...volunteerForm } as VolunteerItem;
+          volunteer[index] = {
+            ...volunteer[index],
+            ...volunteerForm,
+            endDate: volunteerForm.current ? '' : (volunteerForm.endDate || '')
+          } as VolunteerItem;
         }
       } else {
         const newVol: VolunteerItem = {
@@ -1256,7 +1265,7 @@ const ProfilePageV2: React.FC = () => {
           organization: volunteerForm.organization || '',
           role: volunteerForm.role || '',
           startDate: volunteerForm.startDate || '',
-          endDate: volunteerForm.endDate,
+          endDate: volunteerForm.current ? '' : (volunteerForm.endDate || ''),
           current: volunteerForm.current || false,
           description: volunteerForm.description,
         };
@@ -2486,19 +2495,19 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="sm:col-span-2 flex items-center gap-2">
-                    <Checkbox
+                  <div className="sm:col-span-2 flex items-center justify-between">
+                    <Label htmlFor="current" className="text-sm font-medium cursor-pointer">
+                      Current
+                    </Label>
+                    <Switch
                       id="current"
                       checked={experienceForm.current || false}
                       onCheckedChange={(checked) => setExperienceForm({
                         ...experienceForm,
                         current: !!checked,
-                        endDate: checked ? 'Present' : experienceForm.endDate
+                        endDate: checked ? '' : (experienceForm.endDate === 'Present' ? '' : experienceForm.endDate)
                       })}
                     />
-                    <Label htmlFor="current" className="text-sm font-normal cursor-pointer">
-                      I currently work here
-                    </Label>
                   </div>
                   <div className="sm:col-span-2">
                     <Label htmlFor="expLocation">Location</Label>
@@ -2936,19 +2945,19 @@ const ProfilePageV2: React.FC = () => {
                       className="mt-1.5"
                     />
                   </div>
-                  <div className="sm:col-span-2 flex items-center gap-2">
-                    <Checkbox
+                  <div className="sm:col-span-2 flex items-center justify-between">
+                    <Label htmlFor="volCurrent" className="text-sm font-medium cursor-pointer">
+                      Current
+                    </Label>
+                    <Switch
                       id="volCurrent"
                       checked={volunteerForm.current || false}
                       onCheckedChange={(checked) => setVolunteerForm({
                         ...volunteerForm,
                         current: !!checked,
-                        endDate: checked ? 'Present' : volunteerForm.endDate
+                        endDate: checked ? '' : (volunteerForm.endDate === 'Present' ? '' : volunteerForm.endDate)
                       })}
                     />
-                    <Label htmlFor="volCurrent" className="text-sm font-normal cursor-pointer">
-                      I currently volunteer here
-                    </Label>
                   </div>
                   <div className="sm:col-span-2">
                     <Label htmlFor="volDescription">Description (optional)</Label>

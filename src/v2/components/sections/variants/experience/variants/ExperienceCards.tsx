@@ -154,13 +154,9 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
 
           {/* Bullet points */}
           {(exp.bulletPoints?.length > 0 || editable) && (
-            <ul style={{ 
-              margin: 0, 
-              paddingLeft: '16px',
-              listStyleType: 'none',
-            }}>
+            <div style={{ paddingLeft: '4px' }}>
               {exp.bulletPoints?.slice(0, 3).map((bullet, bulletIndex) => (
-                <li
+                <div
                   key={bulletIndex}
                   className="group/bullet"
                   style={{
@@ -170,17 +166,20 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
                     textAlign: 'justify',
                     marginBottom: '6px',
                     position: 'relative',
-                    paddingLeft: '12px',
+                    paddingLeft: '16px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
                   }}
                 >
                   <span style={{
                     position: 'absolute',
-                    left: 0,
+                    left: '4px',
                     top: '7px',
                     width: '4px',
                     height: '4px',
                     borderRadius: '50%',
                     backgroundColor: accentColor,
+                    flexShrink: 0,
                   }} />
                   {editable ? (
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
@@ -202,11 +201,11 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
                   ) : (
                     bullet
                   )}
-                </li>
+                </div>
               ))}
-              
+
               {editable && onAddBulletPoint && (
-                <li style={{ listStyle: 'none', marginTop: '8px' }}>
+                <div style={{ marginTop: '8px', paddingLeft: '16px' }}>
                   <button
                     onClick={() => onAddBulletPoint(exp.id)}
                     className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
@@ -215,9 +214,9 @@ export const ExperienceCards: React.FC<ExperienceVariantProps> = ({
                     <Plus className="w-3 h-3" />
                     Add
                   </button>
-                </li>
+                </div>
               )}
-            </ul>
+            </div>
           )}
         </div>
       ))}

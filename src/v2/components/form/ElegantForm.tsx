@@ -748,7 +748,17 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
   };
 
   const handleUpdate = (id: string, field: string, value: any) => {
-    onChange(items.map(item => item.id === id ? { ...item, [field]: value } : item));
+    // Special handling for 'current' field
+    if (field === 'current' && value === true) {
+      // When setting current to true, also clear endDate
+      onChange(items.map(item =>
+        item.id === id
+          ? { ...item, current: true, endDate: '' }
+          : item
+      ));
+    } else {
+      onChange(items.map(item => item.id === id ? { ...item, [field]: value } : item));
+    }
   };
 
   const handleRemove = (id: string) => {
@@ -955,7 +965,17 @@ const ComplexItemsEditor: React.FC<ComplexItemsEditorProps> = ({
   };
 
   const handleUpdate = (id: string, field: string, value: any) => {
-    onChange(items.map(item => item.id === id ? { ...item, [field]: value } : item));
+    // Special handling for 'current' field
+    if (field === 'current' && value === true) {
+      // When setting current to true, also clear endDate
+      onChange(items.map(item =>
+        item.id === id
+          ? { ...item, current: true, endDate: '' }
+          : item
+      ));
+    } else {
+      onChange(items.map(item => item.id === id ? { ...item, [field]: value } : item));
+    }
   };
 
   const handleRemove = (id: string) => {
@@ -1042,6 +1062,7 @@ const ComplexItemsEditor: React.FC<ComplexItemsEditorProps> = ({
                         value={item[field.key]}
                         onChange={(v) => handleUpdate(item.id, field.key, v)}
                         accentColor={accentColor}
+                        item={item}
                       />
                     ))}
                   </div>
@@ -1057,6 +1078,7 @@ const ComplexItemsEditor: React.FC<ComplexItemsEditorProps> = ({
                       onChange={(v) => handleUpdate(item.id, field.key, v)}
                       accentColor={accentColor}
                       className={field.fullWidth ? 'col-span-2' : ''}
+                      item={item}
                     />
                   ))}
                 </div>
@@ -1069,6 +1091,7 @@ const ComplexItemsEditor: React.FC<ComplexItemsEditorProps> = ({
                     value={item[field.key]}
                     onChange={(v) => handleUpdate(item.id, field.key, v)}
                     accentColor={accentColor}
+                    item={item}
                   />
                 ))}
                 
@@ -1123,6 +1146,8 @@ interface FieldRendererProps {
   onChange: (value: any) => void;
   accentColor: string;
   className?: string;
+  disabled?: boolean;
+  item?: any; // The full item data, to check related fields like 'current'
 }
 
 const FieldRenderer: React.FC<FieldRendererProps> = ({
@@ -1131,8 +1156,17 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
   onChange,
   accentColor,
   className,
+  disabled,
+  item,
 }) => {
   const { key, label, type, placeholder, options, required } = field;
+
+  // Special handling for endDate field - disable if current is checked
+  const isEndDateField = key === 'endDate';
+  const isDisabled = disabled || (isEndDateField && item?.current);
+
+  // Special handling for current field - use Switch instead of checkbox
+  const isCurrentField = key === 'current';
 
   return (
     <div className={cn("space-y-1", className)}>
@@ -1140,7 +1174,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
         {label}
         {required && <span className="text-red-400 ml-0.5">*</span>}
       </Label>
-      
+
       {type === 'textarea' ? (
         <Textarea
           value={value || ''}
@@ -1148,9 +1182,10 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           placeholder={placeholder}
           rows={2}
           className={`resize-none ${FIELD_INPUT_CLASS}`}
+          disabled={isDisabled}
         />
       ) : type === 'select' ? (
-        <Select value={value || ''} onValueChange={onChange}>
+        <Select value={value || ''} onValueChange={onChange} disabled={isDisabled}>
         <SelectTrigger className={`h-8 ${FIELD_INPUT_CLASS}`}>
             <SelectValue placeholder={placeholder || 'Select...'} />
           </SelectTrigger>
@@ -1163,22 +1198,37 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           </SelectContent>
         </Select>
       ) : type === 'checkbox' ? (
-        <label className="flex items-center gap-2 cursor-pointer h-8">
-          <input
-            type="checkbox"
-            checked={value || false}
-            onChange={(e) => onChange(e.target.checked)}
-            className="rounded border-gray-300"
-            style={{ accentColor }}
-          />
-          <span className="text-xs text-gray-600">{placeholder || 'Yes'}</span>
-        </label>
+        isCurrentField ? (
+          // Use Switch for "Current" field for better UX
+          <div className="flex items-center gap-2 h-8">
+            <Switch
+              id={`${key}-switch`}
+              checked={value || false}
+              onCheckedChange={(checked) => onChange(checked)}
+              className="data-[state=checked]:bg-primary"
+            />
+            <span className="text-xs text-gray-600">{placeholder || 'Currently active'}</span>
+          </div>
+        ) : (
+          <label className="flex items-center gap-2 cursor-pointer h-8">
+            <input
+              type="checkbox"
+              checked={value || false}
+              onChange={(e) => onChange(e.target.checked)}
+              className="rounded border-gray-300"
+              style={{ accentColor }}
+              disabled={isDisabled}
+            />
+            <span className="text-xs text-gray-600">{placeholder || 'Yes'}</span>
+          </label>
+        )
       ) : type === 'month' ? (
         <MonthYearPicker
-          value={value || ''}
+          value={isDisabled && isEndDateField ? 'Present' : (value || '')}
           onChange={onChange}
-          placeholder={placeholder || 'Select date'}
+          placeholder={isDisabled && isEndDateField ? 'Present' : (placeholder || 'Select date')}
           className="h-8"
+          disabled={isDisabled}
         />
       ) : type === 'number' ? (
         <Input
@@ -1189,6 +1239,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           min={field.min}
           max={field.max}
           className={`h-8 w-20 ${FIELD_INPUT_CLASS}`}
+          disabled={isDisabled}
         />
       ) : (
         <Input
@@ -1196,6 +1247,7 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`h-8 ${FIELD_INPUT_CLASS}`}
+          disabled={isDisabled}
         />
       )}
     </div>

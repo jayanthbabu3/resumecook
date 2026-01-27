@@ -1,8 +1,8 @@
 /**
  * Auth Page - Gmail Only Login
  *
- * Simplified authentication page with Google Sign-In only.
- * Clean, modern UI focused on quick sign-in.
+ * Minimalist, elegant authentication page focused on login functionality.
+ * Clean design with brand theme consistency.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -10,7 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { FileText, Sparkles, Shield, Zap, Check, Crown } from 'lucide-react';
+import { FileText, Crown, ArrowLeft, Lock, Shield, CheckCircle2 } from 'lucide-react';
 
 const Auth = () => {
   const { signInWithGoogle, loading, user } = useAuth();
@@ -48,12 +48,27 @@ const Auth = () => {
   const handleGoogleSignIn = async () => {
     setIsSubmitting(true);
     setError('');
+
+    // Set a timeout to prevent infinite loading state
+    const timeoutId = setTimeout(() => {
+      setIsSubmitting(false);
+      setError('');
+    }, 30000); // 30 second timeout
+
     try {
       await signInWithGoogle();
+      clearTimeout(timeoutId);
       // Navigate to the redirect destination after successful sign-in
       navigate(redirectTo, { replace: true });
     } catch (error: any) {
-      setError(error.message || 'Failed to sign in with Google. Please try again.');
+      clearTimeout(timeoutId);
+      // Handle specific error cases
+      if (error.message === 'Authentication cancelled') {
+        // User closed the popup - just clear the loading state, no error message needed
+        setError('');
+      } else {
+        setError(error.message || 'Failed to sign in with Google. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -61,7 +76,7 @@ const Auth = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-10 w-10 border-2 border-primary border-t-transparent mx-auto mb-3"></div>
           <p className="text-sm text-muted-foreground">Loading...</p>
@@ -71,201 +86,162 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Visual Branding */}
-      <div className="hidden lg:flex lg:w-[55%] relative bg-[#0a0a0f] overflow-hidden">
-        {/* Mesh gradient background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.3),transparent)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_0%_100%,rgba(139,92,246,0.15),transparent)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_100%_0%,rgba(6,182,212,0.1),transparent)]" />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 relative overflow-hidden">
+      {/* Animated gradient background shapes */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Primary gradient circle - top left */}
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-gradient-to-br from-primary/20 to-blue-400/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+
+        {/* Secondary gradient circle - top right */}
+        <div className="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+
+        {/* Accent gradient circle - bottom */}
+        <div className="absolute -bottom-32 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-to-br from-primary/15 to-blue-500/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+
+        {/* Geometric shapes for visual interest */}
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-gradient-to-br from-primary/10 to-transparent rotate-45 rounded-3xl blur-2xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-48 h-48 bg-gradient-to-tl from-blue-400/10 to-transparent rotate-12 rounded-3xl blur-2xl" />
+
+        {/* Subtle dot pattern */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(203 213 225 / 0.15) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
+          }} />
         </div>
 
-        {/* Floating elements */}
-        <div className="absolute top-[15%] left-[10%] w-64 h-64 rounded-full bg-blue-500/10 blur-[100px] animate-pulse" />
-        <div className="absolute bottom-[20%] right-[15%] w-72 h-72 rounded-full bg-blue-500/10 blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
-
-        {/* Content container */}
-        <div className="relative z-10 flex flex-col justify-between w-full p-10 xl:p-14">
-          {/* Logo */}
-          <Link to="/" className="inline-flex items-center gap-3 w-fit">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 shadow-lg shadow-primary/25">
-              <FileText className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-semibold text-white">ResumeCook</span>
-          </Link>
-
-          {/* Center content */}
-          <div className="flex-1 flex flex-col justify-center max-w-lg py-12">
-            {/* Main heading */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/70">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-                </span>
-                Free to use
-              </div>
-
-              <h1 className="text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-tight">
-                Create your
-                <span className="relative mx-3">
-                  <span className="relative z-10 bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400 bg-clip-text text-transparent">
-                    perfect
-                  </span>
-                </span>
-                resume
-              </h1>
-
-              <p className="text-base xl:text-lg text-white/50 leading-relaxed max-w-md">
-                Professional templates, ATS-optimized formatting. Build your resume in minutes.
-              </p>
-            </div>
-
-            {/* Features */}
-            <div className="flex flex-col gap-4 mt-10 pt-10 border-t border-white/10">
-              {[
-                { icon: Sparkles, text: "AI-powered resume enhancement" },
-                { icon: Shield, text: "ATS-optimized templates" },
-                { icon: Zap, text: "Create in under 5 minutes" },
-              ].map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center">
-                    <feature.icon className="h-4 w-4 text-blue-400" />
-                  </div>
-                  <span className="text-sm text-white/70">{feature.text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="flex items-center justify-between text-sm text-white/30">
-            <span>&copy; {new Date().getFullYear()} ResumeCook</span>
-            <div className="flex items-center gap-6">
-              <Link to="/privacy" className="hover:text-white/50 transition-colors">Privacy</Link>
-              <Link to="/terms" className="hover:text-white/50 transition-colors">Terms</Link>
-            </div>
-          </div>
-        </div>
+        {/* Floating decorative elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-primary/20 to-blue-400/20 rounded-full animate-float" />
+        <div className="absolute bottom-20 right-10 w-16 h-16 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full animate-float animation-delay-2000" />
+        <div className="absolute top-1/2 left-20 w-12 h-12 bg-gradient-to-br from-primary/15 to-blue-500/15 rounded-full animate-float animation-delay-4000" />
       </div>
 
-      {/* Right Side - Auth Form */}
-      <div className="flex-1 flex flex-col bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-background dark:to-blue-950/20 relative overflow-hidden">
-        {/* Gradient mesh background */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(139,92,246,0.1),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.8),transparent_70%)] dark:bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.3),transparent_70%)]" />
+      {/* Navigation */}
+      <nav className="relative z-10 px-6 py-4 lg:px-8">
+        <div className="mx-auto max-w-7xl flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="h-4 w-4" />
+            <span className="text-sm">Back to home</span>
+          </Link>
 
-        {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between p-4 border-b relative z-10 bg-background/80 backdrop-blur-sm">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-blue-600">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center">
               <FileText className="h-4 w-4 text-white" />
             </div>
-            <span className="text-lg font-semibold text-foreground">ResumeCook</span>
+            <span className="text-lg font-semibold">ResumeCook</span>
           </Link>
         </div>
+      </nav>
 
-        {/* Form container */}
-        <div className="flex-1 flex items-center justify-center p-6 sm:p-8 relative z-10">
-          <div className="w-full max-w-[400px] space-y-8">
-            {/* Header */}
-            <div className="text-center space-y-3">
-              {isUpgradeFlow ? (
-                <>
-                  <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-blue-500/10 flex items-center justify-center mb-4">
-                    <Crown className="h-8 w-8 text-primary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-foreground">
-                    Sign in to upgrade
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    Create an account or sign in to upgrade to Pro and unlock AI-powered features
-                  </p>
-                </>
-              ) : (
-                <>
-                  <h2 className="text-2xl font-bold text-foreground">
-                    Welcome to ResumeCook
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    Sign in with your Google account to create amazing resumes
-                  </p>
-                </>
-              )}
-            </div>
+      {/* Main Content */}
+      <main className="relative z-10 flex min-h-[calc(100vh-64px)] items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
+          {/* Login Card with glassmorphism effect */}
+          <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 ring-1 ring-gray-900/5">
+            {/* Card Header */}
+            <div className="p-8 pb-0">
+              <div className="text-center">
+                {/* Logo */}
+                <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center mb-6">
+                  <FileText className="h-8 w-8 text-white" />
+                </div>
 
-            {/* Error Alert */}
-            {error && (
-              <Alert variant="destructive" className="text-sm">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-
-            {/* Google Sign In Button */}
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full h-14 gap-3 font-semibold text-base border-2 border-gray-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-gray-300 transition-all rounded-xl shadow-sm"
-              onClick={handleGoogleSignIn}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <>
-                  <span className="h-5 w-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                <>
-                  <svg className="h-5 w-5" viewBox="0 0 24 24">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-                  </svg>
-                  Continue with Google
-                </>
-              )}
-            </Button>
-
-            {/* Features below button */}
-            <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-xs text-center text-muted-foreground mb-4">
-                What you'll get:
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  "Free resume builder",
-                  "10+ templates",
-                  "PDF downloads",
-                  "ATS optimization",
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </div>
-                ))}
+                {/* Title */}
+                {isUpgradeFlow ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 dark:bg-amber-900/20 px-3 py-1 mb-4">
+                      <Crown className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                      <span className="text-xs font-medium text-amber-700 dark:text-amber-300">Pro Plan</span>
+                    </div>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                      Sign in to continue
+                    </h1>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Unlock all premium features and templates
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                      Welcome back
+                    </h1>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Sign in to access your resumes
+                    </p>
+                  </>
+                )}
               </div>
             </div>
 
-            {/* Terms */}
-            <p className="text-xs text-center text-muted-foreground">
+            {/* Card Body */}
+            <div className="p-8">
+              {/* Error Alert */}
+              {error && (
+                <Alert variant="destructive" className="mb-6">
+                  <AlertDescription className="text-sm">{error}</AlertDescription>
+                </Alert>
+              )}
+
+              {/* Google Sign In Button */}
+              <Button
+                type="button"
+                className="w-full h-11 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 font-medium transition-colors rounded-lg shadow-sm"
+                onClick={handleGoogleSignIn}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="h-4 w-4 border-2 border-gray-400 border-t-primary rounded-full animate-spin" />
+                    <span className="ml-2">Signing in...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-5 w-5" viewBox="0 0 24 24">
+                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                    </svg>
+                    <span className="ml-3">Continue with Google</span>
+                  </>
+                )}
+              </Button>
+
+              {/* Security Badge */}
+              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                <Lock className="h-3.5 w-3.5" />
+                <span>Secure authentication with Google</span>
+              </div>
+            </div>
+
+            {/* Card Footer - Simple privacy note */}
+            <div className="px-8 pb-8">
+              <div className="rounded-lg bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-800/30 p-4 border border-gray-200/50 dark:border-gray-700/50">
+                <div className="flex items-start gap-3">
+                  <Shield className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Secure authentication</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      Sign in with your Google account. Your resumes are private and only accessible to you.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Links */}
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               By signing in, you agree to our{' '}
-              <Link to="/terms" className="text-foreground hover:underline">Terms of Service</Link>
+              <Link to="/terms" className="text-primary hover:underline">Terms</Link>
               {' '}and{' '}
-              <Link to="/privacy" className="text-foreground hover:underline">Privacy Policy</Link>
+              <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
             </p>
           </div>
-        </div>
 
-        {/* Mobile Footer */}
-        <div className="lg:hidden p-4 text-center border-t">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} ResumeCook. All rights reserved.
-          </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

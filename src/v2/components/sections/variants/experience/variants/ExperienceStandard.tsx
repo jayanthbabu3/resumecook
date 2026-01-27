@@ -8,7 +8,7 @@
 import React from 'react';
 import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
-import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
+import { InlineEditableDateRange } from '@/components/resume/InlineEditableDateRange';
 import type { ExperienceVariantProps } from '../../experience/types';
 import { useStyleOptions } from '@/contexts/StyleOptionsContext';
 
@@ -116,36 +116,20 @@ export const ExperienceStandard: React.FC<ExperienceVariantProps> = ({
               </div>
             </div>
             
-            <div style={{
-              fontSize: scaleFontSize(typography.dates?.fontSize || '13px'),
-              color: typography.dates?.color || '#6b7280',
-              whiteSpace: 'nowrap',
-              marginLeft: '16px',
-            }}>
-              {editable ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <InlineEditableDate
-                    path={`experience.${index}.startDate`}
-                    value={exp.startDate}
-                    formatDisplay={formatDate}
-                  />
-                  <span> – </span>
-                  {exp.current ? (
-                    <span>Present</span>
-                  ) : (
-                    <InlineEditableDate
-                      path={`experience.${index}.endDate`}
-                      value={exp.endDate}
-                      formatDisplay={formatDate}
-                    />
-                  )}
-                </div>
-              ) : (
-                <span>
-                  {formatDate ? formatDate(exp.startDate) : exp.startDate} – {exp.current ? 'Present' : (formatDate ? formatDate(exp.endDate) : exp.endDate)}
-                </span>
-              )}
-            </div>
+            <InlineEditableDateRange
+              pathPrefix={`experience.${index}`}
+              startDate={exp.startDate}
+              endDate={exp.endDate}
+              current={exp.current}
+              formatDate={formatDate}
+              editable={editable}
+              style={{
+                fontSize: scaleFontSize(typography.dates?.fontSize || '13px'),
+                color: typography.dates?.color || '#6b7280',
+                whiteSpace: 'nowrap',
+                marginLeft: '16px',
+              }}
+            />
           </div>
           
           {/* Description */}

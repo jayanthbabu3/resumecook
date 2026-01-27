@@ -30,10 +30,13 @@ import {
 
 const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
-  const { user, signOut, isAdmin } = useAuth();
-  const { isPro } = useSubscription();
+  const { user, signOut, isAdmin, loading: authLoading } = useAuth();
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const { currency } = useCountry();
   const priceInfo = PRICES[currency];
+
+  // Don't render dynamic content until auth and subscription are loaded
+  const isLoading = authLoading || (user && subscriptionLoading);
 
   // Memoize user-related values to prevent recalculation
   const userInfo = useMemo(() => {
@@ -142,32 +145,41 @@ const HeaderComponent: React.FC = () => {
 
           {/* Right Section */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Upgrade Button - Logged in but not Pro */}
-            {user && !isPro && (
-              <Button
-                onClick={handleNavigatePricing}
-                size="sm"
-                className="hidden sm:inline-flex h-9 px-4 rounded-lg font-semibold bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25 text-white"
-              >
-                <Zap className="mr-1.5 h-4 w-4" />
-                Upgrade
-              </Button>
-            )}
+            {/* Loading state - show placeholder while loading */}
+            {isLoading ? (
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="h-9 w-20 bg-gray-100 rounded-lg animate-pulse" />
+              </div>
+            ) : (
+              <>
+                {/* Upgrade Button - Logged in but not Pro */}
+                {user && !isPro && (
+                  <Button
+                    onClick={handleNavigatePricing}
+                    size="sm"
+                    className="hidden sm:inline-flex h-9 px-4 rounded-lg font-semibold bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25 text-white"
+                  >
+                    <Zap className="mr-1.5 h-4 w-4" />
+                    Upgrade
+                  </Button>
+                )}
 
-            {/* Sign In Button - Not logged in */}
-            {!user && (
-              <Button
-                onClick={handleNavigateAuth}
-                variant="outline"
-                size="sm"
-                className="hidden sm:inline-flex h-9 px-4 rounded-lg font-medium"
-              >
-                Sign In
-              </Button>
+                {/* Sign In Button - Not logged in */}
+                {!user && (
+                  <Button
+                    onClick={handleNavigateAuth}
+                    variant="outline"
+                    size="sm"
+                    className="hidden sm:inline-flex h-9 px-4 rounded-lg font-medium"
+                  >
+                    Sign In
+                  </Button>
+                )}
+              </>
             )}
 
             {/* User Menu - Logged in (Desktop) */}
-            {user && (
+            {!isLoading && user && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="hidden md:flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-gray-100 transition-colors duration-200">
@@ -305,7 +317,7 @@ const HeaderComponent: React.FC = () => {
 
             {/* Mobile Menu */}
             <div className="flex lg:hidden items-center gap-2">
-              {user && (
+              {!isLoading && user && (
                 <div className="relative hidden sm:flex">
                   <Avatar className={cn(
                     "h-8 w-8 ring-2",
@@ -384,7 +396,7 @@ const HeaderComponent: React.FC = () => {
                     </nav>
 
                     {/* User Section in Mobile */}
-                    {user && (
+                    {!isLoading && user && (
                       <div className="mt-4 pt-4 border-t border-gray-100">
                         {/* User Card */}
                         <div
@@ -521,7 +533,7 @@ const HeaderComponent: React.FC = () => {
                     )}
 
                     {/* Sign In for Mobile */}
-                    {!user && (
+                    {!isLoading && !user && (
                       <div className="mt-4 pt-4 border-t border-gray-100">
                         <SheetClose asChild>
                           <Button
