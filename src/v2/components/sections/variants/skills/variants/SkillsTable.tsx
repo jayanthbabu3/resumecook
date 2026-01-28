@@ -1,9 +1,9 @@
 /**
  * Skills Table Variant
  *
- * Renders skills in a professional table format with category rows.
- * Similar to traditional resumes showing:
- * Category | Technology/Skills list
+ * Renders skills in a clean grouped format with category labels.
+ * Uses a stacked layout (category on top, skills below) that works
+ * in both wide main content and narrow sidebar contexts.
  *
  * Perfect for technical resumes where skills need to be organized by domain.
  */
@@ -56,11 +56,21 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
     return { order, groups };
   }, [items]);
 
-  const handleAddSkill = (category?: string) => {
+  // Add a skill to an existing category
+  const handleAddSkill = (category: string) => {
     addArrayItem('skills', {
       id: `skill-${Date.now()}`,
       name: 'New Skill',
-      category: category || 'New Category',
+      category: category,
+    });
+  };
+
+  // Add a new category (creates placeholder that will be managed via form)
+  const handleAddCategory = () => {
+    addArrayItem('skills', {
+      id: `skill-${Date.now()}`,
+      name: '', // Empty placeholder - category only, user adds skills via form
+      category: 'New Category',
     });
   };
 
@@ -72,144 +82,147 @@ export const SkillsTable: React.FC<SkillsTableProps> = ({
   };
 
   const borderColor = colors.border || '#e5e7eb';
-  const getBorderStyle = () => {
-    if (borderStyle === 'none') return 'none';
-    return `1px ${borderStyle} ${borderColor}`;
-  };
-
-  const tableStyle: React.CSSProperties = {
-    width: '100%',
-    borderCollapse: 'collapse',
-    fontSize: scaleFontSize(typography.body.fontSize),
-    lineHeight: typography.body.lineHeight,
-    border: getBorderStyle(),
-  };
-
-  const headerCellStyle: React.CSSProperties = {
-    padding: '8px 12px',
-    fontWeight: 700,
-    fontSize: scaleFontSize(typography.small?.fontSize || '11px'),
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    color: colors.text.muted,
-    border: getBorderStyle(),
-    borderBottom: `1px solid ${borderColor}`,
-    textAlign: 'left',
-    backgroundColor: `${accentColor}06`,
-  };
-
-  const categoryCellStyle: React.CSSProperties = {
-    padding: '10px 12px',
-    fontWeight: 600,
-    color: accentColor,
-    border: getBorderStyle(),
-    verticalAlign: 'top',
-    whiteSpace: 'nowrap',
-    width: '160px',
-    fontSize: scaleFontSize(typography.body.fontSize),
-  };
-
-  const skillsCellStyle: React.CSSProperties = {
-    padding: '10px 12px',
-    color: typography.body.color,
-    border: getBorderStyle(),
-    verticalAlign: 'top',
-    lineHeight: 1.6,
-  };
 
   if (!items.length && !editable) return null;
 
   return (
-    <div>
-      <table style={tableStyle}>
-        {showHeaders && (
-          <thead>
-            <tr>
-              <th style={headerCellStyle}>Category</th>
-              <th style={headerCellStyle}>Technologies & Tools</th>
-            </tr>
-          </thead>
-        )}
-        <tbody>
-          {grouped.order.map((category, rowIndex) => {
-            const rowBgColor = striped && rowIndex % 2 === 1
-              ? `${accentColor}05`
-              : 'transparent';
+    <div style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: '12px',
+      width: '100%',
+    }}>
+      {grouped.order.map((category, rowIndex) => {
+        // Get valid skills for this category (non-empty names)
+        const validSkills = grouped.groups[category].filter(
+          (skill) => skill.name && skill.name.trim()
+        );
+        
+        // In non-edit mode, skip categories with no valid skills
+        if (!editable && validSkills.length === 0) {
+          return null;
+        }
 
-            return (
-              <tr key={category} style={{ backgroundColor: rowBgColor }}>
-                <td style={categoryCellStyle}>
-                  {editable ? (
-                    <InlineEditableText
-                      path={`skills.${items.findIndex((skill) => skill.category === category)}.category`}
-                      value={category}
-                      style={{ color: accentColor, fontWeight: 600 }}
-                    />
-                  ) : (
-                    category
-                  )}
-                </td>
-                <td style={skillsCellStyle}>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center' }}>
-                    {grouped.groups[category]
-                      .filter((skill) => skill.name?.trim()) // Filter out empty skills
-                      .map((skill, skillIndex, filteredArray) => {
-                        const index = items.findIndex((s) => s.id === skill.id);
-                        const isLast = skillIndex === filteredArray.length - 1;
+        const rowBgColor = striped && rowIndex % 2 === 1
+          ? `${accentColor}08`
+          : 'transparent';
 
-                        return (
-                          <span key={skill.id} className="group relative inline-flex items-center">
-                            {editable ? (
-                              <InlineEditableText
-                                path={`skills.${index}.name`}
-                                value={skill.name}
-                                style={{ color: typography.body.color }}
-                                placeholder="Skill"
-                              />
-                            ) : (
-                              <span>{skill.name}</span>
-                            )}
-                            {!isLast && (
-                              <span style={{ color: colors.text.muted, marginLeft: '2px' }}>,</span>
-                            )}
+        return (
+          <div 
+            key={category} 
+            style={{ 
+              backgroundColor: rowBgColor,
+              borderLeft: `3px solid ${accentColor}`,
+              paddingLeft: '10px',
+              paddingTop: '4px',
+              paddingBottom: '4px',
+            }}
+          >
+            {/* Category Label */}
+            <div style={{
+              fontSize: scaleFontSize(typography.small?.fontSize || '11px'),
+              fontWeight: 600,
+              color: accentColor,
+              textTransform: 'uppercase',
+              letterSpacing: '0.03em',
+              marginBottom: '4px',
+            }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`skills.${items.findIndex((skill) => skill.category === category)}.category`}
+                  value={category}
+                  style={{ 
+                    color: accentColor, 
+                    fontWeight: 600,
+                    fontSize: scaleFontSize(typography.small?.fontSize || '11px'),
+                  }}
+                />
+              ) : (
+                category
+              )}
+            </div>
 
-                            {editable && (
-                              <button
-                                onClick={() => handleRemoveSkill(skill.id)}
-                                className="absolute -right-4 -top-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
-                              >
-                                <X className="w-3 h-3 text-red-500" />
-                              </button>
-                            )}
-                          </span>
-                        );
-                      })}
+            {/* Skills List */}
+            <div style={{ 
+              fontSize: scaleFontSize(typography.body.fontSize),
+              lineHeight: 1.5,
+              color: typography.body.color,
+            }}>
+              {validSkills.map((skill, skillIndex) => {
+                  const index = items.findIndex((s) => s.id === skill.id);
+                  const isLast = skillIndex === validSkills.length - 1;
 
-                    {editable && (
-                      <button
-                        onClick={() => handleAddSkill(category)}
-                        className="ml-2 text-xs px-1.5 py-0.5 rounded border border-dashed hover:bg-gray-50 transition-colors opacity-50 hover:opacity-100"
-                        style={{ color: accentColor, borderColor: accentColor }}
-                      >
-                        <Plus className="h-3 w-3" />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  return (
+                    <span 
+                      key={skill.id} 
+                      className="group"
+                      style={{ 
+                        display: 'inline',
+                        position: 'relative',
+                      }}
+                    >
+                      {editable ? (
+                        <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                          <InlineEditableText
+                            path={`skills.${index}.name`}
+                            value={skill.name}
+                            style={{ 
+                              color: typography.body.color,
+                              display: 'inline',
+                            }}
+                            placeholder="Skill"
+                          />
+                          <button
+                            onClick={() => handleRemoveSkill(skill.id)}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 rounded"
+                            style={{
+                              marginLeft: '2px',
+                              padding: '1px',
+                              display: 'inline-flex',
+                            }}
+                            title="Remove skill"
+                          >
+                            <X className="w-3 h-3 text-red-500" />
+                          </button>
+                        </span>
+                      ) : (
+                        <span>{skill.name}</span>
+                      )}
+                      {!isLast && (
+                        <span style={{ color: colors.text.muted }}>, </span>
+                      )}
+                    </span>
+                  );
+                })}
+
+              {editable && (
+                <button
+                  onClick={() => handleAddSkill(category)}
+                  className="ml-1 text-xs px-1 py-0.5 rounded border border-dashed hover:bg-gray-50 transition-colors opacity-50 hover:opacity-100"
+                  style={{ 
+                    color: accentColor, 
+                    borderColor: accentColor,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    verticalAlign: 'middle',
+                  }}
+                >
+                  <Plus className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+          </div>
+        );
+      })}
 
       {editable && (
         <button
-          onClick={() => handleAddSkill('New Category')}
-          className="mt-3 flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded border border-dashed hover:bg-gray-50 transition-colors"
+          onClick={handleAddCategory}
+          className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded border border-dashed hover:bg-gray-50 transition-colors"
           style={{ color: accentColor, borderColor: accentColor }}
         >
           <Plus className="h-3 w-3" />
-          Add New Category Row
+          Add New Category
         </button>
       )}
     </div>

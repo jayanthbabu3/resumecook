@@ -1,11 +1,8 @@
 /**
  * Experience Timeline Pro Variant
- * 
- * Production-ready timeline variant inspired by professional resume builders.
- * Features: Dates on left column, timeline dots, company in accent color,
- * clean separation between entries.
- * 
- * Adapts to theme colors automatically.
+ *
+ * Clean professional timeline with dates in a left column and a subtle
+ * connecting line. Minimal, ATS-friendly, and industry-ready design.
  */
 
 import React from 'react';
@@ -41,9 +38,9 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
           data-experience-entry="true"
           style={{
             display: 'grid',
-            gridTemplateColumns: '120px 20px 1fr',
-            gap: '0',
-            alignItems: 'start',
+            gridTemplateColumns: '100px 1fr',
+            gap: '20px',
+            position: 'relative',
           }}
         >
           {/* Delete button */}
@@ -56,20 +53,22 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
             </button>
           )}
 
-          {/* Entry Header - keep together for PDF page breaks */}
-          <div data-entry-header="true" style={{ display: 'contents' }}>
-          {/* Left Column - Date and Location */}
-          <div style={{
-            textAlign: 'right',
-            paddingRight: '12px',
-            paddingTop: '2px',
-          }}>
-            <div style={{
-              fontSize: scaleFontSize(typography.body.fontSize),
-              fontWeight: '600',
-              color: '#374151',
-              marginBottom: '4px',
-            }}>
+          {/* Left Column - Dates */}
+          <div
+            style={{
+              textAlign: 'right',
+              paddingTop: '2px',
+              position: 'relative',
+            }}
+          >
+            <div
+              style={{
+                fontSize: scaleFontSize(typography.dates.fontSize),
+                color: '#374151',
+                fontWeight: 500,
+                lineHeight: 1.4,
+              }}
+            >
               {editable ? (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
                   <InlineEditableDate
@@ -77,9 +76,9 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                     value={exp.startDate}
                     formatDisplay={formatDate}
                   />
-                  <span style={{ color: '#9ca3af' }}>-</span>
+                  <span style={{ color: '#9ca3af', fontSize: scaleFontSize('11px') }}>–</span>
                   {exp.current ? (
-                    <span>Present</span>
+                    <span style={{ color: accentColor, fontWeight: 600 }}>Present</span>
                   ) : (
                     <InlineEditableDate
                       path={`experience.${index}.endDate`}
@@ -89,62 +88,46 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                   )}
                 </div>
               ) : (
-                <>
-                  <div>{formatDate ? formatDate(exp.startDate) : exp.startDate}</div>
-                  <div style={{ color: '#9ca3af', fontSize: scaleFontSize(typography.dates.fontSize) }}>-</div>
-                  <div>{exp.current ? 'Present' : (formatDate ? formatDate(exp.endDate) : exp.endDate)}</div>
-                </>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
+                  <span>{formatDate ? formatDate(exp.startDate) : exp.startDate}</span>
+                  <span style={{ color: '#9ca3af', fontSize: scaleFontSize('11px') }}>–</span>
+                  <span style={{ color: exp.current ? accentColor : '#374151', fontWeight: exp.current ? 600 : 500 }}>
+                    {exp.current ? 'Present' : (formatDate ? formatDate(exp.endDate) : exp.endDate)}
+                  </span>
+                </div>
               )}
             </div>
-            {(exp.location || editable) && (
-              <div style={{
-                fontSize: scaleFontSize(typography.dates.fontSize),
-                color: '#6b7280',
-                marginTop: '8px',
-              }}>
-                {editable ? (
-                  <InlineEditableText
-                    path={`experience.${index}.location`}
-                    value={exp.location || ''}
-                    style={{ fontSize: scaleFontSize(typography.dates.fontSize), color: '#6b7280', textAlign: 'right' }}
-                    placeholder="Location"
-                  />
-                ) : (
-                  exp.location
-                )}
-              </div>
-            )}
-          </div>
 
-          {/* Timeline Column */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            position: 'relative',
-          }}>
-            {/* Timeline dot */}
-            <div style={{
-              width: '10px',
-              height: '10px',
-              borderRadius: '50%',
-              backgroundColor: accentColor,
-              marginTop: '6px',
-              zIndex: 1,
-            }} />
-            {/* Timeline line */}
+            {/* Subtle vertical line connecting entries */}
             {index < items.length - 1 && (
-              <div style={{
-                width: '2px',
-                flex: 1,
-                backgroundColor: `${accentColor}30`,
-                marginTop: '4px',
-              }} />
+              <div
+                style={{
+                  position: 'absolute',
+                  right: '-12px',
+                  top: '4px',
+                  bottom: '-24px',
+                  width: '2px',
+                  backgroundColor: '#e5e7eb',
+                }}
+              />
             )}
+
+            {/* Timeline dot */}
+            <div
+              style={{
+                position: 'absolute',
+                right: '-15px',
+                top: '4px',
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: accentColor,
+              }}
+            />
           </div>
 
           {/* Right Column - Content */}
-          <div style={{ paddingLeft: '12px', paddingBottom: '16px' }}>
+          <div data-entry-header="true" style={{ paddingBottom: '4px' }}>
             {/* Position */}
             {editable ? (
               <InlineEditableText
@@ -152,59 +135,121 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                 value={exp.position}
                 as="h3"
                 style={{
-                  fontSize: typography.itemTitle.fontSize,
-                  fontWeight: '600',
-                  color: '#1f2937',
+                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
+                  fontWeight: 600,
+                  color: '#111827',
                   margin: 0,
-                  lineHeight: '1.3',
+                  lineHeight: 1.35,
                 }}
                 placeholder="Position Title"
               />
             ) : (
-              <h3 style={{
-                fontSize: typography.itemTitle.fontSize,
-                fontWeight: '600',
-                color: '#1f2937',
-                margin: 0,
-                lineHeight: '1.3',
-              }}>
+              <h3
+                style={{
+                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
+                  fontWeight: 600,
+                  color: '#111827',
+                  margin: 0,
+                  lineHeight: 1.35,
+                }}
+              >
                 {exp.position}
               </h3>
             )}
 
-            {/* Company */}
-            <div style={{ marginTop: '2px', marginBottom: '10px' }}>
+            {/* Company & Location */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginTop: '3px',
+                flexWrap: 'wrap',
+              }}
+            >
               {editable ? (
                 <InlineEditableText
                   path={`experience.${index}.company`}
                   value={exp.company}
                   style={{
-                    fontSize: typography.itemSubtitle?.fontSize || '14px',
-                    fontWeight: '500',
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '13px'),
+                    fontWeight: 500,
                     color: accentColor,
                   }}
                   placeholder="Company Name"
                 />
               ) : (
-                <span style={{
-                  fontSize: typography.itemSubtitle?.fontSize || '14px',
-                  fontWeight: '500',
-                  color: accentColor,
-                }}>
+                <span
+                  style={{
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '13px'),
+                    fontWeight: 500,
+                    color: accentColor,
+                  }}
+                >
                   {exp.company}
                 </span>
               )}
+
+              {(exp.location || editable) && (
+                <>
+                  <span style={{ color: '#d1d5db' }}>•</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`experience.${index}.location`}
+                      value={exp.location || ''}
+                      style={{
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                        color: '#6b7280',
+                      }}
+                      placeholder="Location"
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                        color: '#6b7280',
+                      }}
+                    >
+                      {exp.location}
+                    </span>
+                  )}
+                </>
+              )}
             </div>
-            </div>
-            {/* End Entry Header */}
+
+            {/* Description */}
+            {(exp.description || editable) && (
+              <div
+                style={{
+                  fontSize: scaleFontSize(typography.body.fontSize),
+                  color: '#4b5563',
+                  marginTop: '8px',
+                  lineHeight: 1.55,
+                  textAlign: 'justify',
+                }}
+              >
+                {editable ? (
+                  <InlineEditableText
+                    path={`experience.${index}.description`}
+                    value={exp.description || ''}
+                    multiline
+                    placeholder="Brief overview of your role..."
+                  />
+                ) : (
+                  exp.description
+                )}
+              </div>
+            )}
 
             {/* Bullet Points */}
             {(exp.bulletPoints?.length > 0 || editable) && (
-              <ul style={{
-                margin: 0,
-                padding: 0,
-                listStyle: 'none',
-              }}>
+              <ul
+                style={{
+                  margin: '8px 0 0 0',
+                  padding: 0,
+                  listStyle: 'none',
+                }}
+              >
                 {exp.bulletPoints?.map((bullet, bulletIndex) => (
                   <li
                     key={bulletIndex}
@@ -212,22 +257,24 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                     style={{
                       display: 'flex',
                       alignItems: 'flex-start',
-                      gap: '8px',
+                      gap: '10px',
                       marginBottom: '5px',
-                      fontSize: typography.body.fontSize,
+                      fontSize: scaleFontSize(typography.body.fontSize),
                       color: '#374151',
-                      lineHeight: '1.55',
+                      lineHeight: 1.55,
                       textAlign: 'justify',
                     }}
                   >
-                    <span style={{
-                      marginTop: '8px',
-                      width: '4px',
-                      height: '4px',
-                      minWidth: '4px',
-                      borderRadius: '50%',
-                      backgroundColor: '#9ca3af',
-                    }} />
+                    <span
+                      style={{
+                        marginTop: '8px',
+                        width: '4px',
+                        height: '4px',
+                        minWidth: '4px',
+                        borderRadius: '50%',
+                        backgroundColor: accentColor,
+                      }}
+                    />
                     {editable ? (
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flex: 1 }}>
                         <InlineEditableText
@@ -252,7 +299,7 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
                 ))}
 
                 {editable && onAddBulletPoint && (
-                  <li style={{ marginTop: '6px', marginLeft: '12px' }}>
+                  <li style={{ marginTop: '6px', marginLeft: '14px' }}>
                     <button
                       onClick={() => onAddBulletPoint(exp.id)}
                       className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-gray-50 transition-colors"
@@ -273,7 +320,7 @@ export const ExperienceTimelinePro: React.FC<ExperienceVariantProps> = ({
         <button
           onClick={onAddExperience}
           className="mt-2 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded border border-dashed hover:bg-gray-50 transition-colors"
-          style={{ color: accentColor, borderColor: accentColor, marginLeft: '140px' }}
+          style={{ color: accentColor, borderColor: accentColor, marginLeft: '120px' }}
         >
           <Plus className="h-3 w-3" />
           Add Experience

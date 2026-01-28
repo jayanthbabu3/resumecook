@@ -30,12 +30,14 @@ export const SkillsTags: React.FC<SkillsVariantProps> = ({
     color: skills.badge?.textColor || accentColor,
   };
 
-  if (!items.length) return null;
+  // Filter out empty/whitespace-only skill names
+  const validItems = items.filter(skill => skill.name && skill.name.trim());
+  if (!validItems.length) return null;
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-      {items.map((skill, index) => (
-        <span key={skill.id || index} style={tagStyle}>
+      {validItems.map((skill) => (
+        <span key={skill.id} style={tagStyle}>
           {skill.name}
         </span>
       ))}

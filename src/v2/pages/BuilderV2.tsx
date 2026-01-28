@@ -2853,7 +2853,7 @@ export const BuilderV2: React.FC = () => {
             {/* Sticky so form stays visible while scrolling resume preview */}
             {!isChatMode && (
               <div className={cn(
-                "w-full lg:w-[520px] xl:w-[580px] flex-shrink-0",
+                "w-full lg:w-[490px] xl:w-[540px] flex-shrink-0",
                 // Height: 100vh minus toolbar and header
                 headerVisible ? "lg:h-[calc(100vh-140px)]" : "lg:h-[calc(100vh-80px)]",
                 "h-auto",

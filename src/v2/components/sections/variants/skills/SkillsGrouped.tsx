@@ -51,6 +51,9 @@ export const SkillsGrouped: React.FC<SkillsGroupedProps> = ({
     color: skills.badge?.textColor || getPillTextColor(skills.badge?.backgroundColor, accentColor),
   };
 
+  // Filter out empty/whitespace-only skill names
+  const validItems = items.filter(skill => skill.name && skill.name.trim());
+
   // If no categories, just render as columns
   if (categories.length === 1 && categories[0] === 'Other') {
     return (
@@ -61,8 +64,8 @@ export const SkillsGrouped: React.FC<SkillsGroupedProps> = ({
           gap: '8px',
         }}
       >
-        {items.map((skill, index) => (
-          <span key={skill.id || index} style={pillStyle}>
+        {validItems.map((skill) => (
+          <span key={skill.id} style={pillStyle}>
             {skill.name}
           </span>
         ))}
@@ -78,27 +81,39 @@ export const SkillsGrouped: React.FC<SkillsGroupedProps> = ({
         gap: '16px',
       }}
     >
-      {categories.map((category) => (
-        <div key={category}>
-          <h4
-            style={{
-              fontSize: scaleFontSize(typography.body.fontSize),
-              fontWeight: 600,
-              color: accentColor,
-              marginBottom: '8px',
-            }}
-          >
-            {category}
-          </h4>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            {groupedSkills[category].map((skill, index) => (
-              <span key={skill.id || index} style={pillStyle}>
-                {skill.name}
-              </span>
-            ))}
+      {categories.map((category) => {
+        // Get valid skills for this category
+        const validCategorySkills = groupedSkills[category].filter(
+          skill => skill.name && skill.name.trim()
+        );
+        
+        // Skip categories with no valid skills
+        if (validCategorySkills.length === 0) {
+          return null;
+        }
+
+        return (
+          <div key={category}>
+            <h4
+              style={{
+                fontSize: scaleFontSize(typography.body.fontSize),
+                fontWeight: 600,
+                color: accentColor,
+                marginBottom: '8px',
+              }}
+            >
+              {category}
+            </h4>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              {validCategorySkills.map((skill) => (
+                <span key={skill.id} style={pillStyle}>
+                  {skill.name}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

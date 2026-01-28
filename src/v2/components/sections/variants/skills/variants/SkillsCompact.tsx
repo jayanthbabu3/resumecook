@@ -27,7 +27,10 @@ export const SkillsCompact: React.FC<SkillsCompactProps> = ({
   const styleContext = useStyleOptions();
   const scaleFontSize = styleContext?.scaleFontSize || ((s: string) => s);
 
-  if (!items.length && !editable) return null;
+  // Filter out empty/whitespace-only skill names
+  const validItems = items.filter(skill => skill.name && skill.name.trim());
+  
+  if (!validItems.length && !editable) return null;
 
   const separatorChar = {
     bullet: ' • ',
@@ -38,30 +41,34 @@ export const SkillsCompact: React.FC<SkillsCompactProps> = ({
   if (editable) {
     return (
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
-        {items.map((skill, index) => (
-          <div key={skill.id || index} className="group relative flex items-center">
-            <InlineEditableText
-              path={`skills.${index}.name`}
-              value={skill.name}
-              style={{
-                fontSize: scaleFontSize(typography.body.fontSize),
-                color: typography.body.color,
-              }}
-              placeholder="Skill"
-            />
-            {onRemoveSkill && (
-              <button
-                onClick={() => onRemoveSkill(skill.id)}
-                className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
-              >
-                <X className="w-3 h-3 text-red-500" />
-              </button>
-            )}
-            {index < items.length - 1 && (
-              <span style={{ color: '#9ca3af', marginLeft: '4px' }}>{separatorChar.trim()}</span>
-            )}
-          </div>
-        ))}
+        {validItems.map((skill, idx) => {
+          // Find original index for correct path
+          const originalIndex = items.findIndex(s => s.id === skill.id);
+          return (
+            <div key={skill.id} className="group relative flex items-center">
+              <InlineEditableText
+                path={`skills.${originalIndex}.name`}
+                value={skill.name}
+                style={{
+                  fontSize: scaleFontSize(typography.body.fontSize),
+                  color: typography.body.color,
+                }}
+                placeholder="Skill"
+              />
+              {onRemoveSkill && (
+                <button
+                  onClick={() => onRemoveSkill(skill.id)}
+                  className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
+                >
+                  <X className="w-3 h-3 text-red-500" />
+                </button>
+              )}
+              {idx < validItems.length - 1 && (
+                <span style={{ color: '#9ca3af', marginLeft: '4px' }}>{separatorChar.trim()}</span>
+              )}
+            </div>
+          );
+        })}
         
         {onAddSkill && (
           <button
@@ -82,10 +89,10 @@ export const SkillsCompact: React.FC<SkillsCompactProps> = ({
       color: typography.body.color,
       lineHeight: 1.6,
     }}>
-      {items.map((skill, index) => (
-        <span key={skill.id || index}>
+      {validItems.map((skill, index) => (
+        <span key={skill.id}>
           {skill.name}
-          {index < items.length - 1 && (
+          {index < validItems.length - 1 && (
             <span style={{ color: '#9ca3af' }}>{separatorChar}</span>
           )}
         </span>

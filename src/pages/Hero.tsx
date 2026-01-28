@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin, Check, X, Crown, Wand2, Upload, Linkedin, Infinity, MessageSquare, FileSearch, BrainCircuit, Mic, Send, Bot, FileUp, ArrowUpRight, Layers, RefreshCw, User } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Sparkles, Zap, TrendingUp, Shield, Award, Clock, Globe, Target, Palette, Mail, Eye, Download, Phone, MapPin, Check, X, Crown, Wand2, Upload, Linkedin, Infinity, MessageSquare, FileSearch, BrainCircuit, Mic, Send, Bot, FileUp, ArrowUpRight, Layers, RefreshCw, User, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -1345,6 +1345,80 @@ const Hero = () => {
                     onClick={() => navigate("/dashboard?feature=interview")}
                   >
                     <span>Try Mock Interview</span>
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Feature 7: Style Customization */}
+              <div className="group relative bg-white rounded-2xl border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-rose-500" />
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-lg shadow-pink-500/30">
+                        <Palette className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-foreground">Style Customization</h3>
+                        <p className="text-sm text-muted-foreground">Make it uniquely yours</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="border-pink-200 text-pink-600 bg-pink-50">FREE</Badge>
+                  </div>
+
+                  {/* Visual Demo - Style Options */}
+                  <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+                    <div className="space-y-3">
+                      {/* Color picker row */}
+                      <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                        <div className="text-[10px] font-medium text-gray-500 uppercase mb-2">Theme Colors</div>
+                        <div className="flex items-center gap-2">
+                          {['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899'].map((color, i) => (
+                            <div 
+                              key={i}
+                              className={`h-6 w-6 rounded-full cursor-pointer transition-transform hover:scale-110 ${i === 0 ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
+                              style={{ backgroundColor: color }}
+                            />
+                          ))}
+                          <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 cursor-pointer hover:scale-110 transition-transform" />
+                        </div>
+                      </div>
+
+                      {/* Font selector row */}
+                      <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
+                        <div className="text-[10px] font-medium text-gray-500 uppercase mb-2">Font Families</div>
+                        <div className="flex gap-2">
+                          {['Inter', 'Georgia', 'Roboto'].map((font, i) => (
+                            <div 
+                              key={i}
+                              className={`text-xs px-3 py-1.5 rounded-lg border ${i === 0 ? 'border-pink-300 bg-pink-50 text-pink-700' : 'border-gray-200 text-gray-600'}`}
+                              style={{ fontFamily: font }}
+                            >
+                              {font}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* More options preview */}
+                      <div className="flex items-center gap-2 text-[10px] text-gray-500">
+                        <Settings className="h-3 w-3" />
+                        <span>+ Font sizes, spacing, margins & more</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Customize theme colors, fonts, spacing, and more. Create a unique resume that matches your personal brand.
+                  </p>
+
+                  <Button
+                    variant="outline"
+                    className="mt-4 w-full h-10 text-sm font-medium rounded-lg border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300 hover:text-pink-700 transition-all group"
+                    onClick={() => navigate("/builder")}
+                  >
+                    <span>Explore Style Options</span>
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                   </Button>
                 </div>

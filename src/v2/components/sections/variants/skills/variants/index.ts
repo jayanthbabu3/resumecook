@@ -5,6 +5,7 @@
  */
 
 export { SkillsPillsEnhanced } from './SkillsPillsEnhanced';
+export { SkillsTagsEnhanced } from './SkillsTagsEnhanced';
 export { SkillsBarsEnhanced } from './SkillsBarsEnhanced';
 export { SkillsDotsEnhanced } from './SkillsDotsEnhanced';
 export { SkillsGroupedEnhanced } from './SkillsGroupedEnhanced';

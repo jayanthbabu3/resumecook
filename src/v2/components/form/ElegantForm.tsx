@@ -853,25 +853,56 @@ const SimpleItemsEditor: React.FC<SimpleItemsEditorProps> = ({
                           </SelectContent>
                         </Select>
                       ) : field.type === 'rating' ? (
-                        <div className="flex gap-0.5">
-                          {[1, 2, 3, 4, 5].map(level => (
-                            <button
-                              key={level}
-                              onClick={() => handleUpdate(item.id, field.key, level)}
-                              className={cn(
-                                "w-5 h-5 rounded-full text-[10px] font-medium transition-all",
-                                (item[field.key] || 0) >= level
-                                  ? "text-white"
-                                  : "bg-gray-200 text-gray-500"
-                              )}
-                              style={{
-                                backgroundColor: (item[field.key] || 0) >= level ? accentColor : undefined
-                              }}
-                            >
-                              {level}
-                            </button>
-                          ))}
-                        </div>
+                        <Select
+                          value={String(item[field.key] || 3)}
+                          onValueChange={(v) => handleUpdate(item.id, field.key, parseInt(v))}
+                        >
+                          <SelectTrigger className={`h-7 ${FIELD_INPUT_CLASS} min-w-[130px]`}>
+                            <SelectValue>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs">
+                                  {item[field.key] === 5 ? 'Expert' :
+                                   item[field.key] === 4 ? 'Advanced' :
+                                   item[field.key] === 2 ? 'Basic' :
+                                   item[field.key] === 1 ? 'Beginner' : 'Intermediate'}
+                                </span>
+                                <div className="flex gap-0.5">
+                                  {[1, 2, 3, 4, 5].map(d => (
+                                    <div
+                                      key={d}
+                                      className="w-1.5 h-1.5 rounded-full"
+                                      style={{ backgroundColor: d <= (item[field.key] || 3) ? accentColor : `${accentColor}30` }}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            {[
+                              { value: '5', label: 'Expert' },
+                              { value: '4', label: 'Advanced' },
+                              { value: '3', label: 'Intermediate' },
+                              { value: '2', label: 'Basic' },
+                              { value: '1', label: 'Beginner' },
+                            ].map(opt => (
+                              <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                                <div className="flex items-center gap-2">
+                                  <span>{opt.label}</span>
+                                  <div className="flex gap-0.5">
+                                    {[1, 2, 3, 4, 5].map(d => (
+                                      <div
+                                        key={d}
+                                        className="w-1.5 h-1.5 rounded-full"
+                                        style={{ backgroundColor: d <= parseInt(opt.value) ? accentColor : `${accentColor}30` }}
+                                      />
+                                    ))}
+                                  </div>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       ) : (
                         <Input
                           value={item[field.key] || ''}

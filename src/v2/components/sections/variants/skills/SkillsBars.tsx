@@ -154,46 +154,65 @@ export const SkillsBars: React.FC<SkillsBarsProps> = ({
     );
   };
 
+  // Filter out empty/whitespace-only skill names
+  const validItems = items.filter(skill => skill.name && skill.name.trim());
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      {items.map((skill, index) => (
-        <div
-          key={skill.id || index}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-          }}
-        >
-          {editable ? (
-            <InlineEditableText
-              path={`skills.${index}.name`}
-              value={skill.name}
-              style={{
-                fontSize: typography.body.fontSize,
-                color: typography.body.color,
-                flex: 1,
-              }}
-              placeholder="Skill name"
-            />
-          ) : (
-            <span
-              style={{
-                fontSize: typography.body.fontSize,
-                color: typography.body.color,
-                flex: 1,
-              }}
-            >
-              {skill.name}
-            </span>
-          )}
-          {showDots
-            ? renderDots((skill as any).level || 3, index)
-            : renderBar((skill as any).level || 3, index)
-          }
-        </div>
-      ))}
+      {validItems.map((skill) => {
+        // Find original index in items array for correct path
+        const originalIndex = items.findIndex(s => s.id === skill.id);
+        
+        return (
+          <div
+            key={skill.id}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '8px',
+              minWidth: 0,
+            }}
+          >
+            <div style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden' }}>
+              {editable ? (
+                <InlineEditableText
+                  path={`skills.${originalIndex}.name`}
+                  value={skill.name}
+                  style={{
+                    fontSize: scaleFontSize(typography.body.fontSize),
+                    color: typography.body.color,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: 'block',
+                  }}
+                  placeholder="Skill name"
+                />
+              ) : (
+                <span
+                  style={{
+                    fontSize: scaleFontSize(typography.body.fontSize),
+                    color: typography.body.color,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: 'block',
+                  }}
+                >
+                  {skill.name}
+                </span>
+              )}
+            </div>
+            <div style={{ flexShrink: 0 }}>
+              {showDots
+                ? renderDots((skill as any).level || 3, originalIndex)
+                : renderBar((skill as any).level || 3, originalIndex)
+              }
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

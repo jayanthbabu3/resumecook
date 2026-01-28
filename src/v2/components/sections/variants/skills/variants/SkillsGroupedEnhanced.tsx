@@ -73,7 +73,7 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
   const handleAddCategory = () => {
     addArrayItem('skills', {
       id: `skill-${Date.now()}`,
-      name: 'New Skill',
+      name: '', // Empty placeholder - category only, user adds skills via form
       category: 'New Category',
       level: 3,
     });
@@ -87,24 +87,33 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
         gap: '20px',
       }}
     >
-      {categories.map((category) => (
-        <div key={category}>
-          <h4
-            style={{
-              fontSize: scaleFontSize(typography.body.fontSize),
-              fontWeight: 600,
-              color: accentColor,
-              marginBottom: '10px',
-              borderBottom: `2px solid ${accentColor}20`,
-              paddingBottom: '4px',
-            }}
-          >
-            {category}
-          </h4>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
-            {groupedSkills[category]
-              .filter((skill) => skill.name?.trim()) // Filter out empty skills
-              .map((skill) => {
+      {categories.map((category) => {
+        // Get valid skills for this category (non-empty names)
+        const validSkills = groupedSkills[category].filter(
+          (skill) => skill.name && skill.name.trim()
+        );
+        
+        // In non-edit mode, skip categories with no valid skills
+        if (!editable && validSkills.length === 0) {
+          return null;
+        }
+
+        return (
+          <div key={category}>
+            <h4
+              style={{
+                fontSize: scaleFontSize(typography.body.fontSize),
+                fontWeight: 600,
+                color: accentColor,
+                marginBottom: '10px',
+                borderBottom: `2px solid ${accentColor}20`,
+                paddingBottom: '4px',
+              }}
+            >
+              {category}
+            </h4>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
+              {validSkills.map((skill) => {
                 const skillIndex = items.findIndex(s => s.id === skill.id);
                 return (
                   <div key={skill.id} className="group relative">
@@ -131,20 +140,21 @@ export const SkillsGroupedEnhanced: React.FC<SkillsGroupedEnhancedProps> = ({
                   </div>
                 );
               })}
-            {/* Add skill to this category button */}
-            {editable && (
-              <button
-                onClick={() => handleAddSkill(category)}
-                className="flex items-center justify-center w-6 h-6 rounded-full border border-dashed hover:bg-gray-50 transition-colors opacity-60 hover:opacity-100"
-                style={{ color: accentColor, borderColor: accentColor }}
-                title={`Add skill to ${category}`}
-              >
-                <Plus className="w-3 h-3" />
-              </button>
-            )}
+              {/* Add skill to this category button */}
+              {editable && (
+                <button
+                  onClick={() => handleAddSkill(category)}
+                  className="flex items-center justify-center w-6 h-6 rounded-full border border-dashed hover:bg-gray-50 transition-colors opacity-60 hover:opacity-100"
+                  style={{ color: accentColor, borderColor: accentColor }}
+                  title={`Add skill to ${category}`}
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       {/* Add new category button */}
       {editable && (

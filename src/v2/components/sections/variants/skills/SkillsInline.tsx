@@ -33,6 +33,8 @@ export const SkillsInline: React.FC<SkillsInlineProps> = ({
   };
 
   const sep = separatorMap[separator];
+  // Filter out empty/whitespace-only skill names
+  const validItems = items.filter(skill => skill.name && skill.name.trim());
 
   return (
     <p
@@ -43,12 +45,12 @@ export const SkillsInline: React.FC<SkillsInlineProps> = ({
         margin: 0,
       }}
     >
-      {items.map((skill, index) => (
+      {validItems.map((skill, index) => (
         <React.Fragment key={skill.id || index}>
           <span style={{ color: accentColor, fontWeight: 500 }}>
             {skill.name}
           </span>
-          {index < items.length - 1 && (
+          {index < validItems.length - 1 && (
             <span style={{ color: '#9ca3af' }}>{sep}</span>
           )}
         </React.Fragment>

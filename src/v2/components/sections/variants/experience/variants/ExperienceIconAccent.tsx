@@ -1,22 +1,17 @@
 /**
  * Experience Icon Accent Variant
  *
- * Creative layout with company initial icon, gradient accent bar,
- * and modern card-style presentation. Perfect for creative professionals.
+ * Clean card-style layout with subtle accent top border.
+ * Minimal, professional design that's ATS-friendly.
+ * Works well with any resume template.
  */
 
 import React from 'react';
-import { X, Plus, MapPin, Calendar } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 import { InlineEditableText } from '@/components/resume/InlineEditableText';
 import { InlineEditableDate } from '@/components/resume/InlineEditableDate';
 import type { ExperienceVariantProps } from '../../experience/types';
 import { useStyleOptions } from '@/contexts/StyleOptionsContext';
-
-// Get company initials for the icon
-const getCompanyInitial = (company: string): string => {
-  if (!company) return '?';
-  return company.charAt(0).toUpperCase();
-};
 
 export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
   items,
@@ -35,10 +30,6 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
 
   if (!items.length && !editable) return null;
 
-  // Create a lighter version of the accent color
-  const lightAccent = `${accentColor}15`;
-  const mediumAccent = `${accentColor}30`;
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.itemGap }}>
       {items.map((exp, index) => (
@@ -47,55 +38,35 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
           className="group relative pdf-experience-entry"
           data-experience-entry="true"
           style={{
-            display: 'flex',
-            gap: '16px',
-            padding: '16px',
-            backgroundColor: lightAccent,
-            borderRadius: '12px',
-            border: `1px solid ${mediumAccent}`,
+            padding: '14px 16px',
+            backgroundColor: '#fafafa',
+            borderRadius: '6px',
+            borderTop: `3px solid ${accentColor}`,
           }}
         >
-          {/* Company Initial Icon */}
-          <div
-            style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '10px',
-              background: `linear-gradient(135deg, ${accentColor} 0%, ${accentColor}cc 100%)`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              boxShadow: `0 4px 12px ${accentColor}40`,
-            }}
-          >
-            <span
+          {/* Delete button */}
+          {editable && onRemoveExperience && (
+            <button
+              onClick={() => onRemoveExperience(exp.id)}
+              className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full z-10"
+            >
+              <X className="w-3 h-3 text-red-600" />
+            </button>
+          )}
+
+          {/* Entry Header */}
+          <div data-entry-header="true">
+            {/* Position Row */}
+            <div
               style={{
-                fontSize: '20px',
-                fontWeight: 800,
-                color: '#ffffff',
-                letterSpacing: '-0.02em',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                gap: '16px',
+                marginBottom: '4px',
               }}
             >
-              {getCompanyInitial(exp.company)}
-            </span>
-          </div>
-
-          {/* Content */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            {editable && onRemoveExperience && (
-              <button
-                onClick={() => onRemoveExperience(exp.id)}
-                className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-red-100 hover:bg-red-200 rounded-full z-10"
-              >
-                <X className="w-3 h-3 text-red-600" />
-              </button>
-            )}
-
-            {/* Entry Header - keep together for PDF page breaks */}
-            <div data-entry-header="true">
-            {/* Position & Company Row */}
-            <div style={{ marginBottom: '8px' }}>
+              {/* Position */}
               {editable ? (
                 <InlineEditableText
                   path={`experience.${index}.position`}
@@ -103,60 +74,38 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                   as="h3"
                   style={{
                     fontSize: scaleFontSize(typography.itemTitle.fontSize),
-                    fontWeight: 700,
-                    color: typography.itemTitle.color,
+                    fontWeight: 600,
+                    color: '#111827',
                     margin: 0,
-                    lineHeight: 1.3,
+                    lineHeight: 1.35,
+                    flex: 1,
                   }}
                   placeholder="Position Title"
                 />
               ) : (
-                <h3 style={{
-                  fontSize: scaleFontSize(typography.itemTitle.fontSize),
-                  fontWeight: 700,
-                  color: typography.itemTitle.color,
-                  margin: 0,
-                  lineHeight: 1.3,
-                }}>
+                <h3
+                  style={{
+                    fontSize: scaleFontSize(typography.itemTitle.fontSize),
+                    fontWeight: 600,
+                    color: '#111827',
+                    margin: 0,
+                    lineHeight: 1.35,
+                    flex: 1,
+                  }}
+                >
                   {exp.position}
                 </h3>
               )}
 
-              {editable ? (
-                <InlineEditableText
-                  path={`experience.${index}.company`}
-                  value={exp.company}
-                  style={{
-                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
-                    color: accentColor,
-                    fontWeight: 600,
-                    marginTop: '2px',
-                  }}
-                  placeholder="Company Name"
-                />
-              ) : (
-                <div style={{
-                  fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '11px'),
-                  color: accentColor,
-                  fontWeight: 600,
-                  marginTop: '2px',
-                }}>
-                  {exp.company}
-                </div>
-              )}
-            </div>
-
-            {/* Date & Location Row */}
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '12px',
-              marginBottom: '10px',
-              fontSize: scaleFontSize(typography.small?.fontSize || typography.dates.fontSize),
-              color: typography.dates.color,
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Calendar style={{ width: '12px', height: '12px', opacity: 0.7 }} />
+              {/* Date Range */}
+              <div
+                style={{
+                  fontSize: scaleFontSize(typography.dates.fontSize),
+                  color: '#6b7280',
+                  whiteSpace: 'nowrap',
+                  fontWeight: 500,
+                }}
+              >
                 {editable ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <InlineEditableDate
@@ -164,7 +113,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                       value={exp.startDate}
                       formatDisplay={formatDate}
                     />
-                    <span> – </span>
+                    <span>–</span>
                     {exp.current ? (
                       <span style={{ color: accentColor, fontWeight: 600 }}>Present</span>
                     ) : (
@@ -177,7 +126,7 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                   </div>
                 ) : (
                   <span>
-                    {formatDate ? formatDate(exp.startDate) : exp.startDate} – {' '}
+                    {formatDate ? formatDate(exp.startDate) : exp.startDate} –{' '}
                     {exp.current ? (
                       <span style={{ color: accentColor, fontWeight: 600 }}>Present</span>
                     ) : (
@@ -186,119 +135,197 @@ export const ExperienceIconAccent: React.FC<ExperienceVariantProps> = ({
                   </span>
                 )}
               </div>
+            </div>
 
-              {exp.location && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <MapPin style={{ width: '12px', height: '12px', opacity: 0.7 }} />
+            {/* Company & Meta Row */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                flexWrap: 'wrap',
+                marginBottom: '10px',
+              }}
+            >
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.company`}
+                  value={exp.company}
+                  style={{
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '13px'),
+                    fontWeight: 500,
+                    color: accentColor,
+                  }}
+                  placeholder="Company Name"
+                />
+              ) : (
+                <span
+                  style={{
+                    fontSize: scaleFontSize(typography.itemSubtitle?.fontSize || '13px'),
+                    fontWeight: 500,
+                    color: accentColor,
+                  }}
+                >
+                  {exp.company}
+                </span>
+              )}
+
+              {(exp.location || editable) && (
+                <>
+                  <span style={{ color: '#d1d5db' }}>•</span>
                   {editable ? (
                     <InlineEditableText
                       path={`experience.${index}.location`}
-                      value={exp.location}
+                      value={exp.location || ''}
+                      style={{
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                        color: '#6b7280',
+                      }}
                       placeholder="Location"
                     />
                   ) : (
-                    <span>{exp.location}</span>
+                    <span
+                      style={{
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                        color: '#6b7280',
+                      }}
+                    >
+                      {exp.location}
+                    </span>
                   )}
-                </div>
+                </>
+              )}
+
+              {(exp.employmentType || editable) && (
+                <>
+                  <span style={{ color: '#d1d5db' }}>•</span>
+                  {editable ? (
+                    <InlineEditableText
+                      path={`experience.${index}.employmentType`}
+                      value={exp.employmentType || ''}
+                      style={{
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                        color: '#6b7280',
+                      }}
+                      placeholder="Full-time"
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: scaleFontSize(typography.body.fontSize),
+                        color: '#6b7280',
+                      }}
+                    >
+                      {exp.employmentType}
+                    </span>
+                  )}
+                </>
               )}
             </div>
-            </div>
-            {/* End Entry Header */}
-
-            {/* Description */}
-            {(exp.description || editable) && (
-              <div style={{
-                fontSize: scaleFontSize(typography.body.fontSize),
-                color: typography.body.color,
-                marginBottom: '8px',
-                lineHeight: typography.body.lineHeight,
-                textAlign: 'justify',
-              }}>
-                {editable ? (
-                  <InlineEditableText
-                    path={`experience.${index}.description`}
-                    value={exp.description || ''}
-                    multiline
-                    placeholder="Brief description of your role..."
-                  />
-                ) : (
-                  exp.description
-                )}
-              </div>
-            )}
-
-            {/* Bullet points with accent squares */}
-            {(exp.bulletPoints?.length > 0 || editable) && (
-              <div style={{ margin: 0, padding: 0 }}>
-                {exp.bulletPoints?.map((bullet, bulletIndex) => (
-                  <div
-                    key={bulletIndex}
-                    className="group/bullet"
-                    style={{
-                      fontSize: scaleFontSize(typography.body.fontSize),
-                      color: typography.body.color,
-                      lineHeight: typography.body.lineHeight,
-                      textAlign: 'justify',
-                      marginBottom: '5px',
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '10px',
-                    }}
-                  >
-                    <span style={{
-                      width: '5px',
-                      height: '5px',
-                      borderRadius: '1px',
-                      backgroundColor: accentColor,
-                      marginTop: '7px',
-                      flexShrink: 0,
-                      transform: 'rotate(45deg)',
-                    }} />
-                    {editable ? (
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flex: 1 }}>
-                        <InlineEditableText
-                          path={`experience.${index}.bulletPoints.${bulletIndex}`}
-                          value={bullet}
-                          style={{ flex: 1 }}
-                          placeholder="Achievement or responsibility..."
-                        />
-                        {onRemoveBulletPoint && (
-                          <button
-                            onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}
-                            className="opacity-0 group-hover/bullet:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
-                          >
-                            <X className="w-3 h-3 text-red-500" />
-                          </button>
-                        )}
-                      </div>
-                    ) : (
-                      <span style={{ flex: 1 }}>{bullet}</span>
-                    )}
-                  </div>
-                ))}
-
-                {editable && onAddBulletPoint && (
-                  <div style={{ marginTop: '8px', marginLeft: '15px' }}>
-                    <button
-                      onClick={() => onAddBulletPoint(exp.id)}
-                      className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-white/50 transition-colors"
-                      style={{ color: accentColor, borderColor: accentColor }}
-                    >
-                      <Plus className="w-3 h-3" />
-                      Add bullet point
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
+
+          {/* Description */}
+          {(exp.description || editable) && (
+            <div
+              style={{
+                fontSize: scaleFontSize(typography.body.fontSize),
+                color: '#4b5563',
+                marginBottom: '8px',
+                lineHeight: 1.55,
+                textAlign: 'justify',
+              }}
+            >
+              {editable ? (
+                <InlineEditableText
+                  path={`experience.${index}.description`}
+                  value={exp.description || ''}
+                  multiline
+                  placeholder="Brief description of your role..."
+                />
+              ) : (
+                exp.description
+              )}
+            </div>
+          )}
+
+          {/* Bullet Points */}
+          {(exp.bulletPoints?.length > 0 || editable) && (
+            <ul
+              style={{
+                margin: 0,
+                padding: 0,
+                listStyle: 'none',
+              }}
+            >
+              {exp.bulletPoints?.map((bullet, bulletIndex) => (
+                <li
+                  key={bulletIndex}
+                  className="group/bullet"
+                  style={{
+                    fontSize: scaleFontSize(typography.body.fontSize),
+                    color: '#374151',
+                    lineHeight: 1.55,
+                    textAlign: 'justify',
+                    marginBottom: '5px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '10px',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: '4px',
+                      height: '4px',
+                      borderRadius: '50%',
+                      backgroundColor: accentColor,
+                      marginTop: '8px',
+                      flexShrink: 0,
+                    }}
+                  />
+                  {editable ? (
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flex: 1 }}>
+                      <InlineEditableText
+                        path={`experience.${index}.bulletPoints.${bulletIndex}`}
+                        value={bullet}
+                        style={{ flex: 1 }}
+                        placeholder="Achievement or responsibility..."
+                      />
+                      {onRemoveBulletPoint && (
+                        <button
+                          onClick={() => onRemoveBulletPoint(exp.id, bulletIndex)}
+                          className="opacity-0 group-hover/bullet:opacity-100 transition-opacity p-0.5 hover:bg-red-100 rounded"
+                        >
+                          <X className="w-3 h-3 text-red-500" />
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <span style={{ flex: 1 }}>{bullet}</span>
+                  )}
+                </li>
+              ))}
+
+              {editable && onAddBulletPoint && (
+                <li style={{ marginTop: '6px', marginLeft: '14px' }}>
+                  <button
+                    onClick={() => onAddBulletPoint(exp.id)}
+                    className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-dashed hover:bg-white transition-colors"
+                    style={{ color: accentColor, borderColor: accentColor }}
+                  >
+                    <Plus className="w-3 h-3" />
+                    Add bullet point
+                  </button>
+                </li>
+              )}
+            </ul>
+          )}
         </div>
       ))}
 
       {editable && onAddExperience && (
         <button
           onClick={onAddExperience}
-          className="mt-2 flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border border-dashed hover:bg-gray-50 transition-colors"
+          className="mt-2 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded border border-dashed hover:bg-gray-50 transition-colors"
           style={{ color: accentColor, borderColor: accentColor }}
         >
           <Plus className="h-3 w-3" />

@@ -9,6 +9,7 @@ import React from 'react';
 import type { SkillsVariantProps, SkillsVariant } from './types';
 import {
   SkillsPillsEnhanced,
+  SkillsTagsEnhanced,
   SkillsBarsEnhanced,
   SkillsDotsEnhanced,
   SkillsGroupedEnhanced,
@@ -46,7 +47,7 @@ export const SkillsVariantRenderer: React.FC<SkillsVariantRendererProps> = ({
   onUpdateSkill,
 }) => {
   // Helper to get skill name from various possible formats
-  const getSkillName = (skill: SkillsVariantProps['items'][0]): string => {
+  const getSkillName = (skill: SkillsVariantProps['items'][0]): string | null => {
     // V2 format: individual skill with name
     if (skill.name && skill.name.trim()) return skill.name;
     // Legacy format: grouped skills with items array
@@ -54,16 +55,19 @@ export const SkillsVariantRenderer: React.FC<SkillsVariantRendererProps> = ({
     if (legacySkill.items && legacySkill.items.length > 0) {
       return legacySkill.items.filter(Boolean).join(', ');
     }
-    // Fallback: use category name if nothing else
-    if (skill.category && skill.category.trim()) return skill.category;
-    return 'Unnamed skill';
+    // No valid name - return null (will be filtered out)
+    // Don't use category name as fallback - that creates duplicate entries
+    return null;
   };
 
-  // Normalize items to ensure all have proper names
-  const normalizedItems = items.map(item => ({
-    ...item,
-    name: getSkillName(item),
-  }));
+  // Normalize items and filter out those without valid names
+  // This filters out placeholder skills created when adding new categories
+  const normalizedItems = items
+    .map(item => ({
+      ...item,
+      name: getSkillName(item) || '',
+    }))
+    .filter(item => item.name && item.name.trim());
 
   const props: SkillsVariantProps = {
     items: normalizedItems,
@@ -77,8 +81,10 @@ export const SkillsVariantRenderer: React.FC<SkillsVariantRendererProps> = ({
 
   switch (variant) {
     case 'pills':
-    case 'tags':
       return <SkillsPillsEnhanced {...props} />;
+    
+    case 'tags':
+      return <SkillsTagsEnhanced {...props} />;
     
     case 'bars':
       return <SkillsBarsEnhanced {...props} />;

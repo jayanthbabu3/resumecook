@@ -35,12 +35,14 @@ export const SkillsPills: React.FC<SkillsVariantProps> = ({
     transition: 'all 0.2s ease',
   };
 
-  if (!items.length) return null;
+  // Filter out empty/whitespace-only skill names
+  const validItems = items.filter(skill => skill.name && skill.name.trim());
+  if (!validItems.length) return null;
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-      {items.map((skill, index) => (
-        <span key={skill.id || index} style={pillStyle}>
+      {validItems.map((skill) => (
+        <span key={skill.id} style={pillStyle}>
           {skill.name}
         </span>
       ))}
