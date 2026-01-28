@@ -1302,7 +1302,7 @@ export const BuilderV2: React.FC = () => {
         ...prev,
         interests: [
           ...(prev.interests || []),
-          { id: `interest-${Date.now()}`, name: 'New Interest' },
+          { id: `interest-${Date.now()}`, name: 'New Interest', description: '' },
         ],
       }));
     } else if (sectionType === 'awards') {

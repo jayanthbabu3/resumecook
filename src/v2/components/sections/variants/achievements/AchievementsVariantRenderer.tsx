@@ -8,8 +8,15 @@ import React from 'react';
 import type { AchievementsVariantProps, AchievementsVariant } from './types';
 import {
   AchievementsStandard,
+  AchievementsList,
+  AchievementsBullets,
+  AchievementsNumbered,
+  AchievementsTimeline,
   AchievementsCompact,
+  AchievementsMinimal,
   AchievementsBadges,
+  AchievementsCards,
+  AchievementsMetrics,
   AchievementsBoxed,
 } from './variants';
 
@@ -42,20 +49,56 @@ export const AchievementsVariantRenderer: React.FC<AchievementsVariantRendererPr
   };
 
   // Dispatch based on variant
-  if (variant === 'boxed') {
-    return <AchievementsBoxed {...props} />;
-  }
+  switch (variant) {
+    case 'boxed':
+      return <AchievementsBoxed {...props} />;
 
-  if (variant === 'badges' || variant === 'cards' || variant === 'achievements-cards' || variant === 'metrics' || variant === 'achievements-metrics') {
-    return <AchievementsBadges {...props} />;
-  }
+    case 'badges':
+      // Badges: 2-column grid with Award icons, tinted background
+      return <AchievementsBadges {...props} />;
 
-  if (variant === 'compact' || variant === 'minimal' || variant === 'achievements-minimal') {
-    return <AchievementsCompact {...props} />;
-  }
+    case 'cards':
+    case 'achievements-cards':
+      // Cards: Full-width cards with shadow and accent top border
+      return <AchievementsCards {...props} />;
 
-  // Default to standard for 'standard', 'list', 'bullets', 'timeline', 'achievements-classic', 'achievements-timeline', etc.
-  return <AchievementsStandard {...props} />;
+    case 'metrics':
+    case 'achievements-metrics':
+      // Metrics: Large numbers/percentages prominently displayed
+      return <AchievementsMetrics {...props} />;
+
+    case 'compact':
+      // Compact: Bullet dots with em-dash separator
+      return <AchievementsCompact {...props} />;
+
+    case 'minimal':
+    case 'achievements-minimal':
+      // Minimal: No bullets, clean stacked text with subtle separators
+      return <AchievementsMinimal {...props} />;
+
+    case 'list':
+      // List variant: Title on top, description below with left accent border
+      return <AchievementsList {...props} />;
+
+    case 'bullets':
+      // Bullets variant: Simple bullet points with accent-colored dots
+      return <AchievementsBullets {...props} />;
+
+    case 'numbered':
+      // Numbered variant: Numbers in accent-colored circles
+      return <AchievementsNumbered {...props} />;
+
+    case 'timeline':
+    case 'achievements-timeline':
+      // Timeline variant: Vertical timeline with connecting line and dots
+      return <AchievementsTimeline {...props} />;
+
+    case 'standard':
+    case 'achievements-classic':
+    default:
+      // Standard variant: Trophy icons with "Title - Description" format
+      return <AchievementsStandard {...props} />;
+  }
 };
 
 export default AchievementsVariantRenderer;

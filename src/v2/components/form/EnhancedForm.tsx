@@ -782,6 +782,8 @@ const RATING_VARIANTS = ['bars', 'dots', 'detailed'];
 const CATEGORY_VARIANTS = ['table', 'grouped', 'category-lines'];
 // Variants that need description field (for strengths)
 const DESCRIPTION_VARIANTS = ['cards', 'grid', 'accent-border'];
+// Variants that need description field for interests
+const INTERESTS_DESCRIPTION_VARIANTS = ['detailed'];
 // Section types that can use simple chips UI
 const SIMPLE_SECTION_TYPES = ['skills', 'interests', 'strengths'];
 
@@ -1355,6 +1357,209 @@ const StrengthsWithDescriptionEditor: React.FC<{
   );
 };
 
+// Interests with Description Editor (for detailed variant)
+const InterestsWithDescriptionEditor: React.FC<{
+  items: any[];
+  onChange: (items: any[]) => void;
+  accentColor: string;
+}> = ({ items, onChange, accentColor }) => {
+  const [newName, setNewName] = useState('');
+  const [newDescription, setNewDescription] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+
+  const handleAdd = () => {
+    if (!newName.trim()) return;
+    const newItem = {
+      id: crypto.randomUUID(),
+      name: newName.trim(),
+      description: newDescription.trim() || '',
+    };
+    onChange([...items, newItem]);
+    setNewName('');
+    setNewDescription('');
+  };
+
+  const handleRemove = (id: string) => {
+    onChange(items.filter(item => item.id !== id));
+  };
+
+  const handleStartEdit = (item: any) => {
+    setEditingId(item.id);
+    setEditName(item.name || '');
+    setEditDescription(item.description || '');
+  };
+
+  const handleSaveEdit = (id: string) => {
+    onChange(items.map(item =>
+      item.id === id
+        ? { ...item, name: editName.trim(), description: editDescription.trim() }
+        : item
+    ));
+    setEditingId(null);
+    setEditName('');
+    setEditDescription('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditName('');
+    setEditDescription('');
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Existing items */}
+      {items.length > 0 && (
+        <div className="space-y-3">
+          {items.map((item) => {
+            const isEditing = editingId === item.id;
+
+            if (isEditing) {
+              return (
+                <div
+                  key={item.id}
+                  className="p-4 rounded-xl border-2 border-blue-300 bg-blue-50/30"
+                >
+                  <div className="space-y-3">
+                    <Input
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      placeholder="Interest name"
+                      className="h-10 text-base font-medium"
+                      autoFocus
+                    />
+                    <Input
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      placeholder="Brief description (optional)"
+                      className="h-10 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleSaveEdit(item.id);
+                        }
+                        if (e.key === 'Escape') {
+                          handleCancelEdit();
+                        }
+                      }}
+                    />
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleCancelEdit}
+                        className="h-8"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => handleSaveEdit(item.id)}
+                        disabled={!editName.trim()}
+                        className="h-8"
+                        style={{ backgroundColor: WEBSITE_THEME_COLOR }}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={item.id}
+                className="group flex items-start gap-3 p-3 rounded-xl border border-gray-200 bg-white hover:border-gray-300 transition-colors cursor-pointer"
+                onClick={() => handleStartEdit(item)}
+              >
+                <Heart
+                  className="w-5 h-5 flex-shrink-0 mt-0.5"
+                  style={{ color: accentColor }}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-gray-900 truncate">
+                    {item.name || 'Untitled'}
+                  </p>
+                  {item.description && (
+                    <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">
+                      {item.description}
+                    </p>
+                  )}
+                  {!item.description && (
+                    <p className="text-sm text-gray-400 mt-0.5 italic">
+                      Click to add description
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemove(item.id);
+                  }}
+                  className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all flex-shrink-0"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Add new interest */}
+      <div className="p-4 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50">
+        <div className="space-y-3">
+          <Input
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && newName.trim()) {
+                e.preventDefault();
+                // Focus description field instead of adding
+                const descInput = document.getElementById('new-interest-desc');
+                if (descInput) descInput.focus();
+              }
+            }}
+            placeholder="Interest name (e.g., Photography, Hiking)"
+            className="h-11 text-base"
+          />
+          <Input
+            id="new-interest-desc"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && newName.trim()) {
+                e.preventDefault();
+                handleAdd();
+              }
+            }}
+            placeholder="Brief description (optional)"
+            className="h-10 text-sm"
+          />
+          <Button
+            onClick={handleAdd}
+            disabled={!newName.trim()}
+            className="w-full h-10"
+            style={{ backgroundColor: newName.trim() ? accentColor : undefined }}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Interest
+          </Button>
+        </div>
+      </div>
+
+      {items.length === 0 && (
+        <p className="text-sm text-gray-400 text-center py-2">
+          Add your hobbies and personal interests
+        </p>
+      )}
+    </div>
+  );
+};
+
 // Generic list section for experience, education, etc.
 const ListSection: React.FC<{
   sectionType: V2SectionType;
@@ -1378,12 +1583,15 @@ const ListSection: React.FC<{
 
   // Determine if we should use simple chips UI
   const isSimpleSectionType = SIMPLE_SECTION_TYPES.includes(sectionType);
-  const needsRating = currentVariant ? RATING_VARIANTS.includes(currentVariant) : false;
-  const needsCategory = currentVariant ? CATEGORY_VARIANTS.includes(currentVariant) : false;
+  // Interests should NEVER show ratings - it's for hobbies, not skills
+  const needsRating = sectionType === 'skills' && currentVariant ? RATING_VARIANTS.includes(currentVariant) : false;
+  const needsCategory = sectionType === 'skills' && currentVariant ? CATEGORY_VARIANTS.includes(currentVariant) : false;
   const needsDescription = currentVariant ? DESCRIPTION_VARIANTS.includes(currentVariant) : false;
+  const needsInterestsDescription = sectionType === 'interests' && currentVariant ? INTERESTS_DESCRIPTION_VARIANTS.includes(currentVariant) : false;
   // For strengths with description variants, use special editor; otherwise use simple chips
   const isStrengthsWithDescription = sectionType === 'strengths' && needsDescription;
-  const useSimpleChipsUI = isSimpleSectionType && !needsRating && !isStrengthsWithDescription;
+  const isInterestsWithDescription = sectionType === 'interests' && needsInterestsDescription;
+  const useSimpleChipsUI = isSimpleSectionType && !needsRating && !isStrengthsWithDescription && !isInterestsWithDescription;
 
   if (!definition) return null;
 
@@ -1819,6 +2027,13 @@ const ListSection: React.FC<{
             onChange={onChange}
             accentColor={WEBSITE_THEME_COLOR}
           />
+        ) : isInterestsWithDescription ? (
+          /* Interests with description - detailed variant */
+          <InterestsWithDescriptionEditor
+            items={items}
+            onChange={onChange}
+            accentColor={WEBSITE_THEME_COLOR}
+          />
         ) : (
           /* Simple chips UI for other variants */
           <div className="space-y-4">
@@ -1863,8 +2078,8 @@ const ListSection: React.FC<{
               </Button>
             </div>
 
-            {/* Hint for rating variants */}
-            {needsRating && items.length > 0 && (
+            {/* Hint for rating variants - only for skills */}
+            {needsRating && sectionType === 'skills' && items.length > 0 && (
               <p className="text-xs text-gray-500 flex items-center gap-1.5">
                 <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-100 text-blue-600 text-[10px] font-medium">?</span>
                 <span>Click on the dots next to a skill to change its proficiency level</span>

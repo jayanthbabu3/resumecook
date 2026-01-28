@@ -7,10 +7,12 @@ import type { InterestsVariantProps, InterestsVariant } from './types';
 import {
   InterestsStandard,
   InterestsPills,
+  InterestsTags,
   InterestsList,
   InterestsDetailed,
   InterestsGrid,
   InterestsIcons,
+  InterestsInline,
 } from './variants';
 
 export type { InterestsVariantProps, InterestsVariant } from './types';
@@ -43,6 +45,8 @@ export const InterestsVariantRenderer: React.FC<InterestsVariantRendererProps> =
     case 'pills':
     case 'compact': // Map compact to pills for a cleaner look
       return <InterestsPills {...props} />;
+    case 'tags':
+      return <InterestsTags {...props} />;
     case 'list':
       return <InterestsList {...props} />;
     case 'detailed':
@@ -51,6 +55,8 @@ export const InterestsVariantRenderer: React.FC<InterestsVariantRendererProps> =
       return <InterestsGrid {...props} />;
     case 'icons':
       return <InterestsIcons {...props} />;
+    case 'inline':
+      return <InterestsInline {...props} />;
     default:
       return <InterestsPills {...props} />;
   }

@@ -747,13 +747,17 @@ export const SECTION_REGISTRY: Record<V2SectionType, SectionDefinition> = {
     icon: 'Sparkles',
     dataKey: 'interests',
     isList: true,
+    itemName: 'interest',
+    itemNamePlural: 'interests',
     formFields: [
       { key: 'name', label: 'Interest', type: 'text', required: true, placeholder: 'Photography' },
       { key: 'description', label: 'Description', type: 'text', placeholder: 'Brief description (optional)' },
     ],
     variants: [
       { id: 'pills', name: 'Pills', description: 'Pill badges' },
+      { id: 'tags', name: 'Tags', description: 'Tag badges' },
       { id: 'list', name: 'List', description: 'Simple list' },
+      { id: 'detailed', name: 'Detailed', description: 'With descriptions' },
       { id: 'inline', name: 'Inline', description: 'Comma-separated' },
     ],
     defaultVariant: 'pills',
