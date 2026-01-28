@@ -28,6 +28,7 @@ export const API_ENDPOINTS = {
   enhanceSectionsBatch: `${API_BASE_URL}/api/enhance-sections/batch`,
   enhanceSections: `${API_BASE_URL}/api/enhance-sections/enhance`,
   parseResume: `${API_BASE_URL}/api/ai/parse-resume`,
+  parseResumeAISDK: `${API_BASE_URL}/api/ai-enhanced/parse-resume-base64`, // Vercel AI SDK endpoint
   generateResumeFromJob: `${API_BASE_URL}/api/ai/generate-from-job`,
   tailorResumeForJob: `${API_BASE_URL}/api/ai/tailor-for-job`,
   chatWithResume: `${API_BASE_URL}/api/ai/chat`,

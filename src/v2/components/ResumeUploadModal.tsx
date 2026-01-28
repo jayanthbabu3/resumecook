@@ -61,6 +61,9 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [previewScale, setPreviewScale] = useState(0.6);
+  // Temporarily disabled - using original parser to save credits and avoid timeouts
+  // const [useAISDK, setUseAISDK] = useState(true); // Default to AI SDK V2 (more reliable and comprehensive)
+  const [useAISDK, setUseAISDK] = useState(false); // Using original parser for now
 
   useEffect(() => {
     if (status !== 'ask_profile') return;
@@ -147,13 +150,18 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
 
       setStatus('parsing');
 
+      // Choose endpoint based on toggle
+      const endpoint = useAISDK ? API_ENDPOINTS.parseResumeAISDK : API_ENDPOINTS.parseResume;
+      console.log(`Using ${useAISDK ? 'Vercel AI SDK' : 'OpenAI'} for parsing`);
+
       // Call the parse-resume API
-      const response = await apiFetch(API_ENDPOINTS.parseResume, {
+      const response = await apiFetch(endpoint, {
         method: 'POST',
         body: JSON.stringify({
           fileData: base64Data,
           fileName: file.name,
           fileType: file.type,
+          quality: 'balanced', // For AI SDK endpoint
         }),
       });
 
@@ -174,7 +182,7 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
       setError(err instanceof Error ? err.message : 'Failed to parse resume');
       setStatus('error');
     }
-  }, [onSuccess, handleClose]);
+  }, [onSuccess, handleClose, useAISDK]);
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -382,6 +390,18 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
                     </p>
                   </div>
                 </div>
+                {/* Toggle for testing AI SDK vs Original - TEMPORARILY HIDDEN */}
+                {/* <div className="mt-3 flex items-center gap-2">
+                  <label className="text-xs text-gray-600 flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={useAISDK}
+                      onChange={(e) => setUseAISDK(e.target.checked)}
+                      className="w-4 h-4 text-primary rounded focus:ring-primary"
+                    />
+                    <span>Use Enhanced Parser V2 (100% Reliable)</span>
+                  </label>
+                </div> */}
               </div>
             </>
           )}
